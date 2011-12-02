@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+	<layout title="Contact Category Layout">
+		<message>
+			<![CDATA[CONTACT CATEGORY LAYOUT DESC]]>
+		</message>
+	</layout>
+	<state>
+		<name>Contacts Category Layout</name>
+		<description>CONTACT CATEGORY LAYOUT DESC</description>
+		<url addpath="/administrator/components/com_qcontacts/elements">
+			<param name="catid" type="category" scope="com_qcontacts_details" default="0" label="Select Category" description="A contacts category" />
+		</url>
+		<params>
+			<param name="image" type="imagelist" directory="/images/stories" hide_default="1" default="" label="Category Image" description="PARAMIMAGE" />
+			<param name="image_align" type="radio" default="right" label="Image Align" description="Alignment of the image">
+				<option value="left">Left</option>
+				<option value="right">Right</option>
+			</param>
+			<param name="show_headings" type="list" default="1" label="Table Headings" description="Show/Hide the Table Headings">
+				<option value="0">Hide</option>
+				<option value="1">Show</option>
+			</param>	
+			<param name="@spacer" type="spacer" default="" label="" description="" />
+			<param name="show_col_name" type="radio" default="1" label="Name Column" description="Show/Hide contact name column in grid">
+				<option value="0">Hide</option>
+				<option value="1">Show</option>
+			</param>
+			<param name="ord_col_name" type="text" size="2" default="0" label="Name Column Order" description="DESCR_COLUMN_ORDER" />
+			<param name="width_col_name" type="text" size="5" default="" label="Name Column Width" description="DESCR_COLUMN_WIDTH" />
+			<param name="sort_col_name" type="radio" default="1" label="Sortable" description="DESCR_COLUMN_SORT">
+				<option value="0">No</option>
+				<option value="1">Yes</option>
+			</param>
+			<param name="@spacer" type="spacer" default="" label="" description="" />
+			<param name="show_col_position" type="radio" default="1" label="Position Column" description="Show/Hide contact position column in grid">
+				<option value="0">Hide</option>
+				<option value="1">Show</option>
+			</param>
+			<param name="ord_col_position" type="text" size="2" default="1" label="Position Column Order" description="DESCR_COLUMN_ORDER" />
+			<param name="width_col_position" type="text" size="5" default="" label="Position Column Width" description="DESCR_COLUMN_WIDTH" />
+			<param name="sort_col_position" type="radio" default="1" label="Sortable" description="DESCR_COLUMN_SORT">
+				<option value="0">No</option>
+				<option value="1">Yes</option>
+			</param>
+			<param name="@spacer" type="spacer" default="" label="" description="" />
+			<param name="show_col_email" type="radio" default="0" label="E-mail Column" description="Show/Hide contact e-mail column in grid">
+				<option value="0">Hide</option>
+				<option value="1">Show</option>
+			</param>
+			<param name="ord_col_email" type="text" size="2" default="2" label="Email Column Order" description="DESCR_COLUMN_ORDER" />
+			<param name="width_col_email" type="text" size="5" default="" label="Email Column Width" description="DESCR_COLUMN_WIDTH" />
+			<param name="sort_col_email" type="radio" default="0" label="Sortable" description="DESCR_COLUMN_SORT">
+				<option value="0">No</option>
+				<option value="1">Yes</option>
+			</param>
+			<param name="@spacer" type="spacer" default="" label="" description="" />
+			<param name="show_col_telephone" type="radio" default="1" label="Telephone Column" description="Show/Hide contact telephone number column in grid">
+				<option value="0">Hide</option>
+				<option value="1">Show</option>
+			</param>
+			<param name="ord_col_telephone" type="text" size="2" default="3" label="Telephone Column Order" description="DESCR_COLUMN_ORDER" />
+			<param name="width_col_telephone" type="text" size="5" default="" label="Telephone Column Width" description="DESCR_COLUMN_WIDTH" />
+			<param name="sort_col_telephone" type="radio" default="0" label="Sortable" description="DESCR_COLUMN_SORT">
+				<option value="0">No</option>
+				<option value="1">Yes</option>
+			</param>
+			<param name="@spacer" type="spacer" default="" label="" description="" />
+			<param name="show_col_mobile" type="radio" default="0" label="Mobile Column" description="Show/Hide contact mobile number column in grid">
+				<option value="0">Hide</option>
+				<option value="1">Show</option>
+			</param>
+			<param name="ord_col_mobile" type="text" size="2" default="4" label="Mobile Column Order" description="DESCR_COLUMN_ORDER" />
+			<param name="width_col_mobile" type="text" size="5" default="" label="Mobile Column Width" description="DESCR_COLUMN_WIDTH" />
+			<param name="sort_col_mobile" type="radio" default="0" label="Sortable" description="DESCR_COLUMN_SORT">
+				<option value="0">No</option>
+				<option value="1">Yes</option>
+			</param>
+			<param name="@spacer" type="spacer" default="" label="" description="" />
+			<param name="show_col_fax" type="radio" default="0" label="Fax Column" description="Show/Hide contact fax number column in grid">
+				<option value="0">Hide</option>
+				<option value="1">Show</option>
+			</param>
+			<param name="ord_col_fax" type="text" size="2" default="5" label="Fax Column Order" description="DESCR_COLUMN_ORDER" />
+			<param name="width_col_fax" type="text" size="5" default="" label="Fax Column Width" description="DESCR_COLUMN_WIDTH" />
+			<param name="sort_col_fax" type="radio" default="0" label="Sortable" description="DESCR_COLUMN_SORT">
+				<option value="0">No</option>
+				<option value="1">Yes</option>
+			</param>
+			<param name="@spacer" type="spacer" default="" label="" description="" />
+			<param name="show_col_street" type="radio" default="0" label="Street Column" description="Show/Hide contact street address column in grid">
+				<option value="0">Hide</option>
+				<option value="1">Show</option>
+			</param>
+			<param name="ord_col_street" type="text" size="2" default="6" label="Street Column Order" description="DESCR_COLUMN_ORDER" />
+			<param name="width_col_street" type="text" size="5" default="" label="Street Column Width" description="DESCR_COLUMN_WIDTH" />
+			<param name="sort_col_street" type="radio" default="0" label="Sortable" description="DESCR_COLUMN_SORT">
+				<option value="0">No</option>
+				<option value="1">Yes</option>
+			</param>
+			<param name="@spacer" type="spacer" default="" label="" description="" />
+			<param name="show_col_suburb" type="radio" default="0" label="City Column" description="Show/Hide contact city column in grid">
+				<option value="0">Hide</option>
+				<option value="1">Show</option>
+			</param>
+			<param name="ord_col_suburb" type="text" size="2" default="7" label="City Column Order" description="DESCR_COLUMN_ORDER" />
+			<param name="width_col_suburb" type="text" size="5" default="" label="City Column Width" description="DESCR_COLUMN_WIDTH" />
+			<param name="sort_col_suburb" type="radio" default="0" label="Sortable" description="DESCR_COLUMN_SORT">
+				<option value="0">No</option>
+				<option value="1">Yes</option>
+			</param>
+			<param name="@spacer" type="spacer" default="" label="" description="" />
+			<param name="show_col_state" type="radio" default="0" label="State Column" description="Show/Hide contact state column in grid">
+				<option value="0">Hide</option>
+				<option value="1">Show</option>
+			</param>
+			<param name="ord_col_state" type="text" size="2" default="8" label="State Column Order" description="DESCR_COLUMN_ORDER" />
+			<param name="width_col_state" type="text" size="5" default="" label="State Column Width" description="DESCR_COLUMN_WIDTH" />
+			<param name="sort_col_state" type="radio" default="0" label="Sortable" description="DESCR_COLUMN_SORT">
+				<option value="0">No</option>
+				<option value="1">Yes</option>
+			</param>
+			<param name="@spacer" type="spacer" default="" label="" description="" />
+			<param name="show_col_postcode" type="radio" default="0" label="Postcode Column" description="Show/Hide contact postcode column in grid">
+				<option value="0">Hide</option>
+				<option value="1">Show</option>
+			</param>
+			<param name="ord_col_postcode" type="text" size="2" default="9" label="Postcode Column Order" description="DESCR_COLUMN_ORDER" />
+			<param name="width_col_postcode" type="text" size="5" default="" label="Postcode Column Width" description="DESCR_COLUMN_WIDTH" />				
+			<param name="sort_col_postcode" type="radio" default="0" label="Sortable" description="DESCR_COLUMN_SORT">
+				<option value="0">No</option>
+				<option value="1">Yes</option>
+			</param>
+			<param name="@spacer" type="spacer" default="" label="" description="" />
+			<param name="show_col_country" type="radio" default="0" label="Country Column" description="Show/Hide contact country column in grid">
+				<option value="0">Hide</option>
+				<option value="1">Show</option>
+			</param>
+			<param name="ord_col_country" type="text" size="2" default="10" label="Country Column Order" description="DESCR_COLUMN_ORDER" />
+			<param name="width_col_country" type="text" size="5" default="" label="Country Column Width" description="DESCR_COLUMN_WIDTH" />
+			<param name="sort_col_country" type="radio" default="0" label="Sortable" description="DESCR_COLUMN_SORT">
+				<option value="0">No</option>
+				<option value="1">Yes</option>
+			</param>
+			<param name="@spacer" type="spacer" default="" label="" description="" />
+			<param name="show_col_category" type="radio" default="0" label="Category Column" description="Show/Hide contact category column in grid">
+				<option value="0">Hide</option>
+				<option value="1">Show</option>
+			</param>
+			<param name="ord_col_category" type="text" size="2" default="11" label="Category Column Order" description="DESCR_COLUMN_ORDER" />
+			<param name="width_col_category" type="text" size="5" default="" label="Category Column Width" description="DESCR_COLUMN_WIDTH" />
+			<param name="sort_col_category" type="radio" default="0" label="Sortable" description="DESCR_COLUMN_SORT">
+				<option value="0">No</option>
+				<option value="1">Yes</option>
+			</param>
+			<param name="@spacer" type="spacer" default="" label="" description="" />
+			<param name="show_col_skype" type="radio" default="0" label="Skype Column" description="Show/Hide contact skype column in grid">
+				<option value="0">Hide</option>
+				<option value="1">Show</option>
+			</param>
+			<param name="ord_col_skype" type="text" size="2" default="12" label="Skype Column Order" description="DESCR_COLUMN_ORDER" />
+			<param name="width_col_skype" type="text" size="5" default="" label="Skype Column Width" description="DESCR_COLUMN_WIDTH" />
+			<param name="sort_col_skype" type="radio" default="0" label="Sortable" description="DESCR_COLUMN_SORT">
+				<option value="0">No</option>
+				<option value="1">Yes</option>
+			</param>
+			<param name="@spacer" type="spacer" default="" label="" description="" />
+			<param name="show_col_yahoo" type="radio" default="0" label="Yahoo Messenger Column" description="Show/Hide contact Yahoo Messenger column in grid">
+				<option value="0">Hide</option>
+				<option value="1">Show</option>
+			</param>
+			<param name="ord_col_yahoo" type="text" size="2" default="13" label="Yahoo Messenger Column Order" description="DESCR_COLUMN_ORDER" />
+			<param name="width_col_yahoo" type="text" size="5" default="" label="Yahoo Messenger Column Width" description="DESCR_COLUMN_WIDTH" />
+			<param name="sort_col_yahoo" type="radio" default="0" label="Sortable" description="DESCR_COLUMN_SORT">
+				<option value="0">No</option>
+				<option value="1">Yes</option>
+			</param>
+			<param name="@spacer" type="spacer" default="" label="" description="" />
+			<param name="show_col_webpage" type="radio" default="0" label="Webpage Column" description="Show/Hide contact Webpage column in grid">
+				<option value="0">Hide</option>
+				<option value="1">Show</option>
+			</param>
+			<param name="ord_col_webpage" type="text" size="2" default="14" label="Website Column Order" description="DESCR_COLUMN_ORDER" />
+			<param name="width_col_webpage" type="text" size="5" default="" label="Website Column Width" description="DESCR_COLUMN_WIDTH" />
+			<param name="sort_col_webpage" type="radio" default="0" label="Sortable" description="DESCR_COLUMN_SORT">
+				<option value="0">No</option>
+				<option value="1">Yes</option>
+			</param>
+			<param name="@spacer" type="spacer" default="" label="" description="" />
+			<param name="default_ordering" type="list" default="ordering" label="Default Ordering" description="DESCR_DEFAULT_ORDERING">
+				<option value="ordering">Ordering</option>
+				<option value="name">Name</option>
+				<option value="con_position">Position</option>
+				<option value="email_to">E-mail</option>
+				<option value="telephone">Telephone</option>
+				<option value="mobile">Mobile</option>
+				<option value="fax">Fax</option>
+				<option value="address">Address</option>
+				<option value="suburb">City</option>
+				<option value="state">State</option>
+				<option value="postcode">Zip Code</option>
+				<option value="country">Country</option>
+			</param>
+			<param name="contacts_per_page" type="list" default="0" label="Contacts Per Page" description="">
+				<option value="5">5</option>
+				<option value="10">10</option>
+				<option value="15">15</option>
+				<option value="20">20</option>
+				<option value="25">25</option>
+				<option value="30">30</option>
+				<option value="50">50</option>
+				<option value="100">100</option>
+				<option value="0">all</option>
+			</param>
+			<param name="show_limit" type="radio" default="0" label="Limit Box" description="PARAMSHOWLIMIT">
+				<option value="0">Hide</option>
+				<option value="1">Show</option>
+			</param>
+			<param name="show_feed_link" type="radio" default="1" label="Show a feed link" description="PARAMSHOWFEEDLINK">
+				<option value="0">No</option>
+				<option value="1">Yes</option>
+			</param>
+		</params>
+	</state>
+</metadata>

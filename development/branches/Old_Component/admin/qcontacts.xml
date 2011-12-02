@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE install SYSTEM "http://dev.joomla.org/xml/1.5/component-install.dtd">
+<install method="upgrade" type="component" version="1.5.0">
+	<name>QContacts</name>
+	<creationDate>July 2009</creationDate>
+	<author>Massimo Giagnoni</author>
+	<authorEmail>info@latenight-coding.com</authorEmail>
+	<authorUrl>www.latenight-coding.com</authorUrl>
+	<copyright>Copyright (C) 2005 - 2008 Open Source Matters. Copyright (C) 2008 Massimo Giagnoni. All rights reserved.</copyright>
+	<license>http://www.gnu.org/copyleft/gpl.html GNU/GPL</license>
+	<version>1.0.6</version>
+	<description>A contact manager component. Displays a list of contacts with various informations and a mail-to form.</description>
+	<installfile>install.qcontacts.php</installfile>
+	<install>
+		<sql>
+			<file charset="utf8" driver="mysql">install.sql</file>
+			<file driver="mysql">install.nonutf8.sql</file>
+		</sql>
+	</install>
+	<files folder="site">
+		<filename>qcontacts.php</filename>
+		<filename>controller.php</filename>
+		<filename>metadata.xml</filename>
+		<filename>router.php</filename>
+		<filename>index.html</filename>
+		<folder>controllers</folder>
+		<folder>css</folder>
+		<folder>images</folder>
+		<folder>includes</folder>
+		<folder>models</folder>
+		<folder>views</folder>
+	</files>
+	<languages folder="languages/site">
+		<language tag="en-GB">en-GB.com_qcontacts.ini</language>
+		<language tag="it-IT">it-IT.com_qcontacts.ini</language>
+	</languages>
+	<administration>
+		<menu img="" link="option=com_qcontacts&amp;view=info">QContacts</menu>
+		<submenu>
+		<menu img="" link="option=com_qcontacts">Contacts</menu>
+		<menu img="" link="option=com_categories&amp;section=com_qcontacts_details">Categories</menu>
+		<menu img="" link="option=com_qcontacts&amp;controller=tools">Tools</menu>
+		<menu img="" link="option=com_qcontacts&amp;view=info">Info</menu>
+		</submenu>
+			<files folder="admin">
+				<filename>admin.qcontacts.php</filename>
+				<filename>controller.php</filename>
+				<filename>qcontacts_cfg.xml</filename>
+				<filename>contact_items.xml</filename>
+				<filename>install.sql</filename>
+				<filename>install.nonutf8.sql</filename>
+				<filename>index.html</filename>
+				<folder>controllers</folder>
+				<folder>models</folder>
+				<folder>views</folder>
+				<folder>elements</folder>
+				<folder>helpers</folder>
+				<folder>tables</folder>
+				<folder>fonts</folder>
+			</files>
+			<languages folder="languages/admin">
+				<language tag="en-GB">en-GB.com_qcontacts.ini</language>
+				<language tag="en-GB">en-GB.com_qcontacts.menu.ini</language>
+				<language tag="it-IT">it-IT.com_qcontacts.ini</language>
+				<language tag="it-IT">it-IT.com_qcontacts.menu.ini</language>
+			</languages>
+	</administration>
+</install>

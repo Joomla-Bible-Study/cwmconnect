@@ -1,0 +1,68 @@
+CREATE TABLE IF NOT EXISTS #__churchdirectory_install ( fielda int(10) );
+CREATE TABLE IF NOT EXISTS `#__churchdirectory_details` (
+  `id` int(11) NOT NULL auto_increment,
+  `name` text NOT NULL,
+  `lname` text NOT NULL,
+  `alias` varchar(255) NOT NULL default '',
+  `con_position` text,
+  `address` text,
+  `suburb` text,
+  `state` text,
+  `country` text,
+  `postcode` varchar(255) default NULL,
+  `postcodeaddon` varchar(255) default NULL,
+  `telephone` varchar(255) default NULL,
+  `fax` varchar(255) default NULL,
+  `misc` mediumtext,
+  `spouse` text,
+  `children` text,
+  `image` varchar(255) default NULL,
+  `imagepos` varchar(60) default NULL,
+  `email_to` varchar(255) default NULL,
+  `default_con` tinyint(1) unsigned NOT NULL default '0',
+  `published` tinyint(1) unsigned NOT NULL default '0',
+  `checked_out` int(11) unsigned NOT NULL default '0',
+  `checked_out_time` datetime NOT NULL default '0000-00-00 00:00:00',
+  `ordering` int(11) NOT NULL default '0',
+  `params` text NOT NULL,
+  `user_id` int(11) NOT NULL default '0',
+  `catid` int(11) NOT NULL default '0',
+  `access` tinyint(3) unsigned NOT NULL default '0',
+  `mobile` varchar(255) NOT NULL default '',
+  `webpage` varchar(255) NOT NULL default '',
+  `skype` varchar(255) NOT NULL default '',
+  `yahoo_msg` varchar(255) NOT NULL default '',
+  `lat` float(10,6) NOT NULL default '36.131973',
+  `lng` float(10,6) NOT NULL default '-86.812370',
+  `team` varchar(2) default NULL,
+  `teamicon` varchar(255) default NULL,
+  PRIMARY KEY  (`id`),
+  KEY `catid` (`catid`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=229 ;
+
+CREATE TABLE IF NOT EXISTS `#__churchdirectory_config` (
+`id` INT NOT NULL auto_increment,
+`params` TEXT NOT NULL,
+PRIMARY KEY  (`id`)
+) DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `#__churchdirectory_kmloptions` (
+  `id` int(11) NOT NULL auto_increment,
+  `name` text NOT NULL,
+  `alias` varchar(255) NOT NULL default '',
+  `disc` tinytext NOT NULL,
+  `addressgp` text NOT NULL,
+  `published` tinyint(1) unsigned NOT NULL default '0',
+  `checked_out` int(11) unsigned NOT NULL default '0',
+  `checked_out_time` datetime NOT NULL default '0000-00-00 00:00:00',
+  `ordering` int(11) NOT NULL default '0',
+  `params` text NOT NULL,
+  `linestyle` varchar(8) NOT NULL default '00000000',
+  `polystyle` varchar(8) NOT NULL default '00000000',
+  `user_id` int(11) NOT NULL default '0',
+  `access` tinyint(3) unsigned NOT NULL default '0',
+  `lat` float(10,6) NOT NULL default '36.131973',
+  `lng` float(10,6) NOT NULL default '-86.812370',
+  `icon` varchar(1) NOT NULL default 'b',
+  PRIMARY KEY  (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=78 ;

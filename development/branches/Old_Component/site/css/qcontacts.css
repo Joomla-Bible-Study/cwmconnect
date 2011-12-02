@@ -1,0 +1,109 @@
+#qcontacts {
+margin:10px 0;
+}
+address {
+	font-style:normal;
+	margin:10px 0;
+}
+#contact-name {
+	font-size: 125%;
+	font-weight: bold;
+}
+#contact-position {
+	font-size: 115%;
+	font-style: italic;
+}
+#contact-image {
+		
+}
+.aright {
+	float: right;
+	margin-right: 25%;
+}
+.aleft {
+	float: left;
+	padding: 5px 25px 25px 0;
+}
+#qcontacts #contact-address p {
+	margin-left: 5px;
+}
+#qcontacts p {
+	line-height:1em;
+	margin: 3px 0 3px 0;
+	padding: 0;
+}
+#emailForm {
+	margin-top: 15px;
+}
+.contact-other {
+	margin-bottom: 3px;
+}
+#qcontacts label {
+	display:block;
+}
+#qcontacts label.chkbox {
+	display:inline;
+}
+#qcontacts input.chkbox {
+	display:inline;
+	margin-bottom: 0;
+}
+#qcontacts label.required {
+	color:#ff0000;
+}
+#qcontacts select {
+	display: block;
+}
+
+span.marker {
+margin:0 10px 0 0;
+}
+
+div.marker {
+	float:left;
+	padding-top: 1px;
+}
+.wtext {
+	width:85px;
+}
+.wicon {
+	width: 25px;
+}
+
+#qcontacts input, #qcontacts textarea, #qcontacts select, #qcontacts .fld-wrap {
+	/*display: block;*/
+	margin-bottom: 6px;
+}
+#qcontacts input.radio {
+	display: inline;
+	margin-bottom: 0;
+}
+#qcontacts .contact-button {
+	display: block;
+	margin-top: 10px;
+}
+
+label.textarea {
+	margin:7px 0;
+	display:block;
+}
+
+#qcontacts-error {
+	border: 1px solid #ff0000;
+	margin-top: 12px;
+	width: 300px;
+	padding: 3px;
+	text-align: center;
+	font-weight: bold;
+}
+
+#captcha-img {
+	margin-top: 6px;
+}
+div.separator {
+	margin-bottom: 6px;
+}
+#qcontacts-confirm  .linkback {
+	display: block;
+	margin-top: 15px;
+}

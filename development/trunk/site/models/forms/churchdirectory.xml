@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form>
+	<fieldset name="churchdirectory" addrulepath="components/com_churchdirectory/models/rules" label="COM_CHURCHDIRECTORY_FORM_LABEL">
+		<field name="churchdirectory_name"
+			type="text"
+			id="churchdirectory-name"
+			size="30"
+			description="COM_CHURCHDIRECTORY_CONTACT_EMAIL_NAME_DESC"
+			label="COM_CHURCHDIRECTORY_CONTACT_EMAIL_NAME_LABEL"
+			filter="string"
+			required="true"
+		/>
+		<field name="churchdirectory_email"
+			type="email"
+			id="churchdirectory-email"
+			size="30"
+			description="COM_CHURCHDIRECTORY_EMAIL_DESC"
+			label="JGLOBAL_EMAIL"
+			filter="string"
+			validate="churchdirectoryemail"
+			required="true"
+		/>
+		<field name="churchdirectory_subject"
+			type="text"
+			id="churchdirectory-emailmsg"
+			size="60"
+			description="COM_CHURCHDIRECTORY_CONTACT_MESSAGE_SUBJECT_DESC"
+			label="COM_CHURCHDIRECTORY_CONTACT_MESSAGE_SUBJECT_LABEL"
+			filter="string"
+			validate="churchdirectoryemailsubject"
+			required="true"
+		/>
+		<field name="churchdirectory_message"
+			type="textarea"
+			cols="50"
+			rows="10"
+			id="churchdirectory-message"
+			description="COM_CHURCHDIRECTORY_CONTACT_ENTER_MESSAGE_DESC"
+			label="COM_CHURCHDIRECTORY_CONTACT_ENTER_MESSAGE_LABEL"
+			filter="htmlsafe"
+			validate="churchdirectoryemailmessage"
+			required="true"
+		/>
+		<field name="churchdirectory_email_copy"
+			type="checkbox"
+			id="churchdirectory-email-copy"
+			description="COM_CHURCHDIRECTORY_CONTACT_EMAIL_A_COPY_DESC"
+			label="COM_CHURCHDIRECTORY_CONTACT_EMAIL_A_COPY_LABEL"
+			default="0"
+		/>
+
+	</fieldset>
+</form>

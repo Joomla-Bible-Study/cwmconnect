@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="utf-8"?>
+<config>
+	<params>
+		<param name="show_name" type="list" default="" label="Name" description="Show/Hide the name info">
+			<option value="">Use Global</option>
+			<option value="0">Hide</option>
+			<option value="1">Show</option>
+		</param>
+		<param name="show_position" type="list" default="" label="Position" description="Show/Hide the position info">
+			<option value="">Use Global</option>
+			<option value="0">Hide</option>
+			<option value="1">Show</option>
+		</param>
+		<param name="show_image" type="list" default="" label="Image" description="Show/Hide the image">
+			<option value="">Use Global</option>
+			<option value="0">Hide</option>
+			<option value="1">Show</option>
+		</param>
+		<param name="cimage_align" type="list" default="" label="Image Alignment" description="Contact image alignment">
+			<option value="">Use Global</option>
+			<option value="0">Left</option>
+			<option value="1">Right</option>
+		</param>
+		<param name="show_email" type="list" default="" label="E-mail" description="PARAMEMAIL">
+			<option value="">Use Global</option>
+			<option value="0">Hide</option>
+			<option value="1">Show</option>
+		</param>
+		<param name="show_street_address" type="list" default="" label="Street Address" description="Show/Hide the street address info">
+			<option value="">Use Global</option>
+			<option value="0">Hide</option>
+			<option value="1">Show</option>
+		</param>
+		<param name="show_suburb" type="list" default="" label="Town/Suburb" description="Show/Hide the suburb info">
+			<option value="">Use Global</option>
+			<option value="0">Hide</option>
+			<option value="1">Show</option>
+		</param>
+		<param name="show_state" type="list" default="" label="State/County" description="Show/Hide the state info">
+			<option value="">Use Global</option>
+			<option value="0">Hide</option>
+			<option value="1">Show</option>
+		</param>
+		<param name="show_postcode" type="list" default="" label="Post/Zip Code" description="Show/Hide the post code info">
+			<option value="">Use Global</option>
+			<option value="0">Hide</option>
+			<option value="1">Show</option>
+		</param>
+		<param name="show_country" type="list" default="" label="Country" description="Show/Hide the country info">
+			<option value="">Use Global</option>
+			<option value="0">Hide</option>
+			<option value="1">Show</option>
+		</param>
+		<param name="show_telephone" type="list" default="" label="Telephone" description="Show/Hide the telephone info">
+			<option value="">Use Global</option>
+			<option value="0">Hide</option>
+			<option value="1">Show</option>
+		</param>
+		<param name="show_mobile" type="list" default="" label="Mobile" description="Show/Hide the mobile info">
+			<option value="">Use Global</option>
+			<option value="0">Hide</option>
+			<option value="1">Show</option>
+		</param>
+		<param name="show_fax" type="list" default="" label="Fax" description="Show/Hide the fax info">
+			<option value="">Use Global</option>
+			<option value="0">Hide</option>
+			<option value="1">Show</option>
+		</param>
+		<param name="show_skype" type="list" default="" label="Skype ID" description="Show (as plain text or hyperlink)/Hide the Skype ID">
+			<option value="">Use Global</option>
+			<option value="0">Hide</option>
+			<option value="1">Show (Text)</option>
+			<option value="2">Show (Link)</option>
+		</param>
+		<param name="show_yahoo" type="list" default="" label="Yahoo Messenger ID" description="YAHOO_H">
+			<option value="">Use Global</option>
+			<option value="0">Hide</option>
+			<option value="1">Show (Text)</option>
+			<option value="2">Show (Link)</option>
+		</param>
+		<param name="show_webpage" type="list" default="" label="Webpage" description="Show/Hide the webpage">
+			<option value="">Use Global</option>
+			<option value="0">Hide</option>
+			<option value="1">Show</option>
+		</param>
+		<param name="show_misc" type="list" default="" label="Misc Info" description="Show/Hide the miscellaneous info">
+			<option value="">Use Global</option>
+			<option value="0">Hide</option>
+			<option value="1">Show</option>
+		</param>
+		
+		<param name="allow_vcard" type="list" default="" label="vCard" description="Show/Hide VCard">
+			<option value="">Use Global</option>
+			<option value="0">Hide</option>
+			<option value="1">Show</option>
+		</param>
+	</params>
+	<params group="advanced">
+		<param name="contact_icons" type="list" default="" label="Icons/text" description="PARAMCONTACTICONS">
+			<option value="">Use Global</option>
+			<option value="0">Icons</option>
+			<option value="1">Text</option>
+			<option value="2">None</option>
+		</param>
+		<param name="icon_address" type="imagelist" directory="/images/M_images" hide_none="1" default="" label="Address Icon" description="Icon for the Address info" />
+		<param name="icon_email" type="imagelist" directory="/images/M_images" hide_none="1" default="" label="Email Icon" description="Icon for the Email info" />
+		<param name="icon_telephone" type="imagelist" directory="/images/M_images" hide_none="1" default="" label="Telephone Icon" description="Icon for the Telephone info" />
+		<param name="icon_mobile" type="imagelist" directory="/images/M_images" hide_none="1" default="" label="Mobile Icon" description="Icon for the Mobile info" />
+		<param name="icon_fax" type="imagelist" directory="/images/M_images" hide_none="1" default="" label="Fax Icon" description="Icon for the Fax info" />
+		<param name="icon_skype" type="imagelist" directory="/components/com_qcontacts/images/" hide_none="1" default="" label="Skype Icon" description="Icon for the Skype info" />
+		<param name="icon_yahoo" type="imagelist" directory="/components/com_qcontacts/images/" hide_none="1" default="" label="Yahoo Msg Icon" description="Icon for the Yahoo Messenger info" />
+		<param name="icon_web" type="imagelist" directory="/images/M_images" hide_none="1" default="" label="Website Icon" description="Icon for the Website info" />
+		<param name="icon_misc" type="imagelist" directory="/images/M_images" hide_none="1" default="" label="Misc Icon" description="Icon for the Misc info" />
+	</params>
+	<params group="email">
+		<param name="show_email_form" type="radio" default="1" label="Email Form" description="Show/Hide the email to form">
+			<option value="0">Hide</option>
+			<option value="1">Show</option>
+		</param>
+		<param name="show_email_copy" type="radio" default="1" label="Email Copy" description="PARAMEMAILCOPY">
+			<option value="0">Hide</option>
+			<option value="1">Show</option>
+		</param>
+		<param name="after_submit" type="list" default="" label="After Form Submission" description="DESCR_AFTER_SUBMIT">
+			<option value="">Use Global</option>
+			<option value="0">Reload form page with message</option>
+			<option value="1">Confirmation in a separate page</option>
+		</param>
+		<param name="banned_email" type="textarea" default="" label="BANNED EMAIL LABEL" rows="3" cols="30" description="BANNED EMAIL DESC" />
+		<param name="banned_subject" type="textarea" default="" label="BANNED SUBJECT LABEL" rows="3" cols="30" description="BANNED SUBJECT DESC" />
+		<param name="banned_text" type="textarea" default="" label="BANNED TEXT LABEL" rows="3" cols="30" description="BANNED TEXT DESC" />
+		<param name="@spacer" type="spacer" default="" label="Captcha" description="" />
+		<param name="show_captcha" type="list" default="" label="Show Captcha" description="Show anti-spam verification code">
+			<option value="">Use Global</option>
+			<option value="0">NO</option>
+			<option value="1">YES</option>
+		</param>
+		<param name="captcha_length" type="text" size="5" default="" label="Captcha Length" description="DESCR_CAPTCHA_LENGTH" />
+		<param name="captcha_width" type="text" size="5" default="" label="Captcha Width" description="DESCR_CAPTCHA_WIDTH" />
+		<param name="captcha_height" type="text" size="5" default="" label="Captcha Height" description="DESCR_CAPTCHA_HEIGHT" />
+		<param name="captcha_font" type="list" default="" label="Captcha Font" description="DESCR_CAPTCHA_FONT">
+			<option value="">Use Global</option>
+			<option value="elephant.ttf">Elephant</option>
+			<option value="Vera.ttf">Bitstream Vera</option>
+			<option value="VeraIt.ttf">Bitstream Vera Oblique</option>
+		</param>
+		<param name="captcha_fsize" type="list" default="" label="Captcha Font Size" description="DESCR_CAPTCHA_FSIZE">
+			<option value="">Use Global</option>
+			<option value="24">24</option>
+			<option value="23">23</option>
+			<option value="22">22</option>
+			<option value="21">21</option>
+			<option value="20">20</option>
+			<option value="19">19</option>
+			<option value="18">18</option>
+			<option value="17">17</option>
+			<option value="16">16</option>
+		</param>
+		<param name="captcha_bgcolor" type="text" size="7" default="" label="Captcha Background" description="DESCR_CAPTCHA_BGCOLOR" />
+		<param name="captcha_txtcolor" type="text" size="30" default="" label="Captcha Text Color" description="DESCR_CAPTCHA_TXTCOLOR" />
+		
+		<param name="captcha_lines" type="list" default="" label="Draw Lines" description="DESCR_CAPTCHA_LINES">
+			<option value="">Use Global</option>
+			<option value="0">NO</option>
+			<option value="1">YES</option>
+		</param>
+		<param name="captcha_lines_color" type="text" size="7" default="" label="Line Color" description="DESCR_CAPTCHA_LINES_COLOR" />
+		<param name="captcha_lines_distance" type="text" size="2" default="5" label="Line Distance" description="DESCR_CAPTCHA_LINES_DISTANCE" />
+		<param name="captcha_arclines" type="list" default="" label="Draw Arc Lines" description="DESCR_CAPTCHA_ARCLINES">
+			<option value="">Use Global</option>
+			<option value="0">NO</option>
+			<option value="1">YES</option>
+		</param>
+		<param name="captcha_arclines_color" type="text" size="7" default="" label="Arc Lines Color" description="DESCR_CAPTCHA_ARCLINES_COLOR" />
+		
+		<param name="@spacer" type="spacer" default="" label="" description="" />
+		<param name="name_show" type="list" default="" label="Name Field" description="NAME_FLD">
+			<option value="">Use Global</option>
+			<option value="0">Hide</option>
+			<option value="1">Show(Optional)</option>
+			<option value="2">Show(Required)</option>
+		</param>
+		<param name="name_size" type="text" size="2" default="" label="Name Field Size" description="Name Field Size" />
+		<param name="name_ord" type="text" size="2" default="" label="Name Field Order" description="Name Field Order" />
+		<param name="@spacer" type="spacer" default="" label="" description="" />
+		<param name="email_show" type="list" default="" label="E-mail Field" description="EMAIL_FLD">
+			<option value="">Use Global</option>
+			<option value="0">Hide</option>
+			<option value="1">Show(Optional)</option>
+			<option value="2">Show(Required)</option>
+		</param>
+		<param name="email_size" type="text" size="2" default="" label="Email Field Size" description="Email Field Size" />
+		<param name="email_ord" type="text" size="2" default="" label="Email Field Order" description="Email Field Order" />
+		<param name="@spacer" type="spacer" default="" label="" description="" />
+		<param name="subject_show" type="list" default="" label="Subject Field" description="SUBJECT_FLD">
+			<option value="">Use Global</option>
+			<option value="0">Hide</option>
+			<option value="1">Show(Optional)</option>
+			<option value="2">Show(Required)</option>
+		</param>
+		<param name="subject_size" type="text" size="2" default="" label="Subject Field Size" description="Subject Field Size" />
+		<param name="subject_ord" type="text" size="2" default="" label="Subject Field Order" description="Subject Field Order" />
+		<param name="@spacer" type="spacer" default="" label="" description="" />
+		<param name="message_show" type="list" default="" label="Message Field" description="MESSAGE_FLD">
+			<option value="">Use Global</option>
+			<option value="0">Hide</option>
+			<option value="1">Show(Optional)</option>
+			<option value="2">Show(Required)</option>
+		</param>		
+		<param name="message_size" type="text" size="6" default="" label="Message Field Size" description="Message Field Size" />
+		<param name="message_ord" type="text" size="2" default="" label="Message Field Order" description="Message Field Order" />
+		<param name="@spacer" type="spacer" default="" label="" description="" />
+		
+		<param name="cust1_show" type="list" default="" label="Cust. Field 1" description="CUST_FLD_1">
+			<option value="">Use Global</option>
+			<option value="0">Hide</option>
+			<option value="1">Show(Optional)</option>
+			<option value="2">Show(Required)</option>
+		</param>
+		<param name="cust1_label" type="text" default="" label="Cust. Field 1 Label" description="Custom field 1 label" />
+		<param name="cust1_type" type="list" default="" label="Cust. Field 1 Type" description="Custom field 1 type">
+			<option value="">Use Global</option>
+			<option value="0">Text</option>
+			<option value="1">Textarea</option>
+			<option value="2">Radio</option>
+			<option value="3">Checkbox</option>
+			<option value="4">Drop Down</option>
+		</param>
+		<param name="cust1_size" type="text" size="6" default="" label="Cust. Field 1 Size" description="Custom field 1 size" />
+		<param name="cust1_value" type="text" size="25" default="" label="Cust. Field 1 Value" description="Custom field 1 value" />
+		<param name="cust1_ord" type="text" size="2" default="" label="Cust. Field 1 Order" description="Custom field 1 order" />
+		
+		<param name="@spacer" type="spacer" default="" label="" description="" />
+		<param name="cust2_show" type="list" default="" label="Cust. Field 2" description="CUST_FLD_2">
+			<option value="">Use Global</option>
+			<option value="0">Hide</option>
+			<option value="1">Show(Optional)</option>
+			<option value="2">Show(Required)</option>
+		</param>
+		<param name="cust2_label" type="text" default="" label="Cust. Field 2 Label" description="Custom field 2 label" />
+		<param name="cust2_type" type="list" default="" label="Cust. Field 2 Type" description="Custom field 2 type">
+			<option value="">Use Global</option>
+			<option value="0">Text</option>
+			<option value="1">Textarea</option>
+			<option value="2">Radio</option>
+			<option value="3">Checkbox</option>
+			<option value="4">Drop Down</option>
+		</param>
+		<param name="cust2_size" type="text" size="6" default="" label="Cust. Field 2 Size" description="Custom field 2 size" />
+		<param name="cust2_value" type="text" size="25" default="" label="Cust. Field 2 Value" description="Custom field 2 value" />
+		<param name="cust2_ord" type="text" size="2" default="" label="Cust. Field 2 Order" description="Custom field 2 order" />
+		
+		<param name="@spacer" type="spacer" default="" label="" description="" />
+		<param name="cust3_show" type="list" default="" label="Cust. Field 3" description="CUST_FLD_3">
+			<option value="">Use Global</option>
+			<option value="0">Hide</option>
+			<option value="1">Show(Optional)</option>
+			<option value="2">Show(Required)</option>
+		</param>
+		<param name="cust3_label" type="text" default="" label="Cust. Field 3 Label" description="Custom field 3 label" />
+		<param name="cust3_type" type="list" default="" label="Cust. Field 3 Type" description="Custom field 3 type">
+			<option value="">Use Global</option>
+			<option value="0">Text</option>
+			<option value="1">Textarea</option>
+			<option value="2">Radio</option>
+			<option value="3">Checkbox</option>
+			<option value="4">Drop Down</option>
+		</param>
+		<param name="cust3_size" type="text" size="6" default="" label="Cust. Field 3 Size" description="Custom field 3 size" />
+		<param name="cust3_value" type="text" size="25" default="" label="Cust. Field 3 Value" description="Custom field 3 value" />
+		<param name="cust3_ord" type="text" size="2" default="" label="Cust. Field 3 Order" description="Custom field 3 order" />
+		
+		<param name="@spacer" type="spacer" default="" label="" description="" />
+		<param name="cust4_show" type="list" default="" label="Cust. Field 4" description="CUST_FLD_4">
+			<option value="">Use Global</option>
+			<option value="0">Hide</option>
+			<option value="1">Show(Optional)</option>
+			<option value="2">Show(Required)</option>
+		</param>
+		<param name="cust4_label" type="text" default="" label="Cust. Field 4 Label" description="Custom field 4 label" />
+		<param name="cust4_type" type="list" default="" label="Cust. Field 4 Type" description="Custom field 4 type">
+			<option value="">Use Global</option>
+			<option value="0">Text</option>
+			<option value="1">Textarea</option>
+			<option value="2">Radio</option>
+			<option value="3">Checkbox</option>
+			<option value="4">Drop Down</option>
+		</param>
+		<param name="cust4_size" type="text" size="6" default="" label="Cust. Field 4 Size" description="Custom field 4 size" />
+		<param name="cust4_value" type="text" size="25" default="" label="Cust. Field 4 Value" description="Custom field 4 value" />
+		<param name="cust4_ord" type="text" size="2" default="" label="Cust. Field 4 Order" description="Custom field 4 order" />
+	
+		<param name="@spacer" type="spacer" default="" label="" description="" />
+		<param name="cust5_show" type="list" default="" label="Cust. Field 5" description="CUST_FLD_5">
+			<option value="">Use Global</option>
+			<option value="0">Hide</option>
+			<option value="1">Show(Optional)</option>
+			<option value="2">Show(Required)</option>
+		</param>
+		<param name="cust5_label" type="text" default="" label="Cust. Field 5 Label" description="Custom field 5 label" />
+		<param name="cust5_type" type="list" default="" label="Cust. Field 5 Type" description="Custom field 5 type">
+			<option value="">Use Global</option>
+			<option value="0">Text</option>
+			<option value="1">Textarea</option>
+			<option value="2">Radio</option>
+			<option value="3">Checkbox</option>
+			<option value="4">Drop Down</option>
+		</param>
+		<param name="cust5_size" type="text" size="6" default="" label="Cust. Field 5 Size" description="Custom field 5 size" />
+		<param name="cust5_value" type="text" size="25" default="" label="Cust. Field 5 Value" description="Custom field 5 value" />
+		<param name="cust5_ord" type="text" size="2" default="" label="Cust. Field 5 Order" description="Custom field 5 order" />
+		
+		<param name="@spacer" type="spacer" default="" label="" description="" />
+		<param name="cust6_show" type="list" default="" label="Cust. Field 6" description="CUST_FLD_6">
+			<option value="">Use Global</option>
+			<option value="0">Hide</option>
+			<option value="1">Show(Optional)</option>
+			<option value="2">Show(Required)</option>
+		</param>
+		<param name="cust6_label" type="text" default="" label="Cust. Field 6 Label" description="Custom field 6 label" />
+		<param name="cust6_type" type="list" default="" label="Cust. Field 6 Type" description="Custom field 6 type">
+			<option value="">Use Global</option>
+			<option value="0">Text</option>
+			<option value="1">Textarea</option>
+			<option value="2">Radio</option>
+			<option value="3">Checkbox</option>
+			<option value="4">Drop Down</option>
+		</param>
+		<param name="cust6_size" type="text" size="6" default="" label="Cust. Field 6 Size" description="Custom field 6 size" />
+		<param name="cust6_value" type="text" size="25" default="" label="Cust. Field 6 Value" description="Custom field 6 value" />
+		<param name="cust6_ord" type="text" size="2" default="" label="Cust. Field 6 Order" description="Custom field 6 order" />
+		
+	</params>
+</config>
