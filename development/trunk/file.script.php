@@ -1,6 +1,6 @@
 <?php
 /*
- * @version             $Id: file.script.php 71 $
+ * @version             $Id: file.script.php 72 $
  * @package		com_churchdirectory
  * @copyright           Copyright (C) 2005 - 2011 Joomla Bible Study, Inc. All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
