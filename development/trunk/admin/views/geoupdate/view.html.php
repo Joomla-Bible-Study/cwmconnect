@@ -1,8 +1,12 @@
 <?php
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * ChurchDirectory Contact manager component for Joomla! 1.7
+ *
+ * @version             $Id: view.html.php 71 $
+ * @package             com_churchdirectory
+ * @copyright           (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
+ * @license		GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 // Protect from unauthorized access
