@@ -34,7 +34,7 @@ abstract class ChurchDirectoryHelperRoute
 			'churchdirectory'  => array((int) $id)
 		);
 		//Create the link
-		$link = 'index.php?option=com_churchdirectory&view=churchdirectory&id='. $id;
+		$link = 'index.php?option=com_churchdirectory&view=contact&id='. $id;
 		if ($catid > 1)
 		{
 			$categories = JCategories::getInstance('ChurchDirectory');

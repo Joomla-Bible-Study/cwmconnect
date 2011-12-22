@@ -2,17 +2,15 @@
 /**
  * ChurchDirectory Contact manager component for Joomla! 1.7
  *
- * @version 1.6.0
- * @package churchdirectory
- * @author NFSDA
- * @copyright Copyright (C) 2011 NFSDA. All rights reserved.
- * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @version             $Id: default.php 71 $
+ * @package             com_churchdirectory
+ * @copyright           Copyright (C) 2005 - 2011 All rights reserved.
+ * @license		GNU General Public License version 2 or later; see LICENSE.txt
  */
-
-//// No direct access
+// No direct access
 defined('_JEXEC') or die;
 
-JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
+JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.multiselect');
 ?>
@@ -24,5 +22,5 @@ JHtml::_('behavior.multiselect');
 <h2>Need help?</h2>
 <p>Feel free to ask a question in our <a href="">support forum</a>.</p>
 <h2>Copyright</h2>
-<p>ChurchDirectory is free software released under the <a href="http://www.gnu.org/copyleft/gpl.html">GNU/GPL License v3</a>. Copyright 2011 Nashville First SDA Church</p>
-<p>Some parts of ChurchDirectory are derived from Joomla! contact component (com_contact). Copyright (C) 2005 - 2011 Open Source Matters, Inc. All rights reserved. </p>
+<p>ChurchDirectory is free software released under the <a href="http://www.gnu.org/copyleft/gpl.html">GNU/GPL License v3</a>.</p>
+<p>Some parts of ChurchDirectory are derived from Joomla! contact component (com_contact). Copyright (C) 2005 - 2011 Joomla Bible Studys, Inc. All rights reserved. </p>

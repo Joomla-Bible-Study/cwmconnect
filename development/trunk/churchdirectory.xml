@@ -1,89 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension type="component" version="1.6" method="upgrade">
+<!DOCTYPE install SYSTEM "http://dev.joomla.org/xml/1.7/component-install.dtd">
+<extension type="component" version="1.7" method="upgrade">
 	<!-- Note: we can use method="upgrade" to ensure an upgrade regardless of
 	if it is a new install or an actual upgrade; Normal installs will
 	behave like an install but upgrades will be treated appropriately even
 	if the interface doesn't support it properly -->
 
         <!-- Generic Metadata -->
-	<name>COM_CHURCHDIRECTORY</name>
-	<author>NFSDA</author>
-	<copyright>(C) 2011 Copyright NFSDA</copyright>
-	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
-	<version>1.7.0</version>
-        <creationDate>November 2011</creationDate>
-	<description>COM_CHURCHDIRECTORY_XML_DESCRIPTION</description>
+    <name>COM_CHURCHDIRECTORY</name>
+    <author>Joomla Bible Study Team</author>
+    <copyright>(C) 2007 - 2011 Joomla Bible Study Team All rights reserved</copyright>
+    <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+    <version>1.7.0</version>
+    <creationDate>November 2011</creationDate>
+    <authorEmail>info@joomlabiblestudy.org</authorEmail>
+    <authorUrl>http://www.joomlabiblestudy.org</authorUrl>
+    <description>COM_CHURCHDIRECTORY_XML_DESCRIPTION</description>
 
 	<!-- Installer Hooks -->
-	<scriptfile>file.script.php</scriptfile>
+    <scriptfile>file.script.php</scriptfile>
 
-        <install>
-		<sql>
-			<file driver="mysql" charset="utf8">sql/install.mysql.utf8.sql</file>
-		</sql>
-	</install>
-	<uninstall> <!-- Runs on uninstall -->
-		<sql>
-			<file driver="mysql" charset="utf8" folder="sql">sql/uninstall.mysql.utf8.sql</file>
-		</sql>
-	</uninstall>
-	<update> <!-- Runs on update; New in 1.6 -->
-		<schemas>
-			<schemapath type="mysql">sql/updates/mysql</schemapath>
-		</schemas>
-	</update>
+    <install>
+        <sql>
+            <file driver="mysql" charset="utf8">sql/install.mysql.utf8.sql</file>
+        </sql>
+    </install>
+    <uninstall> <!-- Runs on uninstall -->
+        <sql>
+            <file driver="mysql" charset="utf8" folder="sql">sql/uninstall.mysql.utf8.sql</file>
+        </sql>
+    </uninstall>
+    <update> <!-- Runs on update; New in 1.6 -->
+        <schemas>
+            <schemapath type="mysql">sql/updates/mysql</schemapath>
+        </schemas>
+    </update>
 
-	<files folder="site">
-		<filename>churchdirectory.php</filename>
-		<filename>controller.php</filename>
-		<filename>metadata.xml</filename>
-		<filename>router.php</filename>
-		<filename>index.html</filename>
-		<folder>controllers</folder>
-                <folder>language</folder>
-		<folder>css</folder>
-                <folder>helpers</folder>
-		<folder>images</folder>
-		<folder>includes</folder>
-		<folder>models</folder>
-		<folder>views</folder>
-	</files>
+    <files folder="site">
+        <filename>churchdirectory.php</filename>
+        <filename>controller.php</filename>
+        <filename>metadata.xml</filename>
+        <filename>router.php</filename>
+        <filename>index.html</filename>
+        <folder>controllers</folder>
+        <folder>language</folder>
+        <folder>helpers</folder>
+        <folder>includes</folder>
+        <folder>models</folder>
+        <folder>views</folder>
+    </files>
+    <media destination="com_churchdirectory" folder="media">
+        <folder>images</folder>
+        <folder>css</folder>
+        <floder>js</floder>
+    </media>
 
-	<media destination="com_churchdirectory">
-		<!-- <filename>com_chruchdirectory.jpg</filename> -->
-	</media>
-
-	<administration>
-		<menu img="../components/com_churchdirectory/images/menu/icon-16-churchdirectory.png">COM_CHURCHDIRECTORY</menu>
-		<submenu>
-		<menu link="option=com_churchdirectory" img="../"
-                            alt="Churchdirectory/Contacts">COM_CHURCHDIRECTORY_CONTACTS</menu>
-		<menu link="option=com_categories&amp;extension=com_churchdirectory"
-                            view="categories" img="class:contact-cat" alt="Churchdirectory/Categories">COM_CHURCHDIRECTORY_CATEGORIES</menu>
-		<menu link="option=com_churchdirectory&amp;controller=tools" img="../components/com_churchdirectory/images/menu/icon-16-tools.png" alt="Churchdirectory/Tools">COM_CHURCHDIRECTORY_TOOLS</menu>
-		<menu link="option=com_churchdirectory&amp;view=info" img="../components/com_churchdirectory/images/menu/icon-16-info.png" alt="Churchdirectory/Info">COM_CHURCHDIRECTORY_INFO</menu>
-                <menu link="option=com_churchdirectory&amp;view=kmloptions" img="../components/com_churchdirectory/images/menu/icon-16-kmloptions.png" alt="Churchdirectory/KMLOptioons">COM_CHURCHDIRECTORY_KMLOPTIOONS</menu>
-		</submenu>
-			<files folder="admin">
-				<filename>admin.churchdirectory.php</filename>
-				<filename>controller.php</filename>
-                                <filename>config.xml</filename>
-				<filename>access.xml</filename>
-				<filename>index.html</filename>
-				<folder>controllers</folder>
-                                <folder>language</folder>
-                                <folder>css</folder>
-                                <folder>custom</folder>
-                                <folder>elements</folder>
-                                <folder>help</folder>
-                                <folder>helpers</folder>
-                                <folder>images</folder>
-				<folder>models</folder>
-                                <folder>sql</folder>
-                                <folder>tables</folder>
-				<folder>views</folder>
-			</files>
-	</administration>
+    <administration>
+        <menu img="../media/com_churchdirectory/images/menu/icon-16-churchdirectory.png">COM_CHURCHDIRECTORY</menu>
+        <submenu>
+            <menu link="option=com_churchdirectory" img="../"
+                            alt="Churchdirectory/Contacts">COM_CHURCHDIRECTORY_CONTACTS
+            </menu>
+            <menu link="option=com_categories&amp;extension=com_churchdirectory"
+                            view="categories" img="class:contact-cat" alt="Churchdirectory/Categories">COM_CHURCHDIRECTORY_CATEGORIES
+            </menu>
+            <menu link="option=com_churchdirectory&view=cpanel" img="../media/com_churchdirectory/images/menu/icon-16-churchdirectory.png.png" alt="Churchdirectory/Cpanel">COM_CHURCHDIRECTORY_CPANEL</menu>
+            <menu link="option=com_churchdirectory&amp;view=info" img="../media/com_churchdirectory/images/menu/icon-16-info.png" alt="Churchdirectory/Info">COM_CHURCHDIRECTORY_INFO</menu>
+            <menu link="option=com_churchdirectory&amp;view=kmls" img="../media/com_churchdirectory/images/menu/icon-16-kml.png" alt="Churchdirectory/KML">COM_CHURCHDIRECTORY_KML</menu>
+        </submenu>
+        <files folder="admin">
+            <filename>admin.churchdirectory.php</filename>
+            <filename>controller.php</filename>
+            <filename>config.xml</filename>
+            <filename>access.xml</filename>
+            <filename>index.html</filename>
+            <folder>controllers</folder>
+            <folder>language</folder>
+            <folder>custom</folder>
+            <folder>elements</folder>
+            <folder>help</folder>
+            <folder>helpers</folder>
+            <folder>models</folder>
+            <folder>sql</folder>
+            <folder>tables</folder>
+            <folder>views</folder>
+        </files>
+    </administration>
 
 		<!-- Extension Update Specification -->
                 <!-- @todo BCC need to corecot Church Directory Compnonet update address -->
@@ -101,13 +103,13 @@
 
 	<!-- Tables -->
 	<!-- These are used for backups to determine which tables to backup; ones marked optional are only backed up if they exist -->
-	<tables>
-		<table>#__churchdirectory_install</table>
-		<table type="optional">#__churchdirectory_update</table>
-	</tables>
+    <tables>
+        <table>#__churchdirectory_install</table>
+        <table type="optional">#__churchdirectory_update</table>
+    </tables>
 
 	<!--  Dependencies -->
-	<dependencies>
-		<dependency type="platform" name="joomla" operator="=" version="1.6" />
-	</dependencies>
+    <dependencies>
+        <dependency type="platform" name="joomla" operator="=" version="1.6" />
+    </dependencies>
 </extension>

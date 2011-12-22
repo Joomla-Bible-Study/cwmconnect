@@ -1,12 +1,17 @@
 <?php
+
 /**
- * @version		$Id: controller.php $
+ * @version		$Id: controller.php 71 $
  * @copyright           Copyright (C) 2005 - 2011 Nasvhille First SDA Chrch All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 // no direct access
 defined('_JEXEC') or die;
+
+// Access check.
+if (!JFactory::getUser()->authorise('core.manage', 'com_churchdirectory')) {
+    return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
+}
 
 jimport('joomla.application.component.controller');
 
@@ -16,47 +21,51 @@ jimport('joomla.application.component.controller');
  * @package		Joomla.Administrator
  * @subpackage	com_churchdirectory
  */
-class ChurchDirectoryController extends JController
-{
-	/**
-	 * @var		string	The default view.
-	 * @since	1.6
-	 */
-	protected $default_view = 'churchdirectories';
+class ChurchDirectoryController extends JController {
 
-	/**
-	 * Method to display a view.
-	 *
-	 * @param	boolean			If true, the view output will be cached
-	 * @param	array			An array of safe url parameters and their variable types, for valid values see {@link JFilterInput::clean()}.
-	 *
-	 * @return	JController		This object to support chaining.
-	 * @since	1.5
-	 */
-	public function display($cachable = false, $urlparams = false)
-	{
-		require_once JPATH_COMPONENT.'/helpers/churchdirectory.php';
+    /**
+     * @var		string	The default view.
+     * @since	1.7.0
+     */
+    protected $default_view = 'cpanel';
 
-		// Load the submenu.
-		ChurchDirectoryHelper::addSubmenu(JRequest::getCmd('view', 'churchdirectories'));
+    /**
+     * Method to display a view.
+     *
+     * @param	boolean			If true, the view output will be cached
+     * @param	array			An array of safe url parameters and their variable types, for valid values see {@link JFilterInput::clean()}.
+     *
+     * @return	JController		This object to support chaining.
+     * @since	1.7.0
+     */
+    public function display($cachable = false, $urlparams = false) {
+        require_once JPATH_COMPONENT . '/helpers/churchdirectory.php';
 
-		$view	= JRequest::getCmd('view', 'churchdirectories');
-		$layout = JRequest::getCmd('layout', 'default');
-		$id	= JRequest::getInt('id');
+        // Load the submenu.
+        ChurchDirectoryHelper::addSubmenu(JRequest::getCmd('view', 'cpanel'));
 
-		// Check for edit form.
-		if ($view == 'churchdirectory' && $layout == 'edit' && !$this->checkEditId('com_churchdirectory.edit.churchdirectory', $id)) {
+        $view = JRequest::getCmd('view', 'cpanel');
+        $layout = JRequest::getCmd('layout', 'default');
+        $id = JRequest::getInt('id');
 
-			// Somehow the person just went to the form - we don't allow that.
-			$this->setError(JText::sprintf('JLIB_APPLICATION_ERROR_UNHELD_ID', $id));
-			$this->setMessage($this->getError(), 'error');
-			$this->setRedirect(JRoute::_('index.php?option=com_churchdirectory&view=churchdirectories', false));
+        $type = JRequest::getWord('view');
+        if (!$type) {
+            JRequest::setVar('view', 'cpanel');
+        }
+        // Check for edit form.
+        if ($view == 'churchdirectory' && $layout == 'edit' && !$this->checkEditId('com_churchdirectory.edit.churchdirectory', $id)) {
 
-			return false;
-		}
+            // Somehow the person just went to the form - we don't allow that.
+            $this->setError(JText::sprintf('JLIB_APPLICATION_ERROR_UNHELD_ID', $id));
+            $this->setMessage($this->getError(), 'error');
+            $this->setRedirect(JRoute::_('index.php?option=com_churchdirectory&view=churchdirectories', false));
 
-		parent::display();
+            return false;
+        }
 
-		return $this;
-	}
+        parent::display();
+
+        return $this;
+    }
+
 }

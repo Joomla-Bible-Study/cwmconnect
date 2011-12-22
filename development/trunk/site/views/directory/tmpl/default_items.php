@@ -1,49 +1,94 @@
 <?php
 /**
- * ChurchDirectory Contact manager component for Joomla! 1.5 and 1.6
+ * ChurchDirectory Contact manager component for Joomla!
  *
- * @version 1.6.0
- * @package churchdirectory
- * @author NFSDA
- * @copyright Copyright (C) 2011 NFSDA. All rights reserved.
- * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
+ * @version $Id: default.php 71 $
+ * @package		com_churchdirectory
+ * @copyright           Copyright (C) 2005 - 2011 Joomla Bible Study, All rights reserved.
+ * @license		GNU General Public License version 2 or later; see LICENSE.txt
  */
- /*
-This file is part of ChurchDirectory.
-ChurchDirectory is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
+defined('_JEXEC') or die;
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
+JHtml::core();
+$printed_items = 0;
+$printed_rows = 0;
+//$items_per_page = 3;
+//$items_per_row = 3;
 
-You should have received a copy of the GNU General Public License
-along with this program.  If not, see <http://www.gnu.org/licenses/>.
-*/
-defined( '_JEXEC' ) or die( 'Restricted access' ); ?>
-<?php foreach($this->items as $item) { ?>
-<tr class="sectiontableentry<?php echo $item->odd+1; ?>">
-	<?php foreach($this->columns as $col) {
-		$c = $col['column'];
-	?>
-	<td <?php if (!$this->params->get('show_headings',1)) {echo ($c->width ? 'width="'.$c->width.'"': '');} ?>>
-	<?php if ($c->field == 'image') {
-		if ($item->{$c->field} == '') { echo '<img src="' . $this->baseurl . '/images/members/1st_church_8x12.jpg" align="center" hspace="6" alt="image" width="100px" />'; }
-		else { echo '<img src="' . $this->baseurl . '/images/members/' . $item->{$c->field} . '" align="center" hspace="6" alt="image" width="100px" />'; }
-	}
-	  elseif ($c->field == 'name') {
-		echo JHTML::link($item->link, $item->name, array('class'=>'directory'.$this->params->get('pageclass_sfx')));
-	} elseif ($c->field == 'catid'){
-	
-	}
-	  else{
-		echo $item->{$c->field};
-	}
-	?>
-	</td>
-	<?php } ?>
-</tr>
-<?php } ?>
+
+$listOrder = $this->escape($this->state->get('list.ordering'));
+$listDirn = $this->escape($this->state->get('list.direction'));
+echo '<div style="page-break-after:always"></div>';
+?>
+<?php if (empty($this->items)) : ?>
+    <p> <?php echo JText::_('COM_CHURCHDIRECTORY_NO_CONTACTS'); ?>	 </p>
+<?php endif; ?>
+<?php
+foreach ($this->items as $item) {
+    if ($printed_rows == $this->params->get('items_per_page')) {
+        echo '<div style="page-break-after:always"></div>';
+        $printed_rows = 0;
+    }
+    if ($printed_items == $this->params->get('items_per_row')) {
+        $printed_items = 0;
+    }
+    ?>
+    <div id="directory-items" class="sectiontableentry<?php echo $item->id + 1; ?>">
+        <?php
+        if ($item->image == null) {
+            echo '<img src="' . $this->baseurl . '/media/com_churchdirectory/images/200-photo_not_available.jpg" alt="No Image Avalible" class="directory-img" /><br /><br />';
+        } else {
+            echo '<img src="' . $this->baseurl . '/images/members/' . $item->image . '" align="center" hspace="6" alt="' . $item->name . '" class="directory-img" /><br /><br />';
+        }
+        ?>
+        <a href="<?php echo JRoute::_(ChurchDirectoryHelperRoute::getChurchDirectoryRoute($item->slug, $item->catid)); ?>">
+            <?php echo $item->name; ?>
+        </a><br />
+        <?php
+        if ($this->params->get('show_position_headings')) :
+            if ($item->con_position != null) {
+
+                echo '<b>Position:</b> ' . $item->con_position . '<br />';
+            }
+        endif;
+        if ($item->address != null) {
+            echo $item->address . '<br />';
+        }
+        if ($item->suburb != null) {
+            echo $item->suburb . ', ' . $item->state . ' ' . $item->postcode;
+        }
+        if ($item->postcodeaddon == null) {
+            echo '<br /><br />';
+        } else {
+            echo '-' . $item->postcodeaddon . '<br /><br />';
+        }
+        if ($this->params->get('show_telephone_headings')) :
+            if ($item->telephone != null) {
+                echo '<b>Ph:</b> ' . $item->telephone . '<br />';
+            }
+        endif;
+        if ($item->mobile != null) {
+            echo '<b>Mobile:</b> ' . $item->mobile . '<br />';
+        }
+        if ($item->fax != null) {
+            echo '<b>Fax:</b> ' . $item->fax . '<br /></span>';
+        }
+        if ($item->misc != null) {
+            echo '<span class="directory-title">Misc: </span>' . $item->misc;
+        }
+        if ($item->children != null) {
+            echo '<span class="directory-title">Children: </span>';
+            echo $item->children;
+        }
+        ?>
+    </div>
+    <?php
+    $printed_items++;
+    if ($printed_items == $items_per_row) {
+        ?>
+        <div style="clear: both"></div>
+        <?php
+        $printed_rows++;
+    }
+}
+echo '<div style="page-break-after:always"></div>';

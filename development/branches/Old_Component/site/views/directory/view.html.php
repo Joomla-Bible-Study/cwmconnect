@@ -41,13 +41,13 @@ class QContactsViewDirectory extends JView {
 		$pparams =& $mainframe->getParams('com_qcontacts');
 
 		$categoryId = JRequest::getVar('catid', 0, '', 'int');
-		
+
 		$limit = $mainframe->getUserStateFromRequest('com_qcontacts.limit'.$categoryId, 'limit',$pparams->get('contacts_per_page', $mainframe->getCfg('list_limit')), '', 'int');
 		$limitstart = JRequest::getVar('limitstart', 0, '', 'int');
 		$limitstart = ($limit !=0 ? (floor($limitstart / $limit) * $limit): 0);
 		$filter_order =$mainframe->getUserStateFromRequest('com_qcontacts.filter_order'.$categoryId, 'filter_order', 'cd.'.$pparams->get('default_ordering','ordering'), '', 'cmd');
 		$filter_order_Dir =$mainframe->getUserStateFromRequest('com_qcontacts.filter_order_Dir'.$categoryId, 'filter_order_Dir', 'ASC', '', 'word');
-		
+
 		$options['aid'] = $user->get('aid', 0);
 		$options['category_id']	= $categoryId;
 		$options['limit'] = $limit;
@@ -62,7 +62,7 @@ class QContactsViewDirectory extends JView {
 			}
 		}
 		$contacts = $model->getContacts($options);
-		
+
 		$total = $model->getContactCount($options);
 
 		if($pparams->get('show_feed_link', 1) == 1) {
@@ -85,7 +85,7 @@ class QContactsViewDirectory extends JView {
 			$c->sortable = $pparams->get('sort_col_image',1);
 			$c->width= $pparams->get('width_col_image');;
 			$columns[]=array('order'=>$pparams->get('ord_col_image',0), 'column'=>$c);
-		}		
+		}
 		if($pparams->get('show_col_name',1)) {
 			$c = new stdClass;
 			$c->field = 'name';
@@ -225,7 +225,7 @@ class QContactsViewDirectory extends JView {
 			$contact =& $contacts[$i];
 
 			$cparams =  new JParameter($contact->params);
-			
+                        dump($cparams, 'cparams');
 			$params = $cparams->toArray();
 			foreach($params as $k=>$v) {
 				if($cparams->get($k) == '') {
@@ -233,9 +233,9 @@ class QContactsViewDirectory extends JView {
 				}
 			}
 			$contact->params = $cparams;
-			
+
 			$contact->link = JRoute::_('index.php?option=com_qcontacts&view=contact&id='.$contact->slug.'&catid='.$contact->catslug);
-			
+
 			if($pparams->get('show_col_email', 0) == 1 && $cparams->get('show_email', 0) == 1) {
 			    $contact->email_to = trim($contact->email_to);
 				if(!empty($contact->email_to) && JMailHelper::isEmailAddress($contact->email_to)) {
@@ -291,13 +291,13 @@ class QContactsViewDirectory extends JView {
 			if(!$cparams->get('show_webpage',0)) {
 				$contact->webpage = '';
 			} else {
-				$contact->webpage = '<a href="'. $contact->webpage .'" target="_blank">'. $contact->webpage .'</a>';			
+				$contact->webpage = '<a href="'. $contact->webpage .'" target="_blank">'. $contact->webpage .'</a>';
 			}
 			$contact->odd = $kk;
 			$contact->count = $i;
 			$kk = 1 - $kk;
 		}
-		
+
 		if(!isset($category)){
 			$category = new stdClass;
 			$category->title = 'Church Directory Bata1';
@@ -305,11 +305,11 @@ class QContactsViewDirectory extends JView {
 			$category->description = '';
 			$category->id = 0;
 		}
-		
+
 		$menus = &JSite::getMenu();
 		$menu = $menus->getActive();
 		$pathway =& $mainframe->getPathway();
-		
+
 		if (is_object( $menu )) {
 			$menu_params = new JParameter( $menu->params );
 			if (!$menu_params->get( 'page_title')) {
@@ -319,11 +319,11 @@ class QContactsViewDirectory extends JView {
 			$pparams->set('page_title',	$category->title);
 		}
 		$document->setTitle( $pparams->get( 'page_title' ) );
-		
+
 		if(is_object($menu) && $menu->query['view'] != 'category') {
 			$pathway->addItem($category->title, '');
 		}
-		
+
 		$lists['order_Dir'] = $filter_order_Dir;
 		$lists['order'] = $filter_order;
 		$selected = '';
@@ -339,7 +339,7 @@ class QContactsViewDirectory extends JView {
 		$this->assignRef('params', $pparams);
 
 		$this->assign('action', JFilterOutput::ampReplace($uri->toString()));
-		
+
 		parent::display($tpl);
 	}
 

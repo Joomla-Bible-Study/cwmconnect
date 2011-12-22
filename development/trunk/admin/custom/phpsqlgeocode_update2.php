@@ -12,7 +12,6 @@ while ($row = mysql_fetch_assoc($result)) {
 
     while ($geocode_pending) {
     // Defining of Rows to look up
-		require('phpsql_rowdf.php');
     	$request_url = $base_url . "&q=" . urlencode("$address". "," . " " . "$suburb". "," . "$state" . " " . "$zip" . " " . "$country");
 	$xml = simplexml_load_file($request_url) or die("url not loading");
 
@@ -27,7 +26,7 @@ while ($row = mysql_fetch_assoc($result)) {
       		$ulong = $coordinatesSplit[0];
 
       $query = sprintf("UPDATE $table " .
-             " SET lat = '%s', lng = '%s'" . 
+             " SET lat = '%s', lng = '%s'" .
              " WHERE id = '%s' LIMIT 1;",
              mysql_real_escape_string($ulat),
              mysql_real_escape_string($ulong),

@@ -1,0 +1,35 @@
+/*Admin*/
+.churchdirectory-img {
+    width: 100px;
+    padding: 10ps;
+}
+div.current .panelform {
+	border: 1px solid #CCCCCC !important;
+}
+/*Studiesedit*/
+.inlineFields div {
+	float: left;
+}
+
+.inlineFields label {
+	min-width: 70px !important;
+}
+/*General*/
+#loading {
+	-moz-border-radius: 7px 7px 7px 7px;
+	border-radius: 7px 7px 7px 7px;
+	background-color: #FFFFFF;
+	border: 1px solid black;
+	padding: 16px;
+	position: fixed;
+	right: 0;
+	text-align: center;
+	top: 0;
+	width: 158px;
+	margin: 7px;
+	display: none;
+}
+
+#loading span {
+	font-weight: bold;
+}

@@ -1,7 +1,7 @@
-<?
+<?php
 require('phpsql_dbinfo.php');
 require('phpsql_connect.php');
-function groupit( $args ) 
+function groupit( $args )
 {
 	extract($args);
 
@@ -94,7 +94,7 @@ foreach ($rows as $row) {
 	$kml[] = ']]></address> <!-- string -->';
   	$kml[] = ' <phoneNumber>' . $row['telephone'] . '</phoneNumber> <!-- string -->';
   	$kml[] = ' <Snippet maxLines="2"><![CDATA[' . $row['con_position'] . ' <br />Team ' . $row['catid'] . ']]></Snippet>   <!-- string -->';
-  	$kml[] = ' <description>' . '<![CDATA[<div>'; 
+  	$kml[] = ' <description>' . '<![CDATA[<div>';
   	if($row['image'] == '')
 		{$kml[] = '<img src="http://www.nfsda.org/images/members/1st_church_8x12.jpg" alt="Photo" width="100" hight="100" /><br />';}
 		 else {$kml[] = '<img src="http://www.nfsda.org/images/members/' . $row['image'] . '" alt="Photo" width="100" hight="100" /><br />';}
@@ -148,7 +148,7 @@ $output = "$kmlOutput";
 echo $kmlOutput;
 //print $output; //display in the browser
 //echo " Updated";
-//header("Location: https://www.nfsda.org/administrator/index.php?option=com_qcontacts"); 
+//header("Location: https://www.nfsda.org/administrator/index.php?option=com_qcontacts");
 
 mysql_free_result($result);
     print mysql_error();

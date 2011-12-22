@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: churchdirectory.php $
+ * @version		$Id: churchdirectory.php 1.7.0 $
  * @package		Joomla.Administrator
  * @subpackage	com_churchdirectory
  * @copyright	Copyright (C) 2005 - 2011 All rights reserved.
@@ -10,11 +10,6 @@
 // No direct access
 defined('_JEXEC') or die;
 
-
-/**
- * @package		Joomla.Administrator
- * @subpackage	com_churchdirectory
- */
 class ChurchDirectoryTableChurchDirectory extends JTable
 {
 	/**
@@ -33,7 +28,7 @@ class ChurchDirectoryTableChurchDirectory extends JTable
 	 *
 	 * @param	array		Named array
 	 * @return	null|string	null is operation was satisfactory, otherwise returns an error
-	 * @since	1.6
+	 * @since	1.7.0
 	 */
 	public function bind($array, $ignore = '')
 	{
@@ -57,7 +52,7 @@ class ChurchDirectoryTableChurchDirectory extends JTable
 	 *
 	 * @param	boolean	True to update fields even if they are null.
 	 * @return	boolean	True on success, false on failure.
-	 * @since	1.6
+	 * @since	1.7.0
 	 */
 	public function store($updateNulls = false)
 	{
@@ -100,7 +95,7 @@ class ChurchDirectoryTableChurchDirectory extends JTable
 	 *
 	 * @return boolean
 	 * @see JTable::check
-	 * @since 1.5
+	 * @since 1.7.0
 	 */
 	function check()
 	{

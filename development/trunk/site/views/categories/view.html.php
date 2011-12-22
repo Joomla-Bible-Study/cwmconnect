@@ -1,116 +1,108 @@
 <?php
+
 /**
- * @version		$Id: view.html.php 21367 2011-05-18 12:29:19Z chdemko $
- * @copyright	Copyright (C) 2005 - 2011 Open Source Matters, Inc. All rights reserved.
+ * @version		$Id: view.html.php* 71 $
+ * @package		com_churchdirectory
+ * @copyright           Copyright (C) 2005 - 2011 Joomla Bible Studys, Inc. All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 // No direct access
 defined('_JEXEC') or die;
 
 jimport('joomla.application.component.view');
 
 /**
- * Content categories view.
+ * ChurchDirectory categories view.
  *
- * @package		Joomla.Site
- * @subpackage	com_contact
- * @since 1.6
+ * @package	com_churchdirectoy
+ * @since 1.7.0
  */
-class ChurchDirectoryViewCategories extends JView
-{
-	protected $state = null;
-	protected $item = null;
-	protected $items = null;
-	protected $pagination = null;
+class ChurchDirectoryViewCategories extends JView {
 
-	/**
-	 * Display the view
-	 *
-	 * @return	mixed	False on error, null otherwise.
-	 */
-	function display($tpl = null)
-	{
-		// Initialise variables
-		$state		= $this->get('State');
-		$items		= $this->get('Items');
-		$parent		= $this->get('Parent');
+    protected $state = null;
+    protected $item = null;
+    protected $items = null;
+    protected $pagination = null;
 
-		// Check for errors.
-		if (count($errors = $this->get('Errors'))) {
-			JError::raiseWarning(500, implode("\n", $errors));
-			return false;
-		}
+    /**
+     * Display the view
+     *
+     * @return	mixed	False on error, null otherwise.
+     */
+    function display($tpl = null) {
+        // Initialise variables
+        $state = $this->get('State');
+        $items = $this->get('Items');
+        $parent = $this->get('Parent');
 
-		if ($items === false) {
-			return JError::raiseError(404, JText::_('JGLOBAL_CATEGORY_NOT_FOUND'));
+        // Check for errors.
+        if (count($errors = $this->get('Errors'))) {
+            JError::raiseWarning(500, implode("\n", $errors));
+            return false;
+        }
 
-		}
+        if ($items === false) {
+            return JError::raiseError(404, JText::_('JGLOBAL_CATEGORY_NOT_FOUND'));
+        }
 
-		if ($parent == false) {
-			return JError::raiseError(404, JText::_('JGLOBAL_CATEGORY_NOT_FOUND'));
-		}
+        if ($parent == false) {
+            return JError::raiseError(404, JText::_('JGLOBAL_CATEGORY_NOT_FOUND'));
+        }
 
-		$params = &$state->params;
+        $params = &$state->params;
 
-		$items = array($parent->id => $items);
+        $items = array($parent->id => $items);
 
-		//Escape strings for HTML output
-		$this->pageclass_sfx = htmlspecialchars($params->get('pageclass_sfx'));
+        //Escape strings for HTML output
+        $this->pageclass_sfx = htmlspecialchars($params->get('pageclass_sfx'));
 
-		$this->assign('maxLevelcat',	$params->get('maxLevelcat', -1));
-		$this->assignRef('params',		$params);
-		$this->assignRef('parent',		$parent);
-		$this->assignRef('items',		$items);
+        $this->assign('maxLevelcat', $params->get('maxLevelcat', -1));
+        $this->assignRef('params', $params);
+        $this->assignRef('parent', $parent);
+        $this->assignRef('items', $items);
 
-		$this->_prepareDocument();
+        $this->_prepareDocument();
 
-		parent::display($tpl);
-	}
+        parent::display($tpl);
+    }
 
-	/**
-	 * Prepares the document
-	 */
-	protected function _prepareDocument()
-	{
-		$app	= JFactory::getApplication();
-		$menus	= $app->getMenu();
-		$title	= null;
+    /**
+     * Prepares the document
+     */
+    protected function _prepareDocument() {
+        $app = JFactory::getApplication();
+        $menus = $app->getMenu();
+        $title = null;
 
-		// Because the application sets a default page title,
-		// we need to get it from the menu item itself
-		$menu = $menus->getActive();
-		if($menu)
-		{
-			$this->params->def('page_heading', $this->params->def('page_title', $menu->title));
-		} else {
-			$this->params->def('page_heading', JText::_('COM_CHURCHDIRECTORY_DEFAULT_PAGE_TITLE'));
-		}
-		$title = $this->params->get('page_title', '');
-		if (empty($title)) {
-			$title = $app->getCfg('sitename');
-		}
-		elseif ($app->getCfg('sitename_pagetitles', 0) == 1) {
-			$title = JText::sprintf('JPAGETITLE', $app->getCfg('sitename'), $title);
-		}
-		elseif ($app->getCfg('sitename_pagetitles', 0) == 2) {
-			$title = JText::sprintf('JPAGETITLE', $title, $app->getCfg('sitename'));
-		}
-		$this->document->setTitle($title);
+        // Because the application sets a default page title,
+        // we need to get it from the menu item itself
+        $menu = $menus->getActive();
+        if ($menu) {
+            $this->params->def('page_heading', $this->params->def('page_title', $menu->title));
+        } else {
+            $this->params->def('page_heading', JText::_('COM_CHURCHDIRECTORY_DEFAULT_PAGE_TITLE'));
+        }
+        $title = $this->params->get('page_title', '');
+        if (empty($title)) {
+            $title = $app->getCfg('sitename');
+        } elseif ($app->getCfg('sitename_pagetitles', 0) == 1) {
+            $title = JText::sprintf('JPAGETITLE', $app->getCfg('sitename'), $title);
+        } elseif ($app->getCfg('sitename_pagetitles', 0) == 2) {
+            $title = JText::sprintf('JPAGETITLE', $title, $app->getCfg('sitename'));
+        }
+        $this->document->setTitle($title);
 
-		if ($this->params->get('menu-meta_description'))
-		{
-			$this->document->setDescription($this->params->get('menu-meta_description'));
-		}
+        if ($this->params->get('menu-meta_description')) {
+            $this->document->setDescription($this->params->get('menu-meta_description'));
+        }
 
-		if ($this->params->get('menu-meta_keywords'))
-		{
-			$this->document->setMetadata('keywords', $this->params->get('menu-meta_keywords'));
-		}
+        if ($this->params->get('menu-meta_keywords')) {
+            $this->document->setMetadata('keywords', $this->params->get('menu-meta_keywords'));
+        }
 
-		if ($this->params->get('robots'))
-		{
-			$this->document->setMetadata('robots', $this->params->get('robots'));
-		}
-	}
+        if ($this->params->get('robots')) {
+            $this->document->setMetadata('robots', $this->params->get('robots'));
+        }
+    }
+
 }
