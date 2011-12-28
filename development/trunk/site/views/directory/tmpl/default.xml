@@ -15,13 +15,6 @@
         <fieldset name="request"
 			addfieldpath="/administrator/components/com_churchdirectory/models/fields"
 		>
-
-            <field name="id" type="category"
-				description="COM_CHURCHDIRECTORY_FIELD_CATEGORY_DESC"
-				extension="com_churchdirectory"
-				label="COM_CHURCHDIRECTORY_FIELD_CATEGORY_LABEL"
-				required="true"
-			/>
         </fieldset>
     </fields>
 

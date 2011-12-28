@@ -40,7 +40,7 @@ foreach ($this->items as $item) {
             echo '<img src="' . $this->baseurl . '/media/com_churchdirectory/images/200-photo_not_available.jpg" align="center" hspace="6" alt="' . JText::_('COM_CHURCHDIRECTORY_NO_PHOTO_AVALIBLE') . '" class="directory-img" />';
         endif;
         ?>
-        <div class="churchdirectory-contact" style="display: block; float: left; width: 55%;">
+        <div class="churchdirectory-contact">
         <a href="<?php echo JRoute::_(ChurchDirectoryHelperRoute::getChurchDirectoryRoute($item->slug, $item->catid)); ?>" id="contact-name">
             <?php echo $item->name; ?>
         </a><br />
