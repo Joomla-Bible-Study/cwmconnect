@@ -155,7 +155,7 @@ class ChurchDirectoryModelDirectory extends JModelList {
         // Filter by state
         $state = $this->getState('filter.published');
         if (is_numeric($state)) {
-			$query->where('a.published = '.(int) $state);
+            $query->where('a.published = ' . (int) $state);
 
             // Filter by start and end dates.
             $nullDate = $db->Quote($db->getNullDate());
@@ -173,7 +173,35 @@ class ChurchDirectoryModelDirectory extends JModelList {
         }
 
         // Add the list ordering clause.
-		$query->order($db->getEscaped($this->getState('list.ordering', 'a.ordering')).' '.$db->getEscaped($this->getState('list.direction', 'ASC')));
+        $app = JFactory::getApplication();
+        $params = JComponentHelper::getParams('com_churchdirectory');
+
+        $menuParams = new JRegistry;
+
+		if ($menu = $app->getMenu()->getActive()) {
+			$menuParams->loadJSON($menu->params);
+		}
+
+		$mergedParams = clone $params;
+		$mergedParams->merge($menuParams);
+
+		$initialSort = $mergedParams->get('dinitial_sort');
+		// Falll back to old style if the parameter hasn't been set yet.
+		if (empty($initialSort))
+		{
+			$query->order($db->getEscaped($this->getState('list.ordering', 'a.ordering')).' '.$db->getEscaped($this->getState('list.direction', 'ASC')));
+		}
+		elseif ($initialSort != 'sortname'){
+			$query->order('a.'.$initialSort);
+		}
+		else {
+			$query->order('a.sortname1');
+			$query->order('a.sortname2');
+			$query->order('a.sortname3');
+			// Fall back to ordering if the data are not complete or there are matches.
+			$query->order('a.ordering');
+
+		}
 
         return $query;
     }
@@ -197,7 +225,7 @@ class ChurchDirectoryModelDirectory extends JModelList {
         }
         $this->setState('list.ordering', $orderCol);
 
-		$listOrder	=  JRequest::getCmd('filter_order_Dir', 'ASC');
+        $listOrder = JRequest::getCmd('filter_order_Dir', 'ASC');
         if (!in_array(strtoupper($listOrder), array('ASC', 'DESC', ''))) {
             $listOrder = 'ASC';
         }
@@ -213,7 +241,7 @@ class ChurchDirectoryModelDirectory extends JModelList {
         }
         $this->setState('filter.language', $app->getLanguageFilter());
 
-		$this->setState('filter.language',$app->getLanguageFilter());
+        $this->setState('filter.language', $app->getLanguageFilter());
 
         // Load the parameters.
         $this->setState('params', $params);
@@ -239,8 +267,8 @@ class ChurchDirectoryModelDirectory extends JModelList {
             }
 
             $options = array();
-            $options['countItems'] = $params->get('show_cat_items', 1) || $params->get('show_empty_categories', 0);
-            $categories = JCategories::getInstance('Contact', $options);
+            $options['countItems'] = $params->get('db_show_cat_items', 1) || $params->get('db_show_empty_categories', 0);
+            $categories = JCategories::getInstance('ChurchDirectory', $options);
             $this->_item = $categories->get($this->getState('category.id', 'root'));
             if (is_object($this->_item)) {
                 $this->_children = $this->_item->getChildren();

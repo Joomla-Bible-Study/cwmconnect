@@ -38,6 +38,12 @@ class ChurchDirectoryTableChurchDirectory extends JTable
 			$array['params'] = (string) $registry;
 		}
 
+                if (isset($array['attribs']) && is_array($array['attribs'])) {
+			$registry = new JRegistry();
+			$registry->loadArray($array['attribs']);
+			$array['attribs'] = (string) $registry;
+		}
+
 		if (isset($array['metadata']) && is_array($array['metadata'])) {
 			$registry = new JRegistry();
 			$registry->loadArray($array['metadata']);
@@ -61,6 +67,12 @@ class ChurchDirectoryTableChurchDirectory extends JTable
 			$registry = new JRegistry();
 			$registry->loadArray($this->params);
 			$this->params = (string)$registry;
+		}
+                // Transform the params field
+		if (is_array($this->attribs)) {
+			$registry = new JRegistry();
+			$registry->loadArray($this->attribs);
+			$this->attribs = (string)$registry;
 		}
 
 		$date	= JFactory::getDate();

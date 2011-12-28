@@ -19,29 +19,31 @@ class ChurchDirectoryViewGeoUpdate extends JView {
 
     function display() {
         // Set the toolbar title
-        JToolBarHelper::title(JText::_('ADMINTOOLS_TITLE_DBTOOLS'), 'churchdirectory');
+        JToolBarHelper::title(JText::_('COM_CHURCHDIRECTORY_GEOUPDATE'), 'churchdirectory');
 
         $model = $this->getModel();
         $from = JRequest::getString('from', null);
 
-        $tables = $model->findTables();
-        $lastTable = $model->repairAndOptimise($from);
-        if (empty($lastTable)) {
+
+        $records = $model->findRecords();
+        $lastRecord = $model->update($from);
+        //print_r($lastRecord);
+        if (empty($lastRecord)) {
             $percent = 100;
-            JToolBarHelper::back((ADMINTOOLS_JVERSION == '15') ? 'Back' : 'JTOOLBAR_BACK', 'index.php?option=com_admintools');
+            JToolBarHelper::back((ADMINTOOLS_JVERSION == '15') ? 'Back' : 'JTOOLBAR_BACK', 'index.php?option=com_churchdirectory&view=info');
         } else {
-            $lastTableID = array_search($lastTable, $tables);
-            $percent = round(100 * ($lastTableID + 1) / count($tables));
+            $lastRecordID = array_search($lastRecord, $records);
+            $percent = round(100 * ($lastRecordID + 1) / count($records));
             if ($percent < 1)
                 $percent = 1;
             if ($percent > 100)
                 $percent = 100;
         }
 
-        $this->assign('table', $lastTable);
+        $this->assign('table', $lastRecord);
         $this->assign('percent', $percent);
 
-        $this->setLayout('optimize');
+        $this->setLayout('geoupdate');
 
         $document = JFactory::getDocument();
         $script = "window.addEvent( 'domready' ,  function() {\n";
@@ -56,7 +58,7 @@ class ChurchDirectoryViewGeoUpdate extends JView {
 
         // Load CSS
         $document = JFactory::getDocument();
-        $document->addStyleSheet(rtrim(JURI::base(), '/') . '/../media/com_churchdirectory/css/genural.css');
+        $document->addStyleSheet(rtrim(JURI::base(), '/') . '/../media/com_churchdirectory/css/general.css');
 
         JHTML::_('behavior.mootools');
 

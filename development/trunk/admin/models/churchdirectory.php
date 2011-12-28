@@ -120,6 +120,11 @@ class ChurchDirectoryModelChurchDirectory extends JModelAdmin {
         if ($item = parent::getItem($pk)) {
             // Convert the params field to an array.
             $registry = new JRegistry;
+            $registry->loadString($item->attribs);
+            $item->attribs = $registry->toArray();
+
+            // Convert the params field to an array.
+            $registry = new JRegistry;
             $registry->loadString($item->metadata);
             $item->metadata = $registry->toArray();
         }

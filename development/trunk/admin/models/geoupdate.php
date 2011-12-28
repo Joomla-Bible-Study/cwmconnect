@@ -45,43 +45,71 @@ class ChurchDirectoryModelGeoUpdate extends JModel {
     }
 
     /**
-     * Finds all tables using the current site's prefix
+     * Finds all Contacts
      * @return array
      */
-    public function getListQuery() {
-
-        // Create a new query object.
-        $db = $this->getDbo();
-        $query = $db->getQuery(true);
-
-        $query->select($this->getState('list.select', 'cd.*'));
-        $query->from('`#__churchdirectory_details` AS cd');
-        $query->order('cd.id');
-
-        return $query;
+    public function findRecords() {
+        $db = & JFactory::getDBO();
+        $query = "SELECT id, name, address, suburb, state, postcode, lat, lng , country
+        FROM   #__churchdirectory_details
+        WHERE  1";
+        $db->setQuery($query);
+        $ret = $db->loadObjectList();
+        //$ret = $query;
+        //dump($row, 'ret: ');
+        return $ret;
     }
 
-    public function update($fromTable = null) {
+    public function update($update = null) {
         $this->resetTimer();
-        $tables = $this->getListQuery();
+        $base_url = "http://maps.google.com/maps/geo?output=xml"; // . "&key=" . "$key";
+        $geocode_pending = true;
+        $this->resetTimer();
+        $geoupdate = $this->findRecords();
+        foreach ($geoupdate AS $row) {
+            $geocode_pending = true;
 
-        $db = $this->getDBO();
+            while ($geocode_pending) {
+                // Defining of Rows to look up
+                $request_url = $base_url . "&q=" . urlencode("$row->address" . "," . " " . "$row->suburb" . "," . "$row->state" . " " . "$row->postcode" . " " . "$row->country");
+                $xml = simplexml_load_file($request_url) or die("url not loading");
 
-        while ($geocode_pending) {
-
-
-            // Finally, optimize
-            $db->setQuery('GEO UPDATE ' . $db->nameQuote($table));
-            $db->query();
+                $status = $xml->Response->Status->code;
+//                if (strcmp($status, "200") == 0) {
+//                    // Successful geocode
+//                    $geocode_pending = false;
+//                    $coordinates = $xml->Response->Placemark->Point->coordinates;
+//                    $coordinatesSplit = split(",", $coordinates);
+//                    // Format: Longitude, Latitude, Altitude
+//                    $ulat = $coordinatesSplit[1];
+//                    $ulong = $coordinatesSplit[0];
+//
+////                    $query = sprintf("UPDATE $table " .
+////                            " SET lat = '%s', lng = '%s'" .
+////                            " WHERE id = '%s' LIMIT 1;", mysql_real_escape_string($ulat), mysql_real_escape_string($ulong), mysql_real_escape_string($id));
+////                    $update_result = mysql_query($query);
+////                    if (!$update_result) {
+////                        die("Invalid query: " . mysql_error());
+////                    }
+//                } else if (strcmp($status, "620") == 0) {
+//                    // sent geocodes too fast
+//                    $delay += 100000;
+//                } else {
+                    //failure to geocode
+                    $geocode_pending = false;
+                    echo "Name: " . $row->name . "<br />";
+                    echo $xml . "<br />";
+                    echo "Address " . $row->address . "," . " " . "$row->suburb" . "," . "$row->state" . " " . "$row->postcode" . " " . "$row->country" . " failed to geocoded.<br /> ";
+                    echo "Received status " . $status . " \n <br /><br />";
+                //}
+                usleep($delay);
+            }
         }
-
-        if (!count($tables))
-            return '';
-
-        return $table;
     }
 
-    public function purgeSessions() {
+    public
+
+    function purgeSessions() {
         $db = $this->getDBO();
 
         $db->setQuery('OPTIMIZE TABLE ' . $db->nameQuote('#__session'));

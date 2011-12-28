@@ -116,13 +116,46 @@ div.separator {
 }
 .directory-img {
     width: 100px;
-    padding: 10ps;
-    clear: both;
+    margin-right:6px;
+    margin-left: 6px;
+    margin-bottom: 20px;
+    float: left;
 }
 #directory-items {
     float: left;
-    width: 200px;
-    height: 250px;
-    border: solid red;
-    padding: 5px;
+    width: 31%;
+    padding: 10px;
+}
+p {
+    font-weight: normal;
+}
+.jicons-text {
+    font-weight: bold;
+}
+.churchdirectory-suburb{
+    display: inline;
+}
+.churchdirectory-state {
+    display: inline;
+}
+.churchdirectory-postcode{
+    display: inline;
+}
+.churchdirectory-churchdirectoryinfo{
+
+}
+.churchdirectory-hl{
+    min-height: 300px;
+    border-left: 1px solid gray;
+    float:left;
+}
+
+.inner {
+    background: none repeat scroll 0 0 #F3F3F3;
+    border: 1px solid #FFFFFF;
+    border-radius: 11px 11px 11px 11px;
+    box-shadow: 0 0 5px #BED1D6;
+    position: relative;
+    margin-top: 7px;
+    padding: 0px 28px 0px;
 }

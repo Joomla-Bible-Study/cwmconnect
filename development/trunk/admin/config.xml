@@ -12,7 +12,7 @@
 			description="JGLOBAL_FIELD_LAYOUT_DESC"
 			menuitems="true"
 			extension="com_churchdirectory"
-			view="contact"
+			view="churchdirectory"
 		/>
 
         <field name="show_churchdirectory_category"
@@ -606,6 +606,7 @@
 			>
             <option value="name">COM_CHURCHDIRECTORY_FIELD_VALUE_NAME</option>
             <option value="sortname">COM_CHURCHDIRECTORY_FIELD_VALUE_SORT_NAME</option>
+            <option value="lname">COM_CHURCHDIRECTORY_FIELD_VALUE_LAST_NAME</option>
             <option value="ordering">COM_CHURCHDIRECTORY_FIELD_VALUE_ORDERING</option>
         </field>
     </fieldset>
@@ -622,6 +623,35 @@
 			extension="com_churchdirectory"
 			view="directory"
 		/>
+        <field name="dr_presentation_style"
+			type="list"
+				description="COM_CHURCHDIRECTORY_FIELD_PRESENTATION_DESC"
+				label="COM_CHURCHDIRECTORY_FIELD_PRESENTATION_LABEL"
+			>
+            <option value="sliders">COM_CHURCHDIRECTORY_FIELD_VALUE_SLIDERS</option>
+            <option value="tabs">COM_CHURCHDIRECTORY_FIELD_VALUE_TABS</option>
+            <option value="plain">COM_CHURCHDIRECTORY_FIELD_VALUE_PLAIN</option>
+        </field>
+        <field name="dr_churchdirectory_icons"
+			type="list"
+			default="0"
+			label="COM_CHURCHDIRECTORY_FIELD_ICONS_SETTINGS_LABEL"
+			description="COM_CHURCHDIRECTORY_FIELD_ICONS_SETTINGS_DESC"
+		>
+            <option value="0">COM_CHURCHDIRECTORY_FIELD_VALUE_ICONS
+            </option>
+            <option value="1">COM_CHURCHDIRECTORY_FIELD_VALUE_TEXT
+            </option>
+            <option value="2">COM_CHURCHDIRECTORY_FIELD_VALUE_NONE
+            </option>
+        </field>
+        <field name="protectedaccess"
+			type="accesslevel"
+			label="COM_CHURCHDIRECTORY_FIELD_MEMBER_PROTECTED_ACCESS_LABEL"
+			description="COM_CHURCHDIRECTORY_FIELD_MEMBER_PROTECTED_ACCESS_DESC"
+			class="inputbox"
+			size="1"
+		/>
         <field name="show_page_title"
 			type="radio"
 			default="1"
@@ -631,26 +661,8 @@
             <option value="0">JHIDE</option>
             <option value="1">JSHOW</option>
         </field>
-        <field name="presentation_style"
-			type="list"
-				description="COM_CHURCHDIRECTORY_FIELD_PRESENTATION_DESC"
-				label="COM_CHURCHDIRECTORY_FIELD_PRESENTATION_LABEL"
-			>
-            <option value="sliders">COM_CHURCHDIRECTORY_FIELD_VALUE_SLIDERS</option>
-            <option value="tabs">COM_CHURCHDIRECTORY_FIELD_VALUE_TABS</option>
-            <option value="plain">COM_CHURCHDIRECTORY_FIELD_VALUE_PLAIN</option>
-        </field>
-        <field name="show_name"
-			type="radio"
-			default="1"
-			label="COM_CHURCHDIRECTORY_FIELD_PARAMS_NAME_LABEL"
-			description="COM_CHURCHDIRECTORY_FIELD_PARAMS_NAME_DESC"
-		>
-            <option value="0">JHIDE</option>
-            <option value="1">JSHOW</option>
-        </field>
 
-        <field name="show_position"
+        <field name="dr_show_position"
 			type="radio"
 			default="1"
 			label="COM_CHURCHDIRECTORY_FIELD_PARAMS_CONTACT_POSITION_LABEL"
@@ -660,7 +672,7 @@
             <option value="1">JSHOW</option>
         </field>
 
-        <field name="show_email"
+        <field name="dr_show_email"
 			type="radio"
 			default="0"
 			label="JGLOBAL_EMAIL"
@@ -670,7 +682,7 @@
             <option value="1">JSHOW</option>
         </field>
 
-        <field name="show_street_address"
+        <field name="dr_show_street_address"
 			type="radio"
 			default="1" label="COM_CHURCHDIRECTORY_FIELD_PARAMS_STREET_ADDRESS_LABEL"
 			description="COM_CHURCHDIRECTORY_FIELD_PARAMS_STREET_ADDRESS_DESC"
@@ -679,7 +691,7 @@
             <option value="1">JSHOW</option>
         </field>
 
-        <field name="show_suburb"
+        <field name="dr_show_suburb"
 			type="radio"
 			default="1"
 			label="COM_CHURCHDIRECTORY_FIELD_PARAMS_TOWN-SUBURB_LABEL"
@@ -689,7 +701,7 @@
             <option value="1">JSHOW</option>
         </field>
 
-        <field name="show_state"
+        <field name="dr_show_state"
 			type="radio"
 			default="1"
 			label="COM_CHURCHDIRECTORY_FIELD_PARAMS_STATE-COUNTY_LABEL"
@@ -699,7 +711,7 @@
             <option value="1">JSHOW</option>
         </field>
 
-        <field name="show_postcode"
+        <field name="dr_show_postcode"
 			type="radio"
 			default="1"
 			label="COM_CHURCHDIRECTORY_FIELD_PARAMS_POST-ZIP_CODE_LABEL"
@@ -709,7 +721,7 @@
             <option value="1">JSHOW</option>
         </field>
 
-        <field name="show_country"
+        <field name="dr_show_country"
 			type="radio"
 			default="1"
 			label="COM_CHURCHDIRECTORY_FIELD_PARAMS_COUNTRY_LABEL"
@@ -719,7 +731,7 @@
             <option value="1">JSHOW</option>
         </field>
 
-        <field name="show_telephone"
+        <field name="dr_show_telephone"
 			type="radio"
 			default="1"
 			label="COM_CHURCHDIRECTORY_FIELD_PARAMS_TELEPHONE_LABEL"
@@ -729,7 +741,7 @@
             <option value="1">JSHOW</option>
         </field>
 
-        <field name="show_mobile"
+        <field name="dr_show_mobile"
 			type="radio"
 			default="1"
 			label="COM_CHURCHDIRECTORY_FIELD_PARAMS_MOBILE_LABEL"
@@ -739,7 +751,7 @@
             <option value="1">JSHOW</option>
         </field>
 
-        <field name="show_fax"
+        <field name="dr_show_fax"
 			type="radio"
 			default="1"
 			label="COM_CHURCHDIRECTORY_FIELD_PARAMS_FAX_LABEL"
@@ -749,7 +761,7 @@
             <option value="1">JSHOW</option>
         </field>
 
-        <field name="show_webpage"
+        <field name="dr_show_webpage"
 			type="radio"
 			default="1"
 			label="COM_CHURCHDIRECTORY_FIELD_PARAMS_WEBPAGE_LABEL"
@@ -759,7 +771,7 @@
             <option value="1">JSHOW</option>
         </field>
 
-        <field name="show_misc"
+        <field name="dr_show_misc"
 			type="radio"
 			default="1"
 			label="COM_CHURCHDIRECTORY_FIELD_PARAMS_MISC_INFO_LABEL"
@@ -768,8 +780,24 @@
             <option value="0">JHIDE</option>
             <option value="1">JSHOW</option>
         </field>
+        <field name="dr_show_spouse"
+			type="radio"
+			default="1"
+			label="COM_CHURCHDIRECTORY_FIELD_PARAMS_SHOW_SPOUSE_LABEL" description="COM_CHURCHDIRECTORY_FIELD_PARAMS_SHOW_SPOUSE_DESC"
+		>
+            <option value="0">JHIDE</option>
+            <option value="1">JSHOW</option>
+        </field>
+        <field name="dr_show_children"
+			type="radio"
+			default="1"
+			label="COM_CHURCHDIRECTORY_FIELD_PARAMS_SHOW_CHILDREN_LABEL" description="COM_CHURCHDIRECTORY_FIELD_PARAMS_SHOW_CHILDREN_DESC"
+		>
+            <option value="0">JHIDE</option>
+            <option value="1">JSHOW</option>
+        </field>
 
-        <field name="show_image"
+        <field name="dr_show_image"
 			type="radio"
 			default="1"
 			label="COM_CHURCHDIRECTORY_FIELD_PARAMS_SHOW_IMAGE_LABEL" description="COM_CHURCHDIRECTORY_FIELD_PARAMS_SHOW_IMAGE_DESC"
@@ -777,23 +805,13 @@
             <option value="0">JHIDE</option>
             <option value="1">JSHOW</option>
         </field>
-        <field name="image"
+        <field name="dr_image"
 			type="media"
 			label="COM_CHURCHDIRECTORY_FIELD_PARAMS_IMAGE_LABEL"
 			description="COM_CHURCHDIRECTORY_FIELD_PARAMS_IMAGE_DESC"
 		>
         </field>
-        <field name="allow_vcard"
-			type="radio"
-			default="0"
-			label="COM_CHURCHDIRECTORY_FIELD_PARAMS_VCARD_LABEL"
-			description="COM_CHURCHDIRECTORY_FIELD_PARAMS_VCARD_DESC"
-		>
-            <option value="0">JHIDE</option>
-            <option value="1">JSHOW</option>
-        </field>
-
-        <field name="allow_kml"
+        <field name="dr_allow_kml"
 				type="radio"
                                 default="0"
 				description="COM_CHURCHDIRECTORY_FIELD_PARAMS_KML_DESC"
@@ -802,8 +820,7 @@
             <option value="0">JHIDE</option>
             <option value="1">JSHOW</option>
         </field>
-
-        <field name="show_articles"
+        <field name="dr_show_articles"
 			type="radio"
 			default="1"
 			label="COM_CHURCHDIRECTORY_FIELD_ARTICLES_SHOW_LABEL"
@@ -812,8 +829,7 @@
             <option value="0">JHIDE</option>
             <option value="1">JSHOW</option>
         </field>
-
-        <field name="show_profile"
+        <field name="dr_show_profile"
 			type="radio"
 			default="1"
 			label="COM_CHURCHDIRECTORY_FIELD_PROFILE_SHOW_LABEL" description="COM_CHURCHDIRECTORY_FIELD_PROFILE_SHOW_DESC"
@@ -822,7 +838,7 @@
             <option value="1">JSHOW</option>
         </field>
 
-        <field name="show_links"
+        <field name="dr_show_links"
 			label="COM_CHURCHDIRECTORY_FIELD_SHOW_LINKS_LABEL"
 			description="COM_CHURCHDIRECTORY_FIELD_SHOW_LINKS_LABEL"
 			type="radio"
@@ -833,7 +849,7 @@
 
         </field>
 
-        <field name="linka_name"
+        <field name="dr_linka_name"
 				type="text"
 				label="COM_CHURCHDIRECTORY_FIELD_LINKA_NAME_LABEL"
 				description="COM_CHURCHDIRECTORY_FIELD_LINK_NAME_DESC"
@@ -841,7 +857,7 @@
 				size="30"
 			/>
 
-        <field name="linkb_name"
+        <field name="dr_linkb_name"
 				type="text"
 				label="COM_CHURCHDIRECTORY_FIELD_LINKB_NAME_LABEL"
 				description="COM_CHURCHDIRECTORY_FIELD_LINK_NAME_DESC"
@@ -849,11 +865,11 @@
 				size="30"
 			/>
 
-        <field name="linkc_name" type="text"
+        <field name="dr_linkc_name" type="text"
 				label="COM_CHURCHDIRECTORY_FIELD_LINKC_NAME_LABEL" description="COM_CHURCHDIRECTORY_FIELD_LINK_NAME_DESC"
 				class="inputbox" size="30" />
 
-        <field name="linkd_name"
+        <field name="dr_linkd_name"
 				type="text"
 				label="COM_CHURCHDIRECTORY_FIELD_LINKD_NAME_LABEL"
 				description="COM_CHURCHDIRECTORY_FIELD_LINK_NAME_DESC"
@@ -861,12 +877,35 @@
 				size="30"
 			/>
 
-        <field name="linke_name"
+        <field name="dr_linke_name"
 				type="text"
 				label="COM_CHURCHDIRECTORY_FIELD_LINKE_NAME_LABEL"
 				description="COM_CHURCHDIRECTORY_FIELD_LINK_NAME_DESC"
 				class="inputbox" size="30"
 			/>
+        <field name="rows_per_page"
+				type="text"
+				label="COM_CHURCHDIRECTORY_FIELD_ROWS_PER_PAGE_LABEL"
+				description="COM_CHURCHDIRECTORY_FIELD_ROWS_PER_PAGE_DESC"
+				class="inputbox" size="30"
+			/>
+        <field name="items_per_row"
+				type="text"
+				label="COM_CHURCHDIRECTORY_FIELD_ITEMS_PER_ROW_LABEL"
+				description="COM_CHURCHDIRECTORY_FIELD_ITEMS_PER_ROW_DESC"
+				class="inputbox" size="30"
+			/>
+        <field name="dinitial_sort" type="list"
+				description="COM_CHURCHDIRECTORY_FIELD_INITIAL_SORT_DESC"
+				label="COM_CHURCHDIRECTORY_FIELD_INITIAL_SORT_LABEL"
+				validate="options"
+				default="ordering"
+			>
+            <option value="name">COM_CHURCHDIRECTORY_FIELD_VALUE_NAME</option>
+            <option value="sortname">COM_CHURCHDIRECTORY_FIELD_VALUE_SORT_NAME</option>
+            <option value="lname">COM_CHURCHDIRECTORY_FIELD_VALUE_LAST_NAME</option>
+            <option value="ordering">COM_CHURCHDIRECTORY_FIELD_VALUE_ORDERING</option>
+        </field>
 
     </fieldset>
 

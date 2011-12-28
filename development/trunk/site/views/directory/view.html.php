@@ -44,6 +44,8 @@ class ChurchDirectoryViewDirectory extends JView {
         $children = $this->get('Children');
         $pagination = $this->get('Pagination');
 
+        // Get the parameters
+        //$params = JComponentHelper::getParams('com_churchdirectoy');
         // Check for errors.
         if (count($errors = $this->get('Errors'))) {
             JError::raiseWarning(500, implode("\n", $errors));
@@ -68,14 +70,68 @@ class ChurchDirectoryViewDirectory extends JView {
             $temp->loadString($item->params);
             $item->params = clone($params);
             $item->params->merge($temp);
+
             if ($item->params->get('show_email', 0) == 1) {
                 $item->email_to = trim($item->email_to);
+
                 if (!empty($item->email_to) && JMailHelper::isEmailAddress($item->email_to)) {
                     $item->email_to = JHtml::_('email.cloak', $item->email_to);
                 } else {
                     $item->email_to = '';
                 }
             }
+            if ($item->params->get('dr_show_street_address') || $item->params->get('dr_show_suburb') || $item->params->get('dr_show_state') || $item->params->get('dr_show_postcode') || $item->params->get('dr_show_country')) {
+                $params->set('address_check', 1);
+            } else {
+                $params->set('address_check', 0);
+            }
+            if ($item->params->get('dr_show_email') || $item->params->get('dr_show_telephone') || $item->params->get('dr_show_fax') || $item->params->get('dr_show_mobile') || $item->params->get('dr_show_webpage') || $item->params->get('dr_show_spouse') || $item->params->get('dr_show_children')) {
+                $params->set('other_check', 1);
+            } else {
+                $params->set('other_check', 0);
+            }
+        }
+
+        switch ($item->params->get('dr_churchdirectory_icons')) {
+            case 1 :
+                // text
+                $params->set('marker_address', JText::_('COM_CHURCHDIRECTORY_ADDRESS') . ": ");
+                $params->set('marker_email', JText::_('JGLOBAL_EMAIL') . ": ");
+                $params->set('marker_telephone', JText::_('COM_CHURCHDIRECTORY_TELEPHONE') . ": ");
+                $params->set('marker_fax', JText::_('COM_CHURCHDIRECTORY_FAX') . ": ");
+                $params->set('marker_mobile', JText::_('COM_CHURCHDIRECTORY_MOBILE') . ": ");
+                $params->set('marker_misc', JText::_('COM_CHURCHDIRECTORY_OTHER_INFORMATION') . ": ");
+                $params->set('marker_class', 'jicons-text');
+                break;
+
+            case 2 :
+                // none
+                $params->set('marker_address', '');
+                $params->set('marker_email', '');
+                $params->set('marker_telephone', '');
+                $params->set('marker_mobile', '');
+                $params->set('marker_fax', '');
+                $params->set('marker_misc', '');
+                $params->set('marker_class', 'jicons-none');
+                break;
+
+            default :
+                // icons
+                $image1 = JHtml::_('image', 'contacts/' . $params->get('icon_address', 'con_address.png'), JText::_('COM_CHURCHDIRECTORY_ADDRESS') . ": ", NULL, true);
+                $image2 = JHtml::_('image', 'contacts/' . $params->get('icon_email', 'emailButton.png'), JText::_('JGLOBAL_EMAIL') . ": ", NULL, true);
+                $image3 = JHtml::_('image', 'contacts/' . $params->get('icon_telephone', 'con_tel.png'), JText::_('COM_CHURCHDIRECTORY_TELEPHONE') . ": ", NULL, true);
+                $image4 = JHtml::_('image', 'contacts/' . $params->get('icon_fax', 'con_fax.png'), JText::_('COM_CHURCHDIRECTORY_FAX') . ": ", NULL, true);
+                $image5 = JHtml::_('image', 'contacts/' . $params->get('icon_misc', 'con_info.png'), JText::_('COM_CHURCHDIRECTORY_OTHER_INFORMATION') . ": ", NULL, true);
+                $image6 = JHtml::_('image', 'contacts/' . $params->get('icon_mobile', 'con_mobile.png'), JText::_('COM_CHURCHDIRECTORY_MOBILE') . ": ", NULL, true);
+
+                $params->set('marker_address', $image1);
+                $params->set('marker_email', $image2);
+                $params->set('marker_telephone', $image3);
+                $params->set('marker_fax', $image4);
+                $params->set('marker_misc', $image5);
+                $params->set('marker_mobile', $image6);
+                $params->set('marker_class', 'jicons-icons');
+                break;
         }
 
         // Setup the category parameters.

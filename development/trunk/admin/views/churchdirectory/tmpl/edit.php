@@ -10,8 +10,11 @@ defined('_JEXEC') or die;
 
 // Include the component HTML helpers.
 JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
+
+// Load the tooltip behavior.
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.formvalidation');
+JHtml::_('behavior.keepalive');
 ?>
 <script type="text/javascript">
     Joomla.submitbutton = function(task)
@@ -149,6 +152,12 @@ JHtml::_('behavior.formvalidation');
                 <li><?php echo $this->form->getLabel('webpage'); ?>
                     <?php echo $this->form->getInput('webpage'); ?></li>
 
+                <li><?php echo $this->form->getLabel('spouse'); ?>
+                    <?php echo $this->form->getInput('spouse'); ?></li>
+
+                <li><?php echo $this->form->getLabel('children'); ?>
+                    <?php echo $this->form->getInput('children'); ?></li>
+
                 <li><?php echo $this->form->getLabel('sortname1'); ?>
                     <?php echo $this->form->getInput('sortname1'); ?></li>
 
@@ -172,29 +181,29 @@ JHtml::_('behavior.formvalidation');
             </ul>
         </fieldset>
 
-        <?php echo JHtml::_('sliders.panel', JText::_('COM_CHURCHDIRECTORY_CONTACT_STAFF_DETAILS'), 'staff-options'); ?>
-
-        <fieldset class="panelform">
-            <?php if (JFactory::getUser()->authorise('core.admin', 'com_churchdirectory')) { ?>
-                <p><?php echo empty($this->item->id) ? JText::_('COM_CHURCHDIRECTORY_DETAILS') : JText::sprintf('COM_CHURCHDIRECTORY_EDIT_CONTACT_MEMBERINFO', $this->item->id); ?></p>
-                <ul class="adminformlist">
-                    <li><?php echo $this->form->getLabel('membstatus'); ?>
-                        <?php echo $this->form->getInput('membstatus'); ?></li>
-
-                    <li><?php echo $this->form->getLabel('elder'); ?>
-                        <?php echo $this->form->getInput('elder'); ?></li>
-                </ul>
-            <?php } ?>
-        </fieldset>
-
         <?php echo $this->loadTemplate('attribs'); ?>
 
         <?php echo $this->loadTemplate('params'); ?>
 
         <?php echo $this->loadTemplate('metadata'); ?>
         <?php echo JHtml::_('sliders.end'); ?>
+    </div>
+    <div class="clr"></div>
+	<?php if ($this->canDo->get('core.admin')): ?>
+		<div class="width-100 fltlft">
+			<?php echo JHtml::_('sliders.start','permissions-sliders-'.$this->item->id, array('useCookie'=>1)); ?>
+
+				<?php echo JHtml::_('sliders.panel',JText::_('COM_CHURCHDIRECTORY_FIELDSET_RULES'), 'access-rules'); ?>
+				<fieldset class="panelform">
+					<?php echo $this->form->getLabel('rules'); ?>
+					<?php echo $this->form->getInput('rules'); ?>
+				</fieldset>
+
+			<?php echo JHtml::_('sliders.end'); ?>
+		</div>
+	<?php endif; ?>
+    <div>
         <input type="hidden" name="task" value="" />
         <?php echo JHtml::_('form.token'); ?>
     </div>
 </form>
-<div class="clr"></div>

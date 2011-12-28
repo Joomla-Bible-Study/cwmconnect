@@ -366,6 +366,19 @@
 			class="inputbox"
 			size="11"
 		/>
+        <field name="spouse" type="text"
+			label="COM_CHURCHDIRECTORY_FIELD_SPOUSE_LABEL"
+			description="COM_CHURCHDIRECTORY_FIELD_SPOUSE_DESC"
+			class="inputbox"
+			size="30"
+		/>
+        <field name="children" type="textarea"
+			label="COM_CHURCHDIRECTORY_FIELD_CHILDREN_LABEL"
+			description="COM_CHURCHDIRECTORY_FIELD_CHILDREN_DESC"
+			class="inputbox"
+			rows="3"
+			cols="30"
+		/>
     </fieldset>
 
     <fields name="params">
@@ -690,6 +703,10 @@
 				view="contact"
 				useglobal="true"
 				/>
+            <field name="rules" type="rules" label="JFIELD_RULES_LABEL"
+			translate_label="false" class="inputbox" filter="rules"
+			component="com_churchdirectory" section="churchdirectory" validate="rules"
+		/>
         </fieldset>
 
         <fieldset name="email"
@@ -779,6 +796,70 @@
 				label="JFIELD_METADATA_RIGHTS_LABEL"
 				description="JFIELD_METADATA_RIGHTS_DESC"
 				size="20" />
+        </fieldset>
+    </fields>
+    <fields name="attribs">
+        <fieldset name="basic" label="COM_CHURCHDIRECTORY_MEMBER_PROTECTED_INFO_FIELDSET_LABEL" description="COM_CHURCHDIRECTORY_MEMBER_PROTECTED_INFO_FIELDSET_DESC">
+            <field name="birthdate"
+				type="calendar"
+				label="COM_CHURCHDIRECTORY_FIELD_MEMBER_BIRTHDATE_LABEL"
+				description="COM_CHURCHDIRECTORY_FIELD_MEMBER_BIRTHDATE_DESC"
+                                class="inputbox" format="%Y-%m-%d" size="22" />
+            <field name="memberstatus" type="text"
+				label="COM_CHURCHDIRECTORY_FIELD_MEMBERSSTATUS_LABEL"
+				description="COM_CHURCHDIRECTORY_FIELD_MEMBERSSTATUS_DESC"
+				size="20" />
+            <field name="memberotherinfo" type="textarea"
+			label="COM_CHURCHDIRECTORY_FIELD_MEMBER_OTHER_INFO_LABEL"
+			description="COM_CHURCHDIRECTORY_FIELD_MEMBER_OTHER_INFO_DESC"
+			class="inputbox"
+			rows="3"
+			cols="30"
+		/>
+        </fieldset>
+        <fieldset name="mailingaddress" label="COM_CHURCHDIRECTORY_MAILING_ADDRESS_FIELDSET_LABEL" description="COM_CHURCHDIRECTORY_MAILING_ADDRESS_FIELDSET_DESC">
+            <field name="mailingaddress" type="textarea"
+			label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_ADDRESS_LABEL"
+			description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_ADDRESS_DESC"
+			class="inputbox"
+			rows="3"
+			cols="30"
+		/>
+
+            <field name="mailingsuburb" type="text"
+			label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_SUBURB_LABEL"
+			description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_SUBURB_DESC"
+			class="inputbox"
+			size="30"
+		/>
+
+            <field name="mailingstate" type="text"
+			label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_STATE_LABEL"
+			description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_STATE_DESC"
+			class="inputbox"
+			size="30"
+		/>
+
+            <field name="mailingpostcode" type="text"
+			label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_POSTCODE_LABEL"
+			description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_POSTCODE_DESC"
+			class="inputbox"
+			size="30"
+		/>
+
+            <field name="mailingpostcodeaddon" type="text"
+			label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_POSTCODEADDON_LABEL"
+			description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_POSTCODEADDON_DESC"
+			class="inputbox"
+			size="30"
+		/>
+
+            <field name="mailingcountry" type="text"
+			label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_COUNTRY_LABEL"
+			description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_COUNTRY_DESC"
+			class="inputbox"
+			size="30"
+		/>
         </fieldset>
     </fields>
 </form>

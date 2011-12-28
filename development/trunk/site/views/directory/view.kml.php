@@ -76,7 +76,7 @@ class ChurchDirectoryViewDirectory extends JView {
             $item->params = clone($params);
             $item->params->merge($temp);
 
-            if ($item->params->get('show_email', 0) == 1) {
+            if ($item->params->get('dr_show_email', 0) == 1) {
                 $item->email_to = trim($item->email_to);
 
                 if (!empty($item->email_to) && JMailHelper::isEmailAddress($item->email_to)) {

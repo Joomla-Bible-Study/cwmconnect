@@ -31,6 +31,10 @@ class ChurchDirectoryViewChurchDirectory extends JView {
         $this->form = $this->get('Form');
         $this->item = $this->get('Item');
         $this->state = $this->get('State');
+        $this->canDo = ChurchDirectoryHelper::getActions($this->state->get('filter.category_id'));
+
+        //Load the Admin settings
+        //$this->admin = BsmHelper::getAdmin();
 
         // Check for errors.
         if (count($errors = $this->get('Errors'))) {
@@ -49,13 +53,11 @@ class ChurchDirectoryViewChurchDirectory extends JView {
      */
     protected function addToolbar() {
         JRequest::setVar('hidemainmenu', true);
-
         $user = JFactory::getUser();
         $userId = $user->get('id');
         $isNew = ($this->item->id == 0);
         $checkedOut = !($this->item->checked_out == 0 || $this->item->checked_out == $userId);
-        $canDo = ChurchDirectoryHelper::getActions($this->state->get('filter.category_id'));
-
+        $canDo = ChurchDirectoryHelper::getActions($this->state->get('filter.category_id'), $this->item->id);
         JToolBarHelper::title(JText::_('COM_CHURCHDIRECTORY_MANAGER_CONTACT'), 'churchdirectory');
 
         // Build the actions for new and existing records.

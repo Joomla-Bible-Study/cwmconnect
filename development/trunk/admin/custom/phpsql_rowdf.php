@@ -6,7 +6,7 @@
     	$address = $row["address"];
     	$suburb = $row["suburb"];
     	$state = $row["state"];
-   	$country = $row["contry"];
+   	$country = $row["country"];
     	$zip = $row["postcode"];
    	$telephone = $row["telephone"];
    	$fax = $row["fax"];
