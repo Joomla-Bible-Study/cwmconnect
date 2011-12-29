@@ -44,17 +44,22 @@ class ChurchDirectoryViewDirectory extends JView {
         $children = $this->get('Children');
         $pagination = $this->get('Pagination');
 
-        // Get the parameters
-        //$params = JComponentHelper::getParams('com_churchdirectoy');
         // Check for errors.
         if (count($errors = $this->get('Errors'))) {
-            JError::raiseWarning(500, implode("\n", $errors));
+            JError::raiseError(500, implode("\n", $errors));
             return false;
         }
 
-        if ($items === false) {
+        if ($items == false) {
             JError::raiseError(404, JText::_('COM_CHURCHDIRECTOY_ERROR_DIRECTORY_NOT_FOUND'));
             return false;
+        }
+
+        // Check whether category access level allows access.
+        $user = JFactory::getUser();
+        $groups = $user->getAuthorisedViewLevels();
+        if (!in_array($category->access, $groups)) {
+            return JError::raiseError(403, JText::_('JERROR_ALERTNOAUTHOR'));
         }
 
         // Check whether category access level allows access.

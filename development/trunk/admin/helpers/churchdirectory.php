@@ -17,6 +17,8 @@ defined('_JEXEC') or die;
  */
 class ChurchDirectoryHelper {
 
+    public static $extension = 'com_churchdirectory';
+
     /**
      * Configure the Linkbar.
      *

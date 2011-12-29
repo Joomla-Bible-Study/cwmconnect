@@ -35,7 +35,6 @@ class ChurchDirectoryViewDirectory extends JView {
     function display($tpl = null) {
         $app = JFactory::getApplication();
         $user = JFactory::getUser();
-
         // Get some data from the models
         $state = $this->get('State');
         $params = $state->params;
@@ -49,6 +48,12 @@ class ChurchDirectoryViewDirectory extends JView {
         $doc->setMetaData('Content-Type', 'application/vnd.google-earth.kml+xml', true);
         JResponse::setHeader('Content-disposition', 'attachment; filename="' . $items[0]->kml_alias . '.kml"', true);
 
+        // Check for errors.
+        if (count($errors = $this->get('Errors'))) {
+            JError::raiseWarning(500, implode("\n", $errors));
+            return false;
+        }
+
         // Check whether category access level allows access.
         $user = JFactory::getUser();
         $groups = $user->getAuthorisedViewLevels();
@@ -58,10 +63,11 @@ class ChurchDirectoryViewDirectory extends JView {
             return false;
         }
 
-        if ($items === false) {
+        if ($items == false) {
             JError::raiseError(404, JText::_('COM_CHURCHDIRECTOY_ERROR_DIRECTORY_NOT_FOUND'));
             return false;
         }
+        
 
         // Prepare the data.
         // Compute the contact slug.
@@ -86,6 +92,7 @@ class ChurchDirectoryViewDirectory extends JView {
                 }
             }
         }
+
         // Setup the category parameters.
         $cparams = $category->getParams();
         $category->params = clone($params);
@@ -122,7 +129,7 @@ class ChurchDirectoryViewDirectory extends JView {
             return $result;
         }
 
-        // Creates an array of strings to hold the lines of the KML file.
+                // Creates an array of strings to hold the lines of the KML file.
         $kml = array('<?xml version="1.0" encoding="UTF-8"?>');
         $kml[] = '<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2">';
         $kml[] = '<Document>';
@@ -158,10 +165,11 @@ class ChurchDirectoryViewDirectory extends JView {
                 $kml[] = ' <open>' . $ckml_params->get('msropen') . '</open>           	   <!-- boolean -->';
 
                 foreach ($rows as $row) {
+                    //var_dump($row->category_params->get('image'));
                     $kml[] = '<Style id="text_photo_banner">';
                     $kml[] = '<IconStyle>';
                     $kml[] = '<scale>';
-                    if ($row->params->get('icscale') == null) {
+                    if ($row->params->get('icscale') == NULL) {
                         $kml[] = '1.1';
                     } else {
                         $kml[] = $row->kml_params->get('icscale');
@@ -172,7 +180,7 @@ class ChurchDirectoryViewDirectory extends JView {
                     if ($row->category_params->get('image') == null) {
                         $kml[] = JURI::base() . 'media/com_churchdirectory/images/kml_icons/iconb.png';
                     } else {
-                        $kml[] = JURI::base() . $row->category_params->get('image');
+                        $kml[] = JURI::base() .DS. $row->category_params->get('image');
                     }
                     $kml[] = '</href>';
                     $kml[] = '</Icon>';
@@ -233,36 +241,37 @@ class ChurchDirectoryViewDirectory extends JView {
                     }
                     $kml[] = '"><![CDATA[' . $row->con_position . ' <br />Team ' . $row->catid . ']]></Snippet>   <!-- string -->';
                     $kml[] = '<description>' . '<![CDATA[<div>';
-                    if ($row->image == null) {
-                        $kml[] = '<img src="' . JURI::base() . 'media/com_churchdirectory/images/photo_not_available.jpg" alt="Photo Not Available" class="directory-img" /><br />';
+                    if (empty($row->image)) {
+                        $kml[] = '<img src="' . JURI::base() . 'media/com_churchdirectory/images/photo_not_available.jpg" alt="Photo" width="100" hight="100" /><br />';
                     } else {
-                        $kml[] = '<img src="' . JURI::base() . $row->image . '" alt="' . $row->name . '" class="directory-img" /><br />';
+                        $kml[] = '<img src="' . JURI::base() .DS. $row->image . '" alt="Photo" width="100" hight="100" /><br />';
                     }
-                    if ($row->con_position == null) {
+                    if (!empty ($row->con_position)) {
                         $kml[] = '<b>Position: ' . $row->con_position . '</b><br />';
                     }
-                    if ($row->spouse == null) {
+                    if (!empty ($row->spouse)) {
                         $kml[] = 'Spouse: ' . $row->spouse . '<br />';
                     }
-                    if ($row->children == null) {
+                    if (!empty ($row->children)) {
                         $kml[] = 'Children: ' . $row->children . '<br />';
                     }
-                    if ($row->misc == null) {
+                    if (!empty ($row->misc)) {
                         $kml[] = $row->misc;
                     }
-                    if ($row->telephone == null) {
+                    if (!empty ($row->telephone)) {
                         $kml[] = '<br />PH: ' . $row->telephone;
                     }
-                    if ($row->fax == null) {
+                    if (!empty ($row->fax)) {
                         $kml[] = '<br />Fax: ' . $row->fax;
                     }
-                    if ($row->mobile == null) {
+                    if (!empty ($row->mobile)) {
                         $kml[] = '<br />Cell: ' . $row->mobile;
                     }
-                    if ($row->email_to == null) {
+                    if (!empty ($row->email_to)) {
                         $kml[] = '<br />Email: <a href="mailto:' . $row->email_to . '">' . $row->email_to . '</a>';
                     }
                     $kml[] = '</div>]]>' . '</description>';
+                    $kml[] = '<styleUrl>#text_photo_banner</styleUrl>';
                     $kml[] = '<Point>';
                     $kml[] = '<coordinates>' . $row->lng . ',' . $row->lat . '</coordinates>';
                     $kml[] = '</Point>';
@@ -272,7 +281,7 @@ class ChurchDirectoryViewDirectory extends JView {
             } // end the country folder
             $kml[] = '</Folder>';
         }
-// End KML file
+// End XML file
         $kml[] = '</Document>';
         $kml[] = '</kml>';
         $kmlOutput = join("\n", $kml);

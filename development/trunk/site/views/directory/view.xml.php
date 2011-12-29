@@ -46,6 +46,7 @@ class ChurchDirectoryViewDirectory extends JView {
         $dispatcher = & JDispatcher::getInstance();
         $doc = JFactory::getDocument();
         $doc->setMetaData('Content-Type', 'application/xml', true);
+        //$doc->setMetaData('Content-Type', 'text/html', true);
 
         // Check for errors.
         if (count($errors = $this->get('Errors'))) {
@@ -62,7 +63,7 @@ class ChurchDirectoryViewDirectory extends JView {
             return false;
         }
 
-        if ($items === false) {
+        if ($items == false) {
             JError::raiseError(404, JText::_('COM_CHURCHDIRECTOY_ERROR_DIRECTORY_NOT_FOUND'));
             return false;
         }
@@ -166,7 +167,7 @@ class ChurchDirectoryViewDirectory extends JView {
                     $kml[] = '<Style id="text_photo_banner">';
                     $kml[] = '<IconStyle>';
                     $kml[] = '<scale>';
-                    if ($row->params->get('icscale') == null) {
+                    if ($row->params->get('icscale') == NULL) {
                         $kml[] = '1.1';
                     } else {
                         $kml[] = $row->kml_params->get('icscale');
@@ -174,10 +175,10 @@ class ChurchDirectoryViewDirectory extends JView {
                     $kml[] = '</scale>';
                     $kml[] = '<Icon>';
                     $kml[] = '<href>';
-                    if ($row->category_params->get('image') == null) {
+                    if ($row->category_params->get('image') === null) {
                         $kml[] = JURI::base() . 'media/com_churchdirectory/images/kml_icons/iconb.png';
                     } else {
-                        $kml[] = JURI::base() . $row->category_params->get('image');
+                        $kml[] = JURI::base() .DS. $row->category_params->get('image');
                     }
                     $kml[] = '</href>';
                     $kml[] = '</Icon>';
@@ -231,43 +232,44 @@ class ChurchDirectoryViewDirectory extends JView {
                     $kml[] = ']]></address> <!-- string -->';
                     $kml[] = '<phoneNumber>' . $row->telephone . '</phoneNumber> <!-- string -->';
                     $kml[] = '<Snippet maxLines="';
-                    if ($row->kml_params->get('rmaxlines')) {
+                    if ($row->kml_params->get('rmaxlines') == null) {
                         $kml[] = '2';
                     } else {
                         $kml[] = $row->kml_params->get('rmaxlines');
                     }
                     $kml[] = '"><![CDATA[' . $row->con_position . ' <br />Team ' . $row->catid . ']]></Snippet>   <!-- string -->';
                     $kml[] = '<description>' . '<![CDATA[<div>';
-                    if ($row->image == null) {
+                    if (empty($row->image)) {
                         $kml[] = '<img src="' . JURI::base() . 'media/com_churchdirectory/images/photo_not_available.jpg" alt="Photo" width="100" hight="100" /><br />';
                     } else {
-                        $kml[] = '<img src="' . JURI::base() . $row->image . '" alt="Photo" width="100" hight="100" /><br />';
+                        $kml[] = '<img src="' . JURI::base() .DS. $row->image . '" alt="Photo" width="100" hight="100" /><br />';
                     }
-                    if ($row->con_position == null) {
+                    if (!empty ($row->con_position)) {
                         $kml[] = '<b>Position: ' . $row->con_position . '</b><br />';
                     }
-                    if ($row->spouse == null) {
+                    if (!empty ($row->spouse)) {
                         $kml[] = 'Spouse: ' . $row->spouse . '<br />';
                     }
-                    if ($row->children == null) {
+                    if (!empty ($row->children)) {
                         $kml[] = 'Children: ' . $row->children . '<br />';
                     }
-                    if ($row->misc == null) {
+                    if (!empty ($row->misc)) {
                         $kml[] = $row->misc;
                     }
-                    if ($row->telephone == null) {
+                    if (!empty ($row->telephone)) {
                         $kml[] = '<br />PH: ' . $row->telephone;
                     }
-                    if ($row->fax == null) {
+                    if (!empty ($row->fax)) {
                         $kml[] = '<br />Fax: ' . $row->fax;
                     }
-                    if ($row->mobile == null) {
+                    if (!empty ($row->mobile)) {
                         $kml[] = '<br />Cell: ' . $row->mobile;
                     }
-                    if ($row->email_to == null) {
+                    if (!empty ($row->email_to)) {
                         $kml[] = '<br />Email: <a href="mailto:' . $row->email_to . '">' . $row->email_to . '</a>';
                     }
                     $kml[] = '</div>]]>' . '</description>';
+                    $kml[] = '<styleUrl>#text_photo_banner</styleUrl>';
                     $kml[] = '<Point>';
                     $kml[] = '<coordinates>' . $row->lng . ',' . $row->lat . '</coordinates>';
                     $kml[] = '</Point>';

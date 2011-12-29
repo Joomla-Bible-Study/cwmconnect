@@ -16,7 +16,7 @@ jimport('joomla.form.formfield');
  * @package	com_churchdirectory
  * @since		1.7.0
  */
-class JFormFieldModal_ChurchDirectories extends JFormField {
+class JFormFieldModal_ChurchDirectory extends JFormField {
 
     /**
      * The form field type.
@@ -24,7 +24,7 @@ class JFormFieldModal_ChurchDirectories extends JFormField {
      * @var		string
      * @since	1.7.0
      */
-    protected $type = 'Modal_ChurchDirectories';
+    protected $type = 'Modal_ChurchDirectory';
 
     /**
      * Method to get the field input markup.
@@ -34,12 +34,12 @@ class JFormFieldModal_ChurchDirectories extends JFormField {
      */
     protected function getInput() {
         // Load the javascript
-        JHtml::_('behavior.framework');
+        //JHtml::_('behavior.framework');
         JHtml::_('behavior.modal', 'a.modal');
 
         // Build the script.
         $script = array();
-        $script[] = '	function jSelectChart_' . $this->id . '(id, name, object) {';
+        $script[] = '	function jSelectChart_' . $this->id . '(id, name, catid, object) {';
         $script[] = '		document.id("' . $this->id . '_id").value = id;';
         $script[] = '		document.id("' . $this->id . '_name").value = name;';
         $script[] = '		SqueezeBox.close();';

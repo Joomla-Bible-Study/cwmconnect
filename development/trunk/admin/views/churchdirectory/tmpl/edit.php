@@ -189,21 +189,22 @@ JHtml::_('behavior.keepalive');
         <?php echo JHtml::_('sliders.end'); ?>
     </div>
     <div class="clr"></div>
-	<?php if ($this->canDo->get('core.admin')): ?>
-		<div class="width-100 fltlft">
-			<?php echo JHtml::_('sliders.start','permissions-sliders-'.$this->item->id, array('useCookie'=>1)); ?>
+    <?php if ($this->canDo->get('core.admin')): ?>
+        <div class="width-100 fltlft">
+            <?php echo JHtml::_('sliders.start', 'permissions-sliders-' . $this->item->id, array('useCookie' => 1)); ?>
 
-				<?php echo JHtml::_('sliders.panel',JText::_('COM_CHURCHDIRECTORY_FIELDSET_RULES'), 'access-rules'); ?>
-				<fieldset class="panelform">
-					<?php echo $this->form->getLabel('rules'); ?>
-					<?php echo $this->form->getInput('rules'); ?>
-				</fieldset>
+            <?php echo JHtml::_('sliders.panel', JText::_('COM_CHURCHDIRECTORY_FIELDSET_RULES'), 'access-rules'); ?>
+            <fieldset class="panelform">
+                <?php echo $this->form->getLabel('rules'); ?>
+                <?php echo $this->form->getInput('rules'); ?>
+            </fieldset>
 
-			<?php echo JHtml::_('sliders.end'); ?>
-		</div>
-	<?php endif; ?>
+            <?php echo JHtml::_('sliders.end'); ?>
+        </div>
+    <?php endif; ?>
     <div>
         <input type="hidden" name="task" value="" />
+        <input type="hidden" name="return" value="<?php echo JRequest::getCmd('return'); ?>" />
         <?php echo JHtml::_('form.token'); ?>
     </div>
 </form>

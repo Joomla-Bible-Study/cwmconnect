@@ -18,6 +18,25 @@ jimport('joomla.application.component.controllerform');
 class ChurchDirectoryControllerChurchDirectory extends JControllerForm {
 
     /**
+     * Class constructor.
+     *
+     * @param	array	$config	A named array of configuration variables.
+     *
+     * @return	JControllerForm
+     * @since	1.6
+     */
+    function __construct($config = array()) {
+        // An article edit form can come from the articles or featured view.
+        // Adjust the redirect view on the value of 'return' in the request.
+        if (JRequest::getCmd('return') == 'featured') {
+            $this->view_list = 'featured';
+            $this->view_item = 'churchdirectory&return=featured';
+        }
+
+        parent::__construct($config);
+    }
+
+    /**
      * Method override to check if you can add a new record.
      *
      * @param	array	$data	An array of input data.
@@ -33,12 +52,12 @@ class ChurchDirectoryControllerChurchDirectory extends JControllerForm {
 
         if ($categoryId) {
             // If the category has been passed in the URL check it.
-            $allow = $user->authorise('core.create', $this->option . '.category.' . $categoryId);
+            $allow = $user->authorise('core.create', 'com_churchdirectory.category.' . $categoryId);
         }
 
         if ($allow === null) {
             // In the absense of better information, revert to the component permissions.
-            return parent::allowAdd($data);
+            return parent::allowAdd();
         } else {
             return $allow;
         }
@@ -58,16 +77,15 @@ class ChurchDirectoryControllerChurchDirectory extends JControllerForm {
         $recordId = (int) isset($data[$key]) ? $data[$key] : 0;
         $user = JFactory::getUser();
         $userId = $user->get('id');
-        $categoryId = (int) isset($data['catid']) ? $data['catid'] : 0;
-
+        //$categoryId = (int) isset($data['catid']) ? $data['catid'] : 0;
         // Check general edit permission first.
-        if ($user->authorise('core.edit', $this->option . '.category.' . $categoryId)) {
+        if ($user->authorise('core.edit', 'com_churchdirectory.category.' . $recordId)) {
             return true;
         }
 
         // Fallback on edit.own.
         // First test if the permission is available.
-        if ($user->authorise('core.edit.own', $this->option . '.category.' . $categoryId)) {
+        if ($user->authorise('core.edit.own', 'com_churchdirectory.category.' . $recordId)) {
             // Now test the owner is the user.
             $ownerId = (int) isset($data['created_by']) ? $data['created_by'] : 0;
             if (empty($ownerId) && $recordId) {
@@ -89,6 +107,24 @@ class ChurchDirectoryControllerChurchDirectory extends JControllerForm {
 
         // Since there is no asset tracking, revert to the component permissions.
         return parent::allowEdit($data, $key);
+    }
+
+    /**
+     * Method to run batch operations.
+     *
+     * @return	void
+     * @since	1.6
+     */
+    public function batch($model) {
+        JRequest::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+
+        // Set the model
+        $model = $this->getModel('ChurchDirectory', '', array());
+
+        // Preset the redirect
+        $this->setRedirect(JRoute::_('index.php?option=com_churchdirectory&view=churchdirectories' . $this->getRedirectToListAppend(), false));
+
+        return parent::batch($model);
     }
 
 }
