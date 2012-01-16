@@ -30,7 +30,7 @@ class ChurchDirectoryViewGeoUpdate extends JView {
         //print_r($lastRecord);
         if (empty($lastRecord)) {
             $percent = 100;
-            JToolBarHelper::back((ADMINTOOLS_JVERSION == '15') ? 'Back' : 'JTOOLBAR_BACK', 'index.php?option=com_churchdirectory&view=info');
+            JToolBarHelper::back('JTOOLBAR_BACK', 'index.php?option=com_churchdirectory&view=cpanel');
         } else {
             $lastRecordID = array_search($lastRecord, $records);
             $percent = round(100 * ($lastRecordID + 1) / count($records));

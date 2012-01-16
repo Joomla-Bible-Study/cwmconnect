@@ -16,9 +16,9 @@ $option = JRequest::getCmd('option','com_churchdirectory');
 ?>
 
 <?php if(!empty($this->table)): ?>
-<h1><?php echo JText::_('ATOOLS_LBL_OPTIMIZEINPROGRESS'); ?></h1>
+<h1><?php echo JText::_('CHURCHDIRECTORY_LBL_GEOUPDATEINPROGRESS'); ?></h1>
 <?php else: ?>
-<h1><?php echo JText::_('ATOOLS_LBL_OPTIMIZECOMPLETE'); ?></h1>
+<h1><?php echo JText::_('CHURCHDIRECTORY_LBL_GEOUPDATECOMPLETE'); ?></h1>
 <?php endif; ?>
 
 <div id="progressbar-outer">
@@ -37,6 +37,6 @@ $option = JRequest::getCmd('option','com_churchdirectory');
 
 <?php if($this->percent == 100): ?>
 <div class="disclaimer">
-	<h3><?php echo JText::_('ATOOLS_LBL_AUTOCLOSE_IN_3S'); ?></h3>
+	<h3><?php echo JText::_('CHURCHDIRECTORY_LBL_AUTOCLOSE_IN_3S'); ?></h3>
 </div>
 <?php endif; ?>
