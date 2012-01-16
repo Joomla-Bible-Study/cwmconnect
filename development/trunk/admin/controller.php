@@ -39,6 +39,7 @@ class ChurchDirectoryController extends JController {
      * @since	1.7.0
      */
     public function display($cachable = false, $urlparams = false) {
+
         require_once JPATH_COMPONENT . '/helpers/churchdirectory.php';
 
         // Load the submenu.

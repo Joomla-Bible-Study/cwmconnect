@@ -67,7 +67,7 @@ class ChurchDirectoryViewDirectory extends JView {
             JError::raiseError(404, JText::_('COM_CHURCHDIRECTOY_ERROR_DIRECTORY_NOT_FOUND'));
             return false;
         }
-        
+
 
         // Prepare the data.
         // Compute the contact slug.
@@ -228,7 +228,7 @@ class ChurchDirectoryViewDirectory extends JView {
                         $kml[] = $row->address . ',<br />';
                     }
                     $kml[] = $row->suburb . ', ' . $row->state . ' ' . $row->postcode;
-                    if ($row->postcodeaddon == null) {
+                    if (!empty($row->postcodeaddon)) {
                         $kml[] = '-' . $row->postcodeaddon;
                     }
                     $kml[] = ']]></address> <!-- string -->';
@@ -240,7 +240,7 @@ class ChurchDirectoryViewDirectory extends JView {
                         $kml[] = $row->kml_params->get('rmaxlines');
                     }
                     $kml[] = '"><![CDATA[' . $row->con_position . ' <br />Team ' . $row->catid . ']]></Snippet>   <!-- string -->';
-                    $kml[] = '<description>' . '<![CDATA[<div>';
+                    $kml[] = '<description>' . '<![CDATA[<div style="padding: 10px;">';
                     if (empty($row->image)) {
                         $kml[] = '<img src="' . JURI::base() . 'media/com_churchdirectory/images/photo_not_available.jpg" alt="Photo" width="100" hight="100" /><br />';
                     } else {

@@ -1,15 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <form>
     <fieldset>
-        <field name="id"
-			type="text"
-			label="JGLOBAL_FIELD_ID_LABEL"
-			description="JGLOBAL_FIELD_ID_DESC"
-			size="10"
-			default="0"
-			readonly="true"
-			class="readonly"
-		/>
+        <field name="id"  type="text" class="readonly" label="JGLOBAL_FIELD_ID_LABEL"
+			description ="JGLOBAL_FIELD_ID_DESC" size="10" default="0"
+			readonly="true"  />
+        <field name="asset_id" type="hidden" filter="unset" />
 
         <field name="name"
 			type="text"
@@ -75,7 +70,10 @@
 			class="inputbox"
 			required="true"
 		/>
-
+        <field
+			name="buttonspacer"
+			description="JGLOBAL_ACTION_PERMISSIONS_DESCRIPTION"
+			type="spacer" />
         <field name="access"
 			type="accesslevel"
 			label="JFIELD_ACCESS_LABEL"
@@ -381,7 +379,7 @@
 		/>
         <field name="rules" type="rules" label="JFIELD_RULES_LABEL"
 			translate_label="false" class="inputbox" filter="rules"
-			component="com_churchdirestory" section="churchdirectory" validate="rules"
+			component="com_churchdirectory" section="churchdirectroy" validate="rules"
 		/>
     </fieldset>
 

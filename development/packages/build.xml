@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="churchdirectory" default="build">
+	<target name="clean">
+		<delete file="com_churchdirectory.zip" />
+	</target>
+	<target name="build">
+		<zip destfile="com_churchdirectory.zip" basedir="../trunk/" />
+	</target>
+</project>

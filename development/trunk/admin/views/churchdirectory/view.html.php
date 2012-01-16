@@ -32,10 +32,7 @@ class ChurchDirectoryViewChurchDirectory extends JView {
         $this->item = $this->get('Item');
         $this->state = $this->get('State');
         $this->canDo = ChurchDirectoryHelper::getActions($this->state->get('filter.category_id'));
-
-        //Load the Admin settings
-        //$this->admin = BsmHelper::getAdmin();
-
+        //var_dump($this->item);
         // Check for errors.
         if (count($errors = $this->get('Errors'))) {
             JError::raiseError(500, implode("\n", $errors));
@@ -67,9 +64,8 @@ class ChurchDirectoryViewChurchDirectory extends JView {
                 JToolBarHelper::apply('churchdirectory.apply');
                 JToolBarHelper::save('churchdirectory.save');
                 JToolBarHelper::save2new('churchdirectory.save2new');
+                JToolBarHelper::cancel('churchdirectory.cancel');
             }
-
-            JToolBarHelper::cancel('churchdirectory.cancel');
         } else {
             // Can't save the record if it's checked out.
             if (!$checkedOut) {
