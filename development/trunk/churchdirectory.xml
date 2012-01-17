@@ -59,10 +59,10 @@
         <menu img="../media/com_churchdirectory/images/menu/icon-16-churchdirectory.png">COM_CHURCHDIRECTORY</menu>
         <submenu>
             <menu link="option=com_churchdirectory" img="../"
-                            alt="Churchdirectory/Contacts">COM_CHURCHDIRECTORY_CONTACTS
+                  alt="Churchdirectory/Contacts">COM_CHURCHDIRECTORY_CONTACTS
             </menu>
             <menu link="option=com_categories&amp;extension=com_churchdirectory"
-                            view="categories" img="class:contact-cat" alt="Churchdirectory/Categories">COM_CHURCHDIRECTORY_CATEGORIES
+                  view="categories" img="class:contact-cat" alt="Churchdirectory/Categories">COM_CHURCHDIRECTORY_CATEGORIES
             </menu>
             <menu link="option=com_churchdirectory&view=cpanel" img="../media/com_churchdirectory/images/menu/icon-16-churchdirectory.png.png" alt="Churchdirectory/Cpanel">COM_CHURCHDIRECTORY_CPANEL</menu>
             <menu link="option=com_churchdirectory&amp;view=info" img="../media/com_churchdirectory/images/menu/icon-16-info.png" alt="Churchdirectory/Info">COM_CHURCHDIRECTORY_INFO</menu>

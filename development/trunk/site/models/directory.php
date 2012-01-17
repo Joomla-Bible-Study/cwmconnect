@@ -178,30 +178,26 @@ class ChurchDirectoryModelDirectory extends JModelList {
 
         $menuParams = new JRegistry;
 
-		if ($menu = $app->getMenu()->getActive()) {
-			$menuParams->loadJSON($menu->params);
-		}
+        if ($menu = $app->getMenu()->getActive()) {
+            $menuParams->loadJSON($menu->params);
+        }
 
-		$mergedParams = clone $params;
-		$mergedParams->merge($menuParams);
+        $mergedParams = clone $params;
+        $mergedParams->merge($menuParams);
 
-		$initialSort = $mergedParams->get('dinitial_sort');
-		// Falll back to old style if the parameter hasn't been set yet.
-		if (empty($initialSort))
-		{
-			$query->order($db->getEscaped($this->getState('list.ordering', 'a.ordering')).' '.$db->getEscaped($this->getState('list.direction', 'ASC')));
-		}
-		elseif ($initialSort != 'sortname'){
-			$query->order('a.'.$initialSort);
-		}
-		else {
-			$query->order('a.sortname1');
-			$query->order('a.sortname2');
-			$query->order('a.sortname3');
-			// Fall back to ordering if the data are not complete or there are matches.
-			$query->order('a.ordering');
-
-		}
+        $initialSort = $mergedParams->get('dinitial_sort');
+        // Falll back to old style if the parameter hasn't been set yet.
+        if (empty($initialSort)) {
+            $query->order($db->getEscaped($this->getState('list.ordering', 'a.ordering')) . ' ' . $db->getEscaped($this->getState('list.direction', 'ASC')));
+        } elseif ($initialSort != 'sortname') {
+            $query->order('a.' . $initialSort);
+        } else {
+            $query->order('a.sortname1');
+            $query->order('a.sortname2');
+            $query->order('a.sortname3');
+            // Fall back to ordering if the data are not complete or there are matches.
+            $query->order('a.ordering');
+        }
 
         return $query;
     }

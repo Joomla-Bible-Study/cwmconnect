@@ -336,7 +336,6 @@ class QContactsViewPrintDirectory extends JView {
         $pagination = new JPagination($total, $limitstart, $limit);
 
         /* Group contacts based on last name 
-         * @todo Make this group field an option so it can be set
          */
         $grouped_contacts = array();
         foreach ($contacts as $contact) {
@@ -347,15 +346,15 @@ class QContactsViewPrintDirectory extends JView {
                 array_push($grouped_contacts[$contact->grouping], $contact);
             }
         }
-//        
+//
         $this->assignRef('items', $grouped_contacts);
         $this->assignRef('columns', $columns);
         $this->assignRef('lists', $lists);
         $this->assignRef('pagination', $pagination);
         $this->assignRef('category', $category);
         $this->assignRef('params', $pparams);
-        
-        
+
+
 
         $this->assign('action', JFilterOutput::ampReplace($uri->toString()));
 
@@ -368,7 +367,7 @@ class QContactsViewPrintDirectory extends JView {
     }
 
     function getItems() {
-        
+
     }
 
 }
