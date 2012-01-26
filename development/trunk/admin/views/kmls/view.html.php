@@ -48,8 +48,14 @@ class ChurchDirectoryViewKMLs extends JView {
             $item->order_dn = true;
         }
 
+        // Set the toolbar
         $this->addToolbar();
+
+        // Display the template
         parent::display($tpl);
+
+        // Set the document
+        $this->setDocument();
     }
 
     /**
@@ -58,9 +64,7 @@ class ChurchDirectoryViewKMLs extends JView {
      * @since	1.7.0
      */
     protected function addToolbar() {
-        require_once JPATH_COMPONENT . '/helpers/churchdirectory.php';
         $canDo = ChurchDirectoryHelper::getActions($this->state->get('filter.category_id'));
-        $user = JFactory::getUser();
         JToolBarHelper::title(JText::_('COM_CHURCHDIRECTORY_MANAGER_KMLS'), 'churchdirectory.png');
 
         if ($canDo->get('core.create') || (count($user->getAuthorisedCategories('com_churchdirectory', 'core.create'))) > 0) {
@@ -93,6 +97,10 @@ class ChurchDirectoryViewKMLs extends JView {
         }
 
         JToolBarHelper::help('churchdirectory_kml', TRUE);
+    }
+    protected function setDocument() {
+        $document = JFactory::getDocument();
+        $document->setTitle(JText::_('COM_CHURCHDIRECTORY_KMLS'));
     }
 
 }

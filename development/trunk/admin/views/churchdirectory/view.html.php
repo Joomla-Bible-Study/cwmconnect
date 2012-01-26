@@ -32,15 +32,21 @@ class ChurchDirectoryViewChurchDirectory extends JView {
         $this->item = $this->get('Item');
         $this->state = $this->get('State');
         $this->canDo = ChurchDirectoryHelper::getActions($this->state->get('filter.category_id'));
-        //var_dump($this->item);
+
         // Check for errors.
         if (count($errors = $this->get('Errors'))) {
             JError::raiseError(500, implode("\n", $errors));
             return false;
         }
 
-        $this->addToolbar();
+        // Set the toolbar
+        $this->addToolBar();
+
+        // Display the template
         parent::display($tpl);
+
+        // Set the document
+        $this->setDocument();
     }
 
     /**
@@ -55,35 +61,35 @@ class ChurchDirectoryViewChurchDirectory extends JView {
         $isNew = ($this->item->id == 0);
         $checkedOut = !($this->item->checked_out == 0 || $this->item->checked_out == $userId);
         $canDo = ChurchDirectoryHelper::getActions($this->state->get('filter.category_id'), $this->item->id);
-        JToolBarHelper::title(JText::_('COM_CHURCHDIRECTORY_MANAGER_CONTACT'), 'churchdirectory');
+        JToolBarHelper::title($isNew ? JText::_('COM_CHURCHDIRECTORY_MANAGER_CONTACT_NEW') : JText::_('COM_CHURCHDIRECTORY_MANAGER_CONTACT_EDIT'), 'churchdirectory');
 
         // Build the actions for new and existing records.
         if ($isNew) {
             // For new records, check the create permission.
             if ($isNew && (count($user->getAuthorisedCategories('com_churchdirectory', 'core.create')) > 0)) {
-                JToolBarHelper::apply('churchdirectory.apply');
-                JToolBarHelper::save('churchdirectory.save');
-                JToolBarHelper::save2new('churchdirectory.save2new');
-                JToolBarHelper::cancel('churchdirectory.cancel');
+                JToolBarHelper::apply('churchdirectory.apply', 'JTOOLBAR_APPLY');
+                JToolBarHelper::save('churchdirectory.save', 'JTOOLBAR_SAVE');
+                JToolBarHelper::custom('churchdirectory.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
             }
+            JToolBarHelper::cancel('churchdirectory.cancel', 'JTOOLBAR_CANCEL');
         } else {
             // Can't save the record if it's checked out.
             if (!$checkedOut) {
                 // Since it's an existing record, check the edit permission, or fall back to edit own if the owner.
                 if ($canDo->get('core.edit') || ($canDo->get('core.edit.own') && $this->item->created_by == $userId)) {
-                    JToolBarHelper::apply('churchdirectory.apply');
-                    JToolBarHelper::save('churchdirectory.save');
+                    JToolBarHelper::apply('churchdirectory.apply', 'JTOOLBAR_APPLY');
+                    JToolBarHelper::save('churchdirectory.save', 'JTOOLBAR_SAVE');
 
                     // We can save this record, but check the create permission to see if we can return to make a new one.
                     if ($canDo->get('core.create')) {
-                        JToolBarHelper::save2new('churchdirectory.save2new');
+                        JToolBarHelper::custom('churchdirectory.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
                     }
                 }
             }
 
             // If checked out, we can still save
             if ($canDo->get('core.create')) {
-                JToolBarHelper::save2copy('churchdirectory.save2copy');
+                JToolBarHelper::custom('churchdirectory.save2copy', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
             }
 
             JToolBarHelper::cancel('churchdirectory.cancel', 'JTOOLBAR_CLOSE');
@@ -91,6 +97,14 @@ class ChurchDirectoryViewChurchDirectory extends JView {
 
         JToolBarHelper::divider();
         JToolBarHelper::help('churchdirectory_contact', TRUE);
+    }
+
+    protected function setDocument() {
+        $isNew = ($this->item->id < 1);
+        $document = JFactory::getDocument();
+        $document->setTitle($isNew ? JText::_('COM_CHURCHDIRECTORY_CHURCHDIRECTORY_CONTACT_CREATING')
+                : JText::_('COM_CHURCHDIRECTORY_CHURCHDIRECTORY_CONTACT_EDITING'));
+        $document->addScript(JURI::root() . "media/com_churchdirectoy/js/churchdirectoy.js");
     }
 
 }

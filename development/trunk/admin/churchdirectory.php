@@ -9,18 +9,26 @@
 // no direct access
 defined('_JEXEC') or die;
 
+jimport('joomla.application.component.controller');
+
+// Set some global property
+addCSS();
+
 // Access check.
 if (!JFactory::getUser()->authorise('core.manage', 'com_churchdirectory')) {
     return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
 }
 
-addCSS();
+// Require helper file
+JLoader::register('ChurchDirectoryHelper', dirname(__FILE__) . DS . 'helpers' . DS . 'churchdirectory.php');
 
-// Include dependancies
-jimport('joomla.application.component.controller');
-
+// Get an instance of the controller prefixed by ChurchDirectory
 $controller = JController::getInstance('churchdirectory');
+
+// Perform the Request task
 $controller->execute(JRequest::getCmd('task'));
+
+// Redirect if set by the controller
 $controller->redirect();
 
 /**

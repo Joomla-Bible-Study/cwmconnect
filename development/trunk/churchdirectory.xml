@@ -45,7 +45,6 @@
         <folder>controllers</folder>
         <folder>language</folder>
         <folder>helpers</folder>
-        <folder>includes</folder>
         <folder>models</folder>
         <folder>views</folder>
     </files>
@@ -64,13 +63,13 @@
             <menu link="option=com_categories&amp;extension=com_churchdirectory"
                   view="categories" img="class:contact-cat" alt="Churchdirectory/Categories">COM_CHURCHDIRECTORY_CATEGORIES
             </menu>
-            <menu link="option=com_churchdirectory&view=cpanel" img="../media/com_churchdirectory/images/menu/icon-16-churchdirectory.png.png" alt="Churchdirectory/Cpanel">COM_CHURCHDIRECTORY_CPANEL</menu>
+            <menu link="option=com_churchdirectory&amp;view=cpanel" img="../media/com_churchdirectory/images/menu/icon-16-churchdirectory.png.png" alt="Churchdirectory/Cpanel">COM_CHURCHDIRECTORY_CPANEL</menu>
             <menu link="option=com_churchdirectory&amp;view=info" img="../media/com_churchdirectory/images/menu/icon-16-info.png" alt="Churchdirectory/Info">COM_CHURCHDIRECTORY_INFO</menu>
             <menu link="option=com_churchdirectory&amp;view=kmls" img="../media/com_churchdirectory/images/menu/icon-16-kml.png" alt="Churchdirectory/KML">COM_CHURCHDIRECTORY_KML</menu>
         </submenu>
         <files folder="admin">
-            <filename>admin.churchdirectory.php</filename>
-            <filename>controller.php</filename>
+            <filename>churchdirectory.php</filename>
+            <filename>controller.ph p</filename>
             <filename>config.xml</filename>
             <filename>access.xml</filename>
             <filename>index.html</filename>

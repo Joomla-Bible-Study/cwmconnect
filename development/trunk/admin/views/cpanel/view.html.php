@@ -30,9 +30,14 @@ class ChurchDirectoryViewCpanel extends JView {
             return false;
         }
 
+        // Set the toolbar
         $this->addToolbar();
 
+        // Display the template
         parent::display($tpl);
+
+        // Set the document
+        $this->setDocument();
     }
 
     /**
@@ -41,17 +46,23 @@ class ChurchDirectoryViewCpanel extends JView {
      * @since	1.7.0
      */
     protected function addToolbar() {
-        require_once JPATH_COMPONENT . '/helpers/churchdirectory.php';
-        $user = JFactory::getUser();
-
+        $canDo = ChurchDirectoryHelper::getActions($this->state->get('filter.category_id'));
         JToolBarHelper::title(JText::_('COM_CHURCHDIRECTORY_MANAGER_CPANEL'), 'contact.png');
 
-        JToolBarHelper::addNew('contact.add');
+        if ($canDo->get('core.create') || (count($user->getAuthorisedCategories('com_churchdirectory', 'core.create'))) > 0) {
+            JToolBarHelper::addNew('churchdirectory.add');
+        }
+        if ($canDo->get('core.admin')) {
+            JToolBarHelper::divider();
+            JToolBarHelper::preferences('com_churchdirectory');
+            JToolBarHelper::divider();
+        }
 
-        JToolBarHelper::preferences('com_churchdirectory');
-        JToolBarHelper::divider();
-
-        JToolBarHelper::help('JHELP_COMPONENTS_CHURCHDIRECTORY_CHURCHDIRECTORY');
+        JToolBarHelper::help('churchdirectory', TRUE);
+    }
+    protected function setDocument() {
+        $document = JFactory::getDocument();
+        $document->setTitle(JText::_('COM_CHURCHDIRECTORY_ADMINISTRATION'));
     }
 
 }

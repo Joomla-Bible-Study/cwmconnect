@@ -54,10 +54,6 @@ class ChurchDirectoryModelChurchDirectory extends JModelAdmin {
     protected function canEditState($record) {
         $user = JFactory::getUser();
 
-        // Check for existing article.
-        if (!empty($record->id)) {
-            return $user->authorise('core.edit.state', 'com_churchdirectory.churchdirectory.' . (int) $record->id);
-        }
         // Check against the category.
         if (!empty($record->catid)) {
             return $user->authorise('core.edit.state', 'com_churchdirectory.category.' . (int) $record->catid);
@@ -92,24 +88,16 @@ class ChurchDirectoryModelChurchDirectory extends JModelAdmin {
      * @since	1.7.0
      */
     public function getForm($data = array(), $loadData = true) {
-        //jimport('joomla.form.form');
-        //JForm::addFieldPath('JPATH_ADMINISTRATOR/components/com_users/models/fields');
+
+        jimport('joomla.form.form');
+        JForm::addFieldPath('JPATH_ADMINISTRATOR/components/com_users/models/fields');
+
         // Get the form.
         $form = $this->loadForm('com_churchdirectory.churchdirectory', 'churchdirectory', array('control' => 'jform', 'load_data' => $loadData));
         if (empty($form)) {
             return false;
         }
 
-        // Determine correct permissions to check.
-        if ($id = (int) $this->getState('churchdirectory.id')) {
-            // Existing record. Can only edit in selected categories.
-            $form->setFieldAttribute('catid', 'action', 'core.edit');
-            // Existing record. Can only edit own articles in selected categories.
-            $form->setFieldAttribute('catid', 'action', 'core.edit.own');
-        } else {
-            // New record. Can only create in selected categories.
-            $form->setFieldAttribute('catid', 'action', 'core.create');
-        }
 
         // Modify the form based on access controls.
         if (!$this->canEditState((object) $data)) {
@@ -268,20 +256,14 @@ class ChurchDirectoryModelChurchDirectory extends JModelAdmin {
 
         return true;
     }
+
     /**
-	 * Custom clean the cache of com_content and content modules
-	 *
-	 * @since	1.6
-	 */
-	protected function cleanCache()
-	{
-		parent::cleanCache('com_churchdirectory');
-//		parent::cleanCache('mod_articles_archive');
-//		parent::cleanCache('mod_articles_categories');
-//		parent::cleanCache('mod_articles_category');
-//		parent::cleanCache('mod_articles_latest');
-//		parent::cleanCache('mod_articles_news');
-//		parent::cleanCache('mod_articles_popular');
-	}
+     * Custom clean the cache of com_content and content modules
+     *
+     * @since	1.6
+     */
+    protected function cleanCache() {
+        parent::cleanCache('com_churchdirectory');
+    }
 
 }

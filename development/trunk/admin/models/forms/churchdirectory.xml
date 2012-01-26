@@ -377,10 +377,6 @@
 			rows="3"
 			cols="30"
 		/>
-        <field name="rules" type="rules" label="JFIELD_RULES_LABEL"
-			translate_label="false" class="inputbox" filter="rules"
-			component="com_churchdirectory" section="churchdirectroy" validate="rules"
-		/>
     </fieldset>
 
     <fields name="params">
@@ -705,10 +701,6 @@
 				view="contact"
 				useglobal="true"
 				/>
-            <field name="rules" type="rules" label="JFIELD_RULES_LABEL"
-			translate_label="false" class="inputbox" filter="rules"
-			component="com_churchdirectory" section="churchdirectory" validate="rules"
-		/>
         </fieldset>
 
         <fieldset name="email"

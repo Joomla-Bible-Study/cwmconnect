@@ -13,20 +13,6 @@ defined('_JEXEC') or die;
 class ChurchDirectoryTableChurchDirectory extends JTable {
 
     /**
-     * Primary Key
-     *
-     * @var int
-     */
-    var $id = null;
-
-    /**
-     * The rules associated with this record.
-     *
-     * @var	JRules	A JRules object.
-     */
-    protected $_rules;
-
-    /**
      * Constructor
      *
      * @param object Database connector object
@@ -60,12 +46,6 @@ class ChurchDirectoryTableChurchDirectory extends JTable {
             $registry = new JRegistry();
             $registry->loadArray($array['metadata']);
             $array['metadata'] = (string) $registry;
-        }
-
-        // Bind the rules.
-        if (isset($array['rules']) && is_array($array['rules'])) {
-            $rules = new JRules($array['rules']);
-            $this->setRules($rules);
         }
 
         return parent::bind($array, $ignore);
@@ -118,6 +98,7 @@ class ChurchDirectoryTableChurchDirectory extends JTable {
         // Attempt to store the data.
         return parent::store($updateNulls);
     }
+
     /**
      * Overloaded check function
      *
@@ -201,6 +182,18 @@ class ChurchDirectoryTableChurchDirectory extends JTable {
             $this->metadesc = JString::str_ireplace($bad_characters, "", $this->metadesc);
         }
         return true;
+    }
+
+    public function load($pk = null, $reset = true) {
+        if (parent::load($pk, $reset)) {
+            // Convert the params field to a registry.
+            $params = new JRegistry;
+            $params->loadJSON($this->params);
+            $this->params = $params;
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
