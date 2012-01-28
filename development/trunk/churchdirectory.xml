@@ -51,7 +51,7 @@
     <media destination="com_churchdirectory" folder="media">
         <folder>images</folder>
         <folder>css</folder>
-        <floder>js</floder>
+        <folder>js</folder>
     </media>
 
     <administration>

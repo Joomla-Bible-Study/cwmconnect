@@ -55,8 +55,6 @@ class ChurchDirectoryModelGeoUpdate extends JModel {
         WHERE  1";
         $db->setQuery($query);
         $ret = $db->loadObjectList();
-        //$ret = $query;
-        //dump($row, 'ret: ');
         return $ret;
     }
 
@@ -67,6 +65,8 @@ class ChurchDirectoryModelGeoUpdate extends JModel {
         $this->resetTimer();
         $geoupdate = $this->findRecords();
         foreach ($geoupdate AS $row) {
+            // Initialize delay in geocode speed
+            $delay = 0;
             $geocode_pending = true;
 
             while ($geocode_pending) {
@@ -75,43 +75,40 @@ class ChurchDirectoryModelGeoUpdate extends JModel {
                 $xml = simplexml_load_file($request_url) or die("url not loading");
 
                 $status = $xml->Response->Status->code;
-//                if (strcmp($status, "200") == 0) {
-//                    // Successful geocode
-//                    $geocode_pending = false;
-//                    $coordinates = $xml->Response->Placemark->Point->coordinates;
-//                    $coordinatesSplit = split(",", $coordinates);
-//                    // Format: Longitude, Latitude, Altitude
-//                    $ulat = $coordinatesSplit[1];
-//                    $ulong = $coordinatesSplit[0];
-//
-////                    $query = sprintf("UPDATE $table " .
-////                            " SET lat = '%s', lng = '%s'" .
-////                            " WHERE id = '%s' LIMIT 1;", mysql_real_escape_string($ulat), mysql_real_escape_string($ulong), mysql_real_escape_string($id));
-////                    $update_result = mysql_query($query);
-////                    if (!$update_result) {
-////                        die("Invalid query: " . mysql_error());
-////                    }
-//                } else if (strcmp($status, "620") == 0) {
-//                    // sent geocodes too fast
-//                    $delay += 100000;
-//                } else {
+                if (strcmp($status, "200") == 0) {
+                    // Successful geocode
+                    $geocode_pending = false;
+                    $coordinates = $xml->Response->Placemark->Point->coordinates;
+                    $coordinatesSplit = split(",", $coordinates);
+                    // Format: Longitude, Latitude, Altitude
+                    $ulat = $coordinatesSplit[1];
+                    $ulong = $coordinatesSplit[0];
+
+                    $query = sprintf("UPDATE $table " .
+                            " SET lat = '%s', lng = '%s'" .
+                            " WHERE id = '%s' LIMIT 1;", mysql_real_escape_string($ulat), mysql_real_escape_string($ulong), mysql_real_escape_string($id));
+                    $update_result = mysql_query($query);
+                    if (!$update_result) {
+                        die("Invalid query: " . mysql_error());
+                    }
+                } else if (strcmp($status, "620") == 0) {
+                    // sent geocodes too fast
+                    $delay += 100000;
+                } else {
                     //failure to geocode
                     $geocode_pending = false;
                     echo "Name: " . $row->name . "<br />";
                     echo $xml . "<br />";
                     echo "Address " . $row->address . "," . " " . "$row->suburb" . "," . "$row->state" . " " . "$row->postcode" . " " . "$row->country" . " failed to geocoded.<br /> ";
                     echo "Received status " . $status . " \n <br /><br />";
-                //}
+                }
                 usleep($delay);
             }
         }
     }
 
-    public
-
-    function purgeSessions() {
+    public function purgeSessions() {
         $db = $this->getDBO();
-
         $db->setQuery('OPTIMIZE TABLE ' . $db->nameQuote('#__session'));
         $db->query();
     }

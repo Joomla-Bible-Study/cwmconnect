@@ -104,7 +104,7 @@ class ChurchDirectoryViewChurchDirectory extends JView {
         $document = JFactory::getDocument();
         $document->setTitle($isNew ? JText::_('COM_CHURCHDIRECTORY_CHURCHDIRECTORY_CONTACT_CREATING')
                 : JText::_('COM_CHURCHDIRECTORY_CHURCHDIRECTORY_CONTACT_EDITING'));
-        $document->addScript(JURI::root() . "media/com_churchdirectoy/js/churchdirectoy.js");
+        $document->addScript(JURI::root() . "media/com_churchdirectory/js/churchdirectory.js");
     }
 
 }

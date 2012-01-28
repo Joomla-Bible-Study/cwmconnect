@@ -44,7 +44,7 @@ class JFormFieldColorpicker extends JFormField {
         }
 
 
-        $doc = & JFactory::getDocument();
+        $doc = JFactory::getDocument();
         $doc->addScript($scriptname);
 
         $options = array();

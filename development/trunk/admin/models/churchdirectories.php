@@ -61,9 +61,6 @@ class ChurchDirectoryModelChurchDirectories extends JModelList {
      * @since	1.7.0
      */
     protected function populateState($ordering = null, $direction = null) {
-        // Initialise variables.
-        $app = JFactory::getApplication();
-
         // Adjust the context to support modal layouts.
         if ($layout = JRequest::getVar('layout')) {
             $this->context .= '.' . $layout;
