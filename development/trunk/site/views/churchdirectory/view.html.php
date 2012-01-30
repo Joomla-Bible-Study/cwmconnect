@@ -87,7 +87,6 @@ class ChurchDirectoryViewChurchDirectory extends JView {
             $params->set('address_check', 0);
         }
 
-        dump($params->get('churchdirectory_icons'),'Icons');
         // Manage the display mode for contact detail groups
         switch ($params->get('churchdirectory_icons')) {
             case 1 :

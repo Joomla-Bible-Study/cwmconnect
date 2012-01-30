@@ -6,11 +6,11 @@ address {
     margin:10px 0;
 }
 #contact-name {
-    font-size: 125%;
+    font-size: 100%;
     font-weight: bold;
 }
 #contact-position {
-    font-size: 115%;
+    font-size: 95%;
     font-style: italic;
 }
 #contact-image {
@@ -150,12 +150,12 @@ p {
     width: 62%;
 }
 
-.inner {
+.innera {
     background: none repeat scroll 0 0 #F3F3F3;
     border: 1px solid #FFFFFF;
     border-radius: 11px 11px 11px 11px;
     box-shadow: 0 0 5px #BED1D6;
     position: relative;
-    margin-top: 7px;
-    padding: 0px 28px 0px;
+    margin-top: 5px;
+    padding: 0px 20px 0px;
 }

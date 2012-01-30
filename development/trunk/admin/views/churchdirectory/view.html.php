@@ -32,6 +32,8 @@ class ChurchDirectoryViewChurchDirectory extends JView {
         $this->item = $this->get('Item');
         $this->state = $this->get('State');
         $this->canDo = ChurchDirectoryHelper::getActions($this->state->get('filter.category_id'));
+        $user = JFactory::getUser();
+        $this->groups = $user->groups;
 
         // Check for errors.
         if (count($errors = $this->get('Errors'))) {
@@ -102,8 +104,7 @@ class ChurchDirectoryViewChurchDirectory extends JView {
     protected function setDocument() {
         $isNew = ($this->item->id < 1);
         $document = JFactory::getDocument();
-        $document->setTitle($isNew ? JText::_('COM_CHURCHDIRECTORY_CHURCHDIRECTORY_CONTACT_CREATING')
-                : JText::_('COM_CHURCHDIRECTORY_CHURCHDIRECTORY_CONTACT_EDITING'));
+        $document->setTitle($isNew ? JText::_('COM_CHURCHDIRECTORY_CHURCHDIRECTORY_CONTACT_CREATING') : JText::_('COM_CHURCHDIRECTORY_CHURCHDIRECTORY_CONTACT_EDITING'));
         $document->addScript(JURI::root() . "media/com_churchdirectory/js/churchdirectory.js");
     }
 

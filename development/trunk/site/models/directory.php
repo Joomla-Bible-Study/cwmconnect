@@ -81,7 +81,7 @@ class ChurchDirectoryModelDirectory extends JModelList {
      */
     public function &getItems() {
         // Invoke the parent getItems method to get the main list
-        $items = &parent::getItems();
+        $items = parent::getItems();
 
         // Convert the params field into an object, saving original in _params
         for ($i = 0, $n = count($items); $i < $n; $i++) {

@@ -7,9 +7,16 @@
  */
 // No direct access.
 defined('_JEXEC') or die;
+//for Access
+$itemacess = $this->state->params->get('protectedaccess');
+$groups = $this->groups;
+foreach ($groups as $itemacessint => $key):
+    $access = $key;
+endforeach;
+
 echo JHtml::_('sliders.panel', JText::_('COM_CHURCHDIRECTORY_CONTACT_KML_DETAILS'), 'kml-options');
 ?>
-<fieldset class="panelform">
+<fieldset class="adminform">
     <p><?php echo empty($this->item->id) ? JText::_('COM_CHURCHDIRECTORY_DETAILS') : JText::sprintf('COM_CHURCHDIRECTORY_EDIT_CONTACT_KML', $this->item->id); ?></p>
 
     <ul class="adminformlist">
@@ -28,19 +35,22 @@ echo JHtml::_('sliders.panel', JText::_('COM_CHURCHDIRECTORY_CONTACT_KML_DETAILS
     </ul>
 </fieldset>
 
-<?php $fieldSets = $this->form->getFieldsets('attribs'); ?>
-<?php foreach ($fieldSets as $name => $fieldSet) : ?>
-    <?php echo JHtml::_('sliders.panel', JText::_($fieldSet->label), $name . '-options'); ?>
-    <?php if (isset($fieldSet->description) && trim($fieldSet->description)) : ?>
-        <p class="tip"><?php echo $this->escape(JText::_($fieldSet->description)); ?></p>
-    <?php endif; ?>
+<?php if ($access === $itemacess): ?>
+    <?php $fieldSets = $this->form->getFieldsets('attribs'); ?>
+    <?php foreach ($fieldSets as $name => $fieldSet) : ?>
+        <?php echo JHtml::_('sliders.panel', JText::_($fieldSet->label), $name . '-options'); ?>
+        <?php if (isset($fieldSet->description) && trim($fieldSet->description)) : ?>
+            <p class="tip"><?php echo $this->escape(JText::_($fieldSet->description)); ?></p>
+        <?php endif; ?>
         <div class="clearfix"></div>
-    <fieldset class="panelform">
-        <ul class="adminformlist">
-            <?php foreach ($this->form->getFieldset($name) as $field) : ?>
-                <li><?php echo $field->label; ?>
-                    <?php echo $field->input; ?></li>
-            <?php endforeach; ?>
-        </ul>
-    </fieldset>
-<?php endforeach; ?>
+        <fieldset class="adminform">
+            <ul class="adminformlist">
+                <?php foreach ($this->form->getFieldset($name) as $field) : ?>
+                    <li><?php echo $field->label; ?>
+                        <?php echo $field->input; ?></li>
+                <?php endforeach; ?>
+            </ul>
+        </fieldset>
+    <?php endforeach; ?>
+    <?php
+ endif;

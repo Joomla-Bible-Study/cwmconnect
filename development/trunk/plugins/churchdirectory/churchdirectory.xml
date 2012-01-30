@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE install SYSTEM "http://dev.joomla.org/xml/1.7/plugen-install.dtd">
-<extension version="1.7" type="plugin" group="search">
+<!DOCTYPE install SYSTEM "http://dev.joomla.org/xml/2.5/plugen-install.dtd">
+<extension version="2.5" type="plugin" group="search">
     <name>PLG_SEARCH_CHURCHDIRECTORY</name>
     <author>Joomla Bible Study Team</author>
     <creationDate>November 2011</creationDate>
@@ -19,24 +19,24 @@
         <fields name="params">
             <fieldset name="basic">
                 <field name="search_limit" type="text"
-					default="50"
-					description="JFIELD_PLG_SEARCH_SEARCHLIMIT_DESC"
-					label="JFIELD_PLG_SEARCH_SEARCHLIMIT_LABEL"
-					size="5"
+                       default="50"
+                       description="JFIELD_PLG_SEARCH_SEARCHLIMIT_DESC"
+                       label="JFIELD_PLG_SEARCH_SEARCHLIMIT_LABEL"
+                       size="5"
 				/>
                 <field name="search_content" type="radio"
-					default="0"
-					description="JFIELD_PLG_SEARCH_ALL_DESC"
-					label="JFIELD_PLG_SEARCH_ALL_LABEL"
-				>
+                       default="0"
+                       description="JFIELD_PLG_SEARCH_ALL_DESC"
+                       label="JFIELD_PLG_SEARCH_ALL_LABEL"
+                >
                     <option value="0">JOFF</option>
                     <option value="1">JON</option>
                 </field>
                 <field name="search_archived" type="radio"
-					default="0"
-					description="JFIELD_PLG_SEARCH_ARCHIVED_DESC"
-					label="JFIELD_PLG_SEARCH_ARCHIVED_LABEL"
-				>
+                       default="0"
+                       description="JFIELD_PLG_SEARCH_ARCHIVED_DESC"
+                       label="JFIELD_PLG_SEARCH_ARCHIVED_LABEL"
+                >
                     <option value="0">JOFF</option>
                     <option value="1">JON</option>
                 </field>
@@ -53,6 +53,6 @@
         	<!-- Dependencies -->
     <dependencies>
         <dependency type="platform" name="joomla" operator="="
-			version="1.6" />
+                    version="1.6" />
     </dependencies>
 </extension>

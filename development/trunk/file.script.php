@@ -1,4 +1,5 @@
 <?php
+
 /*
  * @version             $Id: file.script.php 72 $
  * @package		com_churchdirectory
@@ -21,7 +22,7 @@ class com_churchdirectoryInstallerScript {
     /*
      * Find mimimum required joomla version for this extension. It will be read from the version attribute (install tag) in the manifest file
      */
-    private $minimum_joomla_release = '1.6.0';
+    private $minimum_joomla_release = '1.7.0';
 
     /*
      * $parent is the class calling this method.
@@ -31,7 +32,7 @@ class com_churchdirectoryInstallerScript {
      */
 
     function preflight($type, $parent) {
-        // this component does not work with Joomla releases prior to 1.6
+        // this component does not work with Joomla releases prior to 1.7
         // abort if the current Joomla release is older
         $jversion = new JVersion();
 

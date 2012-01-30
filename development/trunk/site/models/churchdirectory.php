@@ -18,7 +18,7 @@ jimport('joomla.plugin.helper');
 /**
  * @package		Joomla.Site
  * @subpackage	com_churchdirectory
- * @since 1.5
+ * @since 2.5
  */
 class ChurchDirectoryModelChurchDirectory extends JModelForm {
 

@@ -78,7 +78,7 @@ JHtml::_('behavior.keepalive');
         <?php echo JHtml::_('sliders.start', 'churchdirectory-slider'); ?>
         <?php echo JHtml::_('sliders.panel', JText::_('JGLOBAL_FIELDSET_PUBLISHING'), 'publishing-details'); ?>
 
-        <fieldset class="panelform">
+        <fieldset class="adminform">
             <ul class="adminformlist">
 
                 <li><?php echo $this->form->getLabel('created_by'); ?>
@@ -109,7 +109,7 @@ JHtml::_('behavior.keepalive');
         <?php echo JHtml::_('sliders.panel', JText::_('COM_CHURCHDIRECTORY_CONTACT_DETAILS'), 'basic-options'); ?>
 
 
-        <fieldset class="panelform">
+        <fieldset class="adminform">
             <p><?php echo empty($this->item->id) ? JText::_('COM_CHURCHDIRECTORY_DETAILS') : JText::sprintf('COM_CHURCHDIRECTORY_EDIT_DETAILS', $this->item->id); ?></p>
 
             <ul class="adminformlist">
@@ -171,7 +171,7 @@ JHtml::_('behavior.keepalive');
 
         <?php echo JHtml::_('sliders.panel', JText::_('COM_CHURCHDIRECTORY_CONTACT_IM'), 'im-options'); ?>
 
-        <fieldset class="panelform">
+        <fieldset class="adminform">
             <ul class="adminformlist">
                 <li><?php echo $this->form->getLabel('skype'); ?>
                     <?php echo $this->form->getInput('skype'); ?></li>

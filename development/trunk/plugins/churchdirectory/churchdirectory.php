@@ -51,7 +51,7 @@ class plgSearchChurchDirectoris extends JPlugin {
      * @param string mathcing option, exact|any|all
      * @param string ordering option, newest|oldest|popular|alpha|category
      */
-    function onChurchDirectorySearch($text, $phrase='', $ordering='', $areas=null) {
+    function onChurchDirectorySearch($text, $phrase = '', $ordering = '', $areas = null) {
         $db = JFactory::getDbo();
         $app = JFactory::getApplication();
         $user = JFactory::getUser();

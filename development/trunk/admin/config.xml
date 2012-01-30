@@ -46,6 +46,13 @@
             <option value="tabs">COM_CHURCHDIRECTORY_FIELD_VALUE_TABS</option>
             <option value="plain">COM_CHURCHDIRECTORY_FIELD_VALUE_PLAIN</option>
         </field>
+         <field name="protectedaccess"
+			type="usergroup"
+			label="COM_CHURCHDIRECTORY_FIELD_MEMBER_PROTECTED_ACCESS_LABEL"
+			description="COM_CHURCHDIRECTORY_FIELD_MEMBER_PROTECTED_ACCESS_DESC"
+			class="inputbox"
+			size="1"
+		/>
         <field name="show_name"
 			type="radio"
 			default="1"
@@ -645,13 +652,6 @@
             <option value="2">COM_CHURCHDIRECTORY_FIELD_VALUE_NONE
             </option>
         </field>
-        <field name="protectedaccess"
-			type="accesslevel"
-			label="COM_CHURCHDIRECTORY_FIELD_MEMBER_PROTECTED_ACCESS_LABEL"
-			description="COM_CHURCHDIRECTORY_FIELD_MEMBER_PROTECTED_ACCESS_DESC"
-			class="inputbox"
-			size="1"
-		/>
         <field name="show_page_title"
 			type="radio"
 			default="1"
