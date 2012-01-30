@@ -35,25 +35,47 @@ echo JHtml::_('sliders.panel', JText::_('COM_CHURCHDIRECTORY_CONTACT_KML_DETAILS
             <?php echo $this->form->getInput('scale', 'params'); ?></li>
     </ul>
 </fieldset>
-
+<?php $fieldSets = $this->form->getFieldsets('attribs'); ?>
 <!-- Protected Access info -->
-<?php if ($access === $itemacess || $access === "8" ): ?>
-    <?php $fieldSets = $this->form->getFieldsets('attribs'); ?>
-    <?php foreach ($fieldSets as $name => $fieldSet) : ?>
-        <?php echo JHtml::_('sliders.panel', JText::_($fieldSet->label), $name . '-options'); ?>
-        <?php if (isset($fieldSet->description) && trim($fieldSet->description)) : ?>
-            <p class="tip"><?php echo $this->escape(JText::_($fieldSet->description)); ?></p>
-        <?php endif; ?>
-        <div class="clearfix"></div>
-        <fieldset class="adminform">
-            <ul class="adminformlist">
-                <?php foreach ($this->form->getFieldset($name) as $field) : ?>
-                    <li><?php echo $field->label; ?>
-                        <?php echo $field->input; ?></li>
-                <?php endforeach; ?>
-            </ul>
-        </fieldset>
-    <?php endforeach; ?>
-    <?php
- endif;
- // End of Protected Access
+<?php
+if ($access === $itemacess || $access === "9"):
+    foreach ($fieldSets as $name => $fieldSet) :
+        if ($name === 'protected') {
+            ?>
+            <?php echo JHtml::_('sliders.panel', JText::_($fieldSet->label), $name . '-options'); ?>
+            <?php if (isset($fieldSet->description) && trim($fieldSet->description)) : ?>
+                <p class="tip"><?php echo $this->escape(JText::_($fieldSet->description)); ?></p>
+            <?php endif; ?>
+            <div class="clearfix"></div>
+            <fieldset class="adminform">
+                <ul class="adminformlist">
+                    <?php foreach ($this->form->getFieldset($name) as $field) : ?>
+                        <li><?php echo $field->label; ?>
+                            <?php echo $field->input; ?></li>
+                    <?php endforeach; ?>
+                </ul>
+            </fieldset>
+            <?php
+        }
+    endforeach;
+endif;
+// End of Protected Access
+foreach ($fieldSets as $name => $fieldSet) :
+if ($name != 'protected') {
+echo JHtml::_('sliders.panel', JText::_($fieldSet->label), $name . '-options');
+?>
+<?php if (isset($fieldSet->description) && trim($fieldSet->description)) : ?>
+    <p class="tip"><?php echo $this->escape(JText::_($fieldSet->description)); ?></p>
+<?php endif; ?>
+<div class="clearfix"></div>
+<fieldset class="adminform">
+    <ul class="adminformlist">
+        <?php foreach ($this->form->getFieldset($name) as $field) : ?>
+            <li><?php echo $field->label; ?>
+                <?php echo $field->input; ?></li>
+        <?php endforeach; ?>
+    </ul>
+</fieldset>
+<?php
+}
+endforeach;
