@@ -7,13 +7,14 @@
  */
 // No direct access.
 defined('_JEXEC') or die;
-//for Access
+//Predefine for Access
 $itemacess = $this->state->params->get('protectedaccess');
 $groups = $this->groups;
 foreach ($groups as $itemacessint => $key):
     $access = $key;
 endforeach;
 
+// Start of Form
 echo JHtml::_('sliders.panel', JText::_('COM_CHURCHDIRECTORY_CONTACT_KML_DETAILS'), 'kml-options');
 ?>
 <fieldset class="adminform">
@@ -35,7 +36,8 @@ echo JHtml::_('sliders.panel', JText::_('COM_CHURCHDIRECTORY_CONTACT_KML_DETAILS
     </ul>
 </fieldset>
 
-<?php if ($access === $itemacess): ?>
+<!-- Protected Access info -->
+<?php if ($access === $itemacess || $access === "8" ): ?>
     <?php $fieldSets = $this->form->getFieldsets('attribs'); ?>
     <?php foreach ($fieldSets as $name => $fieldSet) : ?>
         <?php echo JHtml::_('sliders.panel', JText::_($fieldSet->label), $name . '-options'); ?>
@@ -54,3 +56,4 @@ echo JHtml::_('sliders.panel', JText::_('COM_CHURCHDIRECTORY_CONTACT_KML_DETAILS
     <?php endforeach; ?>
     <?php
  endif;
+ // End of Protected Access
