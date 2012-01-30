@@ -793,7 +793,7 @@
         </fieldset>
     </fields>
     <fields name="attribs">
-        <fieldset name="basic" label="COM_CHURCHDIRECTORY_MEMBER_PROTECTED_INFO_FIELDSET_LABEL" description="COM_CHURCHDIRECTORY_MEMBER_PROTECTED_INFO_FIELDSET_DESC">
+        <fieldset name="protected" label="COM_CHURCHDIRECTORY_MEMBER_PROTECTED_INFO_FIELDSET_LABEL" description="COM_CHURCHDIRECTORY_MEMBER_PROTECTED_INFO_FIELDSET_DESC">
             <field name="birthdate"
 				type="calendar"
 				label="COM_CHURCHDIRECTORY_FIELD_MEMBER_BIRTHDATE_LABEL"
