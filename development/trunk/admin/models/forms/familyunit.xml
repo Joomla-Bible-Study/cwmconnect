@@ -50,8 +50,8 @@
                required="true"
 		 />
         <field id="published" name="published" type="list" label="JSTATUS"
-                        description="JFIELD_PUBLISHED_DESC" class="inputbox" size="1"
-                        default="1">
+               description="JFIELD_PUBLISHED_DESC" class="inputbox" size="1"
+               default="1">
             <option value="1">
                 JPUBLISHED
             </option>

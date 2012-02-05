@@ -60,7 +60,7 @@ class ChurchDirectoryModelPosition extends JModelAdmin {
      * @return	JTable	A database object
      * @since	1.7.0
      */
-    public function getTable($type = 'FamilyUnit', $prefix = 'ChurchDirectoryTable', $config = array()) {
+    public function getTable($type = 'Position', $prefix = 'ChurchDirectoryTable', $config = array()) {
         return JTable::getInstance($type, $prefix, $config);
     }
 

@@ -57,10 +57,10 @@
                label="COM_CHURCHDIRECTORY_FIELD_SORTNAME3_LABEL" description="COM_CHURCHDIRECTORY_FIELD_SORTNAME3_DESC"
                class="inputbox" size="30" />
 
-        <field name="con_position" type="text"
-               label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_POSITION_LABEL"
-               description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_POSITION_DESC"
-               class="inputbox" size="30" />
+        <field name="con_position" type="sql" extension="com_churchdirectory" label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_POSITION_LABEL"
+                      class="inputbox" query="SELECT id, name FROM #__churchdirectory_position WHERE published = 1 ORDER by name ASC" key_field="id" value_field="name">
+            <option value="-1">COM_CHURCHDIRECTORY_SELECT_POSITION</option>
+        </field>
 
         <field name="email_to" type="email" label="JGLOBAL_EMAIL"
                description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_EMAIL_DESC" class="inputbox"
@@ -547,15 +547,16 @@
                   label="COM_CHURCHDIRECTORY_MEMBER_STATE_INFO_FIELDSET_LABEL"
                   description="COM_CHURCHDIRECTORY_MEMBER_STATE_INFO_FIELDSET_DESC">
             <field name="birthdate" type="calendar"
-                                         label="COM_CHURCHDIRECTORY_FIELD_MEMBER_BIRTHDATE_LABEL"
-                                         description="COM_CHURCHDIRECTORY_FIELD_MEMBER_BIRTHDATE_DESC" class="inputbox"
-                                         format="%Y-%m-%d" size="22" />
+                   label="COM_CHURCHDIRECTORY_FIELD_MEMBER_BIRTHDATE_LABEL"
+                   description="COM_CHURCHDIRECTORY_FIELD_MEMBER_BIRTHDATE_DESC" class="inputbox"
+                   format="%Y-%m-%d" size="22" />
             <field name="familypostion" type="list"
                    label="COM_CHURCHDIRECTORY_FAMILYPOSTION_LABEL" description="COM_CHURCHDIRECTORY_FAMILYPOSTION_DESC"
-                   default="0">
-                <option value="0">COM_CHURCHDIRECTORY_HEAD_SINGLE</option>
+                   default="-1">
+                <option value="-1">COM_CHURCHDIRECTORY_SINGLE</option>
+                <option value="0">COM_CHURCHDIRECTORY_HEAD_OF_HOUSHOLD</option>
                 <option value="1">COM_CHURCHDIRECTORY_SPOUCE</option>
-                <option value="3">COM_CHURCHDIRECTORY_CHILED</option>
+                <option value="2">COM_CHURCHDIRECTORY_CHILED</option>
             </field>
 
         </fieldset>
