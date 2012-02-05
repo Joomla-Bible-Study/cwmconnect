@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @version		$Id: kml.php 1.7.0 $
+ * @version		$Id: familyunit.php 1.7.0 $
  * @package             com_churchdirectory
  * @copyright           (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
@@ -15,7 +15,7 @@ jimport('joomla.application.component.controllerform');
  * @package	com_churchdirectory
  * @since		1.7.0
  */
-class ChurchDirectoryControllerKML extends JControllerForm {
+class ChurchDirectoryControllerFamilyUnit extends JControllerForm {
 
     /**
      * Method override to check if you can add a new record.

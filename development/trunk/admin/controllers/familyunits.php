@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @version		$Id: kmls.php* 1.7.0 $
+ * @version		$Id: familyunits.php* 1.7.0 $
  * @package             com_churchdirectory
  * @copyright           (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
@@ -17,7 +17,7 @@ jimport('joomla.application.component.controlleradmin');
  * @package	com_churchdirectory
  * @since	1.7.0
  */
-class ChurchDirectoryControllerKMLs extends JControllerAdmin {
+class ChurchDirectoryControllerFamilyUnits extends JControllerAdmin {
 
     /**
      * Constructor.
@@ -69,7 +69,7 @@ class ChurchDirectoryControllerKMLs extends JControllerAdmin {
             }
         }
 
-        $this->setRedirect('index.php?option=com_churchdirectory&view=kmls');
+        $this->setRedirect('index.php?option=com_churchdirectory&view=familyunits');
     }
 
     /**
@@ -81,7 +81,7 @@ class ChurchDirectoryControllerKMLs extends JControllerAdmin {
      * @return	JModel
      * @since	1.7.0
      */
-    public function getModel($name = 'KML', $prefix = 'ChurchDirectoryModel', $config = array('ignore_request' => true)) {
+    public function getModel($name = 'FamilyUnit', $prefix = 'ChurchDirectoryModel', $config = array('ignore_request' => true)) {
         $model = parent::getModel($name, $prefix, $config);
 
         return $model;

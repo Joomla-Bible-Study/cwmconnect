@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @version		$Id: churchdirectory.php 1.7.0 $
+ * @version		$Id: position.php 1.7.0 $
  * @package             com_churchdirectory
  * @copyright           (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
@@ -17,13 +17,7 @@ jimport('joomla.application.component.modeladmin');
  * @package	com_churchdirectory
  * @since		1.7.0
  */
-class ChurchDirectoryModelChurchDirectory extends JModelAdmin {
-
-    /**
-     * @var		string	The prefix to use with controller messages.
-     * @since	1.6
-     */
-    protected $text_prefix = 'COM_CHURCHDIRECTORY';
+class ChurchDirectoryModelPosition extends JModelAdmin {
 
     /**
      * Method to test whether a record can be deleted.
@@ -39,7 +33,7 @@ class ChurchDirectoryModelChurchDirectory extends JModelAdmin {
                 return;
             }
             $user = JFactory::getUser();
-            return $user->authorise('core.delete', 'com_churchdirectory.churchdirectory.' . (int) $record->id);
+            return $user->authorise('core.delete');
         }
     }
 
@@ -53,15 +47,7 @@ class ChurchDirectoryModelChurchDirectory extends JModelAdmin {
      */
     protected function canEditState($record) {
         $user = JFactory::getUser();
-
-        // Check against the category.
-        if (!empty($record->catid)) {
-            return $user->authorise('core.edit.state', 'com_churchdirectory.category.' . (int) $record->catid);
-        }
-        // Default to component settings if category not known.
-        else {
-            return parent::canEditState($record);
-        }
+        return parent::canEditState($record);
     }
 
     /**
@@ -74,7 +60,7 @@ class ChurchDirectoryModelChurchDirectory extends JModelAdmin {
      * @return	JTable	A database object
      * @since	1.7.0
      */
-    public function getTable($type = 'ChurchDirectory', $prefix = 'ChurchDirectoryTable', $config = array()) {
+    public function getTable($type = 'FamilyUnit', $prefix = 'ChurchDirectoryTable', $config = array()) {
         return JTable::getInstance($type, $prefix, $config);
     }
 
@@ -88,27 +74,23 @@ class ChurchDirectoryModelChurchDirectory extends JModelAdmin {
      * @since	1.7.0
      */
     public function getForm($data = array(), $loadData = true) {
-
         jimport('joomla.form.form');
         JForm::addFieldPath('JPATH_ADMINISTRATOR/components/com_users/models/fields');
 
         // Get the form.
-        $form = $this->loadForm('com_churchdirectory.churchdirectory', 'churchdirectory', array('control' => 'jform', 'load_data' => $loadData));
+        $form = $this->loadForm('com_churchdirectory.position', 'position', array('control' => 'jform', 'load_data' => $loadData));
         if (empty($form)) {
             return false;
         }
 
-
         // Modify the form based on access controls.
         if (!$this->canEditState((object) $data)) {
             // Disable fields for display.
-            $form->setFieldAttribute('featured', 'disabled', 'true');
             $form->setFieldAttribute('ordering', 'disabled', 'true');
             $form->setFieldAttribute('published', 'disabled', 'true');
 
             // Disable fields while saving.
             // The controller has already verified this is a record you can edit.
-            $form->setFieldAttribute('featured', 'filter', 'unset');
             $form->setFieldAttribute('ordering', 'filter', 'unset');
             $form->setFieldAttribute('published', 'filter', 'unset');
         }
@@ -125,19 +107,7 @@ class ChurchDirectoryModelChurchDirectory extends JModelAdmin {
      * @since	1.7.0
      */
     public function getItem($pk = null) {
-        if ($item = parent::getItem($pk)) {
-            // Convert the params field to an array.
-            $registry = new JRegistry;
-            $registry->loadString($item->attribs);
-            $item->attribs = $registry->toArray();
-
-            // Convert the params field to an array.
-            $registry = new JRegistry;
-            $registry->loadString($item->metadata);
-            $item->metadata = $registry->toArray();
-        }
-
-        return $item;
+        return parent::getItem($pk);
     }
 
     /**
@@ -148,16 +118,10 @@ class ChurchDirectoryModelChurchDirectory extends JModelAdmin {
      */
     protected function loadFormData() {
         // Check the session for previously entered form data.
-        $data = JFactory::getApplication()->getUserState('com_churchdirectory.edit.churchdirectory.data', array());
+        $data = JFactory::getApplication()->getUserState('com_churchdirectory.edit.position.data', array());
 
         if (empty($data)) {
             $data = $this->getItem();
-
-            // Prime some default values.
-            if ($this->getState('churchdirectory.id') == 0) {
-                $app = JFactory::getApplication();
-                $data->set('catid', JRequest::getInt('catid', $app->getUserState('com_churchdirectory.churchdirectories.filter.category_id')));
-            }
         }
 
         return $data;
@@ -189,7 +153,7 @@ class ChurchDirectoryModelChurchDirectory extends JModelAdmin {
             // Set ordering to the last item if not set
             if (empty($table->ordering)) {
                 $db = JFactory::getDbo();
-                $db->setQuery('SELECT MAX(ordering) FROM #__churchdirectory_details');
+                $db->setQuery('SELECT MAX(ordering) FROM #__churchdirectory_position');
                 $max = $db->loadResult();
 
                 $table->ordering = $max + 1;
@@ -207,63 +171,8 @@ class ChurchDirectoryModelChurchDirectory extends JModelAdmin {
      */
     protected function getReorderConditions($table) {
         $condition = array();
-        $condition[] = 'catid = ' . (int) $table->catid;
 
         return $condition;
-    }
-
-    /**
-     * Method to toggle the featured setting of contacts.
-     *
-     * @param	array	$pks	The ids of the items to toggle.
-     * @param	int		$value	The value to toggle to.
-     *
-     * @return	boolean	True on success.
-     * @since	1.7.0
-     */
-    public function featured($pks, $value = 0) {
-        // Sanitize the ids.
-        $pks = (array) $pks;
-        JArrayHelper::toInteger($pks);
-
-        if (empty($pks)) {
-            $this->setError(JText::_('COM_CHURCHDIRECTORY_NO_ITEM_SELECTED'));
-            return false;
-        }
-
-        $table = $this->getTable();
-
-        try {
-            $db = $this->getDbo();
-
-            $db->setQuery(
-                    'UPDATE #__churchdirectory_details AS a' .
-                    ' SET a.featured = ' . (int) $value .
-                    ' WHERE a.id IN (' . implode(',', $pks) . ')'
-            );
-            if (!$db->query()) {
-                throw new Exception($db->getErrorMsg());
-            }
-        } catch (Exception $e) {
-            $this->setError($e->getMessage());
-            return false;
-        }
-
-        $table->reorder();
-
-        // Clean component's cache
-        $this->cleanCache();
-
-        return true;
-    }
-
-    /**
-     * Custom clean the cache of com_content and content modules
-     *
-     * @since	1.6
-     */
-    protected function cleanCache($group = null, $client_id = 0) {
-        parent::cleanCache('com_churchdirectory');
     }
 
 }

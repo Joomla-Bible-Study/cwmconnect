@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @version		$Id: churchdirectories.php 1.7.0 $
+ * @version		$Id: contacts.php 1.7.0 $
  * @package             com_churchdirectory
  * @copyright           (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
@@ -16,7 +16,7 @@ jimport('joomla.application.component.modellist');
  *
  * @package	com_churchdirectory
  */
-class ChurchDirectoryModelChurchDirectories extends JModelList {
+class ChurchDirectoryModelFamilyUnits extends JModelList {
 
     /**
      * Constructor.
@@ -30,22 +30,18 @@ class ChurchDirectoryModelChurchDirectories extends JModelList {
             $config['filter_fields'] = array(
                 'id', 'a.id',
                 'name', 'a.name',
-                'lname', 'a.lname',
                 'alias', 'a.alias',
                 'checked_out', 'a.checked_out',
                 'checked_out_time', 'a.checked_out_time',
-                'catid', 'a.catid', 'category_title',
                 'user_id', 'a.user_id',
                 'state', 'a.state',
                 'access', 'a.access', 'access_level',
                 'created', 'a.created',
                 'created_by', 'a.created_by',
                 'ordering', 'a.ordering',
-                'featured', 'a.featured',
                 'language', 'a.language',
                 'publish_up', 'a.publish_up',
                 'publish_down', 'a.publish_down',
-                'ul.name', 'linked_user',
             );
         }
 
@@ -61,6 +57,9 @@ class ChurchDirectoryModelChurchDirectories extends JModelList {
      * @since	1.7.0
      */
     protected function populateState($ordering = null, $direction = null) {
+        // Initialise variables.
+        $app = JFactory::getApplication();
+
         // Adjust the context to support modal layouts.
         if ($layout = JRequest::getVar('layout')) {
             $this->context .= '.' . $layout;
@@ -74,9 +73,6 @@ class ChurchDirectoryModelChurchDirectories extends JModelList {
 
         $published = $this->getUserStateFromRequest($this->context . '.filter.published', 'filter_published', '');
         $this->setState('filter.published', $published);
-
-        $categoryId = $this->getUserStateFromRequest($this->context . '.filter.category_id', 'filter_category_id');
-        $this->setState('filter.category_id', $categoryId);
 
         $language = $this->getUserStateFromRequest($this->context . '.filter.language', 'filter_language', '');
         $this->setState('filter.language', $language);
@@ -102,7 +98,6 @@ class ChurchDirectoryModelChurchDirectories extends JModelList {
         $id .= ':' . $this->getState('filter.search');
         $id .= ':' . $this->getState('filter.access');
         $id .= ':' . $this->getState('filter.published');
-        $id .= ':' . $this->getState('filter.category_id');
         $id .= ':' . $this->getState('filter.language');
 
         return parent::getStoreId($id);
@@ -123,12 +118,12 @@ class ChurchDirectoryModelChurchDirectories extends JModelList {
         // Select the required fields from the table.
         $query->select(
                 $this->getState(
-                        'list.select', 'a.id, a.name, a.lname, a.alias, a.checked_out, a.checked_out_time, a.catid, a.user_id' .
-                        ', a.published, a.access, a.created, a.created_by, a.ordering, a.featured, a.language' .
+                        'list.select', 'a.id, a.name, a.alias, a.checked_out, a.checked_out_time, a.user_id' .
+                        ', a.published, a.access, a.created, a.created_by, a.ordering, a.language' .
                         ', a.publish_up, a.publish_down'
                 )
         );
-        $query->from('#__churchdirectory_details AS a');
+        $query->from('#__churchdirectory_familyunit AS a');
 
         // Join over the users for the linked user.
         $query->select('ul.name AS linked_user');
@@ -145,10 +140,6 @@ class ChurchDirectoryModelChurchDirectories extends JModelList {
         // Join over the asset groups.
         $query->select('ag.title AS access_level');
         $query->join('LEFT', '#__viewlevels AS ag ON ag.id = a.access');
-
-        // Join over the categories.
-        $query->select('c.title AS category_title');
-        $query->join('LEFT', '#__categories AS c ON c.id = a.catid');
 
         // Filter by access level.
         if ($access = $this->getState('filter.access')) {
@@ -167,16 +158,6 @@ class ChurchDirectoryModelChurchDirectories extends JModelList {
             $query->where('a.published = ' . (int) $published);
         } elseif ($published === '') {
             $query->where('(a.published = 0 OR a.published = 1)');
-        }
-
-        // Filter by a single or group of categories.
-        $categoryId = $this->getState('filter.category_id');
-        if (is_numeric($categoryId)) {
-            $query->where('a.catid = ' . (int) $categoryId);
-        } elseif (is_array($categoryId)) {
-            JArrayHelper::toInteger($categoryId);
-            $categoryId = implode(',', $categoryId);
-            $query->where('a.catid IN (' . $categoryId . ')');
         }
 
         // Filter by search in name.
@@ -201,9 +182,6 @@ class ChurchDirectoryModelChurchDirectories extends JModelList {
         // Add the list ordering clause.
         $orderCol = $this->state->get('list.ordering');
         $orderDirn = $this->state->get('list.direction');
-        if ($orderCol == 'a.ordering' || $orderCol == 'category_title') {
-            $orderCol = 'category_title ' . $orderDirn . ', a.ordering';
-        }
         $query->order($db->getEscaped($orderCol . ' ' . $orderDirn));
 
         return $query;

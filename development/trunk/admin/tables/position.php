@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: kml.php 1.7.0 $
+ * @version		$Id: position.php 1.7.0 $
  * @package		Joomla.Administrator
  * @subpackage	com_churchdirectory
  * @copyright	(C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
@@ -15,7 +15,7 @@ defined('_JEXEC') or die;
  * @package		Joomla.Administrator
  * @subpackage	com_churchdirectory
  */
-class ChurchDirectoryTableKML extends JTable
+class ChurchDirectoryTablePosition extends JTable
 {
 	/**
 	 * Constructor
@@ -25,7 +25,7 @@ class ChurchDirectoryTableKML extends JTable
 	 */
 	public function __construct(& $db)
 	{
-		parent::__construct('#__churchdirectory_kml', 'id', $db);
+		parent::__construct('#__churchdirectory_position', 'id', $db);
 	}
 
 	/**
@@ -113,7 +113,7 @@ class ChurchDirectoryTableKML extends JTable
 			return false;
 		}
 				/** check for existing name */
-		$query = 'SELECT id FROM #__churchdirectory_kml WHERE name = '.$this->_db->Quote($this->name);
+		$query = 'SELECT id FROM #__churchdirectory_position WHERE name = '.$this->_db->Quote($this->name);
 		$this->_db->setQuery($query);
 
 		$xid = intval($this->_db->loadResult());

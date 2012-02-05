@@ -47,7 +47,7 @@ class ChurchDirectoryViewCpanel extends JView {
      */
     protected function addToolbar() {
         $canDo = ChurchDirectoryHelper::getActions($this->state->get('filter.category_id'));
-        JToolBarHelper::title(JText::_('COM_CHURCHDIRECTORY_MANAGER_CPANEL'), 'contact.png');
+        JToolBarHelper::title(JText::_('COM_CHURCHDIRECTORY_MANAGER_CPANEL'), 'churchdirectory');
 
         if ($canDo->get('core.create') || (count($user->getAuthorisedCategories('com_churchdirectory', 'core.create'))) > 0) {
             JToolBarHelper::addNew('churchdirectory.add');

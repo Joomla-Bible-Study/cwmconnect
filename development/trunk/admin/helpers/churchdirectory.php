@@ -43,6 +43,12 @@ class ChurchDirectoryHelper {
         JSubMenuHelper::addEntry(
                 JText::_('COM_CHURCHDIRECTORY_SUBMENU_KML'), 'index.php?option=com_churchdirectory&view=kmls', $vName == 'kmls'
         );
+        JSubMenuHelper::addEntry(
+                JText::_('COM_CHURCHDIRECTORY_SUBMENU_FAMILYUNITS'), 'index.php?option=com_churchdirectory&view=familyunits', $vName == 'familyunits'
+        );
+        JSubMenuHelper::addEntry(
+                JText::_('COM_CHURCHDIRECTORY_SUBMENU_POSITIONS'), 'index.php?option=com_churchdirectory&view=positions', $vName == 'positions'
+        );
 
         if ($vName == 'categories') {
             JToolBarHelper::title(

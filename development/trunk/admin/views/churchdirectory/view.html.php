@@ -35,6 +35,17 @@ class ChurchDirectoryViewChurchDirectory extends JView {
         $user = JFactory::getUser();
         $this->groups = $user->groups;
 
+        //@todo need to find a way to do this outside the view.
+        $birthdate = $this->form->getValue('birthdate', 'attribs');
+        if (!empty($birthdate)):
+            $today = getdate();
+            $tdate = $today['0'];
+            $bdate = strtotime($this->form->getValue('birthdate', 'attribs'));
+            $this->age = $this->getAge($bdate, $tdate);
+        else:
+            $this->age = '0';
+        endif;
+
         // Check for errors.
         if (count($errors = $this->get('Errors'))) {
             JError::raiseError(500, implode("\n", $errors));
@@ -106,6 +117,23 @@ class ChurchDirectoryViewChurchDirectory extends JView {
         $document = JFactory::getDocument();
         $document->setTitle($isNew ? JText::_('COM_CHURCHDIRECTORY_CHURCHDIRECTORY_CONTACT_CREATING') : JText::_('COM_CHURCHDIRECTORY_CHURCHDIRECTORY_CONTACT_EDITING'));
         $document->addScript(JURI::root() . "media/com_churchdirectory/js/churchdirectory.js");
+    }
+
+    /**
+     * @todo need to move this outside the view.
+     * Get the age of a person in years at a given time
+     *
+     * @param       int     $dob    Date Of Birth
+     * @param       int     $tdate  The Target Date
+     * @return      int     The number of years
+     *
+     */
+    protected function getAge($bdate, $tdate) {
+        $age = 0;
+        while ($tdate > $bdate = strtotime('+1 year', $bdate)) {
+            ++$age;
+        }
+        return $age;
     }
 
 }
