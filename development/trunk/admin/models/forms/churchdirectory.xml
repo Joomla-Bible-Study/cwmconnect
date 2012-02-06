@@ -575,8 +575,8 @@
                   label="COM_CHURCHDIRECTORY_MAILING_ADDRESS_FIELDSET_LABEL"
                   description="COM_CHURCHDIRECTORY_MAILING_ADDRESS_FIELDSET_DESC">
                 <field name="mailingaddress" type="textarea"
-                   label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_ADDRESS_LABEL"
-                   description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_ADDRESS_DESC"
+                   label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_MAILING_ADDRESS_LABEL"
+                   description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_MAILING_ADDRESS_DESC"
                    class="inputbox" rows="3" cols="30" />
 
                 <field name="mailingsuburb" type="text"

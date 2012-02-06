@@ -137,9 +137,6 @@ JHtml::_('behavior.keepalive');
                 <li><?php echo $this->form->getLabel('postcode'); ?>
                     <?php echo $this->form->getInput('postcode'); ?></li>
 
-                <li><?php echo $this->form->getLabel('postcodeaddon'); ?>
-                    <?php echo $this->form->getInput('postcodeaddon'); ?></li>
-
                 <li><?php echo $this->form->getLabel('country'); ?>
                     <?php echo $this->form->getInput('country'); ?></li>
 
