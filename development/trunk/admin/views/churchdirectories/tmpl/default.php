@@ -125,14 +125,14 @@ $saveOrder = $listOrder == 'a.ordering';
                         <?php if ($canEdit || $canEditOwn) : ?>
                             <a href="<?php echo JRoute::_('index.php?option=com_churchdirectory&task=churchdirectory.edit&id=' . (int) $item->id); ?>">
                                 <?php echo $this->escape($item->name); ?></a>
-                            <?php else : ?>
+                        <?php else : ?>
                             <?php echo $this->escape($item->name); ?>
                         <?php endif; ?>
                         <p class="smallsub">
                             <?php echo JText::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($item->alias)); ?></p>
                     </td>
                     <td class="center">
-                        <?php echo $item->lname; ?>
+                            <?php echo $item->lname; ?>
                     </td>
                     <td align="center">
                         <?php if (!empty($item->linked_user)) : ?>

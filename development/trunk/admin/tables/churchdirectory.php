@@ -47,6 +47,9 @@ class ChurchDirectoryTableChurchDirectory extends JTable {
             $registry->loadArray($array['metadata']);
             $array['metadata'] = (string) $registry;
         }
+        if (key_exists( 'con_position', $array ) && is_array( $array['con_position'] )) {
+	        $array['con_position'] = implode( ',', $array['con_position'] );
+        }
 
         return parent::bind($array, $ignore);
     }

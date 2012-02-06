@@ -40,6 +40,9 @@ JHtml::_('behavior.keepalive');
                 <li><?php echo $this->form->getLabel('lname'); ?>
                     <?php echo $this->form->getInput('lname'); ?></li>
 
+                <li><?php echo $this->form->getLabel('funitid'); ?>
+                    <?php echo $this->form->getInput('funitid'); ?></li>
+
                 <li><?php echo $this->form->getLabel('alias'); ?>
                     <?php echo $this->form->getInput('alias'); ?></li>
 
@@ -117,7 +120,7 @@ JHtml::_('behavior.keepalive');
                     <?php echo $this->form->getInput('image'); ?></li>
 
                 <li><?php echo $this->form->getLabel('con_position'); ?>
-                    <?php echo $this->form->getInput('con_position'); ?></li>
+                    <?php echo $this->form->getInput('con_position')?></li>
 
                 <li><?php echo $this->form->getLabel('email_to'); ?>
                     <?php echo $this->form->getInput('email_to'); ?></li>
