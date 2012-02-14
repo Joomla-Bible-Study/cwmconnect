@@ -180,5 +180,3 @@ CREATE TABLE IF NOT EXISTS `#__churchdirectory_update` (
   `version` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
-INSERT INTO `#__churchdirectory_update` (`id`, `version`) VALUES
-(1, '1.7.0');
