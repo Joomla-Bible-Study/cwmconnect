@@ -68,7 +68,7 @@
         </submenu>
         <files folder="admin">
             <filename>churchdirectory.php</filename>
-            <filename>controller.ph p</filename>
+            <filename>controller.php</filename>
             <filename>config.xml</filename>
             <filename>access.xml</filename>
             <filename>index.html</filename>
