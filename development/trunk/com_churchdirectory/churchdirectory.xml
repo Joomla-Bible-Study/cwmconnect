@@ -56,7 +56,7 @@
     <administration>
         <menu img="../media/com_churchdirectory/images/menu/icon-16-churchdirectory.png">COM_CHURCHDIRECTORY</menu>
         <submenu>
-            <menu link="option=com_churchdirectory" img="../"
+            <menu link="option=com_churchdirectory" img="../media/com_churchdirectory/images/menu/icon-16-churchdirectory.png"
                   alt="Churchdirectory/Contacts">COM_CHURCHDIRECTORY_CONTACTS
             </menu>
             <menu link="option=com_categories&amp;extension=com_churchdirectory"
@@ -111,6 +111,6 @@
 
 	<!--  Dependencies -->
     <dependencies>
-        <dependency type="platform" name="joomla" operator="=" version="1.6" />
+        <dependency type="platform" name="joomla" operator="=" version="2.5" />
     </dependencies>
 </extension>

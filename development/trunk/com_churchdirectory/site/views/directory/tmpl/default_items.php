@@ -21,6 +21,7 @@ $listDirn = $this->escape($this->state->get('list.direction'));
 <?php endif; ?>
 <?php
 foreach ($this->items as $item) {
+    $attribs = json_decode($item->attribs);
     if ($printed_rows == $this->params->get('rows_per_page')) {
         echo '<div style="page-break-after:always"></div>';
         $printed_rows = 0;
@@ -28,6 +29,15 @@ foreach ($this->items as $item) {
     if ($printed_items == $this->params->get('items_per_row')) {
         $printed_items = 0;
     }
+
+    //var_dump($item);
+    if($item->funitid != '0') :
+        ?><div id="directory-items" class="sectiontableentry<?php echo $item->id + 1; ?>">
+            <?php echo $item->funit_name; ?>
+        </div>
+        <?php
+            else:
+
     ?>
     <div id="directory-items" class="sectiontableentry<?php echo $item->id + 1; ?>">
         <?php
@@ -41,6 +51,7 @@ foreach ($this->items as $item) {
         endif;
         ?>
         <div class="churchdirectory-contact">
+        <p>ID: <?php echo $item->id. '<br/>'; ?> </p>
         <a href="<?php echo JRoute::_(ChurchDirectoryHelperRoute::getChurchDirectoryRoute($item->slug, $item->catid)); ?>" id="contact-name">
             <?php echo $item->name; ?>
         </a><br />
@@ -176,6 +187,7 @@ foreach ($this->items as $item) {
         <?php endif; ?>
     </div>
     <?php
+    endif;
     $printed_items++; ?>
     <?php
     if ($printed_items == $this->params->get('items_per_row')) {

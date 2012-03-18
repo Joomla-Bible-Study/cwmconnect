@@ -127,6 +127,9 @@ class ChurchDirectoryModelChurchDirectory extends JModelForm {
                 $query->select('parent.title as parent_title, parent.id as parent_id, parent.path as parent_route, parent.alias as parent_alias');
                 $query->join('LEFT', '#__categories as parent ON parent.id = c.parent_id');
 
+                $query->select('fu.name as fu_name, fu.id as fu_id, fu.description as fu_description');
+                $query->join('LEFT', '#__churchdirectory_familyunit AS fu ON fu.id = a.funitid');
+
                 $query->where('a.id = ' . (int) $pk);
 
                 // Filter by start and end dates.

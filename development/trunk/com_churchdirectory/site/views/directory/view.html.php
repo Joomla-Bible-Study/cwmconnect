@@ -22,11 +22,11 @@ jimport('joomla.mail.helper');
  */
 class ChurchDirectoryViewDirectory extends JView {
 
-    protected $state;
-    protected $items;
-    protected $category;
-    protected $categories;
-    protected $pagination;
+    protected $state = null;
+    protected $items = null;
+    protected $category = null;
+    protected $categories = null;
+    protected $pagination = null;
 
     /**
      * Display the view
@@ -45,15 +45,17 @@ class ChurchDirectoryViewDirectory extends JView {
         $pagination = $this->get('Pagination');
 
         // Check for errors.
+        //var_dump($items);
+        //print_r('Home');
         if (count($errors = $this->get('Errors'))) {
             JError::raiseError(500, implode("\n", $errors));
             return false;
         }
-
-        if ($items == false) {
-            JError::raiseError(404, JText::_('COM_CHURCHDIRECTOY_ERROR_DIRECTORY_NOT_FOUND'));
-            return false;
-        }
+//
+//        if ($items == false) {
+//            JError::raiseError(404, JText::_('COM_CHURCHDIRECTOY_ERROR_DIRECTORY_NOT_FOUND'));
+//            return false;
+//        }
 
         // Check whether category access level allows access.
         $user = JFactory::getUser();

@@ -130,11 +130,18 @@ class ChurchDirectoryModelDirectory extends JModelList {
         // @todo get id link finished hard coded for now.
         $query->select('k.name AS kml_name, k.style AS kml_style, k.params AS kml_params, k.alias AS kml_alias, k.access AS kml_access, k.lat AS kml_lat, k.lng AS kml_lng');
         $query->join('LEFT', '#__churchdirectory_kml AS k on k.id = a.kmlid');
+
+        // Join on Family Unit.
+        // @todo Need to work this out right
+        $query->select('fu.name AS funit_name, fu.access as funit_access');
+        $query->join('LEFT', '#__churchdirectory_familyunit AS fu ON fu.id = a.funitid');
+
         // Join on category table.
         $query->select('c.title AS category_title, c.params AS category_params, c.alias AS category_alias, c.access AS category_access');
         $query->where('a.access IN (' . $groups . ')');
         $query->join('INNER', '#__categories AS c ON c.id = a.catid');
         $query->where('c.access IN (' . $groups . ')');
+
         // Filter by category.
         if ($categoryId = $this->getState('category.id')) {
             $query->where('a.catid = ' . (int) $categoryId);
@@ -164,8 +171,6 @@ class ChurchDirectoryModelDirectory extends JModelList {
             $query->where('(a.publish_down = ' . $nullDate . ' OR a.publish_down >= ' . $nowDate . ')');
             $query->where($publishedWhere . ' = ' . (int) $state);
         }
-
-
 
         // Filter by language
         if ($this->getState('filter.language')) {

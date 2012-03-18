@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE install SYSTEM "http://dev.joomla.org/xml/2.5/plugen-install.dtd">
-<extension version="2.5" type="plugin" group="search">
+<extension version="2.5" type="plugin" group="search" method="upgrade">
     <name>PLG_SEARCH_CHURCHDIRECTORY</name>
     <author>Joomla Bible Study Team</author>
     <creationDate>November 2011</creationDate>
@@ -10,6 +10,7 @@
     <authorUrl>http://www.joomlabiblestudy.org</authorUrl>
     <version>1.7.0</version>
     <description>PLG_SEARCH_CHURCHDIRECTORY_XML_DESCRIPTION</description>
+    <scriptfile>churchdirectory.scriptfile.php</scriptfile>
     <files>
         <filename plugin="churchdirectory">churchdirectory.php</filename>
         <folder>language</folder>
@@ -52,7 +53,6 @@
     </updateservers> -->
         	<!-- Dependencies -->
     <dependencies>
-        <dependency type="platform" name="joomla" operator="="
-                    version="1.6" />
+        <dependency type="platform" name="joomla" operator="=" version="2.5" />
     </dependencies>
 </extension>
