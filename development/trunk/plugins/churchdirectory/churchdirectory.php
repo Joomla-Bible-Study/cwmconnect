@@ -9,8 +9,6 @@
 // no direct access
 defined('_JEXEC') or die;
 
-jimport('joomla.plugin.plugin');
-
 /**
  * Contacts Search plugin
  *
@@ -102,10 +100,28 @@ class plgSearchChurchDirectoris extends JPlugin {
         $rows = array();
         if (!empty($state)) {
             $query = $db->getQuery(true);
+            //sqlsrv changes
+            $case_when = ' CASE WHEN ';
+            $case_when .= $query->charLength('a.alias');
+            $case_when .= ' THEN ';
+            $a_id = $query->castAsChar('a.id');
+            $case_when .= $query->concatenate(array($a_id, 'a.alias'), ':');
+            $case_when .= ' ELSE ';
+            $case_when .= $a_id . ' END as slug';
+
+            $case_when1 = ' CASE WHEN ';
+            $case_when1 .= $query->charLength('c.alias');
+            $case_when1 .= ' THEN ';
+            $c_id = $query->castAsChar('c.id');
+            $case_when1 .= $query->concatenate(array($c_id, 'c.alias'), ':');
+            $case_when1 .= ' ELSE ';
+            $case_when1 .= $c_id . ' END as catslug';
+
             $query->select('a.name AS title, "" AS created, a.con_position, a.misc, '
-                    . 'CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug, '
-                    . 'CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END AS catslug, '
-                    . 'CONCAT_WS(" / ", ' . $db->Quote($section) . ', c.title) AS section, "2" AS browsernav');
+                    . $case_when . ',' . $case_when1 . ', '
+                    . $query->concatenate(array("a.name", "a.con_position", "a.misc"), ",") . ' AS text,'
+                    . $query->concatenate(array($db->Quote($section), "c.title"), " / ") . ' AS section,'
+                    . '\'2\' AS browsernav');
             $query->from('#__churchdirectory_details AS a');
             $query->innerJoin('#__categories AS c ON c.id = a.catid');
             $query->where('(a.name LIKE ' . $text . 'OR a.misc LIKE ' . $text . 'OR a.con_position LIKE ' . $text
