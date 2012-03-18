@@ -11,7 +11,7 @@
     <author>Joomla Bible Study Team</author>
     <copyright>(C) 2007 - 2011 Joomla Bible Study Team All rights reserved</copyright>
     <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
-    <version>1.7.0.a1</version>
+    <version>1.7.0.a2</version>
     <creationDate>November 2011</creationDate>
     <authorEmail>info@joomlabiblestudy.org</authorEmail>
     <authorUrl>http://www.joomlabiblestudy.org</authorUrl>
@@ -56,12 +56,8 @@
     <administration>
         <menu img="../media/com_churchdirectory/images/menu/icon-16-churchdirectory.png">COM_CHURCHDIRECTORY</menu>
         <submenu>
-            <menu link="option=com_churchdirectory" img="../media/com_churchdirectory/images/menu/icon-16-churchdirectory.png"
-                  alt="Churchdirectory/Contacts">COM_CHURCHDIRECTORY_CONTACTS
-            </menu>
-            <menu link="option=com_categories&amp;extension=com_churchdirectory"
-                  view="categories" img="class:contact-cat" alt="Churchdirectory/Categories">COM_CHURCHDIRECTORY_CATEGORIES
-            </menu>
+            <menu link="option=com_churchdirectory&amp;view=churchdirectories" img="../media/com_churchdirectory/images/menu/icon-16-churchdirectory.png" alt="Churchdirectory/Contacts">COM_CHURCHDIRECTORY_CONTACTS</menu>
+            <menu link="option=com_categories&amp;extension=com_churchdirectory" view="categories" img="class:contact-cat" alt="Churchdirectory/Categories">COM_CHURCHDIRECTORY_CATEGORIES</menu>
             <menu link="option=com_churchdirectory&amp;view=cpanel" img="../media/com_churchdirectory/images/menu/icon-16-churchdirectory.png.png" alt="Churchdirectory/Cpanel">COM_CHURCHDIRECTORY_CPANEL</menu>
             <menu link="option=com_churchdirectory&amp;view=info" img="../media/com_churchdirectory/images/menu/icon-16-info.png" alt="Churchdirectory/Info">COM_CHURCHDIRECTORY_INFO</menu>
             <menu link="option=com_churchdirectory&amp;view=kmls" img="../media/com_churchdirectory/images/menu/icon-16-kml.png" alt="Churchdirectory/KML">COM_CHURCHDIRECTORY_KML</menu>

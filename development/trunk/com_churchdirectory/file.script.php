@@ -22,7 +22,7 @@ class com_churchdirectoryInstallerScript {
     /*
      * Find mimimum required joomla version for this extension. It will be read from the version attribute (install tag) in the manifest file
      */
-    private $minimum_joomla_release = '2.5.0';
+    private $minimum_joomla_release = '1.7.0';
 
     /*
      * $parent is the class calling this method.

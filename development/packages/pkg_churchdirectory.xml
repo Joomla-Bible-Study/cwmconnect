@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <extension type="package" version="2.5">
-    <name>Package Joomla Bible Study</name>
-    <packagename>biblestudy_package</packagename>
-    <version>1.7.0</version>
-    <description></description>
+    <name>Package ChurchDirectory</name>
+    <packagename>churchdirectory_package</packagename>
+    <version>1.7.0.a2</version>
+    <description>Church Directory</description>
     <creationDate>March 17, 2012</creationDate>
     <copyright>(C) 2007-2011 Copyright Joomla Bible Study</copyright>
     <license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>

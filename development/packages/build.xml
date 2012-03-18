@@ -12,7 +12,7 @@
                 <zip destfile="pkg_churchdirectory-1.7.0.zip">
 			<fileset dir=".">
 				<include name="packages/**" />
-				<include name="pkg_churchdirectory_package.xml" />
+				<include name="pkg_churchdirectory.xml" />
 			</fileset>
 		</zip>
 	</target>

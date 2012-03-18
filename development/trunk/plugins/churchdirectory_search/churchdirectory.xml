@@ -8,7 +8,7 @@
     <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
     <authorEmail>info@joomlabiblestudy.org</authorEmail>
     <authorUrl>http://www.joomlabiblestudy.org</authorUrl>
-    <version>1.7.0</version>
+    <version>1.7.0.a1</version>
     <description>PLG_SEARCH_CHURCHDIRECTORY_XML_DESCRIPTION</description>
     <scriptfile>churchdirectory.scriptfile.php</scriptfile>
     <files>
