@@ -51,11 +51,11 @@ class ChurchDirectoryViewDirectory extends JView {
             JError::raiseError(500, implode("\n", $errors));
             return false;
         }
-//
-//        if ($items == false) {
-//            JError::raiseError(404, JText::_('COM_CHURCHDIRECTOY_ERROR_DIRECTORY_NOT_FOUND'));
-//            return false;
-//        }
+
+        if ($items == false) {
+            JError::raiseError(404, JText::_('COM_CHURCHDIRECTOY_ERROR_DIRECTORY_NOT_FOUND'));
+            return false;
+        }
 
         // Check whether category access level allows access.
         $user = JFactory::getUser();
