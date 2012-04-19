@@ -205,7 +205,6 @@ class ChurchDirectoryModelChurchDirectories extends JModelList {
             $orderCol = 'category_title ' . $orderDirn . ', a.ordering';
         }
         $query->order($db->getEscaped($orderCol . ' ' . $orderDirn));
-        dump($db->getEscaped($orderCol . ' ' . $orderDirn), 'chordering');
         return $query;
     }
 
