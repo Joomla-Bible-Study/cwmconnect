@@ -89,7 +89,6 @@ class ChurchDirectoryModelChurchDirectory extends JModelAdmin {
      */
     public function getForm($data = array(), $loadData = true) {
 
-        jimport('joomla.form.form');
         JForm::addFieldPath('JPATH_ADMINISTRATOR/components/com_users/models/fields');
 
         // Get the form.
@@ -135,7 +134,6 @@ class ChurchDirectoryModelChurchDirectory extends JModelAdmin {
             $registry = new JRegistry;
             $registry->loadString($item->metadata);
             $item->metadata = $registry->toArray();
-
         }
 
         return $item;
@@ -260,7 +258,7 @@ class ChurchDirectoryModelChurchDirectory extends JModelAdmin {
     }
 
     /**
-     * Custom clean the cache of com_content and content modules
+     * Custom clean the cache of com_churchdirectory and churchdirectory modules
      *
      * @since	1.6
      */
