@@ -1,7 +1,6 @@
 <?php
 
 /**
- * @version		$Id: churchdirectory.php 71 $
  * @package             com_churchdirectory
  * @copyright           (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
@@ -10,12 +9,12 @@
 defined('_JEXEC') or die;
 
 /**
- * Contacts Search plugin
+ * ChurchDirectory Search plugin
  *
  * @package	Search.churchdirectory
  * @since		1.7.0
  */
-class plgSearchChurchDirectoris extends JPlugin {
+class plgSearchChurchdirectory extends JPlugin {
 
     /**
      * Constructor
@@ -28,20 +27,21 @@ class plgSearchChurchDirectoris extends JPlugin {
     public function __construct(& $subject, $config) {
         parent::__construct($subject, $config);
         $this->loadLanguage();
+        $this->loadLanguage('com_churchdirectory', JPATH_ADMINISTRATOR);
     }
 
     /**
      * @return array An array of search areas
      */
-    function onChurchDirectorySearchAreas() {
+    function onContentSearchAreas() {
         static $areas = array(
-    'churchdirectories' => 'PLG_SEARCH_CONTACTS_CONTACTS'
+    'churchdirectory' => 'PLG_SEARCH_CHURCHDIRECTORY_CONTACTS'
         );
         return $areas;
     }
 
     /**
-     * Contacts Search method
+     * ChurchDirectory Search method
      *
      * The sql must return the following fields that are used in a common display
      * routine: href, title, section, created, text, browsernav
@@ -49,7 +49,7 @@ class plgSearchChurchDirectoris extends JPlugin {
      * @param string mathcing option, exact|any|all
      * @param string ordering option, newest|oldest|popular|alpha|category
      */
-    function onChurchDirectorySearch($text, $phrase = '', $ordering = '', $areas = null) {
+    function onContentSearch($text, $phrase = '', $ordering = '', $areas = null) {
         $db = JFactory::getDbo();
         $app = JFactory::getApplication();
         $user = JFactory::getUser();
@@ -77,7 +77,7 @@ class plgSearchChurchDirectoris extends JPlugin {
             return array();
         }
 
-        $section = JText::_('PLG_SEARCH_CHURCHDIRECTROY_CONTACTS');
+        $section = JText::_('PLG_SEARCH_CHURCHDIRECTORY_CONTACTS');
 
         switch ($ordering) {
             case 'alpha':
@@ -117,19 +117,19 @@ class plgSearchChurchDirectoris extends JPlugin {
             $case_when1 .= ' ELSE ';
             $case_when1 .= $c_id . ' END as catslug';
 
-            $query->select('a.name AS title, "" AS created, a.con_position, a.misc, '
+            $query->select('a.name AS title, \'\' AS created, a.misc, '
                     . $case_when . ',' . $case_when1 . ', '
-                    . $query->concatenate(array("a.name", "a.con_position", "a.misc"), ",") . ' AS text,'
+                    . $query->concatenate(array("a.name", "a.misc"), ",") . ' AS text,'
                     . $query->concatenate(array($db->Quote($section), "c.title"), " / ") . ' AS section,'
                     . '\'2\' AS browsernav');
             $query->from('#__churchdirectory_details AS a');
             $query->innerJoin('#__categories AS c ON c.id = a.catid');
-            $query->where('(a.name LIKE ' . $text . 'OR a.misc LIKE ' . $text . 'OR a.con_position LIKE ' . $text
+            $query->where('(a.name LIKE ' . $text . 'OR a.misc LIKE ' . $text
                     . 'OR a.address LIKE ' . $text . 'OR a.suburb LIKE ' . $text . 'OR a.state LIKE ' . $text
                     . 'OR a.country LIKE ' . $text . 'OR a.postcode LIKE ' . $text . 'OR a.telephone LIKE ' . $text
                     . 'OR a.fax LIKE ' . $text . ') AND a.published IN (' . implode(',', $state) . ') AND c.published=1 '
                     . 'AND a.access IN (' . $groups . ') AND c.access IN (' . $groups . ')');
-            $query->group('a.id');
+            $query->group('a.id, a.misc');
             $query->order($order);
 
             // Filter by language
@@ -146,7 +146,6 @@ class plgSearchChurchDirectoris extends JPlugin {
                 foreach ($rows as $key => $row) {
                     $rows[$key]->href = 'index.php?option=com_churchdirectory&view=churchdirectory&id=' . $row->slug . '&catid=' . $row->catslug;
                     $rows[$key]->text = $row->title;
-                    $rows[$key]->text .= ($row->con_position) ? ', ' . $row->con_position : '';
                     $rows[$key]->text .= ($row->misc) ? ', ' . $row->misc : '';
                 }
             }

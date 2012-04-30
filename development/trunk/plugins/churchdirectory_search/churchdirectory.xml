@@ -2,7 +2,7 @@
 <!DOCTYPE install SYSTEM "http://dev.joomla.org/xml/2.5/plugen-install.dtd">
 <extension version="2.5" type="plugin" group="search" method="upgrade">
     <name>PLG_SEARCH_CHURCHDIRECTORY</name>
-    <author>Joomla Bible Study Team</author>
+    <author>Joomla! Bible Study Team</author>
     <creationDate>November 2011</creationDate>
     <copyright>(C) 2007 - 2011 Joomla Bible Study Team All rights reserved</copyright>
     <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
@@ -52,7 +52,7 @@
         </server>
     </updateservers> -->
         	<!-- Dependencies -->
-    <dependencies>
+    <!-- <dependencies>
         <dependency type="platform" name="joomla" operator="=" version="2.5" />
-    </dependencies>
+    </dependencies> -->
 </extension>

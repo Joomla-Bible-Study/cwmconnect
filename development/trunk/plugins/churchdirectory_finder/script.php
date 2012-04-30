@@ -10,9 +10,9 @@
 defined('_JEXEC') or die;
 
 /**
- * Script file of ChurchDirectory plugin
+ * Script file of ChurchDirectory Finder plugin
  */
-class plgSearchChurchDirectorisInstallerScript {
+class plgFinderChurchDirectoryInstallerScript {
 
     function install($parent) {
         // I activate the plugin
