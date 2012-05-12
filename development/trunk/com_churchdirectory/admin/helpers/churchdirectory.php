@@ -74,7 +74,7 @@ class ChurchDirectoryHelper {
         } elseif (empty($contactId)) {
             $assetName = 'com_churchdirectory.category.' . (int) $categoryId;
         } else {
-            $assetName = 'com_churchdirectory.contact.' . (int) $contactId;
+            $assetName = 'com_churchdirectory.churchdirectory.' . (int) $contactId;
         }
 
         $actions = array(

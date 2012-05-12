@@ -7,7 +7,6 @@ CREATE TABLE IF NOT EXISTS `#__churchdirectory_details` (
   `name` varchar(255) NOT NULL DEFAULT '',
   `lname` varchar(255) NOT NULL DEFAULT '',
   `alias` varchar(255) NOT NULL DEFAULT '',
-  `con_position` varchar(255) NOT NULL DEFAULT '',
   `address` text,
   `suburb` varchar(100) DEFAULT NULL,
   `state` varchar(100) DEFAULT NULL,
@@ -166,6 +165,7 @@ CREATE TABLE IF NOT EXISTS `#__churchdirectory_position` (
   `asset_id` int(10) DEFAULT NULL,
   `publish_up` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `publish_down` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `webpage` varchar(255) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=16 ;
 
@@ -180,3 +180,18 @@ CREATE TABLE IF NOT EXISTS `#__churchdirectory_update` (
   `version` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `#__churchdirectory_details_ps`
+--
+
+CREATE TABLE IF NOT EXISTS `#__churchdirectory_details_ps` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `contact_id` int(10) NOT NULL DEFAULT '0',
+  `posistion_id` int(3) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `idx_contact` (`contact_id`),
+  KEY `idx_position` (`posistion_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;

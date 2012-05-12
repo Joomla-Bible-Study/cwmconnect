@@ -3,3 +3,4 @@ DROP TABLE IF EXISTS `#__churchdirectory_familyunit`;
 DROP TABLE IF EXISTS `#__churchdirectory_kml`;
 DROP TABLE IF EXISTS `#__churchdirectory_position`;
 DROP TABLE IF EXISTS `#__churchdirectory_update`;
+DROP TABLE IF EXISTS `#__churchdirectory_details_ps`;
