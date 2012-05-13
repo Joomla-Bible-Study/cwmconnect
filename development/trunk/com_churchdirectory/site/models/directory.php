@@ -60,7 +60,6 @@ class ChurchDirectoryModelDirectory extends JModelList {
             $config['filter_fields'] = array(
                 'id', 'a.id',
                 'name', 'a.name',
-                'con_position', 'a.con_position',
                 'suburb', 'a.suburb',
                 'state', 'a.state',
                 'country', 'a.country',
@@ -101,6 +100,12 @@ class ChurchDirectoryModelDirectory extends JModelList {
                 $params->loadString($item->params);
                 $item->params = $params;
             }
+
+            if (!isset($this->_attribs)) {
+                $params = new JRegistry();
+                $params->loadString($item->attribs);
+                $item->attribs = $params;
+            }
         }
 
         return $items;
@@ -133,7 +138,7 @@ class ChurchDirectoryModelDirectory extends JModelList {
 
         // Join on Family Unit.
         // @todo Need to work this out right
-        $query->select('fu.name AS funit_name, fu.access as funit_access');
+        $query->select('fu.id AS funit_id, fu.name AS funit_name, fu.image as funit_image, fu.access as funit_access');
         $query->join('LEFT', '#__churchdirectory_familyunit AS fu ON fu.id = a.funitid');
 
         // Join on category table.

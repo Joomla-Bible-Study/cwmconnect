@@ -159,3 +159,57 @@ p {
     margin-top: 5px;
     padding: 0px 20px 0px;
 }
+
+/*Directory Layout*/
+.familymembers-list {
+    background: none repeat scroll 0 0 #F3F3F3;
+    border: 1px solid #FFFFFF;
+    border-radius: 11px 11px 11px 11px;
+    box-shadow: 0 0 5px #BED1D6;
+    position: relative;
+    margin-top: 5px;
+    padding: 5px;
+}
+
+.title {
+    font-weight: bold;
+}
+
+.directory-subtitle {
+    float: left;
+    width: 40%;
+    padding: 0px 5px 0px;
+    text-align: left;
+}
+
+.directory-telephone {
+}
+
+.directory-name {
+    float: left;
+    width: 25%;
+    padding: 0px 5px 0px;
+    text-align: center;
+    border-right-style: solid;
+    border-right-width: 2px;
+    border-right-color: black;
+}
+
+.directory-submemberinfo {
+    margin-left: 25px;
+}
+
+.directory-familymembers-list {
+    padding: 5px 0px 5px;
+}
+.vertical-line {
+/* display: inline; */
+float: left;
+border-width:1px;
+border-style: solid;
+border-color: #000;
+padding-bottom:2000px; margin-bottom:-2000px;
+}
+div.vert-line{overflow:hidden}
+div.vert-line>div+div{border-left: black;}
+div.vert-line>div{float:left; padding-bottom:2000px; margin-bottom:-2000px;}

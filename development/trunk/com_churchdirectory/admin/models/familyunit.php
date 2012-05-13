@@ -160,6 +160,23 @@ class ChurchDirectoryModelFamilyUnit extends JModelAdmin {
             }
         }
     }
+        /**
+     * Returns a list of mediafiles associated with this study
+     *
+     * @since   7.0
+     */
+    public function getMembers() {
+        $db = $this->getDbo();
+        $query = $db->getQuery(true);
+
+        $query->select('members.id, members.name');
+        $query->from('#__churchdirectory_details AS members');
+        $query->where('members.funitid = ' . (int) $this->getItem()->id);
+        $query->order('members.name DESC');
+
+        $db->setQuery($query->__toString());
+        return $db->loadObjectList();
+    }
 
     /**
      * A protected method to get a set of ordering conditions.

@@ -7,7 +7,8 @@
  */
 // no direct access
 defined('_JEXEC') or die;
+var_dump($this);
+foreach ($this->items as $item) {
+    //var_dump($this);
 
-echo 'Famly Unite';
-
-?>
+}

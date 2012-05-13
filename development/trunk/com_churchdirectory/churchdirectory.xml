@@ -81,8 +81,8 @@
         </files>
     </administration>
 
-		<!-- Extension Update Specification -->
-                <!-- @todo BCC need to corecot Church Directory Compnonet update address -->
+	<!-- Extension Update Specification -->
+        <!-- @todo BCC need to corecot Church Directory Compnonet update address -->
 	<!-- <update> -->
 		<!-- <server type="extension" priority="1" name="Primary Update Server">http://update.example.com/update/alpha.xml</server> --> <!-- useful for single extensions -->
 		<!-- <server type="extension" priority="2" name="Secondary Update Server">http://update2.example.com/update/alpha.xml</server> --> <!--  as above, backup server -->
@@ -91,9 +91,9 @@
 	<!-- </update> -->
 
         <!-- Extension Params -->
-	<!-- <params>
+	<params>
 		<param name="example" type="text" default="" label="Example Param" description="EXAMPLEPARAMDESC" />
-	</params> -->
+	</params>
 
 	<!-- Tables -->
 	<!-- These are used for backups to determine which tables to backup; ones marked optional are only backed up if they exist -->
@@ -102,6 +102,7 @@
         <table>#__churchdirectory_familyunit</table>
         <table>#__churchdirectory_kml</table>
         <table>#__churchdirectory_position</table>
+        <table>#__churchdirectory_details_ps</table>
         <table type="optional">#__churchdirectory_update</table>
     </tables>
 

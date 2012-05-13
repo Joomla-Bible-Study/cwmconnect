@@ -26,3 +26,5 @@ CREATE TABLE IF NOT EXISTS `#__churchdirectory_details_ps` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 ALTER TABLE `#__churchdirectory_position` ADD `webpage` varchar(255) NOT NULL DEFAULT '';
+ALTER TABLE `#__churchdirectory_familyunit` ADD `image` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL AFTER `description`
+ALTER TABLE `#_churchdirectory_details` ADD INDEX `idx_funit` ( `funitid` ) 

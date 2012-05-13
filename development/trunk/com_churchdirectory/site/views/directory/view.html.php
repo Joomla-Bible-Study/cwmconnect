@@ -44,9 +44,6 @@ class ChurchDirectoryViewDirectory extends JView {
         $children = $this->get('Children');
         $pagination = $this->get('Pagination');
 
-        // Check for errors.
-        //var_dump($items);
-        //print_r('Home');
         if (count($errors = $this->get('Errors'))) {
             JError::raiseError(500, implode("\n", $errors));
             return false;
