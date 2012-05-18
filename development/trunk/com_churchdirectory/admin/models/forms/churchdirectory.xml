@@ -229,7 +229,7 @@
                size="11" />
             <field name="spouse" type="text"
                label="COM_CHURCHDIRECTORY_FIELD_SPOUSE_LABEL" description="COM_CHURCHDIRECTORY_FIELD_SPOUSE_DESC"
-               class="inputbox" size="30" />
+               class="readonly" size="30" readonly="true" />
             <field name="children" type="textarea"
                label="COM_CHURCHDIRECTORY_FIELD_CHILDREN_LABEL" description="COM_CHURCHDIRECTORY_FIELD_CHILDREN_DESC"
                class="inputbox" rows="3" cols="30" />

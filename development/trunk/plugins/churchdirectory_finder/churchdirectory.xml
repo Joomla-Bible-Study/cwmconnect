@@ -15,8 +15,10 @@
         <folder>language</folder>
         <filename>index.html</filename>
     </files>
-    <languages>
-        <language tag="en-GB">language/en-GB/en-GB.plg_finder_churchdirectory.ini</language>
-        <language tag="en-GB">language/en-GB/en-GB.plg_finder_churchdirectory.sys.ini</language>
-    </languages>
+	<!-- UPDATESERVER DEFINITION -->
+    <updateservers>
+		<!-- Note: No spaces or linebreaks allowed between the server tags -->
+        <server type="extension" priority="1" name="Joomla! ChurchDirectory Finder Plg"><![CDATA[http://www.joomlabiblestudy.org/index.php?option=com_ars&view=update&task=stream&format=xml&id=7&dummy=extension.xml]]>
+        </server>
+    </updateservers>
 </extension>

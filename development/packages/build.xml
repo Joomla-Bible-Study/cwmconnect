@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="churchdirectory" default="build">
 	<target name="clean">
-		<delete file="packages/com_churchdirectory-1.7.0.zip" />
-                <delete file="packages/plg_churchdirectory_search-1.7.0.zip" />
-                <delete file="pkg_churchdirectory-1.7.0.zip" />
+		<delete file="packages/com_churchdirectory.zip" />
+                <delete file="packages/plg_churchdirectory_search.zip" />
+                <delete file="packages/plg_churchdirectory_finder.zip" />
+                <delete file="pkg_churchdirectory.zip" />
 	</target>
 	<target name="build">
                 <mkdir dir="packages" />
-		<zip destfile="packages/com_churchdirectory-1.7.0.zip" basedir="../trunk/com_churchdirectory" />
-		<zip destfile="packages/plg_churchdirectory_search-1.7.0.zip" basedir="../trunk/plugins/churchdirectory_search" />
-                <zip destfile="pkg_churchdirectory-1.7.0.zip">
+		<zip destfile="packages/com_churchdirectory.zip" basedir="../trunk/com_churchdirectory" />
+		<zip destfile="packages/plg_churchdirectory_search.zip" basedir="../trunk/plugins/churchdirectory_search" />
+		<zip destfile="packages/plg_churchdirectory_finder.zip" basedir="../trunk/plugins/churchdirectory_finder" />
+                <zip destfile="pkg_churchdirectory.zip">
 			<fileset dir=".">
 				<include name="packages/**" />
 				<include name="pkg_churchdirectory.xml" />

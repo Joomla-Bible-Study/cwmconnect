@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <extension type="package" version="2.5">
     <name>Package ChurchDirectory</name>
-    <packagename>churchdirectory_package</packagename>
+    <packagename>churchdirectory</packagename>
     <version>1.7.0.a2</version>
     <description>Church Directory</description>
     <creationDate>March 17, 2012</creationDate>
@@ -13,7 +13,8 @@
     <packager>Tom Fuller</packager>
     <packagerurl>http://www.joomlabiblestudy.org</packagerurl>
     <files folder="packages">
-        <file type="component" id="com_churchdirectory">com_churchdirectory-1.7.0.zip</file>
-        <file type="plugin" id="churchdirectorysearch" group="search">plg_churchdirectory_search-1.7.0.zip</file>
+        <file type="component" id="com_churchdirectory">com_churchdirectory.zip</file>
+        <file type="plugin" id="churchdirectorysearch" group="search">plg_churchdirectory_search.zip</file>
+        <file type="plugin" id="churchdirectoryfinder" group="finder">plg_churchdirectory_finder.zip</file>
     </files>
 </extension>
