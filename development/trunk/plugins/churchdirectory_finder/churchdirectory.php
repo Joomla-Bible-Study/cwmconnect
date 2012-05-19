@@ -51,7 +51,7 @@ class plgFinderChurchDirectory extends FinderIndexerAdapter {
      * @var    string
      * @since  1.7.0
      */
-    protected $type_title = 'Churchdirectory';
+    protected $type_title = 'ChurchDirectory';
 
     /**
      * The table name.
