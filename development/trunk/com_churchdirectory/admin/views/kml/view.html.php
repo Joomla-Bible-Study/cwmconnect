@@ -38,8 +38,14 @@ class ChurchDirectoryViewKML extends JView {
             return false;
         }
 
-        $this->addToolbar();
+        // Set the toolbar
+        $this->addToolBar();
+
+        // Display the template
         parent::display($tpl);
+
+        // Set the document
+        $this->setDocument();
     }
 
     /**
@@ -97,7 +103,7 @@ class ChurchDirectoryViewKML extends JView {
     protected function setDocument() {
         $isNew = ($this->item->id < 1);
         $document = JFactory::getDocument();
-        $document->setTitle($isNew ? JText::_('COM_CHURCHDIRECTORY_KML_CREATING') : JText::_('COM_CHURCHDIRECTORY_KML_EDITING'));
+        $document->setTitle($isNew ? JText::_('COM_CHURCHDIRECTORY_KML_CREATING') : JText::sprintf('COM_CHURCHDIRECTORY_KML_EDITING', $this->item->name));
     }
 
 }

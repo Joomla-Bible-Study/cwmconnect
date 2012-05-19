@@ -40,8 +40,14 @@ class ChurchDirectoryViewFamilyUnit extends JView {
             return false;
         }
 
-        $this->addToolbar();
+        // Set the toolbar
+        $this->addToolBar();
+
+        // Display the template
         parent::display($tpl);
+
+        // Set the document
+        $this->setDocument();
     }
 
     /**
@@ -99,7 +105,7 @@ class ChurchDirectoryViewFamilyUnit extends JView {
     protected function setDocument() {
         $isNew = ($this->item->id < 1);
         $document = JFactory::getDocument();
-        $document->setTitle($isNew ? JText::_('COM_CHURCHDIRECTORY_FAMILYUNIT_CREATING') : JText::_('COM_CHURCHDIRECTORY_FAMILYUNIT_EDITING'));
+        $document->setTitle($isNew ? JText::_('COM_CHURCHDIRECTORY_FAMILYUNIT_CREATING') : JText::sprintf('COM_CHURCHDIRECTORY_FAMILYUNIT_EDITING', $this->item->name));
     }
 
 }
