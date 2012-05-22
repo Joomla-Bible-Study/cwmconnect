@@ -173,6 +173,11 @@ class ChurchDirectoryModelChurchDirectory extends JModelForm {
                 $registry->loadString($data->metadata);
                 $data->metadata = $registry;
 
+                
+                $registry = new JRegistry;
+                $registry->loadString($data->attribs);
+                $data->attribs = $registry;
+
                 // Compute access permissions.
                 if ($access = $this->getState('filter.access')) {
                     // If the access filter has been set, we already know this user can view.

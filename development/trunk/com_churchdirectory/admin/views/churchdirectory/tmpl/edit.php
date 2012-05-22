@@ -70,13 +70,15 @@ JHtml::_('behavior.keepalive');
                 <li><?php echo $this->form->getLabel('id'); ?>
                     <?php echo $this->form->getInput('id'); ?></li>
             </ul>
+        </fieldset>
+        <fieldset class="adminform">
+
             <div class="clr"></div>
             <?php echo $this->form->getLabel('misc'); ?>
             <div class="clr"></div>
             <?php echo $this->form->getInput('misc'); ?>
         </fieldset>
     </div>
-
     <div class="width-40 fltrt">
         <?php echo JHtml::_('sliders.start', 'churchdirectory-slider'); ?>
         <?php echo JHtml::_('sliders.panel', JText::_('JGLOBAL_FIELDSET_PUBLISHING'), 'publishing-details'); ?>
@@ -120,7 +122,7 @@ JHtml::_('behavior.keepalive');
                     <?php echo $this->form->getInput('image'); ?></li>
 
                 <li><?php echo $this->form->getLabel('con_position'); ?>
-                    <?php echo $this->form->getInput('con_position')?></li>
+                    <?php echo $this->form->getInput('con_position') ?></li>
 
                 <li><?php echo $this->form->getLabel('email_to'); ?>
                     <?php echo $this->form->getInput('email_to'); ?></li>
