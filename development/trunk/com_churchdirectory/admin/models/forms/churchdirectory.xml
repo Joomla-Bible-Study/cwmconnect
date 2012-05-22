@@ -594,11 +594,6 @@
                    description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_POSTCODE_DESC"
                    class="inputbox" size="30" />
 
-                <field name="mailingpostcodeaddon" type="text"
-                   label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_POSTCODEADDON_LABEL"
-                   description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_POSTCODEADDON_DESC"
-                   class="inputbox" size="30" />
-
                 <field name="mailingcountry" type="text"
                    label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_COUNTRY_LABEL"
                    description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_COUNTRY_DESC"
