@@ -19,25 +19,25 @@ if (count($this->items[$this->parent->id]) > 0 && $this->maxLevelcat != 0) :
                 }
                 ?>
                 <li<?php echo $class; ?>>
-                <?php $class = ''; ?>
+                    <?php $class = ''; ?>
                     <span class="item-title"><a href="<?php echo JRoute::_(ChurchDirectoryHelperRoute::getCategoryRoute($item->id)); ?>">
-                    <?php echo $this->escape($item->title); ?></a>
+                            <?php echo $this->escape($item->title); ?></a>
                     </span>
 
-            <?php if ($this->params->get('show_subcat_desc_cat') == 1) : ?>
+                    <?php if ($this->params->get('show_subcat_desc_cat') == 1) : ?>
                         <?php if ($item->description) : ?>
                             <div class="category-desc">
-                            <?php echo JHtml::_('content.prepare', $item->description); ?>
+                                <?php echo JHtml::_('content.prepare', $item->description); ?>
                             </div>
-                            <?php endif; ?>
+                        <?php endif; ?>
                     <?php endif; ?>
 
                     <?php if ($this->params->get('show_cat_items_cat') == 1) : ?>
                         <dl><dt>
-                        <?php echo JText::_('COM_CHURCHDIRECTORY_COUNT'); ?></dt>
+                            <?php echo JText::_('COM_CHURCHDIRECTORY_COUNT'); ?></dt>
                             <dd><?php echo $item->numitems; ?></dd>
                         </dl>
-            <?php endif; ?>
+                    <?php endif; ?>
 
                     <?php
                     if (count($item->getChildren()) > 0) :

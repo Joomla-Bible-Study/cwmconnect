@@ -10,7 +10,7 @@
 //No Direct Access
 defined('_JEXEC') or die;
 
-function getTeacherLandingPage($params, $id, $famid) {
+function getFamilyMembersPage($params, $id, $famid) {
 
     $teacher = null;
     $teacher = "\n" . '<div id="landing_table" width="100%">';
@@ -32,7 +32,7 @@ function getTeacherLandingPage($params, $id, $famid) {
         //var_dump($params->get('show_telephone'));
         //var_dump($attribs);
         $teacher .= '<div class="directory-familymembers-list">';
-        $teacher .= '<div class="directory-name"><a href="' . JRoute::_('index.php?option=com_churchdirectory&view=churchdirectory&id='. $b->id ) . '">';
+        $teacher .= '<div class="directory-name"><a href="' . JRoute::_('index.php?option=com_churchdirectory&view=churchdirectory&id=' . $b->id) . '">';
         $teacher .= $b->name;
         $teacher .='</a></div>';
         $teacher .= '<div class="directory-subtitle">';
@@ -53,10 +53,10 @@ function getTeacherLandingPage($params, $id, $famid) {
         $teacher .= '</div>';
         $teacher .='<div class="clearfix"></div><div class="directory-submemberinfo">';
         if ($b->telephone && $params->get('dr_show_telephone')) {
-            $teacher .= '<div class="directory-telephone"><span class="title">'. JText::_('COM_CHURCHDIRECTORY_HOME') .':</span> ' . $b->telephone .'</div>';
+            $teacher .= '<div class="directory-telephone"><span class="title">' . JText::_('COM_CHURCHDIRECTORY_HOME') . ':</span> ' . $b->telephone . '</div>';
         }
         if ($b->mobile && $params->get('dr_show_mobile')) {
-            $teacher .= '<div class="directory-mobile"><span class="title">'. JText::_('COM_CHURCHDIRECTORY_MOBILE') .':</span> ' . $b->mobile .'</div>';
+            $teacher .= '<div class="directory-mobile"><span class="title">' . JText::_('COM_CHURCHDIRECTORY_MOBILE') . ':</span> ' . $b->mobile . '</div>';
         }
         $teacher .= '</div>';
         $i++;
@@ -67,9 +67,8 @@ function getTeacherLandingPage($params, $id, $famid) {
     }
     $teacher .= '</div>';
 
-        if ($b->children && $params->get('dr_show_children')) {
-            $teacher .= '<div class="directory-children"><br /><span class="title">'. JText::_('COM_CHURCHDIRECTORY_CHILDREN') .':</span> ' . $b->children .'</div>';
-        }
-    //var_dump($teacher);
+    if ($b->children && $params->get('dr_show_children')) {
+        $teacher .= '<div class="directory-children"><br /><span class="title">' . JText::_('COM_CHURCHDIRECTORY_CHILDREN') . ':</span> ' . $b->children . '</div>';
+    }
     return $teacher;
 }

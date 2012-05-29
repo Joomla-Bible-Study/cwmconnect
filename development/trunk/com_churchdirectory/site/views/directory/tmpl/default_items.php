@@ -1,12 +1,9 @@
 <?php
 /**
- * ChurchDirectory Contact manager component for Joomla!
- *
- * @version             $Id: default.php 71 $
  * @package		com_churchdirectory
  * @copyright           (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
- */
+ **/
 defined('_JEXEC') or die;
 
 JHtml::core();
@@ -96,8 +93,8 @@ foreach ($this->items as $item) {
             <div class="clearfix"></div>
             <div class="familymembers-list">
                 <?php
-                $heading_call = JView::loadHelper('familymembers');
-                $heading = getTeacherLandingPage($params = $item->params, $id = $item->id, $famid = $item->funitid);
+                JView::loadHelper('familymembers');
+                $heading = getFamilyMembersPage($params = $item->params, $id = $item->id, $famid = $item->funitid);
                 if ($heading) {
                     echo $heading;
                 }
@@ -123,12 +120,24 @@ foreach ($this->items as $item) {
                     <p>ID: <?php echo $item->id; ?> </p>
                     <p>Count: <?php echo $printed_rows; ?> </p>
                 <?php endif; ?>
-                <a href="<?php echo JRoute::_(ChurchDirectoryHelperRoute::getChurchDirectoryRoute($item->slug, $item->catid)); ?>" id="contact-name">
+                    <span id="contact-name">
+                <a href="<?php echo JRoute::_(ChurchDirectoryHelperRoute::getChurchDirectoryRoute($item->slug, $item->catid)); ?>">
                     <?php echo $item->name; ?>
-                </a><br />
+                </a></span>
                 <?php
                 if ($item->con_position && $this->params->get('dr_show_position')) :
-                    echo '<span id="contact-position"><b>Position:</b>' . $item->con_position . '</span><br />';
+                    if ($item->con_position['0'] != 0):
+                        echo '<div id="position-header"><span id="contact-position">
+                            <b>Position: </b></span></div><div id="position-name">
+                            <span id="contact-position">';
+                        foreach ($item->con_position as $positions) :
+                            JView::loadHelper('positions');
+                            $name = getPosition($positions);
+                            echo $name . '<br />';
+                        endforeach;
+                        echo '</span></div><div class="clearfix"></div><br />';
+
+                    endif;
                 endif;
                 ?>
                 <?php if (($this->params->get('address_check') > 0) && ($item->address || $item->suburb || $item->state || $item->country || $item->postcode)) : ?>

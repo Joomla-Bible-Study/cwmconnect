@@ -100,12 +100,13 @@ class ChurchDirectoryModelDirectory extends JModelList {
                 $params->loadString($item->params);
                 $item->params = $params;
             }
-
             if (!isset($this->_attribs)) {
                 $params = new JRegistry();
                 $params->loadString($item->attribs);
                 $item->attribs = $params;
             }
+            $item->con_position = explode(',', $item->con_position);
+
         }
 
         return $items;

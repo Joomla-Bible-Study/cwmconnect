@@ -8,6 +8,8 @@ address {
 #contact-name {
     font-size: 100%;
     font-weight: bold;
+    padding-bottom: 5px;
+    margin-bottom: 5px;
 }
 #contact-position {
     font-size: 95%;
@@ -213,3 +215,13 @@ padding-bottom:2000px; margin-bottom:-2000px;
 div.vert-line{overflow:hidden}
 div.vert-line>div+div{border-left: black;}
 div.vert-line>div{float:left; padding-bottom:2000px; margin-bottom:-2000px;}
+
+#position-header {
+    font-weight: bold;
+    float: left;
+    width: 20%;
+}
+#position-name {
+    float: right;
+    width: 70%;
+}

@@ -1,12 +1,10 @@
 <?php
 
 /**
- * @version		$Id: churchdirectory.php 22338 2011-11-04 17:24:53Z github_bot $
- * @package		Joomla.Site
- * @subpackage	com_churchdirectory
- * @copyright	Copyright (C) 2005 - 2011 Open Source Matters, Inc. All rights reserved.
+ * @package		com_churchdirectory
+ * @copyright           (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
- */
+ * */
 // No direct access
 defined('_JEXEC') or die;
 
@@ -173,10 +171,11 @@ class ChurchDirectoryModelChurchDirectory extends JModelForm {
                 $registry->loadString($data->metadata);
                 $data->metadata = $registry;
 
-                
                 $registry = new JRegistry;
                 $registry->loadString($data->attribs);
                 $data->attribs = $registry;
+
+                $data->con_position = explode(',', $data->con_position);
 
                 // Compute access permissions.
                 if ($access = $this->getState('filter.access')) {
