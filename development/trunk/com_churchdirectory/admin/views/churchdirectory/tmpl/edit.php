@@ -29,7 +29,7 @@ JHtml::_('behavior.keepalive');
     }
 </script>
 
-<form action="<?php echo JRoute::_('index.php?option=com_churchdirectory&layout=edit&id=' . (int) $this->item->id); ?>" method="post" name="adminForm" id="churchdirectory-form" class="form-validate">
+<form action="<?php echo JRoute::_('index.php?option=com_churchdirectory&layout=edit&id=' . (int) $this->item->id); ?>" method="post" name="adminForm" id="adminForm" class="form-validate">
     <div class="width-60 fltlft">
         <fieldset class="adminform">
             <legend><?php echo empty($this->item->id) ? JText::_('COM_CHURCHDIRECTORY_NEW_CONTACT') : JText::sprintf('COM_CHURCHDIRECTORY_EDIT_CONTACT', $this->item->id); ?></legend>
@@ -122,7 +122,7 @@ JHtml::_('behavior.keepalive');
                     <?php echo $this->form->getInput('image'); ?></li>
 
                 <li><?php echo $this->form->getLabel('con_position'); ?>
-                    <?php echo $this->form->getInput('con_position') ?></li>
+                    <?php echo $this->form->getInput('con_position'); var_dump($this->form->getInput('con_position'));?></li>
 
                 <li><?php echo $this->form->getLabel('email_to'); ?>
                     <?php echo $this->form->getInput('email_to'); ?></li>

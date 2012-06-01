@@ -57,8 +57,8 @@
                label="COM_CHURCHDIRECTORY_FIELD_SORTNAME3_LABEL" description="COM_CHURCHDIRECTORY_FIELD_SORTNAME3_DESC"
                class="inputbox" size="30" />
 
-        <field name="con_position" type="sql" label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_POSITION_LABEL"
-               query="SELECT id, name FROM #__churchdirectory_position WHERE published = 1 ORDER by name ASC" key_field="id" value_field="name" multiple="true" />
+        <field name="con_position" type="positions" class="inputbox" size="30" label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_POSITION_LABEL" description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_POSITION_DESC" />
+
         <field
             name="funitid"
             type="sql"
