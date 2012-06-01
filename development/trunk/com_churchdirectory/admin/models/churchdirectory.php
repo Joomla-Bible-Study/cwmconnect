@@ -151,7 +151,6 @@ class ChurchDirectoryModelChurchDirectory extends JModelAdmin {
 
         if (empty($data)) {
             $data = $this->getItem();
-            $data->con_position = explode(',', $data->con_position);
 
             // Prime some default values.
             if ($this->getState('churchdirectory.id') == 0) {
@@ -267,58 +266,43 @@ class ChurchDirectoryModelChurchDirectory extends JModelAdmin {
     }
 
     /**
-     * Gets all the Positions associated with a particular study
+     * Gets all the Positions associated with a particular contact
      *
-     * @return type JSON Object containing the topics
+     * @return type JSON Object containing the positions
      * @since 1.7.1
      */
     function getPositions() {
-        // do search in case of present study only, suppress otherwise
-        //$translatedList = array();
         if (JRequest::getVar('id', 0, null, 'int') > 0) {
             $db = $this->getDbo();
             $query = $db->getQuery(true);
 
-            $query->select('position.id, position.topic_text, position.params AS position_params');
+            $query->select('position.id, position.name');
             $query->from('#__churchdirectory_details_ps AS details_ps');
 
-            $query->join('LEFT', '#__churchdirectory_position AS position ON position.id = details_ps.posistion_id');
+            $query->join('LEFT', '#__churchdirectory_position AS position ON position.id = details_ps.contact_id');
             $query->where('details_ps.contact_id = ' . JRequest::getVar('id', 0, null, 'int'));
-
-            $db->setQuery($query);
+            var_dump($query);
+            $db->setQuery($query->__toString());
             $positions = $db->loadObjectList();
-//            if ($positions) {
-//                foreach ($positions as $position) {
-//                    $text = getTopicItemTranslated($position);
-//                    $translatedList[] = array('id' => $position->id, 'name' => $text);
-//                }
-//            }
         }
-        return $positions;
+        return json_encode($positions);
     }
 
     /**
      * Gets all positions available
      *
-     * @return type JSON Object containing thepositions
+     * @return type JSON Object containing the positions
      * @since 1.7.1
      */
-    function getAllpostions() {
+    function getAllpositions() {
         $db = $this->getDbo();
         $query = $db->getQuery(true);
 
-        $query->select('position.id, position.position_text, position.params AS position_params');
+        $query->select('position.id, position.name');
         $query->from('#__churchdirectory_position AS position');
 
         $db->setQuery($query->__toString());
         $positions = $db->loadObjectList();
-        //$translatedList = array();
-//        if ($topics) {
-//            foreach ($topics as $topic) {
-//                $text = getTopicItemTranslated($topic);
-//                $translatedList[] = array('id' => $topic->id, 'name' => $text);
-//            }
-//        }
         return json_encode($positions);
     }
 

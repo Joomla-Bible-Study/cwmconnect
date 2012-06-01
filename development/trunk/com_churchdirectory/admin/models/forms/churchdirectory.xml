@@ -57,7 +57,7 @@
                label="COM_CHURCHDIRECTORY_FIELD_SORTNAME3_LABEL" description="COM_CHURCHDIRECTORY_FIELD_SORTNAME3_DESC"
                class="inputbox" size="30" />
 
-        <field name="con_position" type="positions" class="inputbox" size="30" label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_POSITION_LABEL" description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_POSITION_DESC" />
+        <field name="positions" type="positions" class="inputbox" size="30" label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_POSITION_LABEL" description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_POSITION_DESC" />
 
         <field
             name="funitid"

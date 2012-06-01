@@ -51,25 +51,26 @@ class ChurchDirectoryViewChurchDirectory extends JView {
             return false;
         }
         $document = JFactory::getDocument();
-        $document->addScript(JURI::root() . 'media/com_biblestudy/js/plugins/jquery.tokeninput.js');
-        $document->addStyleSheet(JURI::root() . 'media/com_biblestudy/css/token-input-jbs.css');
+        //$document->addScript(JURI::root() . 'media/com_biblestudy/js/plugins/jquery.tokeninput.js');
+        //$document->addStyleSheet(JURI::root() . 'media/com_biblestudy/css/token-input-jbs.css');
         var_dump($this->get('allpositions'));
-        $script = "
-            \$j(document).ready(function() {
-                \$j('#positoins').tokenInput(" . $this->get('allpositions') . ",
-                {
-                    theme: 'jbs',
-                    hintText: '" . JText::_('JBS_CMN_TOPIC_TAG') . "',
-                    noResultsText: '" . JText::_('JBS_CMN_NOT_FOUND') . "',
-                    searchingText: '" . JText::_('JBS_CMN_SEARCHING') . "',
-                    animateDropdown: false,
-                    preventDuplicates: true,
-                    prePopulate: " . $this->get('positions') . "
-                });
-            });
-             ";
+        var_dump($this->get('positions'));
+//        $script = "
+//            \$j(document).ready(function() {
+//                \$j('#positoins').tokenInput(" . $this->get('allpositions') . ",
+//                {
+//                    theme: 'jbs',
+//                    hintText: '" . JText::_('JBS_CMN_TOPIC_TAG') . "',
+//                    noResultsText: '" . JText::_('JBS_CMN_NOT_FOUND') . "',
+//                    searchingText: '" . JText::_('JBS_CMN_SEARCHING') . "',
+//                    animateDropdown: false,
+//                    preventDuplicates: true,
+//                    prePopulate: " . $this->get('positions') . "
+//                });
+//            });
+//             ";
 
-        $document->addScriptDeclaration($script);
+        //$document->addScriptDeclaration($script);
 
         // Set the toolbar
         $this->addToolBar();

@@ -121,8 +121,8 @@ JHtml::_('behavior.keepalive');
                 <li><?php echo $this->form->getLabel('image'); ?>
                     <?php echo $this->form->getInput('image'); ?></li>
 
-                <li><?php echo $this->form->getLabel('con_position'); ?>
-                    <?php echo $this->form->getInput('con_position'); var_dump($this->form->getInput('con_position'));?></li>
+                <li><?php echo $this->form->getLabel('positions'); ?>
+                    <?php echo $this->form->getInput('positions'); ?></li>
 
                 <li><?php echo $this->form->getLabel('email_to'); ?>
                     <?php echo $this->form->getInput('email_to'); ?></li>
