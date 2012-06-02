@@ -8,7 +8,6 @@
  * @copyright           Copyright (C) 2005 - 2011 Joomla Bible Study, All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 // No direct access
 defined('_JEXEC') or die;
 
@@ -43,7 +42,7 @@ class ChurchDirectoryViewDirectory extends JView {
         $children = $this->get('Children');
         $parent = $this->get('Parent');
         $pagination = $this->get('Pagination');
-        $dispatcher = & JDispatcher::getInstance();
+        //$dispatcher = JDispatcher::getInstance();
         $doc = JFactory::getDocument();
         $doc->setMetaData('Content-Type', 'application/vnd.google-earth.kml+xml', true);
         JResponse::setHeader('Content-disposition', 'attachment; filename="' . $items[0]->kml_alias . '.kml"', true);
@@ -129,9 +128,9 @@ class ChurchDirectoryViewDirectory extends JView {
             return $result;
         }
 
-                // Creates an array of strings to hold the lines of the KML file.
+        // Creates an array of strings to hold the lines of the KML file.
         $kml = array('<?xml version="1.0" encoding="UTF-8"?>');
-        $kml[] = '<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2">';
+        $kml[] = '<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom">';
         $kml[] = '<Document>';
         $kml[] = '<name>' . $items[0]->kml_name . '</name>';
         $kml[] = '<open>' . $items[0]->kml_params->get('open') . '</open>';
@@ -144,8 +143,92 @@ class ChurchDirectoryViewDirectory extends JView {
 		 <heading>' . $items[0]->kml_params->get('heading') . '</heading>
 		 <gx:altitudeMode>' . $items[0]->kml_params->get('gxaltitudeMode') . '</gx:altitudeMode>
   	     </LookAt>    <!-- Camera or LookAt -->';
-        $kml[] = $items[0]->kml_style;
+        //$kml[] = $items[0]->kml_style;
 
+        $kml[] = '<StyleMap id="text_photo_banner0">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#text_photo_banner</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#text_photo_banner1</styleUrl>
+		</Pair>
+	</StyleMap>';
+        $kml[] = '<Style id="text_photo_banner">';
+        $kml[] = '<IconStyle>';
+        $kml[] = '<scale>';
+        if ($items[0]->params->get('icscale') == NULL) {
+            $kml[] = '1.1';
+        } else {
+            $kml[] = $items[0]->kml_params->get('icscale');
+        }
+        $kml[] = '</scale>';
+        $kml[] = '<Icon>';
+        $kml[] = '<href>';
+        if ($items[0]->category_params->get('image') === null) {
+            $kml[] = JURI::base() . 'media/com_churchdirectory/images/kml_icons/iconb.png';
+        } else {
+            $kml[] = JURI::base() . DS . $items[0]->category_params->get('image');
+        }
+        $kml[] = '</href>';
+        $kml[] = '</Icon>';
+        $kml[] = '<hotSpot x="0.5" y="0.5" xunits="fraction" yunits="fraction"/>';
+        $kml[] = '</IconStyle>';
+        $kml[] = '<LabelStyle>';
+        //$kml[] = '<color>';
+        //$kml[] = '00ffffff';
+        //$kml[] = $items[0]->kml_params->get('lscolor');
+        //$kml[] = '</color>';
+        //$kml[] = '<colorMode>';
+        //$kml[] = $items[0]->kml_params->get('lscolormode');
+        //$kml[] = '</colorMode>';
+        $kml[] = '<scale>';
+        if ($items[0]->params->get('lsscale') == null) {
+            $kml[] = '.6';
+        } else {
+            $kml[] = $items[0]->kml_params->get('lsscale');
+        }
+        $kml[] = '</scale>';
+        $kml[] = '</LabelStyle>';
+        $kml[] = '</Style> ';
+        $kml[] = '<Style id="text_photo_banner1">';
+        $kml[] = '<IconStyle>';
+        $kml[] = '<scale>';
+        if ($items[0]->params->get('icscale') == NULL) {
+            $kml[] = '1.1';
+        } else {
+            $kml[] = $items[0]->kml_params->get('icscale');
+        }
+        $kml[] = '</scale>';
+        $kml[] = '<Icon>';
+        $kml[] = '<href>';
+        if ($items[0]->category_params->get('image') === null) {
+            $kml[] = JURI::base() . 'media/com_churchdirectory/images/kml_icons/iconb.png';
+        } else {
+            $kml[] = JURI::base() . DS . $items[0]->category_params->get('image');
+        }
+        $kml[] = '</href>';
+        $kml[] = '</Icon>';
+        $kml[] = '<hotSpot x="0.5" y="0.5" xunits="fraction" yunits="fraction"/>';
+        $kml[] = '</IconStyle>';
+        $kml[] = '<LabelStyle>';
+        //$kml[] = '<color>';
+        //$kml[] = '00ffffff';
+        //$kml[] = $items[0]->kml_params->get('lscolor');
+        //$kml[] = '</color>';
+        //$kml[] = '<colorMode>';
+        //$kml[] = $items[0]->kml_params->get('lscolormode');
+        //$kml[] = '</colorMode>';
+        $kml[] = '<scale>';
+        if ($items[0]->params->get('lsscale') == null) {
+            $kml[] = '.6';
+        } else {
+            $kml[] = $items[0]->kml_params->get('lsscale');
+        }
+        $kml[] = '</scale>';
+        $kml[] = '</LabelStyle>';
+        $kml[] = '</Style> ';
         $teams = groupit(array('items' => $items, 'field' => 'category_title'));
 
         foreach ($teams as $c => $catid) {
@@ -165,42 +248,6 @@ class ChurchDirectoryViewDirectory extends JView {
                 $kml[] = ' <open>' . $ckml_params->get('msropen') . '</open>           	   <!-- boolean -->';
 
                 foreach ($rows as $row) {
-                    //var_dump($row->category_params->get('image'));
-                    $kml[] = '<Style id="text_photo_banner">';
-                    $kml[] = '<IconStyle>';
-                    $kml[] = '<scale>';
-                    if ($row->params->get('icscale') == NULL) {
-                        $kml[] = '1.1';
-                    } else {
-                        $kml[] = $row->kml_params->get('icscale');
-                    }
-                    $kml[] = '</scale>';
-                    $kml[] = '<Icon>';
-                    $kml[] = '<href>';
-                    if ($row->category_params->get('image') == null) {
-                        $kml[] = JURI::base() . 'media/com_churchdirectory/images/kml_icons/iconb.png';
-                    } else {
-                        $kml[] = JURI::base() .DS. $row->category_params->get('image');
-                    }
-                    $kml[] = '</href>';
-                    $kml[] = '</Icon>';
-                    $kml[] = '</IconStyle>';
-                    $kml[] = '<LabelStyle>';
-                    $kml[] = '<color>';
-                    $kml[] = $row->kml_params->get('lscolor');
-                    $kml[] = '</color>';
-                    $kml[] = '<colorMode>';
-                    $kml[] = $row->kml_params->get('lscolormode');
-                    $kml[] = '</colorMode>';
-                    $kml[] = '<scale>';
-                    if ($row->params->get('lsscale') == null) {
-                        $kml[] = '.6';
-                    } else {
-                        $kml[] = $row->kml_params->get('lsscale');
-                    }
-                    $kml[] = '</scale>';
-                    $kml[] = '</LabelStyle>';
-                    $kml[] = '</Style> ';
                     $kml[] = '<Placemark id="placemark' . $mycounter++ . ' "> ';
                     $kml[] = '<name>' . $row->name . '</name>';
                     $kml[] = '<visibility>';
@@ -224,56 +271,53 @@ class ChurchDirectoryViewDirectory extends JView {
                     }
                     $kml[] = '</gx:balloonVisibility>';
                     $kml[] = '<address><![CDATA[';
-                    if ($row->address == null) {
+                    if ($row->address != NULL) {
                         $kml[] = $row->address . ',<br />';
                     }
                     $kml[] = $row->suburb . ', ' . $row->state . ' ' . $row->postcode;
-                    if (!empty($row->postcodeaddon)) {
-                        $kml[] = '-' . $row->postcodeaddon;
-                    }
                     $kml[] = ']]></address> <!-- string -->';
                     $kml[] = '<phoneNumber>' . $row->telephone . '</phoneNumber> <!-- string -->';
                     $kml[] = '<Snippet maxLines="';
-                    if ($row->kml_params->get('rmaxlines')) {
+                    if ($row->kml_params->get('rmaxlines') == null) {
                         $kml[] = '2';
                     } else {
                         $kml[] = $row->kml_params->get('rmaxlines');
                     }
-                    $kml[] = '"><![CDATA[' . $row->con_position . ' <br />Team ' . $row->catid . ']]></Snippet>   <!-- string -->';
+                    $kml[] = '">More coming soon</Snippet>   <!-- string -->';
                     $kml[] = '<description>' . '<![CDATA[<div style="padding: 10px;">';
                     if (empty($row->image)) {
                         $kml[] = '<img src="' . JURI::base() . 'media/com_churchdirectory/images/photo_not_available.jpg" alt="Photo" width="100" hight="100" /><br />';
                     } else {
-                        $kml[] = '<img src="' . JURI::base() .DS. $row->image . '" alt="Photo" width="100" hight="100" /><br />';
+                        $kml[] = '<img src="' . JURI::base() . DS . $row->image . '" alt="Photo" width="100" hight="100" /><br />';
                     }
-                    if (!empty ($row->con_position)) {
-                        $kml[] = '<b>Position: ' . $row->con_position . '</b><br />';
+                    if (!empty($row->id)) {
+                        $kml[] = '<b>Position:</b> Fixing sitll need to implement<br />';
                     }
-                    if (!empty ($row->spouse)) {
+                    if (!empty($row->spouse)) {
                         $kml[] = 'Spouse: ' . $row->spouse . '<br />';
                     }
-                    if (!empty ($row->children)) {
+                    if (!empty($row->children)) {
                         $kml[] = 'Children: ' . $row->children . '<br />';
                     }
-                    if (!empty ($row->misc)) {
+                    if (!empty($row->misc)) {
                         $kml[] = $row->misc;
                     }
-                    if (!empty ($row->telephone)) {
+                    if (!empty($row->telephone)) {
                         $kml[] = '<br />PH: ' . $row->telephone;
                     }
-                    if (!empty ($row->fax)) {
+                    if (!empty($row->fax)) {
                         $kml[] = '<br />Fax: ' . $row->fax;
                     }
-                    if (!empty ($row->mobile)) {
+                    if (!empty($row->mobile)) {
                         $kml[] = '<br />Cell: ' . $row->mobile;
                     }
-                    if (!empty ($row->email_to)) {
+                    if (!empty($row->email_to)) {
                         $kml[] = '<br />Email: <a href="mailto:' . $row->email_to . '">' . $row->email_to . '</a>';
                     }
                     $kml[] = '</div>]]>' . '</description>';
-                    $kml[] = '<styleUrl>#text_photo_banner</styleUrl>';
+                    $kml[] = '<styleUrl>#text_photo_banner0</styleUrl>';
                     $kml[] = '<Point>';
-                    $kml[] = '<coordinates>' . $row->lng . ',' . $row->lat . '</coordinates>';
+                    $kml[] = '<coordinates>' . $row->lng . ',' . $row->lat . ',0</coordinates>';
                     $kml[] = '</Point>';
                     $kml[] = '</Placemark>';
                 } // end the state folder

@@ -105,7 +105,6 @@ class ChurchDirectoryModelDirectory extends JModelList {
                 $params->loadString($item->attribs);
                 $item->attribs = $params;
             }
-            $item->con_position = explode(',', $item->con_position);
 
         }
 

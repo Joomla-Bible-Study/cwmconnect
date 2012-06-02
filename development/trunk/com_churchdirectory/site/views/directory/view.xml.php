@@ -8,7 +8,6 @@
  * @copyright           (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 // No direct access
 defined('_JEXEC') or die;
 
@@ -43,11 +42,10 @@ class ChurchDirectoryViewDirectory extends JView {
         $children = $this->get('Children');
         $parent = $this->get('Parent');
         $pagination = $this->get('Pagination');
-        $dispatcher = & JDispatcher::getInstance();
+        $dispatcher = JDispatcher::getInstance();
         $doc = JFactory::getDocument();
         $doc->setMetaData('Content-Type', 'application/xml', true);
         //$doc->setMetaData('Content-Type', 'text/html', true);
-
         // Check for errors.
         if (count($errors = $this->get('Errors'))) {
             JError::raiseWarning(500, implode("\n", $errors));
@@ -145,6 +143,42 @@ class ChurchDirectoryViewDirectory extends JView {
   	     </LookAt>    <!-- Camera or LookAt -->';
         $kml[] = $items[0]->kml_style;
 
+        $kml[] = '<Style id="text_photo_banner">';
+        $kml[] = '<IconStyle>';
+        $kml[] = '<scale>';
+        if ($items[0]->params->get('icscale') == NULL) {
+            $kml[] = '1.1';
+        } else {
+            $kml[] = $items[0]->kml_params->get('icscale');
+        }
+        $kml[] = '</scale>';
+        $kml[] = '<Icon>';
+        $kml[] = '<href>';
+        if ($items[0]->category_params->get('image') === null) {
+            $kml[] = JURI::base() . 'media/com_churchdirectory/images/kml_icons/iconb.png';
+        } else {
+            $kml[] = JURI::base() . DS . $items[0]->category_params->get('image');
+        }
+        $kml[] = '</href>';
+        $kml[] = '</Icon>';
+        $kml[] = '</IconStyle>';
+        $kml[] = '<LabelStyle>';
+        $kml[] = '<color>';
+        $kml[] = $items[0]->kml_params->get('lscolor');
+        $kml[] = '</color>';
+        $kml[] = '<colorMode>';
+        $kml[] = $items[0]->kml_params->get('lscolormode');
+        $kml[] = '</colorMode>';
+        $kml[] = '<scale>';
+        if ($items[0]->params->get('lsscale') == null) {
+            $kml[] = '.6';
+        } else {
+            $kml[] = $items[0]->kml_params->get('lsscale');
+        }
+        $kml[] = '</scale>';
+        $kml[] = '</LabelStyle>';
+        $kml[] = '</Style> ';
+
         $teams = groupit(array('items' => $items, 'field' => 'category_title'));
 
         foreach ($teams as $c => $catid) {
@@ -164,41 +198,6 @@ class ChurchDirectoryViewDirectory extends JView {
                 $kml[] = ' <open>' . $ckml_params->get('msropen') . '</open>           	   <!-- boolean -->';
 
                 foreach ($rows as $row) {
-                    $kml[] = '<Style id="text_photo_banner">';
-                    $kml[] = '<IconStyle>';
-                    $kml[] = '<scale>';
-                    if ($row->params->get('icscale') == NULL) {
-                        $kml[] = '1.1';
-                    } else {
-                        $kml[] = $row->kml_params->get('icscale');
-                    }
-                    $kml[] = '</scale>';
-                    $kml[] = '<Icon>';
-                    $kml[] = '<href>';
-                    if ($row->category_params->get('image') === null) {
-                        $kml[] = JURI::base() . 'media/com_churchdirectory/images/kml_icons/iconb.png';
-                    } else {
-                        $kml[] = JURI::base() .DS. $row->category_params->get('image');
-                    }
-                    $kml[] = '</href>';
-                    $kml[] = '</Icon>';
-                    $kml[] = '</IconStyle>';
-                    $kml[] = '<LabelStyle>';
-                    $kml[] = '<color>';
-                    $kml[] = $row->kml_params->get('lscolor');
-                    $kml[] = '</color>';
-                    $kml[] = '<colorMode>';
-                    $kml[] = $row->kml_params->get('lscolormode');
-                    $kml[] = '</colorMode>';
-                    $kml[] = '<scale>';
-                    if ($row->params->get('lsscale') == null) {
-                        $kml[] = '.6';
-                    } else {
-                        $kml[] = $row->kml_params->get('lsscale');
-                    }
-                    $kml[] = '</scale>';
-                    $kml[] = '</LabelStyle>';
-                    $kml[] = '</Style> ';
                     $kml[] = '<Placemark id="placemark' . $mycounter++ . ' "> ';
                     $kml[] = '<name>' . $row->name . '</name>';
                     $kml[] = '<visibility>';
@@ -222,13 +221,10 @@ class ChurchDirectoryViewDirectory extends JView {
                     }
                     $kml[] = '</gx:balloonVisibility>';
                     $kml[] = '<address><![CDATA[';
-                    if ($row->address == null) {
-                        $kml[] = $row->address . ',<br />';
+                    if ($row->address != null) {
+                        $kml[] = $row->address . '<br />';
                     }
                     $kml[] = $row->suburb . ', ' . $row->state . ' ' . $row->postcode;
-                    if ($row->postcodeaddon == null) {
-                        $kml[] = '-' . $row->postcodeaddon;
-                    }
                     $kml[] = ']]></address> <!-- string -->';
                     $kml[] = '<phoneNumber>' . $row->telephone . '</phoneNumber> <!-- string -->';
                     $kml[] = '<Snippet maxLines="';
@@ -237,35 +233,35 @@ class ChurchDirectoryViewDirectory extends JView {
                     } else {
                         $kml[] = $row->kml_params->get('rmaxlines');
                     }
-                    $kml[] = '"><![CDATA[' . $row->con_position . ' <br />Team ' . $row->catid . ']]></Snippet>   <!-- string -->';
+                    $kml[] = '"><![CDATA[' . $row->id . ' <br />Team ' . $row->catid . ']]></Snippet>   <!-- string -->';
                     $kml[] = '<description>' . '<![CDATA[<div>';
                     if (empty($row->image)) {
                         $kml[] = '<img src="' . JURI::base() . 'media/com_churchdirectory/images/photo_not_available.jpg" alt="Photo" width="100" hight="100" /><br />';
                     } else {
-                        $kml[] = '<img src="' . JURI::base() .DS. $row->image . '" alt="Photo" width="100" hight="100" /><br />';
+                        $kml[] = '<img src="' . JURI::base() . DS . $row->image . '" alt="Photo" width="100" hight="100" /><br />';
                     }
-                    if (!empty ($row->con_position)) {
-                        $kml[] = '<b>Position: ' . $row->con_position . '</b><br />';
+                    if (!empty($row->id)) {
+                        $kml[] = '<b>Position: ' . $row->id . '</b><br />';
                     }
-                    if (!empty ($row->spouse)) {
+                    if (!empty($row->spouse)) {
                         $kml[] = 'Spouse: ' . $row->spouse . '<br />';
                     }
-                    if (!empty ($row->children)) {
+                    if (!empty($row->children)) {
                         $kml[] = 'Children: ' . $row->children . '<br />';
                     }
-                    if (!empty ($row->misc)) {
+                    if (!empty($row->misc)) {
                         $kml[] = $row->misc;
                     }
-                    if (!empty ($row->telephone)) {
+                    if (!empty($row->telephone)) {
                         $kml[] = '<br />PH: ' . $row->telephone;
                     }
-                    if (!empty ($row->fax)) {
+                    if (!empty($row->fax)) {
                         $kml[] = '<br />Fax: ' . $row->fax;
                     }
-                    if (!empty ($row->mobile)) {
+                    if (!empty($row->mobile)) {
                         $kml[] = '<br />Cell: ' . $row->mobile;
                     }
-                    if (!empty ($row->email_to)) {
+                    if (!empty($row->email_to)) {
                         $kml[] = '<br />Email: <a href="mailto:' . $row->email_to . '">' . $row->email_to . '</a>';
                     }
                     $kml[] = '</div>]]>' . '</description>';

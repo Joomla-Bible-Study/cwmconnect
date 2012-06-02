@@ -125,19 +125,14 @@ foreach ($this->items as $item) {
                     <?php echo $item->name; ?>
                 </a></span>
                 <?php
-                if ($item->con_position && $this->params->get('dr_show_position')) :
-                    if ($item->con_position['0'] != 0):
+                if ($this->params->get('dr_show_position')) :
                         echo '<div id="position-header"><span id="contact-position">
                             <b>Position: </b></span></div><div id="position-name">
                             <span id="contact-position">';
-                        foreach ($item->con_position as $positions) :
                             JView::loadHelper('positions');
-                            $name = getPosition($positions);
+                            $name = @getPosition($item->id);
                             echo $name . '<br />';
-                        endforeach;
                         echo '</span></div><div class="clearfix"></div><br />';
-
-                    endif;
                 endif;
                 ?>
                 <?php if (($this->params->get('address_check') > 0) && ($item->address || $item->suburb || $item->state || $item->country || $item->postcode)) : ?>
