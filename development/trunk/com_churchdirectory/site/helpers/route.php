@@ -1,12 +1,10 @@
 <?php
+
 /**
- * @version		$Id: route.php 21097 2011-04-07 15:38:03Z dextercowley $
- * @package		Joomla.Site
- * @subpackage	com_churchdirectory
- * @copyright	Copyright (C) 2005 - 2011 Open Source Matters, Inc. All rights reserved.
+ * @package             com_churchdirectory
+ * @copyright           (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 // no direct access
 defined('_JEXEC') or die;
 
@@ -22,141 +20,118 @@ jimport('joomla.application.categories');
  * @subpackage	com_churchdirectory
  * @since 1.5
  */
-abstract class ChurchDirectoryHelperRoute
-{
-	protected static $lookup;
-	/**
-	 * @param	int	The route of the newsfeed
-	 */
-	public static function getChurchDirectoryRoute($id, $catid)
-	{
-		$needles = array(
-			'churchdirectory'  => array((int) $id)
-		);
-		//Create the link
-		$link = 'index.php?option=com_churchdirectory&view=member&id='. $id;
-		if ($catid > 1)
-		{
-			$categories = JCategories::getInstance('ChurchDirectory');
-			$category = $categories->get($catid);
-			if ($category) {
-				$needles['category'] = array_reverse($category->getPath());
-				$needles['categories'] = $needles['category'];
-				$link .= '&catid='.$catid;
-			}
-		}
+abstract class ChurchDirectoryHelperRoute {
 
-		if ($item = self::_findItem($needles)) {
-			$link .= '&Itemid='.$item;
-		}
-		elseif ($item = self::_findItem()) {
-			$link .= '&Itemid='.$item;
-		}
+    protected static $lookup;
 
-		return $link;
-	}
+    /**
+     * @param	int	The route of the newsfeed
+     */
+    public static function getMemberRoute($id, $catid) {
+        $needles = array(
+            'churchdirectory' => array((int) $id)
+        );
+        //Create the link
+        $link = 'index.php?option=com_churchdirectory&view=member&id=' . $id;
+        if ($catid > 1) {
+            $categories = JCategories::getInstance('ChurchDirectory');
+            $category = $categories->get($catid);
+            if ($category) {
+                $needles['category'] = array_reverse($category->getPath());
+                $needles['categories'] = $needles['category'];
+                $link .= '&catid=' . $catid;
+            }
+        }
 
-	public static function getCategoryRoute($catid)
-	{
-		if ($catid instanceof JCategoryNode)
-		{
-			$id = $catid->id;
-			$category = $catid;
-		}
-		else
-		{
-			$id = (int) $catid;
-			$category = JCategories::getInstance('ChurchDirectory')->get($id);
-		}
+        if ($item = self::_findItem($needles)) {
+            $link .= '&Itemid=' . $item;
+        } elseif ($item = self::_findItem()) {
+            $link .= '&Itemid=' . $item;
+        }
 
-		if($id < 1)
-		{
-			$link = '';
-		}
-		else
-		{
-			$needles = array(
-				'category' => array($id)
-			);
+        return $link;
+    }
 
-			if ($item = self::_findItem($needles))
-			{
-				$link = 'index.php?Itemid='.$item;
-			}
-			else
-			{
-				//Create the link
-				$link = 'index.php?option=com_churchdirectory&view=category&id='.$id;
-				if($category)
-				{
-					$catids = array_reverse($category->getPath());
-					$needles = array(
-						'category' => $catids,
-						'categories' => $catids
-					);
-					if ($item = self::_findItem($needles)) {
-						$link .= '&Itemid='.$item;
-					}
-					elseif ($item = self::_findItem()) {
-						$link .= '&Itemid='.$item;
-					}
-				}
-			}
-		}
+    public static function getCategoryRoute($catid) {
+        if ($catid instanceof JCategoryNode) {
+            $id = $catid->id;
+            $category = $catid;
+        } else {
+            $id = (int) $catid;
+            $category = JCategories::getInstance('ChurchDirectory')->get($id);
+        }
 
-		return $link;
-	}
+        if ($id < 1) {
+            $link = '';
+        } else {
+            $needles = array(
+                'category' => array($id)
+            );
 
-	protected static function _findItem($needles = null)
-	{
-		$app		= JFactory::getApplication();
-		$menus		= $app->getMenu('site');
+            if ($item = self::_findItem($needles)) {
+                $link = 'index.php?Itemid=' . $item;
+            } else {
+                //Create the link
+                $link = 'index.php?option=com_churchdirectory&view=category&id=' . $id;
+                if ($category) {
+                    $catids = array_reverse($category->getPath());
+                    $needles = array(
+                        'category' => $catids,
+                        'categories' => $catids
+                    );
+                    if ($item = self::_findItem($needles)) {
+                        $link .= '&Itemid=' . $item;
+                    } elseif ($item = self::_findItem()) {
+                        $link .= '&Itemid=' . $item;
+                    }
+                }
+            }
+        }
 
-		// Prepare the reverse lookup array.
-		if (self::$lookup === null)
-		{
-			self::$lookup = array();
+        return $link;
+    }
 
-			$component	= JComponentHelper::getComponent('com_churchdirectory');
-			$items		= $menus->getItems('component_id', $component->id);
-			foreach ($items as $item)
-			{
-				if (isset($item->query) && isset($item->query['view']))
-				{
-					$view = $item->query['view'];
-					if (!isset(self::$lookup[$view])) {
-						self::$lookup[$view] = array();
-					}
-					if (isset($item->query['id'])) {
-						self::$lookup[$view][$item->query['id']] = $item->id;
-					}
-				}
-			}
-		}
+    protected static function _findItem($needles = null) {
+        $app = JFactory::getApplication();
+        $menus = $app->getMenu('site');
 
-		if ($needles)
-		{
-			foreach ($needles as $view => $ids)
-			{
-				if (isset(self::$lookup[$view]))
-				{
-					foreach($ids as $id)
-					{
-						if (isset(self::$lookup[$view][(int)$id])) {
-							return self::$lookup[$view][(int)$id];
-						}
-					}
-				}
-			}
-		}
-		else
-		{
-			$active = $menus->getActive();
-			if ($active) {
-				return $active->id;
-			}
-		}
+        // Prepare the reverse lookup array.
+        if (self::$lookup === null) {
+            self::$lookup = array();
 
-		return null;
-	}
+            $component = JComponentHelper::getComponent('com_churchdirectory');
+            $items = $menus->getItems('component_id', $component->id);
+            foreach ($items as $item) {
+                if (isset($item->query) && isset($item->query['view'])) {
+                    $view = $item->query['view'];
+                    if (!isset(self::$lookup[$view])) {
+                        self::$lookup[$view] = array();
+                    }
+                    if (isset($item->query['id'])) {
+                        self::$lookup[$view][$item->query['id']] = $item->id;
+                    }
+                }
+            }
+        }
+
+        if ($needles) {
+            foreach ($needles as $view => $ids) {
+                if (isset(self::$lookup[$view])) {
+                    foreach ($ids as $id) {
+                        if (isset(self::$lookup[$view][(int) $id])) {
+                            return self::$lookup[$view][(int) $id];
+                        }
+                    }
+                }
+            }
+        } else {
+            $active = $menus->getActive();
+            if ($active) {
+                return $active->id;
+            }
+        }
+
+        return null;
+    }
+
 }

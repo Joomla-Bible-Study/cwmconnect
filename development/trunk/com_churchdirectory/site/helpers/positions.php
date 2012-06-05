@@ -18,7 +18,7 @@ function getPosition($id) {
 
     $query->join('LEFT', '#__churchdirectory_position AS position ON position.id = details_ps.contact_id');
     $query->where('details_ps.contact_id = '. $id);
-    //var_dump($query);
+    
     $db->setQuery($query->__toString());
     $positions = $db->loadObjectList();
     return json_encode($positions);

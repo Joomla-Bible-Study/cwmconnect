@@ -132,9 +132,9 @@ class ChurchDirectoryViewMember extends JView {
         // Add links to contacts
         if ($params->get('show_churchdirectory_list') && count($contacts) > 1) {
             foreach ($contacts as &$contact) {
-                $contact->link = JRoute::_(ChurchDirectoryHelperRoute::getChurchDirectoryRoute($contact->slug, $contact->catid));
+                $contact->link = JRoute::_(ChurchDirectoryHelperRoute::getMemberRoute($contact->slug, $contact->catid));
             }
-            $item->link = JRoute::_(ChurchDirectoryHelperRoute::getChurchDirectoryRoute($item->slug, $item->catid));
+            $item->link = JRoute::_(ChurchDirectoryHelperRoute::getMemberRoute($item->slug, $item->catid));
         }
 
         JHtml::_('behavior.formvalidation');

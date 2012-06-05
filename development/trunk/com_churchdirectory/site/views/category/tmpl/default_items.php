@@ -33,10 +33,10 @@ $listDirn = $this->escape($this->state->get('list.direction'));
                 <thead><tr>
 
                         <th class="item-title">
-                            <?php echo JHtml::_('grid.sort', 'COM_CHURCHDIRECTORY_CONTACT_EMAIL_NAME_LABEL', 'a.name', $listDirn, $listOrder); ?>
+                            <?php echo JHtml::_('grid.sort', 'COM_CHURCHDIRECTORY_MEMBER_EMAIL_NAME_LABEL', 'a.name', $listDirn, $listOrder); ?>
                         </th>
                         <th class="item-image">
-                            <?php echo JHtml::_('grid.sort', 'COM_CHURCHDIRECTORY_CONTACT_IMAGE_LABEL', 'a.name', $listDirn, $listOrder); ?>
+                            <?php echo JHtml::_('grid.sort', 'COM_CHURCHDIRECTORY_MEMBER_IMAGE_LABEL', 'a.name', $listDirn, $listOrder); ?>
                         </th>
                         <?php if ($this->params->get('show_position_headings')) : ?>
                             <th class="item-position">
@@ -97,7 +97,7 @@ $listDirn = $this->escape($this->state->get('list.direction'));
                         <?php endif; ?>
 
                         <td class="item-title">
-                            <a href="<?php echo JRoute::_(ChurchDirectoryHelperRoute::getChurchDirectoryRoute($item->slug, $item->catid)); ?>">
+                            <a href="<?php echo JRoute::_(ChurchDirectoryHelperRoute::getMemberRoute($item->slug, $item->catid)); ?>">
                                 <?php echo $item->name; ?></a>
                         </td>
                         <?php if ($item->image != null) { ?>

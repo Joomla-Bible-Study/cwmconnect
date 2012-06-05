@@ -121,7 +121,7 @@ foreach ($this->items as $item) {
                     <p>Count: <?php echo $printed_rows; ?> </p>
                 <?php endif; ?>
                     <span id="contact-name">
-                <a href="<?php echo JRoute::_(ChurchDirectoryHelperRoute::getChurchDirectoryRoute($item->slug, $item->catid)); ?>">
+                <a href="<?php echo JRoute::_(ChurchDirectoryHelperRoute::getMemberRoute($item->slug, $item->catid)); ?>">
                     <?php echo $item->name; ?>
                 </a></span>
                 <?php
