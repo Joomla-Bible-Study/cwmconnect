@@ -180,18 +180,3 @@ CREATE TABLE IF NOT EXISTS `#__churchdirectory_update` (
   `version` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `#__churchdirectory_details_ps`
---
-
-CREATE TABLE IF NOT EXISTS `#__churchdirectory_details_ps` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `contact_id` int(10) NOT NULL DEFAULT '0',
-  `posistion_id` int(3) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`),
-  KEY `idx_contact` (`contact_id`),
-  KEY `idx_position` (`posistion_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;

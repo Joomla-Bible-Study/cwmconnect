@@ -32,6 +32,26 @@ JHtml::_('behavior.formvalidation');
             </ul>
         </fieldset>
     </div>
+    <div class="width-40 fltrt">
+        <fieldset class="adminform">
+            <legend><?php echo JText::_('COM_CHURCHDIRECTORY_FAMILY_MEMBERS'); ?></legend>
+            <table class="adminlist">
+                <thead>
+                    <tr>
+                        <th align="center"><?php echo JText::_('COM_CHURCHDIRECTORY_FIELD_NAME_LABEL'); ?></th>
+                        <th align="center"><?php echo JText::_('COM_CHURCHDIRECTORY_ID_LABEL'); ?></th>
+
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <?php echo $this->members ?>
+
+                </tbody>
+            </table>
+
+        </fieldset>
+    </div>
     <div>
         <input type="hidden" name="task" value="" />
         <input type="hidden" name="tooltype" value="" />

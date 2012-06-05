@@ -161,6 +161,33 @@ class ChurchDirectoryModelPosition extends JModelAdmin {
         }
     }
 
+    public function getMembers() {
+        //$db = $this->getDbo();
+        //$query = $db->getQuery(true);
+        $positions = $this->getPositions();
+        $results = $positions;
+        //var_dump($results);
+        return $results;
+    }
+
+    protected function getPositions() {
+        $db = $this->getDbo();
+        $query = $db->getQuery(true);
+        $query->select('members.con_position, members.name, members.id');
+        $query->from('#__churchdirectory_details AS members');
+        $query->where('con_position <> ""');
+        $query->order('members.lname DESC');
+
+        $db->setQuery($query->__toString());
+        $positions = $db->loadObjectList();
+        foreach ($positions as $p):
+            $positions = explode(',', $p->con_position);
+            //$positions = json_encode($positions);
+
+        endforeach;
+        return $positions;
+    }
+
     /**
      * A protected method to get a set of ordering conditions.
      *

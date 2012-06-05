@@ -160,7 +160,8 @@ class ChurchDirectoryModelFamilyUnit extends JModelAdmin {
             }
         }
     }
-        /**
+
+    /**
      * Returns a list of mediafiles associated with this study
      *
      * @since   7.0
@@ -169,10 +170,10 @@ class ChurchDirectoryModelFamilyUnit extends JModelAdmin {
         $db = $this->getDbo();
         $query = $db->getQuery(true);
 
-        $query->select('members.id, members.name');
+        $query->select('members.id, members.lname');
         $query->from('#__churchdirectory_details AS members');
         $query->where('members.funitid = ' . (int) $this->getItem()->id);
-        $query->order('members.name DESC');
+        $query->order('members.lname DESC');
 
         $db->setQuery($query->__toString());
         return $db->loadObjectList();

@@ -129,10 +129,10 @@ JHtml::_('behavior.formvalidation');
         </fieldset>
 
     </div>
+    <div class="clr"></div>
     <div>
         <input type="hidden" name="task" value="" />
         <input type="hidden" name="tooltype" value="" />
         <?php echo JHtml::_('form.token'); ?>
     </div>
 </form>
-<div class="clr"></div>
