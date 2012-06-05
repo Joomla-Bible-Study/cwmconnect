@@ -32,7 +32,7 @@ class ChurchDirectoryHelper {
                 JText::_('COM_CHURCHDIRECTORY_SUBMENU_CPANEL'), 'index.php?option=com_churchdirectory&view=cpanel', $vName == 'cpanel'
         );
         JSubMenuHelper::addEntry(
-                JText::_('COM_CHURCHDIRECTORY_SUBMENU_CONTACTS'), 'index.php?option=com_churchdirectory&view=churchdirectories', $vName == 'churchdirectories'
+                JText::_('COM_CHURCHDIRECTORY_SUBMENU_MEMBERS'), 'index.php?option=com_churchdirectory&view=members', $vName == 'members'
         );
         JSubMenuHelper::addEntry(
                 JText::_('COM_CHURCHDIRECTORY_SUBMENU_CATEGORIES'), 'index.php?option=com_categories&extension=com_churchdirectory', $vName == 'categories'
@@ -74,7 +74,7 @@ class ChurchDirectoryHelper {
         } elseif (empty($contactId)) {
             $assetName = 'com_churchdirectory.category.' . (int) $categoryId;
         } else {
-            $assetName = 'com_churchdirectory.churchdirectory.' . (int) $contactId;
+            $assetName = 'com_churchdirectory.members.' . (int) $contactId;
         }
 
         $actions = array(

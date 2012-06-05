@@ -13,7 +13,7 @@ defined('_JEXEC') or die;
  * @package	com_churchdirectory
  * @since       1.7.0
  */
-abstract class JHtmlChurchdirectory {
+abstract class JHtmlMember {
 
     /**
      * @param	int $value	The featured value
@@ -26,8 +26,8 @@ abstract class JHtmlChurchdirectory {
     static function featured($value = 0, $i, $canChange = true) {
         // Array of image, task, title, action
         $states = array(
-            0 => array('disabled.png', 'churchdirectories.featured', 'COM_CHURCHDIRECTORY_UNFEATURED', 'COM_CHURCHDIRECTORY_TOGGLE_TO_FEATURE'),
-            1 => array('featured.png', 'churchdirectories.unfeatured', 'JFEATURED', 'COM_CHURCHDIRECTORY_TOGGLE_TO_UNFEATURE'),
+            0 => array('disabled.png', 'members.featured', 'COM_CHURCHDIRECTORY_UNFEATURED', 'COM_CHURCHDIRECTORY_TOGGLE_TO_FEATURE'),
+            1 => array('featured.png', 'members.unfeatured', 'JFEATURED', 'COM_CHURCHDIRECTORY_TOGGLE_TO_UNFEATURE'),
         );
         $state = JArrayHelper::getValue($states, (int) $value, $states[1]);
         $html = JHtml::_('image', 'admin/' . $state[0], JText::_($state[2]), NULL, true);

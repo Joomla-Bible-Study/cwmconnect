@@ -1,6 +1,15 @@
 .icon-48-churchdirectory {
-	background-image: url(../images/icons/icon-48-churchdirectory.png);
+	background-image: url('../images/icons/icon-48-churchdirectory.png');
+}
+.icon-48-members {
+	background-image: url('../images/icons/icon-48-members.png');
 }
 .icon-48-kml {
-        background-image: url(../images/icons/icon-48-kmllogo.png);
+        background-image: url('../images/icons/icon-48-kml.png');
+}
+.icon-48-familyunit {
+        background-image: url('../images/icons/icon-48-familyunit.png');
+}
+.icon-48-position {
+        background-image: url('../images/icons/icon-48-position.png');
 }

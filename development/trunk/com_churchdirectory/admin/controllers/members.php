@@ -1,7 +1,6 @@
 <?php
 
 /**
- * @version		$Id: churchdirectories.php 71 $
  * @package             com_churchdirectory
  * @copyright           (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
@@ -17,7 +16,7 @@ jimport('joomla.application.component.controlleradmin');
  * @package	com_churchdirectory
  * @since	1.7.0
  */
-class ChurchDirectoryControllerChurchDirectories extends JControllerAdmin {
+class ChurchDirectoryControllerMembers extends JControllerAdmin {
 
     /**
      * Constructor.
@@ -72,7 +71,7 @@ class ChurchDirectoryControllerChurchDirectories extends JControllerAdmin {
             }
         }
 
-        $this->setRedirect('index.php?option=com_churchdirectory&view=churchdirectories');
+        $this->setRedirect('index.php?option=com_churchdirectory&view=members');
     }
 
     /**
@@ -84,7 +83,7 @@ class ChurchDirectoryControllerChurchDirectories extends JControllerAdmin {
      * @return	JModel
      * @since	1.7.0
      */
-    public function getModel($name = 'ChurchDirectory', $prefix = 'ChurchDirectoryModel', $config = array('ignore_request' => true)) {
+    public function getModel($name = 'Member', $prefix = 'ChurchDirectoryModel', $config = array('ignore_request' => true)) {
         $model = parent::getModel($name, $prefix, $config);
 
         return $model;

@@ -8,11 +8,11 @@
 
         <field
             name="churchdirectory_layout" type="componentlayout"
-            label="JGLOBAL_FIELD_LAYOUT_LABEL"
-            description="JGLOBAL_FIELD_LAYOUT_DESC"
-            menuitems="true"
-            extension="com_churchdirectory"
-            view="churchdirectory"
+                                          label="JGLOBAL_FIELD_LAYOUT_LABEL"
+                                          description="JGLOBAL_FIELD_LAYOUT_DESC"
+                                          menuitems="true"
+                                          extension="com_churchdirectory"
+                                          view="churchdirectory"
 		/>
 
         <field name="show_churchdirectory_category"
@@ -47,11 +47,11 @@
             <option value="plain">COM_CHURCHDIRECTORY_FIELD_VALUE_PLAIN</option>
         </field>
         <field name="protectedaccess"
-                type="usergroup"
-                label="COM_CHURCHDIRECTORY_FIELD_MEMBER_PROTECTED_ACCESS_LABEL"
-                description="COM_CHURCHDIRECTORY_FIELD_MEMBER_PROTECTED_ACCESS_DESC"
-                class="inputbox"
-                size="1"
+               type="usergroup"
+               label="COM_CHURCHDIRECTORY_FIELD_MEMBER_PROTECTED_ACCESS_LABEL"
+               description="COM_CHURCHDIRECTORY_FIELD_MEMBER_PROTECTED_ACCESS_DESC"
+               class="inputbox"
+               size="1"
 		/>
         <field name="show_name"
                type="radio"
@@ -331,11 +331,11 @@
 
         <field
             name="category_layout" type="componentlayout"
-            label="JGLOBAL_FIELD_LAYOUT_LABEL"
-            description="JGLOBAL_FIELD_LAYOUT_DESC"
-            menuitems="true"
-            extension="com_churchdirectory"
-            view="category"
+                                   label="JGLOBAL_FIELD_LAYOUT_LABEL"
+                                   description="JGLOBAL_FIELD_LAYOUT_DESC"
+                                   menuitems="true"
+                                   extension="com_churchdirectory"
+                                   view="category"
 		/>
 
         <field name="show_category_title" type="radio"
@@ -625,11 +625,11 @@
 
         <field
             name="directory_layout" type="componentlayout"
-            label="JGLOBAL_FIELD_LAYOUT_LABEL"
-            description="JGLOBAL_FIELD_LAYOUT_DESC"
-            menuitems="true"
-            extension="com_churchdirectory"
-            view="directory"
+                                    label="JGLOBAL_FIELD_LAYOUT_LABEL"
+                                    description="JGLOBAL_FIELD_LAYOUT_DESC"
+                                    menuitems="true"
+                                    extension="com_churchdirectory"
+                                    view="directory"
 		/>
         <field name="dr_presentation_style"
                type="list"

@@ -19,9 +19,9 @@ JHtml::_('behavior.keepalive');
 <script type="text/javascript">
     Joomla.submitbutton = function(task)
     {
-        if (task == 'churchdirectory.cancel' || document.formvalidator.isValid(document.id('churchdirectory-form'))) {
+        if (task == 'member.cancel' || document.formvalidator.isValid(document.id('member-form'))) {
 <?php echo $this->form->getField('misc')->save(); ?>
-            Joomla.submitform(task, document.getElementById('churchdirectory-form'));
+            Joomla.submitform(task, document.getElementById('member-form'));
         }
         else {
             alert('<?php echo $this->escape(JText::_('JGLOBAL_VALIDATION_FORM_FAILED')); ?>');
@@ -29,10 +29,10 @@ JHtml::_('behavior.keepalive');
     }
 </script>
 
-<form action="<?php echo JRoute::_('index.php?option=com_churchdirectory&layout=edit&id=' . (int) $this->item->id); ?>" method="post" name="adminForm" id="adminForm" class="form-validate">
+<form action="<?php echo JRoute::_('index.php?option=com_churchdirectory&layout=edit&id=' . (int) $this->item->id); ?>" method="post" name="adminForm" id="member-form" class="form-validate">
     <div class="width-60 fltlft">
         <fieldset class="adminform">
-            <legend><?php echo empty($this->item->id) ? JText::_('COM_CHURCHDIRECTORY_NEW_CONTACT') : JText::sprintf('COM_CHURCHDIRECTORY_EDIT_CONTACT', $this->item->id); ?></legend>
+            <legend><?php echo empty($this->item->id) ? JText::_('COM_CHURCHDIRECTORY_NEW_MEMBER') : JText::sprintf('COM_CHURCHDIRECTORY_EDIT_MEMBER', $this->item->id); ?></legend>
             <ul class="adminformlist">
                 <li><?php echo $this->form->getLabel('name'); ?>
                     <?php echo $this->form->getInput('name'); ?></li>
@@ -80,7 +80,7 @@ JHtml::_('behavior.keepalive');
         </fieldset>
     </div>
     <div class="width-40 fltrt">
-        <?php echo JHtml::_('sliders.start', 'churchdirectory-slider'); ?>
+        <?php echo JHtml::_('sliders.start', 'member-slider'); ?>
         <?php echo JHtml::_('sliders.panel', JText::_('JGLOBAL_FIELDSET_PUBLISHING'), 'publishing-details'); ?>
 
         <fieldset class="adminform">
@@ -111,7 +111,7 @@ JHtml::_('behavior.keepalive');
 
             </ul>
         </fieldset>
-        <?php echo JHtml::_('sliders.panel', JText::_('COM_CHURCHDIRECTORY_CONTACT_DETAILS'), 'basic-options'); ?>
+        <?php echo JHtml::_('sliders.panel', JText::_('COM_CHURCHDIRECTORY_MEMBER_DETAILS'), 'basic-options'); ?>
 
 
         <fieldset class="adminform">
@@ -121,8 +121,8 @@ JHtml::_('behavior.keepalive');
                 <li><?php echo $this->form->getLabel('image'); ?>
                     <?php echo $this->form->getInput('image'); ?></li>
 
-                <li><?php echo $this->form->getLabel('positions'); ?>
-                    <?php echo $this->form->getInput('positions'); ?></li>
+                <li><?php echo $this->form->getLabel('con_position'); ?>
+                    <?php echo $this->form->getInput('con_position'); ?></li>
 
                 <li><?php echo $this->form->getLabel('email_to'); ?>
                     <?php echo $this->form->getInput('email_to'); ?></li>
@@ -171,7 +171,7 @@ JHtml::_('behavior.keepalive');
             </ul>
         </fieldset>
 
-        <?php echo JHtml::_('sliders.panel', JText::_('COM_CHURCHDIRECTORY_CONTACT_IM'), 'im-options'); ?>
+        <?php echo JHtml::_('sliders.panel', JText::_('COM_CHURCHDIRECTORY_MEMBER_IM'), 'im-options'); ?>
 
         <fieldset class="adminform">
             <ul class="adminformlist">

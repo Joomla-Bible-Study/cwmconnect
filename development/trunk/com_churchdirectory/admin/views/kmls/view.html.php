@@ -65,7 +65,7 @@ class ChurchDirectoryViewKMLs extends JView {
      */
     protected function addToolbar() {
         $canDo = ChurchDirectoryHelper::getActions($this->state->get('filter.category_id'));
-        JToolBarHelper::title(JText::_('COM_CHURCHDIRECTORY_MANAGER_KMLS'), 'churchdirectory.png');
+        JToolBarHelper::title(JText::_('COM_CHURCHDIRECTORY_MANAGER_KMLS'), 'kml');
 
         if ($canDo->get('core.create') || (count($user->getAuthorisedCategories('com_churchdirectory', 'core.create'))) > 0) {
             JToolBarHelper::addNew('kml.add');

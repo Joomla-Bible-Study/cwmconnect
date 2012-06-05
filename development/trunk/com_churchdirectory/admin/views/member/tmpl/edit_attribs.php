@@ -15,11 +15,11 @@ foreach ($groups as $itemacessint => $key):
 endforeach;
 
 // Start of Form
-echo JHtml::_('sliders.panel', JText::_('COM_CHURCHDIRECTORY_CONTACT_KML_DETAILS'), 'kml-options');
+echo JHtml::_('sliders.panel', JText::_('COM_CHURCHDIRECTORY_MEMBER_KML_DETAILS'), 'kml-options');
 ?>
 <fieldset class="adminform">
     <p>
-        <?php echo empty($this->item->id) ? JText::_('COM_CHURCHDIRECTORY_DETAILS') : JText::sprintf('COM_CHURCHDIRECTORY_EDIT_CONTACT_KML', $this->item->id); ?></p>
+        <?php echo empty($this->item->id) ? JText::_('COM_CHURCHDIRECTORY_DETAILS') : JText::sprintf('COM_CHURCHDIRECTORY_EDIT_MEMBER_KML', $this->item->id); ?></p>
 
     <ul class="adminformlist">
         <li><?php echo $this->form->getLabel('lat'); ?>

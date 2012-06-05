@@ -20,7 +20,7 @@ $canOrder = $user->authorise('core.edit.state', 'com_churchdirectory.category');
 $saveOrder = $listOrder == 'a.ordering';
 ?>
 
-<form action="<?php echo JRoute::_('index.php?option=com_churchdirectory&view=churchdirectories'); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo JRoute::_('index.php?option=com_churchdirectory&view=members'); ?>" method="post" name="adminForm" id="adminForm">
     <fieldset id="filter-bar">
         <div class="filter-search fltlft">
             <label class="filter-search-lbl" for="filter_search"><?php echo JText::_('JSEARCH_FILTER_LABEL'); ?></label>
@@ -80,7 +80,7 @@ $saveOrder = $listOrder == 'a.ordering';
                 <th width="10%">
                     <?php echo JHtml::_('grid.sort', 'JGRID_HEADING_ORDERING', 'a.ordering', $listDirn, $listOrder); ?>
                     <?php if ($canOrder && $saveOrder) : ?>
-                        <?php echo JHtml::_('grid.order', $this->items, 'filesave.png', 'churchdirectories.saveorder'); ?>
+                        <?php echo JHtml::_('grid.order', $this->items, 'filesave.png', 'members.saveorder'); ?>
                     <?php endif; ?>
                 </th>
                 <th width="10%">
@@ -120,10 +120,10 @@ $saveOrder = $listOrder == 'a.ordering';
                     </td>
                     <td>
                         <?php if ($item->checked_out) : ?>
-                            <?php echo JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, 'churchdirectories.', $canCheckin); ?>
+                            <?php echo JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, 'members.', $canCheckin); ?>
                         <?php endif; ?>
                         <?php if ($canEdit || $canEditOwn) : ?>
-                            <a href="<?php echo JRoute::_('index.php?option=com_churchdirectory&task=churchdirectory.edit&id=' . (int) $item->id); ?>">
+                            <a href="<?php echo JRoute::_('index.php?option=com_churchdirectory&task=member.edit&id=' . (int) $item->id); ?>">
                                 <?php echo $this->escape($item->name); ?></a>
                         <?php else : ?>
                             <?php echo $this->escape($item->name); ?>
@@ -140,10 +140,10 @@ $saveOrder = $listOrder == 'a.ordering';
                         <?php endif; ?>
                     </td>
                     <td align="center">
-                        <?php echo JHtml::_('jgrid.published', $item->published, $i, 'churchdirectories.', $canChange, 'cb', $item->publish_up, $item->publish_down); ?>
+                        <?php echo JHtml::_('jgrid.published', $item->published, $i, 'members.', $canChange, 'cb', $item->publish_up, $item->publish_down); ?>
                     </td>
                     <td class="center">
-                        <?php echo JHtml::_('churchdirectory.featured', $item->featured, $i, $canChange); ?>
+                        <?php echo JHtml::_('member.featured', $item->featured, $i, $canChange); ?>
                     </td>
                     <td align="center">
                         <?php echo $item->category_title; ?>
@@ -152,11 +152,11 @@ $saveOrder = $listOrder == 'a.ordering';
                         <?php if ($canChange) : ?>
                             <?php if ($saveOrder) : ?>
                                 <?php if ($listDirn == 'asc') : ?>
-                                    <span><?php echo $this->pagination->orderUpIcon($i, ($item->catid == @$this->items[$i - 1]->catid), 'churchdirectories.orderup', 'JLIB_HTML_MOVE_UP', $ordering); ?></span>
-                                    <span><?php echo $this->pagination->orderDownIcon($i, $n, ($item->catid == @$this->items[$i + 1]->catid), 'churchdirectories.orderdown', 'JLIB_HTML_MOVE_DOWN', $ordering); ?></span>
+                                    <span><?php echo $this->pagination->orderUpIcon($i, ($item->catid == @$this->items[$i - 1]->catid), 'members.orderup', 'JLIB_HTML_MOVE_UP', $ordering); ?></span>
+                                    <span><?php echo $this->pagination->orderDownIcon($i, $n, ($item->catid == @$this->items[$i + 1]->catid), 'members.orderdown', 'JLIB_HTML_MOVE_DOWN', $ordering); ?></span>
                                 <?php elseif ($listDirn == 'desc') : ?>
-                                    <span><?php echo $this->pagination->orderUpIcon($i, ($item->catid == @$this->items[$i - 1]->catid), 'churchdirectories.orderdown', 'JLIB_HTML_MOVE_UP', $ordering); ?></span>
-                                    <span><?php echo $this->pagination->orderDownIcon($i, $n, ($item->catid == @$this->items[$i + 1]->catid), 'churchdirectories.orderup', 'JLIB_HTML_MOVE_DOWN', $ordering); ?></span>
+                                    <span><?php echo $this->pagination->orderUpIcon($i, ($item->catid == @$this->items[$i - 1]->catid), 'members.orderdown', 'JLIB_HTML_MOVE_UP', $ordering); ?></span>
+                                    <span><?php echo $this->pagination->orderDownIcon($i, $n, ($item->catid == @$this->items[$i + 1]->catid), 'members.orderup', 'JLIB_HTML_MOVE_DOWN', $ordering); ?></span>
                                 <?php endif; ?>
                             <?php endif; ?>
                             <?php $disabled = $saveOrder ? '' : 'disabled="disabled"'; ?>

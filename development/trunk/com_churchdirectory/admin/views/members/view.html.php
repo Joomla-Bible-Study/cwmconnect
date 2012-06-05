@@ -19,7 +19,7 @@ jimport('joomla.i18n.help');
  * @package	com_churchdirectory
  * @since		1.7.0
  */
-class ChurchDirectoryViewChurchDirectories extends JView {
+class ChurchDirectoryViewMembers extends JView {
 
     protected $items;
     protected $pagination;
@@ -67,30 +67,30 @@ class ChurchDirectoryViewChurchDirectories extends JView {
      */
     protected function addToolbar() {
         $canDo = ChurchDirectoryHelper::getActions($this->state->get('filter.category_id'));
-        JToolBarHelper::title(JText::_('COM_CHURCHDIRECTORY_MANAGER_CONTACTS'), 'churchdirectory');
+        JToolBarHelper::title(JText::_('COM_CHURCHDIRECTORY_MANAGER_MEMBERS'), 'members');
 
         if ($canDo->get('core.create') || (count($user->getAuthorisedCategories('com_churchdirectory', 'core.create'))) > 0) {
-            JToolBarHelper::addNew('churchdirectory.add');
+            JToolBarHelper::addNew('member.add');
         }
 
         if (($canDo->get('core.edit')) || ($canDo->get('core.edit.own'))) {
-            JToolBarHelper::editList('churchdirectory.edit');
+            JToolBarHelper::editList('member.edit');
         }
 
         if ($canDo->get('core.edit.state')) {
             JToolBarHelper::divider();
-            JToolBarHelper::publish('churchdirectories.publish', 'JTOOLBAR_PUBLISH', true);
-            JToolBarHelper::unpublish('churchdirectories.unpublish', 'JTOOLBAR_UNPUBLISH', true);
+            JToolBarHelper::publish('members.publish', 'JTOOLBAR_PUBLISH', true);
+            JToolBarHelper::unpublish('members.unpublish', 'JTOOLBAR_UNPUBLISH', true);
             JToolBarHelper::divider();
-            JToolBarHelper::archiveList('churchdirectories.archive');
-            JToolBarHelper::checkin('churchdirectories.checkin');
+            JToolBarHelper::archiveList('members.archive');
+            JToolBarHelper::checkin('members.checkin');
         }
 
         if ($this->state->get('filter.published') == -2 && $canDo->get('core.delete')) {
-            JToolBarHelper::deleteList('', 'churchdirectories.delete', 'JTOOLBAR_EMPTY_TRASH');
+            JToolBarHelper::deleteList('', 'members.delete', 'JTOOLBAR_EMPTY_TRASH');
             JToolBarHelper::divider();
         } elseif ($canDo->get('core.edit.state')) {
-            JToolBarHelper::trash('churchdirectories.trash');
+            JToolBarHelper::trash('members.trash');
             JToolBarHelper::divider();
         }
 
@@ -99,12 +99,12 @@ class ChurchDirectoryViewChurchDirectories extends JView {
             JToolBarHelper::divider();
         }
 
-        JToolBarHelper::help('churchdirectory_contacts', TRUE);
+        JToolBarHelper::help('churchdirectory_members', TRUE);
     }
 
     protected function setDocument() {
         $document = JFactory::getDocument();
-        $document->setTitle(JText::_('COM_CHURCHDIRECTORY_ADMINISTRATION_CONTACTS'));
+        $document->setTitle(JText::_('COM_CHURCHDIRECTORY_ADMINISTRATION_MEMBERS'));
     }
 
 }

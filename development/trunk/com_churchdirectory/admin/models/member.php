@@ -1,7 +1,6 @@
 <?php
 
 /**
- * @version		$Id: churchdirectory.php 1.7.0 $
  * @package             com_churchdirectory
  * @copyright           (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
@@ -17,7 +16,7 @@ jimport('joomla.application.component.modeladmin');
  * @package	com_churchdirectory
  * @since		1.7.0
  */
-class ChurchDirectoryModelChurchDirectory extends JModelAdmin {
+class ChurchDirectoryModelMember extends JModelAdmin {
 
     /**
      * @var		string	The prefix to use with controller messages.
@@ -39,7 +38,7 @@ class ChurchDirectoryModelChurchDirectory extends JModelAdmin {
                 return;
             }
             $user = JFactory::getUser();
-            return $user->authorise('core.delete', 'com_churchdirectory.churchdirectory.' . (int) $record->id);
+            return $user->authorise('core.delete', 'com_churchdirectory.member.' . (int) $record->id);
         }
     }
 
@@ -65,6 +64,90 @@ class ChurchDirectoryModelChurchDirectory extends JModelAdmin {
     }
 
     /**
+     * Method to store a record
+     *
+     * @access	public
+     * @return	boolean	True on success
+     */
+    function store() {
+        // fix up special html fields
+
+        $row = & $this->getTable();
+
+        $data = JRequest::get('post');
+
+        // Bind the form fields to the table
+        if (!$row->bind($data)) {
+            $this->setError($this->_db->getErrorMsg());
+            return false;
+        }
+
+
+        // Make sure the record is valid
+        if (!$row->check()) {
+            $this->setError($this->_db->getErrorMsg());
+            return false;
+        }
+
+        //Get Tags
+        $vTags = JRequest::getVar('positions', '', 'post', 'string', JREQUEST_ALLOWRAW);
+        $iTags = explode(",", $vTags);
+
+        JTable::addIncludePath(JPATH_ADMINISTRATOR . DIRECTORY_SEPARATOR . 'components' . DIRECTORY_SEPARATOR . 'com_biblestudy' . DIRECTORY_SEPARATOR . 'tables');
+
+        foreach ($iTags as $aTag) {
+            if (is_numeric($aTag)) {
+                //It's an existing tag.  Add it
+                if ($aTag != "") {
+
+                    $tagRow = & JTable::getInstance('studytopics', 'Table');
+
+                    $isDup = $this->isDuplicate($row->id, $aTag);
+
+                    if (!$isDup) {
+                        $tagRow->study_id = $row->id;
+                        $tagRow->topic_id = $aTag;
+
+                        if (!$tagRow->store()) {
+                            $this->setError($this->_db->getErrorMsg());
+                            return false;
+                        }
+                    }
+                }
+            } else {
+                //It's a new tag.  Gotta insert it into the Topics table.
+                if ($aTag != "") {
+                    $topicRow = & JTable::getInstance('topic', 'Table');
+                    $tempText = $aTag;
+                    $tempText = str_replace("0_", "", $tempText);
+                    $topicRow->topic_text = $tempText;
+                    $topicRow->published = 1;
+                    if (!$topicRow->store()) {
+                        $this->setError($this->_db->getErrorMsg());
+                        return false;
+                    }
+
+                    //Gotta somehow make sure this isn't a duplicate...
+                    $tagRow = & JTable::getInstance('studytopics', 'Table');
+                    $tagRow->study_id = $row->id;
+                    $tagRow->topic_id = $topicRow->id;
+
+                    $isDup = $this->isDuplicate($row->id, $aTag);
+
+                    if (!$isDup) {
+                        if (!$tagRow->store()) {
+                            $this->setError($this->_db->getErrorMsg());
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+        return true;
+    }
+
+
+    /**
      * Returns a Table object, always creating it
      *
      * @param	type	$type	The table type to instantiate
@@ -74,7 +157,7 @@ class ChurchDirectoryModelChurchDirectory extends JModelAdmin {
      * @return	JTable	A database object
      * @since	1.7.0
      */
-    public function getTable($type = 'ChurchDirectory', $prefix = 'ChurchDirectoryTable', $config = array()) {
+    public function getTable($type = 'Member', $prefix = 'ChurchDirectoryTable', $config = array()) {
         return JTable::getInstance($type, $prefix, $config);
     }
 
@@ -92,7 +175,7 @@ class ChurchDirectoryModelChurchDirectory extends JModelAdmin {
         JForm::addFieldPath('JPATH_ADMINISTRATOR/components/com_users/models/fields');
 
         // Get the form.
-        $form = $this->loadForm('com_churchdirectory.churchdirectory', 'churchdirectory', array('control' => 'jform', 'load_data' => $loadData));
+        $form = $this->loadForm('com_churchdirectory.member', 'member', array('control' => 'jform', 'load_data' => $loadData));
         if (empty($form)) {
             return false;
         }
@@ -147,15 +230,15 @@ class ChurchDirectoryModelChurchDirectory extends JModelAdmin {
      */
     protected function loadFormData() {
         // Check the session for previously entered form data.
-        $data = JFactory::getApplication()->getUserState('com_churchdirectory.edit.churchdirectory.data', array());
+        $data = JFactory::getApplication()->getUserState('com_churchdirectory.edit.member.data', array());
 
         if (empty($data)) {
             $data = $this->getItem();
 
             // Prime some default values.
-            if ($this->getState('churchdirectory.id') == 0) {
+            if ($this->getState('member.id') == 0) {
                 $app = JFactory::getApplication();
-                $data->set('catid', JRequest::getInt('catid', $app->getUserState('com_churchdirectory.churchdirectories.filter.category_id')));
+                $data->set('catid', JRequest::getInt('catid', $app->getUserState('com_churchdirectory.members.filter.category_id')));
             }
         }
 
@@ -263,47 +346,6 @@ class ChurchDirectoryModelChurchDirectory extends JModelAdmin {
      */
     protected function cleanCache($group = null, $client_id = 0) {
         parent::cleanCache('com_churchdirectory');
-    }
-
-    /**
-     * Gets all the Positions associated with a particular contact
-     *
-     * @return type JSON Object containing the positions
-     * @since 1.7.1
-     */
-    function getPositions() {
-        if (JRequest::getVar('id', 0, null, 'int') > 0) {
-            $db = $this->getDbo();
-            $query = $db->getQuery(true);
-
-            $query->select('position.id, position.name');
-            $query->from('#__churchdirectory_details_ps AS details_ps');
-
-            $query->join('LEFT', '#__churchdirectory_position AS position ON position.id = details_ps.contact_id');
-            $query->where('details_ps.contact_id = ' . JRequest::getVar('id', 0, null, 'int'));
-            var_dump($query);
-            $db->setQuery($query->__toString());
-            $positions = $db->loadObjectList();
-        }
-        return json_encode($positions);
-    }
-
-    /**
-     * Gets all positions available
-     *
-     * @return type JSON Object containing the positions
-     * @since 1.7.1
-     */
-    function getAllpositions() {
-        $db = $this->getDbo();
-        $query = $db->getQuery(true);
-
-        $query->select('position.id, position.name');
-        $query->from('#__churchdirectory_position AS position');
-
-        $db->setQuery($query->__toString());
-        $positions = $db->loadObjectList();
-        return json_encode($positions);
     }
 
 }

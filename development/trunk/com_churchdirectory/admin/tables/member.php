@@ -10,7 +10,7 @@
 // No direct access
 defined('_JEXEC') or die;
 
-class ChurchDirectoryTableChurchDirectory extends JTable {
+class ChurchDirectoryTableMember extends JTable {
 
     /**
      * Constructor
@@ -46,9 +46,6 @@ class ChurchDirectoryTableChurchDirectory extends JTable {
             $registry = new JRegistry();
             $registry->loadArray($array['metadata']);
             $array['metadata'] = (string) $registry;
-        }
-        if (key_exists( 'con_position', $array ) && is_array( $array['con_position'] )) {
-	        $array['con_position'] = implode( ',', $array['con_position'] );
         }
 
         return parent::bind($array, $ignore);
@@ -92,7 +89,7 @@ class ChurchDirectoryTableChurchDirectory extends JTable {
             }
         }
         // Verify that the alias is unique
-        $table = JTable::getInstance('ChurchDirectory', 'ChurchDirectoryTable');
+        $table = JTable::getInstance('Member', 'ChurchDirectoryTable');
         if ($table->load(array('alias' => $this->alias, 'catid' => $this->catid)) && ($table->id != $this->id || $this->id == 0)) {
             $this->setError(JText::_('COM_CHURCHDIRECTORY_ERROR_UNIQUE_ALIAS'));
             return false;
@@ -209,7 +206,7 @@ class ChurchDirectoryTableChurchDirectory extends JTable {
      */
     protected function _getAssetName() {
         $k = $this->_tbl_key;
-        return 'com_churchdirectory.churchdirectroy.' . (int) $this->$k;
+        return 'com_churchdirectory.member.' . (int) $this->$k;
     }
 
     /**

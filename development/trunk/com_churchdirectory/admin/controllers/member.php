@@ -1,7 +1,6 @@
 <?php
 
 /**
- * @version		$Id: churchdirectory.php 1.7.0 $
  * @package             com_churchdirectory
  * @copyright           (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
@@ -15,7 +14,7 @@ jimport('joomla.application.component.controllerform');
  * @package	com_churchdirectory
  * @since		1.7.0
  */
-class ChurchDirectoryControllerChurchDirectory extends JControllerForm {
+class ChurchDirectoryControllerMember extends JControllerForm {
 
     /**
      * Class constructor.
@@ -30,7 +29,7 @@ class ChurchDirectoryControllerChurchDirectory extends JControllerForm {
         // Adjust the redirect view on the value of 'return' in the request.
         if (JRequest::getCmd('return') == 'featured') {
             $this->view_list = 'featured';
-            $this->view_item = 'churchdirectory&return=featured';
+            $this->view_item = 'member&return=featured';
         }
 
         parent::__construct($config);
@@ -122,7 +121,7 @@ class ChurchDirectoryControllerChurchDirectory extends JControllerForm {
         $model = $this->getModel('ChurchDirectory', '', array());
 
         // Preset the redirect
-        $this->setRedirect(JRoute::_('index.php?option=com_churchdirectory&view=churchdirectories' . $this->getRedirectToListAppend(), false));
+        $this->setRedirect(JRoute::_('index.php?option=com_churchdirectory&view=members' . $this->getRedirectToListAppend(), false));
 
         return parent::batch($model);
     }

@@ -57,7 +57,8 @@
                label="COM_CHURCHDIRECTORY_FIELD_SORTNAME3_LABEL" description="COM_CHURCHDIRECTORY_FIELD_SORTNAME3_DESC"
                class="inputbox" size="30" />
 
-        <field name="positions" type="positions" class="inputbox" size="30" label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_POSITION_LABEL" description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_POSITION_DESC" />
+        <field name="con_position" size="15" type="sql" label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_POSITION_LABEL" description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_POSITION_DESC"
+               query="SELECT id, name FROM #__churchdirectory_position WHERE published = 1 ORDER by name ASC" key_field="id" value_field="name" multiple="true" />
 
         <field
             name="funitid"
@@ -270,8 +271,8 @@
                 </field>
 
                 <field name="show_contact_list" type="list"
-                   label="COM_CHURCHDIRECTORY_FIELD_CONTACT_SHOW_LIST_LABEL"
-                   description="COM_CHURCHDIRECTORY_FIELD_CONTACT_SHOW_LIST_DESC">
+                   label="COM_CHURCHDIRECTORY_FIELD_MEMBER_SHOW_LIST_LABEL"
+                   description="COM_CHURCHDIRECTORY_FIELD_MEMBER_SHOW_LIST_DESC">
                     <option value="">JGLOBAL_USE_GLOBAL</option>
                     <option value="0">JHIDE</option>
                     <option value="1">JSHOW</option>
@@ -294,15 +295,15 @@
                 </field>
 
                 <field name="show_position" type="list"
-                   label="COM_CHURCHDIRECTORY_FIELD_PARAMS_CONTACT_POSITION_LABEL"
-                   description="COM_CHURCHDIRECTORY_FIELD_PARAMS_CONTACT_POSITION_DESC">
+                   label="COM_CHURCHDIRECTORY_FIELD_PARAMS_MEMBER_POSITION_LABEL"
+                   description="COM_CHURCHDIRECTORY_FIELD_PARAMS_MEMBER_POSITION_DESC">
                     <option value="">JGLOBAL_USE_GLOBAL</option>
                     <option value="0">JHIDE</option>
                     <option value="1">JSHOW</option>
                 </field>
 
                 <field name="show_email" type="list" label="JGLOBAL_EMAIL"
-                   description="COM_CHURCHDIRECTORY_FIELD_PARAMS_CONTACT_E_MAIL_DESC">
+                   description="COM_CHURCHDIRECTORY_FIELD_PARAMS_MEMBER_E_MAIL_DESC">
                     <option value="">JGLOBAL_USE_GLOBAL</option>
                     <option value="0">JHIDE</option>
                     <option value="1">JSHOW</option>
@@ -465,7 +466,7 @@
                    view="contact" useglobal="true" />
             </fieldset>
 
-            <fieldset name="email" label="COM_CHURCHDIRECTORY_FIELDSET_CONTACT_FORM">
+            <fieldset name="email" label="COM_CHURCHDIRECTORY_FIELDSET_MEMBER_FORM">
 
                 <field name="show_email_form" type="list"
 

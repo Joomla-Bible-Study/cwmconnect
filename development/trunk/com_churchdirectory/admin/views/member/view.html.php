@@ -16,7 +16,7 @@ jimport('joomla.application.component.view');
  * @package	com_churchdirectory
  * @since		1.7.0
  */
-class ChurchDirectoryViewChurchDirectory extends JView {
+class ChurchDirectoryViewMember extends JView {
 
     protected $form;
     protected $item;
@@ -50,27 +50,6 @@ class ChurchDirectoryViewChurchDirectory extends JView {
             JError::raiseError(500, implode("\n", $errors));
             return false;
         }
-        $document = JFactory::getDocument();
-        //$document->addScript(JURI::root() . 'media/com_biblestudy/js/plugins/jquery.tokeninput.js');
-        //$document->addStyleSheet(JURI::root() . 'media/com_biblestudy/css/token-input-jbs.css');
-        var_dump($this->get('allpositions'));
-        var_dump($this->get('positions'));
-//        $script = "
-//            \$j(document).ready(function() {
-//                \$j('#positoins').tokenInput(" . $this->get('allpositions') . ",
-//                {
-//                    theme: 'jbs',
-//                    hintText: '" . JText::_('JBS_CMN_TOPIC_TAG') . "',
-//                    noResultsText: '" . JText::_('JBS_CMN_NOT_FOUND') . "',
-//                    searchingText: '" . JText::_('JBS_CMN_SEARCHING') . "',
-//                    animateDropdown: false,
-//                    preventDuplicates: true,
-//                    prePopulate: " . $this->get('positions') . "
-//                });
-//            });
-//             ";
-
-        //$document->addScriptDeclaration($script);
 
         // Set the toolbar
         $this->addToolBar();
@@ -94,48 +73,48 @@ class ChurchDirectoryViewChurchDirectory extends JView {
         $isNew = ($this->item->id == 0);
         $checkedOut = !($this->item->checked_out == 0 || $this->item->checked_out == $userId);
         $canDo = ChurchDirectoryHelper::getActions($this->state->get('filter.category_id'), $this->item->id);
-        JToolBarHelper::title($isNew ? JText::_('COM_CHURCHDIRECTORY_MANAGER_CONTACT_NEW') : JText::_('COM_CHURCHDIRECTORY_MANAGER_CONTACT_EDIT'), 'churchdirectory');
+        JToolBarHelper::title($isNew ? JText::_('COM_CHURCHDIRECTORY_MANAGER_MEMBER_NEW') : JText::_('COM_CHURCHDIRECTORY_MANAGER_MEMBER_EDIT'), 'members');
 
         // Build the actions for new and existing records.
         if ($isNew) {
             // For new records, check the create permission.
             if ($isNew && (count($user->getAuthorisedCategories('com_churchdirectory', 'core.create')) > 0)) {
-                JToolBarHelper::apply('churchdirectory.apply', 'JTOOLBAR_APPLY');
-                JToolBarHelper::save('churchdirectory.save', 'JTOOLBAR_SAVE');
-                JToolBarHelper::custom('churchdirectory.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
+                JToolBarHelper::apply('member.apply', 'JTOOLBAR_APPLY');
+                JToolBarHelper::save('member.save', 'JTOOLBAR_SAVE');
+                JToolBarHelper::custom('member.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
             }
-            JToolBarHelper::cancel('churchdirectory.cancel', 'JTOOLBAR_CANCEL');
+            JToolBarHelper::cancel('member.cancel', 'JTOOLBAR_CANCEL');
         } else {
             // Can't save the record if it's checked out.
             if (!$checkedOut) {
                 // Since it's an existing record, check the edit permission, or fall back to edit own if the owner.
                 if ($canDo->get('core.edit') || ($canDo->get('core.edit.own') && $this->item->created_by == $userId)) {
-                    JToolBarHelper::apply('churchdirectory.apply', 'JTOOLBAR_APPLY');
-                    JToolBarHelper::save('churchdirectory.save', 'JTOOLBAR_SAVE');
+                    JToolBarHelper::apply('member.apply', 'JTOOLBAR_APPLY');
+                    JToolBarHelper::save('member.save', 'JTOOLBAR_SAVE');
 
                     // We can save this record, but check the create permission to see if we can return to make a new one.
                     if ($canDo->get('core.create')) {
-                        JToolBarHelper::custom('churchdirectory.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
+                        JToolBarHelper::custom('member.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
                     }
                 }
             }
 
             // If checked out, we can still save
             if ($canDo->get('core.create')) {
-                JToolBarHelper::custom('churchdirectory.save2copy', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
+                JToolBarHelper::custom('member.save2copy', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
             }
 
-            JToolBarHelper::cancel('churchdirectory.cancel', 'JTOOLBAR_CLOSE');
+            JToolBarHelper::cancel('member.cancel', 'JTOOLBAR_CLOSE');
         }
 
         JToolBarHelper::divider();
-        JToolBarHelper::help('churchdirectory_contact', TRUE);
+        JToolBarHelper::help('member_contact', TRUE);
     }
 
     protected function setDocument() {
         $isNew = ($this->item->id < 1);
         $document = JFactory::getDocument();
-        $document->setTitle($isNew ? JText::_('COM_CHURCHDIRECTORY_CHURCHDIRECTORY_CONTACT_CREATING') : JText::_('COM_CHURCHDIRECTORY_CHURCHDIRECTORY_CONTACT_EDITING'));
+        $document->setTitle($isNew ? JText::_('COM_CHURCHDIRECTORY_CHURCHDIRECTORY_MEMBER_CREATING') : JText::_('COM_CHURCHDIRECTORY_CHURCHDIRECTORY_MEMBER_EDITING'));
         $document->addScript(JURI::root() . "media/com_churchdirectory/js/churchdirectory.js");
     }
 

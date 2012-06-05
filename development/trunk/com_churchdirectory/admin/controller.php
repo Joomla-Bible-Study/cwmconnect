@@ -54,12 +54,12 @@ class ChurchDirectoryController extends JController {
             JRequest::setVar('view', 'cpanel');
         }
         // Check for edit form.
-        if ($view == 'churchdirectory' && $layout == 'edit' && !$this->checkEditId('com_churchdirectory.edit.churchdirectory', $id)) {
+        if ($view == 'member' && $layout == 'edit' && !$this->checkEditId('com_churchdirectory.edit.member', $id)) {
 
             // Somehow the person just went to the form - we don't allow that.
             $this->setError(JText::sprintf('JLIB_APPLICATION_ERROR_UNHELD_ID', $id));
             $this->setMessage($this->getError(), 'error');
-            $this->setRedirect(JRoute::_('index.php?option=com_churchdirectory&view=churchdirectories', false));
+            $this->setRedirect(JRoute::_('index.php?option=com_churchdirectory&view=members', false));
 
             return false;
         }

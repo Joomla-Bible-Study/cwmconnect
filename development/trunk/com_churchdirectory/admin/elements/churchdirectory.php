@@ -33,7 +33,7 @@ class JElementChurchdirectory extends JElement {
         $doc = JFactory::getDocument();
         $template = $app->getTemplate();
         $fieldName = $control_name . '[' . $name . ']';
-        $contact = JTable::getInstance('churchdirectory');
+        $contact = JTable::getInstance('member');
         if ($value) {
             $contact->load($value);
         } else {
