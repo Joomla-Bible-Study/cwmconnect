@@ -18,12 +18,12 @@ jimport('joomla.plugin.helper');
  * @subpackage	com_churchdirectory
  * @since 2.5
  */
-class ChurchDirectoryModelChurchDirectory extends JModelForm {
+class ChurchDirectoryModelMember extends JModelForm {
 
     /**
      * @since	1.6
      */
-    protected $view_item = 'churchdirectory';
+    protected $view_item = 'member';
     protected $_item = null;
 
     /**
@@ -31,7 +31,7 @@ class ChurchDirectoryModelChurchDirectory extends JModelForm {
      *
      * @var		string
      */
-    protected $_context = 'com_churchdirectory.churchdirectory';
+    protected $_context = 'com_churchdirectory.member';
 
     /**
      * Method to auto-populate the model state.
@@ -45,7 +45,7 @@ class ChurchDirectoryModelChurchDirectory extends JModelForm {
 
         // Load state from the request.
         $pk = JRequest::getInt('id');
-        $this->setState('churchdirectory.id', $pk);
+        $this->setState('member.id', $pk);
 
         // Load the parameters.
         $params = $app->getParams();
@@ -59,7 +59,7 @@ class ChurchDirectoryModelChurchDirectory extends JModelForm {
     }
 
     /**
-     * Method to get the churchdirectory form.
+     * Method to get the member form.
      *
      * The base form is loaded from XML and then an event is fired
      *
@@ -71,36 +71,36 @@ class ChurchDirectoryModelChurchDirectory extends JModelForm {
      */
     public function getForm($data = array(), $loadData = true) {
         // Get the form.
-        $form = $this->loadForm('com_churchdirectory.churchdirectory', 'churchdirectory', array('control' => 'jform', 'load_data' => true));
+        $form = $this->loadForm('com_churchdirectory.member', 'member', array('control' => 'jform', 'load_data' => true));
         if (empty($form)) {
             return false;
         }
 
-        $id = $this->getState('churchdirectory.id');
+        $id = $this->getState('member.id');
         $params = $this->getState('params');
-        $churchdirectory = $this->_item[$id];
-        $params->merge($churchdirectory->params);
+        $member = $this->_item[$id];
+        $params->merge($member->params);
 
         if (!$params->get('show_email_copy', 0)) {
-            $form->removeField('churchdirectory_email_copy');
+            $form->removeField('member_email_copy');
         }
 
         return $form;
     }
 
     protected function loadFormData() {
-        $data = (array) JFactory::getApplication()->getUserState('com_churchdirectory.churchdirectory.data', array());
+        $data = (array) JFactory::getApplication()->getUserState('com_churchdirectory.member.data', array());
         return $data;
     }
 
     /**
-     * Gets a list of churchdirectorys
+     * Gets a list of members
      * @param array
      * @return mixed Object or null
      */
     public function &getItem($pk = null) {
         // Initialise variables.
-        $pk = (!empty($pk)) ? $pk : (int) $this->getState('churchdirectory.id');
+        $pk = (!empty($pk)) ? $pk : (int) $this->getState('member.id');
 
         if ($this->_item === null) {
             $this->_item = array();
@@ -171,6 +171,10 @@ class ChurchDirectoryModelChurchDirectory extends JModelForm {
                 $registry->loadString($data->metadata);
                 $data->metadata = $registry;
 
+                $registry = new JRegistry;
+                $registry->loadString($data->attribs);
+                $data->attribs = $registry;
+
                 // Compute access permissions.
                 if ($access = $this->getState('filter.access')) {
                     // If the access filter has been set, we already know this user can view.
@@ -207,7 +211,7 @@ class ChurchDirectoryModelChurchDirectory extends JModelForm {
         // TODO: Cache on the fingerprint of the arguments
         $db = $this->getDbo();
         $user = JFactory::getUser();
-        $pk = (!empty($pk)) ? $pk : (int) $this->getState('churchdirectory.id');
+        $pk = (!empty($pk)) ? $pk : (int) $this->getState('member.id');
 
         $query = $db->getQuery(true);
         if ($pk) {
@@ -241,9 +245,9 @@ class ChurchDirectoryModelChurchDirectory extends JModelForm {
                     throw new JException(JText::_('COM_CHURCHDIRECTORY_ERROR_CONTACT_NOT_FOUND'), 404);
                 }
 
-                // If we are showing a churchdirectory list, then the churchdirectory parameters take priority
-                // So merge the churchdirectory parameters with the merged parameters
-                if ($this->getState('params')->get('show_churchdirectory_list')) {
+                // If we are showing a member list, then the member parameters take priority
+                // So merge the member parameters with the merged parameters
+                if ($this->getState('params')->get('show_member_list')) {
                     $registry = new JRegistry;
                     $registry->loadString($result->params);
                     $this->getState('params')->merge($registry);
@@ -294,7 +298,7 @@ class ChurchDirectoryModelChurchDirectory extends JModelForm {
                 $form->bind($data);
                 $result->profile = $form;
 
-                $this->churchdirectory = $result;
+                $this->member = $result;
                 return $result;
             }
         }

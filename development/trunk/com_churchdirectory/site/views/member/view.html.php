@@ -17,7 +17,7 @@ require_once JPATH_COMPONENT . '/models/category.php';
  * @package	com_churchdirectory
  * @since 		1.7.0
  */
-class ChurchDirectoryViewChurchDirectory extends JView {
+class ChurchDirectoryViewMember extends JView {
 
     protected $state;
     protected $form;
@@ -142,18 +142,18 @@ class ChurchDirectoryViewChurchDirectory extends JView {
         //Escape strings for HTML output
         $this->pageclass_sfx = htmlspecialchars($params->get('pageclass_sfx'));
 
-        $this->assignRef('churchdirectory', $item);
+        $this->assignRef('member', $item);
         $this->assignRef('params', $params);
         $this->assignRef('return', $return);
         $this->assignRef('state', $state);
         $this->assignRef('item', $item);
         $this->assignRef('user', $user);
-        $this->assignRef('churchdirectories', $contacts);
+        $this->assignRef('members', $contacts);
 
         // Override the layout only if this is not the active menu item
         // If it is the active menu item, then the view and item id will match
         $active = $app->getMenu()->getActive();
-        if ((!$active) || ((strpos($active->link, 'view=churchdirctory') === false) || (strpos($active->link, '&id=' . (string) $this->item->id) === false))) {
+        if ((!$active) || ((strpos($active->link, 'view=member') === false) || (strpos($active->link, '&id=' . (string) $this->item->id) === false))) {
             if ($layout = $params->get('churchdirectory_layout')) {
                 $this->setLayout($layout);
             }
@@ -193,17 +193,17 @@ class ChurchDirectoryViewChurchDirectory extends JView {
         $id = (int) @$menu->query['id'];
 
         // if the menu item does not concern this contact
-        if ($menu && ($menu->query['option'] != 'com_churchdirectory' || $menu->query['view'] != 'churchdirctory' || $id != $this->item->id)) {
+        if ($menu && ($menu->query['option'] != 'com_churchdirectory' || $menu->query['view'] != 'member' || $id != $this->item->id)) {
 
             // If this is not a single churchdirectory menu item, set the page title to the contact title
             if ($this->item->name) {
                 $title = $this->item->name;
             }
-            $path = array(array('title' => $this->churchdirectory->name, 'link' => ''));
-            $category = JCategories::getInstance('ChurchDirectory')->get($this->churchdirectory->catid);
+            $path = array(array('title' => $this->member->name, 'link' => ''));
+            $category = JCategories::getInstance('ChurchDirectory')->get($this->member->catid);
 
-            while ($category && ($menu->query['option'] != 'com_churchdirectory' || $menu->query['view'] == 'churchdirctory' || $id != $category->id) && $category->id > 1) {
-                $path[] = array('title' => $category->title, 'link' => ChurchDirectoryHelperRoute::getCategoryRoute($this->churchdirectory->catid));
+            while ($category && ($menu->query['option'] != 'com_churchdirectory' || $menu->query['view'] == 'member' || $id != $category->id) && $category->id > 1) {
+                $path[] = array('title' => $category->title, 'link' => ChurchDirectoryHelperRoute::getCategoryRoute($this->member->catid));
                 $category = $category->getParent();
             }
 

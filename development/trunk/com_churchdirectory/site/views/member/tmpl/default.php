@@ -14,28 +14,28 @@ $cparams = JComponentHelper::getParams('com_media');
             <?php echo $this->escape($this->params->get('page_heading')); ?>
         </h1>
     <?php endif; ?>
-    <?php if ($this->churchdirectory->name && $this->params->get('show_name')) : ?>
+    <?php if ($this->member->name && $this->params->get('show_name')) : ?>
         <h2>
-            <span class="churchdirectory-name"><?php echo $this->churchdirectory->name; ?></span>
+            <span class="churchdirectory-name"><?php echo $this->member->name; ?></span>
         </h2>
     <?php endif; ?>
     <?php if ($this->params->get('show_churchdirectory_category') == 'show_no_link') : ?>
         <h3>
-            <span class="churchdirectory-category"><?php echo $this->churchdirectory->category_title; ?></span>
+            <span class="churchdirectory-category"><?php echo $this->member->category_title; ?></span>
         </h3>
     <?php endif; ?>
     <?php if ($this->params->get('show_churchdirectory_category') == 'show_with_link') : ?>
-        <?php $churchdirectoryLink = ChurchDirectoryHelperRoute::getCategoryRoute($this->churchdirectory->catid); ?>
+        <?php $churchdirectoryLink = ChurchDirectoryHelperRoute::getCategoryRoute($this->member->catid); ?>
         <h3>
             <span class="churchdirectory-category"><a href="<?php echo $churchdirectoryLink; ?>">
-                    <?php echo $this->escape($this->churchdirectory->category_title); ?></a>
+                    <?php echo $this->escape($this->member->category_title); ?></a>
             </span>
         </h3>
     <?php endif; ?>
     <?php if ($this->params->get('show_churchdirectory_list') && count($this->churchdirectories) > 1) : ?>
         <form action="#" method="get" name="selectForm" id="selectForm">
-            <?php echo JText::_('COM_CHURCHDIRECTORY_SELECT_CONTACT'); ?>
-            <?php echo JHtml::_('select.genericlist', $this->churchdirectories, 'id', 'class="inputbox" onchange="document.location.href = this.value"', 'link', 'name', $this->churchdirectory->link); ?>
+            <?php echo JText::_('COM_CHURCHDIRECTORY_SELECT_MEMBER'); ?>
+            <?php echo JHtml::_('select.genericlist', $this->churchdirectories, 'id', 'class="inputbox" onchange="document.location.href = this.value"', 'link', 'name', $this->member->link); ?>
         </form>
     <?php endif; ?>
     <?php if ($this->params->get('presentation_style') != 'plain') { ?>
@@ -47,19 +47,19 @@ $cparams = JComponentHelper::getParams('com_media');
     <?php if ($this->params->get('presentation_style') == 'plain'): ?>
         <?php echo '<h3>' . JText::_('COM_CHURCHDIRECTORY_DETAILS') . '</h3>'; ?>
     <?php endif; ?>
-        <?php if ($this->churchdirectory->image && $this->params->get('show_image')) : ?>
+        <?php if ($this->member->image && $this->params->get('show_image')) : ?>
         <div class="churchdirectory-image">
-        <?php echo JHtml::_('image', $this->churchdirectory->image, JText::_('COM_CHURCHDIRECTORY_IMAGE_DETAILS'), array('align' => 'middle')); ?>
+        <?php echo JHtml::_('image', $this->member->image, JText::_('COM_CHURCHDIRECTORY_IMAGE_DETAILS'), array('align' => 'middle')); ?>
         </div>
     <?php endif; ?>
 
-    <?php if ($this->churchdirectory->con_position && $this->params->get('show_position')) : ?>
+    <?php if ($this->member->con_position && $this->params->get('show_position')) : ?>
         <?php
-        if ($this->churchdirectory->con_position['0'] != 0):
+        if ($this->member->con_position['0'] != 0):
             echo '<div id="position-header"><span id="contact-position">
                             <b>Position: </b></span></div><div id="position-name">
                             <span id="contact-position">';
-            foreach ($this->churchdirectory->con_position as $positions) :
+            foreach ($this->member->con_position as $positions) :
                 JView::loadHelper('positions');
                 $name = getPosition($positions);
                 echo $name . '<br />';
@@ -74,11 +74,11 @@ $cparams = JComponentHelper::getParams('com_media');
 
     <?php if ($this->params->get('allow_vcard')) : ?>
             <?php echo JText::_('COM_CHURCHDIRECTORY_DOWNLOAD_INFORMATION_AS'); ?>
-        <a href="<?php echo JRoute::_('index.php?option=com_churchdirectory&amp;view=churchdirectory&amp;id=' . $this->churchdirectory->id . '&amp;format=vcf'); ?>">
+        <a href="<?php echo JRoute::_('index.php?option=com_churchdirectory&amp;view=member&amp;id=' . $this->member->id . '&amp;format=vcf'); ?>">
         <?php echo JText::_('COM_CHURCHDIRECTORY_VCARD'); ?></a>
     <?php endif; ?>
     <p></p>
-    <?php if ($this->params->get('show_email_form') && ($this->churchdirectory->email_to || $this->churchdirectory->user_id)) : ?>
+    <?php if ($this->params->get('show_email_form') && ($this->member->email_to || $this->member->user_id)) : ?>
 
         <?php if ($this->params->get('presentation_style') != 'plain'): ?>
             <?php echo JHtml::_($this->params->get('presentation_style') . '.panel', JText::_('COM_CHURCHDIRECTORY_EMAIL_FORM'), 'display-form'); ?>
@@ -91,7 +91,7 @@ $cparams = JComponentHelper::getParams('com_media');
     <?php if ($this->params->get('show_links')) : ?>
         <?php echo $this->loadTemplate('links'); ?>
     <?php endif; ?>
-    <?php if ($this->params->get('show_articles') && $this->churchdirectory->user_id && $this->churchdirectory->articles) : ?>
+    <?php if ($this->params->get('show_articles') && $this->member->user_id && $this->member->articles) : ?>
         <?php if ($this->params->get('presentation_style') != 'plain'): ?>
             <?php echo JHtml::_($this->params->get('presentation_style') . '.panel', JText::_('JGLOBAL_ARTICLES'), 'display-articles'); ?>
         <?php endif; ?>
@@ -100,7 +100,7 @@ $cparams = JComponentHelper::getParams('com_media');
         <?php endif; ?>
         <?php echo $this->loadTemplate('articles'); ?>
     <?php endif; ?>
-    <?php if ($this->params->get('show_profile') && $this->churchdirectory->user_id && JPluginHelper::isEnabled('user', 'profile')) : ?>
+    <?php if ($this->params->get('show_profile') && $this->member->user_id && JPluginHelper::isEnabled('user', 'profile')) : ?>
         <?php if ($this->params->get('presentation_style') != 'plain'): ?>
             <?php echo JHtml::_($this->params->get('presentation_style') . '.panel', JText::_('COM_CHURCHDIRECTORY_PROFILE'), 'display-profile'); ?>
         <?php endif; ?>
@@ -109,7 +109,7 @@ $cparams = JComponentHelper::getParams('com_media');
         <?php endif; ?>
         <?php echo $this->loadTemplate('profile'); ?>
     <?php endif; ?>
-    <?php if ($this->churchdirectory->misc && $this->params->get('show_misc')) : ?>
+    <?php if ($this->member->misc && $this->params->get('show_misc')) : ?>
         <?php if ($this->params->get('presentation_style') != 'plain') { ?>
             <?php
             echo JHtml::_($this->params->get('presentation_style') . '.panel', JText::_('COM_CHURCHDIRECTORY_OTHER_INFORMATION'), 'display-misc');
@@ -123,7 +123,7 @@ $cparams = JComponentHelper::getParams('com_media');
                 <?php echo $this->params->get('marker_misc'); ?>
             </div>
             <div class="churchdirectory-misc">
-        <?php echo $this->churchdirectory->misc; ?>
+        <?php echo $this->member->misc; ?>
             </div>
         </div>
     <?php endif; ?>

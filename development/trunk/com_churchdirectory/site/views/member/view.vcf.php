@@ -19,7 +19,7 @@ class ChurchDirectoryViewChurchDirectory extends JView {
         // Get model data.
         $state = $this->get('State');
         $item = $this->get('Item');
-        //print_r($item);
+        
         // Check for errors.
         if (count($errors = $this->get('Errors'))) {
             JError::raiseWarning(500, implode("\n", $errors));

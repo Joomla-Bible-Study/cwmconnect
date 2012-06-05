@@ -18,8 +18,8 @@ endif;
     <ul>
         <?php
         foreach (range('a', 'e') as $char) :// letters 'a' to 'e'
-            $link = $this->churchdirectory->params->get('link' . $char);
-            $label = $this->churchdirectory->params->get('link' . $char . '_name');
+            $link = $this->member->params->get('link' . $char);
+            $label = $this->member->params->get('link' . $char . '_name');
 
             if (!$link) :
                 continue;

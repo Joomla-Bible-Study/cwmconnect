@@ -53,11 +53,11 @@ if (isset($this->error)) :
                     <?php endif ?>
                 <?php endforeach; ?>
                 <dt></dt>
-                <dd><button class="button validate" type="submit"><?php echo JText::_('COM_CHURCHDIRECTORY_CONTACT_SEND'); ?></button>
+                <dd><button class="button validate" type="submit"><?php echo JText::_('COM_CHURCHDIRECTORY_MEMBER_SEND'); ?></button>
                     <input type="hidden" name="option" value="com_churchdirectory" />
-                    <input type="hidden" name="task" value="churchdirectory.submit" />
+                    <input type="hidden" name="task" value="member.submit" />
                     <input type="hidden" name="return" value="<?php echo $this->return_page; ?>" />
-                    <input type="hidden" name="id" value="<?php echo $this->churchdirectory->slug; ?>" />
+                    <input type="hidden" name="id" value="<?php echo $this->member->slug; ?>" />
                     <?php echo JHtml::_('form.token'); ?>
                 </dd>
             </dl>

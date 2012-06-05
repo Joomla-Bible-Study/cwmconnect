@@ -43,7 +43,7 @@ function ChurchDirectoryBuildRoute(&$query) {
         unset($query['view']);
     };
 
-    // are we dealing with a churchdirectory that is attached to a menu item?
+    // are we dealing with a member that is attached to a menu item?
     if (isset($view) && ($mView == $view) and (isset($query['id'])) and ($mId == intval($query['id']))) {
         unset($query['view']);
         unset($query['catid']);
@@ -51,9 +51,9 @@ function ChurchDirectoryBuildRoute(&$query) {
         return $segments;
     }
 
-    if (isset($view) and ($view == 'category' or $view == 'churchdirectory')) {
+    if (isset($view) and ($view == 'category' or $view == 'member')) {
         if ($mId != intval($query['id']) || $mView != $view) {
-            if ($view == 'churchdirectory' && isset($query['catid'])) {
+            if ($view == 'member' && isset($query['catid'])) {
                 $catid = $query['catid'];
             } elseif (isset($query['id'])) {
                 $catid = $query['id'];
@@ -77,7 +77,7 @@ function ChurchDirectoryBuildRoute(&$query) {
                 }
                 $segments = array_merge($segments, array_reverse($array));
             }
-            if ($view == 'churchdirectory') {
+            if ($view == 'member') {
                 if ($advanced) {
                     list($tmp, $id) = explode(':', $query['id'], 2);
                 } else {
@@ -161,7 +161,7 @@ function ChurchDirectoryParseRoute($segments) {
                 $nid = $segment;
             }
             $vars['id'] = $nid;
-            $vars['view'] = 'churchdirectory';
+            $vars['view'] = 'member';
         }
         $found = 0;
     }
