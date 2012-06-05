@@ -234,6 +234,7 @@ class ChurchDirectoryModelMember extends JModelAdmin {
 
         if (empty($data)) {
             $data = $this->getItem();
+            $data->con_position = explode(',', $data->con_position);
 
             // Prime some default values.
             if ($this->getState('member.id') == 0) {
