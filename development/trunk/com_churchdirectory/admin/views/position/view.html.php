@@ -32,7 +32,8 @@ class ChurchDirectoryViewPosition extends JView {
         $this->item = $this->get('Item');
         $this->state = $this->get('State');
 
-        $this->members = $this->get('members');
+        $model = $this->getModel();
+        $this->members = $model->getMembers($this->item->id);
 
         // Check for errors.
         if (count($errors = $this->get('Errors'))) {

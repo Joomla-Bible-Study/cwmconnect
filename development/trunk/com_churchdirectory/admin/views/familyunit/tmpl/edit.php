@@ -12,6 +12,8 @@ defined('_JEXEC') or die;
 JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.formvalidation');
+JHTML::_('behavior.mootools');
+JHTML::_('behavior.modal');
 ?>
 
 <form action="<?php echo JRoute::_('index.php?option=com_churchdirectory&view=familyunit&layout=edit&id=' . (int) $this->item->id); ?>" method="post" name="adminForm" id="familyunit-form" class="form-validate">
@@ -74,8 +76,8 @@ JHtml::_('behavior.formvalidation');
                             ?>
                             <tr class="row<?php echo $i % 2; ?>">
                                 <td align="center">
-                                    <?php $link = 'index.php?option=com_churchdirectory&amp;task=churchdirectory.edit&amp;id=' . (int) $item->id . '&amp;tmpl=component&amp;view=churchdirectory&amp;layout=modal'; ?>
-                                    <!-- <a class="modal" href="<?php //echo $link;  ?>" rel="{handler: 'iframe', size: {x: 900, y: 550}}" title="<?php //echo $this->escape($item->name) ? $this->escape($item->name) : 'ID: ' . $this->escape($item->id);  ?>"> -->
+                                    <?php $link = 'index.php?option=com_churchdirectory&amp;task=churchdirectory.edit&amp;id=' . (int) $item->id . '&amp;tmpl=component&amp;layout=modal'; ?>
+                                    <!-- <a class="modal" href="<?php //echo $link;   ?>" rel="{handler: 'iframe', size: {x: 900, y: 550}}" title="<?php //echo $this->escape($item->name) ? $this->escape($item->name) : 'ID: ' . $this->escape($item->id);   ?>"> -->
                                     <?php echo ($this->escape($item->name) ? $this->escape($item->name) : 'ID: ' . $this->escape($item->id)); ?>
                                     <!-- </a> -->
                                 </td>

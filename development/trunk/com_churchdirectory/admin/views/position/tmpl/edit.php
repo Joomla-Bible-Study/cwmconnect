@@ -12,6 +12,8 @@ defined('_JEXEC') or die;
 JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.formvalidation');
+JHTML::_('behavior.mootools');
+JHTML::_('behavior.modal');
 ?>
 
 <form action="<?php echo JRoute::_('index.php?option=com_churchdirectory&view=position&layout=edit&id=' . (int) $this->item->id); ?>" method="post" name="adminForm" id="position-form" class="form-validate">
@@ -44,8 +46,9 @@ JHtml::_('behavior.formvalidation');
                     </tr>
                 </thead>
                 <tbody>
-
-                    <?php echo $this->members ?>
+                    <tr><td>
+                            <?php echo $this->members->name ?></td>
+                        <td><?php echo $this->members->id ?></td>
 
                 </tbody>
             </table>

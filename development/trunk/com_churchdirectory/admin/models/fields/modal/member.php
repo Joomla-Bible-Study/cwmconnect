@@ -16,7 +16,7 @@ jimport('joomla.form.formfield');
  * @package	com_churchdirectory
  * @since		1.7.0
  */
-class JFormFieldModal_ChurchDirectory extends JFormField {
+class JFormFieldModal_Member extends JFormField {
 
     /**
      * The form field type.
@@ -24,7 +24,7 @@ class JFormFieldModal_ChurchDirectory extends JFormField {
      * @var		string
      * @since	1.7.0
      */
-    protected $type = 'Modal_ChurchDirectory';
+    protected $type = 'Modal_Member';
 
     /**
      * Method to get the field input markup.

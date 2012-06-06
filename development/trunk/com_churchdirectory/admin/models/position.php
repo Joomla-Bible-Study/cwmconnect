@@ -161,16 +161,14 @@ class ChurchDirectoryModelPosition extends JModelAdmin {
         }
     }
 
-    public function getMembers() {
-        //$db = $this->getDbo();
-        //$query = $db->getQuery(true);
-        $positions = $this->getPositions();
-        $results = $positions;
-        //var_dump($results);
-        return $results;
-    }
-
-    protected function getPositions() {
+    /**
+     * Returns the members associated with this position.
+     *
+     * @param string $id
+     * @return array
+     * @since 1.7.1
+     */
+    public function getMembers($id) {
         $db = $this->getDbo();
         $query = $db->getQuery(true);
         $query->select('members.con_position, members.name, members.id');
@@ -180,13 +178,21 @@ class ChurchDirectoryModelPosition extends JModelAdmin {
 
         $db->setQuery($query->__toString());
         $positions = $db->loadObjectList();
-        $position = array();
+        var_dump($positions);
         foreach ($positions as $p):
-            $position[] = explode(',', $p->con_position);
-
+            $position = new stdClass();
+            $position->name = $p->name;
+            $position->con_position = explode(',', $p->con_position);
+            $position->id = $p->id;
         endforeach;
-        $position = array_merge($position);
-        return $position;
+
+        var_dump($position);
+        $key = array_search($id, $position->con_position);
+        if ($key >= '0'):
+            $results = $position;
+        endif;
+
+        return $results;
     }
 
     /**
