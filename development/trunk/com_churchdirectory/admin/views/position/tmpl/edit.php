@@ -46,10 +46,21 @@ JHTML::_('behavior.modal');
                     </tr>
                 </thead>
                 <tbody>
-                    <tr><td>
-                            <?php echo $this->members->name ?></td>
-                        <td><?php echo $this->members->id ?></td>
-
+                    <?php if ($this->members != FALSE): foreach ($this->members as $members) : ?>
+                            <tr><td>
+                                    <?php echo $members['name'] ?></td>
+                                <td><?php echo $members['id'] ?></td>
+                            </tr>
+                            <?php
+                        endforeach;
+                    else:
+                        ?>
+                        <tr>
+                            <td colspan="2" align="center">
+                                <?php echo JText::_('COM_CHURCHDIRECTORY_FIELD_NO_RECORDS'); ?>
+                            </td>
+                        </tr>
+                    <?php endif; ?>
                 </tbody>
             </table>
 

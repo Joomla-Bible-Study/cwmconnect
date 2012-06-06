@@ -19,6 +19,8 @@ jimport('joomla.application.component.modeladmin');
  */
 class ChurchDirectoryModelPosition extends JModelAdmin {
 
+    const name = null;
+
     /**
      * Method to test whether a record can be deleted.
      *
@@ -164,7 +166,7 @@ class ChurchDirectoryModelPosition extends JModelAdmin {
     /**
      * Returns the members associated with this position.
      *
-     * @param string $id
+     * @param string $id The id of the position
      * @return array
      * @since 1.7.1
      */
@@ -178,20 +180,25 @@ class ChurchDirectoryModelPosition extends JModelAdmin {
 
         $db->setQuery($query->__toString());
         $positions = $db->loadObjectList();
-        var_dump($positions);
+
+        $positiontemp = array();
         foreach ($positions as $p):
-            $position = new stdClass();
-            $position->name = $p->name;
-            $position->con_position = explode(',', $p->con_position);
-            $position->id = $p->id;
+            $con_position = explode(',', $p->con_position);
+            $positiontemp = array("name" => $p->name, "con_position" => $con_position, "id" => $p->id);
+            $positionkey[] = $positiontemp;
         endforeach;
 
-        var_dump($position);
-        $key = array_search($id, $position->con_position);
-        if ($key >= '0'):
-            $results = $position;
-        endif;
+        foreach ($positionkey as $p => $d):
+            $key = array_search($id, $d['con_position']);
+            if ($key !== FALSE) :
+                $positiontemp1 = array("name" => $d['name'], "id" => $d['id']);
+                $position[] = $positiontemp1;
+            else:
+                $position = FALSE;
+            endif;
+        endforeach;
 
+        $results = $position;
         return $results;
     }
 
