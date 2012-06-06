@@ -180,12 +180,13 @@ class ChurchDirectoryModelPosition extends JModelAdmin {
 
         $db->setQuery($query->__toString());
         $positions = $db->loadObjectList();
+        $position = array();
         foreach ($positions as $p):
-            $positions = explode(',', $p->con_position);
-            //$positions = json_encode($positions);
+            $position[] = explode(',', $p->con_position);
 
         endforeach;
-        return $positions;
+        $position = array_merge($position);
+        return $position;
     }
 
     /**

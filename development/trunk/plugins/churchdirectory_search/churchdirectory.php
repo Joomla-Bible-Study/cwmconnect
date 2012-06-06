@@ -35,7 +35,7 @@ class plgSearchChurchdirectory extends JPlugin {
      */
     function onContentSearchAreas() {
         static $areas = array(
-    'churchdirectory' => 'PLG_SEARCH_CHURCHDIRECTORY_CONTACTS'
+    'churchdirectory' => 'PLG_SEARCH_CHURCHDIRECTORY_MEMBERS'
         );
         return $areas;
     }
@@ -77,7 +77,7 @@ class plgSearchChurchdirectory extends JPlugin {
             return array();
         }
 
-        $section = JText::_('PLG_SEARCH_CHURCHDIRECTORY_CONTACTS');
+        $section = JText::_('PLG_SEARCH_CHURCHDIRECTORY_MEMBERS');
 
         switch ($ordering) {
             case 'alpha':
@@ -144,7 +144,7 @@ class plgSearchChurchdirectory extends JPlugin {
 
             if ($rows) {
                 foreach ($rows as $key => $row) {
-                    $rows[$key]->href = 'index.php?option=com_churchdirectory&view=churchdirectory&id=' . $row->slug . '&catid=' . $row->catslug;
+                    $rows[$key]->href = 'index.php?option=com_churchdirectory&view=member&id=' . $row->slug . '&catid=' . $row->catslug;
                     $rows[$key]->text = $row->title;
                     $rows[$key]->text .= ($row->misc) ? ', ' . $row->misc : '';
                 }

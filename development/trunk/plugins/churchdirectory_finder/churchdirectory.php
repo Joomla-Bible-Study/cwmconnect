@@ -116,7 +116,7 @@ class plgFinderChurchDirectory extends FinderIndexerAdapter {
      * @throws  Exception on database error.
      */
     public function onFinderAfterDelete($context, $table) {
-        if ($context == 'com_churchdirectory.churchdirectory') {
+        if ($context == 'com_churchdirectory.member') {
             $id = $table->id;
         } elseif ($context == 'com_finder.index') {
             $id = $table->link_id;
@@ -141,7 +141,7 @@ class plgFinderChurchDirectory extends FinderIndexerAdapter {
      */
     public function onFinderAfterSave($context, $row, $isNew) {
         // We only want to handle churchdirectory here
-        if ($context == 'com_churchdirectory.churchdirectory') {
+        if ($context == 'com_churchdirectory.member') {
             // Check if the access levels are different
             if (!$isNew && $this->old_access != $row->access) {
                 // Process the change.
@@ -179,7 +179,7 @@ class plgFinderChurchDirectory extends FinderIndexerAdapter {
      */
     public function onFinderBeforeSave($context, $row, $isNew) {
         // We only want to handle contacts here
-        if ($context == 'com_churchdirectory.churchdirectory') {
+        if ($context == 'com_churchdirectory.member') {
             // Query the database for the old access level if the item isn't new
             if (!$isNew) {
                 $this->checkItemAccess($row);
@@ -212,7 +212,7 @@ class plgFinderChurchDirectory extends FinderIndexerAdapter {
      */
     public function onFinderChangeState($context, $pks, $value) {
         // We only want to handle contacts here
-        if ($context == 'com_churchdirectory.churchdirectory') {
+        if ($context == 'com_churchdirectory.member') {
             $this->itemStateChange($pks, $value);
         }
 
@@ -246,7 +246,7 @@ class plgFinderChurchDirectory extends FinderIndexerAdapter {
 
         // Build the necessary route and path information.
         $item->url = $this->getURL($item->id, $this->extension, $this->layout);
-        $item->route = ChurchDirectoryHelperRoute::getChurchDirectoryRoute($item->slug, $item->catslug);
+        $item->route = ChurchDirectoryHelperRoute::getMemberRoute($item->slug, $item->catslug);
         $item->path = FinderIndexerHelper::getContentPath($item->route);
 
         // Get the menu title if it exists.
