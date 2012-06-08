@@ -68,7 +68,7 @@ class ChurchDirectoryViewKMLs extends JView {
         JToolBarHelper::title(JText::_('COM_CHURCHDIRECTORY_MANAGER_KMLS'), 'kml');
 
         if ($canDo->get('core.create') || (count($user->getAuthorisedCategories('com_churchdirectory', 'core.create'))) > 0) {
-            JToolBarHelper::addNew('kml.add');
+            //JToolBarHelper::addNew('kml.add');
         }
 
         if (($canDo->get('core.edit')) || ($canDo->get('core.edit.own'))) {
@@ -84,10 +84,10 @@ class ChurchDirectoryViewKMLs extends JView {
         }
 
         if ($this->state->get('filter.published') == -2 && $canDo->get('core.delete')) {
-            JToolBarHelper::deleteList('', 'kmls.delete', 'JTOOLBAR_EMPTY_TRASH');
+            //JToolBarHelper::deleteList('', 'kmls.delete', 'JTOOLBAR_EMPTY_TRASH');
             JToolBarHelper::divider();
         } elseif ($canDo->get('core.edit.state')) {
-            JToolBarHelper::trash('kmls.trash');
+            //JToolBarHelper::trash('kmls.trash');
             JToolBarHelper::divider();
         }
 
