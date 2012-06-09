@@ -43,7 +43,7 @@ JHTML::_('behavior.modal');
     <div class="width-40 fltrt">
 
         <fieldset class="adminform">
-            <legend><?php echo JText::_('COM_CHURCHDIRECTORY_CONTACT_DETAILS'); ?></legend>
+            <legend><?php echo JText::_('COM_CHURCHDIRECTORY_FAMILYUNITE_DETAILS'); ?></legend>
             <ul class="adminformlist">
                 <li><?php echo $this->form->getLabel('image'); ?>
                     <?php echo $this->form->getInput('image'); ?></li>

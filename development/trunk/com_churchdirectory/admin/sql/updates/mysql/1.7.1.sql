@@ -16,7 +16,7 @@ ALTER TABLE `#__churchdirectory_position` ADD `webpage` varchar(255) NOT NULL DE
 ALTER TABLE `#__churchdirectory_familyunit` ADD `image` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL AFTER `description`;
 ALTER TABLE `#__churchdirectory_details` ADD INDEX `idx_funit` ( `funitid` );
 
-UPDATE  `#__niy31_menu` SET  `title` =  'COM_CHURCHDIRECTORY_MEMBERS',
+UPDATE  `#__menu` SET  `title` =  'COM_CHURCHDIRECTORY_MEMBERS',
 `alias` =  'com-churchdirectory-members',
 `path` =  'com-churchdirectory/com-churchdirectory-members',
 `link` =  'index.php?option=com_churchdirectory&view=members',

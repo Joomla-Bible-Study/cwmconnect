@@ -3,7 +3,7 @@
  * @package		com_churchdirectory
  * @copyright           (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
- **/
+ * */
 defined('_JEXEC') or die;
 
 JHtml::core();
@@ -120,20 +120,36 @@ foreach ($this->items as $item) {
                     <p>ID: <?php echo $item->id; ?> </p>
                     <p>Count: <?php echo $printed_rows; ?> </p>
                 <?php endif; ?>
-                    <span id="contact-name">
-                <a href="<?php echo JRoute::_(ChurchDirectoryHelperRoute::getMemberRoute($item->slug, $item->catid)); ?>">
-                    <?php echo $item->name; ?>
-                </a></span>
-                <?php
-                if ($this->params->get('dr_show_position')) :
-                        echo '<div id="position-header"><span id="contact-position">
-                            <b>Position: </b></span></div><div id="position-name">
-                            <span id="contact-position">';
-                            JView::loadHelper('positions');
-                            $name = @getPosition($item->id);
-                            echo $name . '<br />';
-                        echo '</span></div><div class="clearfix"></div><br />';
-                endif;
+                <span id="contact-name">
+                    <a href="<?php echo JRoute::_(ChurchDirectoryHelperRoute::getMemberRoute($item->slug, $item->catid)); ?>">
+                        <?php echo $item->name; ?>
+                    </a></span><br /><br />
+                <?php if ($item->con_position['0'] !== '' && $this->params->get('dr_show_position')) : ?>
+                    <div class="clearfix"></div>
+                    <div id="position-header"><span id="contact-position">
+                            <b>Position: </b>
+                        </span>
+                    </div>
+                    <div id="position-name">
+                        <span id="contact-position">
+                            <?php
+                            foreach ($item->con_position as $positions) :
+                                if ($positions !== ''):
+                                    JView::loadHelper('positions');
+                                    $name = @getPosition($positions);
+
+                                    foreach ($name as $positions) :
+                                        echo $positions->name . '<br />';
+                                    endforeach;
+                                endif;
+                            endforeach;
+                            ?>
+                            <br />
+                        </span>
+                    </div>
+                    <div class="clearfix"></div>
+                    <br />
+                <?php endif;
                 ?>
                 <?php if (($this->params->get('address_check') > 0) && ($item->address || $item->suburb || $item->state || $item->country || $item->postcode)) : ?>
                     <div class="churchdirectory-address">

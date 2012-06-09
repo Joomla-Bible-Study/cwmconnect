@@ -622,7 +622,6 @@
               description="COM_CHURCHDIRECTORY_FIELD_CONFIG_DIRECTORY_MEMBER_DESC"
     >
 
-
         <field
             name="directory_layout" type="componentlayout"
                                     label="JGLOBAL_FIELD_LAYOUT_LABEL"

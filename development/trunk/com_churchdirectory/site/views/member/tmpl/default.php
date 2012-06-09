@@ -47,9 +47,9 @@ $cparams = JComponentHelper::getParams('com_media');
     <?php if ($this->params->get('presentation_style') == 'plain'): ?>
         <?php echo '<h3>' . JText::_('COM_CHURCHDIRECTORY_DETAILS') . '</h3>'; ?>
     <?php endif; ?>
-        <?php if ($this->member->image && $this->params->get('show_image')) : ?>
+    <?php if ($this->member->image && $this->params->get('show_image')) : ?>
         <div class="churchdirectory-image">
-        <?php echo JHtml::_('image', $this->member->image, JText::_('COM_CHURCHDIRECTORY_IMAGE_DETAILS'), array('align' => 'middle')); ?>
+            <?php echo JHtml::_('image', $this->member->image, JText::_('COM_CHURCHDIRECTORY_IMAGE_DETAILS'), array('align' => 'middle')); ?>
         </div>
     <?php endif; ?>
 
@@ -62,7 +62,9 @@ $cparams = JComponentHelper::getParams('com_media');
             foreach ($this->member->con_position as $positions) :
                 JView::loadHelper('positions');
                 $name = getPosition($positions);
-                echo $name . '<br />';
+                foreach ($name as $positions):
+                    echo $positions->name . '<br />';
+                endforeach;
             endforeach;
             echo '</span></div><div class="clearfix"></div><br />';
 
@@ -73,9 +75,9 @@ $cparams = JComponentHelper::getParams('com_media');
     <?php echo $this->loadTemplate('address'); ?>
 
     <?php if ($this->params->get('allow_vcard')) : ?>
-            <?php echo JText::_('COM_CHURCHDIRECTORY_DOWNLOAD_INFORMATION_AS'); ?>
+        <?php echo JText::_('COM_CHURCHDIRECTORY_DOWNLOAD_INFORMATION_AS'); ?>
         <a href="<?php echo JRoute::_('index.php?option=com_churchdirectory&amp;view=member&amp;id=' . $this->member->id . '&amp;format=vcf'); ?>">
-        <?php echo JText::_('COM_CHURCHDIRECTORY_VCARD'); ?></a>
+            <?php echo JText::_('COM_CHURCHDIRECTORY_VCARD'); ?></a>
     <?php endif; ?>
     <p></p>
     <?php if ($this->params->get('show_email_form') && ($this->member->email_to || $this->member->user_id)) : ?>
@@ -116,14 +118,14 @@ $cparams = JComponentHelper::getParams('com_media');
         }
         ?>
         <?php if ($this->params->get('presentation_style') == 'plain'): ?>
-        <?php echo '<h3>' . JText::_('COM_CHURCHDIRECTORY_OTHER_INFORMATION') . '</h3>'; ?>
-                <?php endif; ?>
+            <?php echo '<h3>' . JText::_('COM_CHURCHDIRECTORY_OTHER_INFORMATION') . '</h3>'; ?>
+        <?php endif; ?>
         <div class="churchdirectory-miscinfo">
             <div class="<?php echo $this->params->get('marker_class'); ?>">
                 <?php echo $this->params->get('marker_misc'); ?>
             </div>
             <div class="churchdirectory-misc">
-        <?php echo $this->member->misc; ?>
+                <?php echo $this->member->misc; ?>
             </div>
         </div>
     <?php endif; ?>

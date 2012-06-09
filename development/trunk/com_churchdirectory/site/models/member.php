@@ -175,6 +175,10 @@ class ChurchDirectoryModelMember extends JModelForm {
                 $registry->loadString($data->attribs);
                 $data->attribs = $registry;
 
+                if(!empty($data->con_position)) :
+                    $data->con_position = explode(',', $data->con_position);
+                endif;
+
                 // Compute access permissions.
                 if ($access = $this->getState('filter.access')) {
                     // If the access filter has been set, we already know this user can view.

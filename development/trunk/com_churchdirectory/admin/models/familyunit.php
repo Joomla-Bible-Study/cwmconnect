@@ -170,7 +170,7 @@ class ChurchDirectoryModelFamilyUnit extends JModelAdmin {
         $db = $this->getDbo();
         $query = $db->getQuery(true);
 
-        $query->select('members.id, members.lname');
+        $query->select('members.id, members.name');
         $query->from('#__churchdirectory_details AS members');
         $query->where('members.funitid = ' . (int) $this->getItem()->id);
         $query->order('members.lname DESC');
