@@ -1,6 +1,7 @@
 <?php
+
 /**
- * @package		com_churchdirectory
+ * @package		ChurchDirectory.Site
  * @copyright           (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
  * */
@@ -11,11 +12,11 @@ $printed_items = 0;
 $printed_rows = 0;
 
 
-$heading_call = null;
+//$heading_call = null;
 $heading = null;
 
-$listOrder = $this->escape($this->state->get('list.ordering'));
-$listDirn = $this->escape($this->state->get('list.direction'));
+//$listOrder = $this->escape($this->state->get('list.ordering'));
+//$listDirn = $this->escape($this->state->get('list.direction'));
 ?>
 <?php if (empty($this->items)) : ?>
     <p> <?php echo JText::_('COM_CHURCHDIRECTORY_NO_CONTACTS'); ?>	 </p>
@@ -100,7 +101,6 @@ foreach ($this->items as $item) {
                 }
                 ?>
             </div>
-            <div class="clearfix"></div>
         </div>
     <?php elseif ($item->funitid === '0'):
         ?>
@@ -147,7 +147,6 @@ foreach ($this->items as $item) {
                             <br />
                         </span>
                     </div>
-                    <div class="clearfix"></div>
                     <br />
                 <?php endif;
                 ?>

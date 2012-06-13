@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @package		com_churchdirectory
+ * @package		ChurchDirectory.Site
  * @copyright           (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
  */
@@ -12,9 +12,9 @@ jimport('joomla.application.component.view');
 require_once JPATH_COMPONENT . '/models/category.php';
 
 /**
- * HTML Contact View class for the Contact component
+ * HTML Member View class for the ChurchDirectory component
  *
- * @package	com_churchdirectory
+ * @package	ChurchDirectory.Site
  * @since 		1.7.0
  */
 class ChurchDirectoryViewMember extends JView {

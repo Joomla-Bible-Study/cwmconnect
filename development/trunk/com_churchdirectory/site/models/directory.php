@@ -3,9 +3,7 @@
 /**
  * ChurchDirectory Contact manager component for Joomla! 1.5 and 1.6
  *
- * @version 1.6.0
- * @package com_churchdirectory
- * @author NFSDA
+ * @package ChurchDirectory.Site
  * @copyright Copyright (C) 2011 NFSDA. All rights reserved.
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  */

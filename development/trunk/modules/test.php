@@ -1,7 +1,7 @@
 <?php
 /* ------------------------------------------------------------------------
-  # author    Nashville First SDA Church
-  # copyright Copyright © 2011 nfsda.org. All rights reserved.
+  # @author    Nashville First SDA Church
+  # @copyright Copyright © 2011 nfsda.org. All rights reserved.
   # @license  http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL
   # Website   http://www.nfsda.org
   ------------------------------------------------------------------------- */

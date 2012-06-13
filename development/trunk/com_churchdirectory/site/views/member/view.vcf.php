@@ -1,8 +1,7 @@
 <?php
 
 /**
- * @version		$Id: view.vcf.php 71 $
- * @package		com_churchdirectory
+ * @package		ChurchDirectory.Site
  * @copyright           (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
  */
@@ -19,7 +18,7 @@ class ChurchDirectoryViewChurchDirectory extends JView {
         // Get model data.
         $state = $this->get('State');
         $item = $this->get('Item');
-        
+
         // Check for errors.
         if (count($errors = $this->get('Errors'))) {
             JError::raiseWarning(500, implode("\n", $errors));

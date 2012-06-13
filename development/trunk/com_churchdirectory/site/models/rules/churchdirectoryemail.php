@@ -1,35 +1,38 @@
 <?php
-/**
- * @version		$Id: churchdirectoryemail.php 21321 2011-05-11 01:05:59Z dextercowley $
- * @package		Joomla.Site
- * @subpackage	ChurchDirectory
- * @copyright	Copyright (C) 2005 - 2011 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
- */
 
+/**
+ * @package		ChurchDirectory.Site
+ * @copyright           (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
+ * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ * */
 defined('_JEXEC') or die;
 
 jimport('joomla.form.formrule');
 
 require_once 'libraries/joomla/form/rules/email.php';
 
-class JFormRuleChurchDirectoryEmail extends JFormRuleEmail
-{
-	public function test(& $element, $value, $group = null, & $input = null, & $form = null)
-	{
-		if(!parent::test($element, $value, $group, $input, $form)){
-			return false;
-		}
+/**
+ * Rule to check email
+ * @package ChurchDirectory.Site
+ * @since 1.7.0
+ */
 
-		$params = JComponentHelper::getParams('com_churchdirectory');
-		$banned = $params->get('banned_email');
+class JFormRuleChurchDirectoryEmail extends JFormRuleEmail {
 
-		foreach(explode(';', $banned) as $item){
-			if (JString::stristr($item, $value) !== false)
-					return false;
-		}
+    public function test(& $element, $value, $group = null, & $input = null, & $form = null) {
+        if (!parent::test($element, $value, $group, $input, $form)) {
+            return false;
+        }
 
-		return true;
-	}
+        $params = JComponentHelper::getParams('com_churchdirectory');
+        $banned = $params->get('banned_email');
+
+        foreach (explode(';', $banned) as $item) {
+            if (JString::stristr($item, $value) !== false)
+                return false;
+        }
+
+        return true;
+    }
 
 }

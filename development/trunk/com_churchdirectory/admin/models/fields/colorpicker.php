@@ -1,7 +1,8 @@
 <?php
 
 /**
-  copyright Fiona Coulter 2011 Spiral Scripts http://www.spiralscripts.co.uk
+ * @package ChurchDirectory.Admin
+ * @copyright Fiona Coulter 2011 Spiral Scripts http://www.spiralscripts.co.uk
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die;
@@ -10,7 +11,8 @@ jimport('joomla.form.formfield');
 
 /**
  * Form Field class for the Joomla Framework.
- *
+ * @package ChurchDirectory.Admin
+ * @since 1.7.1
  */
 class JFormFieldColorpicker extends JFormField {
 

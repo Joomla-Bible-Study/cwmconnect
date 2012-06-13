@@ -1,10 +1,9 @@
 <?php
 
 /**
- * ChurchDirectory Contact manager component for Joomla!
+ * ChurchDirectory Member manager component for Joomla!
  *
- * @version             $Id: view.kml.php 71 $
- * @package		com_churchdirectory
+ * @package		ChurchDirectory.Site
  * @copyright           Copyright (C) 2005 - 2011 Joomla Bible Study, All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
  */
@@ -17,7 +16,7 @@ jimport('joomla.mail.helper');
 /**
  * HTML Contact View class for the Contact component
  *
- * @package	com_churchdirectory
+ * @package	ChurchDirectory.Site
  * @since 		1.7.0
  */
 class ChurchDirectoryViewDirectory extends JView {

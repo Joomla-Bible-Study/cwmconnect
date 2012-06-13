@@ -1,10 +1,10 @@
 <?php
 
 /**
- * @version		$Id: categories.php
- * @copyright	Copyright (C) 2005 - 2011 Open Source Matters, Inc. All rights reserved.
+ * @package		ChurchDirectory.Site
+ * @copyright           (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
- */
+ * */
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die;
 
@@ -13,8 +13,7 @@ jimport('joomla.application.component.model');
 /**
  * This models supports retrieving lists of churchdirectory categories.
  *
- * @package		Joomla.Site
- * @subpackage	com_churchdirectory
+ * @package	ChurchDirectory.Site
  * @since		1.6
  */
 class ChurchDirectoryModelCategories extends JModel {

@@ -1,7 +1,6 @@
 <?php
 /**
- * @version		$Id: default_items.php 71 $
- * @package		com_churchdirectory
+ * @package		ChurchDirectory.Site
  * @copyright           (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
  */

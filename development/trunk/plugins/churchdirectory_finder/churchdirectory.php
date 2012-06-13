@@ -14,7 +14,7 @@ jimport('joomla.application.component.helper');
 require_once JPATH_ADMINISTRATOR . '/components/com_finder/helpers/indexer/adapter.php';
 
 /**
- * Finder adapter for ChurchDirectory Contacts.
+ * Finder adapter for ChurchDirectory Members.
  *
  * @package     Finder.ChurchDirectory
  * @since       1.7.0

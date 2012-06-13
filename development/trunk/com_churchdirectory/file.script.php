@@ -1,12 +1,10 @@
 <?php
 
-/*
- * @version             $Id: file.script.php 72 $
- * @package		com_churchdirectory
+/**
+ * @package             ChurchDirectory
  * @copyright           (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 // No direct access to this file
 defined('_JEXEC') or die;
 
@@ -122,10 +120,9 @@ class com_churchdirectoryInstallerScript {
         return $manifest[$name];
     }
 
-    /*
+    /**
      * sets parameter values in the component's row of the extension table
      */
-
     function setParams($param_array) {
         if (count($param_array) > 0) {
             // read the existing component value(s)

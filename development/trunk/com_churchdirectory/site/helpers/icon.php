@@ -1,23 +1,13 @@
 <?php
 /**
- * @version		$Id: icon.php 21518 2011-06-10 21:38:12Z chdemko $
- * @package		Joomla.Site
- * @subpackage	com_content
+ * @package	ChurchDirectory.Site
  * @copyright	Copyright (C) 2005 - 2011 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ * @license	GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 // no direct access
 defined('_JEXEC') or die;
 
-/**
- * Content Component HTML Helper
- *
- * @static
- * @package		Joomla.Site
- * @subpackage	com_content
- * @since 1.5
- */
 class JHtmlIcon
 {
 

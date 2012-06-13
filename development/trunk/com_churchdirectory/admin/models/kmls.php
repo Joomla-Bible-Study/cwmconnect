@@ -1,8 +1,7 @@
 <?php
 
 /**
- * @version		$Id: kmls.php 1.7.0 $
- * @package             com_churchdirectory
+ * @package             ChurchDirectory.Admin
  * @copyright           (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
  */
@@ -12,9 +11,9 @@ defined('_JEXEC') or die;
 jimport('joomla.application.component.modellist');
 
 /**
- * Methods supporting a list of contact records.
+ * Methods supporting a list of KML records.
  *
- * @package	com_churchdirectory
+ * @package	ChurchDirectory.Admin
  */
 class ChurchDirectoryModelKMLs extends JModelList {
 

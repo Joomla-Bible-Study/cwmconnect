@@ -1,8 +1,7 @@
 <?php
 
 /**
- * @version		$Id: router.php 71 $
- * @package		com_churchdirectory
+ * @package		ChurchDirectory.Site
  * @copyright           (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
  */
@@ -11,8 +10,8 @@ defined('_JEXEC') or die;
 jimport('joomla.application.categories');
 
 /**
- * Build the route for the com_churchdirectory component
- *
+ * Build the route for the ChurchDirectory component
+ * @package ChurchDirectory.Site
  * @param	array	An array of URL arguments
  *
  * @return	array	The URL arguments to use to assemble the subsequent URL.
@@ -108,7 +107,7 @@ function ChurchDirectoryBuildRoute(&$query) {
 
 /**
  * Parse the segments of a URL.
- *
+ * @package ChurchDirectory.Site
  * @param	array	The segments of the URL to parse.
  *
  * @return	array	The URL attributes to be used by the application.

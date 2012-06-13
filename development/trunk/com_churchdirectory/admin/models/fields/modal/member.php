@@ -1,8 +1,7 @@
 <?php
 
 /**
- * @version		$Id: contacts.php 1.7.0 $
- * @package             com_churchdirectory
+ * @package             ChurchDirectory.Admin
  * @copyright           (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
  */
@@ -13,7 +12,7 @@ jimport('joomla.form.formfield');
 /**
  * Supports a modal contact picker.
  *
- * @package	com_churchdirectory
+ * @package	ChurchDirectory.Admin
  * @since		1.7.0
  */
 class JFormFieldModal_Member extends JFormField {

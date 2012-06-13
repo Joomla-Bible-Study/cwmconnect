@@ -1,8 +1,7 @@
 <?php
 
 /**
- * @version		$Id: ordering.php 1.7.0 $
- * @package             com_churchdirectory
+ * @package             ChurchDirectory.Admin
  * @copyright           (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
  */
@@ -14,8 +13,7 @@ jimport('joomla.form.formfield');
 /**
  * Supports an HTML select list of contacts
  *
- * @package		Joomla.Administrator
- * @subpackage	com_churchdirectory
+ * @package	ChurchDirectory.Admin
  * @since		1.7.0
  */
 class JFormFieldOrdering extends JFormField {

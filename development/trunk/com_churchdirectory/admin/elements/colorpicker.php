@@ -1,7 +1,8 @@
 <?php
 
 /**
-  copyright Fiona Coulter 2011 Spiral Scripts http://www.spiralscripts.co.uk
+ * @package ChurchDirectory.Admin
+ * @copyright Fiona Coulter 2011 Spiral Scripts http://www.spiralscripts.co.uk
  * @license		GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
  */
 // no direct access
@@ -52,8 +53,8 @@ class JElementColorpicker extends JElement {
         $js = 'window.addEvent(\'domready\', function(){
 		var colorInput = $(\'' . $control_name . $name . '\');
 		var cpicker = new ColorPicker(colorInput,{' . $optionString . '});
-});
-';
+                });
+                ';
 
         $doc->addScriptDeclaration($js);
 

@@ -1,8 +1,8 @@
 <?php
 
 /**
- * @version		$Id: churchdirectory.scriptfile.php 71 $
- * @package             com_churchdirectory
+ * @package             Finder.ChurchDirectory
+ *
  * @copyright           (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
  */
@@ -30,5 +30,3 @@ class plgFinderChurchDirectoryInstallerScript {
     }
 
 }
-
-?>

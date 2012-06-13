@@ -1,23 +1,14 @@
 <?php
 
 /**
- * ChurchDirectory Contact manager component for Joomla!
+ * ChurchDirectory Member manager component for Joomla!
  *
- * @version             $Id: churchdirectory.php 1.7.0 $
- * @package             com_churchdirectory
+ * @package             ChurchDirectory.Admin
  * @copyright           (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
  */
 // No direct access
 defined('_JEXEC') or die;
-
-/**
- * Renders a contact element
- *
- * @package     com_churchdirectory
- * @deprecated	JParameter is deprecated and will be removed in a future version. Use JForm instead.
- * @since		1.7.0
- */
 class JElementChurchdirectory extends JElement {
 
     /**

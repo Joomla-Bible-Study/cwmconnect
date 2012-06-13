@@ -1,8 +1,7 @@
 <?php
 
 /**
- * @version		$Id: cpanel.php 1.7.0 $
- * @package             com_churchdirectory
+ * @package             ChurchDirectory.Admin
  * @copyright           (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
  */
@@ -14,7 +13,7 @@ jimport('joomla.application.component.model');
 /**
  * Methods supporting a list of contact records.
  *
- * @package	com_churchdirectory
+ * @package	ChurchDirectory.Admin
  */
 class ChurchDirectoryModelCpanel extends JModel {
 

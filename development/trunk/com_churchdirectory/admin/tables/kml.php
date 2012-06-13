@@ -1,20 +1,13 @@
 <?php
 /**
- * @version		$Id: kml.php 1.7.0 $
- * @package		Joomla.Administrator
- * @subpackage	com_churchdirectory
+ * @package	ChurchDirectory.Admin
  * @copyright	(C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ * @license	GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 // No direct access
 defined('_JEXEC') or die;
 
-
-/**
- * @package		Joomla.Administrator
- * @subpackage	com_churchdirectory
- */
 class ChurchDirectoryTableKML extends JTable
 {
 	/**

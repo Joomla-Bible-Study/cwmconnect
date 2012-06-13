@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @package             com_churchdirectory
+ * @package             ChurchDirectory.Site
  * @copyright           (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
  */
@@ -16,8 +16,7 @@ jimport('joomla.application.categories');
  * ChurchDirectory Component Route Helper
  *
  * @static
- * @package		Joomla.Site
- * @subpackage	com_churchdirectory
+ * @package	ChurchDirectory.Site
  * @since 1.5
  */
 abstract class ChurchDirectoryHelperRoute {
