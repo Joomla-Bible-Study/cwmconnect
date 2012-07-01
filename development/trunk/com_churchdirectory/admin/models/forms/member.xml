@@ -558,6 +558,10 @@
             <fieldset name="memberstate"
                   label="COM_CHURCHDIRECTORY_MEMBER_STATE_INFO_FIELDSET_LABEL"
                   description="COM_CHURCHDIRECTORY_MEMBER_STATE_INFO_FIELDSET_DESC">
+                <field name="anniversary" type="calendar"
+                   label="COM_CHURCHDIRECTORY_FIELD_MEMBER_ANNIVERSARY_LABEL"
+                   description="COM_CHURCHDIRECTORY_FIELD_MEMBER_ANNIVERSARY_DESC" class="inputbox"
+                   format="%Y-%m-%d" size="22" />
                 <field name="birthdate" type="calendar"
                    label="COM_CHURCHDIRECTORY_FIELD_MEMBER_BIRTHDATE_LABEL"
                    description="COM_CHURCHDIRECTORY_FIELD_MEMBER_BIRTHDATE_DESC" class="inputbox"
