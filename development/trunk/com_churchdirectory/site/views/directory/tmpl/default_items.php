@@ -34,7 +34,7 @@ foreach ($this->items as $item) {
         echo '<div class="vertical-line"></div>';
     }
     if ($item->funitid != '0' && $item->attribs->get('familypostion') === '0') :
-        ?><div id="directory-items" class="sectiontableentry<?php echo $item->id + 1; ?>">
+        ?><div id="directory-items" class="sectiontableentry<?php echo $item->id + 1; ?> paddingitem">
         <?php echo $item->funit_name; ?>
         <?php
         if ($item->image && $this->params->get('dr_show_image')) :
@@ -104,7 +104,7 @@ foreach ($this->items as $item) {
         </div>
     <?php elseif ($item->funitid === '0'):
         ?>
-        <div id="directory-items" class="sectiontableentry<?php echo $item->id + 1; ?>">
+        <div id="directory-items" class="sectiontableentry<?php echo $item->id + 1; ?> paddingitem">
             <?php
             if ($item->image && $this->params->get('dr_show_image')) :
 

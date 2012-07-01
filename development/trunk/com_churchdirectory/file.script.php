@@ -15,12 +15,12 @@ class com_churchdirectoryInstallerScript {
      * The release value to be displayed and check against throughout this file.
      */
 
-    private $release = '1.7.0';
+    private $release = '1.7.1';
 
     /*
      * Find mimimum required joomla version for this extension. It will be read from the version attribute (install tag) in the manifest file
      */
-    private $minimum_joomla_release = '1.7.0';
+    private $minimum_joomla_release = '2.5.0';
 
     /*
      * $parent is the class calling this method.

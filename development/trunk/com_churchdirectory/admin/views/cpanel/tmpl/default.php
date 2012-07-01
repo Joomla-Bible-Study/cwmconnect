@@ -6,11 +6,17 @@
  */
 defined('_JEXEC') or die;
 ?>
+<div class="fltlft">
+    <p>Welcome to the new and improved Church Directory System this i a alpha release and has lot of bugs and things not completed.<br />
 
-<p>Welcome to the new and improved Church Directory System this i a alpha release and has lot of bugs and things not completed.<br />
+        All core function should be working. Directory rendering is till not fully functional and working on family unit.<br /><br />
 
-All core function should be working. Directory rendering is till not fully functional and working on family unit.<br /><br />
+        Thanks for supporting the work.<br /><br />
 
-Thanks for supporting the work.<br /><br />
-
-Joomla Bible Study Team</p>
+        Joomla Bible Study Team</p>
+</div>
+<div class="fltrt">
+    <div id="cpanel" style="padding-left: 20px">
+        <?php echo LiveUpdate::getIcon(); ?>
+    </div>
+</div>

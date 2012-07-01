@@ -11,7 +11,12 @@
 defined('_JEXEC') or die();
 
 jimport('joomla.application.component.view');
+require_once (JPATH_COMPONENT_ADMINISTRATOR . DS . 'liveupdate' . DS . 'liveupdate.php');
 
+/**
+ * @package ChurchDirectory.Admin
+ * @since 1.7.0
+ */
 class ChurchDirectoryViewCpanel extends JView {
 
     protected $items;
@@ -59,6 +64,11 @@ class ChurchDirectoryViewCpanel extends JView {
 
         JToolBarHelper::help('churchdirectory', TRUE);
     }
+
+    /**
+     * Set browser title
+     * @since 1.7.0
+     */
     protected function setDocument() {
         $document = JFactory::getDocument();
         $document->setTitle(JText::_('COM_CHURCHDIRECTORY_ADMINISTRATION'));

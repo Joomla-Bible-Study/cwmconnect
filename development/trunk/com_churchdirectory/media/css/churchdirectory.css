@@ -225,3 +225,14 @@ div.vert-line>div{float:left; padding-bottom:2000px; margin-bottom:-2000px;}
     float: right;
     width: 70%;
 }
+
+.headerpage {
+    padding: 5px;
+    border-color: black;
+    border-style: solid;
+    border-width: 1px;
+}
+
+.paddingitem {
+    padding: 5px;
+}

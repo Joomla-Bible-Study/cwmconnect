@@ -55,12 +55,6 @@ $saveOrder = $listOrder == 'a.ordering';
                 <th width="5%">
                     <?php echo JHtml::_('grid.sort', 'JSTATUS', 'a.state', $listDirn, $listOrder); ?>
                 </th>
-                <th width="10%">
-                    <?php echo JHtml::_('grid.sort', 'JGRID_HEADING_ORDERING', 'a.ordering', $listDirn, $listOrder); ?>
-                    <?php if ($canOrder && $saveOrder) : ?>
-                        <?php echo JHtml::_('grid.order', $this->items, 'filesave.png', 'positions.saveorder'); ?>
-                    <?php endif; ?>
-                </th>
                 <th width="5%">
                     <?php echo JHtml::_('grid.sort', 'JGRID_HEADING_LANGUAGE', 'a.language', $listDirn, $listOrder); ?>
                 </th>
@@ -80,7 +74,6 @@ $saveOrder = $listOrder == 'a.ordering';
             <?php
             $n = count($this->items);
             foreach ($this->items as $i => $item) :
-                $ordering = $listOrder == 'a.ordering';
                 $canCreate = $user->authorise('core.create');
                 $canEdit = $user->authorise('core.edit');
                 $canCheckin = $user->authorise('core.manage', 'com_checkin') || $item->checked_out == $userId || $item->checked_out == 0;
@@ -106,23 +99,6 @@ $saveOrder = $listOrder == 'a.ordering';
                     </td>
                     <td align="center">
                         <?php echo JHtml::_('jgrid.published', $item->published, $i, 'positions.', $canChange, 'cb', $item->publish_up, $item->publish_down); ?>
-                    </td>
-                    <td class="order">
-                        <?php if ($canChange) : ?>
-                            <?php if ($saveOrder) : ?>
-                                <?php if ($listDirn == 'asc') : ?>
-                                    <span><?php echo $this->pagination->orderUpIcon($i, ($item->catid == @$this->items[$i - 1]->catid), 'positions.orderup', 'JLIB_HTML_MOVE_UP', $ordering); ?></span>
-                                    <span><?php echo $this->pagination->orderDownIcon($i, $n, ($item->catid == @$this->items[$i + 1]->catid), 'positions.orderdown', 'JLIB_HTML_MOVE_DOWN', $ordering); ?></span>
-                                <?php elseif ($listDirn == 'desc') : ?>
-                                    <span><?php echo $this->pagination->orderUpIcon($i, ($item->catid == @$this->items[$i - 1]->catid), 'positions.orderdown', 'JLIB_HTML_MOVE_UP', $ordering); ?></span>
-                                    <span><?php echo $this->pagination->orderDownIcon($i, $n, ($item->catid == @$this->items[$i + 1]->catid), 'positions.orderup', 'JLIB_HTML_MOVE_DOWN', $ordering); ?></span>
-                                <?php endif; ?>
-                            <?php endif; ?>
-                            <?php $disabled = $saveOrder ? '' : 'disabled="disabled"'; ?>
-                            <input type="text" name="order[]" size="5" value="<?php echo $item->ordering; ?>" <?php echo $disabled ?> class="text-area-order" />
-                        <?php else : ?>
-                            <?php echo $item->ordering; ?>
-                        <?php endif; ?>
                     </td>
                     <td class="center">
                         <?php if ($item->language == '*'): ?>

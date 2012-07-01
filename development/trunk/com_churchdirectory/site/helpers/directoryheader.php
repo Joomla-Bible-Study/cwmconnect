@@ -8,6 +8,7 @@
  * */
 //No Direct Access
 defined('_JEXEC') or die;
+
 /**
  * Directory Header Helper
  * @package ChurchDirectory.Site
@@ -15,11 +16,31 @@ defined('_JEXEC') or die;
  */
 class DirectoryHeaderHelper {
 
-    static function getChurchBio() {
+    static function getHeader($params) {
+        $db = JFactory::getDBO();
+        $query = $db->getQuery(true);
 
-    }
-    static function getPastorBio() {
+        $query->select('a.*');
+        $query->from('#__churchdirectory_dirheader AS a');
+        $query->order('a.ordering ASC');
 
+        $db->setQuery($query->__toString());
+
+        $tresult = $db->loadObjectList();
+        $h = 0;
+        $header = null;
+        foreach ($tresult as $b) {
+            $header .= '<div class="headerpage">';
+            if ($params->get('dr_show_debug')) :
+                $header .= '<p>ID: ' . $b->id . '</p>';
+                $header .= '<p>Count: ' . $h . '</p>';
+            endif;
+            $header .= $b->description;
+            $header .= '</div>';
+            $header .= '<div style="page-break-after:always"></div>';
+            $h++;
+        }
+        return $header;
     }
 
 }

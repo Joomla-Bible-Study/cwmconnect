@@ -32,8 +32,7 @@ JHtml::addIncludePath(JPATH_COMPONENT . '/helpers');
                 <?php echo JText::_('COM_CHURCHDIRECTORY_KMLFILE'); ?></a>
         <?php endif; ?>
         <?php JView::loadHelper('directoryheader');
-        echo DirectoryHeaderHelper::getChurchBio();
-        echo DirectoryHeaderHelper::getPastorBio();
+        echo DirectoryHeaderHelper::getHeader($params = $this->params);
         ?>
     </div>
     <?php
