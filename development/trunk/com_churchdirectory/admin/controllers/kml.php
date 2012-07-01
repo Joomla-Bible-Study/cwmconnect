@@ -13,6 +13,13 @@ jimport('joomla.application.component.controllerform');
 class ChurchDirectoryControllerKML extends JControllerForm {
 
     /**
+     * NOTE: This is needed to prevent Joomla 1.6's pluralization mechanisim from kicking in
+     *
+     * @since 7.0
+     */
+    protected $view_list = 'cpanel';
+
+    /**
      * Method override to check if you can add a new record.
      *
      * @param	array	$data	An array of input data.

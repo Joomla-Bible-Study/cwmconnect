@@ -99,6 +99,10 @@ class ChurchDirectoryViewKML extends JView {
         JToolBarHelper::help('churchdirectory_kml', TRUE);
     }
 
+    /**
+     * Set browser title
+     * @since 1.7.0
+     */
     protected function setDocument() {
         $isNew = ($this->item->id < 1);
         $document = JFactory::getDocument();

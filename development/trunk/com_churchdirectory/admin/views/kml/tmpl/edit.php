@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @package	ChurchDirectory.Admin
  * @copyright	(C) 2007 - 2011 Joomla Bible Study Team All rights reserved.

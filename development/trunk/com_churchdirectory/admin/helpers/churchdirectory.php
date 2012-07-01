@@ -40,7 +40,7 @@ class ChurchDirectoryHelper {
                 JText::_('COM_CHURCHDIRECTORY_SUBMENU_INFO'), 'index.php?option=com_churchdirectory&view=info', $vName == 'info'
         );
         JSubMenuHelper::addEntry(
-                JText::_('COM_CHURCHDIRECTORY_SUBMENU_KML'), 'index.php?option=com_churchdirectory&view=kmls', $vName == 'kmls'
+                JText::_('COM_CHURCHDIRECTORY_SUBMENU_KML'), 'index.php?option=com_churchdirectory&task=kml.edit&id=1', $vName == 'kmls'
         );
         JSubMenuHelper::addEntry(
                 JText::_('COM_CHURCHDIRECTORY_SUBMENU_FAMILYUNITS'), 'index.php?option=com_churchdirectory&view=familyunits', $vName == 'familyunits'
