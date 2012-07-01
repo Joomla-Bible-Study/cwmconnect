@@ -18,7 +18,7 @@ jimport('joomla.i18n.help');
  * @package ChurchDirectory.Admin
  * @since   1.7.0
  */
-class ChurchDirectoryViewFamilyUnits extends JView {
+class ChurchDirectoryViewDirHeaders extends JView {
 
     protected $items;
     protected $pagination;
@@ -26,7 +26,7 @@ class ChurchDirectoryViewFamilyUnits extends JView {
 
     /**
      * Display the view
-     *
+     * @since 1.7.0
      * @return	void
      */
     public function display($tpl = null) {
@@ -64,29 +64,29 @@ class ChurchDirectoryViewFamilyUnits extends JView {
      */
     protected function addToolbar() {
         $canDo = ChurchDirectoryHelper::getActions($this->state->get('filter.category_id'));
-        JToolBarHelper::title(JText::_('COM_CHURCHDIRECTORY_MANAGER_FAMILYUNITS'), 'churchdirectory');
+        JToolBarHelper::title(JText::_('COM_CHURCHDIRECTORY_MANAGER_DIRHEADERS'), 'churchdirectory');
 
         if ($canDo->get('core.create') || (count($user->getAuthorisedCategories('com_churchdirectory', 'core.create'))) > 0) {
-            JToolBarHelper::addNew('familyunit.add');
+            JToolBarHelper::addNew('dirheader.add');
         }
 
         if (($canDo->get('core.edit')) || ($canDo->get('core.edit.own'))) {
-            JToolBarHelper::editList('familyunit.edit');
+            JToolBarHelper::editList('dirheader.edit');
         }
 
         if ($canDo->get('core.edit.state')) {
             JToolBarHelper::divider();
-            JToolBarHelper::publish('familyunits.publish', 'JTOOLBAR_PUBLISH', true);
-            JToolBarHelper::unpublish('familyunits.unpublish', 'JTOOLBAR_UNPUBLISH', true);
+            JToolBarHelper::publish('dirheaders.publish', 'JTOOLBAR_PUBLISH', true);
+            JToolBarHelper::unpublish('dirheaders.unpublish', 'JTOOLBAR_UNPUBLISH', true);
             JToolBarHelper::divider();
-            JToolBarHelper::checkin('familyunits.checkin');
+            JToolBarHelper::checkin('dirheaders.checkin');
         }
 
         if ($this->state->get('filter.published') == -2 && $canDo->get('core.delete')) {
-            JToolBarHelper::deleteList('', 'familyunits.delete', 'JTOOLBAR_EMPTY_TRASH');
+            JToolBarHelper::deleteList('', 'dirheaders.delete', 'JTOOLBAR_EMPTY_TRASH');
             JToolBarHelper::divider();
         } elseif ($canDo->get('core.edit.state')) {
-            JToolBarHelper::trash('familyunits.trash');
+            JToolBarHelper::trash('dirheaders.trash');
             JToolBarHelper::divider();
         }
 
@@ -95,16 +95,16 @@ class ChurchDirectoryViewFamilyUnits extends JView {
             JToolBarHelper::divider();
         }
 
-        JToolBarHelper::help('churchdirectory_familyunit', TRUE);
+        JToolBarHelper::help('churchdirectory_dirheader', TRUE);
     }
 
     /**
-     * Set browser title
+     * To set browser title
      * @since 1.7.0
      */
     protected function setDocument() {
         $document = JFactory::getDocument();
-        $document->setTitle(JText::_('COM_CHURCHDIRECTORY_FAMILYUNITS'));
+        $document->setTitle(JText::_('COM_CHURCHDIRECTORY_DIRHEADERS'));
     }
 
 }

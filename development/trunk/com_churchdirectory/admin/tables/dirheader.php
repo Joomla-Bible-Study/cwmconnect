@@ -8,7 +8,11 @@
 // No direct access
 defined('_JEXEC') or die;
 
-class ChurchDirectoryTableFamilyUnit extends JTable {
+/**
+ * @package ChurchDirectory.Admin
+ * @since 1.7.0
+ */
+class ChurchDirectoryTableDirHeader extends JTable {
 
     /**
      * Constructor
@@ -17,7 +21,7 @@ class ChurchDirectoryTableFamilyUnit extends JTable {
      * @since 1.7.0
      */
     public function __construct(& $db) {
-        parent::__construct('#__churchdirectory_familyunit', 'id', $db);
+        parent::__construct('#__churchdirectory_dirheader', 'id', $db);
     }
 
     /**
@@ -101,7 +105,7 @@ class ChurchDirectoryTableFamilyUnit extends JTable {
             return false;
         }
         /** check for existing name */
-        $query = 'SELECT id FROM #__churchdirectory_familyunit WHERE name = ' . $this->_db->Quote($this->name);
+        $query = 'SELECT id FROM #__churchdirectory_dirheader WHERE name = ' . $this->_db->Quote($this->name);
         $this->_db->setQuery($query);
 
         $xid = intval($this->_db->loadResult());

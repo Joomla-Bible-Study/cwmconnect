@@ -8,6 +8,10 @@
 // No direct access
 defined('_JEXEC') or die;
 
+/**
+ * @package ChurchDirectory.Admin
+ * @since 1.7.0
+ */
 class ChurchDirectoryTablePosition extends JTable {
 
     /**

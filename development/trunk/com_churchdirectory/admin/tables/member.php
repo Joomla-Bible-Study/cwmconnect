@@ -8,6 +8,10 @@
 // No direct access
 defined('_JEXEC') or die;
 
+/**
+ * @package	ChurchDirectory.Admin
+ * @since 1.7.0
+ */
 class ChurchDirectoryTableMember extends JTable {
 
     /**
@@ -45,8 +49,8 @@ class ChurchDirectoryTableMember extends JTable {
             $registry->loadArray($array['metadata']);
             $array['metadata'] = (string) $registry;
         }
-        if (key_exists( 'con_position', $array ) && is_array( $array['con_position'] )) {
-	        $array['con_position'] = implode( ',', $array['con_position'] );
+        if (key_exists('con_position', $array) && is_array($array['con_position'])) {
+            $array['con_position'] = implode(',', $array['con_position']);
         }
 
         return parent::bind($array, $ignore);
@@ -185,6 +189,12 @@ class ChurchDirectoryTableMember extends JTable {
         return true;
     }
 
+    /**
+     * Pre load items
+     * @param string $pk
+     * @param string $reset
+     * @return boolean
+     */
     public function load($pk = null, $reset = true) {
         if (parent::load($pk, $reset)) {
             // Convert the params field to a registry.
@@ -227,7 +237,7 @@ class ChurchDirectoryTableMember extends JTable {
      * @return      int
      * @since       1.6
      */
-    protected function _getAssetParentId($table=null, $id=null) {
+    protected function _getAssetParentId($table = null, $id = null) {
         $asset = JTable::getInstance('Asset');
         $asset->loadByName('com_churchdirectory');
         return $asset->id;

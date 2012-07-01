@@ -46,6 +46,9 @@ class ChurchDirectoryHelper {
                 JText::_('COM_CHURCHDIRECTORY_SUBMENU_FAMILYUNITS'), 'index.php?option=com_churchdirectory&view=familyunits', $vName == 'familyunits'
         );
         JSubMenuHelper::addEntry(
+                JText::_('COM_CHURCHDIRECTORY_SUBMENU_DIRHEADERS'), 'index.php?option=com_churchdirectory&view=dirheaders', $vName == 'dirheaders'
+        );
+        JSubMenuHelper::addEntry(
                 JText::_('COM_CHURCHDIRECTORY_SUBMENU_POSITIONS'), 'index.php?option=com_churchdirectory&view=positions', $vName == 'positions'
         );
 
