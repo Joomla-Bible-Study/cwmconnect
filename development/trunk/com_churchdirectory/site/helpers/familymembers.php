@@ -28,10 +28,8 @@ function getFamilyMembersPage($params, $id, $famid) {
     $i = 0;
     foreach ($tresult as $b) {
         $attribs = json_decode($b->attribs);
-        //var_dump($params->get('show_telephone'));
-        //var_dump($attribs);
         $teacher .= '<div class="directory-familymembers-list">';
-        $teacher .= '<div class="directory-name"><a href="' . JRoute::_('index.php?option=com_churchdirectory&view=churchdirectory&id=' . $b->id) . '">';
+        $teacher .= '<div class="directory-name"><a href="' . JRoute::_('index.php?option=com_churchdirectory&view=member&id=' . $b->id) . '">';
         $teacher .= $b->name;
         $teacher .='</a></div>';
         $teacher .= '<div class="directory-subtitle">';

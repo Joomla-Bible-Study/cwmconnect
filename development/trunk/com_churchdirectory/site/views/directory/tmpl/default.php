@@ -31,6 +31,10 @@ JHtml::addIncludePath(JPATH_COMPONENT . '/helpers');
             <a href="<?php echo JRoute::_('index.php?option=com_churchdirectory&amp;view=directory&amp;format=kml'); ?>">
                 <?php echo JText::_('COM_CHURCHDIRECTORY_KMLFILE'); ?></a>
         <?php endif; ?>
+        <?php JView::loadHelper('directoryheader');
+        echo DirectoryHeaderHelper::getChurchBio();
+        echo DirectoryHeaderHelper::getPastorBio();
+        ?>
     </div>
     <?php
     echo $this->loadTemplate('items');
