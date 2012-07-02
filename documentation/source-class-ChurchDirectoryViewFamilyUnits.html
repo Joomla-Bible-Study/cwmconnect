@@ -8,7 +8,7 @@
 	<title>File development/trunk/com_churchdirectory/admin/views/familyunits/view.html.php | joomla_churchdirectory</title>
 
 	<script type="text/javascript" src="resources/combined.js?144019575"></script>
-	<script type="text/javascript" src="elementlist.js?3069945091"></script>
+	<script type="text/javascript" src="elementlist.js?3317330739"></script>
 	<link rel="stylesheet" type="text/css" media="all" href="resources/style.css?1532301413" />
 
 </head>
@@ -54,6 +54,8 @@
 			<ul>
 				<li><a href="class-ChurchDirectoryControllerCpanel.html">ChurchDirectoryControllerCpanel</a></li>
 				<li><a href="class-ChurchDirectoryControllerDirectory.html">ChurchDirectoryControllerDirectory</a></li>
+				<li><a href="class-ChurchDirectoryControllerDirHeader.html">ChurchDirectoryControllerDirHeader</a></li>
+				<li><a href="class-ChurchDirectoryControllerDirHeaders.html">ChurchDirectoryControllerDirHeaders</a></li>
 				<li><a href="class-ChurchDirectoryControllerFamilyUnit.html">ChurchDirectoryControllerFamilyUnit</a></li>
 				<li><a href="class-ChurchDirectoryControllerFamilyUnits.html">ChurchDirectoryControllerFamilyUnits</a></li>
 				<li><a href="class-ChurchDirectoryControllerKML.html">ChurchDirectoryControllerKML</a></li>
@@ -64,6 +66,8 @@
 				<li><a href="class-ChurchDirectoryControllerPositions.html">ChurchDirectoryControllerPositions</a></li>
 				<li><a href="class-ChurchDirectoryHelper.html">ChurchDirectoryHelper</a></li>
 				<li><a href="class-ChurchDirectoryModelCpanel.html">ChurchDirectoryModelCpanel</a></li>
+				<li><a href="class-ChurchDirectoryModelDirHeader.html">ChurchDirectoryModelDirHeader</a></li>
+				<li><a href="class-ChurchDirectoryModelDirHeaders.html">ChurchDirectoryModelDirHeaders</a></li>
 				<li><a href="class-ChurchDirectoryModelFamilyUnit.html">ChurchDirectoryModelFamilyUnit</a></li>
 				<li><a href="class-ChurchDirectoryModelFamilyUnits.html">ChurchDirectoryModelFamilyUnits</a></li>
 				<li><a href="class-ChurchDirectoryModelGeoUpdate.html">ChurchDirectoryModelGeoUpdate</a></li>
@@ -71,11 +75,14 @@
 				<li><a href="class-ChurchDirectoryModelKMLs.html">ChurchDirectoryModelKMLs</a></li>
 				<li><a href="class-ChurchDirectoryModelPosition.html">ChurchDirectoryModelPosition</a></li>
 				<li><a href="class-ChurchDirectoryModelPositions.html">ChurchDirectoryModelPositions</a></li>
+				<li><a href="class-ChurchDirectoryTableDirHeader.html">ChurchDirectoryTableDirHeader</a></li>
 				<li><a href="class-ChurchDirectoryTableFamilyUnit.html">ChurchDirectoryTableFamilyUnit</a></li>
 				<li><a href="class-ChurchDirectoryTableKML.html">ChurchDirectoryTableKML</a></li>
 				<li><a href="class-ChurchDirectoryTableMember.html">ChurchDirectoryTableMember</a></li>
 				<li><a href="class-ChurchDirectoryTablePosition.html">ChurchDirectoryTablePosition</a></li>
 				<li><a href="class-ChurchDirectoryViewCpanel.html">ChurchDirectoryViewCpanel</a></li>
+				<li><a href="class-ChurchDirectoryViewDirHeader.html">ChurchDirectoryViewDirHeader</a></li>
+				<li><a href="class-ChurchDirectoryViewDirHeaders.html">ChurchDirectoryViewDirHeaders</a></li>
 				<li><a href="class-ChurchDirectoryViewFamilyUnit.html">ChurchDirectoryViewFamilyUnit</a></li>
 				<li class="active"><a href="class-ChurchDirectoryViewFamilyUnits.html">ChurchDirectoryViewFamilyUnits</a></li>
 				<li><a href="class-ChurchDirectoryViewGeoUpdate.html">ChurchDirectoryViewGeoUpdate</a></li>
@@ -154,8 +161,8 @@
 <a href="#15" id="15" class="l"> 15: </a><span class="php-comment">/**
 </span><a href="#16" id="16" class="l"> 16: </a><span class="php-comment"> * View class for a list of churchdirectories.
 </span><a href="#17" id="17" class="l"> 17: </a><span class="php-comment"> *
-</span><a href="#18" id="18" class="l"> 18: </a><span class="php-comment"> * @package         ChurchDirectory.Admin
-</span><a href="#19" id="19" class="l"> 19: </a><span class="php-comment"> * @since       1.7.0
+</span><a href="#18" id="18" class="l"> 18: </a><span class="php-comment"> * @package ChurchDirectory.Admin
+</span><a href="#19" id="19" class="l"> 19: </a><span class="php-comment"> * @since   1.7.0
 </span><a href="#20" id="20" class="l"> 20: </a><span class="php-comment"> */</span>
 <a href="#21" id="21" class="l"> 21: </a><span class="php-keyword1">class</span> ChurchDirectoryViewFamilyUnits <span class="php-keyword1">extends</span> JView {
 <a href="#22" id="22" class="l"> 22: </a>
@@ -236,13 +243,18 @@
 <a href="#97" id="97" class="l"> 97: </a>
 <a href="#98" id="98" class="l"> 98: </a>        JToolBarHelper::help(<span class="php-quote">'churchdirectory_familyunit'</span>, <span class="php-keyword1">TRUE</span>);
 <a href="#99" id="99" class="l"> 99: </a>    }
-<a href="#100" id="100" class="l">100: </a>    <span class="php-keyword1">protected</span> <span class="php-keyword1">function</span> setDocument() {
-<a href="#101" id="101" class="l">101: </a>        <span class="php-var">$document</span> = JFactory::getDocument();
-<a href="#102" id="102" class="l">102: </a>        <span class="php-var">$document</span>-&gt;setTitle(JText::_(<span class="php-quote">'COM_CHURCHDIRECTORY_FAMILYUNITS'</span>));
-<a href="#103" id="103" class="l">103: </a>    }
-<a href="#104" id="104" class="l">104: </a>
-<a href="#105" id="105" class="l">105: </a>}
-<a href="#106" id="106" class="l">106: </a></code></pre>
+<a href="#100" id="100" class="l">100: </a>
+<a href="#101" id="101" class="l">101: </a>    <span class="php-comment">/**
+</span><a href="#102" id="102" class="l">102: </a><span class="php-comment">     * Set browser title
+</span><a href="#103" id="103" class="l">103: </a><span class="php-comment">     * @since 1.7.0
+</span><a href="#104" id="104" class="l">104: </a><span class="php-comment">     */</span>
+<a href="#105" id="105" class="l">105: </a>    <span class="php-keyword1">protected</span> <span class="php-keyword1">function</span> setDocument() {
+<a href="#106" id="106" class="l">106: </a>        <span class="php-var">$document</span> = JFactory::getDocument();
+<a href="#107" id="107" class="l">107: </a>        <span class="php-var">$document</span>-&gt;setTitle(JText::_(<span class="php-quote">'COM_CHURCHDIRECTORY_FAMILYUNITS'</span>));
+<a href="#108" id="108" class="l">108: </a>    }
+<a href="#109" id="109" class="l">109: </a>
+<a href="#110" id="110" class="l">110: </a>}
+<a href="#111" id="111" class="l">111: </a></code></pre>
 
 	<div id="footer">
 		joomla_churchdirectory API documentation generated by <a href="http://apigen.org">ApiGen 2.6.1</a>

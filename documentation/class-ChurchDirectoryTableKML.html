@@ -7,7 +7,7 @@
 	<title>Class ChurchDirectoryTableKML | joomla_churchdirectory</title>
 
 	<script type="text/javascript" src="resources/combined.js?144019575"></script>
-	<script type="text/javascript" src="elementlist.js?3069945091"></script>
+	<script type="text/javascript" src="elementlist.js?3317330739"></script>
 	<link rel="stylesheet" type="text/css" media="all" href="resources/style.css?1532301413" />
 
 </head>
@@ -53,6 +53,8 @@
 			<ul>
 				<li><a href="class-ChurchDirectoryControllerCpanel.html">ChurchDirectoryControllerCpanel</a></li>
 				<li><a href="class-ChurchDirectoryControllerDirectory.html">ChurchDirectoryControllerDirectory</a></li>
+				<li><a href="class-ChurchDirectoryControllerDirHeader.html">ChurchDirectoryControllerDirHeader</a></li>
+				<li><a href="class-ChurchDirectoryControllerDirHeaders.html">ChurchDirectoryControllerDirHeaders</a></li>
 				<li><a href="class-ChurchDirectoryControllerFamilyUnit.html">ChurchDirectoryControllerFamilyUnit</a></li>
 				<li><a href="class-ChurchDirectoryControllerFamilyUnits.html">ChurchDirectoryControllerFamilyUnits</a></li>
 				<li><a href="class-ChurchDirectoryControllerKML.html">ChurchDirectoryControllerKML</a></li>
@@ -63,6 +65,8 @@
 				<li><a href="class-ChurchDirectoryControllerPositions.html">ChurchDirectoryControllerPositions</a></li>
 				<li><a href="class-ChurchDirectoryHelper.html">ChurchDirectoryHelper</a></li>
 				<li><a href="class-ChurchDirectoryModelCpanel.html">ChurchDirectoryModelCpanel</a></li>
+				<li><a href="class-ChurchDirectoryModelDirHeader.html">ChurchDirectoryModelDirHeader</a></li>
+				<li><a href="class-ChurchDirectoryModelDirHeaders.html">ChurchDirectoryModelDirHeaders</a></li>
 				<li><a href="class-ChurchDirectoryModelFamilyUnit.html">ChurchDirectoryModelFamilyUnit</a></li>
 				<li><a href="class-ChurchDirectoryModelFamilyUnits.html">ChurchDirectoryModelFamilyUnits</a></li>
 				<li><a href="class-ChurchDirectoryModelGeoUpdate.html">ChurchDirectoryModelGeoUpdate</a></li>
@@ -70,11 +74,14 @@
 				<li><a href="class-ChurchDirectoryModelKMLs.html">ChurchDirectoryModelKMLs</a></li>
 				<li><a href="class-ChurchDirectoryModelPosition.html">ChurchDirectoryModelPosition</a></li>
 				<li><a href="class-ChurchDirectoryModelPositions.html">ChurchDirectoryModelPositions</a></li>
+				<li><a href="class-ChurchDirectoryTableDirHeader.html">ChurchDirectoryTableDirHeader</a></li>
 				<li><a href="class-ChurchDirectoryTableFamilyUnit.html">ChurchDirectoryTableFamilyUnit</a></li>
 				<li class="active"><a href="class-ChurchDirectoryTableKML.html">ChurchDirectoryTableKML</a></li>
 				<li><a href="class-ChurchDirectoryTableMember.html">ChurchDirectoryTableMember</a></li>
 				<li><a href="class-ChurchDirectoryTablePosition.html">ChurchDirectoryTablePosition</a></li>
 				<li><a href="class-ChurchDirectoryViewCpanel.html">ChurchDirectoryViewCpanel</a></li>
+				<li><a href="class-ChurchDirectoryViewDirHeader.html">ChurchDirectoryViewDirHeader</a></li>
+				<li><a href="class-ChurchDirectoryViewDirHeaders.html">ChurchDirectoryViewDirHeaders</a></li>
 				<li><a href="class-ChurchDirectoryViewFamilyUnit.html">ChurchDirectoryViewFamilyUnit</a></li>
 				<li><a href="class-ChurchDirectoryViewFamilyUnits.html">ChurchDirectoryViewFamilyUnits</a></li>
 				<li><a href="class-ChurchDirectoryViewGeoUpdate.html">ChurchDirectoryViewGeoUpdate</a></li>
@@ -171,6 +178,8 @@ JTable
 				(C) 2007 - 2011 Joomla Bible Study Team All rights reserved.<br />
 				<b>License:</b>
 				<a href="GNU">General Public License version 2 or later; see LICENSE.txt</a><br />
+				<b>Since:</b>
+				1.7.0<br />
 		<b>Located at</b> <a href="source-class-ChurchDirectoryTableKML.html#11" title="Go to source code">development/trunk/com_churchdirectory/admin/tables/kml.php</a><br />
 	</div>
 
@@ -188,7 +197,7 @@ JTable
 
 		<td class="name"><div>
 		<a class="anchor" href="#___construct">#</a>
-		<code><a href="source-class-ChurchDirectoryTableKML.html#13" title="Go to source code">__construct</a>( <span>object <var>&amp; $db</var></span> )</code>
+		<code><a href="source-class-ChurchDirectoryTableKML.html#17" title="Go to source code">__construct</a>( <span>object <var>&amp; $db</var></span> )</code>
 
 		<div class="description short">
 			
@@ -229,7 +238,7 @@ JTable
 
 		<td class="name"><div>
 		<a class="anchor" href="#_bind">#</a>
-		<code><a href="source-class-ChurchDirectoryTableKML.html#24" title="Go to source code">bind</a>( <span>array <var>$array</var></span>, <span> <var>$ignore</var> = <span class="php-quote">''</span></span> )</code>
+		<code><a href="source-class-ChurchDirectoryTableKML.html#27" title="Go to source code">bind</a>( <span>array <var>$array</var></span>, <span> <var>$ignore</var> = <span class="php-quote">''</span></span> )</code>
 
 		<div class="description short">
 			
@@ -276,7 +285,7 @@ JTable
 
 		<td class="name"><div>
 		<a class="anchor" href="#_store">#</a>
-		<code><a href="source-class-ChurchDirectoryTableKML.html#42" title="Go to source code">store</a>( <span>boolean <var>$updateNulls</var> = <span class="php-keyword1">false</span></span> )</code>
+		<code><a href="source-class-ChurchDirectoryTableKML.html#44" title="Go to source code">store</a>( <span>boolean <var>$updateNulls</var> = <span class="php-keyword1">false</span></span> )</code>
 
 		<div class="description short">
 			
@@ -321,7 +330,7 @@ JTable
 
 		<td class="name"><div>
 		<a class="anchor" href="#_check">#</a>
-		<code><a href="source-class-ChurchDirectoryTableKML.html#79" title="Go to source code">check</a>( )</code>
+		<code><a href="source-class-ChurchDirectoryTableKML.html#80" title="Go to source code">check</a>( )</code>
 
 		<div class="description short">
 			

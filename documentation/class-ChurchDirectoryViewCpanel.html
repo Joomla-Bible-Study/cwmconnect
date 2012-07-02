@@ -7,7 +7,7 @@
 	<title>Class ChurchDirectoryViewCpanel | joomla_churchdirectory</title>
 
 	<script type="text/javascript" src="resources/combined.js?144019575"></script>
-	<script type="text/javascript" src="elementlist.js?3069945091"></script>
+	<script type="text/javascript" src="elementlist.js?3317330739"></script>
 	<link rel="stylesheet" type="text/css" media="all" href="resources/style.css?1532301413" />
 
 </head>
@@ -53,6 +53,8 @@
 			<ul>
 				<li><a href="class-ChurchDirectoryControllerCpanel.html">ChurchDirectoryControllerCpanel</a></li>
 				<li><a href="class-ChurchDirectoryControllerDirectory.html">ChurchDirectoryControllerDirectory</a></li>
+				<li><a href="class-ChurchDirectoryControllerDirHeader.html">ChurchDirectoryControllerDirHeader</a></li>
+				<li><a href="class-ChurchDirectoryControllerDirHeaders.html">ChurchDirectoryControllerDirHeaders</a></li>
 				<li><a href="class-ChurchDirectoryControllerFamilyUnit.html">ChurchDirectoryControllerFamilyUnit</a></li>
 				<li><a href="class-ChurchDirectoryControllerFamilyUnits.html">ChurchDirectoryControllerFamilyUnits</a></li>
 				<li><a href="class-ChurchDirectoryControllerKML.html">ChurchDirectoryControllerKML</a></li>
@@ -63,6 +65,8 @@
 				<li><a href="class-ChurchDirectoryControllerPositions.html">ChurchDirectoryControllerPositions</a></li>
 				<li><a href="class-ChurchDirectoryHelper.html">ChurchDirectoryHelper</a></li>
 				<li><a href="class-ChurchDirectoryModelCpanel.html">ChurchDirectoryModelCpanel</a></li>
+				<li><a href="class-ChurchDirectoryModelDirHeader.html">ChurchDirectoryModelDirHeader</a></li>
+				<li><a href="class-ChurchDirectoryModelDirHeaders.html">ChurchDirectoryModelDirHeaders</a></li>
 				<li><a href="class-ChurchDirectoryModelFamilyUnit.html">ChurchDirectoryModelFamilyUnit</a></li>
 				<li><a href="class-ChurchDirectoryModelFamilyUnits.html">ChurchDirectoryModelFamilyUnits</a></li>
 				<li><a href="class-ChurchDirectoryModelGeoUpdate.html">ChurchDirectoryModelGeoUpdate</a></li>
@@ -70,11 +74,14 @@
 				<li><a href="class-ChurchDirectoryModelKMLs.html">ChurchDirectoryModelKMLs</a></li>
 				<li><a href="class-ChurchDirectoryModelPosition.html">ChurchDirectoryModelPosition</a></li>
 				<li><a href="class-ChurchDirectoryModelPositions.html">ChurchDirectoryModelPositions</a></li>
+				<li><a href="class-ChurchDirectoryTableDirHeader.html">ChurchDirectoryTableDirHeader</a></li>
 				<li><a href="class-ChurchDirectoryTableFamilyUnit.html">ChurchDirectoryTableFamilyUnit</a></li>
 				<li><a href="class-ChurchDirectoryTableKML.html">ChurchDirectoryTableKML</a></li>
 				<li><a href="class-ChurchDirectoryTableMember.html">ChurchDirectoryTableMember</a></li>
 				<li><a href="class-ChurchDirectoryTablePosition.html">ChurchDirectoryTablePosition</a></li>
 				<li class="active"><a href="class-ChurchDirectoryViewCpanel.html">ChurchDirectoryViewCpanel</a></li>
+				<li><a href="class-ChurchDirectoryViewDirHeader.html">ChurchDirectoryViewDirHeader</a></li>
+				<li><a href="class-ChurchDirectoryViewDirHeaders.html">ChurchDirectoryViewDirHeaders</a></li>
 				<li><a href="class-ChurchDirectoryViewFamilyUnit.html">ChurchDirectoryViewFamilyUnit</a></li>
 				<li><a href="class-ChurchDirectoryViewFamilyUnits.html">ChurchDirectoryViewFamilyUnits</a></li>
 				<li><a href="class-ChurchDirectoryViewGeoUpdate.html">ChurchDirectoryViewGeoUpdate</a></li>
@@ -171,7 +178,9 @@ JView
 				(C) 2007 - 2011 Joomla Bible Study Team All rights reserved.<br />
 				<b>License:</b>
 				<a href="GNU">General Public License version 2 or later; see LICENSE.txt</a><br />
-		<b>Located at</b> <a href="source-class-ChurchDirectoryViewCpanel.html#15" title="Go to source code">development/trunk/com_churchdirectory/admin/views/cpanel/view.html.php</a><br />
+				<b>Since:</b>
+				1.7.0<br />
+		<b>Located at</b> <a href="source-class-ChurchDirectoryViewCpanel.html#16" title="Go to source code">development/trunk/com_churchdirectory/admin/views/cpanel/view.html.php</a><br />
 	</div>
 
 
@@ -188,7 +197,7 @@ JView
 
 		<td class="name"><div>
 		<a class="anchor" href="#_display">#</a>
-		<code><a href="source-class-ChurchDirectoryViewCpanel.html#21" title="Go to source code">display</a>( <span> <var>$tpl</var> = <span class="php-keyword1">null</span></span> )</code>
+		<code><a href="source-class-ChurchDirectoryViewCpanel.html#26" title="Go to source code">display</a>( <span> <var>$tpl</var> = <span class="php-keyword1">null</span></span> )</code>
 
 		<div class="description short">
 			
@@ -216,7 +225,7 @@ JView
 
 		<td class="name"><div>
 		<a class="anchor" href="#_addToolbar">#</a>
-		<code><a href="source-class-ChurchDirectoryViewCpanel.html#42" title="Go to source code">addToolbar</a>( )</code>
+		<code><a href="source-class-ChurchDirectoryViewCpanel.html#47" title="Go to source code">addToolbar</a>( )</code>
 
 		<div class="description short">
 			
@@ -252,19 +261,27 @@ JView
 
 		<td class="name"><div>
 		<a class="anchor" href="#_setDocument">#</a>
-		<code><a href="source-class-ChurchDirectoryViewCpanel.html#62" title="Go to source code">setDocument</a>( )</code>
+		<code><a href="source-class-ChurchDirectoryViewCpanel.html#68" title="Go to source code">setDocument</a>( )</code>
 
 		<div class="description short">
 			
+<p>Set browser title</p>
+
 		</div>
 
 		<div class="description detailed hidden">
 			
+<p>Set browser title</p>
 
 
 
 
 
+
+				<h4>Since</h4>
+				<div class="list">
+						1.7.0<br />
+				</div>
 
 		</div>
 		</div></td>
@@ -287,7 +304,7 @@ JView
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-ChurchDirectoryViewCpanel.html#17" title="Go to source code"><var>$items</var></a>
+				<a href="source-class-ChurchDirectoryViewCpanel.html#22" title="Go to source code"><var>$items</var></a>
 		</td>
 		<td class="value"><code></code></td>
 		<td class="description"><div>
@@ -311,7 +328,7 @@ JView
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-ChurchDirectoryViewCpanel.html#18" title="Go to source code"><var>$pagination</var></a>
+				<a href="source-class-ChurchDirectoryViewCpanel.html#23" title="Go to source code"><var>$pagination</var></a>
 		</td>
 		<td class="value"><code></code></td>
 		<td class="description"><div>
@@ -335,7 +352,7 @@ JView
 		</code></td>
 
 		<td class="name">
-				<a href="source-class-ChurchDirectoryViewCpanel.html#19" title="Go to source code"><var>$state</var></a>
+				<a href="source-class-ChurchDirectoryViewCpanel.html#24" title="Go to source code"><var>$state</var></a>
 		</td>
 		<td class="value"><code></code></td>
 		<td class="description"><div>

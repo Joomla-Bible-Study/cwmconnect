@@ -8,7 +8,7 @@
     <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
     <authorEmail>info@joomlabiblestudy.org</authorEmail>
     <authorUrl>http://www.joomlabiblestudy.org</authorUrl>
-    <version>1.7.0.a1</version>
+    <version>1.7.1</version>
     <description>PLG_SEARCH_CHURCHDIRECTORY_XML_DESCRIPTION</description>
     <scriptfile>churchdirectory.scriptfile.php</scriptfile>
     <files>
@@ -44,14 +44,14 @@
             </fieldset>
         </fields>
     </config>
-        	<!-- UPDATESERVER DEFINITION -->
+    <!-- UPDATESERVER DEFINITION -->
     <!--<updateservers> -->
-		<!-- Note: No spaces or linebreaks allowed between the server tags -->
-        <!-- <server type="extension" priority="1"
-			name="Joomla Bible Study Podcast Plg"><![CDATA[http://www.joomlabiblestudy.org/index.php?option=com_ars&view=update&task=stream&format=xml&id=8]]>
+    <!-- Note: No spaces or linebreaks allowed between the server tags -->
+    <!-- <server type="extension" priority="1"
+                     			name="Joomla Bible Study Podcast Plg"><![CDATA[http://www.joomlabiblestudy.org/index.php?option=com_ars&view=update&task=stream&format=xml&id=8]]>
         </server>
     </updateservers> -->
-        	<!-- Dependencies -->
+    <!-- Dependencies -->
     <!-- <dependencies>
         <dependency type="platform" name="joomla" operator="=" version="2.5" />
     </dependencies> -->
