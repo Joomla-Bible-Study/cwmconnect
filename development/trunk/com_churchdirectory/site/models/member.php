@@ -9,13 +9,11 @@
 defined('_JEXEC') or die;
 
 jimport('joomla.application.component.modelform');
-jimport('joomla.application.component.modelitem');
 jimport('joomla.event.dispatcher');
-jimport('joomla.plugin.helper');
 
 /**
  * Module for Members
- * 
+ *
  * @package	ChurchDirectory.Site
  * @since 2.5
  */
