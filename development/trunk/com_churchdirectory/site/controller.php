@@ -8,15 +8,13 @@
 // No direct access
 defined('_JEXEC') or die;
 
-jimport('joomla.application.component.controller');
-
 /**
  * ChurchDirectory Component Controller
  *
  * @package	ChurchDirectory.Site
  * @since 1.7.0
  */
-class ChurchDirectoryController extends JController {
+class ChurchDirectoryController extends JControllerLegacy {
 
     /**
      * Method to display a view.

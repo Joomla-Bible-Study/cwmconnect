@@ -53,6 +53,15 @@
                class="inputbox"
                size="1"
 		/>
+        <field name="show_address_full"
+               type="radio"
+               default="0"
+               label="COM_CHURCHDIRECTORY_FIELD_PARAMS_ADDRESS_FULL_LABEL"
+               description="COM_CHURCHDIRECTORY_FIELD_PARAMS_ADDRESS_FULL_DESC"
+        >
+            <option value="0">JHIDE</option>
+            <option value="1">JSHOW</option>
+        </field>
         <field name="show_name"
                type="radio"
                default="1"
@@ -652,6 +661,15 @@
             <option value="2">COM_CHURCHDIRECTORY_FIELD_VALUE_NONE
             </option>
         </field>
+        <field name="dr_show_address_full"
+               type="radio"
+               default="0"
+               label="COM_CHURCHDIRECTORY_FIELD_PARAMS_ADDRESS_FULL_LABEL"
+               description="COM_CHURCHDIRECTORY_FIELD_PARAMS_ADDRESS_FULL_DESC"
+        >
+            <option value="0">JHIDE</option>
+            <option value="1">JSHOW</option>
+        </field>
         <field name="show_page_title"
                type="radio"
                default="1"
@@ -661,7 +679,6 @@
             <option value="0">JHIDE</option>
             <option value="1">JSHOW</option>
         </field>
-
         <field name="dr_show_position"
                type="radio"
                default="1"

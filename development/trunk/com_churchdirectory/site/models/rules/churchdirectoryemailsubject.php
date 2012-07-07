@@ -14,7 +14,6 @@ jimport('joomla.form.formrule');
  * @package ChurchDirectory.Site
  * @since 1.7.0
  */
-
 class JFormRuleChurchDirectoryEmailSubject extends JFormRule {
 
     public function test(& $element, $value, $group = null, & $input = null, & $form = null) {

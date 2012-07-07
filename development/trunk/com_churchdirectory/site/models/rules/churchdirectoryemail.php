@@ -16,7 +16,6 @@ require_once 'libraries/joomla/form/rules/email.php';
  * @package ChurchDirectory.Site
  * @since 1.7.0
  */
-
 class JFormRuleChurchDirectoryEmail extends JFormRuleEmail {
 
     public function test(& $element, $value, $group = null, & $input = null, & $form = null) {

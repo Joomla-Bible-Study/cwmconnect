@@ -8,12 +8,11 @@
 // no direct access
 defined('_JEXEC') or die;
 
-jimport('joomla.application.component.controller');
 require_once JPATH_COMPONENT . '/helpers/route.php';
 
 JHTML::stylesheet('general.css', 'media/com_churchdirectory/css/');
 JHTML::stylesheet('churchdirectory.css', 'media/com_churchdirectory/css/');
 
-$controller = JController::getInstance('ChurchDirectory');
+$controller = JControllerLegacy::getInstance('ChurchDirectory');
 $controller->execute(JRequest::getCmd('task'));
 $controller->redirect();
