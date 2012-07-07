@@ -1,8 +1,7 @@
 --
 -- Version 1.7.1 update
 --
-INSERT INTO `#__churchdirectory_update` (id,version) VALUES (1,'1.7.1'),
-ON DUPLICATE KEY UPDATE version= '1.7.1';
+INSERT INTO `#__churchdirectory_update` (id,version) VALUES (1,'1.7.1') ON DUPLICATE KEY UPDATE version= '1.7.1';
 
 --
 -- Fix for Published Problmes to allow for trash

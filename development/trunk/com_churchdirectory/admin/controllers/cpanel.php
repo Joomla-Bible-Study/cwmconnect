@@ -8,7 +8,7 @@
 // No direct access.
 defined('_JEXEC') or die;
 
-jimport('joomla.application.component.controller');
+jimport('joomla.application.component.controlleradmin');
 
 /**
  * Articles list controller class.
@@ -16,9 +16,10 @@ jimport('joomla.application.component.controller');
  * @package             ChurchDirectory.Admin
  * @since	1.7.0
  */
-class ChurchDirectoryControllerCpanel extends ChurchdirectoryControllerDefault {
+class ChurchDirectoryControllerCpanel extends JControllerAdmin {
 
-    public function display() {
+	function display() {
+        JRequest::setVar('view', 'cpanel');
         parent::display();
     }
 
