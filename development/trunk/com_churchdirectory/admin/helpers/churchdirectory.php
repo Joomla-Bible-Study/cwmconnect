@@ -51,6 +51,9 @@ class ChurchDirectoryHelper {
         JSubMenuHelper::addEntry(
                 JText::_('COM_CHURCHDIRECTORY_SUBMENU_POSITIONS'), 'index.php?option=com_churchdirectory&view=positions', $vName == 'positions'
         );
+        JSubMenuHelper::addEntry(
+                JText::_('COM_CHURCHDIRECTORY_SUBMENU_DATABASE'), 'index.php?option=com_churchdirectory&view=database', $vName == 'database'
+        );
 
         if ($vName == 'categories') {
             JToolBarHelper::title(

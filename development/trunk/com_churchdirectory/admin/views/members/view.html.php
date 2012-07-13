@@ -9,8 +9,6 @@
 defined('_JEXEC') or die;
 
 jimport('joomla.application.component.view');
-jimport('joomla.application.component.helper');
-jimport('joomla.i18n.help');
 
 /**
  * View class for a list of churchdirectories.
