@@ -149,9 +149,9 @@ class ChurchdirectoryModelDatabase extends InstallerModel {
         $table->load($this->getExtentionId());
         $cache = new JRegistry($table->manifest_cache);
         $updateVersion = $cache->get('version');
-        $file = JPATH_COMPONENT_ADMINISTRATOR .'/churchdirectory.xml';
+        $file = JPATH_COMPONENT_ADMINISTRATOR . '/churchdirectory.xml';
         $xml = JFactory::getXML($file);
-        $jbsversion = (string)$xml->version;
+        $jbsversion = (string) $xml->version;
         if ($updateVersion == $jbsversion) {
             return $updateVersion;
         } else {

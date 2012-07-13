@@ -34,7 +34,7 @@ class ChurchDirectoryControllerDatabase extends JController {
     function fix() {
         $model = $this->getModel('database');
         $model->fix();
-        $this->setRedirect(JRoute::_('index.php?option=com_churchdirectory&view=cpanel', false));
+        $this->setRedirect(JRoute::_('index.php?option=com_churchdirectory&view=database', false));
     }
 
 }
