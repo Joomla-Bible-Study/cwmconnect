@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @package             ChurchDirectory.Admin
  * @copyright           (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
@@ -10,10 +9,11 @@ defined('_JEXEC') or die;
 //Predefine for Access
 $itemacess = $this->state->params->get('protectedaccess');
 $groups = $this->groups;
-foreach ($groups as $itemacessint => $key):
-    $access = $key;
-endforeach;
-
+if ($groups[$itemacess] != null) {
+    $access = true;
+} else {
+    $access = false;
+}
 // Start of Form
 echo JHtml::_('sliders.panel', JText::_('COM_CHURCHDIRECTORY_MEMBER_KML_DETAILS'), 'kml-options');
 ?>
@@ -46,7 +46,7 @@ echo JHtml::_('sliders.panel', JText::_('COM_CHURCHDIRECTORY_MEMBER_KML_DETAILS'
 <!-- Protected Access info -->
 
 <?php
-if ($access === $itemacess || $access === "8"):
+if ($access === true):
     foreach ($fieldSets as $name => $fieldSet) :
         if ($name === 'protected') {
             ?>
@@ -88,16 +88,18 @@ foreach ($fieldSets as $name => $fieldSet) :
             <ul class="adminformlist">
                 <?php foreach ($this->form->getFieldset($name) as $field) : ?>
                     <?php if ($field->name == 'jform[attribs][birthdate]'): ?>
-                    <li><?php echo $field->label; ?>
-                        <?php echo $field->input; ?></li>
-                    <?php if($this->age != '0'): ?>
-                    <li><label id="jform_age-lbl" for="jform_age" class="hasTip" title="<?php echo JText::_('COM_CHURCHDIRECTORY_AGE_HASTIP'); ?> "><?php echo JText::_('COM_CHURCHDIRECTORY_AGE_LABEL'); ?></label>
-                    <input type="text" name="jform[age]" id="jform_age" value="<?php echo $this->age; ?>" class="readonly" size="10" readonly="readonly"/></li>
-                    <?php endif; else: ?>
-                    <li><?php echo $field->label; ?>
+                        <li><?php echo $field->label; ?>
+                            <?php echo $field->input; ?></li>
+                        <?php if ($this->age != '0'): ?>
+                            <li><label id="jform_age-lbl" for="jform_age" class="hasTip" title="<?php echo JText::_('COM_CHURCHDIRECTORY_AGE_HASTIP'); ?> "><?php echo JText::_('COM_CHURCHDIRECTORY_AGE_LABEL'); ?></label>
+                                <input type="text" name="jform[age]" id="jform_age" value="<?php echo $this->age; ?>" class="readonly" size="10" readonly="readonly"/></li>
+                            <?php endif;
+                        else:
+                            ?>
+                        <li><?php echo $field->label; ?>
                         <?php echo $field->input; ?></li>
                     <?php endif; ?>
-                <?php endforeach; ?>
+        <?php endforeach; ?>
             </ul>
         </fieldset>
 
