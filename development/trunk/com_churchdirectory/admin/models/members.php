@@ -135,7 +135,7 @@ class ChurchDirectoryModelMembers extends JModelList {
 
         // Join over the language
         $query->select('l.title AS language_title');
-        $query->join('LEFT', '`#__languages` AS l ON l.lang_code = a.language');
+        $query->join('LEFT', $db->quoteName('#__languages') . ' AS l ON l.lang_code = a.language');
 
         // Join over the users for the checked out user.
         $query->select('uc.name AS editor');
@@ -198,12 +198,14 @@ class ChurchDirectoryModelMembers extends JModelList {
         }
 
         // Add the list ordering clause.
-        $orderCol = $this->state->get('list.ordering');
-        $orderDirn = $this->state->get('list.direction');
+        $orderCol = $this->state->get('list.ordering', 'a.name');
+        $orderDirn = $this->state->get('list.direction', 'asc');
         if ($orderCol == 'a.ordering' || $orderCol == 'category_title') {
-            $orderCol = 'category_title ' . $orderDirn . ', a.ordering';
+            $orderCol = 'c.title ' . $orderDirn . ', a.ordering';
         }
-        $query->order($db->getEscaped($orderCol . ' ' . $orderDirn));
+        $query->order($db->escape($orderCol . ' ' . $orderDirn));
+
+        //echo nl2br(str_replace('#__','jos_',$query));
         return $query;
     }
 

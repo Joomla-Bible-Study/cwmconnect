@@ -8,15 +8,13 @@
 // No direct access
 defined('_JEXEC') or die;
 
-jimport('joomla.application.component.view');
-
 /**
  * View to edit a contact.
  *
  * @package	ChurchDirectory.Admin
  * @since		1.7.0
  */
-class ChurchDirectoryViewMember extends JView {
+class ChurchDirectoryViewMember extends JViewLegacy {
 
     protected $form;
     protected $item;
@@ -72,18 +70,19 @@ class ChurchDirectoryViewMember extends JView {
         $userId = $user->get('id');
         $isNew = ($this->item->id == 0);
         $checkedOut = !($this->item->checked_out == 0 || $this->item->checked_out == $userId);
-        $canDo = ChurchDirectoryHelper::getActions($this->state->get('filter.category_id'), $this->item->id);
+        $canDo = ChurchDirectoryHelper::getActions($this->item->catid, 0);
         JToolBarHelper::title($isNew ? JText::_('COM_CHURCHDIRECTORY_MANAGER_MEMBER_NEW') : JText::_('COM_CHURCHDIRECTORY_MANAGER_MEMBER_EDIT'), 'members');
 
         // Build the actions for new and existing records.
         if ($isNew) {
             // For new records, check the create permission.
             if ($isNew && (count($user->getAuthorisedCategories('com_churchdirectory', 'core.create')) > 0)) {
-                JToolBarHelper::apply('member.apply', 'JTOOLBAR_APPLY');
-                JToolBarHelper::save('member.save', 'JTOOLBAR_SAVE');
-                JToolBarHelper::custom('member.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
+                JToolBarHelper::apply('member.apply');
+                JToolBarHelper::save('member.save');
+                JToolBarHelper::save2new('member.save2new');
+                //JToolBarHelper::custom('member.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
             }
-            JToolBarHelper::cancel('member.cancel', 'JTOOLBAR_CANCEL');
+            JToolBarHelper::cancel('member.cancel');
         } else {
             // Can't save the record if it's checked out.
             if (!$checkedOut) {
@@ -94,14 +93,16 @@ class ChurchDirectoryViewMember extends JView {
 
                     // We can save this record, but check the create permission to see if we can return to make a new one.
                     if ($canDo->get('core.create')) {
-                        JToolBarHelper::custom('member.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
+                        JToolBarHelper::save2new('member.save2new');
+                        //JToolBarHelper::custom('member.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
                     }
                 }
             }
 
             // If checked out, we can still save
             if ($canDo->get('core.create')) {
-                JToolBarHelper::custom('member.save2copy', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
+                JToolBarHelper::save2copy('member.save2copy');
+                //JToolBarHelper::custom('member.save2copy', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
             }
 
             JToolBarHelper::cancel('member.cancel', 'JTOOLBAR_CLOSE');

@@ -8,8 +8,6 @@
 // no direct access
 defined('_JEXEC') or die;
 
-jimport('joomla.application.component.controller');
-
 // Set some global property
 addCSS();
 
@@ -19,10 +17,10 @@ if (!JFactory::getUser()->authorise('core.manage', 'com_churchdirectory')) {
 }
 
 // Require helper file
-JLoader::register('ChurchDirectoryHelper', dirname(__FILE__) . DS . 'helpers' . DS . 'churchdirectory.php');
+JLoader::register('ChurchDirectoryHelper', dirname(__FILE__) . '/helpers/churchdirectory.php');
 
 // Get an instance of the controller prefixed by ChurchDirectory
-$controller = JController::getInstance('churchdirectory');
+$controller = JControllerLegacy::getInstance('Churchdirectory');
 
 // Perform the Request task
 $controller->execute(JRequest::getCmd('task'));
@@ -36,6 +34,6 @@ $controller->redirect();
  * @since   1.7.0
  */
 function addCSS() {
-    JHTML::stylesheet('general.css', 'media/com_churchdirectory/css/');
-    JHTML::stylesheet('icons.css', 'media/com_churchdirectory/css/');
+    JHTML::stylesheet('/media/com_churchdirectory/css/general.css');
+    JHTML::stylesheet('/media/com_churchdirectory/css/icons.css');
 }

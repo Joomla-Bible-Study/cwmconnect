@@ -17,6 +17,7 @@ defined('_JEXEC') or die;
 </div>
 <div class="fltrt">
     <div id="cpanel" style="padding-left: 20px">
-        <?php echo LiveUpdate::getIcon(); ?>
+        <?php if ($this->versionName != 'ture'): echo LiveUpdate::getIcon();
+        endif; ?>
     </div>
 </div>

@@ -8,7 +8,7 @@
 // No direct access
 defined('_JEXEC') or die;
 
-jimport('joomla.application.component.view');
+//jimport('joomla.application.component.view');
 
 /**
  * View class for a list of churchdirectories.
@@ -16,7 +16,7 @@ jimport('joomla.application.component.view');
  * @package	ChurchDirectory.Admin
  * @since		1.7.0
  */
-class ChurchDirectoryViewMembers extends JView {
+class ChurchDirectoryViewMembers extends JViewLegacy {
 
     protected $items;
     protected $pagination;

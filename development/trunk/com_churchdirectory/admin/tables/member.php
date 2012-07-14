@@ -33,7 +33,7 @@ class ChurchDirectoryTableMember extends JTable {
      */
     public function bind($array, $ignore = '') {
         if (isset($array['params']) && is_array($array['params'])) {
-            $registry = new JRegistry();
+			$registry = new JRegistry;
             $registry->loadArray($array['params']);
             $array['params'] = (string) $registry;
         }
@@ -81,13 +81,13 @@ class ChurchDirectoryTableMember extends JTable {
         $user = JFactory::getUser();
         if ($this->id) {
             // Existing item
-            $this->modified = $date->toMySQL();
-            $this->modified_by = $user->get('id');
+			$this->modified		= $date->toSql();
+			$this->modified_by	= $user->get('id');
         } else {
             // New newsfeed. A feed created and created_by field can be set by the user,
             // so we don't touch either of these if they are set.
             if (!intval($this->created)) {
-                $this->created = $date->toMySQL();
+				$this->created = $date->toSql();
             }
             if (empty($this->created_by)) {
                 $this->created_by = $user->get('id');
@@ -117,14 +117,6 @@ class ChurchDirectoryTableMember extends JTable {
         if (JFilterInput::checkAttribute(array('href', $this->webpage))) {
             $this->setError(JText::_('COM_CHURCHDIRECTORY_WARNING_PROVIDE_VALID_URL'));
             return false;
-        }
-
-        // check for http, https, ftp on webpage
-        if ((strlen($this->webpage) > 0)
-                && (stripos($this->webpage, 'http://') === false)
-                && (stripos($this->webpage, 'https://') === false)
-                && (stripos($this->webpage, 'ftp://') === false)) {
-            $this->webpage = 'http://' . $this->webpage;
         }
 
         /** check for valid name */
@@ -157,10 +149,8 @@ class ChurchDirectoryTableMember extends JTable {
 
         // Check the publish down date is not earlier than publish up.
         if (intval($this->publish_down) > 0 && $this->publish_down < $this->publish_up) {
-            // Swap the dates.
-            $temp = $this->publish_up;
-            $this->publish_up = $this->publish_down;
-            $this->publish_down = $temp;
+			$this->setError(JText::_('JGLOBAL_START_PUBLISH_AFTER_FINISH'));
+			return false;
         }
 
         return true;
@@ -199,7 +189,7 @@ class ChurchDirectoryTableMember extends JTable {
         if (parent::load($pk, $reset)) {
             // Convert the params field to a registry.
             $params = new JRegistry;
-            $params->loadJSON($this->params);
+            $params->loadString($this->params);
             $this->params = $params;
             return true;
         } else {

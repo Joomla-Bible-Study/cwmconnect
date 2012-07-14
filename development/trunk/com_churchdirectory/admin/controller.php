@@ -8,19 +8,12 @@
 // no direct access
 defined('_JEXEC') or die;
 
-// Access check.
-if (!JFactory::getUser()->authorise('core.manage', 'com_churchdirectory')) {
-    return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
-}
-
-jimport('joomla.application.component.controller');
-
 /**
  * Component Controller
  *
  * @package	ChurchDirectory.Admin
  */
-class ChurchDirectoryController extends JController {
+class ChurchDirectoryController extends JControllerLegacy {
 
     /**
      * @var		string	The default view.

@@ -7,7 +7,9 @@
  */
 // No direct access
 defined('_JEXEC') or die;
-
+/**
+ * For Joomla 2.5.
+ */
 jimport('joomla.application.component.modeladmin');
 
 /**
@@ -252,7 +254,7 @@ class ChurchDirectoryModelMember extends JModelAdmin {
                 return;
             }
             $user = JFactory::getUser();
-            return $user->authorise('core.delete', 'com_churchdirectory.member.' . (int) $record->id);
+            return $user->authorise('core.delete', 'com_churchdirectory.member.' . (int) $record->catid);
         }
     }
 
@@ -384,7 +386,7 @@ class ChurchDirectoryModelMember extends JModelAdmin {
      * @return	void
      * @since	1.7.0
      */
-    protected function prepareTable(&$table) {
+    protected function prepareTable($table) {
         $date = JFactory::getDate();
         $user = JFactory::getUser();
 
@@ -453,7 +455,7 @@ class ChurchDirectoryModelMember extends JModelAdmin {
                     ' SET a.featured = ' . (int) $value .
                     ' WHERE a.id IN (' . implode(',', $pks) . ')'
             );
-            if (!$db->query()) {
+            if (!$db->execute()) {
                 throw new Exception($db->getErrorMsg());
             }
         } catch (Exception $e) {

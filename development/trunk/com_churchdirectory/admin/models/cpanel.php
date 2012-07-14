@@ -15,7 +15,7 @@ jimport('joomla.application.component.model');
  *
  * @package	ChurchDirectory.Admin
  */
-class ChurchDirectoryModelCpanel extends JModel {
+class ChurchDirectoryModelCpanel extends JModelLegacy {
 
     /**
      * constructor (registers additional tasks to methods)

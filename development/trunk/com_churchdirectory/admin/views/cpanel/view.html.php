@@ -10,14 +10,13 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
-jimport('joomla.application.component.view');
-require_once (JPATH_COMPONENT_ADMINISTRATOR . DS . 'liveupdate' . DS . 'liveupdate.php');
+require_once (JPATH_COMPONENT_ADMINISTRATOR . '/liveupdate/liveupdate.php');
 
 /**
  * @package ChurchDirectory.Admin
  * @since 1.7.0
  */
-class ChurchDirectoryViewCpanel extends JView {
+class ChurchDirectoryViewCpanel extends JViewLegacy {
 
     protected $items;
     protected $pagination;
@@ -32,6 +31,16 @@ class ChurchDirectoryViewCpanel extends JView {
         if (count($errors = $this->get('Errors'))) {
             JError::raiseError(500, implode("\n", $errors));
             return false;
+        }
+
+        jimport('joomla.version');
+        $version = new JVersion();
+
+        $versionName = 'Unknown';
+        if ($version->RELEASE == '3.0') {
+            $this->versionName = TRUE;
+        } else {
+            $this->versionName = FALSE;
         }
 
         // Set the toolbar
