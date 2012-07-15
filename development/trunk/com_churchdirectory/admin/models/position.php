@@ -170,37 +170,39 @@ class ChurchDirectoryModelPosition extends JModelAdmin {
      * @since 1.7.1
      */
     public function getMembers($id) {
-        $positionkey = null;
-        $positions = null;
         $db = $this->getDbo();
         $query = $db->getQuery(true);
         $query->select('members.con_position, members.name, members.id');
         $query->from('#__churchdirectory_details AS members');
-        $query->where('con_position <> ""');
         $query->order('members.lname DESC');
 
         $db->setQuery($query->__toString());
         $positions = $db->loadObjectList();
-dump($positions, 'temppos');
         $positiontemp = array();
         foreach ($positions as $p):
-            $con_position = explode(',', $p->con_position);
-            $positiontemp = array("name" => $p->name, "con_position" => $con_position, "id" => $p->id);
-
-            $positionkey[] = $positiontemp;
+            if ($p->con_position != ''):
+                $con_position = explode(',', $p->con_position);
+                $positiontemp = array("name" => $p->name, "con_position" => $con_position, "id" => $p->id);
+                $positionkey[] = $positiontemp;
+            else :
+                $positionkey[] = null;
+            endif;
         endforeach;
+        dump($positionkey, 'Posisionkey');
+        $position = null;
         if ($positionkey):
-            foreach ($positionkey as $p => $d):
-                $key = array_search($id, $d['con_position']);
-                if ($key !== FALSE) :
-                    $positiontemp1 = array("name" => $d['name'], "id" => $d['id']);
-                    $position[] = $positiontemp1;
-                else:
-                    $position = FALSE;
+            foreach ($positionkey as $d):
+                if ($d['con_position'] != ''):
+                    $conpositions = $d['con_position'];
+                    $key = array_search($id, $conpositions);
+                    if ($key === 0) :
+                        $positiontemp1 = array("name" => $d['name'], "id" => $d['id']);
+                        $position[] = $positiontemp1;
+                    endif;
                 endif;
             endforeach;
         endif;
-
+        dump($position);
         $results = $position;
         return $results;
     }
