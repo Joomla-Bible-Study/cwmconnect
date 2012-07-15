@@ -134,7 +134,7 @@ class ChurchDirectoryModelDirHeader extends JModelAdmin {
      * @return	void
      * @since	1.7.0
      */
-    protected function prepareTable(&$table) {
+    protected function prepareTable($table) {
         jimport('joomla.filter.output');
         $date = JFactory::getDate();
         $user = JFactory::getUser();

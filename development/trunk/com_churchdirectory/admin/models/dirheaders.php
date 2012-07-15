@@ -131,7 +131,7 @@ class ChurchDirectoryModelDirHeaders extends JModelList {
 
         // Join over the language
         $query->select('l.title AS language_title');
-        $query->join('LEFT', '`#__languages` AS l ON l.lang_code = a.language');
+        $query->join('LEFT', $db->quoteName('#__languages') . ' AS l ON l.lang_code = a.language');
 
         // Join over the users for the checked out user.
         $query->select('uc.name AS editor');
@@ -180,9 +180,9 @@ class ChurchDirectoryModelDirHeaders extends JModelList {
         }
 
         // Add the list ordering clause.
-        $orderCol = $this->state->get('list.ordering');
-        $orderDirn = $this->state->get('list.direction');
-        $query->order($db->getEscaped($orderCol . ' ' . $orderDirn));
+        $orderCol = $this->state->get('list.ordering', 'a.name');
+        $orderDirn = $this->state->get('list.direction', 'acs');
+        $query->order($db->escape($orderCol . ' ' . $orderDirn));
 
         return $query;
     }

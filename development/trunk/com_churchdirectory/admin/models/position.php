@@ -136,7 +136,7 @@ class ChurchDirectoryModelPosition extends JModelAdmin {
      * @return	void
      * @since	1.7.0
      */
-    protected function prepareTable(&$table) {
+    protected function prepareTable($table) {
         jimport('joomla.filter.output');
         $date = JFactory::getDate();
         $user = JFactory::getUser();
@@ -170,6 +170,8 @@ class ChurchDirectoryModelPosition extends JModelAdmin {
      * @since 1.7.1
      */
     public function getMembers($id) {
+        $positionkey = null;
+        $positions = null;
         $db = $this->getDbo();
         $query = $db->getQuery(true);
         $query->select('members.con_position, members.name, members.id');
@@ -179,23 +181,25 @@ class ChurchDirectoryModelPosition extends JModelAdmin {
 
         $db->setQuery($query->__toString());
         $positions = $db->loadObjectList();
-
+dump($positions, 'temppos');
         $positiontemp = array();
         foreach ($positions as $p):
             $con_position = explode(',', $p->con_position);
             $positiontemp = array("name" => $p->name, "con_position" => $con_position, "id" => $p->id);
+
             $positionkey[] = $positiontemp;
         endforeach;
-
-        foreach ($positionkey as $p => $d):
-            $key = array_search($id, $d['con_position']);
-            if ($key !== FALSE) :
-                $positiontemp1 = array("name" => $d['name'], "id" => $d['id']);
-                $position[] = $positiontemp1;
-            else:
-                $position = FALSE;
-            endif;
-        endforeach;
+        if ($positionkey):
+            foreach ($positionkey as $p => $d):
+                $key = array_search($id, $d['con_position']);
+                if ($key !== FALSE) :
+                    $positiontemp1 = array("name" => $d['name'], "id" => $d['id']);
+                    $position[] = $positiontemp1;
+                else:
+                    $position = FALSE;
+                endif;
+            endforeach;
+        endif;
 
         $results = $position;
         return $results;

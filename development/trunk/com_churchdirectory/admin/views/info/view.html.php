@@ -10,7 +10,7 @@ defined('_JEXEC') or die;
 
 jimport('joomla.application.component.view');
 
-class ChurchDirectoryViewInfo extends JView {
+class ChurchDirectoryViewInfo extends JViewLegacy {
 
     protected $items;
     protected $pagination;

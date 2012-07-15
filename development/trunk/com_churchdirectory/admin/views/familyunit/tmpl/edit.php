@@ -11,9 +11,18 @@ defined('_JEXEC') or die;
 JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.formvalidation');
-JHTML::_('behavior.mootools');
-JHTML::_('behavior.modal');
 ?>
+<script type="text/javascript">
+    Joomla.submitbutton = function(task)
+    {
+        if (task == 'familyunit.cancel' || document.formvalidator.isValid(document.id('familyunit-form'))) {
+            Joomla.submitform(task, document.getElementById('familyunit-form'));
+        }
+        else {
+            alert('<?php echo $this->escape(JText::_('JGLOBAL_VALIDATION_FORM_FAILED')); ?>');
+        }
+    }
+</script>
 
 <form action="<?php echo JRoute::_('index.php?option=com_churchdirectory&view=familyunit&layout=edit&id=' . (int) $this->item->id); ?>" method="post" name="adminForm" id="familyunit-form" class="form-validate">
     <div class="width-60 fltlft">
@@ -133,7 +142,6 @@ JHTML::_('behavior.modal');
     <div class="clr"></div>
     <div>
         <input type="hidden" name="task" value="" />
-        <input type="hidden" name="tooltype" value="" />
         <?php echo JHtml::_('form.token'); ?>
     </div>
 </form>

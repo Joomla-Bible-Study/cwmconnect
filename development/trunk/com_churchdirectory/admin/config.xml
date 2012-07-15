@@ -41,6 +41,7 @@
                type="list"
                description="COM_CHURCHDIRECTORY_FIELD_PRESENTATION_DESC"
                label="COM_CHURCHDIRECTORY_FIELD_PRESENTATION_LABEL"
+               default="sliders"
         >
             <option value="sliders">COM_CHURCHDIRECTORY_FIELD_VALUE_SLIDERS</option>
             <option value="tabs">COM_CHURCHDIRECTORY_FIELD_VALUE_TABS</option>
@@ -84,7 +85,7 @@
 
         <field name="show_email"
                type="radio"
-               default="0"
+               default="1"
                label="JGLOBAL_EMAIL"
                description="COM_CHURCHDIRECTORY_FIELD_PARAMS_MEMBER_E_MAIL_DESC"
         >
@@ -517,7 +518,7 @@
         </field>
 
         <field name="show_email_headings" type="radio"
-               default="0"
+               default="1"
                label="JGLOBAL_EMAIL"
                description="COM_CHURCHDIRECTORY_FIELD_CONFIG_EMAIL_DESC"
         >
@@ -691,7 +692,7 @@
 
         <field name="dr_show_email"
                type="radio"
-               default="0"
+               default="1"
                label="JGLOBAL_EMAIL"
                description="COM_CHURCHDIRECTORY_FIELD_PARAMS_MEMBER_E_MAIL_DESC"
         >
@@ -830,7 +831,7 @@
         </field>
         <field name="dr_allow_kml"
                type="radio"
-               default="0"
+               default="1"
                description="COM_CHURCHDIRECTORY_FIELD_PARAMS_KML_DESC"
                label="COM_CHURCHDIRECTORY_FIELD_PARAMS_KML_LABEL"
         >
@@ -905,18 +906,20 @@
                label="COM_CHURCHDIRECTORY_FIELD_ROWS_PER_PAGE_LABEL"
                description="COM_CHURCHDIRECTORY_FIELD_ROWS_PER_PAGE_DESC"
                class="inputbox" size="30"
+               default="3"
 			/>
         <field name="items_per_row"
                type="text"
                label="COM_CHURCHDIRECTORY_FIELD_ITEMS_PER_ROW_LABEL"
                description="COM_CHURCHDIRECTORY_FIELD_ITEMS_PER_ROW_DESC"
                class="inputbox" size="30"
+               default="2"
 			/>
         <field name="dinitial_sort" type="list"
                description="COM_CHURCHDIRECTORY_FIELD_INITIAL_SORT_DESC"
                label="COM_CHURCHDIRECTORY_FIELD_INITIAL_SORT_LABEL"
                validate="options"
-               default="ordering"
+               default="lname"
         >
             <option value="name">COM_CHURCHDIRECTORY_FIELD_VALUE_NAME</option>
             <option value="sortname">COM_CHURCHDIRECTORY_FIELD_VALUE_SORT_NAME</option>
@@ -926,7 +929,7 @@
 
         <field name="dr_show_debug"
                type="radio"
-               default="1"
+               default="0"
                label="COM_CHURCHDIRECTORY_FIELD_PARAMS_DEBUG_TITLE_LABEL"
                description="COM_CHURCHDIRECTORY_FIELD_PARAMS_DEBUG_TITLE_DESC"
         >

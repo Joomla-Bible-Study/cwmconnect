@@ -33,7 +33,7 @@ class ChurchDirectoryTableMember extends JTable {
      */
     public function bind($array, $ignore = '') {
         if (isset($array['params']) && is_array($array['params'])) {
-			$registry = new JRegistry;
+            $registry = new JRegistry;
             $registry->loadArray($array['params']);
             $array['params'] = (string) $registry;
         }
@@ -81,13 +81,13 @@ class ChurchDirectoryTableMember extends JTable {
         $user = JFactory::getUser();
         if ($this->id) {
             // Existing item
-			$this->modified		= $date->toSql();
-			$this->modified_by	= $user->get('id');
+            $this->modified = $date->toSql();
+            $this->modified_by = $user->get('id');
         } else {
             // New newsfeed. A feed created and created_by field can be set by the user,
             // so we don't touch either of these if they are set.
             if (!intval($this->created)) {
-				$this->created = $date->toSql();
+                $this->created = $date->toSql();
             }
             if (empty($this->created_by)) {
                 $this->created_by = $user->get('id');
@@ -149,8 +149,8 @@ class ChurchDirectoryTableMember extends JTable {
 
         // Check the publish down date is not earlier than publish up.
         if (intval($this->publish_down) > 0 && $this->publish_down < $this->publish_up) {
-			$this->setError(JText::_('JGLOBAL_START_PUBLISH_AFTER_FINISH'));
-			return false;
+            $this->setError(JText::_('JGLOBAL_START_PUBLISH_AFTER_FINISH'));
+            return false;
         }
 
         return true;

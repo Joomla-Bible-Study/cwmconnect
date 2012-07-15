@@ -18,7 +18,7 @@ jimport('joomla.i18n.help');
  * @package         ChurchDirectory.Admin
  * @since		1.7.0
  */
-class ChurchDirectoryViewPositions extends JView {
+class ChurchDirectoryViewPositions extends JViewLegacy {
 
     protected $items;
     protected $pagination;

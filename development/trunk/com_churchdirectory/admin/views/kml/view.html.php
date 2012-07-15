@@ -16,7 +16,7 @@ jimport('joomla.application.component.view');
  * @package	ChurchDirectory.Admin
  * @since		1.7.0
  */
-class ChurchDirectoryViewKML extends JView {
+class ChurchDirectoryViewKML extends JViewLegacy {
 
     protected $form;
     protected $item;
@@ -58,7 +58,7 @@ class ChurchDirectoryViewKML extends JView {
         $userId = $user->get('id');
         $isNew = ($this->item->id == 0);
         $checkedOut = !($this->item->checked_out == 0 || $this->item->checked_out == $userId);
-        $canDo = ChurchDirectoryHelper::getActions($this->state->get('filter.category_id'));
+        $canDo = ChurchDirectoryHelper::getActions(0);
 
         JToolBarHelper::title($isNew ? JText::_('COM_CHURCHDIRECTORY_MANAGER_KML_NEW') : JText::_('COM_CHURCHDIRECTORY_MANAGER_KML_EDIT'), 'kml');
 

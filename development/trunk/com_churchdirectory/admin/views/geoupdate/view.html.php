@@ -14,7 +14,7 @@ defined('_JEXEC') or die;
 // Load framework base classes
 jimport('joomla.application.component.view');
 
-class ChurchDirectoryViewGeoUpdate extends JView {
+class ChurchDirectoryViewGeoUpdate extends JViewLegacy {
 
     function display() {
         // Set the toolbar title
@@ -59,7 +59,7 @@ class ChurchDirectoryViewGeoUpdate extends JView {
         $document = JFactory::getDocument();
         $document->addStyleSheet(rtrim(JURI::base(), '/') . '/../media/com_churchdirectory/css/general.css');
 
-        JHTML::_('behavior.mootools');
+        JHTML::_('behavior.framework');
 
         parent::display();
     }

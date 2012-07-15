@@ -8,6 +8,11 @@
 // no direct access
 defined('_JEXEC') or die;
 
+/**
+ * Abstract class to help with featured
+ * @package ChurchDirectory.Admin
+ * @since 1.7.0
+ */
 abstract class JHtmlMember {
 
     /**

@@ -80,7 +80,6 @@ class ChurchDirectoryViewMember extends JViewLegacy {
                 JToolBarHelper::apply('member.apply');
                 JToolBarHelper::save('member.save');
                 JToolBarHelper::save2new('member.save2new');
-                //JToolBarHelper::custom('member.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
             }
             JToolBarHelper::cancel('member.cancel');
         } else {
@@ -94,7 +93,6 @@ class ChurchDirectoryViewMember extends JViewLegacy {
                     // We can save this record, but check the create permission to see if we can return to make a new one.
                     if ($canDo->get('core.create')) {
                         JToolBarHelper::save2new('member.save2new');
-                        //JToolBarHelper::custom('member.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
                     }
                 }
             }
@@ -102,7 +100,6 @@ class ChurchDirectoryViewMember extends JViewLegacy {
             // If checked out, we can still save
             if ($canDo->get('core.create')) {
                 JToolBarHelper::save2copy('member.save2copy');
-                //JToolBarHelper::custom('member.save2copy', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
             }
 
             JToolBarHelper::cancel('member.cancel', 'JTOOLBAR_CLOSE');

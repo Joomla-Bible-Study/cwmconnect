@@ -8,6 +8,12 @@
 // no direct access
 defined('_JEXEC') or die;
 
+/**
+ * Class for color picker
+ * 
+ * @package ChurchDirectory.Admin
+ * @since 1.7.0
+ */
 class JElementColorpicker extends JElement {
 
     /**

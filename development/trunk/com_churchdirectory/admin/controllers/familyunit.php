@@ -23,14 +23,9 @@ class ChurchDirectoryControllerFamilyUnit extends JControllerForm {
     protected function allowAdd($data = array()) {
         // Initialise variables.
         $user = JFactory::getUser();
-        $allow = null;
+        $allow = $user->authorise('core.create');
 
-        if ($allow === null) {
-            // In the absense of better information, revert to the component permissions.
-            return parent::allowAdd($data);
-        } else {
             return $allow;
-        }
     }
 
     /**

@@ -9,6 +9,12 @@
  */
 // No direct access
 defined('_JEXEC') or die;
+
+/**
+ * JElement for ChurchDirectory
+ * @package ChurchDirectory.Admin
+ * @since 1.7.0
+ */
 class JElementChurchdirectory extends JElement {
 
     /**

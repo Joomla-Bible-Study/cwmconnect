@@ -76,18 +76,19 @@ class ChurchDirectoryHelper {
 
         if (empty($contactId) && empty($categoryId)) {
             $assetName = 'com_churchdirectory';
+            $level = 'component';
         } elseif (empty($contactId)) {
             $assetName = 'com_churchdirectory.category.' . (int) $categoryId;
+            $level = 'category';
         } else {
             $assetName = 'com_churchdirectory.members.' . (int) $contactId;
+            $level = 'category';
         }
 
-        $actions = array(
-            'core.admin', 'core.manage', 'core.create', 'core.edit', 'core.edit.own', 'core.edit.state', 'core.delete'
-        );
+        $actions = JAccess::getActions('com_churchdirectory', $level);
 
         foreach ($actions as $action) {
-            $result->set($action, $user->authorise($action, $assetName));
+            $result->set($action->name, $user->authorise($action->name, $assetName));
         }
 
         return $result;

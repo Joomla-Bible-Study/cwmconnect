@@ -16,7 +16,7 @@ jimport('joomla.application.component.view');
  * @package ChurchDirectory.Admin
  * @since   1.7.0
  */
-class ChurchDirectoryViewDatabase extends JView {
+class ChurchDirectoryViewDatabase extends JViewLegacy {
 
     protected $form;
     protected $item;

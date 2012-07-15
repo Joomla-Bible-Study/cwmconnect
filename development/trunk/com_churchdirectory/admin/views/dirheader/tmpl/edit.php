@@ -12,6 +12,17 @@ JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.formvalidation');
 ?>
+<script type="text/javascript">
+    Joomla.submitbutton = function(task)
+    {
+        if (task == 'dirheader.cancel' || document.formvalidator.isValid(document.id('dirheader-form'))) {
+            Joomla.submitform(task, document.getElementById('dirheader-form'));
+        }
+        else {
+            alert('<?php echo $this->escape(JText::_('JGLOBAL_VALIDATION_FORM_FAILED')); ?>');
+        }
+    }
+</script>
 
 <form action="<?php echo JRoute::_('index.php?option=com_churchdirectory&view=dirheader&layout=edit&id=' . (int) $this->item->id); ?>" method="post" name="adminForm" id="dirheader-form" class="form-validate">
     <div class="width-60 fltlft">
@@ -90,7 +101,6 @@ JHtml::_('behavior.formvalidation');
     <div class="clr"></div>
     <div>
         <input type="hidden" name="task" value="" />
-        <input type="hidden" name="tooltype" value="" />
         <?php echo JHtml::_('form.token'); ?>
     </div>
 </form>
