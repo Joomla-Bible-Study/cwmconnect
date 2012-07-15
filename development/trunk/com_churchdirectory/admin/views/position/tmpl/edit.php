@@ -55,7 +55,7 @@ JHtml::_('behavior.formvalidation');
                 </thead>
                 <tbody>
                     <?php
-                    if ($this->members != null): foreach ($this->members as $members) : dump($members, 'Members'); ?>
+                    if ($this->members != null): foreach ($this->members as $members) : ?>
                             <tr><td>
                                     <?php echo $members['name'] ?></td>
                                 <td><?php echo $members['id'] ?></td>
