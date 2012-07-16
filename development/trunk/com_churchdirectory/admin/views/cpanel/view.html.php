@@ -35,8 +35,7 @@ class ChurchDirectoryViewCpanel extends JViewLegacy {
 
         jimport('joomla.version');
         $version = new JVersion();
-
-        $versionName = 'Unknown';
+        
         if ($version->RELEASE == '3.0') {
             $this->versionName = TRUE;
         } else {
@@ -62,9 +61,6 @@ class ChurchDirectoryViewCpanel extends JViewLegacy {
         $canDo = ChurchDirectoryHelper::getActions($this->state->get('filter.category_id'));
         JToolBarHelper::title(JText::_('COM_CHURCHDIRECTORY_MANAGER_CPANEL'), 'churchdirectory.png');
 
-        if ($canDo->get('core.create') || (count($user->getAuthorisedCategories('com_churchdirectory', 'core.create'))) > 0) {
-            JToolBarHelper::addNew('churchdirectory.add');
-        }
         if ($canDo->get('core.admin')) {
             JToolBarHelper::divider();
             JToolBarHelper::preferences('com_churchdirectory');

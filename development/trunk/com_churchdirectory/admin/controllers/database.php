@@ -15,7 +15,7 @@ defined('_JEXEC') or die;
  * @package	ChurchDirectory.Admin
  * @since	1.7.0
  */
-class ChurchDirectoryControllerDatabase extends JController {
+class ChurchDirectoryControllerDatabase extends JControllerLegacy {
 
     /**
      * Tries to fix missing database updates

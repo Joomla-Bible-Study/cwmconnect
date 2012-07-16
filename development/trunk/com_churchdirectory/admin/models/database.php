@@ -149,16 +149,13 @@ class ChurchdirectoryModelDatabase extends InstallerModel {
         $table->load($this->getExtentionId());
         $cache = new JRegistry($table->manifest_cache);
         $updateVersion = $cache->get('version');
-        $file = JPATH_COMPONENT_ADMINISTRATOR . '/churchdirectory.xml';
-        $xml = JFactory::getXML($file);
-        $jbsversion = (string) $xml->version;
-        if ($updateVersion == $jbsversion) {
+        if ($updateVersion == $this->getCompVersion()) {
             return $updateVersion;
         } else {
-            $cache->set('version', $jbsversion);
+            $cache->set('version', $this->getCompVersion());
             $table->manifest_cache = $cache->toString();
             if ($table->store()) {
-                return $jbsversion;
+                return $this->getCompVersion();
             } else {
                 return false;
             }
@@ -218,6 +215,19 @@ class ChurchdirectoryModelDatabase extends InstallerModel {
             throw new Exception('Database error - getExtentionId');
         }
         return $result;
+    }
+
+    /**
+     * To retreave component version
+     *
+     * @return string Version of component
+     * @since 1.7.3
+     */
+    public function getCompVersion() {
+        $file = JPATH_COMPONENT_ADMINISTRATOR . '/churchdirectory.xml';
+        $xml = JFactory::getXML($file);
+        $jversion = (string) $xml->version;
+        return $jversion;
     }
 
 }

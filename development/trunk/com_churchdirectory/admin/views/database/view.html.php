@@ -8,31 +8,22 @@
 // No direct access
 defined('_JEXEC') or die;
 
-jimport('joomla.application.component.view');
-
 /**
- * View to edit a contact.
+ * View to fix Database.
  *
  * @package ChurchDirectory.Admin
  * @since   1.7.0
  */
 class ChurchDirectoryViewDatabase extends JViewLegacy {
 
-    protected $form;
-    protected $item;
-    protected $state;
-
     /**
      * Display the view
+     *
+     * @since 1.7.0
      */
     public function display($tpl = null) {
         $language = JFactory::getLanguage();
         $language->load('com_installer');
-
-        // Get data from the model
-        $this->form = $this->get("Form");
-        $this->item = $this->get("Item");
-        $this->state = $this->get("State");
 
         // Get data from the model for database
         $this->changeSet = $this->get('Items');
@@ -45,8 +36,19 @@ class ChurchDirectoryViewDatabase extends JViewLegacy {
         $this->updateVersion = ($this->updateVersion) ? $this->updateVersion : JText::_('JNONE');
         $this->pagination = $this->get('Pagination');
         $this->errorCount = count($this->errors);
+        $this->jversion = $this->get('CompVersion');
         //end for database
 
+        $errors = count($this->errors);
+        if (!(strncmp($this->schemaVersion, $this->jversion, 5) === 0)) {
+            $this->errorCount++;
+        }
+        if (!$this->filterParams) {
+            $this->errorCount++;
+        }
+        if (($this->updateVersion != $this->jversion)) {
+            $this->errorCount++;
+        }
         $this->setLayout('form');
 
         // Check for errors.
@@ -72,15 +74,11 @@ class ChurchDirectoryViewDatabase extends JViewLegacy {
      */
     protected function addToolbar() {
         JRequest::setVar('hidemainmenu', true);
-        $user = JFactory::getUser();
-        $userId = $user->get('id');
-        $isNew = ($this->item->id == 0);
-        $checkedOut = !($this->item->checked_out == 0 || $this->item->checked_out == $userId);
-        $canDo = ChurchDirectoryHelper::getActions($this->state->get('filter.category_id'));
+        $canDo = ChurchDirectoryHelper::getActions();
 
         JToolBarHelper::title(JText::_('COM_CHURCHDIRECTORY_DATABASE'), 'churchdirectory');
 
-        JToolBarHelper::custom( 'database.cancel', 'back', 'back', 'JTOOLBAR_BACK', false, false );
+        JToolBarHelper::custom('database.cancel', 'back', 'back', 'JTOOLBAR_BACK', false, false);
         JToolBarHelper::divider();
         JToolBarHelper::custom('database.fix', 'refresh', 'refresh', 'COM_CHURCHDIRECTORY_DATABASE_FIX', false, false);
     }
@@ -90,9 +88,8 @@ class ChurchDirectoryViewDatabase extends JViewLegacy {
      * @since 1.7.0
      */
     protected function setDocument() {
-        $isNew = ($this->item->id < 1);
         $document = JFactory::getDocument();
-        $document->setTitle($isNew ? JText::_('COM_CHURCHDIRECTORY_DIRHEADER_CREATING') : JText::sprintf('COM_CHURCHDIRECTORY_DIRHEADER_EDITING', $this->item->name));
+        $document->setTitle(JText::_('COM_CHURCHDIRECTORY_DATABASE'));
     }
 
 }
