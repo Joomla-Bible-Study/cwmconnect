@@ -2,7 +2,7 @@
 <extension type="package" version="2.5">
     <name>Package ChurchDirectory</name>
     <packagename>churchdirectory</packagename>
-    <version>1.7.2</version>
+    <version>1.7.3</version>
     <description>Church Directory</description>
     <creationDate>March 17, 2012</creationDate>
     <copyright>(C) 2007-2011 Copyright Joomla Bible Study</copyright>
