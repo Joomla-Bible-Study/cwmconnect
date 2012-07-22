@@ -1,26 +1,29 @@
 <?php
 
-/*
+/**
+ * GeoUpdate System for KML
  * @package             ChurchDirectory.Admin
  * @copyright           (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 // Protect from unauthorized access
 defined('_JEXEC') or die;
 
 jimport('joomla.application.component.model');
 jimport('joomla.client.ftp');
+
 /**
  * For Getting GeoUpdate from Google
  *
  * @package             ChurchDirectory.Admin
  * @since               1.7.0
  */
-
 class ChurchDirectoryModelGeoUpdate extends JModel {
 
-    /** @var float The time the process started */
+    /**
+     * Set start Time
+     * @var float The time the process started
+     */
     private $startTime = null;
 
     /**
@@ -63,6 +66,10 @@ class ChurchDirectoryModelGeoUpdate extends JModel {
         return $ret;
     }
 
+    /**
+     * Update Lng & Lat
+     * @param string $update
+     */
     public function update($update = null) {
         $this->resetTimer();
         $base_url = "http://maps.google.com/maps/geo?output=xml"; // . "&key=" . "$key";
@@ -112,6 +119,9 @@ class ChurchDirectoryModelGeoUpdate extends JModel {
         }
     }
 
+    /**
+     * Perge the session
+     */
     public function purgeSessions() {
         $db = $this->getDBO();
         $db->setQuery('OPTIMIZE TABLE ' . $db->nameQuote('#__session'));

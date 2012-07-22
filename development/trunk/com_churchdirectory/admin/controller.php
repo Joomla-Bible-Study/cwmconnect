@@ -1,6 +1,7 @@
 <?php
 
 /**
+ * ChurchDirectory Controller
  * @package             ChurchDirectory.Admin
  * @copyright           (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
@@ -16,6 +17,7 @@ defined('_JEXEC') or die;
 class ChurchDirectoryController extends JControllerLegacy {
 
     /**
+     * The Default View
      * @var		string	The default view.
      * @since	1.7.0
      */

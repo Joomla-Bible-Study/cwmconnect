@@ -1,6 +1,7 @@
 <?php
 
 /**
+ * Controller for Member
  * @package             ChurchDirectory.Admin
  * @copyright           (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
@@ -11,6 +12,7 @@ defined('_JEXEC') or die;
 jimport('joomla.application.component.controllerform');
 
 /**
+ * class for Member
  * @package	ChurchDirectory.Admin
  * @since		1.7.0
  */
@@ -110,6 +112,7 @@ class ChurchDirectoryControllerMember extends JControllerForm {
 
     /**
      * Method to run batch operations.
+     * @param array $model Description
      *
      * @return	void
      * @since	1.6

@@ -1,0 +1,350 @@
+<!DOCTYPE html><html xmlns:date="http://exslt.org/dates-and-times" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+<meta charset="utf-8">
+<title>Joomla ChurchDirectory » ChurchDirectory\Site</title>
+<meta name="author" content="Mike van Riel">
+<meta name="description" content="">
+<link href="../css/template.css" rel="stylesheet" media="all">
+<script src="../js/jquery-1.7.1.min.js" type="text/javascript"></script><script src="../js/jquery-ui-1.8.2.custom.min.js" type="text/javascript"></script><script src="../js/jquery.mousewheel.min.js" type="text/javascript"></script><script src="../js/bootstrap.js" type="text/javascript"></script><script src="../js/template.js" type="text/javascript"></script><script src="../js/prettify/prettify.min.js" type="text/javascript"></script><link rel="shortcut icon" href="../img/favicon.ico">
+<link rel="apple-touch-icon" href="../img/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="72x72" href="../img/apple-touch-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="114x114" href="../img/apple-touch-icon-114x114.png">
+</head>
+<body>
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner"><div class="container">
+<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></a><a class="brand" href="../index.html">Joomla ChurchDirectory</a><div class="nav-collapse"><ul class="nav">
+<li class="dropdown">
+<a href="#api" class="dropdown-toggle" data-toggle="dropdown">
+                                    API Documentation <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a>Packages</a></li>
+<li><a href="../packages/ChurchDirectory.html"><i class="icon-folder-open"></i> ChurchDirectory</a></li>
+<li><a href="../packages/Default.html"><i class="icon-folder-open"></i> Default</a></li>
+<li><a href="../packages/Finder.html"><i class="icon-folder-open"></i> Finder</a></li>
+<li><a href="../packages/Search.html"><i class="icon-folder-open"></i> Search</a></li>
+</ul>
+</li>
+<li class="dropdown" id="charts-menu">
+<a href="#charts" class="dropdown-toggle" data-toggle="dropdown">
+                                    Charts <b class="caret"></b></a><ul class="dropdown-menu"><li><a href="../graph_class.html"><i class="icon-list-alt"></i> Class hierarchy diagram</a></li></ul>
+</li>
+<li class="dropdown" id="reports-menu">
+<a href="#reports" class="dropdown-toggle" data-toggle="dropdown">
+                                    Reports <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a href="../errors.html"><i class="icon-remove-sign"></i> Errors 
+                <span class="label label-info">269</span></a></li>
+<li><a href="../markers.html"><i class="icon-map-marker"></i> Markers 
+                <ul><li>todo 
+                <span class="label label-info">9</span>
+</li></ul></a></li>
+<li><a href="../deprecated.html"><i class="icon-stop"></i> Deprecated elements 
+                <span class="label label-info">0</span></a></li>
+</ul>
+</li>
+</ul></div>
+</div></div>
+<div class="go_to_top"><a href="#___" style="color: inherit">Back to top  <i class="icon-upload icon-white"></i></a></div>
+</div>
+<div id="___" class="container">
+<noscript><div class="alert alert-warning">
+                            Javascript is disabled; several features are only available
+                            if Javascript is enabled.
+                        </div></noscript>
+<div class="row">
+<div class="span4">
+<div class="btn-group view pull-right" data-toggle="buttons-radio">
+<button class="btn details" title="Show descriptions and method names"><i class="icon-list"></i></button><button class="btn simple" title="Show only method names"><i class="icon-align-justify"></i></button>
+</div>
+<ul class="side-nav nav nav-list">
+<li class="nav-header">
+<i class="icon-map-marker"></i> Packages</li>
+<li>
+<a href="../packages/ChurchDirectory.Site.html" title="Site"><i class="icon-folder-open"></i>Site</a><ul class="nav nav-list nav-packages"></ul>
+</li>
+<li class="nav-header">
+<i class="icon-custom icon-function"></i> Functions</li>
+<li class="function  "><a href="#ChurchDirectoryBuildRoute" title="ChurchDirectoryBuildRoute :: Build the route for the ChurchDirectory component"><span class="description">Build the route for the ChurchDirectory component</span><pre>ChurchDirectoryBuildRoute</pre></a></li>
+<li class="function  "><a href="#ChurchDirectoryParseRoute" title="ChurchDirectoryParseRoute :: Parse the segments of a URL."><span class="description">Parse the segments of a URL.</span><pre>ChurchDirectoryParseRoute</pre></a></li>
+<li class="function  "><a href="#getFamilyMembersPage" title="getFamilyMembersPage :: "><span class="description">getFamilyMembersPage()
+        </span><pre>getFamilyMembersPage</pre></a></li>
+<li class="function  "><a href="#getPosition" title="getPosition :: "><span class="description">getPosition()
+        </span><pre>getPosition</pre></a></li>
+<li class="function  "><a href="#groupit" title="groupit :: "><span class="description">groupit()
+        </span><pre>groupit</pre></a></li>
+<li class="function  "><a href="#groupit" title="groupit :: "><span class="description">groupit()
+        </span><pre>groupit</pre></a></li>
+<li class="nav-header">
+<i class="icon-custom icon-class"></i> Classes</li>
+<li><a href="#ChurchDirectoryController" title="ChurchDirectory Component Controller">ChurchDirectoryController</a></li>
+<li><a href="#ChurchDirectoryControllerChurchDirectory" title="Controller for ChurchDirectory">ChurchDirectoryControllerChurchDirectory</a></li>
+<li><a href="#DirectoryHeaderHelper" title="Directory Header Helper">DirectoryHeaderHelper</a></li>
+<li><a href="#ChurchDirectoryHelperRoute" title="ChurchDirectory Component Route Helper">ChurchDirectoryHelperRoute</a></li>
+<li><a href="#ChurchDirectoryModelCategories" title="This models supports retrieving lists of churchdirectory categories.">ChurchDirectoryModelCategories</a></li>
+<li><a href="#ChurchDirectoryModelFeatured" title="">ChurchDirectoryModelFeatured</a></li>
+<li><a href="#ChurchDirectoryModelMember" title="Module for Members">ChurchDirectoryModelMember</a></li>
+<li><a href="#JFormRuleChurchDirectoryEmail" title="Rule to check email">JFormRuleChurchDirectoryEmail</a></li>
+<li><a href="#JFormRuleChurchDirectoryEmailMessage" title="Rule to check for email message">JFormRuleChurchDirectoryEmailMessage</a></li>
+<li><a href="#JFormRuleChurchDirectoryEmailSubject" title="Rule checker for email subject">JFormRuleChurchDirectoryEmailSubject</a></li>
+<li><a href="#ChurchDirectoryViewCategories" title="ChurchDirectory categories view.">ChurchDirectoryViewCategories</a></li>
+<li><a href="#ChurchDirectoryViewCategory" title="HTML View class for the ChurchDirectory component">ChurchDirectoryViewCategory</a></li>
+<li><a href="#ChurchDirectoryViewCategory" title="HTML View class for the ChurchDirectorys component">ChurchDirectoryViewCategory</a></li>
+<li><a href="#ChurchDirectoryViewDirectory" title="HTML Member View class for the ChurchDirectory component">ChurchDirectoryViewDirectory</a></li>
+<li><a href="#ChurchDirectoryViewDirectory" title="HTML Contact View class for the Contact component">ChurchDirectoryViewDirectory</a></li>
+<li><a href="#ChurchDirectoryViewDirectory" title="HTML Contact View class for the Contact component">ChurchDirectoryViewDirectory</a></li>
+<li><a href="#ChurchDirectoryViewFeatured" title="Frontpage View class">ChurchDirectoryViewFeatured</a></li>
+<li><a href="#ChurchDirectoryViewMember" title="HTML Member View class for the ChurchDirectory component">ChurchDirectoryViewMember</a></li>
+</ul>
+</div>
+<div class="span8 package-contents">
+<ul class="breadcrumb">
+<li>
+<a href="../index.html"><i class="icon-folder-open"></i></a><span class="divider">\</span>
+</li>
+<li><a href="../packages/ChurchDirectory.html">ChurchDirectory</a></li>
+<span class="divider">\</span><li class="active"><a href="../packages/ChurchDirectory.Site.html">Site</a></li>
+</ul>
+<div class="package-indent">
+<h3>
+<i class="icon-custom icon-function"></i> Functions</h3>
+<a name="ChurchDirectoryBuildRoute" id="ChurchDirectoryBuildRoute"></a><div class="element clickable function  ChurchDirectoryBuildRoute" data-toggle="collapse" data-target=".ChurchDirectoryBuildRoute .collapse">
+<h2>Build the route for the ChurchDirectory component</h2>
+<pre>ChurchDirectoryBuildRoute(array $query) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<p class="long_description"></p>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/ChurchDirectory.Site.html">ChurchDirectory.Site</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$query</h4>
+<code>array</code><p>An array of URL arguments</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>The URL arguments to use to assemble the subsequent URL.</div>
+</div></div>
+</div>
+<a name="ChurchDirectoryParseRoute" id="ChurchDirectoryParseRoute"></a><div class="element clickable function  ChurchDirectoryParseRoute" data-toggle="collapse" data-target=".ChurchDirectoryParseRoute .collapse">
+<h2>Parse the segments of a URL.</h2>
+<pre>ChurchDirectoryParseRoute(array $segments) : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<p class="long_description"></p>
+<table class="table table-bordered"><tr>
+<th>package</th>
+<td><a href="../packages/ChurchDirectory.Site.html">ChurchDirectory.Site</a></td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$segments</h4>
+<code>array</code><p>The segments of the URL to parse.</p></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>The URL attributes to be used by the application.</div>
+</div></div>
+</div>
+<a name="getFamilyMembersPage" id="getFamilyMembersPage"></a><div class="element clickable function  getFamilyMembersPage" data-toggle="collapse" data-target=".getFamilyMembersPage .collapse">
+<h2>getFamilyMembersPage()
+        </h2>
+<pre>getFamilyMembersPage($params, $id, $famid) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<p class="long_description"></p>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$params</h4>
+<code></code>
+</div>
+<div class="subelement argument">
+<h4>$id</h4>
+<code></code>
+</div>
+<div class="subelement argument">
+<h4>$famid</h4>
+<code></code>
+</div>
+</div></div>
+</div>
+<a name="getPosition" id="getPosition"></a><div class="element clickable function  getPosition" data-toggle="collapse" data-target=".getPosition .collapse">
+<h2>getPosition()
+        </h2>
+<pre>getPosition($id) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<p class="long_description"></p>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$id</h4>
+<code></code>
+</div>
+</div></div>
+</div>
+<a name="groupit" id="groupit"></a><div class="element clickable function  groupit" data-toggle="collapse" data-target=".groupit .collapse">
+<h2>groupit()
+        </h2>
+<pre>groupit($args) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<p class="long_description"></p>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$args</h4>
+<code></code>
+</div>
+</div></div>
+</div>
+<a name="groupit" id="groupit"></a><div class="element clickable function  groupit" data-toggle="collapse" data-target=".groupit .collapse">
+<h2>groupit()
+        </h2>
+<pre>groupit($args) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<p class="long_description"></p>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$args</h4>
+<code></code>
+</div>
+</div></div>
+</div>
+<h3>
+<i class="icon-custom icon-class"></i> Classes and interfaces</h3>
+<a name="ChurchDirectoryController" id="ChurchDirectoryController"></a><div class="element ajax clickable class" href="../classes/ChurchDirectoryController.html">
+<h1>ChurchDirectoryController<a href="../classes/ChurchDirectoryController.html">¶</a>
+</h1>
+<p class="short_description">ChurchDirectory Component Controller</p>
+<div class="details collapse"></div>
+<a href="../classes/ChurchDirectoryController.html" class="more">« More »</a>
+</div>
+<a name="ChurchDirectoryControllerChurchDirectory" id="ChurchDirectoryControllerChurchDirectory"></a><div class="element ajax clickable class" href="../classes/ChurchDirectoryControllerChurchDirectory.html">
+<h1>ChurchDirectoryControllerChurchDirectory<a href="../classes/ChurchDirectoryControllerChurchDirectory.html">¶</a>
+</h1>
+<p class="short_description">Controller for ChurchDirectory</p>
+<div class="details collapse"></div>
+<a href="../classes/ChurchDirectoryControllerChurchDirectory.html" class="more">« More »</a>
+</div>
+<a name="ChurchDirectoryHelperRoute" id="ChurchDirectoryHelperRoute"></a><div class="element ajax clickable class" href="../classes/ChurchDirectoryHelperRoute.html">
+<h1>ChurchDirectoryHelperRoute<a href="../classes/ChurchDirectoryHelperRoute.html">¶</a>
+</h1>
+<p class="short_description">ChurchDirectory Component Route Helper</p>
+<div class="details collapse"></div>
+<a href="../classes/ChurchDirectoryHelperRoute.html" class="more">« More »</a>
+</div>
+<a name="ChurchDirectoryModelCategories" id="ChurchDirectoryModelCategories"></a><div class="element ajax clickable class" href="../classes/ChurchDirectoryModelCategories.html">
+<h1>ChurchDirectoryModelCategories<a href="../classes/ChurchDirectoryModelCategories.html">¶</a>
+</h1>
+<p class="short_description">This models supports retrieving lists of churchdirectory categories.</p>
+<div class="details collapse"></div>
+<a href="../classes/ChurchDirectoryModelCategories.html" class="more">« More »</a>
+</div>
+<a name="ChurchDirectoryModelFeatured" id="ChurchDirectoryModelFeatured"></a><div class="element ajax clickable class" href="../classes/ChurchDirectoryModelFeatured.html">
+<h1>ChurchDirectoryModelFeatured<a href="../classes/ChurchDirectoryModelFeatured.html">¶</a>
+</h1>
+<p class="short_description"></p>
+<div class="details collapse"></div>
+<a href="../classes/ChurchDirectoryModelFeatured.html" class="more">« More »</a>
+</div>
+<a name="ChurchDirectoryModelMember" id="ChurchDirectoryModelMember"></a><div class="element ajax clickable class" href="../classes/ChurchDirectoryModelMember.html">
+<h1>ChurchDirectoryModelMember<a href="../classes/ChurchDirectoryModelMember.html">¶</a>
+</h1>
+<p class="short_description">Module for Members</p>
+<div class="details collapse"></div>
+<a href="../classes/ChurchDirectoryModelMember.html" class="more">« More »</a>
+</div>
+<a name="ChurchDirectoryViewCategories" id="ChurchDirectoryViewCategories"></a><div class="element ajax clickable class" href="../classes/ChurchDirectoryViewCategories.html">
+<h1>ChurchDirectoryViewCategories<a href="../classes/ChurchDirectoryViewCategories.html">¶</a>
+</h1>
+<p class="short_description">ChurchDirectory categories view.</p>
+<div class="details collapse"></div>
+<a href="../classes/ChurchDirectoryViewCategories.html" class="more">« More »</a>
+</div>
+<a name="ChurchDirectoryViewCategory" id="ChurchDirectoryViewCategory"></a><div class="element ajax clickable class" href="../classes/ChurchDirectoryViewCategory.html">
+<h1>ChurchDirectoryViewCategory<a href="../classes/ChurchDirectoryViewCategory.html">¶</a>
+</h1>
+<p class="short_description">HTML View class for the ChurchDirectory component</p>
+<div class="details collapse"></div>
+<a href="../classes/ChurchDirectoryViewCategory.html" class="more">« More »</a>
+</div>
+<a name="ChurchDirectoryViewCategory" id="ChurchDirectoryViewCategory"></a><div class="element ajax clickable class" href="../classes/ChurchDirectoryViewCategory.html">
+<h1>ChurchDirectoryViewCategory<a href="../classes/ChurchDirectoryViewCategory.html">¶</a>
+</h1>
+<p class="short_description">HTML View class for the ChurchDirectorys component</p>
+<div class="details collapse"></div>
+<a href="../classes/ChurchDirectoryViewCategory.html" class="more">« More »</a>
+</div>
+<a name="ChurchDirectoryViewDirectory" id="ChurchDirectoryViewDirectory"></a><div class="element ajax clickable class" href="../classes/ChurchDirectoryViewDirectory.html">
+<h1>ChurchDirectoryViewDirectory<a href="../classes/ChurchDirectoryViewDirectory.html">¶</a>
+</h1>
+<p class="short_description">HTML Member View class for the ChurchDirectory component</p>
+<div class="details collapse"></div>
+<a href="../classes/ChurchDirectoryViewDirectory.html" class="more">« More »</a>
+</div>
+<a name="ChurchDirectoryViewDirectory" id="ChurchDirectoryViewDirectory"></a><div class="element ajax clickable class" href="../classes/ChurchDirectoryViewDirectory.html">
+<h1>ChurchDirectoryViewDirectory<a href="../classes/ChurchDirectoryViewDirectory.html">¶</a>
+</h1>
+<p class="short_description">HTML Contact View class for the Contact component</p>
+<div class="details collapse"></div>
+<a href="../classes/ChurchDirectoryViewDirectory.html" class="more">« More »</a>
+</div>
+<a name="ChurchDirectoryViewDirectory" id="ChurchDirectoryViewDirectory"></a><div class="element ajax clickable class" href="../classes/ChurchDirectoryViewDirectory.html">
+<h1>ChurchDirectoryViewDirectory<a href="../classes/ChurchDirectoryViewDirectory.html">¶</a>
+</h1>
+<p class="short_description">HTML Contact View class for the Contact component</p>
+<div class="details collapse"></div>
+<a href="../classes/ChurchDirectoryViewDirectory.html" class="more">« More »</a>
+</div>
+<a name="ChurchDirectoryViewFeatured" id="ChurchDirectoryViewFeatured"></a><div class="element ajax clickable class" href="../classes/ChurchDirectoryViewFeatured.html">
+<h1>ChurchDirectoryViewFeatured<a href="../classes/ChurchDirectoryViewFeatured.html">¶</a>
+</h1>
+<p class="short_description">Frontpage View class</p>
+<div class="details collapse"></div>
+<a href="../classes/ChurchDirectoryViewFeatured.html" class="more">« More »</a>
+</div>
+<a name="ChurchDirectoryViewMember" id="ChurchDirectoryViewMember"></a><div class="element ajax clickable class" href="../classes/ChurchDirectoryViewMember.html">
+<h1>ChurchDirectoryViewMember<a href="../classes/ChurchDirectoryViewMember.html">¶</a>
+</h1>
+<p class="short_description">HTML Member View class for the ChurchDirectory component</p>
+<div class="details collapse"></div>
+<a href="../classes/ChurchDirectoryViewMember.html" class="more">« More »</a>
+</div>
+<a name="DirectoryHeaderHelper" id="DirectoryHeaderHelper"></a><div class="element ajax clickable class" href="../classes/DirectoryHeaderHelper.html">
+<h1>DirectoryHeaderHelper<a href="../classes/DirectoryHeaderHelper.html">¶</a>
+</h1>
+<p class="short_description">Directory Header Helper</p>
+<div class="details collapse"></div>
+<a href="../classes/DirectoryHeaderHelper.html" class="more">« More »</a>
+</div>
+<a name="JFormRuleChurchDirectoryEmail" id="JFormRuleChurchDirectoryEmail"></a><div class="element ajax clickable class" href="../classes/JFormRuleChurchDirectoryEmail.html">
+<h1>JFormRuleChurchDirectoryEmail<a href="../classes/JFormRuleChurchDirectoryEmail.html">¶</a>
+</h1>
+<p class="short_description">Rule to check email</p>
+<div class="details collapse"></div>
+<a href="../classes/JFormRuleChurchDirectoryEmail.html" class="more">« More »</a>
+</div>
+<a name="JFormRuleChurchDirectoryEmailMessage" id="JFormRuleChurchDirectoryEmailMessage"></a><div class="element ajax clickable class" href="../classes/JFormRuleChurchDirectoryEmailMessage.html">
+<h1>JFormRuleChurchDirectoryEmailMessage<a href="../classes/JFormRuleChurchDirectoryEmailMessage.html">¶</a>
+</h1>
+<p class="short_description">Rule to check for email message</p>
+<div class="details collapse"></div>
+<a href="../classes/JFormRuleChurchDirectoryEmailMessage.html" class="more">« More »</a>
+</div>
+<a name="JFormRuleChurchDirectoryEmailSubject" id="JFormRuleChurchDirectoryEmailSubject"></a><div class="element ajax clickable class" href="../classes/JFormRuleChurchDirectoryEmailSubject.html">
+<h1>JFormRuleChurchDirectoryEmailSubject<a href="../classes/JFormRuleChurchDirectoryEmailSubject.html">¶</a>
+</h1>
+<p class="short_description">Rule checker for email subject</p>
+<div class="details collapse"></div>
+<a href="../classes/JFormRuleChurchDirectoryEmailSubject.html" class="more">« More »</a>
+</div>
+</div>
+</div>
+</div>
+<div class="row"><footer class="span12">
+            Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by <a href="http://glyphicons.com/">Glyphicons</a>.<br>
+            Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor 2.0.0a8</a> and<br>
+            generated on 2012-07-22T15:51:31-05:00.<br></footer></div>
+</div>
+</body>
+</html>

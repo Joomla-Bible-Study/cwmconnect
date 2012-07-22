@@ -16,7 +16,9 @@ defined('_JEXEC') or die;
  * @since               1.7.0
  */
 class ChurchDirectoryControllerDirectory extends JControllerAdmin {
-
+    /**
+     * Display
+     */
     function display() {
         JRequest::setVar('view', 'directory');
         parent::display();

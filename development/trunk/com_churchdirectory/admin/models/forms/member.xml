@@ -58,7 +58,9 @@
                class="inputbox" size="30" />
 
         <field name="con_position" size="15" type="sql" label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_POSITION_LABEL" description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_POSITION_DESC"
-               query="SELECT id, name FROM #__churchdirectory_position WHERE published = 1 ORDER by name ASC" key_field="id" value_field="name" multiple="true" />
+               query="SELECT id, name FROM #__churchdirectory_position WHERE published = 1 ORDER by name ASC" key_field="id" value_field="name" multiple="true" default="-1">
+            <option value="-1">COM_CHURCHDIRECTORY_SELECT_POSITION</option>
+        </field>
 
         <field
             name="funitid"

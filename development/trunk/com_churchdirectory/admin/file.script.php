@@ -1,34 +1,44 @@
 <?php
 
 /**
- * @package             ChurchDirectory
+ * Main install Script
+ * @package             ChurchDirectory.Admin
  * @copyright           (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
  */
 // No direct access to this file
 defined('_JEXEC') or die;
 
-//the name of the class must be the name of your component + InstallerScript
-//for example: com_contentInstallerScript for com_content.
+/**
+ * Class for install Script
+ *
+ * @package             ChurchDirectory.Admin
+ * @since 1.7.0
+ */
 class com_churchdirectoryInstallerScript {
-    /*
-     * The release value to be displayed and check against throughout this file.
-     */
 
+    /**
+     * The release value to be displayed and check against throughout this file.
+     *
+     * @var string
+     */
     private $release = '1.7.2';
 
-    /*
+    /**
      * Find mimimum required joomla version for this extension. It will be read from the version attribute (install tag) in the manifest file
+     *
+     * @var string
      */
     private $minimum_joomla_release = '2.5.0';
 
-    /*
-     * $parent is the class calling this method.
-     * $type is the type of change (install, update or discover_install, not uninstall).
+    /**
      * preflight runs before anything else and while the extracted files are in the uploaded temp folder.
      * If preflight returns false, Joomla will abort the update and undo everything already done.
+     *
+     * @param string $type is the type of change (install, update or discover_install, not uninstall).
+     * @param string $parent is the class calling this method.
+     * @return boolean
      */
-
     function preflight($type, $parent) {
         // this component does not work with Joomla releases prior to 1.7
         // abort if the current Joomla release is older
@@ -60,36 +70,35 @@ class com_churchdirectoryInstallerScript {
         echo '<p>' . JText::_('COM_CHURCHDIRECTORY_PREFLIGHT_' . $type . ' ' . $rel) . '</p>';
     }
 
-    /*
-     * $parent is the class calling this method.
+    /**
      * install runs after the database scripts are executed.
      * If the extension is new, the install method is run.
      * If install returns false, Joomla will abort the install and undo everything already done.
+     *
+     * @param string $parent is the class calling this method.
      */
-
     function install($parent) {
         echo '<p>' . JText::_('COM_CHURCHDIRECTORY_INSTALL to ' . $this->release) . '</p>';
         // You can have the backend jump directly to the newly installed component configuration page
         $parent->getParent()->setRedirectURL('index.php?option=com_churchdirectory');
     }
 
-    /*
-     * $parent is the class calling this method.
+    /**
      * update runs after the database scripts are executed.
      * If the extension exists, then the update method is run.
      * If this returns false, Joomla will abort the update and undo everything already done.
+     *
+     * @param string $parent is the class calling this method.
      */
-
     function update($parent) {
         echo '<p>' . JText::_('COM_CHURCHDIRECTORY_UPDATE_ to ' . $this->release) . '</p>';
     }
 
-    /*
-     * $parent is the class calling this method.
-     * $type is the type of change (install, update or discover_install, not uninstall).
+    /**
      * postflight is run after the extension is registered in the database.
+     * @param type $type is the type of change (install, update or discover_install, not uninstall).
+     * @param type $parent is the class calling this method.
      */
-
     function postflight($type, $parent) {
         // set initial values for component parameters
         $params['my_param0'] = 'Component version ' . $this->release;
@@ -100,19 +109,19 @@ class com_churchdirectoryInstallerScript {
         echo '<p>' . JText::_('COM_CHURCHDIRECTORY_POSTFLIGHT ' . $type . ' to ' . $this->release) . '</p>';
     }
 
-    /*
-     * $parent is the class calling this method
-     * uninstall runs before any other action is taken (file removal or database processing).
+    /**
+     * uninstall runs before any other action is taken (file removal or database processing)
+     * @param string $parent
      */
-
     function uninstall($parent) {
         echo '<p>' . JText::_('COM_CHURCHDIRECTORY_UNINSTALL ' . $this->release) . '</p>';
     }
 
-    /*
+    /**
      * get a variable from the manifest file (actually, from the manifest cache).
+     * @param string $name
+     * @return object
      */
-
     function getParam($name) {
         $db = JFactory::getDbo();
         $db->setQuery('SELECT manifest_cache FROM #__extensions WHERE name = "com_churchdirectory"');
@@ -122,6 +131,7 @@ class com_churchdirectoryInstallerScript {
 
     /**
      * sets parameter values in the component's row of the extension table
+     * @param array $param_array
      */
     function setParams($param_array) {
         if (count($param_array) > 0) {

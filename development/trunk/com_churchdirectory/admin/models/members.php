@@ -1,6 +1,7 @@
 <?php
 
 /**
+ * Members list model
  * @package             ChurchDirectory.Admin
  * @copyright           (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
@@ -55,6 +56,8 @@ class ChurchDirectoryModelMembers extends JModelList {
      * Method to auto-populate the model state.
      *
      * Note. Calling getState in this method will result in recursion.
+     * @param string $ordering Ordering
+     * @param string $direction Direction of the list
      *
      * @return	void
      * @since	1.7.0

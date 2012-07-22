@@ -1,6 +1,7 @@
 <?php
 
 /**
+ * Member HTML
  * @package             ChurchDirectory.Admin
  * @copyright           (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
@@ -16,9 +17,11 @@ defined('_JEXEC') or die;
 abstract class JHtmlMember {
 
     /**
+     * Change featurd
+     *
      * @param	int $value	The featured value
      * @param	int $i
-     * @param	bool $canChange Whether the value can be changed or not
+     * @param	boolean $canChange Whether the value can be changed or not
      *
      * @return	string	The anchor tag to toggle featured/unfeatured contacts.
      * @since	1.7.0

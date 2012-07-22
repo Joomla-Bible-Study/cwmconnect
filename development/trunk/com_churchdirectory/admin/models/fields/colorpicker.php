@@ -1,6 +1,7 @@
 <?php
 
 /**
+ * Field Colerpicker
  * @package ChurchDirectory.Admin
  * @copyright Fiona Coulter 2011 Spiral Scripts http://www.spiralscripts.co.uk
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
@@ -18,10 +19,14 @@ class JFormFieldColorpicker extends JFormField {
 
     /**
      * Color picker form field type compatible with Joomla 1.6. Displays an Adobe type color picker panel, and returns a six-digit hex value, eg #cc99ff
+     * @var string Type of Field
      */
     protected $type = 'Colorpicker';
 
     /**
+     * Get Inpute
+     *
+     * @return string
      */
     protected function getInput() {
 

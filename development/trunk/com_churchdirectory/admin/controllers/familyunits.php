@@ -1,6 +1,7 @@
 <?php
 
 /**
+ * Controller for FamilyUnits
  * @package             ChurchDirectory.Admin
  * @copyright           (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
@@ -9,7 +10,12 @@
 defined('_JEXEC') or die;
 
 jimport('joomla.application.component.controlleradmin');
-
+/**
+ * FamilyUnits list controller class.
+ *
+ * @package	ChurchDirectory.Admin
+ * @since	1.7.0
+ */
 class ChurchDirectoryControllerFamilyUnits extends JControllerAdmin {
 
     /**
@@ -70,6 +76,7 @@ class ChurchDirectoryControllerFamilyUnits extends JControllerAdmin {
      *
      * @param	string	$name	The name of the model.
      * @param	string	$prefix	The prefix for the PHP class name.
+     * @param array $config Ingnore info
      *
      * @return	JModel
      * @since	1.7.0

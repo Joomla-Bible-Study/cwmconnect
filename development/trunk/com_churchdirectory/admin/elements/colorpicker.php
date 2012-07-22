@@ -1,6 +1,7 @@
 <?php
 
 /**
+ * Colorpicker Element
  * @package ChurchDirectory.Admin
  * @copyright Fiona Coulter 2011 Spiral Scripts http://www.spiralscripts.co.uk
  * @license		GNU/GPL license: http://www.gnu.org/copyleft/gpl.html
@@ -10,7 +11,7 @@ defined('_JEXEC') or die;
 
 /**
  * Class for color picker
- * 
+ *
  * @package ChurchDirectory.Admin
  * @since 1.7.0
  */
@@ -21,6 +22,15 @@ class JElementColorpicker extends JElement {
      */
     var $_name = 'colorpicker';
 
+    /**
+     * Fetch Element
+     *
+     * @param string $name
+     * @param string $value
+     * @param array $node
+     * @param string $control_name
+     * @return string
+     */
     function fetchElement($name, $value, &$node, $control_name) {
 
         //try to find script

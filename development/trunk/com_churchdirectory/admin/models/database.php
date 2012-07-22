@@ -1,6 +1,7 @@
 <?php
 
 /**
+ * Database Model
  * @package ChurchDirectory.Admin
  * @Copyright (C) 2007 - 2011 Joomla Bible Study Team All rights reserved
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
@@ -15,19 +16,25 @@ JLoader::register('InstallerModel', JPATH_ADMINISTRATOR . DIRECTORY_SEPARATOR . 
 JLoader::register('Com_ChurchDirectoryInstallerScript', JPATH_COMPONENT_ADMINISTRATOR . 'file.script.php');
 
 /**
- * Installer Manage Model
+ * Database Manage Model
  *
  * @package		ChurchDirectory.Admin
  * @since		1.7.2
  */
 class ChurchdirectoryModelDatabase extends InstallerModel {
 
+    /**
+     * Context of model
+     * @var string
+     */
     protected $_context = 'com_churchdirectory.discover';
 
     /**
      * Method to auto-populate the model state.
      *
      * Note. Calling getState in this method will result in recursion.
+     * @param string $ordering Ordering
+     * @param string $direction Direction of the list
      *
      * @since	1.7.2
      */
@@ -64,6 +71,10 @@ class ChurchdirectoryModelDatabase extends InstallerModel {
         return $changeSet;
     }
 
+    /**
+     * Overrides Pagination
+     * @return boolean
+     */
     public function getPagination() {
         return true;
     }

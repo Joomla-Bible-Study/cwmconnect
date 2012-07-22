@@ -1,0 +1,174 @@
+<!DOCTYPE html><html xmlns:date="http://exslt.org/dates-and-times" lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+<meta charset="utf-8">
+<title>Joomla ChurchDirectory » \ChurchDirectoryModelGeoUpdate</title>
+<meta name="author" content="Mike van Riel">
+<meta name="description" content="">
+<link href="../css/template.css" rel="stylesheet" media="all">
+<script src="../js/jquery-1.7.1.min.js" type="text/javascript"></script><script src="../js/jquery-ui-1.8.2.custom.min.js" type="text/javascript"></script><script src="../js/jquery.mousewheel.min.js" type="text/javascript"></script><script src="../js/bootstrap.js" type="text/javascript"></script><script src="../js/template.js" type="text/javascript"></script><script src="../js/prettify/prettify.min.js" type="text/javascript"></script><link rel="shortcut icon" href="../img/favicon.ico">
+<link rel="apple-touch-icon" href="../img/apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="72x72" href="../img/apple-touch-icon-72x72.png">
+<link rel="apple-touch-icon" sizes="114x114" href="../img/apple-touch-icon-114x114.png">
+</head>
+<body>
+<div class="navbar navbar-fixed-top">
+<div class="navbar-inner"><div class="container">
+<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse"><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></a><a class="brand" href="../index.html">Joomla ChurchDirectory</a><div class="nav-collapse"><ul class="nav">
+<li class="dropdown">
+<a href="#api" class="dropdown-toggle" data-toggle="dropdown">
+                                    API Documentation <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a>Packages</a></li>
+<li><a href="../packages/ChurchDirectory.html"><i class="icon-folder-open"></i> ChurchDirectory</a></li>
+<li><a href="../packages/Default.html"><i class="icon-folder-open"></i> Default</a></li>
+<li><a href="../packages/Finder.html"><i class="icon-folder-open"></i> Finder</a></li>
+<li><a href="../packages/Search.html"><i class="icon-folder-open"></i> Search</a></li>
+</ul>
+</li>
+<li class="dropdown" id="charts-menu">
+<a href="#charts" class="dropdown-toggle" data-toggle="dropdown">
+                                    Charts <b class="caret"></b></a><ul class="dropdown-menu"><li><a href="../graph_class.html"><i class="icon-list-alt"></i> Class hierarchy diagram</a></li></ul>
+</li>
+<li class="dropdown" id="reports-menu">
+<a href="#reports" class="dropdown-toggle" data-toggle="dropdown">
+                                    Reports <b class="caret"></b></a><ul class="dropdown-menu">
+<li><a href="../errors.html"><i class="icon-remove-sign"></i> Errors 
+                <span class="label label-info">269</span></a></li>
+<li><a href="../markers.html"><i class="icon-map-marker"></i> Markers 
+                <ul><li>todo 
+                <span class="label label-info">9</span>
+</li></ul></a></li>
+<li><a href="../deprecated.html"><i class="icon-stop"></i> Deprecated elements 
+                <span class="label label-info">0</span></a></li>
+</ul>
+</li>
+</ul></div>
+</div></div>
+<div class="go_to_top"><a href="#___" style="color: inherit">Back to top  <i class="icon-upload icon-white"></i></a></div>
+</div>
+<div id="___" class="container">
+<noscript><div class="alert alert-warning">
+                            Javascript is disabled; several features are only available
+                            if Javascript is enabled.
+                        </div></noscript>
+<div class="row">
+<div class="span4">
+<span class="btn-group visibility" data-toggle="buttons-checkbox"><button class="btn public active" title="Show public elements">Public</button><button class="btn protected" title="Show protected elements">Protected</button><button class="btn private" title="Show private elements">Private</button><button class="btn inherited active" title="Show inherited elements">Inherited</button></span><div class="btn-group view pull-right" data-toggle="buttons-radio">
+<button class="btn details" title="Show descriptions and method names"><i class="icon-list"></i></button><button class="btn simple" title="Show only method names"><i class="icon-align-justify"></i></button>
+</div>
+<ul class="side-nav nav nav-list">
+<li class="nav-header">
+<i class="icon-custom icon-method"></i> Methods</li>
+<li class="method public "><a href="#findRecords" title="findRecords :: Finds all Contacts"><span class="description">Finds all Contacts</span><pre>findRecords()</pre></a></li>
+<li class="method public "><a href="#purgeSessions" title="purgeSessions :: Perge the session"><span class="description">Perge the session</span><pre>purgeSessions()</pre></a></li>
+<li class="method public "><a href="#update" title="update :: Update Lng &amp; Lat"><span class="description">Update Lng &amp; Lat</span><pre>update()</pre></a></li>
+<li class="nav-header private">» Private</li>
+<li class="method private "><a href="#haveEnoughTime" title="haveEnoughTime :: Makes sure that no more than 3 seconds since the start of the timer have
+elapsed"><span class="description">Makes sure that no more than 3 seconds since the start of the timer have
+elapsed</span><pre>haveEnoughTime()</pre></a></li>
+<li class="method private "><a href="#microtime_float" title="microtime_float :: Returns the current timestampt in decimal seconds"><span class="description">Returns the current timestampt in decimal seconds</span><pre>microtime_float()</pre></a></li>
+<li class="method private "><a href="#resetTimer" title="resetTimer :: Starts or resets the internal timer"><span class="description">Starts or resets the internal timer</span><pre>resetTimer()</pre></a></li>
+<li class="nav-header">
+<i class="icon-custom icon-property"></i> Properties</li>
+<li class="nav-header private">» Private</li>
+<li class="property private "><a href="#%24startTime" title="$startTime :: Set start Time"><span class="description">Set start Time</span><pre>$startTime</pre></a></li>
+</ul>
+</div>
+<div class="span8">
+<a name="%5CChurchDirectoryModelGeoUpdate" id="\ChurchDirectoryModelGeoUpdate"></a><ul class="breadcrumb">
+<li>
+<a href="../index.html"><i class="icon-custom icon-class"></i></a><span class="divider">\</span>
+</li>
+<li><a href="../namespaces/global.html">global</a></li>
+<li class="active">
+<span class="divider">\</span><a href="../classes/ChurchDirectoryModelGeoUpdate.html">ChurchDirectoryModelGeoUpdate</a>
+</li>
+</ul>
+<div href="../classes/ChurchDirectoryModelGeoUpdate.html" class="element class">
+<p class="short_description">For Getting GeoUpdate from Google</p>
+<div class="details">
+<p class="long_description"></p>
+<table class="table table-bordered">
+<tr>
+<th>package</th>
+<td><a href="../packages/ChurchDirectory.Admin.html">ChurchDirectory.Admin</a></td>
+</tr>
+<tr>
+<th>since</th>
+<td>1.7.0</td>
+</tr>
+</table>
+<h3>
+<i class="icon-custom icon-method"></i> Methods</h3>
+<a name="findRecords" id="findRecords"></a><div class="element clickable method public findRecords" data-toggle="collapse" data-target=".findRecords .collapse">
+<h2>Finds all Contacts</h2>
+<pre>findRecords() : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<p class="long_description"></p>
+<h3>Returns</h3>
+<div class="subelement response"><code>array</code></div>
+</div></div>
+</div>
+<a name="purgeSessions" id="purgeSessions"></a><div class="element clickable method public purgeSessions" data-toggle="collapse" data-target=".purgeSessions .collapse">
+<h2>Perge the session</h2>
+<pre>purgeSessions() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><p class="long_description"></p></div></div>
+</div>
+<a name="update" id="update"></a><div class="element clickable method public update" data-toggle="collapse" data-target=".update .collapse">
+<h2>Update Lng &amp; Lat</h2>
+<pre>update(string $update) </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<p class="long_description"></p>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$update</h4>
+<code>string</code>
+</div>
+</div></div>
+</div>
+<a name="haveEnoughTime" id="haveEnoughTime"></a><div class="element clickable method private haveEnoughTime" data-toggle="collapse" data-target=".haveEnoughTime .collapse">
+<h2>Makes sure that no more than 3 seconds since the start of the timer have
+elapsed</h2>
+<pre>haveEnoughTime() : bool</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<p class="long_description"></p>
+<h3>Returns</h3>
+<div class="subelement response"><code>bool</code></div>
+</div></div>
+</div>
+<a name="microtime_float" id="microtime_float"></a><div class="element clickable method private microtime_float" data-toggle="collapse" data-target=".microtime_float .collapse">
+<h2>Returns the current timestampt in decimal seconds</h2>
+<pre>microtime_float() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><p class="long_description"></p></div></div>
+</div>
+<a name="resetTimer" id="resetTimer"></a><div class="element clickable method private resetTimer" data-toggle="collapse" data-target=".resetTimer .collapse">
+<h2>Starts or resets the internal timer</h2>
+<pre>resetTimer() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><p class="long_description"></p></div></div>
+</div>
+<h3>
+<i class="icon-custom icon-property"></i> Properties</h3>
+<a name="%24startTime" id="$startTime"> </a><div class="element clickable property private $startTime" data-toggle="collapse" data-target=".$startTime .collapse">
+<h2>Set start Time</h2>
+<pre>$startTime : float</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><p class="long_description"></p></div></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="row"><footer class="span12">
+            Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by <a href="http://glyphicons.com/">Glyphicons</a>.<br>
+            Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor 2.0.0a8</a> and<br>
+            generated on 2012-07-22T15:51:31-05:00.<br></footer></div>
+</div>
+</body>
+</html>

@@ -1,6 +1,8 @@
 <?php
 
 /**
+ * Controller for Directory Headers List
+ *
  * @package             ChurchDirectory.Admin
  * @copyright           (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
@@ -10,6 +12,11 @@ defined('_JEXEC') or die;
 
 jimport('joomla.application.component.controlleradmin');
 
+/**
+ * Class for DirHeaders
+ * @package ChurchDirectory.Admin
+ * @since 1.7.0
+ */
 class ChurchDirectoryControllerDirHeaders extends JControllerAdmin {
 
     /**
@@ -70,6 +77,7 @@ class ChurchDirectoryControllerDirHeaders extends JControllerAdmin {
      *
      * @param	string	$name	The name of the model.
      * @param	string	$prefix	The prefix for the PHP class name.
+     * @param array $config Ingnore info
      *
      * @return	JModel
      * @since	1.7.0

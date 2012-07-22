@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @package		ChurchDirectory.Site
  * @copyright           (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
@@ -124,7 +123,7 @@ foreach ($this->items as $item) {
                     <a href="<?php echo JRoute::_(ChurchDirectoryHelperRoute::getMemberRoute($item->slug, $item->catid)); ?>">
                         <?php echo $item->name; ?>
                     </a></span><br /><br />
-                <?php if ($item->con_position['0'] !== '' && $this->params->get('dr_show_position')) : ?>
+                <?php if ($item->con_position['0'] !== '' && $item->con_position['0'] !== '-1' && $this->params->get('dr_show_position')) : ?>
                     <div class="clearfix"></div>
                     <div id="position-header"><span id="contact-position">
                             <b>Position: </b>
@@ -150,6 +149,7 @@ foreach ($this->items as $item) {
                     <br />
                 <?php endif;
                 ?>
+                <div class="clearfix" ></div>
                 <?php if (($this->params->get('address_check') > 0) && ($item->address || $item->suburb || $item->state || $item->country || $item->postcode)) : ?>
                     <div class="churchdirectory-address">
                         <?php if ($this->params->get('address_check') > 0) : ?>

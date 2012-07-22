@@ -24,6 +24,15 @@ class JElementChurchdirectory extends JElement {
      */
     var $_name = 'Churchdirectory';
 
+    /**
+     * Fech Element
+     *
+     * @param string $name
+     * @param string $value
+     * @param array $node
+     * @param string $control_name
+     * @return string
+     */
     public function fetchElement($name, $value, &$node, $control_name) {
         $app = JFactory::getApplication();
         $db = JFactory::getDbo();
