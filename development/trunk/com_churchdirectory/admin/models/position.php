@@ -150,8 +150,6 @@ class ChurchDirectoryModelPosition extends JModelAdmin {
         }
 
         if (empty($table->id)) {
-            // Set the values
-            //$table->created	= $date->toMySQL();
             // Set ordering to the last item if not set
             if (empty($table->ordering)) {
                 $db = JFactory::getDbo();
@@ -189,7 +187,6 @@ class ChurchDirectoryModelPosition extends JModelAdmin {
                 $positionkey[] = null;
             endif;
         endforeach;
-        dump($positionkey, 'Posisionkey');
         $position = null;
         if ($positionkey):
             foreach ($positionkey as $d):
@@ -203,7 +200,6 @@ class ChurchDirectoryModelPosition extends JModelAdmin {
                 endif;
             endforeach;
         endif;
-        dump($position);
         $results = $position;
         return $results;
     }

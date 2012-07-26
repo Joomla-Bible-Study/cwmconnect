@@ -1,6 +1,7 @@
 <?php
 
 /**
+ * Member Default dispaly
  * @package		ChurchDirectory.Site
  * @copyright           (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
@@ -56,7 +57,7 @@ $cparams = JComponentHelper::getParams('com_media');
 
     <?php if ($this->member->con_position && $this->params->get('show_position')) : ?>
         <?php
-        if ($this->member->con_position['0'] != 0):
+        if ($this->member->con_position['0'] !== '' && $this->member->con_position['0'] !== '-1'):
             echo '<div id="position-header"><span id="contact-position">
                             <b>Position: </b></span></div><div id="position-name">
                             <span id="contact-position">';
