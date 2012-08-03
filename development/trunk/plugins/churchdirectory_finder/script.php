@@ -1,6 +1,7 @@
 <?php
 
 /**
+ * Install ChurchDirectory Finder
  * @package             Finder.ChurchDirectory
  *
  * @copyright           (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
@@ -11,9 +12,15 @@ defined('_JEXEC') or die;
 
 /**
  * Script file of ChurchDirectory Finder plugin
+ * @package Finder.ChurchDirectory
+ * @since 1.7.2
  */
 class plgFinderChurchDirectoryInstallerScript {
 
+    /**
+     * Install function
+     * @param string $parent
+     */
     function install($parent) {
         // I activate the plugin
         $db = JFactory::getDbo();

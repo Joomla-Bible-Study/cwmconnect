@@ -34,7 +34,7 @@
 <a href="#reports" class="dropdown-toggle" data-toggle="dropdown">
                                     Reports <b class="caret"></b></a><ul class="dropdown-menu">
 <li><a href="../errors.html"><i class="icon-remove-sign"></i> Errors 
-                <span class="label label-info">269</span></a></li>
+                <span class="label label-info">0</span></a></li>
 <li><a href="../markers.html"><i class="icon-map-marker"></i> Markers 
                 <ul><li>todo 
                 <span class="label label-info">9</span>
@@ -61,20 +61,18 @@
 <li class="nav-header">
 <i class="icon-map-marker"></i> Packages</li>
 <li>
-<a href="../packages/ChurchDirectory.Site.html" title="Site"><i class="icon-folder-open"></i>Site</a><ul class="nav nav-list nav-packages"></ul>
+<a href="../packages/ChurchDirectory.Site.html" title="Site"><i class="icon-folder-open"></i>Site</a><ul class="nav nav-list nav-packages"><li>
+<span class="empty-package"><i class="icon-folder-close"></i>mod</span><ul class="nav nav-list nav-packages"><li>
+<a href="../packages/ChurchDirectory.Site.mod.birthdayanniversary.html" title="birthdayanniversary"><i class="icon-folder-open"></i>birthdayanniversary</a><ul class="nav nav-list nav-packages"></ul>
+</li></ul>
+</li></ul>
 </li>
 <li class="nav-header">
 <i class="icon-custom icon-function"></i> Functions</li>
 <li class="function  "><a href="#ChurchDirectoryBuildRoute" title="ChurchDirectoryBuildRoute :: Build the route for the ChurchDirectory component"><span class="description">Build the route for the ChurchDirectory component</span><pre>ChurchDirectoryBuildRoute</pre></a></li>
 <li class="function  "><a href="#ChurchDirectoryParseRoute" title="ChurchDirectoryParseRoute :: Parse the segments of a URL."><span class="description">Parse the segments of a URL.</span><pre>ChurchDirectoryParseRoute</pre></a></li>
-<li class="function  "><a href="#getFamilyMembersPage" title="getFamilyMembersPage :: "><span class="description">getFamilyMembersPage()
-        </span><pre>getFamilyMembersPage</pre></a></li>
-<li class="function  "><a href="#getPosition" title="getPosition :: "><span class="description">getPosition()
-        </span><pre>getPosition</pre></a></li>
-<li class="function  "><a href="#groupit" title="groupit :: "><span class="description">groupit()
-        </span><pre>groupit</pre></a></li>
-<li class="function  "><a href="#groupit" title="groupit :: "><span class="description">groupit()
-        </span><pre>groupit</pre></a></li>
+<li class="function  "><a href="#getFamilyMembersPage" title="getFamilyMembersPage :: Get Family Mebers Buld"><span class="description">Get Family Mebers Buld</span><pre>getFamilyMembersPage</pre></a></li>
+<li class="function  "><a href="#getPosition" title="getPosition :: Get Position"><span class="description">Get Position</span><pre>getPosition</pre></a></li>
 <li class="nav-header">
 <i class="icon-custom icon-class"></i> Classes</li>
 <li><a href="#ChurchDirectoryController" title="ChurchDirectory Component Controller">ChurchDirectoryController</a></li>
@@ -82,7 +80,9 @@
 <li><a href="#DirectoryHeaderHelper" title="Directory Header Helper">DirectoryHeaderHelper</a></li>
 <li><a href="#ChurchDirectoryHelperRoute" title="ChurchDirectory Component Route Helper">ChurchDirectoryHelperRoute</a></li>
 <li><a href="#ChurchDirectoryModelCategories" title="This models supports retrieving lists of churchdirectory categories.">ChurchDirectoryModelCategories</a></li>
-<li><a href="#ChurchDirectoryModelFeatured" title="">ChurchDirectoryModelFeatured</a></li>
+<li><a href="#ChurchDirectoryModelCategory" title="class list category">ChurchDirectoryModelCategory</a></li>
+<li><a href="#ChurchDirectoryModelDirectory" title="Class list for Directory">ChurchDirectoryModelDirectory</a></li>
+<li><a href="#ChurchDirectoryModelFeatured" title="Class list for Featured">ChurchDirectoryModelFeatured</a></li>
 <li><a href="#ChurchDirectoryModelMember" title="Module for Members">ChurchDirectoryModelMember</a></li>
 <li><a href="#JFormRuleChurchDirectoryEmail" title="Rule to check email">JFormRuleChurchDirectoryEmail</a></li>
 <li><a href="#JFormRuleChurchDirectoryEmailMessage" title="Rule to check for email message">JFormRuleChurchDirectoryEmailMessage</a></li>
@@ -92,9 +92,10 @@
 <li><a href="#ChurchDirectoryViewCategory" title="HTML View class for the ChurchDirectorys component">ChurchDirectoryViewCategory</a></li>
 <li><a href="#ChurchDirectoryViewDirectory" title="HTML Member View class for the ChurchDirectory component">ChurchDirectoryViewDirectory</a></li>
 <li><a href="#ChurchDirectoryViewDirectory" title="HTML Contact View class for the Contact component">ChurchDirectoryViewDirectory</a></li>
-<li><a href="#ChurchDirectoryViewDirectory" title="HTML Contact View class for the Contact component">ChurchDirectoryViewDirectory</a></li>
+<li><a href="#ChurchDirectoryViewDirectory" title="XML Contact View class for the ChurchDirectory component">ChurchDirectoryViewDirectory</a></li>
 <li><a href="#ChurchDirectoryViewFeatured" title="Frontpage View class">ChurchDirectoryViewFeatured</a></li>
 <li><a href="#ChurchDirectoryViewMember" title="HTML Member View class for the ChurchDirectory component">ChurchDirectoryViewMember</a></li>
+<li><a href="#ChurchDirectoryViewMember" title="Class for Member VCF">ChurchDirectoryViewMember</a></li>
 </ul>
 </div>
 <div class="span8 package-contents">
@@ -147,67 +148,41 @@
 </div></div>
 </div>
 <a name="getFamilyMembersPage" id="getFamilyMembersPage"></a><div class="element clickable function  getFamilyMembersPage" data-toggle="collapse" data-target=".getFamilyMembersPage .collapse">
-<h2>getFamilyMembersPage()
-        </h2>
-<pre>getFamilyMembersPage($params, $id, $famid) </pre>
+<h2>Get Family Mebers Buld</h2>
+<pre>getFamilyMembersPage(array $params, int $id, int $famid) : string</pre>
 <div class="labels"></div>
 <div class="row collapse"><div class="detail-description">
 <p class="long_description"></p>
 <h3>Parameters</h3>
 <div class="subelement argument">
 <h4>$params</h4>
-<code></code>
+<code>array</code>
 </div>
 <div class="subelement argument">
 <h4>$id</h4>
-<code></code>
+<code>int</code>
 </div>
 <div class="subelement argument">
 <h4>$famid</h4>
-<code></code>
+<code>int</code>
 </div>
+<h3>Returns</h3>
+<div class="subelement response"><code>string</code></div>
 </div></div>
 </div>
 <a name="getPosition" id="getPosition"></a><div class="element clickable function  getPosition" data-toggle="collapse" data-target=".getPosition .collapse">
-<h2>getPosition()
-        </h2>
-<pre>getPosition($id) </pre>
+<h2>Get Position</h2>
+<pre>getPosition(int $id) : object</pre>
 <div class="labels"></div>
 <div class="row collapse"><div class="detail-description">
 <p class="long_description"></p>
 <h3>Parameters</h3>
 <div class="subelement argument">
 <h4>$id</h4>
-<code></code>
+<code>int</code>
 </div>
-</div></div>
-</div>
-<a name="groupit" id="groupit"></a><div class="element clickable function  groupit" data-toggle="collapse" data-target=".groupit .collapse">
-<h2>groupit()
-        </h2>
-<pre>groupit($args) </pre>
-<div class="labels"></div>
-<div class="row collapse"><div class="detail-description">
-<p class="long_description"></p>
-<h3>Parameters</h3>
-<div class="subelement argument">
-<h4>$args</h4>
-<code></code>
-</div>
-</div></div>
-</div>
-<a name="groupit" id="groupit"></a><div class="element clickable function  groupit" data-toggle="collapse" data-target=".groupit .collapse">
-<h2>groupit()
-        </h2>
-<pre>groupit($args) </pre>
-<div class="labels"></div>
-<div class="row collapse"><div class="detail-description">
-<p class="long_description"></p>
-<h3>Parameters</h3>
-<div class="subelement argument">
-<h4>$args</h4>
-<code></code>
-</div>
+<h3>Returns</h3>
+<div class="subelement response"><code>object</code></div>
 </div></div>
 </div>
 <h3>
@@ -240,10 +215,24 @@
 <div class="details collapse"></div>
 <a href="../classes/ChurchDirectoryModelCategories.html" class="more">« More »</a>
 </div>
+<a name="ChurchDirectoryModelCategory" id="ChurchDirectoryModelCategory"></a><div class="element ajax clickable class" href="../classes/ChurchDirectoryModelCategory.html">
+<h1>ChurchDirectoryModelCategory<a href="../classes/ChurchDirectoryModelCategory.html">¶</a>
+</h1>
+<p class="short_description">class list category</p>
+<div class="details collapse"></div>
+<a href="../classes/ChurchDirectoryModelCategory.html" class="more">« More »</a>
+</div>
+<a name="ChurchDirectoryModelDirectory" id="ChurchDirectoryModelDirectory"></a><div class="element ajax clickable class" href="../classes/ChurchDirectoryModelDirectory.html">
+<h1>ChurchDirectoryModelDirectory<a href="../classes/ChurchDirectoryModelDirectory.html">¶</a>
+</h1>
+<p class="short_description">Class list for Directory</p>
+<div class="details collapse"></div>
+<a href="../classes/ChurchDirectoryModelDirectory.html" class="more">« More »</a>
+</div>
 <a name="ChurchDirectoryModelFeatured" id="ChurchDirectoryModelFeatured"></a><div class="element ajax clickable class" href="../classes/ChurchDirectoryModelFeatured.html">
 <h1>ChurchDirectoryModelFeatured<a href="../classes/ChurchDirectoryModelFeatured.html">¶</a>
 </h1>
-<p class="short_description"></p>
+<p class="short_description">Class list for Featured</p>
 <div class="details collapse"></div>
 <a href="../classes/ChurchDirectoryModelFeatured.html" class="more">« More »</a>
 </div>
@@ -292,7 +281,7 @@
 <a name="ChurchDirectoryViewDirectory" id="ChurchDirectoryViewDirectory"></a><div class="element ajax clickable class" href="../classes/ChurchDirectoryViewDirectory.html">
 <h1>ChurchDirectoryViewDirectory<a href="../classes/ChurchDirectoryViewDirectory.html">¶</a>
 </h1>
-<p class="short_description">HTML Contact View class for the Contact component</p>
+<p class="short_description">XML Contact View class for the ChurchDirectory component</p>
 <div class="details collapse"></div>
 <a href="../classes/ChurchDirectoryViewDirectory.html" class="more">« More »</a>
 </div>
@@ -307,6 +296,13 @@
 <h1>ChurchDirectoryViewMember<a href="../classes/ChurchDirectoryViewMember.html">¶</a>
 </h1>
 <p class="short_description">HTML Member View class for the ChurchDirectory component</p>
+<div class="details collapse"></div>
+<a href="../classes/ChurchDirectoryViewMember.html" class="more">« More »</a>
+</div>
+<a name="ChurchDirectoryViewMember" id="ChurchDirectoryViewMember"></a><div class="element ajax clickable class" href="../classes/ChurchDirectoryViewMember.html">
+<h1>ChurchDirectoryViewMember<a href="../classes/ChurchDirectoryViewMember.html">¶</a>
+</h1>
+<p class="short_description">Class for Member VCF</p>
 <div class="details collapse"></div>
 <a href="../classes/ChurchDirectoryViewMember.html" class="more">« More »</a>
 </div>
@@ -338,13 +334,43 @@
 <div class="details collapse"></div>
 <a href="../classes/JFormRuleChurchDirectoryEmailSubject.html" class="more">« More »</a>
 </div>
+<ul class="breadcrumb">
+<li>
+<a href="../index.html"><i class="icon-folder-open"></i></a><span class="divider">\</span>
+</li>
+<li><a href="../packages/ChurchDirectory.html">ChurchDirectory</a></li>
+<span class="divider">\</span><li><a href="../packages/ChurchDirectory.Site.html">Site</a></li>
+<span class="divider">\</span><li class="active"><a href="../packages/ChurchDirectory.Site.mod.html">mod</a></li>
+</ul>
+<div class="package-indent">
+<ul class="breadcrumb">
+<li>
+<a href="../index.html"><i class="icon-folder-open"></i></a><span class="divider">\</span>
+</li>
+<li><a href="../packages/ChurchDirectory.html">ChurchDirectory</a></li>
+<span class="divider">\</span><li><a href="../packages/ChurchDirectory.Site.html">Site</a></li>
+<span class="divider">\</span><li><a href="../packages/ChurchDirectory.Site.mod.html">mod</a></li>
+<span class="divider">\</span><li class="active"><a href="../packages/ChurchDirectory.Site.mod.birthdayanniversary.html">birthdayanniversary</a></li>
+</ul>
+<div class="package-indent">
+<h3>
+<i class="icon-custom icon-class"></i> Classes and interfaces</h3>
+<a name="modBirthdayAnniversaryHelper" id="modBirthdayAnniversaryHelper"></a><div class="element ajax clickable class" href="../classes/modBirthdayAnniversaryHelper.html">
+<h1>modBirthdayAnniversaryHelper<a href="../classes/modBirthdayAnniversaryHelper.html">¶</a>
+</h1>
+<p class="short_description">Abstract helper for Birthdy Anniversary Display</p>
+<div class="details collapse"></div>
+<a href="../classes/modBirthdayAnniversaryHelper.html" class="more">« More »</a>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
 <div class="row"><footer class="span12">
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by <a href="http://glyphicons.com/">Glyphicons</a>.<br>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor 2.0.0a8</a> and<br>
-            generated on 2012-07-22T15:51:31-05:00.<br></footer></div>
+            generated on 2012-08-03T09:07:28-05:00.<br></footer></div>
 </div>
 </body>
 </html>

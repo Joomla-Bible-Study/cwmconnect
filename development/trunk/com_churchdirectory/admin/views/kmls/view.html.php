@@ -1,6 +1,7 @@
 <?php
 
 /**
+ * View for KMLs
  * @package             ChurchDirectory.Admin
  * @copyright           (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
@@ -20,13 +21,27 @@ jimport('joomla.i18n.help');
  */
 class ChurchDirectoryViewKMLs extends JViewLegacy {
 
+    /**
+     * Protect items
+     * @var array
+     */
     protected $items;
+
+    /**
+     * Protect pagination
+     * @var array
+     */
     protected $pagination;
+
+    /**
+     * Protect state
+     * @var array
+     */
     protected $state;
 
     /**
      * Display the view
-     *
+     * @param string $tpl
      * @return	void
      */
     public function display($tpl = null) {
@@ -63,7 +78,7 @@ class ChurchDirectoryViewKMLs extends JViewLegacy {
      * @since	1.7.0
      */
     protected function addToolbar() {
-        require_once JPATH_COMPONENT.'/helpers/churchdirectory.php';
+        require_once JPATH_COMPONENT . '/helpers/churchdirectory.php';
         $canDo = ChurchDirectoryHelper::getActions($this->state->get('filter.category_id'));
         JToolBarHelper::title(JText::_('COM_CHURCHDIRECTORY_MANAGER_KMLS'), 'kml');
 
@@ -98,6 +113,10 @@ class ChurchDirectoryViewKMLs extends JViewLegacy {
 
         JToolBarHelper::help('churchdirectory_kml', TRUE);
     }
+
+    /**
+     * Set Document Title
+     */
     protected function setDocument() {
         $document = JFactory::getDocument();
         $document->setTitle(JText::_('COM_CHURCHDIRECTORY_KMLS'));

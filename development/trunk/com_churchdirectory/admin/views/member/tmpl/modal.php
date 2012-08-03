@@ -1,6 +1,7 @@
 <?php
 
 /**
+ * Modal view member
  * @package		ChurchDirectory.Admin
  * @since               7.1.0
  * @desc                form for modal layout

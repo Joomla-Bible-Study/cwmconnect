@@ -1,6 +1,7 @@
 <?php
 
 /**
+ * View for Member
  * @package		ChurchDirectory.Site
  * @copyright           (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
@@ -19,11 +20,35 @@ require_once JPATH_COMPONENT . '/models/category.php';
  */
 class ChurchDirectoryViewMember extends JView {
 
+    /**
+     * Protected
+     * @var array
+     */
     protected $state;
+
+    /**
+     * Protected
+     * @var array
+     */
     protected $form;
+
+    /**
+     * Protected
+     * @var array
+     */
     protected $item;
+
+    /**
+     * Protected
+     * @var array
+     */
     protected $return_page;
 
+    /**
+     * Dispaly function
+     * @param string $tpl
+     * @return boolean
+     */
     function display($tpl = null) {
         // Initialise variables.
         $app = JFactory::getApplication();

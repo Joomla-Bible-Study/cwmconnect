@@ -1,6 +1,7 @@
 <?php
 
 /**
+ * Directory view for ChurchDirectory
  * @package		ChurchDirectory.Site
  * @copyright           (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
@@ -19,15 +20,39 @@ jimport('joomla.mail.helper');
  */
 class ChurchDirectoryViewDirectory extends JView {
 
+    /**
+     * Protected
+     * @var array
+     */
     protected $state = null;
+
+    /**
+     * Protected
+     * @var array
+     */
     protected $items = null;
+
+    /**
+     * Protected
+     * @var array
+     */
     protected $category = null;
+
+    /**
+     * Protected
+     * @var array
+     */
     protected $categories = null;
+
+    /**
+     * Protected
+     * @var array
+     */
     protected $pagination = null;
 
     /**
      * Display the view
-     *
+     * @param string $tpl
      * @return	mixed	False on error, null otherwise.
      */
     function display($tpl = null) {

@@ -1,6 +1,7 @@
 <?php
 
 /**
+ * Rules for email subject
  * @package		ChurchDirectory.Site
  * @copyright           (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
@@ -16,6 +17,15 @@ jimport('joomla.form.formrule');
  */
 class JFormRuleChurchDirectoryEmailSubject extends JFormRule {
 
+    /**
+     * Test email subject
+     * @param string $element
+     * @param string $value
+     * @param array $group
+     * @param string $input
+     * @param array $form
+     * @return boolean
+     */
     public function test(& $element, $value, $group = null, & $input = null, & $form = null) {
         $params = JComponentHelper::getParams('com_churchdirectory');
         $banned = $params->get('banned_subject');

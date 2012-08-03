@@ -1,6 +1,6 @@
 <?php
-
 /**
+ * Sub view for catigory on items
  * @package		ChurchDirectory.Site
  * @copyright           (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
@@ -131,68 +131,68 @@ $listDirn = $this->escape($this->state->get('list.direction'));
                                     endif;
                                 endif;
                                 ?>
-                            <?php echo $item->con_position; ?>
+                                <?php echo $item->con_position; ?>
                             </td>
-                            <?php endif; ?>
+                        <?php endif; ?>
 
                         <?php if ($this->params->get('show_email_headings')) : ?>
                             <td class="item-email">
-                            <?php echo $item->email_to; ?>
+                                <?php echo $item->email_to; ?>
                             </td>
-                            <?php endif; ?>
+                        <?php endif; ?>
 
                         <?php if ($this->params->get('show_telephone_headings')) : ?>
                             <td class="item-phone">
-                            <?php echo $item->telephone; ?>
+                                <?php echo $item->telephone; ?>
                             </td>
-                            <?php endif; ?>
+                        <?php endif; ?>
 
                         <?php if ($this->params->get('show_mobile_headings')) : ?>
                             <td class="item-phone">
-                            <?php echo $item->mobile; ?>
+                                <?php echo $item->mobile; ?>
                             </td>
-                            <?php endif; ?>
+                        <?php endif; ?>
 
                         <?php if ($this->params->get('show_fax_headings')) : ?>
                             <td class="item-phone">
-                            <?php echo $item->fax; ?>
+                                <?php echo $item->fax; ?>
                             </td>
-                            <?php endif; ?>
+                        <?php endif; ?>
 
                         <?php if ($this->params->get('show_suburb_headings')) : ?>
                             <td class="item-suburb">
-                            <?php echo $item->suburb; ?>
+                                <?php echo $item->suburb; ?>
                             </td>
-                            <?php endif; ?>
+                        <?php endif; ?>
 
                         <?php if ($this->params->get('show_state_headings')) : ?>
                             <td class="item-state">
-                            <?php echo $item->state; ?>
+                                <?php echo $item->state; ?>
                             </td>
-                            <?php endif; ?>
+                        <?php endif; ?>
 
                         <?php if ($this->params->get('show_country_headings')) : ?>
                             <td class="item-state">
-            <?php echo $item->country; ?>
+                                <?php echo $item->country; ?>
                             </td>
-                    <?php endif; ?>
+                        <?php endif; ?>
 
                     </tr>
-    <?php endforeach; ?>
+                <?php endforeach; ?>
 
             </tbody>
         </table>
 
-                <?php if ($this->params->get('show_pagination')) : ?>
+        <?php if ($this->params->get('show_pagination')) : ?>
             <div class="pagination">
                 <?php if ($this->params->def('show_pagination_results', 1)) : ?>
                     <p class="counter">
-                    <?php echo $this->pagination->getPagesCounter(); ?>
+                        <?php echo $this->pagination->getPagesCounter(); ?>
                     </p>
-            <?php endif; ?>
-        <?php echo $this->pagination->getPagesLinks(); ?>
+                <?php endif; ?>
+                <?php echo $this->pagination->getPagesLinks(); ?>
             </div>
-    <?php endif; ?>
+        <?php endif; ?>
         <div>
             <input type="hidden" name="filter_order" value="<?php echo $listOrder; ?>" />
             <input type="hidden" name="filter_order_Dir" value="<?php echo $listDirn; ?>" />

@@ -1,6 +1,7 @@
 <?php
 
 /**
+ * Model for Categories
  * @package		ChurchDirectory.Site
  * @copyright           (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
@@ -31,7 +32,17 @@ class ChurchDirectoryModelCategories extends JModel {
      * @var		string
      */
     protected $_extension = 'com_churchdirectory';
+
+    /**
+     * The parent context
+     * @var array
+     */
     private $_parent = null;
+
+    /**
+     * The items
+     * @var array
+     */
     private $_items = null;
 
     /**
@@ -105,6 +116,10 @@ class ChurchDirectoryModelCategories extends JModel {
         return $this->_items;
     }
 
+    /**
+     * Get parent
+     * @return array
+     */
     public function getParent() {
         if (!is_object($this->_parent)) {
             $this->getItems();

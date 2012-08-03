@@ -1,6 +1,7 @@
 <?php
 
 /**
+ * View for position
  * @package	ChurchDirectory.Admin
  * @copyright	(C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
  * @license	GNU General Public License version 2 or later; see LICENSE.txt
@@ -11,19 +12,34 @@ defined('_JEXEC') or die;
 jimport('joomla.application.component.view');
 
 /**
- * View to edit a contact.
+ * View to edit a position.
  *
  * @package	ChurchDirectory.Admin
  * @since		1.7.0
  */
 class ChurchDirectoryViewPosition extends JViewLegacy {
 
+    /**
+     * Protect form
+     * @var array Protect form
+     */
     protected $form;
+
+    /**
+     * Protect item
+     * @var type protect item
+     */
     protected $item;
+
+    /**
+     * Protect state
+     * @var array protect state
+     */
     protected $state;
 
     /**
      * Display the view
+     * @param string $tpl
      */
     public function display($tpl = null) {
         // Initialiase variables.
@@ -102,6 +118,9 @@ class ChurchDirectoryViewPosition extends JViewLegacy {
         JToolBarHelper::help('churchdirectory_position', TRUE);
     }
 
+    /**
+     * Set Document Title
+     */
     protected function setDocument() {
         $isNew = ($this->item->id < 1);
         $document = JFactory::getDocument();

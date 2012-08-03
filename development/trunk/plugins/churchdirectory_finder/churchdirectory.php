@@ -1,6 +1,7 @@
 <?php
 
 /**
+ * ChurchDirectory Member Finder
  * @package     Finder.ChurchDirectory
  *
  * @copyright	(C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
@@ -265,7 +266,6 @@ class plgFinderChurchDirectory extends FinderIndexerAdapter {
         //if ($item->params->get('show_position', true)) {
         //    $item->addInstruction(FinderIndexer::META_CONTEXT, 'position');
         //}
-
         // Handle the contact street address.
         if ($item->params->get('show_street_address', true)) {
             $item->addInstruction(FinderIndexer::META_CONTEXT, 'address');

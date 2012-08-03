@@ -1,6 +1,7 @@
 <?php
 
 /**
+ * ChurchDirectory View
  * @package	ChurchDirectory.Admin
  * @copyright	(C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
  * @license	GNU General Public License version 2 or later; see LICENSE.txt
@@ -18,7 +19,7 @@ class ChurchDirectoryViewDatabase extends JViewLegacy {
 
     /**
      * Display the view
-     *
+     * @param string $tpl
      * @since 1.7.0
      */
     public function display($tpl = null) {

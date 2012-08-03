@@ -1,6 +1,7 @@
 <?php
 
 /**
+ * View for Categories
  * @package		ChurchDirectory.Site
  * @copyright           (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
@@ -18,14 +19,33 @@ jimport('joomla.application.component.view');
  */
 class ChurchDirectoryViewCategories extends JView {
 
+    /**
+     * Protected state
+     * @var array
+     */
     protected $state = null;
+
+    /**
+     * Protected item
+     * @var item
+     */
     protected $item = null;
+
+    /**
+     * Protected items
+     * @var array
+     */
     protected $items = null;
+
+    /**
+     * Protected pagination
+     * @var array
+     */
     protected $pagination = null;
 
     /**
      * Display the view
-     *
+     * @param string $tpl
      * @return	mixed	False on error, null otherwise.
      */
     function display($tpl = null) {

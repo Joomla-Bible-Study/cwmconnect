@@ -1,6 +1,7 @@
 <?php
 
 /**
+ * Router for ChurchDirectory
  * @package             ChurchDirectory.Site
  * @copyright           (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
@@ -21,10 +22,16 @@ jimport('joomla.application.categories');
  */
 abstract class ChurchDirectoryHelperRoute {
 
+    /**
+     * Protect lookup
+     * @var string protect lookup
+     */
     protected static $lookup;
 
     /**
+     * Get member route
      * @param	int	The route of the newsfeed
+     * @param iint $catid Catigory id
      */
     public static function getMemberRoute($id, $catid) {
         $needles = array(
@@ -51,6 +58,11 @@ abstract class ChurchDirectoryHelperRoute {
         return $link;
     }
 
+    /**
+     * Get Categroy Route
+     * @param JCategoryNode $catid
+     * @return string
+     */
     public static function getCategoryRoute($catid) {
         if ($catid instanceof JCategoryNode) {
             $id = $catid->id;
@@ -90,6 +102,11 @@ abstract class ChurchDirectoryHelperRoute {
         return $link;
     }
 
+    /**
+     * Find Item
+     * @param string $needles
+     * @return null
+     */
     protected static function _findItem($needles = null) {
         $app = JFactory::getApplication();
         $menus = $app->getMenu('site');

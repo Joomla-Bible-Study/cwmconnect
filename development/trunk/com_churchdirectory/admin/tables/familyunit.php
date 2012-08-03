@@ -1,6 +1,7 @@
 <?php
 
 /**
+ * FamilyUnit JTable
  * @package	ChurchDirectory.Admin
  * @copyright	(C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
  * @license	GNU General Public License version 2 or later; see LICENSE.txt
@@ -8,6 +9,11 @@
 // No direct access
 defined('_JEXEC') or die;
 
+/**
+ * FamilyUnit Table Class
+ * @package	ChurchDirectory.Admin
+ * @since 1.7.1
+ */
 class ChurchDirectoryTableFamilyUnit extends JTable {
 
     /**
@@ -24,6 +30,7 @@ class ChurchDirectoryTableFamilyUnit extends JTable {
      * Overloaded bind function
      *
      * @param	array		Named array
+     * @param string $ignore
      * @return	null|string	null is operation was satisfactory, otherwise returns an error
      * @since	1.7.0
      */
@@ -38,7 +45,7 @@ class ChurchDirectoryTableFamilyUnit extends JTable {
     }
 
     /**
-     * Stores a contact
+     * Stores a FamilyUnit
      *
      * @param	boolean	True to update fields even if they are null.
      * @return	boolean	True on success, false on failure.

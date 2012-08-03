@@ -1,6 +1,6 @@
 <?php
-
 /**
+ * Sub view category for children
  * @package		ChurchDirectory.Site
  * @copyright           (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
@@ -53,5 +53,6 @@ if (count($this->children[$this->category->id]) > 0 && $this->maxLevel != 0) :
         <?php endforeach; ?>
     </ul>
     <?php
+
 
  endif;

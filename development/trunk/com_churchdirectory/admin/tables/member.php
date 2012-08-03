@@ -1,6 +1,7 @@
 <?php
 
 /**
+ * Member JTable
  * @package	ChurchDirectory.Admin
  * @copyright	(C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
  * @license	GNU General Public License version 2 or later; see LICENSE.txt
@@ -9,6 +10,7 @@
 defined('_JEXEC') or die;
 
 /**
+ * Member Table Class
  * @package	ChurchDirectory.Admin
  * @since 1.7.0
  */
@@ -28,6 +30,7 @@ class ChurchDirectoryTableMember extends JTable {
      * Overloaded bind function
      *
      * @param	array		Named array
+     * @param   string  $ignore
      * @return	null|string	null is operation was satisfactory, otherwise returns an error
      * @since	1.7.0
      */
@@ -224,6 +227,8 @@ class ChurchDirectoryTableMember extends JTable {
     /**
      * Get the parent asset id for the record
      *
+     * @param array $table
+     * @param int $id
      * @return      int
      * @since       1.6
      */

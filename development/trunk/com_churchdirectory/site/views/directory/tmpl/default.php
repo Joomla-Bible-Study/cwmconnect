@@ -1,6 +1,6 @@
 <?php
-
 /**
+ * Default view for directory
  * @package		ChurchDirectory.Site
  * @copyright           (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
@@ -30,8 +30,9 @@ JHtml::addIncludePath(JPATH_COMPONENT . '/helpers');
             <?php echo JText::_('COM_CHURCHDIRECTORY_DOWNLOAD_INFORMATION_AS'); ?>
             <a href="<?php echo JRoute::_('index.php?option=com_churchdirectory&amp;view=directory&amp;format=kml'); ?>">
                 <?php echo JText::_('COM_CHURCHDIRECTORY_KMLFILE'); ?></a>
-        <?php endif; ?>
-        <?php JView::loadHelper('directoryheader');
+            <?php endif; ?>
+        <?php
+        JView::loadHelper('directoryheader');
         echo DirectoryHeaderHelper::getHeader($params = $this->params);
         ?>
     </div>

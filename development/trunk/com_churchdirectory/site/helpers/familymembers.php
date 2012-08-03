@@ -1,6 +1,7 @@
 <?php
 
 /**
+ * Family Member Helper
  * @package ChurchDirectory.Site
  * @Copyright (C) 2007 - 2011 Joomla Bible Study Team All rights reserved
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
@@ -9,6 +10,13 @@
 //No Direct Access
 defined('_JEXEC') or die;
 
+/**
+ * Get Family Mebers Buld
+ * @param array $params
+ * @param int $id
+ * @param int $famid
+ * @return string
+ */
 function getFamilyMembersPage($params, $id, $famid) {
 
     $teacher = null;

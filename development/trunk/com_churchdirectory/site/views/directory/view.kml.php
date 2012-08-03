@@ -21,15 +21,59 @@ jimport('joomla.mail.helper');
  */
 class ChurchDirectoryViewDirectory extends JView {
 
+    /**
+     * Protected
+     * @var array
+     */
     protected $state;
+
+    /**
+     * Protected
+     * @var array
+     */
     protected $items;
+
+    /**
+     * Protected
+     * @var array
+     */
     protected $params;
+
+    /**
+     * Protected
+     * @var array
+     */
     protected $kml_params;
+
+    /**
+     * Protected
+     * @var array
+     */
     protected $category_params;
+
+    /**
+     * Protected
+     * @var array
+     */
     protected $category;
+
+    /**
+     * Protected
+     * @var array
+     */
     protected $children;
+
+    /**
+     * Protected
+     * @var array
+     */
     protected $pagination;
 
+    /**
+     * Display function
+     * @param string $tpl
+     * @return boolean
+     */
     function display($tpl = null) {
         $app = JFactory::getApplication();
         $user = JFactory::getUser();
@@ -106,26 +150,6 @@ class ChurchDirectoryViewDirectory extends JView {
         $this->assignRef('params', $params);
         $this->assignRef('parent', $parent);
         $this->assignRef('pagination', $pagination);
-
-        // for parssing records out to put then in order and not repeat the records.
-        function groupit($args) {
-            extract($args);
-
-            $result = array();
-            foreach ($items as $item) {
-                if (!empty($item->$field))
-                    $key = $item->$field;
-                else
-                    $key = 'nomatch';
-                if (array_key_exists($key, $result))
-                    $result[$key][] = $item;
-                else {
-                    $result[$key] = array();
-                    $result[$key][] = $item;
-                }
-            }
-            return $result;
-        }
 
         // Creates an array of strings to hold the lines of the KML file.
         $kml = array('<?xml version="1.0" encoding="UTF-8"?>');
@@ -228,10 +252,10 @@ class ChurchDirectoryViewDirectory extends JView {
         $kml[] = '</scale>';
         $kml[] = '</LabelStyle>';
         $kml[] = '</Style> ';
-        $teams = groupit(array('items' => $items, 'field' => 'category_title'));
+        $teams = $this->groupit(array('items' => $items, 'field' => 'category_title'));
 
         foreach ($teams as $c => $catid) {
-            $newrows[$c] = groupit(array('items' => $teams[$c], 'field' => 'suburb'));
+            $newrows[$c] = $this->groupit(array('items' => $teams[$c], 'field' => 'suburb'));
             $ckml_params = $catid[0]->kml_params;
         }
         $mycounter = '0';
@@ -324,11 +348,35 @@ class ChurchDirectoryViewDirectory extends JView {
             } // end the country folder
             $kml[] = '</Folder>';
         }
-// End XML file
+        // End KML file
         $kml[] = '</Document>';
         $kml[] = '</kml>';
         $kmlOutput = join("\n", $kml);
         echo $kmlOutput;
+    }
+
+    /**
+     * for parssing records out to put then in order and not repeat the records.
+     * @param array $args
+     * @return array
+     */
+    public function groupit($args) {
+        extract($args);
+
+        $result = array();
+        foreach ($items as $item) {
+            if (!empty($item->$field))
+                $key = $item->$field;
+            else
+                $key = 'nomatch';
+            if (array_key_exists($key, $result))
+                $result[$key][] = $item;
+            else {
+                $result[$key] = array();
+                $result[$key][] = $item;
+            }
+        }
+        return $result;
     }
 
 }

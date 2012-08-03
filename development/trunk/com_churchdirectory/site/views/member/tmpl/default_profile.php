@@ -1,6 +1,6 @@
 <?php
-
 /**
+ * Sub view member for profile
  * @package		ChurchDirectory.Site
  * @copyright           (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
@@ -8,7 +8,8 @@
 defined('_JEXEC') or die;
 ?>
 <?php if (JPluginHelper::isEnabled('user', 'profile')) :
-    $fields = $this->item->profile->getFieldset('profile'); ?>
+    $fields = $this->item->profile->getFieldset('profile');
+    ?>
     <div class="churchdirectory-profile" id="users-profile-custom">
         <dl>
             <?php

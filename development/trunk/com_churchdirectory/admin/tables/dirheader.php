@@ -1,6 +1,7 @@
 <?php
 
 /**
+ * DirHeader JTable
  * @package	ChurchDirectory.Admin
  * @copyright	(C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
  * @license	GNU General Public License version 2 or later; see LICENSE.txt
@@ -9,6 +10,7 @@
 defined('_JEXEC') or die;
 
 /**
+ * DirHeader Table Class
  * @package ChurchDirectory.Admin
  * @since 1.7.0
  */
@@ -28,6 +30,7 @@ class ChurchDirectoryTableDirHeader extends JTable {
      * Overloaded bind function
      *
      * @param	array		Named array
+     * @param string $ignore
      * @return	null|string	null is operation was satisfactory, otherwise returns an error
      * @since	1.7.0
      */
@@ -42,7 +45,7 @@ class ChurchDirectoryTableDirHeader extends JTable {
     }
 
     /**
-     * Stores a contact
+     * Stores a header
      *
      * @param	boolean	True to update fields even if they are null.
      * @return	boolean	True on success, false on failure.

@@ -1,6 +1,7 @@
 <?php
 
 /**
+ * View Members
  * @package             ChurchDirectory.Admin
  * @copyright           (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
@@ -18,13 +19,27 @@ defined('_JEXEC') or die;
  */
 class ChurchDirectoryViewMembers extends JViewLegacy {
 
+    /**
+     * Protect items
+     * @var array
+     */
     protected $items;
+
+    /**
+     * Protect pagination
+     * @var array
+     */
     protected $pagination;
+
+    /**
+     * Protect state
+     * @var array
+     */
     protected $state;
 
     /**
      * Display the view
-     *
+     * @param string $tpl
      * @return	void
      */
     public function display($tpl = null) {
@@ -98,7 +113,9 @@ class ChurchDirectoryViewMembers extends JViewLegacy {
 
         JToolBarHelper::help('churchdirectory_members', TRUE);
     }
-
+    /**
+     * Set Document title
+     */
     protected function setDocument() {
         $document = JFactory::getDocument();
         $document->setTitle(JText::_('COM_CHURCHDIRECTORY_ADMINISTRATION_MEMBERS'));

@@ -1,6 +1,7 @@
 <?php
 
 /**
+ * ChurchDirectory Member Search Plugin
  * @package             Search.ChurchDirectory
  * @copyright           (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
@@ -31,6 +32,7 @@ class plgSearchChurchdirectory extends JPlugin {
     }
 
     /**
+     * Content Search Areas
      * @return array An array of search areas
      */
     function onContentSearchAreas() {
@@ -48,6 +50,7 @@ class plgSearchChurchdirectory extends JPlugin {
      * @param string Target search string
      * @param string mathcing option, exact|any|all
      * @param string ordering option, newest|oldest|popular|alpha|category
+     * @param string $areas
      */
     function onContentSearch($text, $phrase = '', $ordering = '', $areas = null) {
         $db = JFactory::getDbo();

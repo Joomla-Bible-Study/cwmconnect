@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ChurchDirectory Contact manager component for Joomla! 1.5 and 1.6
+ * ChurchDirectory Contact manager component
  *
  * @package ChurchDirectory.Site
  * @copyright Copyright (C) 2011 NFSDA. All rights reserved.
@@ -12,22 +12,53 @@ defined('_JEXEC') or die;
 
 jimport('joomla.application.component.modellist');
 
+/**
+ * Class list for Directory
+ * @package ChurchDirectory.Site
+ * @since 1.7.0
+ */
 class ChurchDirectoryModelDirectory extends JModelList {
 
     /**
+     * Set view_item
+     * @access protected
      * @since	1.6
      */
     protected $view_item = 'directory';
 
     /**
      * Category items data
-     *
+     * @access protected
      * @var array
      */
     protected $_item = null;
+
+    /**
+     * Articles
+     * @access protected
+     * @var array
+     */
     protected $_articles = null;
+
+    /**
+     * Siblings
+     * @access protected
+     * @var array
+     */
     protected $_siblings = null;
+
+    /**
+     * Childern items
+     * @access protected
+     * @var array
+     */
     protected $_children = null;
+
+    /**
+     * Perent
+     * @access protected
+     * @var string
+     */
     protected $_parent = null;
 
     /**
@@ -104,7 +135,6 @@ class ChurchDirectoryModelDirectory extends JModelList {
                 $item->attribs = $params;
             }
             $item->con_position = explode(',', $item->con_position);
-
         }
 
         return $items;
@@ -215,7 +245,8 @@ class ChurchDirectoryModelDirectory extends JModelList {
      * Method to auto-populate the model state.
      *
      * Note. Calling getState in this method will result in recursion.
-     *
+     * @param string $ordering
+     * @param string $direction
      * @since	1.6
      */
     protected function populateState($ordering = null, $direction = null) {
@@ -255,8 +286,6 @@ class ChurchDirectoryModelDirectory extends JModelList {
     /**
      * Method to get category data for the current category
      *
-     * @param	int		An optional ID
-     *
      * @return	object
      * @since	1.5
      */
@@ -295,8 +324,6 @@ class ChurchDirectoryModelDirectory extends JModelList {
     /**
      * Get the parent category.
      *
-     * @param	int		An optional category id. If not supplied, the model state 'category.id' will be used.
-     *
      * @return	mixed	An array of categories or false if an error occurs.
      */
     public function getParent() {
@@ -318,6 +345,11 @@ class ChurchDirectoryModelDirectory extends JModelList {
         return $this->_leftsibling;
     }
 
+    /**
+     * Get the sibling (adjacent) categories.
+     *
+     * @return	mixed	An array of categories or false if an error occurs.
+     */
     function &getRightSibling() {
         if (!is_object($this->_item)) {
             $this->getCategory();
@@ -327,8 +359,6 @@ class ChurchDirectoryModelDirectory extends JModelList {
 
     /**
      * Get the child categories.
-     *
-     * @param	int		An optional category id. If not supplied, the model state 'category.id' will be used.
      *
      * @return	mixed	An array of categories or false if an error occurs.
      */

@@ -1,6 +1,7 @@
 <?php
 
 /**
+ * View Member
  * @package             ChurchDirectory.Admin
  * @copyright           (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
@@ -16,12 +17,27 @@ defined('_JEXEC') or die;
  */
 class ChurchDirectoryViewMember extends JViewLegacy {
 
+    /**
+     * Protect form
+     * @var array
+     */
     protected $form;
+
+    /**
+     * Protect items
+     * @var array
+     */
     protected $item;
+
+    /**
+     * Protect state
+     * @var array
+     */
     protected $state;
 
     /**
      * Display the view
+     * @param string $tpl
      */
     public function display($tpl = null) {
         // Initialiase variables.
@@ -109,6 +125,9 @@ class ChurchDirectoryViewMember extends JViewLegacy {
         JToolBarHelper::help('member_contact', TRUE);
     }
 
+    /**
+     * Set Document title
+     */
     protected function setDocument() {
         $isNew = ($this->item->id < 1);
         $document = JFactory::getDocument();
@@ -117,13 +136,11 @@ class ChurchDirectoryViewMember extends JViewLegacy {
     }
 
     /**
-     * @todo need to move this outside the view.
      * Get the age of a person in years at a given time
-     *
-     * @param       int     $dob    Date Of Birth
+     * @todo need to move this outside the view.
+     * @param       int     $bdate    Date Of Birth
      * @param       int     $tdate  The Target Date
      * @return      int     The number of years
-     *
      */
     protected function getAge($bdate, $tdate) {
         $age = 0;

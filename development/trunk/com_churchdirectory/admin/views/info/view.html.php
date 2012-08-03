@@ -1,6 +1,7 @@
 <?php
 
 /**
+ * View for Info
  * @package             ChurchDirectory.Admin
  * @copyright           (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
@@ -10,12 +11,37 @@ defined('_JEXEC') or die;
 
 jimport('joomla.application.component.view');
 
+/**
+ * Class for Info
+ * @package ChurchDirectory.Admin
+ * @since 1.7.0
+ */
 class ChurchDirectoryViewInfo extends JViewLegacy {
 
+    /**
+     * Protect Items
+     * @var array
+     */
     protected $items;
+
+    /**
+     * Protect Pagination
+     * @var array
+     */
     protected $pagination;
+
+    /**
+     * Protect State
+     * @var array
+     */
     protected $state;
 
+    /**
+     * Display function
+     * @param  string $tpl
+     * @return boolean
+     * @since 1.7.0
+     */
     public function display($tpl = null) {
         $this->items = $this->get('Items');
         $this->pagination = $this->get('Pagination');

@@ -34,7 +34,7 @@
 <a href="#reports" class="dropdown-toggle" data-toggle="dropdown">
                                     Reports <b class="caret"></b></a><ul class="dropdown-menu">
 <li><a href="../errors.html"><i class="icon-remove-sign"></i> Errors 
-                <span class="label label-info">269</span></a></li>
+                <span class="label label-info">0</span></a></li>
 <li><a href="../markers.html"><i class="icon-map-marker"></i> Markers 
                 <ul><li>todo 
                 <span class="label label-info">9</span>
@@ -84,17 +84,15 @@
 <li class="method public "><a href="#getForm" title="getForm :: Method to get the member form."><span class="description">Method to get the member form.</span><pre>getForm()</pre></a></li>
 <li class="method public "><a href="#getItem" title="getItem :: Gets a list of members"><span class="description">Gets a list of members</span><pre>getItem()</pre></a></li>
 <li class="nav-header protected">» Protected</li>
-<li class="method protected "><a href="#getChurchDirectoryQuery" title="getChurchDirectoryQuery :: "><span class="description">getChurchDirectoryQuery()
-        </span><pre>getChurchDirectoryQuery()</pre></a></li>
-<li class="method protected "><a href="#loadFormData" title="loadFormData :: "><span class="description">loadFormData()
-        </span><pre>loadFormData()</pre></a></li>
+<li class="method protected "><a href="#getChurchDirectoryQuery" title="getChurchDirectoryQuery :: Get ChurchDirectory query"><span class="description">Get ChurchDirectory query</span><pre>getChurchDirectoryQuery()</pre></a></li>
+<li class="method protected "><a href="#loadFormData" title="loadFormData :: Load form date"><span class="description">Load form date</span><pre>loadFormData()</pre></a></li>
 <li class="method protected "><a href="#populateState" title="populateState :: Method to auto-populate the model state."><span class="description">Method to auto-populate the model state.</span><pre>populateState()</pre></a></li>
 <li class="nav-header">
 <i class="icon-custom icon-property"></i> Properties</li>
 <li class="nav-header protected">» Protected</li>
 <li class="property protected "><a href="#%24_context" title="$_context :: Model context string."><span class="description">Model context string.</span><pre>$_context</pre></a></li>
-<li class="property protected "><a href="#%24_item" title="$_item :: "><span class="description">$_item</span><pre>$_item</pre></a></li>
-<li class="property protected "><a href="#%24view_item" title="$view_item :: "><span class="description">$view_item</span><pre>$view_item</pre></a></li>
+<li class="property protected "><a href="#%24_item" title="$_item :: Protect item"><span class="description">Protect item</span><pre>$_item</pre></a></li>
+<li class="property protected "><a href="#%24view_item" title="$view_item :: Protect view"><span class="description">Protect view</span><pre>$view_item</pre></a></li>
 </ul>
 </div>
 <div class="span8">
@@ -463,25 +461,40 @@
 </div></div>
 </div>
 <a name="getChurchDirectoryQuery" id="getChurchDirectoryQuery"></a><div class="element clickable method protected getChurchDirectoryQuery" data-toggle="collapse" data-target=".getChurchDirectoryQuery .collapse">
-<h2>getChurchDirectoryQuery()
-        </h2>
-<pre>getChurchDirectoryQuery($pk) </pre>
+<h2>Get ChurchDirectory query</h2>
+<pre>getChurchDirectoryQuery(string $pk) : boolean</pre>
 <div class="labels"></div>
 <div class="row collapse"><div class="detail-description">
 <p class="long_description"></p>
 <h3>Parameters</h3>
 <div class="subelement argument">
 <h4>$pk</h4>
-<code></code>
+<code>string</code>
 </div>
+<h3>Exceptions</h3>
+<table class="table table-bordered">
+<tr>
+<th><code><a href="http://php.net/manual/en/class.exception.php">\Exception</a></code></th>
+<td></td>
+</tr>
+<tr>
+<th><code>\JException</code></th>
+<td></td>
+</tr>
+</table>
+<h3>Returns</h3>
+<div class="subelement response"><code>boolean</code></div>
 </div></div>
 </div>
 <a name="loadFormData" id="loadFormData"></a><div class="element clickable method protected loadFormData" data-toggle="collapse" data-target=".loadFormData .collapse">
-<h2>loadFormData()
-        </h2>
-<pre>loadFormData() </pre>
+<h2>Load form date</h2>
+<pre>loadFormData() : array</pre>
 <div class="labels"></div>
-<div class="row collapse"><div class="detail-description"><p class="long_description"></p></div></div>
+<div class="row collapse"><div class="detail-description">
+<p class="long_description"></p>
+<h3>Returns</h3>
+<div class="subelement response"><code>array</code></div>
+</div></div>
 </div>
 <a name="populateState" id="populateState"></a><div class="element clickable method protected populateState" data-toggle="collapse" data-target=".populateState .collapse">
 <h2>Method to auto-populate the model state.</h2>
@@ -504,22 +517,16 @@
 <div class="row collapse"><div class="detail-description"><p class="long_description"></p></div></div>
 </div>
 <a name="%24_item" id="$_item"> </a><div class="element clickable property protected $_item" data-toggle="collapse" data-target=".$_item .collapse">
-<h2>$_item</h2>
-<pre>$_item </pre>
+<h2>Protect item</h2>
+<pre>$_item : string</pre>
 <div class="labels"></div>
 <div class="row collapse"><div class="detail-description"><p class="long_description"></p></div></div>
 </div>
 <a name="%24view_item" id="$view_item"> </a><div class="element clickable property protected $view_item" data-toggle="collapse" data-target=".$view_item .collapse">
-<h2>$view_item</h2>
-<pre>$view_item </pre>
+<h2>Protect view</h2>
+<pre>$view_item : string</pre>
 <div class="labels"></div>
-<div class="row collapse"><div class="detail-description">
-<p class="long_description"></p>
-<table class="table table-bordered"><tr>
-<th>since</th>
-<td>1.6</td>
-</tr></table>
-</div></div>
+<div class="row collapse"><div class="detail-description"><p class="long_description"></p></div></div>
 </div>
 </div>
 </div>
@@ -528,7 +535,7 @@
 <div class="row"><footer class="span12">
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by <a href="http://glyphicons.com/">Glyphicons</a>.<br>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor 2.0.0a8</a> and<br>
-            generated on 2012-07-22T15:51:31-05:00.<br></footer></div>
+            generated on 2012-08-03T09:07:29-05:00.<br></footer></div>
 </div>
 </body>
 </html>

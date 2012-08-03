@@ -13,15 +13,35 @@ defined('_JEXEC') or die();
 require_once (JPATH_COMPONENT_ADMINISTRATOR . '/liveupdate/liveupdate.php');
 
 /**
+ * Class view cpanel
  * @package ChurchDirectory.Admin
  * @since 1.7.0
  */
 class ChurchDirectoryViewCpanel extends JViewLegacy {
 
+    /**
+     * Protect Items
+     * @var array
+     */
     protected $items;
+
+    /**
+     * Protect Pragination
+     * @var array
+     */
     protected $pagination;
+
+    /**
+     * Protect State
+     * @var array
+     */
     protected $state;
 
+    /**
+     * Display Function
+     * @param string $tpl
+     * @return boolean
+     */
     public function display($tpl = null) {
         $this->items = $this->get('Items');
         $this->pagination = $this->get('Pagination');
@@ -35,7 +55,7 @@ class ChurchDirectoryViewCpanel extends JViewLegacy {
 
         jimport('joomla.version');
         $version = new JVersion();
-        
+
         if ($version->RELEASE == '3.0') {
             $this->versionName = TRUE;
         } else {

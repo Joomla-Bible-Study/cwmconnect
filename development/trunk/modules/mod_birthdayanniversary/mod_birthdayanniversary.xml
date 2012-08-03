@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension type="module" version="2.5.0" method="upgrade" client="site">
+<extension type="module" version="2.5" method="upgrade" client="site">
     <name>mod_birthdayanniversary</name>
     <author>Joomla Bible Study Team</author>
     <creationDate>July 13, 2012</creationDate>
@@ -8,53 +8,105 @@
     <authorEmail>info@joomlabiblestudy.org</authorEmail>
     <authorUrl>http://www.joomlabiblestudy.org</authorUrl>
     <version>1.0.0</version>
-    <description>MOD_BIRTHDAYANNIVERSARY_MDL_DESCRIPTION</description>
+    <description>MOD_BIRTHDAYANNIVERSARY_XML_DESCRIPTION</description>
     <files>
         <filename module="mod_birthdayanniversary">mod_birthdayanniversary.php</filename>
         <filename>helper.php</filename>
         <folder>tmpl</folder>
-        <folder>elements</folder>
         <folder>language</folder>
         <filename>index.html</filename>
         <filename>mod_birthdayanniversary.xml</filename>
     </files>
+
+    <help key="JHELP_EXTENSIONS_MODULE_MANAGER_MOST_READ" />
     <config>
-        <!-- @todo: look at new params for j1.7+ -->
         <fields name="params">
-            <fieldset name="basic" label="JBS_MDL_LIST_LAYOUT"
-                      addfieldpath="/administrator/components/com_biblestudy/models/fields">
-                <field name="t" type="sql" description="JBS_MNU_SELECT_TEMPLATE_DESC"
-                       label="JBS_MNU_SELECT_TEMPLATE" default="1"
-                       query="SELECT id, title FROM #__bsms_templates WHERE published = 1 ORDER BY text ASC"
-                       key_field="id" value_field="title" required="true" />
-                <field name="moduletemplate" type="sql" label="JBS_TPL_MODULE_TEMPLATE" description="JBS_TPL_SERMONS_TEMPLATE_DESC" hide_none="true"
-                       query="SELECT id, type, filename FROM #__bsms_templatecode WHERE type=7 AND published =1 ORDER BY filename ASC" key_field="filename" value_field="filename">
-                    <option value="0">JBS_CMN_USE_DEFAULT</option>
+            <fieldset name="basic">
+
+                <field
+                    name="catid"
+                    type="category"
+                    extension="com_content"
+                    multiple="true"
+                    size="10"
+                    default=""
+                    label="JCATEGORY"
+                    description="MOD_POPULAR_FIELD_CATEGORY_DESC" >
+                    <option value="">JOPTION_ALL_CATEGORIES</option>
                 </field>
-                <field name="css" type="filelist" label="JBS_STYLE_CHOOSE_CSS_FILE" description="JBS_STYLE_CHOOSE_FILE_DESC"
-                       directory="/media/com_biblestudy/css/site" exclude=".html" hide_default="true" required="true"/>
-                <field name="moduleitems" description="JBS_MDL_ITEMS_DESC"
-                       label="JBS_MDL_ITEMS" default="5" type="text" size="10" />
-                <field name="use_headers" type="radio" default="1" label="JBS_MDL_USE_LIST_HEADER"
-                       description="JBS_MDL_USE_LIST_HEADER_DESC" >
-                    <option value="1">JYES</option>
-                    <option value="0">JNO</option>
+
+                <field
+                    name="count"
+                    type="text"
+                    default="5"
+                    label="MOD_POPULAR_FIELD_COUNT_LABEL"
+                    description="MOD_POPULAR_FIELD_COUNT_DESC" />
+
+                <field
+                    name="show_front"
+                    type="radio"
+                    default="1"
+                    label="MOD_POPULAR_FIELD_FEATURED_LABEL"
+                    description="MOD_POPULAR_FIELD_FEATURED_DESC">
+                    <option
+                        value="1">JSHOW
+                    </option>
+                    <option
+                        value="0">JHIDE
+                    </option>
                 </field>
-                <field name="show_link" type="radio" default="1"
-                       label="JBS_MDL_SHOW_COMPONENT" description="JBS_MDL_SHOW_COMPONENT_DESC">
-                    <option value="1">JSHOW</option>
-                    <option value="0">JHIDE</option>
+
+            </fieldset>
+
+            <fieldset
+                name="advanced">
+
+                <field
+                    name="layout"
+                    type="modulelayout"
+                    label="JFIELD_ALT_LAYOUT_LABEL"
+                    description="JFIELD_ALT_MODULE_LAYOUT_DESC" />
+
+                <field
+                    name="moduleclass_sfx"
+                    type="text"
+                    label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
+                    description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
+
+                <field
+                    name="cache"
+                    type="list"
+                    default="1"
+                    label="COM_MODULES_FIELD_CACHING_LABEL"
+                    description="COM_MODULES_FIELD_CACHING_DESC">
+                    <option
+                        value="1">JGLOBAL_USE_GLOBAL
+                    </option>
+                    <option
+                        value="0">COM_MODULES_FIELD_VALUE_NOCACHING
+                    </option>
                 </field>
-                <field name="pagetext" type="text" size="50" default="More Bible Studies"
-                       label="JBS_MDL_LINK_TEXT" description="JBS_MDL_LINK_TEXT_DESC" />
-                <field name="show_verses" type="list" default="0"
-                       label="JBS_TPL_VERSES_SHOW_VERSES" description="JBS_TPL_VERSES_SHOW_VERSES_DESC">
-                    <option value="0">JBS_TPL_SHOW_ONLY_CHAPTERS</option>
-                    <option value="1">JBS_TPL_SHOW_VERSES_AND_CHAPTERS</option>
+
+                <field
+                    name="cache_time"
+                    type="text"
+                    default="900"
+                    label="COM_MODULES_FIELD_CACHE_TIME_LABEL"
+                    description="COM_MODULES_FIELD_CACHE_TIME_DESC" />
+
+                <field
+                    name="cachemode"
+                    type="hidden"
+                    default="static">
+                    <option
+                        value="static">
+                    </option>
                 </field>
+
             </fieldset>
         </fields>
     </config>
+
     <!-- UPDATESERVER DEFINITION -->
     <updateservers>
         <!-- Note: No spaces or linebreaks allowed between the server tags -->

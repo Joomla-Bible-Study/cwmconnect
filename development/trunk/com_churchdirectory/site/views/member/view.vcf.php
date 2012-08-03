@@ -1,6 +1,7 @@
 <?php
 
 /**
+ * View for VCF
  * @package		ChurchDirectory.Site
  * @copyright           (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
@@ -9,11 +10,29 @@
 defined('_JEXEC') or die;
 jimport('joomla.application.component.view');
 
-class ChurchDirectoryViewChurchDirectory extends JView {
+/**
+ * Class for Member VCF
+ * @package		ChurchDirectory.Site
+ * @since 1.7.0
+ */
+class ChurchDirectoryViewMember extends JView {
 
+    /**
+     * Protected
+     * @var array
+     */
     protected $state;
+
+    /**
+     * Protected
+     * @var array
+     */
     protected $item;
 
+    /**
+     * Display function
+     * @return boolean
+     */
     public function display() {
         // Get model data.
         $state = $this->get('State');

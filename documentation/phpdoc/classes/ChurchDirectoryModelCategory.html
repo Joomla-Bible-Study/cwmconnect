@@ -34,7 +34,7 @@
 <a href="#reports" class="dropdown-toggle" data-toggle="dropdown">
                                     Reports <b class="caret"></b></a><ul class="dropdown-menu">
 <li><a href="../errors.html"><i class="icon-remove-sign"></i> Errors 
-                <span class="label label-info">269</span></a></li>
+                <span class="label label-info">0</span></a></li>
 <li><a href="../markers.html"><i class="icon-map-marker"></i> Markers 
                 <ul><li>todo 
                 <span class="label label-info">9</span>
@@ -66,21 +66,20 @@
 <li class="method public "><a href="#getItems" title="getItems :: Method to get a list of items."><span class="description">Method to get a list of items.</span><pre>getItems()</pre></a></li>
 <li class="method public "><a href="#getLeftSibling" title="getLeftSibling :: Get the sibling (adjacent) categories."><span class="description">Get the sibling (adjacent) categories.</span><pre>getLeftSibling()</pre></a></li>
 <li class="method public "><a href="#getParent" title="getParent :: Get the parent category."><span class="description">Get the parent category.</span><pre>getParent()</pre></a></li>
-<li class="method public "><a href="#getRightSibling" title="getRightSibling :: "><span class="description">getRightSibling()
-        </span><pre>getRightSibling()</pre></a></li>
+<li class="method public "><a href="#getRightSibling" title="getRightSibling :: Get right Sibling"><span class="description">Get right Sibling</span><pre>getRightSibling()</pre></a></li>
 <li class="nav-header protected">» Protected</li>
 <li class="method protected "><a href="#getListQuery" title="getListQuery :: Method to build an SQL query to load the list data."><span class="description">Method to build an SQL query to load the list data.</span><pre>getListQuery()</pre></a></li>
 <li class="method protected "><a href="#populateState" title="populateState :: Method to auto-populate the model state."><span class="description">Method to auto-populate the model state.</span><pre>populateState()</pre></a></li>
 <li class="nav-header">
 <i class="icon-custom icon-property"></i> Properties</li>
 <li class="nav-header protected">» Protected</li>
-<li class="property protected "><a href="#%24_articles" title="$_articles :: "><span class="description">$_articles</span><pre>$_articles</pre></a></li>
+<li class="property protected "><a href="#%24_articles" title="$_articles :: Protect _articles"><span class="description">Protect _articles</span><pre>$_articles</pre></a></li>
 <li class="property protected "><a href="#%24_categories" title="$_categories :: The list of other newfeed categories."><span class="description">The list of other newfeed categories.</span><pre>$_categories</pre></a></li>
 <li class="property protected "><a href="#%24_category" title="$_category :: The category that applies."><span class="description">The category that applies.</span><pre>$_category</pre></a></li>
-<li class="property protected "><a href="#%24_children" title="$_children :: "><span class="description">$_children</span><pre>$_children</pre></a></li>
+<li class="property protected "><a href="#%24_children" title="$_children :: Protect _children"><span class="description">Protect _children</span><pre>$_children</pre></a></li>
 <li class="property protected "><a href="#%24_item" title="$_item :: Category items data"><span class="description">Category items data</span><pre>$_item</pre></a></li>
-<li class="property protected "><a href="#%24_parent" title="$_parent :: "><span class="description">$_parent</span><pre>$_parent</pre></a></li>
-<li class="property protected "><a href="#%24_siblings" title="$_siblings :: "><span class="description">$_siblings</span><pre>$_siblings</pre></a></li>
+<li class="property protected "><a href="#%24_parent" title="$_parent :: Protect _parent"><span class="description">Protect _parent</span><pre>$_parent</pre></a></li>
+<li class="property protected "><a href="#%24_siblings" title="$_siblings :: Protect _siblings"><span class="description">Protect _siblings</span><pre>$_siblings</pre></a></li>
 </ul>
 </div>
 <div class="span8">
@@ -93,7 +92,20 @@
 <span class="divider">\</span><a href="../classes/ChurchDirectoryModelCategory.html">ChurchDirectoryModelCategory</a>
 </li>
 </ul>
-<div href="../classes/ChurchDirectoryModelCategory.html" class="element class"><div class="details">
+<div href="../classes/ChurchDirectoryModelCategory.html" class="element class">
+<p class="short_description">class list category</p>
+<div class="details">
+<p class="long_description"></p>
+<table class="table table-bordered">
+<tr>
+<th>package</th>
+<td><a href="../packages/ChurchDirectory.Site.html">ChurchDirectory.Site</a></td>
+</tr>
+<tr>
+<th>since</th>
+<td>1.7.0</td>
+</tr>
+</table>
 <h3>
 <i class="icon-custom icon-method"></i> Methods</h3>
 <a name="__construct" id="__construct"></a><div class="element clickable method public __construct" data-toggle="collapse" data-target=".__construct .collapse">
@@ -177,11 +189,14 @@
 </div></div>
 </div>
 <a name="getRightSibling" id="getRightSibling"></a><div class="element clickable method public getRightSibling" data-toggle="collapse" data-target=".getRightSibling .collapse">
-<h2>getRightSibling()
-        </h2>
-<pre>getRightSibling() </pre>
+<h2>Get right Sibling</h2>
+<pre>getRightSibling() : string</pre>
 <div class="labels"></div>
-<div class="row collapse"><div class="detail-description"><p class="long_description"></p></div></div>
+<div class="row collapse"><div class="detail-description">
+<p class="long_description"></p>
+<h3>Returns</h3>
+<div class="subelement response"><code>string</code></div>
+</div></div>
 </div>
 <a name="getListQuery" id="getListQuery"></a><div class="element clickable method protected getListQuery" data-toggle="collapse" data-target=".getListQuery .collapse">
 <h2>Method to build an SQL query to load the list data.</h2>
@@ -200,7 +215,7 @@
 </div>
 <a name="populateState" id="populateState"></a><div class="element clickable method protected populateState" data-toggle="collapse" data-target=".populateState .collapse">
 <h2>Method to auto-populate the model state.</h2>
-<pre>populateState($ordering, $direction) </pre>
+<pre>populateState(int $ordering, string $direction) </pre>
 <div class="labels"></div>
 <div class="row collapse"><div class="detail-description">
 <p class="long_description"><p>Note. Calling getState in this method will result in recursion.</p></p>
@@ -211,21 +226,27 @@
 <h3>Parameters</h3>
 <div class="subelement argument">
 <h4>$ordering</h4>
-<code></code>
+<code>int</code>
 </div>
 <div class="subelement argument">
 <h4>$direction</h4>
-<code></code>
+<code>string</code>
 </div>
 </div></div>
 </div>
 <h3>
 <i class="icon-custom icon-property"></i> Properties</h3>
 <a name="%24_articles" id="$_articles"> </a><div class="element clickable property protected $_articles" data-toggle="collapse" data-target=".$_articles .collapse">
-<h2>$_articles</h2>
-<pre>$_articles </pre>
+<h2>Protect _articles</h2>
+<pre>$_articles : array</pre>
 <div class="labels"></div>
-<div class="row collapse"><div class="detail-description"><p class="long_description"></p></div></div>
+<div class="row collapse"><div class="detail-description">
+<p class="long_description"></p>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>protected</td>
+</tr></table>
+</div></div>
 </div>
 <a name="%24_categories" id="$_categories"> </a><div class="element clickable property protected $_categories" data-toggle="collapse" data-target=".$_categories .collapse">
 <h2>The list of other newfeed categories.</h2>
@@ -252,36 +273,61 @@
 </div></div>
 </div>
 <a name="%24_children" id="$_children"> </a><div class="element clickable property protected $_children" data-toggle="collapse" data-target=".$_children .collapse">
-<h2>$_children</h2>
-<pre>$_children </pre>
+<h2>Protect _children</h2>
+<pre>$_children : array</pre>
 <div class="labels"></div>
-<div class="row collapse"><div class="detail-description"><p class="long_description"></p></div></div>
+<div class="row collapse"><div class="detail-description">
+<p class="long_description"></p>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>protected</td>
+</tr></table>
+</div></div>
 </div>
 <a name="%24_item" id="$_item"> </a><div class="element clickable property protected $_item" data-toggle="collapse" data-target=".$_item .collapse">
 <h2>Category items data</h2>
 <pre>$_item : array</pre>
 <div class="labels"></div>
-<div class="row collapse"><div class="detail-description"><p class="long_description"></p></div></div>
+<div class="row collapse"><div class="detail-description">
+<p class="long_description"></p>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>protected</td>
+</tr></table>
+</div></div>
 </div>
 <a name="%24_parent" id="$_parent"> </a><div class="element clickable property protected $_parent" data-toggle="collapse" data-target=".$_parent .collapse">
-<h2>$_parent</h2>
-<pre>$_parent </pre>
+<h2>Protect _parent</h2>
+<pre>$_parent : \_parent</pre>
 <div class="labels"></div>
-<div class="row collapse"><div class="detail-description"><p class="long_description"></p></div></div>
+<div class="row collapse"><div class="detail-description">
+<p class="long_description"></p>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>protected</td>
+</tr></table>
+</div></div>
 </div>
 <a name="%24_siblings" id="$_siblings"> </a><div class="element clickable property protected $_siblings" data-toggle="collapse" data-target=".$_siblings .collapse">
-<h2>$_siblings</h2>
-<pre>$_siblings </pre>
+<h2>Protect _siblings</h2>
+<pre>$_siblings : array</pre>
 <div class="labels"></div>
-<div class="row collapse"><div class="detail-description"><p class="long_description"></p></div></div>
-</div>
+<div class="row collapse"><div class="detail-description">
+<p class="long_description"></p>
+<table class="table table-bordered"><tr>
+<th>access</th>
+<td>protected</td>
+</tr></table>
 </div></div>
+</div>
+</div>
+</div>
 </div>
 </div>
 <div class="row"><footer class="span12">
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by <a href="http://glyphicons.com/">Glyphicons</a>.<br>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor 2.0.0a8</a> and<br>
-            generated on 2012-07-22T15:51:31-05:00.<br></footer></div>
+            generated on 2012-08-03T09:07:29-05:00.<br></footer></div>
 </div>
 </body>
 </html>

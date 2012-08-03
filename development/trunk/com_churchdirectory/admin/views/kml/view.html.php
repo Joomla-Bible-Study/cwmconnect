@@ -1,6 +1,7 @@
 <?php
 
 /**
+ * View KML
  * @package	ChurchDirectory.Admin
  * @copyright	(C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
  * @license	GNU General Public License version 2 or later; see LICENSE.txt
@@ -18,12 +19,27 @@ jimport('joomla.application.component.view');
  */
 class ChurchDirectoryViewKML extends JViewLegacy {
 
+    /**
+     * Protect form
+     * @var array
+     */
     protected $form;
+
+    /**
+     * Protect item
+     * @var array
+     */
     protected $item;
+
+    /**
+     * Protect state
+     * @var array
+     */
     protected $state;
 
     /**
      * Display the view
+     * @param string $tpl
      */
     public function display($tpl = null) {
         // Initialiase variables.

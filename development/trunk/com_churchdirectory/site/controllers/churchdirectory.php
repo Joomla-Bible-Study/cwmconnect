@@ -1,6 +1,7 @@
 <?php
 
 /**
+ * Controller ChurchDirectory
  * @package	ChurchDirectory.Site
  * @copyright	Copyright (C) 2005 - 2011 Joomla! Bible Study Team All rights reserved.
  * @license	GNU General Public License version 2 or later; see LICENSE.txt
@@ -11,17 +12,27 @@ jimport('joomla.application.component.controllerform');
 
 /**
  * Controller for ChurchDirectory
- * 
+ *
  * @package	ChurchDirectory.Site
  * @since 1.7.0
  */
-
 class ChurchDirectoryControllerChurchDirectory extends JControllerForm {
 
+    /**
+     * Get model
+     * @param string $name
+     * @param string $prefix
+     * @param array $config
+     * @return array
+     */
     public function getModel($name = '', $prefix = '', $config = array('ignore_request' => true)) {
         return parent::getModel($name, $prefix, array('ignore_request' => false));
     }
 
+    /**
+     * Custome Submit
+     * @return boolean
+     */
     public function submit() {
         // Check for request forgeries.
         JRequest::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
@@ -124,6 +135,12 @@ class ChurchDirectoryControllerChurchDirectory extends JControllerForm {
         return true;
     }
 
+    /**
+     * Send email
+     * @param array $data
+     * @param array $churchdirectory
+     * @return array
+     */
     private function _sendEmail($data, $churchdirectory) {
         $app = JFactory::getApplication();
         $params = JComponentHelper::getParams('com_churchdirectory');

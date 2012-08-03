@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Member Default dispaly
  * @package		ChurchDirectory.Site
@@ -80,7 +79,7 @@ $cparams = JComponentHelper::getParams('com_media');
         <?php echo JText::_('COM_CHURCHDIRECTORY_DOWNLOAD_INFORMATION_AS'); ?>
         <a href="<?php echo JRoute::_('index.php?option=com_churchdirectory&amp;view=member&amp;id=' . $this->member->id . '&amp;format=vcf'); ?>">
             <?php echo JText::_('COM_CHURCHDIRECTORY_VCARD'); ?></a>
-    <?php endif; ?>
+        <?php endif; ?>
     <p></p>
     <?php if ($this->params->get('show_email_form') && ($this->member->email_to || $this->member->user_id)) : ?>
 

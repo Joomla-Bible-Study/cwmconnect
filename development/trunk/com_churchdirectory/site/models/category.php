@@ -1,6 +1,7 @@
 <?php
 
 /**
+ * Model list catagory
  * @package		ChurchDirectory.Site
  * @copyright           (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
@@ -10,17 +11,46 @@ defined('_JEXEC') or die;
 
 jimport('joomla.application.component.modellist');
 
+/**
+ * class list category
+ * @package ChurchDirectory.Site
+ * @since 1.7.0
+ */
 class ChurchDirectoryModelCategory extends JModelList {
 
     /**
      * Category items data
-     *
+     * @access protected
      * @var array
      */
     protected $_item = null;
+
+    /**
+     * Protect _articles
+     * @access protected
+     * @var array
+     */
     protected $_articles = null;
+
+    /**
+     * Protect _siblings
+     * @access protected
+     * @var array
+     */
     protected $_siblings = null;
+
+    /**
+     * Protect _children
+     * @access protected
+     * @var array
+     */
     protected $_children = null;
+
+    /**
+     * Protect _parent
+     * @access protected
+     * @var _parent
+     */
     protected $_parent = null;
 
     /**
@@ -168,7 +198,8 @@ class ChurchDirectoryModelCategory extends JModelList {
      * Method to auto-populate the model state.
      *
      * Note. Calling getState in this method will result in recursion.
-     *
+     * @param int $ordering
+     * @param string $direction
      * @since	1.6
      */
     protected function populateState($ordering = null, $direction = null) {
@@ -220,8 +251,6 @@ class ChurchDirectoryModelCategory extends JModelList {
     /**
      * Method to get category data for the current category
      *
-     * @param	int		An optional ID
-     *
      * @return	object
      * @since	1.5
      */
@@ -260,8 +289,6 @@ class ChurchDirectoryModelCategory extends JModelList {
     /**
      * Get the parent category.
      *
-     * @param	int		An optional category id. If not supplied, the model state 'category.id' will be used.
-     *
      * @return	mixed	An array of categories or false if an error occurs.
      */
     public function getParent() {
@@ -283,6 +310,10 @@ class ChurchDirectoryModelCategory extends JModelList {
         return $this->_leftsibling;
     }
 
+    /**
+     * Get right Sibling
+     * @return string
+     */
     function &getRightSibling() {
         if (!is_object($this->_item)) {
             $this->getCategory();
@@ -292,8 +323,6 @@ class ChurchDirectoryModelCategory extends JModelList {
 
     /**
      * Get the child categories.
-     *
-     * @param	int		An optional category id. If not supplied, the model state 'category.id' will be used.
      *
      * @return	mixed	An array of categories or false if an error occurs.
      */

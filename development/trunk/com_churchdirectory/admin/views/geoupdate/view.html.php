@@ -7,16 +7,24 @@
  * @copyright           (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
  */
-
 // Protect from unauthorized access
 defined('_JEXEC') or die;
 
 // Load framework base classes
 jimport('joomla.application.component.view');
 
+/**
+ * Class for GeoUpdate
+ * @package ChurchDirectory.Admin
+ * @since 1.7.1
+ */
 class ChurchDirectoryViewGeoUpdate extends JViewLegacy {
 
-    function display() {
+    /**
+     * Display the view
+     * @return	void
+     */
+    public function display() {
         // Set the toolbar title
         JToolBarHelper::title(JText::_('COM_CHURCHDIRECTORY_GEOUPDATE'), 'churchdirectory');
 

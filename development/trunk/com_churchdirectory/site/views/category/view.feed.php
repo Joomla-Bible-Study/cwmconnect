@@ -1,6 +1,7 @@
 <?php
 
 /**
+ * Feed view for Category
  * @package		ChurchDirectory.Site
  * @copyright           (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
@@ -18,6 +19,10 @@ jimport('joomla.application.component.view');
  */
 class ChurchDirectoryViewCategory extends JView {
 
+    /**
+     * Display Function
+     * @return boolean
+     */
     function display() {
         // Get some data from the models
         $category = $this->get('Category');

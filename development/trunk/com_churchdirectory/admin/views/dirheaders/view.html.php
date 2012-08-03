@@ -1,6 +1,6 @@
-<?php
-
+\<?php
 /**
+ * View DirHeaders
  * @package             ChurchDirectory.Admin
  * @copyright           (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
@@ -20,13 +20,28 @@ jimport('joomla.i18n.help');
  */
 class ChurchDirectoryViewDirHeaders extends JViewLegacy {
 
+    /**
+     * Protect items
+     * @var array
+     */
     protected $items;
+
+    /**
+     * Protect pagination
+     * @var array
+     */
     protected $pagination;
+
+    /**
+     * Protect state
+     * @var array
+     */
     protected $state;
 
     /**
      * Display the view
      * @since 1.7.0
+     * @param string $tpl
      * @return	void
      */
     public function display($tpl = null) {

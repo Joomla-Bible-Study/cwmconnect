@@ -1,6 +1,7 @@
 <?php
 
 /**
+ * Helper for positions
  * @package             ChurchDirectory.Site
  * @copyright           (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
@@ -8,6 +9,11 @@
 //No Direct Access
 defined('_JEXEC') or die;
 
+/**
+ * Get Position
+ * @param int $id
+ * @return object
+ */
 function getPosition($id) {
     $db = JFactory::getDBO();
     $query = $db->getQuery(true);

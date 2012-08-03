@@ -34,7 +34,7 @@
 <a href="#reports" class="dropdown-toggle" data-toggle="dropdown">
                                     Reports <b class="caret"></b></a><ul class="dropdown-menu">
 <li><a href="../errors.html"><i class="icon-remove-sign"></i> Errors 
-                <span class="label label-info">269</span></a></li>
+                <span class="label label-info">0</span></a></li>
 <li><a href="../markers.html"><i class="icon-map-marker"></i> Markers 
                 <ul><li>todo 
                 <span class="label label-info">9</span>
@@ -60,17 +60,14 @@
 <ul class="side-nav nav nav-list">
 <li class="nav-header">
 <i class="icon-custom icon-method"></i> Methods</li>
-<li class="method public "><a href="#getCategoryRoute" title="getCategoryRoute :: "><span class="description">getCategoryRoute()
-        </span><pre>getCategoryRoute()</pre></a></li>
-<li class="method public "><a href="#getMemberRoute" title="getMemberRoute :: "><span class="description">getMemberRoute()
-        </span><pre>getMemberRoute()</pre></a></li>
+<li class="method public "><a href="#getCategoryRoute" title="getCategoryRoute :: Get Categroy Route"><span class="description">Get Categroy Route</span><pre>getCategoryRoute()</pre></a></li>
+<li class="method public "><a href="#getMemberRoute" title="getMemberRoute :: Get member route"><span class="description">Get member route</span><pre>getMemberRoute()</pre></a></li>
 <li class="nav-header protected">» Protected</li>
-<li class="method protected "><a href="#_findItem" title="_findItem :: "><span class="description">_findItem()
-        </span><pre>_findItem()</pre></a></li>
+<li class="method protected "><a href="#_findItem" title="_findItem :: Find Item"><span class="description">Find Item</span><pre>_findItem()</pre></a></li>
 <li class="nav-header">
 <i class="icon-custom icon-property"></i> Properties</li>
 <li class="nav-header protected">» Protected</li>
-<li class="property protected "><a href="#%24lookup" title="$lookup :: "><span class="description">$lookup</span><pre>$lookup</pre></a></li>
+<li class="property protected "><a href="#%24lookup" title="$lookup :: Protect lookup"><span class="description">Protect lookup</span><pre>$lookup</pre></a></li>
 </ul>
 </div>
 <div class="span8">
@@ -104,23 +101,23 @@
 <h3>
 <i class="icon-custom icon-method"></i> Methods</h3>
 <a name="getCategoryRoute" id="getCategoryRoute"></a><div class="element clickable method public getCategoryRoute" data-toggle="collapse" data-target=".getCategoryRoute .collapse">
-<h2>getCategoryRoute()
-        </h2>
-<pre>getCategoryRoute($catid) </pre>
+<h2>Get Categroy Route</h2>
+<pre>getCategoryRoute(\JCategoryNode $catid) : string</pre>
 <div class="labels"></div>
 <div class="row collapse"><div class="detail-description">
 <p class="long_description"></p>
 <h3>Parameters</h3>
 <div class="subelement argument">
 <h4>$catid</h4>
-<code></code>
+<code>\JCategoryNode</code>
 </div>
+<h3>Returns</h3>
+<div class="subelement response"><code>string</code></div>
 </div></div>
 </div>
 <a name="getMemberRoute" id="getMemberRoute"></a><div class="element clickable method public getMemberRoute" data-toggle="collapse" data-target=".getMemberRoute .collapse">
-<h2>getMemberRoute()
-        </h2>
-<pre>getMemberRoute(int $id, $catid) </pre>
+<h2>Get member route</h2>
+<pre>getMemberRoute(int $id, \iint $catid) </pre>
 <div class="labels"></div>
 <div class="row collapse"><div class="detail-description">
 <p class="long_description"></p>
@@ -130,29 +127,29 @@
 <code>int</code><p>The route of the newsfeed</p></div>
 <div class="subelement argument">
 <h4>$catid</h4>
-<code></code>
-</div>
+<code>\iint</code><p>Catigory id</p></div>
 </div></div>
 </div>
 <a name="_findItem" id="_findItem"></a><div class="element clickable method protected _findItem" data-toggle="collapse" data-target="._findItem .collapse">
-<h2>_findItem()
-        </h2>
-<pre>_findItem($needles) </pre>
+<h2>Find Item</h2>
+<pre>_findItem(string $needles) : null</pre>
 <div class="labels"></div>
 <div class="row collapse"><div class="detail-description">
 <p class="long_description"></p>
 <h3>Parameters</h3>
 <div class="subelement argument">
 <h4>$needles</h4>
-<code></code>
+<code>string</code>
 </div>
+<h3>Returns</h3>
+<div class="subelement response"><code>null</code></div>
 </div></div>
 </div>
 <h3>
 <i class="icon-custom icon-property"></i> Properties</h3>
 <a name="%24lookup" id="$lookup"> </a><div class="element clickable property protected $lookup" data-toggle="collapse" data-target=".$lookup .collapse">
-<h2>$lookup</h2>
-<pre>$lookup </pre>
+<h2>Protect lookup</h2>
+<pre>$lookup : string</pre>
 <div class="labels"></div>
 <div class="row collapse"><div class="detail-description"><p class="long_description"></p></div></div>
 </div>
@@ -163,7 +160,7 @@
 <div class="row"><footer class="span12">
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by <a href="http://glyphicons.com/">Glyphicons</a>.<br>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor 2.0.0a8</a> and<br>
-            generated on 2012-07-22T15:51:31-05:00.<br></footer></div>
+            generated on 2012-08-03T09:07:29-05:00.<br></footer></div>
 </div>
 </body>
 </html>

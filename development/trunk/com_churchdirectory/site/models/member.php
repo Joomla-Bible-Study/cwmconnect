@@ -1,6 +1,7 @@
 <?php
 
 /**
+ * Model for Member
  * @package		ChurchDirectory.Site
  * @copyright           (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
@@ -20,9 +21,15 @@ jimport('joomla.event.dispatcher');
 class ChurchDirectoryModelMember extends JModelForm {
 
     /**
-     * @since	1.6
+     * Protect view
+     * @var string
      */
     protected $view_item = 'member';
+
+    /**
+     * Protect item
+     * @var string
+     */
     protected $_item = null;
 
     /**
@@ -87,6 +94,10 @@ class ChurchDirectoryModelMember extends JModelForm {
         return $form;
     }
 
+    /**
+     * Load form date
+     * @return array
+     */
     protected function loadFormData() {
         $data = (array) JFactory::getApplication()->getUserState('com_churchdirectory.member.data', array());
         return $data;
@@ -174,7 +185,7 @@ class ChurchDirectoryModelMember extends JModelForm {
                 $registry->loadString($data->attribs);
                 $data->attribs = $registry;
 
-                if(!empty($data->con_position)) :
+                if (!empty($data->con_position)) :
                     $data->con_position = explode(',', $data->con_position);
                 endif;
 
@@ -210,6 +221,13 @@ class ChurchDirectoryModelMember extends JModelForm {
         return $this->_item[$pk];
     }
 
+    /**
+     * Get ChurchDirectory query
+     * @param string $pk
+     * @return boolean
+     * @throws Exception
+     * @throws JException
+     */
     protected function getChurchDirectoryQuery($pk = null) {
         // TODO: Cache on the fingerprint of the arguments
         $db = $this->getDbo();

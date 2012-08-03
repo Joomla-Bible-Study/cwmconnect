@@ -1,6 +1,7 @@
 <?php
 
 /**
+ * View for Postions
  * @package             ChurchDirectory.Admin
  * @copyright           (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
@@ -20,13 +21,27 @@ jimport('joomla.i18n.help');
  */
 class ChurchDirectoryViewPositions extends JViewLegacy {
 
+    /**
+     * Protect items
+     * @var array protect items
+     */
     protected $items;
+
+    /**
+     * Protect items
+     * @var array protect pagination
+     */
     protected $pagination;
+
+    /**
+     * Protect state
+     * @var array protect state
+     */
     protected $state;
 
     /**
      * Display the view
-     *
+     * @param string $tpl
      * @return	void
      */
     public function display($tpl = null) {
@@ -97,6 +112,10 @@ class ChurchDirectoryViewPositions extends JViewLegacy {
 
         JToolBarHelper::help('churchdirectory_position', TRUE);
     }
+
+    /**
+     * Set Document title
+     */
     protected function setDocument() {
         $document = JFactory::getDocument();
         $document->setTitle(JText::_('COM_CHURCHDIRECTORY_POSITIONS'));

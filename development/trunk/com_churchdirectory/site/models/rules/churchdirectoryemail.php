@@ -1,6 +1,7 @@
 <?php
 
 /**
+ * Rules for Email
  * @package		ChurchDirectory.Site
  * @copyright           (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
@@ -18,6 +19,15 @@ require_once 'libraries/joomla/form/rules/email.php';
  */
 class JFormRuleChurchDirectoryEmail extends JFormRuleEmail {
 
+    /**
+     * Test email
+     * @param string $element
+     * @param string $value
+     * @param array $group
+     * @param string $input
+     * @param array $form
+     * @return boolean
+     */
     public function test(& $element, $value, $group = null, & $input = null, & $form = null) {
         if (!parent::test($element, $value, $group, $input, $form)) {
             return false;

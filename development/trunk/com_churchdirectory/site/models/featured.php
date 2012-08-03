@@ -1,6 +1,7 @@
 <?php
 
 /**
+ * Model List for Featured
  * @package		ChurchDirectory.Site
  * @copyright           (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
@@ -11,6 +12,7 @@ defined('_JEXEC') or die;
 jimport('joomla.application.component.modellist');
 
 /**
+ * Class list for Featured
  * @package		ChurchDirectory.Site
  * @since               1.7.0
  */
@@ -22,9 +24,29 @@ class ChurchDirectoryModelFeatured extends JModelList {
      * @var array
      */
     protected $_item = null;
+
+    /**
+     * Articles
+     * @var array
+     */
     protected $_articles = null;
+
+    /**
+     * Sibling items
+     * @var array
+     */
     protected $_siblings = null;
+
+    /**
+     * Childern items
+     * @var array
+     */
     protected $_children = null;
+
+    /**
+     * Parent item
+     * @var string
+     */
     protected $_parent = null;
 
     /**
@@ -156,7 +178,8 @@ class ChurchDirectoryModelFeatured extends JModelList {
      * Method to auto-populate the model state.
      *
      * Note. Calling getState in this method will result in recursion.
-     *
+     * @param string $ordering
+     * @param string $direction
      * @since	1.6
      */
     protected function populateState($ordering = null, $direction = null) {
