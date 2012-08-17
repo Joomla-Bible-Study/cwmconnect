@@ -384,7 +384,7 @@ class ChurchDirectoryModelMember extends JModelAdmin {
      * @return	void
      * @since	1.7.0
      */
-    protected function prepareTable(&$table) {
+    protected function prepareTable($table) {
         $date = JFactory::getDate();
         $user = JFactory::getUser();
 
