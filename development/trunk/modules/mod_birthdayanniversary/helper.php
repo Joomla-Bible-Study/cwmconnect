@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Model for ChurchDirectory Birthday & Anniversary Display.
+ * Helper for ChurchDirectory Birthday & Anniversary Display.
  * @package		ChurchDirectory.Site
  * @subpackage	mod_birthdayanniversary
  * @copyright	Copyright (C) 2012
@@ -14,45 +14,94 @@ require_once JPATH_SITE . '/components/com_churchdirectory/helpers/route.php';
 JModelLegacy::addIncludePath(JPATH_SITE . '/components/com_churchdirectory/models', 'ChurchDirectoryModel');
 
 /**
- * Abstract helper for Birthdy Anniversary Display
+ * helper for Birthdy Anniversary Display
  * @package ChurchDirectory.Site
  * @subpackage mod_birthdayanniversary
  * @since 1.7.2
  */
-abstract class modBirthdayAnniversaryHelper {
+class modBirthdayAnniversaryHelper {
 
     /**
-     * Get List
+     * Get Birthdays for This Month
      * @param array $params
+     * @return array
      */
-    public static function getList(&$params) {
-        // Get an instance of the generic Members model
-        $model = JModelLegacy::getInstance('Directory', 'ChurchDirectoryModel', array('ignore_request' => true));
+    static function getBirthdays($params) {
+        $db = JFactory::getDbo();
+        $results = FALSE;
+        $query = "SELECT * FROM " . $db->nameQuote('#__churchdirectory_details') . " ORDER BY MONTH(birthdate) DESC";
+        $records = modBirthdayAnniversaryHelper::performDB($query);
+        foreach ($records as $record):
+            if ($record->birthdate !== '0000-00-00'):
+                list($byear, $bmonth, $bday) = explode('-', $record->birthdate);
+                if ($bmonth === date('m')):
+                    $results[] = array('name' => $record->name, 'id' => $record->id, 'day' => $bday);
+                endif;
+            endif;
+        endforeach;
+        return $results;
+    }
 
-        // Set application parameters in model
-        $app = JFactory::getApplication();
-        $appParams = $app->getParams();
-        $model->setState('params', $appParams);
+    /**
+     * Get Anniversarys for This Month
+     * @param array $params
+     * @return array
+     */
+    static function getAnniversary($params) {
+        $db = JFactory::getDbo();
+        $results = FALSE;
+        $query = "SELECT * FROM " . $db->nameQuote('#__churchdirectory_details') . " ORDER BY MONTH(anniversary) DESC";
+        $records = modBirthdayAnniversaryHelper::performDB($query);
+        foreach ($records as $record):
+            if ($record->anniversary !== '0000-00-00'):
+                list($byear, $bmonth, $bday) = explode('-', $record->anniversary);
+                $tmonth = date('m');
+                dump($bmonth, 'bMonth');
+                dump($tmonth, 'This Month');
+                if ($bmonth === date('m')):
+                    $results[] = array('name' => $record->name, 'id' => $record->id, 'day' => $bday);
+                endif;
+            endif;
+        endforeach;
+        return $results;
+    }
 
-        // Set the filters based on the module params
-        $model->setState('list.start', 0);
-        $model->setState('list.limit', (int) $params->get('count', 5));
+    /**
+     * Performs a database query
+     * @param $query is a Joomla ready query
+     * @return results
+     */
+    protected static function performDB($query) {
+        if (!$query) {
+            return false;
+        }
+        $db = JFactory::getDbo();
+        $db->setQuery($query);
+        $db->query();
+        if ($db->getErrorNum() != 0) {
+            return $db->stderr(true);
+        } else {
+            return $db->loadObjectList();
+        }
+    }
 
-        $model->setState('filter.state', 1);
-        $model->setState('filter.archived', 0);
-        $model->setState('filter.approved', 1);
+    /**
+     * Convert a stdClass to an Array.
+     * @param stdClass $Class
+     * @return array
+     */
+    static public function object_to_array(stdClass $Class) {
+        # Typecast to (array) automatically converts stdClass -> array.
+        $Class = (array) $Class;
 
-        // Access filter
-        $access = !JComponentHelper::getParams('com_churchdirectory')->get('show_noauth');
-        $authorised = JAccess::getAuthorisedViewLevels(JFactory::getUser()->get('id'));
-        $model->setState('filter.access', $access);
-
-        $ordering = $params->get('ordering', 'ordering');
-        $model->setState('list.ordering', $ordering == 'order' ? 'ordering' : $ordering);
-        $model->setState('list.direction', $params->get('direction', 'asc'));
-
-        $catid = (int) $params->get('catid', 0);
-        $model->setState('category.id', $catid);
+        # Iterate through the former properties looking for any stdClass properties.
+        # Recursively apply (array).
+        foreach ($Class as $key => $value) {
+            if (is_object($value) && get_class($value) === 'stdClass') {
+                $Class[$key] = self::object_to_array($value);
+            }
+        }
+        return $Class;
     }
 
 }

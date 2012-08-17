@@ -18,61 +18,41 @@
         <filename>mod_birthdayanniversary.xml</filename>
     </files>
 
-    <help key="JHELP_EXTENSIONS_MODULE_MANAGER_MOST_READ" />
+    <help key="JHELP_EXTENSIONS_MODULE_MANAGER_WEBLINKS" />
     <config>
         <fields name="params">
             <fieldset name="basic">
-
                 <field
                     name="catid"
                     type="category"
-                    extension="com_content"
-                    multiple="true"
-                    size="10"
-                    default=""
+                    extension="com_churchdirectory"
+                    required="true"
                     label="JCATEGORY"
-                    description="MOD_POPULAR_FIELD_CATEGORY_DESC" >
-                    <option value="">JOPTION_ALL_CATEGORIES</option>
+                    description="MOD_BIRTHDAYANNIVERSARY_FIELD_CATEGORY_DESC" default="0">
+                    <option value="0">MOD_BIRTHDAYANNIVERSARY_FIELD_VALUE_CATEGORY</option>
                 </field>
-
                 <field
-                    name="count"
-                    type="text"
-                    default="5"
-                    label="MOD_POPULAR_FIELD_COUNT_LABEL"
-                    description="MOD_POPULAR_FIELD_COUNT_DESC" />
-
-                <field
-                    name="show_front"
+                    name="show_page_heading"
                     type="radio"
                     default="1"
-                    label="MOD_POPULAR_FIELD_FEATURED_LABEL"
-                    description="MOD_POPULAR_FIELD_FEATURED_DESC">
-                    <option
-                        value="1">JSHOW
-                    </option>
-                    <option
-                        value="0">JHIDE
-                    </option>
+                    label="MOD_BIRTHDAYANNIVERSARY_FIELD_SHOW_PAGE_HEADING_LABEL"
+                    description="MOD_BIRTHDAYANNIVERSARY_FIELD_SHOW_PAGE_HEADING_DESC">
+                    <option value="1">JSHOW</option>
+                    <option value="0">JHIDE</option>
                 </field>
-
             </fieldset>
-
             <fieldset
                 name="advanced">
-
                 <field
                     name="layout"
                     type="modulelayout"
                     label="JFIELD_ALT_LAYOUT_LABEL"
                     description="JFIELD_ALT_MODULE_LAYOUT_DESC" />
-
                 <field
                     name="moduleclass_sfx"
                     type="text"
                     label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
                     description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
-
                 <field
                     name="cache"
                     type="list"
@@ -86,14 +66,12 @@
                         value="0">COM_MODULES_FIELD_VALUE_NOCACHING
                     </option>
                 </field>
-
                 <field
                     name="cache_time"
                     type="text"
                     default="900"
                     label="COM_MODULES_FIELD_CACHE_TIME_LABEL"
                     description="COM_MODULES_FIELD_CACHE_TIME_DESC" />
-
                 <field
                     name="cachemode"
                     type="hidden"
@@ -102,7 +80,6 @@
                         value="static">
                     </option>
                 </field>
-
             </fieldset>
         </fields>
     </config>
