@@ -1353,7 +1353,7 @@ If this returns false, Joomla will abort the update and undo everything already 
       </method>
     </class>
   </file>
-  <file path="com_churchdirectory/admin/helpers/churchdirectory.php" hash="19365b570eab27f7a673a7d4c0ec242a" package="ChurchDirectory\Admin">
+  <file path="com_churchdirectory/admin/helpers/churchdirectory.php" hash="418cdd7bb7b4fbbcd29d2373cd57f87b" package="ChurchDirectory\Admin">
     <docblock line="3">
       <description><![CDATA[ChurchDirectory Helper]]></description>
       <long-description><![CDATA[]]></long-description>
@@ -1427,6 +1427,27 @@ If this returns false, Joomla will abort the update and undo everything already 
         <argument line="78">
           <name>$contactId</name>
           <default><![CDATA[0]]></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="true" visibility="public" namespace="global" line="109" package="ChurchDirectory\Admin">
+        <name>getAge</name>
+        <full_name>getAge</full_name>
+        <docblock line="102">
+          <description><![CDATA[Get Age of Member]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="102" name="param" description="" type="string" variable="$birthdate">
+            <type by_reference="false">string</type>
+          </tag>
+          <tag line="102" name="return" description="" type="string">
+            <type by_reference="false">string</type>
+          </tag>
+          <tag line="102" name="internal" description="requires php5.3.x"/>
+          <tag line="102" name="since" description="1.7.3"/>
+        </docblock>
+        <argument line="109">
+          <name>$birthdate</name>
+          <default><![CDATA[]]></default>
           <type/>
         </argument>
       </method>
@@ -2826,7 +2847,7 @@ ordering requirements.</p>]]></long-description>
       </method>
     </class>
   </file>
-  <file path="com_churchdirectory/admin/models/member.php" hash="ba7c4d0c64767160cff144bbcdd6a377" package="ChurchDirectory\Admin">
+  <file path="com_churchdirectory/admin/models/member.php" hash="96827f6635a509b34d168c750a88d711" package="ChurchDirectory\Admin">
     <docblock line="3">
       <description><![CDATA[Member model]]></description>
       <long-description><![CDATA[]]></long-description>
@@ -2916,275 +2937,272 @@ ordering requirements.</p>]]></long-description>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="protected" namespace="global" line="217" package="ChurchDirectory\Admin">
+      <method final="false" abstract="false" static="false" visibility="protected" namespace="global" line="215" package="ChurchDirectory\Admin">
         <name>batchUser</name>
         <full_name>batchUser</full_name>
-        <docblock line="206">
+        <docblock line="204">
           <description><![CDATA[Batch change a linked user.]]></description>
           <long-description><![CDATA[]]></long-description>
-          <tag line="206" name="param" description="The new value matching a User ID." type="integer" variable="$value">
+          <tag line="204" name="param" description="The new value matching a User ID." type="integer" variable="$value">
             <type by_reference="false">integer</type>
           </tag>
-          <tag line="206" name="param" description="An array of row IDs." type="array" variable="$pks">
+          <tag line="204" name="param" description="An array of row IDs." type="array" variable="$pks">
             <type by_reference="false">array</type>
           </tag>
-          <tag line="206" name="param" description="An array of item contexts." type="array" variable="$contexts">
+          <tag line="204" name="param" description="An array of item contexts." type="array" variable="$contexts">
             <type by_reference="false">array</type>
           </tag>
-          <tag line="206" name="return" description="True if successful, false otherwise and internal error is set." type="boolean">
+          <tag line="204" name="return" description="True if successful, false otherwise and internal error is set." type="boolean">
             <type by_reference="false">boolean</type>
           </tag>
-          <tag line="206" name="since" description="2.5"/>
+          <tag line="204" name="since" description="2.5"/>
         </docblock>
-        <argument line="217">
+        <argument line="215">
           <name>$value</name>
           <default><![CDATA[]]></default>
           <type/>
         </argument>
-        <argument line="217">
+        <argument line="215">
           <name>$pks</name>
           <default><![CDATA[]]></default>
           <type/>
         </argument>
-        <argument line="217">
+        <argument line="215">
           <name>$contexts</name>
           <default><![CDATA[]]></default>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="protected" namespace="global" line="252" package="ChurchDirectory\Admin">
+      <method final="false" abstract="false" static="false" visibility="protected" namespace="global" line="250" package="ChurchDirectory\Admin">
         <name>canDelete</name>
         <full_name>canDelete</full_name>
-        <docblock line="244">
+        <docblock line="242">
           <description><![CDATA[Method to test whether a record can be deleted.]]></description>
           <long-description><![CDATA[]]></long-description>
-          <tag line="244" name="param" description="A record object." type="object" variable="$record">
+          <tag line="242" name="param" description="A record object." type="object" variable="$record">
             <type by_reference="false">object</type>
           </tag>
-          <tag line="244" name="return" description="True if allowed to delete the record. Defaults to the permission set in the component." type="boolean">
+          <tag line="242" name="return" description="True if allowed to delete the record. Defaults to the permission set in the component." type="boolean">
             <type by_reference="false">boolean</type>
           </tag>
-          <tag line="244" name="since" description="1.7.0"/>
+          <tag line="242" name="since" description="1.7.0"/>
         </docblock>
-        <argument line="252">
+        <argument line="250">
           <name>$record</name>
           <default><![CDATA[]]></default>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="protected" namespace="global" line="270" package="ChurchDirectory\Admin">
+      <method final="false" abstract="false" static="false" visibility="protected" namespace="global" line="268" package="ChurchDirectory\Admin">
         <name>canEditState</name>
         <full_name>canEditState</full_name>
-        <docblock line="262">
+        <docblock line="260">
           <description><![CDATA[Method to test whether a record can have its state edited.]]></description>
           <long-description><![CDATA[]]></long-description>
-          <tag line="262" name="param" description="A record object." type="object" variable="$record">
+          <tag line="260" name="param" description="A record object." type="object" variable="$record">
             <type by_reference="false">object</type>
           </tag>
-          <tag line="262" name="return" description="True if allowed to change the state of the record. Defaults to the permission set in the component." type="boolean">
+          <tag line="260" name="return" description="True if allowed to change the state of the record. Defaults to the permission set in the component." type="boolean">
             <type by_reference="false">boolean</type>
           </tag>
-          <tag line="262" name="since" description="1.7.0"/>
+          <tag line="260" name="since" description="1.7.0"/>
         </docblock>
-        <argument line="270">
+        <argument line="268">
           <name>$record</name>
           <default><![CDATA[]]></default>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="293" package="ChurchDirectory\Admin">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="291" package="ChurchDirectory\Admin">
         <name>getTable</name>
         <full_name>getTable</full_name>
-        <docblock line="283">
+        <docblock line="281">
           <description><![CDATA[Returns a Table object, always creating it]]></description>
           <long-description><![CDATA[]]></long-description>
-          <tag line="283" name="param" description="The table type to instantiate" type="\type" variable="$type">
+          <tag line="281" name="param" description="The table type to instantiate" type="\type" variable="$type">
             <type by_reference="false">\type</type>
           </tag>
-          <tag line="283" name="param" description="A prefix for the table class name. Optional." type="string" variable="$prefix">
+          <tag line="281" name="param" description="A prefix for the table class name. Optional." type="string" variable="$prefix">
             <type by_reference="false">string</type>
           </tag>
-          <tag line="283" name="param" description="Configuration array for model. Optional." type="array" variable="$config">
+          <tag line="281" name="param" description="Configuration array for model. Optional." type="array" variable="$config">
             <type by_reference="false">array</type>
           </tag>
-          <tag line="283" name="return" description="A database object" type="\JTable">
+          <tag line="281" name="return" description="A database object" type="\JTable">
             <type by_reference="false">\JTable</type>
           </tag>
-          <tag line="283" name="since" description="1.7.0"/>
+          <tag line="281" name="since" description="1.7.0"/>
         </docblock>
-        <argument line="293">
+        <argument line="291">
           <name>$type</name>
           <default><![CDATA['Member']]></default>
           <type/>
         </argument>
-        <argument line="293">
+        <argument line="291">
           <name>$prefix</name>
           <default><![CDATA['ChurchDirectoryTable']]></default>
           <type/>
         </argument>
-        <argument line="293">
+        <argument line="291">
           <name>$config</name>
           <default><![CDATA[array()]]></default>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="306" package="ChurchDirectory\Admin">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="304" package="ChurchDirectory\Admin">
         <name>getForm</name>
         <full_name>getForm</full_name>
-        <docblock line="297">
+        <docblock line="295">
           <description><![CDATA[Method to get the row form.]]></description>
           <long-description><![CDATA[]]></long-description>
-          <tag line="297" name="param" description="Data for the form." type="array" variable="$data">
+          <tag line="295" name="param" description="Data for the form." type="array" variable="$data">
             <type by_reference="false">array</type>
           </tag>
-          <tag line="297" name="param" description="True if the form is to load its own data (default case), false if not." type="boolean" variable="$loadData">
+          <tag line="295" name="param" description="True if the form is to load its own data (default case), false if not." type="boolean" variable="$loadData">
             <type by_reference="false">boolean</type>
           </tag>
-          <tag line="297" name="return" description="A JForm object on success, false on failure" type="mixed">
+          <tag line="295" name="return" description="A JForm object on success, false on failure" type="mixed">
             <type by_reference="false">mixed</type>
           </tag>
-          <tag line="297" name="since" description="1.7.0"/>
+          <tag line="295" name="since" description="1.7.0"/>
         </docblock>
-        <argument line="306">
+        <argument line="304">
           <name>$data</name>
           <default><![CDATA[array()]]></default>
           <type/>
         </argument>
-        <argument line="306">
+        <argument line="304">
           <name>$loadData</name>
           <default><![CDATA[true]]></default>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="342" package="ChurchDirectory\Admin">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="339" package="ChurchDirectory\Admin">
         <name>getItem</name>
         <full_name>getItem</full_name>
-        <docblock line="334">
+        <docblock line="331">
           <description><![CDATA[Method to get a single record.]]></description>
           <long-description><![CDATA[]]></long-description>
-          <tag line="334" name="param" description="The id of the primary key." type="integer" variable="$pk">
+          <tag line="331" name="param" description="The id of the primary key." type="integer" variable="$pk">
             <type by_reference="false">integer</type>
           </tag>
-          <tag line="334" name="return" description="Object on success, false on failure." type="mixed">
+          <tag line="331" name="return" description="Object on success, false on failure." type="mixed">
             <type by_reference="false">mixed</type>
           </tag>
-          <tag line="334" name="since" description="1.7.0"/>
+          <tag line="331" name="since" description="1.7.0"/>
         </docblock>
-        <argument line="342">
+        <argument line="339">
           <name>$pk</name>
           <default><![CDATA[null]]></default>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="protected" namespace="global" line="364" package="ChurchDirectory\Admin">
+      <method final="false" abstract="false" static="false" visibility="protected" namespace="global" line="361" package="ChurchDirectory\Admin">
         <name>loadFormData</name>
         <full_name>loadFormData</full_name>
-        <docblock line="358">
+        <docblock line="355">
           <description><![CDATA[Method to get the data that should be injected in the form.]]></description>
           <long-description><![CDATA[]]></long-description>
-          <tag line="358" name="return" description="The data for the form." type="mixed">
+          <tag line="355" name="return" description="The data for the form." type="mixed">
             <type by_reference="false">mixed</type>
           </tag>
-          <tag line="358" name="since" description="1.7.0"/>
+          <tag line="355" name="since" description="1.7.0"/>
         </docblock>
       </method>
-      <method final="false" abstract="false" static="false" visibility="protected" namespace="global" line="390" package="ChurchDirectory\Admin">
+      <method final="false" abstract="false" static="false" visibility="protected" namespace="global" line="387" package="ChurchDirectory\Admin">
         <name>prepareTable</name>
         <full_name>prepareTable</full_name>
-        <docblock line="382">
+        <docblock line="379">
           <description><![CDATA[Prepare and sanitise the table prior to saving.]]></description>
           <long-description><![CDATA[]]></long-description>
-          <tag line="382" name="param" description="" type="\JTable" variable="$table">
+          <tag line="379" name="param" description="" type="\JTable" variable="$table">
             <type by_reference="false">\JTable</type>
           </tag>
-          <tag line="382" name="return" description="" type="void">
+          <tag line="379" name="return" description="" type="void">
             <type by_reference="false">void</type>
           </tag>
-          <tag line="382" name="since" description="1.7.0"/>
+          <tag line="379" name="since" description="1.7.0"/>
         </docblock>
-        <argument line="390">
+        <argument line="387">
           <name>$table</name>
           <default><![CDATA[]]></default>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="protected" namespace="global" line="423" package="ChurchDirectory\Admin">
+      <method final="false" abstract="false" static="false" visibility="protected" namespace="global" line="420" package="ChurchDirectory\Admin">
         <name>getReorderConditions</name>
         <full_name>getReorderConditions</full_name>
-        <docblock line="415">
+        <docblock line="412">
           <description><![CDATA[A protected method to get a set of ordering conditions.]]></description>
           <long-description><![CDATA[]]></long-description>
-          <tag line="415" name="param" description="A record object." type="\JTable" variable="$table">
+          <tag line="412" name="param" description="A record object." type="\JTable" variable="$table">
             <type by_reference="false">\JTable</type>
           </tag>
-          <tag line="415" name="return" description="An array of conditions to add to add to ordering queries." type="array">
+          <tag line="412" name="return" description="An array of conditions to add to add to ordering queries." type="array">
             <type by_reference="false">array</type>
           </tag>
-          <tag line="415" name="since" description="1.7.0"/>
+          <tag line="412" name="since" description="1.7.0"/>
         </docblock>
-        <argument line="423">
+        <argument line="420">
           <name>$table</name>
           <default><![CDATA[]]></default>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="439" package="ChurchDirectory\Admin">
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="436" package="ChurchDirectory\Admin">
         <name>featured</name>
         <full_name>featured</full_name>
-        <docblock line="430">
+        <docblock line="427">
           <description><![CDATA[Method to toggle the featured setting of contacts.]]></description>
           <long-description><![CDATA[]]></long-description>
-          <tag line="430" name="param" description="The ids of the items to toggle." type="array" variable="$pks">
+          <tag line="427" name="param" description="The ids of the items to toggle." type="array" variable="$pks">
             <type by_reference="false">array</type>
           </tag>
-          <tag line="430" name="param" description="The value to toggle to." type="int" variable="$value">
+          <tag line="427" name="param" description="The value to toggle to." type="int" variable="$value">
             <type by_reference="false">int</type>
           </tag>
-          <tag line="430" name="return" description="True on success." type="boolean">
+          <tag line="427" name="return" description="True on success." type="boolean">
             <type by_reference="false">boolean</type>
           </tag>
-          <tag line="430" name="since" description="1.7.0"/>
+          <tag line="427" name="since" description="1.7.0"/>
         </docblock>
-        <argument line="439">
+        <argument line="436">
           <name>$pks</name>
           <default><![CDATA[]]></default>
           <type/>
         </argument>
-        <argument line="439">
+        <argument line="436">
           <name>$value</name>
           <default><![CDATA[0]]></default>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="protected" namespace="global" line="482" package="ChurchDirectory\Admin">
+      <method final="false" abstract="false" static="false" visibility="protected" namespace="global" line="479" package="ChurchDirectory\Admin">
         <name>cleanCache</name>
         <full_name>cleanCache</full_name>
-        <docblock line="475">
+        <docblock line="472">
           <description><![CDATA[Custom clean the cache of com_churchdirectory and churchdirectory modules]]></description>
           <long-description><![CDATA[]]></long-description>
-          <tag line="475" name="param" description="" type="string" variable="$group">
+          <tag line="472" name="param" description="" type="string" variable="$group">
             <type by_reference="false">string</type>
           </tag>
-          <tag line="475" name="param" description="" type="int" variable="$client_id">
+          <tag line="472" name="param" description="" type="int" variable="$client_id">
             <type by_reference="false">int</type>
           </tag>
-          <tag line="475" name="since" description="1.6"/>
+          <tag line="472" name="since" description="1.6"/>
         </docblock>
-        <argument line="482">
+        <argument line="479">
           <name>$group</name>
           <default><![CDATA[null]]></default>
           <type/>
         </argument>
-        <argument line="482">
+        <argument line="479">
           <name>$client_id</name>
           <default><![CDATA[0]]></default>
           <type/>
         </argument>
       </method>
     </class>
-    <markers>
-      <todo line="178">Deal with ordering?</todo>
-    </markers>
   </file>
   <file path="com_churchdirectory/admin/models/members.php" hash="18ddb5d5c1cb5bd7c2c332deacb55e6e" package="ChurchDirectory\Admin">
     <docblock line="3">
@@ -5107,16 +5125,16 @@ where id is the value of the primary key of the table.</p>]]></long-description>
       <todo line="59">Complete the ordering stuff with nested sets</todo>
     </markers>
   </file>
-  <file path="com_churchdirectory/admin/views/member/tmpl/edit.php" hash="ac8f1698f7a448244ff7e9455e186241" package="ChurchDirectory\Admin">
-    <docblock line="3">
+  <file path="com_churchdirectory/admin/views/member/tmpl/edit.php" hash="1c96db1f67263679eff2d4c709c9212a" package="ChurchDirectory\Admin">
+    <docblock line="2">
       <description><![CDATA[Edit view member]]></description>
       <long-description><![CDATA[]]></long-description>
-      <tag line="3" name="package" description="ChurchDirectory.Admin"/>
-      <tag line="3" name="copyright" description="(C) 2007 - 2011 Joomla Bible Study Team All rights reserved."/>
-      <tag line="3" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
+      <tag line="2" name="package" description="ChurchDirectory.Admin"/>
+      <tag line="2" name="copyright" description="(C) 2007 - 2011 Joomla Bible Study Team All rights reserved."/>
+      <tag line="2" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
   </file>
-  <file path="com_churchdirectory/admin/views/member/tmpl/edit_attribs.php" hash="9a76fa2beafce310662fbb6e740f5d02" package="ChurchDirectory\Admin">
+  <file path="com_churchdirectory/admin/views/member/tmpl/edit_attribs.php" hash="869045e1ae60428638047e74cd0a3c43" package="ChurchDirectory\Admin">
     <docblock line="2">
       <description><![CDATA[Sube view member attribs]]></description>
       <long-description><![CDATA[]]></long-description>
@@ -5154,7 +5172,7 @@ where id is the value of the primary key of the table.</p>]]></long-description>
       <tag line="3" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
   </file>
-  <file path="com_churchdirectory/admin/views/member/view.html.php" hash="4ae5df0d20a0dcd56179019707b88be4" package="ChurchDirectory\Admin">
+  <file path="com_churchdirectory/admin/views/member/view.html.php" hash="37e227830492603bb20d71d041629058" package="ChurchDirectory\Admin">
     <docblock line="3">
       <description><![CDATA[View Member]]></description>
       <long-description><![CDATA[]]></long-description>
@@ -5221,50 +5239,22 @@ where id is the value of the primary key of the table.</p>]]></long-description>
           <type/>
         </argument>
       </method>
-      <method final="false" abstract="false" static="false" visibility="protected" namespace="global" line="83" package="ChurchDirectory\Admin">
+      <method final="false" abstract="false" static="false" visibility="protected" namespace="global" line="75" package="ChurchDirectory\Admin">
         <name>addToolbar</name>
         <full_name>addToolbar</full_name>
-        <docblock line="78">
+        <docblock line="70">
           <description><![CDATA[Add the page title and toolbar.]]></description>
           <long-description><![CDATA[]]></long-description>
-          <tag line="78" name="since" description="1.7.0"/>
+          <tag line="70" name="since" description="1.7.0"/>
         </docblock>
       </method>
-      <method final="false" abstract="false" static="false" visibility="protected" namespace="global" line="131" package="ChurchDirectory\Admin">
+      <method final="false" abstract="false" static="false" visibility="protected" namespace="global" line="123" package="ChurchDirectory\Admin">
         <name>setDocument</name>
         <full_name>setDocument</full_name>
-        <docblock line="128">
+        <docblock line="120">
           <description><![CDATA[Set Document title]]></description>
           <long-description><![CDATA[]]></long-description>
         </docblock>
-      </method>
-      <method final="false" abstract="false" static="false" visibility="protected" namespace="global" line="145" package="ChurchDirectory\Admin">
-        <name>getAge</name>
-        <full_name>getAge</full_name>
-        <docblock line="138">
-          <description><![CDATA[Get the age of a person in years at a given time]]></description>
-          <long-description><![CDATA[]]></long-description>
-          <tag line="138" name="todo" description="need to move this outside the view."/>
-          <tag line="138" name="param" description="Date Of Birth" type="int" variable="$bdate">
-            <type by_reference="false">int</type>
-          </tag>
-          <tag line="138" name="param" description="The Target Date" type="int" variable="$tdate">
-            <type by_reference="false">int</type>
-          </tag>
-          <tag line="138" name="return" description="The number of years" type="int">
-            <type by_reference="false">int</type>
-          </tag>
-        </docblock>
-        <argument line="145">
-          <name>$bdate</name>
-          <default><![CDATA[]]></default>
-          <type/>
-        </argument>
-        <argument line="145">
-          <name>$tdate</name>
-          <default><![CDATA[]]></default>
-          <type/>
-        </argument>
       </method>
     </class>
   </file>
@@ -8292,9 +8282,9 @@ ordering requirements.</p>]]></long-description>
       </method>
     </class>
   </file>
-  <file path="modules/mod_birthdayanniversary/helper.php" hash="c3acf546981b99aff5cd2c51ca6ab2be" package="ChurchDirectory\Site\mod\birthdayanniversary">
+  <file path="modules/mod_birthdayanniversary/helper.php" hash="5913e9d500fd4b47c2df1c275b3075da" package="ChurchDirectory\Site\mod\birthdayanniversary">
     <docblock line="3">
-      <description><![CDATA[Model for ChurchDirectory Birthday & Anniversary Display.]]></description>
+      <description><![CDATA[Helper for ChurchDirectory Birthday & Anniversary Display.]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="3" name="package" description="ChurchDirectory.Site"/>
       <tag line="3" name="subpackage" description="mod_birthdayanniversary"/>
@@ -8309,33 +8299,119 @@ ordering requirements.</p>]]></long-description>
       <name>modBirthdayAnniversaryHelper</name>
       <full_name>\modBirthdayAnniversaryHelper</full_name>
       <docblock line="16">
-        <description><![CDATA[Abstract helper for Birthdy Anniversary Display]]></description>
+        <description><![CDATA[helper for Birthdy Anniversary Display]]></description>
         <long-description><![CDATA[]]></long-description>
         <tag line="16" name="package" description="ChurchDirectory.Site"/>
         <tag line="16" name="subpackage" description="mod_birthdayanniversary"/>
         <tag line="16" name="since" description="1.7.2"/>
       </docblock>
-      <method final="false" abstract="false" static="true" visibility="public" namespace="global" line="28" package="ChurchDirectory\Site\mod\birthdayanniversary">
-        <name>getList</name>
-        <full_name>getList</full_name>
+      <method final="false" abstract="false" static="true" visibility="public" namespace="global" line="29" package="ChurchDirectory\Site\mod\birthdayanniversary">
+        <name>getBirthdays</name>
+        <full_name>getBirthdays</full_name>
         <docblock line="24">
-          <description><![CDATA[Get List]]></description>
+          <description><![CDATA[Get Birthdays for This Month]]></description>
           <long-description><![CDATA[]]></long-description>
           <tag line="24" name="param" description="" type="array" variable="$params">
             <type by_reference="false">array</type>
           </tag>
+          <tag line="24" name="return" description="" type="array">
+            <type by_reference="false">array</type>
+          </tag>
         </docblock>
-        <argument line="28">
+        <argument line="29">
           <name>$params</name>
           <default><![CDATA[]]></default>
           <type/>
         </argument>
       </method>
+      <method final="false" abstract="false" static="true" visibility="public" namespace="global" line="50" package="ChurchDirectory\Site\mod\birthdayanniversary">
+        <name>getAnniversary</name>
+        <full_name>getAnniversary</full_name>
+        <docblock line="45">
+          <description><![CDATA[Get Anniversarys for This Month]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="45" name="param" description="" type="array" variable="$params">
+            <type by_reference="false">array</type>
+          </tag>
+          <tag line="45" name="return" description="" type="array">
+            <type by_reference="false">array</type>
+          </tag>
+        </docblock>
+        <argument line="50">
+          <name>$params</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="true" visibility="protected" namespace="global" line="74" package="ChurchDirectory\Site\mod\birthdayanniversary">
+        <name>performDB</name>
+        <full_name>performDB</full_name>
+        <docblock line="69">
+          <description><![CDATA[Performs a database query]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="69" name="param" description="is a Joomla ready query" type="\$query" variable="$query">
+            <type by_reference="false">\$query</type>
+          </tag>
+          <tag line="69" name="return" description="" type="\results">
+            <type by_reference="false">\results</type>
+          </tag>
+        </docblock>
+        <argument line="74">
+          <name>$query</name>
+          <default><![CDATA[]]></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="true" visibility="public" namespace="global" line="93" package="ChurchDirectory\Site\mod\birthdayanniversary">
+        <name>object_to_array</name>
+        <full_name>object_to_array</full_name>
+        <docblock line="88">
+          <description><![CDATA[Convert a stdClass to an Array.]]></description>
+          <long-description><![CDATA[]]></long-description>
+          <tag line="88" name="param" description="" type="\stdClass" variable="$Class">
+            <type by_reference="false">\stdClass</type>
+          </tag>
+          <tag line="88" name="return" description="" type="array">
+            <type by_reference="false">array</type>
+          </tag>
+        </docblock>
+        <argument line="93">
+          <name>$Class</name>
+          <default><![CDATA[]]></default>
+          <type>\stdClass</type>
+        </argument>
+      </method>
     </class>
   </file>
-  <file path="modules/mod_birthdayanniversary/mod_birthdayanniversary.php" hash="3619d634f10f75b805202671667ba5fa" package="ChurchDirectory\Model\BirthdayAnniversary">
+  <file path="modules/mod_birthdayanniversary/mod_birthdayanniversary.php" hash="dd726d57eda310df261d2f4cfdafc043" package="ChurchDirectory\Model\BirthdayAnniversary">
     <docblock line="3">
       <description><![CDATA[Model for Birthday and Annversary]]></description>
+      <long-description><![CDATA[]]></long-description>
+      <tag line="3" name="package" description="ChurchDirectory"/>
+      <tag line="3" name="subpackage" description="Model.BirthdayAnniversary"/>
+      <tag line="3" name="Copyright" description="(C) 2007 - 2011 Joomla Bible Study Team All rights reserved"/>
+      <tag line="3" name="license" description="http://www.gnu.org/copyleft/gpl.html GNU/GPL"/>
+      <tag line="3" name="link" description="http://www.JoomlaBibleStudy.org" link="http://www.JoomlaBibleStudy.org"/>
+    </docblock>
+    <include line="14" type="Require Once" package="Default">
+      <name/>
+    </include>
+    <include line="34" type="Require" package="Default">
+      <name/>
+    </include>
+    <function namespace="global" line="28" package="ChurchDirectory\Model\BirthdayAnniversary">
+      <name>addCSS</name>
+      <full_name>\addCSS</full_name>
+      <docblock line="23">
+        <description><![CDATA[Global css]]></description>
+        <long-description><![CDATA[]]></long-description>
+        <tag line="23" name="since" description="1.7.0"/>
+      </docblock>
+    </function>
+  </file>
+  <file path="modules/mod_birthdayanniversary/tmpl/default.php" hash="b28556f62b556899d902dbf03a84c0a8" package="ChurchDirectory\Model\BirthdayAnniversary">
+    <docblock line="3">
+      <description><![CDATA[Default view for Birthday and Annversary]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="3" name="package" description="ChurchDirectory"/>
       <tag line="3" name="subpackage" description="Model.BirthdayAnniversary"/>
@@ -8869,7 +8945,7 @@ routine: href, title, section, created, text, browsernav</p>]]></long-descriptio
     <package name="ChurchDirectory" full_name="Search\ChurchDirectory"/>
   </package>
   <namespace name="global" full_name="global"/>
-  <marker count="9">todo</marker>
+  <marker count="7">todo</marker>
   <marker count="0">fixme</marker>
   <deprecated count="0"/>
 </project>
