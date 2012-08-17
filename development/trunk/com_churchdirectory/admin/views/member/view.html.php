@@ -48,16 +48,8 @@ class ChurchDirectoryViewMember extends JViewLegacy {
         $user = JFactory::getUser();
         $this->groups = $user->groups;
 
-        //@todo need to find a way to do this outside the view.
-        $birthdate = $this->form->getValue('birthdate', 'attribs');
-        if (!empty($birthdate)):
-            $today = getdate();
-            $tdate = $today['0'];
-            $bdate = strtotime($this->form->getValue('birthdate', 'attribs'));
-            $this->age = $this->getAge($bdate, $tdate);
-        else:
-            $this->age = '0';
-        endif;
+        /* Get Age of Member */
+        $this->age = ChurchDirectoryHelper::getAge($this->form->getValue('birthdate'));
 
         // Check for errors.
         if (count($errors = $this->get('Errors'))) {
@@ -142,11 +134,16 @@ class ChurchDirectoryViewMember extends JViewLegacy {
      * @param       int     $tdate  The Target Date
      * @return      int     The number of years
      */
-    protected function getAge($bdate, $tdate) {
-        $age = 0;
-        while ($tdate > $bdate = strtotime('+1 year', $bdate)) {
-            ++$age;
-        }
+    protected function getAge($birthdate) {
+        dump($birthdate, 'getAge bdate');
+        //explode the date to get month, day and year
+        $birthDate = explode("-", $birthdate);
+        //get age from date or birthdate
+        $age = (date("md", date("U", mktime(0, 0, 0, $birthDate[0], $birthDate[1], $birthDate[2]))) > date("md") ? ((date("Y") - $birthDate[2]) - 1) : (date("Y") - $birthDate[2]));
+//        $age = 0;
+//        while ($tdate > $bdate = strtotime('+1 year', $bdate)) {
+//            ++$age;
+//        }
         return $age;
     }
 

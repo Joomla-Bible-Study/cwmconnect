@@ -87,20 +87,10 @@ foreach ($fieldSets as $name => $fieldSet) :
         <div class="clearfix"></div>
         <fieldset class="adminform">
             <ul class="adminformlist">
-                <?php foreach ($this->form->getFieldset($name) as $field) : ?>
-                    <?php if ($field->name == 'jform[attribs][birthdate]'): ?>
-                        <li><?php echo $field->label; ?>
-                            <?php echo $field->input; ?></li>
-                        <?php if ($this->age != '0'): ?>
-                            <li><label id="jform_age-lbl" for="jform_age" class="hasTip" title="<?php echo JText::_('COM_CHURCHDIRECTORY_AGE_HASTIP'); ?> "><?php echo JText::_('COM_CHURCHDIRECTORY_AGE_LABEL'); ?></label>
-                                <input type="text" name="jform[age]" id="jform_age" value="<?php echo $this->age; ?>" class="readonly" size="10" readonly="readonly"/></li>
-                            <?php endif;
-                        else:
-                            ?>
-                        <li><?php echo $field->label; ?>
+                    <?php foreach ($this->form->getFieldset($name) as $field) : ?>
+                    <li><?php echo $field->label; ?>
                         <?php echo $field->input; ?></li>
-                    <?php endif; ?>
-        <?php endforeach; ?>
+                <?php endforeach; ?>
             </ul>
         </fieldset>
 

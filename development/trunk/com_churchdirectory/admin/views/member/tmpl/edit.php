@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Edit view member
  * @package             ChurchDirectory.Admin
@@ -81,7 +80,7 @@ JHtml::_('behavior.keepalive');
         </fieldset>
     </div>
     <div class="width-40 fltrt">
-        <?php echo JHtml::_('sliders.start', 'member-slider'); ?>
+        <?php echo JHtml::_('sliders.start', 'member-slider_' . $this->item->id, array('useCookie' => 1)); ?>
         <?php echo JHtml::_('sliders.panel', JText::_('JGLOBAL_FIELDSET_PUBLISHING'), 'publishing-details'); ?>
 
         <fieldset class="adminform">
@@ -169,6 +168,17 @@ JHtml::_('behavior.keepalive');
 
                 <li><?php echo $this->form->getLabel('sortname3'); ?>
                     <?php echo $this->form->getInput('sortname3'); ?></li>
+
+                <li><?php echo $this->form->getLabel('birthdate'); ?>
+                    <?php echo $this->form->getInput('birthdate'); ?></li>
+
+                <li><?php echo $this->form->getLabel('anniversary'); ?>
+                    <?php echo $this->form->getInput('anniversary'); ?></li>
+
+                <?php if ($this->age != '0'): ?>
+                    <li><label id="jform_age-lbl" for="jform_age" class="hasTip" title="<?php echo JText::_('COM_CHURCHDIRECTORY_AGE_HASTIP'); ?> "><?php echo JText::_('COM_CHURCHDIRECTORY_AGE_LABEL'); ?></label>
+                        <input type="text" name="jform[age]" id="jform_age" value="<?php echo $this->age . ' ' . JText::_('COM_CHURCHDIRECTORY_YEARS_OLD'); ?>" class="readonly" size="10" readonly="readonly"/></li>
+                <?php endif; ?>
             </ul>
         </fieldset>
 

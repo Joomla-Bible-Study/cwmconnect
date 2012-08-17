@@ -99,4 +99,24 @@ class ChurchDirectoryHelper {
         return $result;
     }
 
+    /**
+     * Get Age of Member
+     * @param string $birthdate
+     * @return string
+     * @internal requires php5.3.x
+     * @since 1.7.3
+     */
+    public static function getAge($birthdate) {
+        if (!empty($birthdate)):
+            $date = new DateTime($birthdate);
+            $now = new DateTime();
+            $interval = $now->diff($date);
+            if ($interval->y !== intval(date('Y'))):
+                return $interval->y;
+            else:
+                return '0';
+            endif;
+        endif;
+    }
+
 }

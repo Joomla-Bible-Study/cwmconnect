@@ -175,8 +175,6 @@ class ChurchDirectoryModelMember extends JModelAdmin {
             // New category ID
             $table->catid = $categoryId;
 
-            // TODO: Deal with ordering?
-            //$table->ordering	= 1;
             // Check the row.
             if (!$table->check()) {
                 $this->setError($table->getError());
@@ -313,7 +311,6 @@ class ChurchDirectoryModelMember extends JModelAdmin {
             return false;
         }
 
-
         // Modify the form based on access controls.
         if (!$this->canEditState((object) $data)) {
             // Disable fields for display.
@@ -387,7 +384,7 @@ class ChurchDirectoryModelMember extends JModelAdmin {
      * @return	void
      * @since	1.7.0
      */
-    protected function prepareTable($table) {
+    protected function prepareTable(&$table) {
         $date = JFactory::getDate();
         $user = JFactory::getUser();
 
@@ -481,6 +478,7 @@ class ChurchDirectoryModelMember extends JModelAdmin {
      */
     protected function cleanCache($group = null, $client_id = 0) {
         parent::cleanCache('com_churchdirectory');
+        parent::cleanCache('mod_birthdayanniversary');
     }
 
 }
