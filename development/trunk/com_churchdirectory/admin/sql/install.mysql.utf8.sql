@@ -59,6 +59,8 @@ CREATE TABLE IF NOT EXISTS `#__churchdirectory_details` (
   `yahoo_msg` varchar(255) NOT NULL DEFAULT '',
   `lat` float(10,6) NOT NULL,
   `lng` float(10,6) NOT NULL,
+  `birthdate` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `anniversary` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `attribs` varchar(5120) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `idx_catid` (`catid`),
