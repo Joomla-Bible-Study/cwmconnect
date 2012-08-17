@@ -36,6 +36,6 @@ $controller->redirect();
  * @since   1.7.0
  */
 function addCSS() {
-    JHTML::stylesheet('/media/com_churchdirectory/css/general.css');
-    JHTML::stylesheet('/media/com_churchdirectory/css/icons.css');
+    JHTML::stylesheet('media/com_churchdirectory/css/general.css');
+    JHTML::stylesheet('media/com_churchdirectory/css/icons.css');
 }

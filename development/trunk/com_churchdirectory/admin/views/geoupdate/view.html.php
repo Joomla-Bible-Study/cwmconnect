@@ -63,10 +63,6 @@ class ChurchDirectoryViewGeoUpdate extends JViewLegacy {
         $script .= "});\n";
         $document->addScriptDeclaration($script);
 
-        // Load CSS
-        $document = JFactory::getDocument();
-        $document->addStyleSheet(rtrim(JURI::base(), '/') . '/../media/com_churchdirectory/css/general.css');
-
         JHTML::_('behavior.framework');
 
         parent::display();

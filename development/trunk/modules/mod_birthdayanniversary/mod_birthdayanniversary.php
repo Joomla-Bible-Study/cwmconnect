@@ -26,9 +26,9 @@ $anniversary = modBirthdayAnniversaryHelper::getAnniversary($params);
  * @since   1.7.0
  */
 function addCSS() {
-    JHtml::stylesheet('/media/com_churchdirectory/css/general.css');
-    JHtml::stylesheet('/media/com_churchdirectory/css/model.css');
-    JHtml::stylesheet('/media/com_churchdirectory/css/icons.css');
+    JHtml::stylesheet('media/com_churchdirectory/css/general.css');
+    JHtml::stylesheet('media/com_churchdirectory/css/model.css');
+    JHtml::stylesheet('media/com_churchdirectory/css/icons.css');
 }
 
 require JModuleHelper::getLayoutPath('mod_birthdayanniversary', $params->get('layout', 'default'));

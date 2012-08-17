@@ -55,9 +55,6 @@ class modBirthdayAnniversaryHelper {
         foreach ($records as $record):
             if ($record->anniversary !== '0000-00-00'):
                 list($byear, $bmonth, $bday) = explode('-', $record->anniversary);
-                $tmonth = date('m');
-                dump($bmonth, 'bMonth');
-                dump($tmonth, 'This Month');
                 if ($bmonth === date('m')):
                     $results[] = array('name' => $record->name, 'id' => $record->id, 'day' => $bday);
                 endif;
