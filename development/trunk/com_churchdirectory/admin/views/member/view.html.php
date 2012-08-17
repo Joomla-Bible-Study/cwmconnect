@@ -127,24 +127,4 @@ class ChurchDirectoryViewMember extends JViewLegacy {
         $document->addScript(JURI::root() . "media/com_churchdirectory/js/churchdirectory.js");
     }
 
-    /**
-     * Get the age of a person in years at a given time
-     * @todo need to move this outside the view.
-     * @param       int     $bdate    Date Of Birth
-     * @param       int     $tdate  The Target Date
-     * @return      int     The number of years
-     */
-    protected function getAge($birthdate) {
-        dump($birthdate, 'getAge bdate');
-        //explode the date to get month, day and year
-        $birthDate = explode("-", $birthdate);
-        //get age from date or birthdate
-        $age = (date("md", date("U", mktime(0, 0, 0, $birthDate[0], $birthDate[1], $birthDate[2]))) > date("md") ? ((date("Y") - $birthDate[2]) - 1) : (date("Y") - $birthDate[2]));
-//        $age = 0;
-//        while ($tdate > $bdate = strtotime('+1 year', $bdate)) {
-//            ++$age;
-//        }
-        return $age;
-    }
-
 }
