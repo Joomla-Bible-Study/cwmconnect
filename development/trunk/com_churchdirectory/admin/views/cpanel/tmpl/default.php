@@ -8,9 +8,13 @@
 defined('_JEXEC') or die;
 
 JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
-JHtml::_('jquerybehavior.tooltip');
+if (CHURCHDIRECTORY_CHECKREL === TRUE):
+    JHtml::_('jquerybehavior.tooltip');
+    JHtml::_('dropdown.init');
+else :
+    JHtml::_('behavior.tooltip');
+endif;
 JHtml::_('behavior.multiselect');
-JHtml::_('dropdown.init');
 ?>
 <form action="<?php echo JRoute::_('index.php?option=com_churchdirectory'); ?>" method="post" name="adminForm" id="adminForm">
     <div class="row-fluid">

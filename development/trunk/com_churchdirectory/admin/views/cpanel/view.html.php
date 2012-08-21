@@ -10,7 +10,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
-require_once (JPATH_COMPONENT_ADMINISTRATOR . '/liveupdate/liveupdate.php');
+require_once (JPATH_COMPONENT_ADMINISTRATOR . DIRECTORY_SEPARATOR . 'liveupdate' . DIRECTORY_SEPARATOR . 'liveupdate.php');
 
 /**
  * Class view cpanel

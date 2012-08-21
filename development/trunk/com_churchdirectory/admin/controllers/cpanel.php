@@ -19,10 +19,11 @@ jimport('joomla.application.component.controlleradmin');
  * @since	1.7.0
  */
 class ChurchDirectoryControllerCpanel extends JControllerAdmin {
+
     /**
      * Display funtion.
      */
-    function display() {
+    public function display($cachable = false, $urlparams = false) {
         JRequest::setVar('view', 'cpanel');
         parent::display();
     }
