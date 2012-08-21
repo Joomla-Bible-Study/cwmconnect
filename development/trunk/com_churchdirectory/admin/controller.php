@@ -80,6 +80,16 @@ class ChurchDirectoryController extends JControllerLegacy {
             return false;
         }
 
+        jimport('joomla.version');
+        $version = new JVersion();
+
+        if ($version->RELEASE == '3.0') {
+            $versionName = TRUE;
+        } else {
+            $versionName = FALSE;
+        }
+        define('CHURCHDIRECTORY_CHECKREL', $versionName);
+
         parent::display();
 
         return $this;

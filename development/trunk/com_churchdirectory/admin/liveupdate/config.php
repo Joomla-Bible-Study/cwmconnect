@@ -14,7 +14,7 @@ class LiveUpdateConfig extends LiveUpdateAbstractConfig {
 
     var $_extensionName = 'com_churchdirectory';
     var $_extensionTitle = 'Church Directory Component';
-    var $_updateURL = 'http://www.joomlabiblestudy.org/index.php?option=com_ars&view=update&format=ini&id=7';
+    var $_updateURL = 'http://www.joomlabiblestudy.org/index.php?option=com_ars&view=update&format=ini&id=11';
     var $_requiresAuthorization = false;
     var $_versionStrategy = 'vcompare';
 
