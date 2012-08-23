@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Main install Script
  * @package             ChurchDirectory.Admin
@@ -114,6 +113,9 @@ class com_churchdirectoryInstallerScript {
      * @param string $parent is the class calling this method.
      */
     function install($parent) {
+        // Install subextensions
+        $status = $this->_installSubextensions($parent);
+
         $installation_queue = array(
             // modules => { (folder) => { (module) => { (position), (published) } }* }*
             'modules' => array(
@@ -242,7 +244,8 @@ class com_churchdirectoryInstallerScript {
         $params['my_param2'] = 'Still yet another value';
         $this->setParams($params);
 
-        echo '<p>' . JText::_('COM_CHURCHDIRECTORY_POSTFLIGHT ' . $type . ' to ' . $this->release) . '</p>';
+        // Show the post-installation page
+        $this->_renderPostInstallation($status, $fofStatus, $straperStatus, $parent);
     }
 
     /**
@@ -250,7 +253,11 @@ class com_churchdirectoryInstallerScript {
      * @param string $parent
      */
     function uninstall($parent) {
-        echo '<p>' . JText::_('COM_CHURCHDIRECTORY_UNINSTALL ' . $this->release) . '</p>';
+        // Uninstall subextensions
+        $status = $this->_uninstallSubextensions($parent);
+
+        // Show the post-uninstallation page
+        $this->_renderPostUninstallation($status, $parent);
     }
 
     /**
@@ -286,6 +293,135 @@ class com_churchdirectoryInstallerScript {
                     ' WHERE name = "com_churchdirectory"');
             $db->query();
         }
+    }
+
+    /**
+     * Renders the post-installation message
+     * @since 1.7.4
+     * @todo need to add verion check system.
+     */
+    private function _renderPostInstallation($status, $parent) {
+        ?>
+
+        <?php $rows = 1; ?>
+        <img src="../media/com_akeeba/icons/logo-48.png" width="48" height="48" alt="Akeeba Backup" align="right" />
+
+        <h2>Welcome to Church Directory System</h2>
+
+        <?php if (!version_compare(PHP_VERSION, '5.3.0', 'ge')): ?>
+            <div style="margin: 1em; padding: 1em; background: #ffff00; border: thick solid red; color: black; font-size: 14pt;" id="notfixedperms">
+                <h1 style="margin: 1em 0; color: red; font-size: 22pt;">OUTDATED PHP VERSION</h1>
+                <p>You are using an outdated version of PHP which is not properly supported by Church Directory. Please upgrade to PHP 5.3 or later as soon as possible. Future versions of Church Directory will not work at all on PHP 5.2.</p>
+            </div>
+        <?php endif; ?>
+
+        <table class="adminlist">
+            <thead>
+                <tr>
+                    <th class="title" colspan="2">Extension</th>
+                    <th width="30%"><?php echo JTEXT::_('COM_CHURCHDIRECTORY_STATUS'); ?></th>
+                </tr>
+            </thead>
+            <tfoot>
+                <tr>
+                    <td colspan="3"></td>
+                </tr>
+            </tfoot>
+            <tbody>
+                <tr class="row0">
+                    <td class="key" colspan="2"><?php echo JTEXT::_('COM_CHURCHDIRECTORY_COMPONENT'); ?></td>
+                    <td><strong style="color: green"><?php echo JTEXT::_('COM_CHURCHDIRECTORY_INSTALLED'); ?></strong></td>
+                </tr>
+                <?php if (count($status->modules)) : ?>
+                    <tr>
+                        <th>Module</th>
+                        <th>Client</th>
+                        <th></th>
+                    </tr>
+                    <?php foreach ($status->modules as $module) : ?>
+                        <tr class="row<?php echo ($rows++ % 2); ?>">
+                            <td class="key"><?php echo $module['name']; ?></td>
+                            <td class="key"><?php echo ucfirst($module['client']); ?></td>
+                            <td><strong style="color: <?php echo ($module['result']) ? "green" : "red" ?>"><?php echo ($module['result']) ? JTEXT::_('COM_CHURCHDIRECTORY_INSTALLED') : JTEXT::_('COM_CHURCHDIRECTORY_NOT_INSTALLED'); ?></strong></td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+                <?php if (count($status->plugins)) : ?>
+                    <tr>
+                        <th>Plugin</th>
+                        <th>Group</th>
+                        <th></th>
+                    </tr>
+                    <?php foreach ($status->plugins as $plugin) : ?>
+                        <tr class="row<?php echo ($rows++ % 2); ?>">
+                            <td class="key"><?php echo ucfirst($plugin['name']); ?></td>
+                            <td class="key"><?php echo ucfirst($plugin['group']); ?></td>
+                            <td><strong style="color: <?php echo ($plugin['result']) ? "green" : "red" ?>"><?php echo ($plugin['result']) ? JTEXT::_('COM_CHURCHDIRECTORY_INSTALLED') : JTEXT::_('COM_CHURCHDIRECTORY_NOT_INSTALLED'); ?></strong></td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </tbody>
+        </table>
+
+        <fieldset>
+            <p>
+                install info after thought
+        </fieldset>
+        <?php
+    }
+
+    private function _renderPostUninstallation($status, $parent) {
+        ?>
+        <?php $rows = 0; ?>
+        <h2><?php echo JText::_('COM_CHURCHDIRECTORY_UNINSTALL'); ?></h2>
+        <table class="adminlist">
+            <thead>
+                <tr>
+                    <th class="title" colspan="2"><?php echo JText::_('COM_CHURCHDIRECTORY_EXTENSION'); ?></th>
+                    <th width="30%"><?php echo JText::_('COM_CHURCHDIRECTORY_STATUS'); ?></th>
+                </tr>
+            </thead>
+            <tfoot>
+                <tr>
+                    <td colspan="3"></td>
+                </tr>
+            </tfoot>
+            <tbody>
+                <tr class="row0">
+                    <td class="key" colspan="2"><?php echo JText::_('COM_CHURCHDIRECTORY'); ?></td>
+                    <td><strong style="color: green"><?php echo JText::_('COM_CHURCHDIRECTORY_REMOVED'); ?></strong></td>
+                </tr>
+                <?php if (count($status->modules)) : ?>
+                    <tr>
+                        <th><?php echo JText::_('COM_CHURCHDIRECTORY_MODULE'); ?></th>
+                        <th><?php echo JText::_('COM_CHURCHDIRECTORY_CLIENT'); ?></th>
+                        <th></th>
+                    </tr>
+                    <?php foreach ($status->modules as $module) : ?>
+                        <tr class="row<?php echo (++$rows % 2); ?>">
+                            <td class="key"><?php echo $module['name']; ?></td>
+                            <td class="key"><?php echo ucfirst($module['client']); ?></td>
+                            <td><strong style="color: <?php echo ($module['result']) ? "green" : "red" ?>"><?php echo ($module['result']) ? JText::_('COM_CHURCHDIRECTORY_REMOVED') : JText::_('COM_CHURCHDIRECTORY_NOT_REMOVED'); ?></strong></td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+                <?php if (count($status->plugins)) : ?>
+                    <tr>
+                        <th><?php echo JText::_('Plugin'); ?></th>
+                        <th><?php echo JText::_('Group'); ?></th>
+                        <th></th>
+                    </tr>
+                    <?php foreach ($status->plugins as $plugin) : ?>
+                        <tr class="row<?php echo (++$rows % 2); ?>">
+                            <td class="key"><?php echo ucfirst($plugin['name']); ?></td>
+                            <td class="key"><?php echo ucfirst($plugin['group']); ?></td>
+                            <td><strong style="color: <?php echo ($plugin['result']) ? "green" : "red" ?>"><?php echo ($plugin['result']) ? JText::_('COM_CHURCHDIRECTORY_REMOVED') : JText::_('COM_CHURCHDIRECTORY_NOT_REMOVED'); ?></strong></td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </tbody>
+        </table>
+        <?php
     }
 
     /**
