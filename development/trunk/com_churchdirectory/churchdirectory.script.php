@@ -1,6 +1,7 @@
 <?php
 /**
  * Main install Script
+ * This Script is bassed off AkeebaBackup component.
  * @package             ChurchDirectory.Admin
  * @copyright           (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
@@ -17,7 +18,7 @@ defined('_JEXEC') or die;
 class com_churchdirectoryInstallerScript {
 
     /** @var string The component's name */
-    protected $_churchdirectory_extension = 'com_akeeba';
+    protected $_churchdirectory_extension = 'com_churchdirectory';
 
     /**
      * The list of extra modules and plugins to install
@@ -67,14 +68,6 @@ class com_churchdirectoryInstallerScript {
      * @return boolean
      */
     function preflight($type, $parent) {
-
-        // Bugfix for "Can not build admin menus"
-        if (in_array($type, array('install', 'discover_install'))) {
-            $this->_bugfixDBFunctionReturnedNoError();
-        } else {
-            $this->_bugfixCantBuildAdminMenus();
-        }
-
         // this component does not work with Joomla releases prior to 1.7
         // abort if the current Joomla release is older
         $jversion = new JVersion();
@@ -98,124 +91,7 @@ class com_churchdirectoryInstallerScript {
                 Jerror::raiseWarning(null, 'Incorrect version sequence. Cannot upgrade ' . $rel);
                 return false;
             }
-        } else {
-            $rel = $this->release;
         }
-
-        echo '<p>' . JText::_('COM_CHURCHDIRECTORY_PREFLIGHT_' . $type . ' ' . $rel) . '</p>';
-    }
-
-    /**
-     * install runs after the database scripts are executed.
-     * If the extension is new, the install method is run.
-     * If install returns false, Joomla will abort the install and undo everything already done.
-     *
-     * @param string $parent is the class calling this method.
-     */
-    function install($parent) {
-        // Install subextensions
-        $status = $this->_installSubextensions($parent);
-
-        $installation_queue = array(
-            // modules => { (folder) => { (module) => { (position), (published) } }* }*
-            'modules' => array(
-                'admin' => array(
-                ),
-                'site' => array(
-                    'birthdayanniversary' => 0,
-                )
-            ),
-            // plugins => { (folder) => { (element) => (published) }* }*
-            'plugins' => array(
-                'finder' => array(
-                    'churchdirectory_finder' => 1,
-                ),
-                'search' => array(
-                    'churchdirectory_search' => 0,
-                ),
-                'system' => array(
-                    'jbsbackup' => 0,
-                    'jbspodcast' => 0,
-                )
-            )
-        );
-        // -- General settings
-
-        jimport('joomla.installer.installer');
-        $db = JFactory::getDBO();
-        $status = new JObject();
-        $status->modules = array();
-        $status->plugins = array();
-
-        // Modules installation
-        if (count($installation_queue['modules'])) {
-            foreach ($installation_queue['modules'] as $folder => $modules) {
-                if (count($modules))
-                    foreach ($modules as $module => $modulePreferences) {
-                        // Install the module
-                        if (empty($folder))
-                            $folder = 'site';
-                        $path = "$src/modules/$folder/$module";
-                        if (!is_dir($path)) {
-                            $path = "$src/modules/$folder/mod_$module";
-                        }
-                        if (!is_dir($path)) {
-                            $path = "$src/modules/$module";
-                        }
-                        if (!is_dir($path)) {
-                            $path = "$src/modules/mod_$module";
-                        }
-                        if (!is_dir($path))
-                            continue;
-                        // Was the module already installed?
-                        $sql = 'SELECT COUNT(*) FROM #__modules WHERE `module`=' . $db->Quote('mod_' . $module);
-                        $db->setQuery($sql);
-                        $count = $db->loadResult();
-                        $installer = new JInstaller;
-                        $result = $installer->install($path);
-                        $status->modules[] = array('name' => 'mod_' . $module, 'client' => $folder, 'result' => $result);
-                    }
-            }
-        }
-        // Plugins installation
-        if (count($installation_queue['plugins'])) {
-            foreach ($installation_queue['plugins'] as $folder => $plugins) {
-                if (count($plugins))
-                    foreach ($plugins as $plugin => $published) {
-                        $path = "$src/plugins/$folder/$plugin";
-                        if (!is_dir($path)) {
-                            $path = "$src/plugins/$folder/plg_$plugin";
-                        }
-                        if (!is_dir($path)) {
-                            $path = "$src/plugins/$plugin";
-                        }
-                        if (!is_dir($path)) {
-                            $path = "$src/plugins/plg_$plugin";
-                        }
-                        if (!is_dir($path))
-                            continue;
-                        // Was the module already installed?
-                        $query = "SELECT COUNT(*) FROM  #__extensions WHERE element=" . $db->Quote($plugin) . " AND folder=" . $db->Quote($folder);
-                        $db->setQuery($query);
-                        $result = $db->loadResult();
-
-                        $installer = new JInstaller;
-                        $result = $installer->install($path);
-                        $status->plugins[] = array('name' => 'plg_' . $plugin, 'group' => $folder, 'result' => $result);
-
-                        if ($published && !$count) {
-                            $query = "UPDATE #__extensions SET enabled=1 WHERE element=" . $db->Quote($plugin) . " AND folder=" . $db->Quote($folder);
-                            $db->setQuery($query);
-                            $db->query();
-                        }
-                    }
-            }
-        }
-
-
-        echo '<p>' . JText::_('COM_CHURCHDIRECTORY_INSTALL to ' . $this->release) . '</p>';
-        // You can have the backend jump directly to the newly installed component configuration page
-        $parent->getParent()->setRedirectURL('index.php?option=com_churchdirectory');
     }
 
     /**
@@ -226,7 +102,7 @@ class com_churchdirectoryInstallerScript {
      * @param string $parent is the class calling this method.
      */
     function update($parent) {
-        echo '<p>' . JText::_('COM_CHURCHDIRECTORY_UPDATE_ to ' . $this->release) . '</p>';
+
     }
 
     /**
@@ -291,7 +167,7 @@ class com_churchdirectoryInstallerScript {
             $db->setQuery('UPDATE #__extensions SET params = ' .
                     $db->quote($paramsString) .
                     ' WHERE name = "com_churchdirectory"');
-            $db->query();
+            $db->execute();
         }
     }
 
@@ -304,16 +180,9 @@ class com_churchdirectoryInstallerScript {
         ?>
 
         <?php $rows = 1; ?>
-        <img src="../media/com_akeeba/icons/logo-48.png" width="48" height="48" alt="Akeeba Backup" align="right" />
+        <img src="../media/com_churchdirectory/images/icons/icon-48-churchdirectory.png" width="48" height="48" alt="ChurchDirectory" align="right" />
 
         <h2>Welcome to Church Directory System</h2>
-
-        <?php if (!version_compare(PHP_VERSION, '5.3.0', 'ge')): ?>
-            <div style="margin: 1em; padding: 1em; background: #ffff00; border: thick solid red; color: black; font-size: 14pt;" id="notfixedperms">
-                <h1 style="margin: 1em 0; color: red; font-size: 22pt;">OUTDATED PHP VERSION</h1>
-                <p>You are using an outdated version of PHP which is not properly supported by Church Directory. Please upgrade to PHP 5.3 or later as soon as possible. Future versions of Church Directory will not work at all on PHP 5.2.</p>
-            </div>
-        <?php endif; ?>
 
         <table class="adminlist">
             <thead>
@@ -332,13 +201,13 @@ class com_churchdirectoryInstallerScript {
                     <td class="key" colspan="2"><?php echo JTEXT::_('COM_CHURCHDIRECTORY_COMPONENT'); ?></td>
                     <td><strong style="color: green"><?php echo JTEXT::_('COM_CHURCHDIRECTORY_INSTALLED'); ?></strong></td>
                 </tr>
-                <?php if (count($status->modules)) : ?>
+        <?php if (count($status->modules)) : ?>
                     <tr>
                         <th>Module</th>
                         <th>Client</th>
                         <th></th>
                     </tr>
-                    <?php foreach ($status->modules as $module) : ?>
+            <?php foreach ($status->modules as $module) : ?>
                         <tr class="row<?php echo ($rows++ % 2); ?>">
                             <td class="key"><?php echo $module['name']; ?></td>
                             <td class="key"><?php echo ucfirst($module['client']); ?></td>
@@ -346,26 +215,25 @@ class com_churchdirectoryInstallerScript {
                         </tr>
                     <?php endforeach; ?>
                 <?php endif; ?>
-                <?php if (count($status->plugins)) : ?>
+        <?php if (count($status->plugins)) : ?>
                     <tr>
                         <th>Plugin</th>
                         <th>Group</th>
                         <th></th>
                     </tr>
-                    <?php foreach ($status->plugins as $plugin) : ?>
+            <?php foreach ($status->plugins as $plugin) : ?>
                         <tr class="row<?php echo ($rows++ % 2); ?>">
                             <td class="key"><?php echo ucfirst($plugin['name']); ?></td>
                             <td class="key"><?php echo ucfirst($plugin['group']); ?></td>
                             <td><strong style="color: <?php echo ($plugin['result']) ? "green" : "red" ?>"><?php echo ($plugin['result']) ? JTEXT::_('COM_CHURCHDIRECTORY_INSTALLED') : JTEXT::_('COM_CHURCHDIRECTORY_NOT_INSTALLED'); ?></strong></td>
                         </tr>
                     <?php endforeach; ?>
-                <?php endif; ?>
+        <?php endif; ?>
             </tbody>
         </table>
 
         <fieldset>
-            <p>
-                install info after thought
+            <p></p>
         </fieldset>
         <?php
     }
@@ -391,13 +259,13 @@ class com_churchdirectoryInstallerScript {
                     <td class="key" colspan="2"><?php echo JText::_('COM_CHURCHDIRECTORY'); ?></td>
                     <td><strong style="color: green"><?php echo JText::_('COM_CHURCHDIRECTORY_REMOVED'); ?></strong></td>
                 </tr>
-                <?php if (count($status->modules)) : ?>
+        <?php if (count($status->modules)) : ?>
                     <tr>
                         <th><?php echo JText::_('COM_CHURCHDIRECTORY_MODULE'); ?></th>
                         <th><?php echo JText::_('COM_CHURCHDIRECTORY_CLIENT'); ?></th>
                         <th></th>
                     </tr>
-                    <?php foreach ($status->modules as $module) : ?>
+            <?php foreach ($status->modules as $module) : ?>
                         <tr class="row<?php echo (++$rows % 2); ?>">
                             <td class="key"><?php echo $module['name']; ?></td>
                             <td class="key"><?php echo ucfirst($module['client']); ?></td>
@@ -405,102 +273,23 @@ class com_churchdirectoryInstallerScript {
                         </tr>
                     <?php endforeach; ?>
                 <?php endif; ?>
-                <?php if (count($status->plugins)) : ?>
+        <?php if (count($status->plugins)) : ?>
                     <tr>
                         <th><?php echo JText::_('Plugin'); ?></th>
                         <th><?php echo JText::_('Group'); ?></th>
                         <th></th>
                     </tr>
-                    <?php foreach ($status->plugins as $plugin) : ?>
+            <?php foreach ($status->plugins as $plugin) : ?>
                         <tr class="row<?php echo (++$rows % 2); ?>">
                             <td class="key"><?php echo ucfirst($plugin['name']); ?></td>
                             <td class="key"><?php echo ucfirst($plugin['group']); ?></td>
                             <td><strong style="color: <?php echo ($plugin['result']) ? "green" : "red" ?>"><?php echo ($plugin['result']) ? JText::_('COM_CHURCHDIRECTORY_REMOVED') : JText::_('COM_CHURCHDIRECTORY_NOT_REMOVED'); ?></strong></td>
                         </tr>
                     <?php endforeach; ?>
-                <?php endif; ?>
+        <?php endif; ?>
             </tbody>
         </table>
         <?php
-    }
-
-    /**
-     * Joomla! 1.6+ bugfix for "Can not build admin menus"
-     */
-    private function _bugfixCantBuildAdminMenus() {
-        $db = JFactory::getDbo();
-
-        // If there are multiple #__extensions record, keep one of them
-        $query = $db->getQuery(true);
-        $query->select('extension_id')
-                ->from('#__extensions')
-                ->where($db->qn('element') . ' = ' . $db->q($this->_akeeba_extension));
-        $db->setQuery($query);
-        $ids = $db->loadColumn();
-        if (count($ids) > 1) {
-            asort($ids);
-            $extension_id = array_shift($ids); // Keep the oldest id
-
-            foreach ($ids as $id) {
-                $query = $db->getQuery(true);
-                $query->delete('#__extensions')
-                        ->where($db->qn('extension_id') . ' = ' . $db->q($id));
-                $db->setQuery($query);
-                $db->query();
-            }
-        }
-
-        // @todo
-        // If there are multiple assets records, delete all except the oldest one
-        $query = $db->getQuery(true);
-        $query->select('id')
-                ->from('#__assets')
-                ->where($db->qn('name') . ' = ' . $db->q($this->_akeeba_extension));
-        $db->setQuery($query);
-        $ids = $db->loadObjectList();
-        if (count($ids) > 1) {
-            asort($ids);
-            $asset_id = array_shift($ids); // Keep the oldest id
-
-            foreach ($ids as $id) {
-                $query = $db->getQuery(true);
-                $query->delete('#__assets')
-                        ->where($db->qn('id') . ' = ' . $db->q($id));
-                $db->setQuery($query);
-                $db->query();
-            }
-        }
-
-        // Remove #__menu records for good measure!
-        $query = $db->getQuery(true);
-        $query->select('id')
-                ->from('#__menu')
-                ->where($db->qn('type') . ' = ' . $db->q('component'))
-                ->where($db->qn('menutype') . ' = ' . $db->q('main'))
-                ->where($db->qn('link') . ' LIKE ' . $db->q('index.php?option=' . $this->_akeeba_extension));
-        $db->setQuery($query);
-        $ids1 = $db->loadColumn();
-        if (empty($ids1))
-            $ids1 = array();
-        $query = $db->getQuery(true);
-        $query->select('id')
-                ->from('#__menu')
-                ->where($db->qn('type') . ' = ' . $db->q('component'))
-                ->where($db->qn('menutype') . ' = ' . $db->q('main'))
-                ->where($db->qn('link') . ' LIKE ' . $db->q('index.php?option=' . $this->_akeeba_extension . '&%'));
-        $db->setQuery($query);
-        $ids2 = $db->loadColumn();
-        if (empty($ids2))
-            $ids2 = array();
-        $ids = array_merge($ids1, $ids2);
-        if (!empty($ids))
-            foreach ($ids as $id) {
-                $query = $db->getQuery(true);
-                $query->delete('#__menu')
-                        ->where($db->qn('id') . ' = ' . $db->q($id));
-                $db->setQuery($query);
-                $db->query();
-            }
     }
 
     /**
@@ -567,7 +356,7 @@ class com_churchdirectoryInstallerScript {
                                 $sql->set($db->qn('published') . ' = ' . $db->q('1'));
                             }
                             $db->setQuery($sql);
-                            $db->query();
+                            $db->execute();
 
                             // B. Change the ordering of back-end modules to 1 + max ordering
                             if ($folder == 'admin') {
@@ -584,7 +373,7 @@ class com_churchdirectoryInstallerScript {
                                         ->set($db->qn('ordering') . ' = ' . $db->q($position))
                                         ->where($db->qn('module') . ' = ' . $db->q('mod_' . $module));
                                 $db->setQuery($query);
-                                $db->query();
+                                $db->execute();
                             }
 
                             // C. Link to all pages
@@ -651,7 +440,7 @@ class com_churchdirectoryInstallerScript {
                                     ->where($db->qn('element') . ' = ' . $db->q($plugin))
                                     ->where($db->qn('folder') . ' = ' . $db->q($folder));
                             $db->setQuery($query);
-                            $db->query();
+                            $db->execute();
                         }
                     }
             }
@@ -669,7 +458,7 @@ class com_churchdirectoryInstallerScript {
     private function _uninstallSubextensions($parent) {
         jimport('joomla.installer.installer');
 
-        $db = & JFactory::getDBO();
+        $db = JFactory::getDBO();
 
         $status = new JObject();
         $status->modules = array();
