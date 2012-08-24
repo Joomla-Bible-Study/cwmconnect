@@ -34,7 +34,7 @@
 <a href="#reports" class="dropdown-toggle" data-toggle="dropdown">
                                     Reports <b class="caret"></b></a><ul class="dropdown-menu">
 <li><a href="../errors.html"><i class="icon-remove-sign"></i> Errors 
-                <span class="label label-info">0</span></a></li>
+                <span class="label label-info">3</span></a></li>
 <li><a href="../markers.html"><i class="icon-map-marker"></i> Markers 
                 <ul><li>todo 
                 <span class="label label-info">7</span>
@@ -67,9 +67,17 @@
 <li class="method public "><a href="#setParams" title="setParams :: sets parameter values in the component's row of the extension table"><span class="description">sets parameter values in the component's row of the extension table</span><pre>setParams()</pre></a></li>
 <li class="method public "><a href="#uninstall" title="uninstall :: uninstall runs before any other action is taken (file removal or database processing)"><span class="description">uninstall runs before any other action is taken (file removal or database processing)</span><pre>uninstall()</pre></a></li>
 <li class="method public "><a href="#update" title="update :: update runs after the database scripts are executed."><span class="description">update runs after the database scripts are executed.</span><pre>update()</pre></a></li>
+<li class="nav-header private">» Private</li>
+<li class="method private "><a href="#_bugfixCantBuildAdminMenus" title='_bugfixCantBuildAdminMenus :: Joomla! 1.6+ bugfix for "Can not build admin menus"'><span class="description">Joomla! 1.6+ bugfix for "Can not build admin menus"</span><pre>_bugfixCantBuildAdminMenus()</pre></a></li>
+<li class="method private "><a href="#_installSubextensions" title="_installSubextensions :: Installs subextensions (modules, plugins) bundled with the main extension"><span class="description">Installs subextensions (modules, plugins) bundled with the main extension</span><pre>_installSubextensions()</pre></a></li>
+<li class="method private "><a href="#_uninstallSubextensions" title="_uninstallSubextensions :: Uninstalls subextensions (modules, plugins) bundled with the main extension"><span class="description">Uninstalls subextensions (modules, plugins) bundled with the main extension</span><pre>_uninstallSubextensions()</pre></a></li>
 <li class="nav-header">
 <i class="icon-custom icon-property"></i> Properties</li>
+<li class="nav-header protected">» Protected</li>
+<li class="property protected "><a href="#%24_churchdirectory_extension" title="$_churchdirectory_extension :: "><span class="description">&lt;p&gt;The component's name&lt;/p&gt;
+</span><pre>$_churchdirectory_extension</pre></a></li>
 <li class="nav-header private">» Private</li>
+<li class="property private "><a href="#%24installation_queue" title="$installation_queue :: The list of extra modules and plugins to install"><span class="description">The list of extra modules and plugins to install</span><pre>$installation_queue</pre></a></li>
 <li class="property private "><a href="#%24minimum_joomla_release" title="$minimum_joomla_release :: Find mimimum required joomla version for this extension."><span class="description">Find mimimum required joomla version for this extension.</span><pre>$minimum_joomla_release</pre></a></li>
 <li class="property private "><a href="#%24release" title="$release :: The release value to be displayed and check against throughout this file."><span class="description">The release value to be displayed and check against throughout this file.</span><pre>$release</pre></a></li>
 </ul>
@@ -201,8 +209,65 @@ If this returns false, Joomla will abort the update and undo everything already 
 <code>string</code><p>is the class calling this method.</p></div>
 </div></div>
 </div>
+<a name="_bugfixCantBuildAdminMenus" id="_bugfixCantBuildAdminMenus"></a><div class="element clickable method private _bugfixCantBuildAdminMenus" data-toggle="collapse" data-target="._bugfixCantBuildAdminMenus .collapse">
+<h2>Joomla! 1.6+ bugfix for "Can not build admin menus"</h2>
+<pre>_bugfixCantBuildAdminMenus() </pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><p class="long_description"></p></div></div>
+</div>
+<a name="_installSubextensions" id="_installSubextensions"></a><div class="element clickable method private _installSubextensions" data-toggle="collapse" data-target="._installSubextensions .collapse">
+<h2>Installs subextensions (modules, plugins) bundled with the main extension</h2>
+<pre>_installSubextensions(\JInstaller $parent) : \JObject</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<p class="long_description"></p>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$parent</h4>
+<code>\JInstaller</code>
+</div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\JObject</code>The subextension installation status</div>
+</div></div>
+</div>
+<a name="_uninstallSubextensions" id="_uninstallSubextensions"></a><div class="element clickable method private _uninstallSubextensions" data-toggle="collapse" data-target="._uninstallSubextensions .collapse">
+<h2>Uninstalls subextensions (modules, plugins) bundled with the main extension</h2>
+<pre>_uninstallSubextensions(\JInstaller $parent) : \JObject</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<p class="long_description"></p>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$parent</h4>
+<code>\JInstaller</code>
+</div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>\JObject</code>The subextension uninstallation status</div>
+</div></div>
+</div>
 <h3>
 <i class="icon-custom icon-property"></i> Properties</h3>
+<a name="%24_churchdirectory_extension" id="$_churchdirectory_extension"> </a><div class="element clickable property protected $_churchdirectory_extension" data-toggle="collapse" data-target=".$_churchdirectory_extension .collapse">
+<h2>&lt;p&gt;The component's name&lt;/p&gt;
+</h2>
+<pre>$_churchdirectory_extension : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><p class="long_description"></p></div></div>
+</div>
+<a name="%24installation_queue" id="$installation_queue"> </a><div class="element clickable property private $installation_queue" data-toggle="collapse" data-target=".$installation_queue .collapse">
+<h2>The list of extra modules and plugins to install</h2>
+<pre>$installation_queue : array</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<p class="long_description"></p>
+<table class="table table-bordered"><tr>
+<th>author</th>
+<td><a href="">Nicholas K. Dionysopoulos</a></td>
+</tr></table>
+</div></div>
+</div>
 <a name="%24minimum_joomla_release" id="$minimum_joomla_release"> </a><div class="element clickable property private $minimum_joomla_release" data-toggle="collapse" data-target=".$minimum_joomla_release .collapse">
 <h2>Find mimimum required joomla version for this extension.</h2>
 <pre>$minimum_joomla_release : string</pre>
@@ -222,7 +287,7 @@ If this returns false, Joomla will abort the update and undo everything already 
 <div class="row"><footer class="span12">
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by <a href="http://glyphicons.com/">Glyphicons</a>.<br>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor 2.0.0a8</a> and<br>
-            generated on 2012-08-16T23:55:13-05:00.<br></footer></div>
+            generated on 2012-08-22T21:59:49-05:00.<br></footer></div>
 </div>
 </body>
 </html>
