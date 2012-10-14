@@ -45,6 +45,14 @@ class com_churchdirectoryInstallerScript {
             'search' => array(
                 'churchdirectory_search' => 0,
             ),
+        ),
+        // plugins => { (folder) => { (element) => (published) }* }*
+        'template' => array(
+            'admin' => array(
+            ),
+            'site' => array(
+                'churchdirectory_print' => 1,
+            ),
         )
     );
 
