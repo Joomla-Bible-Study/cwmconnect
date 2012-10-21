@@ -10,6 +10,8 @@
 //No Direct Access
 defined('_JEXEC') or die;
 
+require_once JPATH_COMPONENT . '/helpers/positions.php';
+
 /**
  * Get Family Mebers Buld
  * @param array $params
@@ -19,23 +21,26 @@ defined('_JEXEC') or die;
  */
 function getFamilyMembersPage($params, $id, $famid) {
 
-    $teacher = null;
     $teacher = "\n" . '<div id="landing_table" width="100%">';
     $db = JFactory::getDBO();
     $query = $db->getQuery(true);
 
     $query->select('members.*');
     $query->from('#__churchdirectory_details AS members');
-    $query->where('members.funitid = ' . (int) $id);
+    $query->where('members.funitid = ' . (int) $famid);
     $query->order('members.name DESC');
 
     $db->setQuery($query->__toString());
-
+    if ($params->get('dr_show_debug')):
+        var_dump($id);
+        var_dump($famid);
+    endif;
     $tresult = $db->loadObjectList();
     $t = 0;
     $i = 0;
     foreach ($tresult as $b) {
         $attribs = json_decode($b->attribs);
+        $b->con_position = explode(',', $b->con_position);
         $teacher .= '<div class="directory-familymembers-list">';
         $teacher .= '<div class="directory-name"><a href="' . JRoute::_('index.php?option=com_churchdirectory&view=member&id=' . $b->id) . '">';
         $teacher .= $b->name;
@@ -57,6 +62,32 @@ function getFamilyMembersPage($params, $id, $famid) {
         }
         $teacher .= '</div>';
         $teacher .='<div class="clearfix"></div><div class="directory-submemberinfo">';
+        if ($b->con_position['0'] >= '1' && $params->get('dr_show_position')) :
+            $teacher .='<div class="clearfix"></div>';
+            $teacher .='<div id="position-header"><span id="contact-position">';
+            $teacher .='<b>Position: </b>';
+            $teacher .='</span>';
+            $teacher .='</div>';
+            $teacher .='<div id="position-name">';
+            $teacher .='<span id="contact-position">';
+            foreach ($b->con_position as $positions_pre) :
+                $name = getPosition($positions_pre);
+                $n = count($name);
+                $pi = '1';
+                foreach ($name as $positions) :
+                    if ($n != $pi):
+                        $teacher .= $positions->name . '<br />';
+                    else:
+                        $teacher .= $positions->name;
+                    endif;
+                    $pi++;
+                endforeach;
+            endforeach;
+            $teacher .='<br />';
+            $teacher .='</span>';
+            $teacher .='</div>';
+            $teacher .='<br /><div class="clearfix"></div>';
+        endif;
         if ($b->telephone && $params->get('dr_show_telephone')) {
             $teacher .= '<div class="directory-telephone"><span class="title">' . JText::_('COM_CHURCHDIRECTORY_HOME') . ':</span> ' . $b->telephone . '</div>';
         }

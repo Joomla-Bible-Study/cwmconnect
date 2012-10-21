@@ -95,7 +95,7 @@ foreach ($this->items as $item) {
             <div class="familymembers-list">
                 <?php
                 JView::loadHelper('familymembers');
-                $heading = getFamilyMembersPage($params = $item->params, $id = $item->id, $famid = $item->funitid);
+                $heading = getFamilyMembersPage($item->params, $item->id, $item->funitid);
                 if ($heading) {
                     echo $heading;
                 }
@@ -124,7 +124,7 @@ foreach ($this->items as $item) {
                     <a href="<?php echo JRoute::_(ChurchDirectoryHelperRoute::getMemberRoute($item->slug, $item->catid)); ?>">
                         <?php echo $item->name; ?>
                     </a></span><br /><br />
-                <?php if ($item->con_position['0'] !== '' && $item->con_position['0'] !== '-1' && $this->params->get('dr_show_position')) : ?>
+                <?php if ($item->con_position['0'] >= '1' && $this->params->get('dr_show_position')) : ?>
                     <div class="clearfix"></div>
                     <div id="position-header"><span id="contact-position">
                             <b>Position: </b>
@@ -245,13 +245,7 @@ foreach ($this->items as $item) {
                                 <?php echo JText::_('COM_CHURCHDIRECTORY_WEBPAGE'); ?></a>
                         </span>
                     </p>
-                <?php endif; ?>
-                <?php if ($item->spouse && $this->params->get('dr_show_spouse')) : ?>
-                    <p>
-                        <?php echo '<span class="jicons-text">' . JText::_('COM_CHURCHDIRECTORY_SPOUSE') . ': </span>' . $item->spouse . '<br />'; ?>
-                    </p>
-                    <?php
-                endif;
+                <?php endif;
                 if ($item->children && $this->params->get('dr_show_children')) :
                     ?>
                     <p>
