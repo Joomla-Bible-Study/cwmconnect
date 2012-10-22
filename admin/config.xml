@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <config>
-
     <fieldset name="member"
               label="COM_CHURCHDIRECTORY_FIELD_CONFIG_INDIVIDUAL_MEMBER_DISPLAY"
               description="COM_CHURCHDIRECTORY_FIELD_CONFIG_INDIVIDUAL_MEMBER_DESC"
@@ -47,13 +46,6 @@
             <option value="tabs">COM_CHURCHDIRECTORY_FIELD_VALUE_TABS</option>
             <option value="plain">COM_CHURCHDIRECTORY_FIELD_VALUE_PLAIN</option>
         </field>
-        <field name="protectedaccess"
-               type="usergroup"
-               label="COM_CHURCHDIRECTORY_FIELD_MEMBER_PROTECTED_ACCESS_LABEL"
-               description="COM_CHURCHDIRECTORY_FIELD_MEMBER_PROTECTED_ACCESS_DESC"
-               class="inputbox"
-               size="1"
-		/>
         <field name="show_address_full"
                type="radio"
                default="0"
@@ -280,16 +272,6 @@
                description="COM_CHURCHDIRECTORY_FIELD_LINK_NAME_DESC"
                class="inputbox" size="30"
 			/>
-
-        <field name="sef_advanced_link"
-                                 type="radio"
-                                 default="0"
-                                 label="Sef Advanced Mode"
-                                 description="Remove ItemID from Content URL?">
-            <option    value="0">JNO</option>
-            <option    value="1">JYES</option>
-        </field>
-
     </fieldset>
     <fieldset name="Icons"
               label="COM_CHURCHDIRECTORY_ICONS_SETTINGS"
@@ -1034,6 +1016,26 @@
             <option value="1">JSHOW</option>
         </field>
 
+    </fieldset>
+    <fieldset name="globle"
+              label="COM_CHURCHDIRECTORY_FIELD_CONFIG_GLOBLE_MEMBER_DISPLAY"
+              description="COM_CHURCHDIRECTORY_FIELD_CONFIG_GLOBLE_MEMBER_DESC"
+    >
+        <field name="protectedaccess"
+               type="usergroup"
+               label="COM_CHURCHDIRECTORY_FIELD_MEMBER_PROTECTED_ACCESS_LABEL"
+               description="COM_CHURCHDIRECTORY_FIELD_MEMBER_PROTECTED_ACCESS_DESC"
+               class="inputbox"
+               size="1"
+		/>
+        <field name="sef_advanced_link"
+               type="radio"
+               default="0"
+               label="COM_CHURCHDIRECTORY_FIELD_SEF_LABLE"
+               description="COM_CHURCHDIRECTORY_FIELD_SEF_DESC">
+            <option    value="0">JNO</option>
+            <option    value="1">JYES</option>
+        </field>
     </fieldset>
     <fieldset name="permissions"
               label="JCONFIG_PERMISSIONS_LABEL"
