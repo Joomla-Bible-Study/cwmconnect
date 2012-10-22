@@ -18,8 +18,7 @@ if (!JFactory::getUser()->authorise('core.manage', 'com_churchdirectory')) {
     return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
 }
 
-
-require_once(JPATH_COMPONENT_ADMINISTRATOR . DIRECTORY_SEPARATOR . 'liveupdate' . DIRECTORY_SEPARATOR . 'liveupdate.php');
+require_once(JPATH_COMPONENT_ADMINISTRATOR . '/liveupdate/liveupdate.php');
 if (JRequest::getCmd('view', '') == 'liveupdate') {
     LiveUpdate::handleRequest();
     return;
