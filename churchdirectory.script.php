@@ -79,6 +79,9 @@ class com_churchdirectoryInstallerScript {
         // Install subextensions
         $status = $this->_installSubextensions($parent);
 
+        // Remove old stuff
+        $this->deleteUnexistingFiles();
+
         // Show the post-installation page
         $this->_renderPostInstallation($status, $fofStatus, $straperStatus, $parent);
     }
@@ -445,6 +448,32 @@ class com_churchdirectoryInstallerScript {
         }
 
         return $status;
+    }
+
+    /**
+     * Remove Old Files and Folders
+     * @since 7.1.0
+     */
+    public function deleteUnexistingFiles() {
+        $files = array(
+            '/media/com_churchdirectory/startfile.php',
+        );
+
+        $folders = array(
+            '/components/com_churchdirectory/views/churchdirectory',
+        );
+
+        foreach ($files as $file) {
+            if (JFile::exists(JPATH_ROOT . $file) && !JFile::delete(JPATH_ROOT . $file)) {
+                echo JText::sprintf('FILES_JOOMLA_ERROR_FILE_FOLDER', $file) . '<br />';
+            }
+        }
+
+        foreach ($folders as $folder) {
+            if (JFolder::exists(JPATH_ROOT . $folder) && !JFolder::delete(JPATH_ROOT . $folder)) {
+                echo JText::sprintf('FILES_JOOMLA_ERROR_FILE_FOLDER', $folder) . '<br />';
+            }
+        }
     }
 
 }
