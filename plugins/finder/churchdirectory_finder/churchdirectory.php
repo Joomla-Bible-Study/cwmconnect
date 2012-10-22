@@ -44,7 +44,7 @@ class plgFinderChurchDirectory extends FinderIndexerAdapter {
      * @var    string
      * @since  1.7.0
      */
-    protected $layout = 'churchdirectory';
+    protected $layout = 'member';
 
     /**
      * The type of content that the adapter indexes.
@@ -52,7 +52,7 @@ class plgFinderChurchDirectory extends FinderIndexerAdapter {
      * @var    string
      * @since  1.7.0
      */
-    protected $type_title = 'ChurchDirectory';
+    protected $type_title = 'Church Member';
 
     /**
      * The table name.
@@ -97,7 +97,7 @@ class plgFinderChurchDirectory extends FinderIndexerAdapter {
      * @since   1.7.0
      */
     public function onFinderCategoryChangeState($extension, $pks, $value) {
-        // Make sure we're handling com_contact categories
+        // Make sure we're handling com_churchdirectory categories
         if ($extension == 'com_churchdirectory') {
             $this->categoryStateChange($pks, $value);
         }
@@ -179,7 +179,7 @@ class plgFinderChurchDirectory extends FinderIndexerAdapter {
      * @throws  Exception on database error.
      */
     public function onFinderBeforeSave($context, $row, $isNew) {
-        // We only want to handle contacts here
+        // We only want to handle members here
         if ($context == 'com_churchdirectory.member') {
             // Query the database for the old access level if the item isn't new
             if (!$isNew) {
@@ -212,7 +212,7 @@ class plgFinderChurchDirectory extends FinderIndexerAdapter {
      * @since   1.7.0
      */
     public function onFinderChangeState($context, $pks, $value) {
-        // We only want to handle contacts here
+        // We only want to handle members here
         if ($context == 'com_churchdirectory.member') {
             $this->itemStateChange($pks, $value);
         }
@@ -259,68 +259,68 @@ class plgFinderChurchDirectory extends FinderIndexerAdapter {
         }
 
         /*
-         * Add the meta-data processing instructions based on the contact
+         * Add the meta-data processing instructions based on the member
          * configuration parameters.
          */
-        // Handle the contact position.
+        // Handle the member position.
         //if ($item->params->get('show_position', true)) {
         //    $item->addInstruction(FinderIndexer::META_CONTEXT, 'position');
         //}
-        // Handle the contact street address.
+        // Handle the member street address.
         if ($item->params->get('show_street_address', true)) {
             $item->addInstruction(FinderIndexer::META_CONTEXT, 'address');
         }
 
-        // Handle the contact city.
+        // Handle the member city.
         if ($item->params->get('show_suburb', true)) {
             $item->addInstruction(FinderIndexer::META_CONTEXT, 'city');
         }
 
-        // Handle the contact region.
+        // Handle the member region.
         if ($item->params->get('show_state', true)) {
             $item->addInstruction(FinderIndexer::META_CONTEXT, 'region');
         }
 
-        // Handle the contact country.
+        // Handle the member country.
         if ($item->params->get('show_country', true)) {
             $item->addInstruction(FinderIndexer::META_CONTEXT, 'country');
         }
 
-        // Handle the contact zip code.
+        // Handle the member zip code.
         if ($item->params->get('show_postcode', true)) {
             $item->addInstruction(FinderIndexer::META_CONTEXT, 'zip');
         }
 
-        // Handle the contact telephone number.
+        // Handle the member telephone number.
         if ($item->params->get('show_telephone', true)) {
             $item->addInstruction(FinderIndexer::META_CONTEXT, 'telephone');
         }
 
-        // Handle the contact fax number.
+        // Handle the member fax number.
         if ($item->params->get('show_fax', true)) {
             $item->addInstruction(FinderIndexer::META_CONTEXT, 'fax');
         }
 
-        // Handle the contact e-mail address.
+        // Handle the member e-mail address.
         if ($item->params->get('show_email', true)) {
             $item->addInstruction(FinderIndexer::META_CONTEXT, 'email');
         }
 
-        // Handle the contact mobile number.
+        // Handle the member mobile number.
         if ($item->params->get('show_mobile', true)) {
             $item->addInstruction(FinderIndexer::META_CONTEXT, 'mobile');
         }
 
-        // Handle the contact webpage.
+        // Handle the member webpage.
         if ($item->params->get('show_webpage', true)) {
             $item->addInstruction(FinderIndexer::META_CONTEXT, 'webpage');
         }
 
-        // Handle the contact user name.
+        // Handle the member user name.
         $item->addInstruction(FinderIndexer::META_CONTEXT, 'user');
 
         // Add the type taxonomy data.
-        $item->addTaxonomy('Type', 'Contact');
+        $item->addTaxonomy('Type', 'Church Member');
 
         // Add the category taxonomy data.
         $item->addTaxonomy('Category', $item->category, $item->cat_state, $item->cat_access);
