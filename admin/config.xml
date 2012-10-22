@@ -281,6 +281,15 @@
                class="inputbox" size="30"
 			/>
 
+        <field name="sef_advanced_link"
+                                 type="radio"
+                                 default="0"
+                                 label="Sef Advanced Mode"
+                                 description="Remove ItemID from Content URL?">
+            <option    value="0">JNO</option>
+            <option    value="1">JYES</option>
+        </field>
+
     </fieldset>
     <fieldset name="Icons"
               label="COM_CHURCHDIRECTORY_ICONS_SETTINGS"
