@@ -316,6 +316,11 @@ class plgFinderChurchDirectory extends FinderIndexerAdapter {
             $item->addInstruction(FinderIndexer::META_CONTEXT, 'webpage');
         }
 
+        // Handle the member webpage.
+        if ($item->params->get('show_children', true)) {
+            $item->addInstruction(FinderIndexer::META_CONTEXT, 'children');
+        }
+
         // Handle the member user name.
         $item->addInstruction(FinderIndexer::META_CONTEXT, 'user');
 
