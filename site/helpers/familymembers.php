@@ -41,8 +41,9 @@ function getFamilyMembersPage($params, $id, $famid) {
     foreach ($tresult as $b) {
         $attribs = json_decode($b->attribs);
         $b->con_position = explode(',', $b->con_position);
+        $b->slug = $b->alias ? ($b->id . ':' . $b->alias) : $b->id;
         $teacher .= '<div class="directory-familymembers-list">';
-        $teacher .= '<div class="directory-name"><a href="' . JRoute::_('index.php?option=com_churchdirectory&view=member&id=' . $b->id) . '">';
+        $teacher .= '<div class="directory-name"><a href="' . JRoute::_(ChurchDirectoryHelperRoute::getMemberRoute($b->slug, $b->catid)) . '">';
         $teacher .= $b->name;
         $teacher .='</a></div>';
         $teacher .= '<div class="directory-subtitle">';
