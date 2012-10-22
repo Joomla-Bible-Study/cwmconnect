@@ -384,6 +384,7 @@ class plgFinderChurchDirectory extends FinderIndexerAdapter {
         $sql->select('a.created_by_alias, a.modified, a.modified_by');
         $sql->select('a.metakey, a.metadesc, a.metadata, a.language');
         $sql->select('a.sortname1, a.sortname2, a.sortname3');
+        $sql->select('a.children');
         $sql->select('a.publish_up AS publish_start_date, a.publish_down AS publish_end_date');
         $sql->select('a.suburb AS city, a.state AS region, a.country, a.postcode AS zip');
         $sql->select('a.telephone, a.fax, a.misc AS summary, a.email_to AS email, a.mobile');
