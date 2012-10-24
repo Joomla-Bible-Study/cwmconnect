@@ -9,7 +9,7 @@
 // No direct access
 defined('_JEXEC') or die;
 
-jimport('joomla.application.component.view');
+
 
 /**
  * ChurchDirectory categories view.

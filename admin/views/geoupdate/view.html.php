@@ -11,7 +11,7 @@
 defined('_JEXEC') or die;
 
 // Load framework base classes
-jimport('joomla.application.component.view');
+
 
 /**
  * Class for GeoUpdate

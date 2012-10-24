@@ -8,7 +8,7 @@
  */
 // No direct access
 defined('_JEXEC') or die;
-jimport('joomla.application.component.view');
+
 
 /**
  * Class for Member VCF
