@@ -83,7 +83,7 @@ class com_churchdirectoryInstallerScript {
         $this->deleteUnexistingFiles();
 
         // Show the post-installation page
-        $this->_renderPostInstallation($status, $fofStatus, $straperStatus, $parent);
+        $this->_renderPostInstallation($status, $parent);
     }
 
     /**
