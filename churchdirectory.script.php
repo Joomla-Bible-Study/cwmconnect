@@ -57,6 +57,14 @@ class com_churchdirectoryInstallerScript {
     );
 
     /**
+     * Varibles to set default params
+     * @var array
+     */
+    private $param_array = array(
+        'protectedaccess' => 8,
+    );
+
+    /**
      * preflight runs before anything else and while the extracted files are in the uploaded temp folder.
      * If preflight returns false, Joomla will abort the update and undo everything already done.
      *
@@ -473,6 +481,29 @@ class com_churchdirectoryInstallerScript {
             if (JFolder::exists(JPATH_ROOT . $folder) && !JFolder::delete(JPATH_ROOT . $folder)) {
                 echo JText::sprintf('FILES_JOOMLA_ERROR_FILE_FOLDER', $folder) . '<br />';
             }
+        }
+    }
+
+    /**
+     * Set new Parrams to system.
+     * @param array $param_array
+     */
+    private function setParams($param_array) {
+        if (count($param_array) > 0) {
+            // read the existing component value(s)
+            $db = JFactory::getDbo();
+            $db->setQuery('SELECT params FROM #__extensions WHERE name = ' . $db->quote('com_democompupdate'));
+            $params = json_decode($db->loadResult(), true);
+            // add the new variable(s) to the existing one(s)
+            foreach ($param_array as $name => $value) {
+                $params[(string) $name] = (string) $value;
+            }
+            // store the combined new and existing values back as a JSON string
+            $paramsString = json_encode($params);
+            $db->setQuery('UPDATE #__extensions SET params = ' .
+                    $db->quote($paramsString) .
+                    ' WHERE name = ' . $db->quote('com_democompupdate'));
+            $db->query();
         }
     }
 
