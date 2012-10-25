@@ -18,7 +18,7 @@ jimport('joomla.mail.helper');
  * @package	ChurchDirectory.Site
  * @since 		1.7.0
  */
-class ChurchDirectoryViewDirectory extends JView {
+class ChurchDirectoryViewDirectory extends JViewLegacy {
 
     /**
      * Protected
@@ -115,9 +115,10 @@ class ChurchDirectoryViewDirectory extends JView {
                 $params->set('other_check', 1);
             } else {
                 $params->set('other_check', 0);
-
             }
-            $item->con_position = array(explode(',', $item->con_position));
+            if (isset($item->con_position)) {
+                $item->con_position = array(explode(',', $item->con_position));
+            }
         }
 
         switch ($item->params->get('dr_churchdirectory_icons')) {
