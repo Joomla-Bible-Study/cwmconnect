@@ -41,7 +41,7 @@ JHtml::_('behavior.multiselect');
                     <div class="fltrt">
                         <div id="cpanel" style="padding-left: 20px">
                             <?php
-                            if ($this->versionName != TRUE): echo LiveUpdate::getIcon();
+                            if ($this->versionName != TRUE): //echo LiveUpdate::getIcon();
                             endif;
                             ?>
                         </div>
