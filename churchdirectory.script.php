@@ -203,10 +203,9 @@ class com_churchdirectoryInstallerScript
 
 	/**
 	 * Install is run on every new install.
-	 * @param $type
-	 * @param $parent
+	 * @param string $parent
 	 */
-	function install($type, $parent)
+	function install($parent)
 	{
 		// set params
 		$this->setParams();
