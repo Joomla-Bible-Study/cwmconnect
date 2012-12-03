@@ -19,7 +19,7 @@ jimport('joomla.application.component.view');
  * @subpackage	com_churchdirectory
  * @since		1.6
  */
-class ChurchDirectoryViewContacts extends JView {
+class ChurchDirectoryViewContacts extends JViewLegacy {
 
     protected $items;
     protected $pagination;

@@ -142,7 +142,7 @@ class ChurchDirectoryModelMember extends JModelForm {
 
                 // Filter by start and end dates.
                 $nullDate = $db->Quote($db->getNullDate());
-                $nowDate = $db->Quote(JFactory::getDate()->toMySQL());
+                $nowDate = $db->Quote(JFactory::getDate()->toSql());
 
 
                 // Filter by published state.
@@ -184,10 +184,6 @@ class ChurchDirectoryModelMember extends JModelForm {
                 $registry = new JRegistry;
                 $registry->loadString($data->attribs);
                 $data->attribs = $registry;
-
-                if (!empty($data->con_position)) :
-                    $data->con_position = explode(',', $data->con_position);
-                endif;
 
                 // Compute access permissions.
                 if ($access = $this->getState('filter.access')) {
@@ -302,7 +298,7 @@ class ChurchDirectoryModelMember extends JModelForm {
 
                 //get the profile information for the linked user
                 require_once JPATH_ADMINISTRATOR . '/components/com_users/models/user.php';
-                $userModel = JModel::getInstance('User', 'UsersModel', array('ignore_request' => true));
+                $userModel = JModelLegacy::getInstance('User', 'UsersModel', array('ignore_request' => true));
                 $data = $userModel->getItem((int) $result->user_id);
 
                 JPluginHelper::importPlugin('user');

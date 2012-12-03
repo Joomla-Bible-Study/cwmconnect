@@ -116,7 +116,7 @@ class ChurchDirectoryViewDirectory extends JViewLegacy {
             } else {
                 $params->set('other_check', 0);
             }
-            if (isset($item->con_position)) {
+            if (isset($item->con_position) && strstr($item->con_position['0'], ',')) {
                 $item->con_position = array(explode(',', $item->con_position));
             }
         }

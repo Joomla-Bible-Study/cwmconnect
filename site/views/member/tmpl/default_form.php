@@ -35,7 +35,7 @@ if (isset($this->error)) :
                 <?php } ?>
                 <?php //Dynamically load any additional fields from plugins. ?>
                 <?php foreach ($this->form->getFieldsets() as $fieldset): ?>
-                    <?php if ($fieldset->name != 'churchdirectory'): ?>
+                    <?php if ($fieldset->name != 'member'): ?>
                         <?php $fields = $this->form->getFieldset($fieldset->name); ?>
                         <?php foreach ($fields as $field): ?>
                             <?php if ($field->hidden): ?>

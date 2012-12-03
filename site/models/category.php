@@ -152,7 +152,7 @@ class ChurchDirectoryModelCategory extends JModelList {
         }
         // Filter by start and end dates.
         $nullDate = $db->Quote($db->getNullDate());
-        $nowDate = $db->Quote(JFactory::getDate()->toMySQL());
+        $nowDate = $db->Quote(JFactory::getDate()->toSql());
 
         if ($this->getState('filter.publish_date')) {
             $query->where('(a.publish_up = ' . $nullDate . ' OR a.publish_up <= ' . $nowDate . ')');
@@ -172,7 +172,7 @@ class ChurchDirectoryModelCategory extends JModelList {
         $menuParams = new JRegistry;
 
         if ($menu = $app->getMenu()->getActive()) {
-            $menuParams->loadJSON($menu->params);
+            $menuParams->loadString($menu->params);
         }
 
         $mergedParams = clone $params;

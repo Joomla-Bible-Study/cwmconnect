@@ -134,7 +134,6 @@ class ChurchDirectoryModelDirectory extends JModelList {
                 $params->loadString($item->attribs);
                 $item->attribs = $params;
             }
-            $item->con_position = explode(',', $item->con_position);
         }
 
         return $items;
@@ -218,7 +217,7 @@ class ChurchDirectoryModelDirectory extends JModelList {
         $menuParams = new JRegistry;
 
         if ($menu = $app->getMenu()->getActive()) {
-            $menuParams->loadJSON($menu->params);
+            $menuParams->loadString($menu->params);
         }
 
         $mergedParams = clone $params;
@@ -226,17 +225,15 @@ class ChurchDirectoryModelDirectory extends JModelList {
 
         $initialSort = $mergedParams->get('dinitial_sort');
         // Falll back to old style if the parameter hasn't been set yet.
-        if (empty($initialSort)) {
-            $query->order($db->getEscaped($this->getState('list.ordering', 'a.ordering')) . ' ' . $db->getEscaped($this->getState('list.direction', 'ASC')));
-        } elseif ($initialSort != 'sortname') {
-            $query->order('a.' . $initialSort);
+        if ($initialSort != 'sortname') {
+            //$query->order('a.' . $initialSort);
+        } elseif ($this->getState('list.ordering') == 'sortname') {
+	        $query->order($db->escape('a.sortname1').' '.$db->escape($this->getState('list.direction', 'ASC')));
+	        $query->order($db->escape('a.sortname2').' '.$db->escape($this->getState('list.direction', 'ASC')));
+	        $query->order($db->escape('a.sortname3').' '.$db->escape($this->getState('list.direction', 'ASC')));
         } else {
-            $query->order('a.sortname1');
-            $query->order('a.sortname2');
-            $query->order('a.sortname3');
-            // Fall back to ordering if the data are not complete or there are matches.
-            $query->order('a.ordering');
-        }
+		    $query->order($db->escape($this->getState('list.ordering', 'a.ordering')).' '.$db->escape($this->getState('list.direction', 'ASC')));
+	    }
 
         return $query;
     }

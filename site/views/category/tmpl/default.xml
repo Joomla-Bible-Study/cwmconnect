@@ -190,8 +190,8 @@
 
             <field name="show_position"
 				type="list"
-				description="COM_CHURCHDIRECTORY_FIELD_PARAMS_CONTACT_POSITION_DESC"
-				label="COM_CHURCHDIRECTORY_FIELD_PARAMS_CONTACT_POSITION_LABEL"
+				description="COM_CHURCHDIRECTORY_FIELD_SHOW_POSITION_DESC"
+				label="COM_CHURCHDIRECTORY_FIELD_SHOW_POSITION_LABEL"
 			>
                 <option value="">JGLOBAL_USE_GLOBAL</option>
                 <option value="0">JHIDE</option>

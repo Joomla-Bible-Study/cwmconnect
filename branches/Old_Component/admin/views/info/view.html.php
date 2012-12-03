@@ -27,7 +27,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 defined('_JEXEC') or die( 'Restricted access' );
 jimport('joomla.application.component.view');
 
-class QContactsViewInfo extends JView {
+class QContactsViewInfo extends JViewLegacy {
 	function display($tpl = null) {
 		parent::display($tpl);
 	}

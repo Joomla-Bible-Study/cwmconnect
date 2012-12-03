@@ -18,7 +18,7 @@ jimport('joomla.mail.helper');
  * @package	ChurchDirectory.Site
  * @since		1.7.0
  */
-class ChurchDirectoryViewCategory extends JView {
+class ChurchDirectoryViewCategory extends JViewLegacy {
 
     /**
      * Protected state

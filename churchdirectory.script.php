@@ -60,7 +60,7 @@ class com_churchdirectoryInstallerScript
 	 * @var array
 	 */
 	private $param_array = array(
-		'protectedaccess' => 8,
+		'protectedaccess' => "8",
 		"churchdirectory_layout" => "_:default",
 		"show_churchdirectory_category" => "hide",
 		"show_churchdirectory_list" => "0",
@@ -166,7 +166,6 @@ class com_churchdirectoryInstallerScript
 		"custom_reply" => "0",
 		"redirect" => "",
 		"show_feed_link" => "1",
-		"protectedaccess" => "1",
 		"sef_advanced_link" => "0",
 	);
 
