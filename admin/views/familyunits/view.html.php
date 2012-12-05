@@ -78,7 +78,9 @@ class ChurchDirectoryViewFamilyUnits extends JViewLegacy {
      * @since	1.7.0
      */
     protected function addToolbar() {
-        $canDo = ChurchDirectoryHelper::getActions($this->state->get('filter.category_id'));
+	    require_once JPATH_COMPONENT . '/helpers/churchdirectory.php';
+	    $canDo = ChurchDirectoryHelper::getActions($this->state->get('filter.category_id'));
+	    $user = JFactory::getUser();
         JToolBarHelper::title(JText::_('COM_CHURCHDIRECTORY_MANAGER_FAMILYUNITS'), 'churchdirectory');
 
         if ($canDo->get('core.create') || (count($user->getAuthorisedCategories('com_churchdirectory', 'core.create'))) > 0) {
