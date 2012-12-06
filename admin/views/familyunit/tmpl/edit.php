@@ -80,7 +80,7 @@ JHtml::_('behavior.formvalidation');
                 <tbody>
 
                     <?php
-                    if (count($this->members) > 0) :
+                    if (count($this->members) > 0 && $this->members) :
                         foreach ($this->members as $i => $item) :
                             ?>
                             <tr class="row<?php echo $i % 2; ?>">

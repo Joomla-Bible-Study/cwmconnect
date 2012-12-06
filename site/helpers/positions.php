@@ -22,6 +22,7 @@ function getPosition($con_position)
 	$i = 0;
 	$positions = array();
 	$results = null;
+	$position = null;
 	if (strstr($con_position, ',')) {
 		$ids = explode(',', $con_position);
 		foreach ($ids AS $id):
@@ -49,9 +50,15 @@ function getPosition($con_position)
 		$position = $db->loadObject();
 		$positions[$i] = $position;
 	}
+	$n = count($position);
+	$pi = '0';
 	foreach ($positions AS $position):
-		$results .= $position->name;
-		$results .= '<br />';
+		if ($n != $pi):
+			$results .= $position->name;
+			$results .= '<br />'; else:
+			$results .= $position->name;
+		endif;
+		$pi++;
 	endforeach;
 
 	return $results;
