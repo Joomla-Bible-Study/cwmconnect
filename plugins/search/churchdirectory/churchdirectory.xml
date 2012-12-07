@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE install SYSTEM "http://dev.joomla.org/xml/2.5/plugen-install.dtd">
 <extension version="2.5" type="plugin" group="search" method="upgrade">
     <name>plg_search_churchdirectory</name>
     <author>Joomla! Bible Study Team</author>
     <creationDate>November 2011</creationDate>
-    <copyright>(C) 2007 - 2011 Joomla Bible Study Team All rights reserved</copyright>
+    <copyright>(C) 2007 - 2012 Joomla Bible Study Team All rights reserved</copyright>
     <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
     <authorEmail>info@joomlabiblestudy.org</authorEmail>
     <authorUrl>http://www.joomlabiblestudy.org</authorUrl>

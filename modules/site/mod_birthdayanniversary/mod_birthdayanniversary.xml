@@ -2,7 +2,7 @@
 <extension type="module" version="2.5" method="upgrade" client="site">
     <name>mod_birthdayanniversary</name>
     <author>Joomla Bible Study Team</author>
-    <creationDate>July 13, 2012</creationDate>
+    <creationDate>July 2012</creationDate>
     <copyright>(C) 2007-2012 Joomla Bible Study</copyright>
     <license>GPL/GNU</license>
     <authorEmail>info@joomlabiblestudy.org</authorEmail>
