@@ -7,7 +7,6 @@
  * */
 defined('_JEXEC') or die;
 
-JHtml::core();
 $printed_items = 0;
 $printed_rows = 0;
 
@@ -126,23 +125,14 @@ foreach ($this->items as $item) {
                     </a></span><br /><br />
                 <?php if ($item->con_position['0'] >= '1' && $this->params->get('dr_show_position')) : ?>
                     <div class="clearfix"></div>
-                    <div id="position-header"><span id="contact-position">
-                            <b>Position: </b>
-                        </span>
+                    <div id="position-header">
+                            <h4>Position: </h4>
                     </div>
                     <div id="position-name">
-                        <span id="contact-position">
+                        <span class="contact-position">
                             <?php
-                            foreach ($item->con_position as $positions) :
-                                if ($positions !== ''):
                                     JView::loadHelper('positions');
-                                    $name = @getPosition($positions);
-
-                                    foreach ($name as $positions) :
-                                        echo $positions->name . '<br />';
-                                    endforeach;
-                                endif;
-                            endforeach;
+                                    echo getPosition($item->con_position);
                             ?>
                             <br />
                         </span>

@@ -1,28 +1,67 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="churchdirectory" default="build">
-    <description>
-        Build for Joomla Bible Study, Please modify location as you need.
-    </description>
+<project name="ChurchDirectory" default="build">
+    <!-- ============================================  -->
+    <!-- Target: prepare                               -->
+    <!-- ============================================  -->
+    <target name="prepare">
+        <echo msg="Making directory ./build"/>
+        <mkdir dir="./build"/>
+    </target>
+
+    <!-- ============================================  -->
+    <!-- (DEFAULT)  Target: info                       -->
+    <!-- ============================================  -->
+    <target name="info">
+        <echo msg="Build for Joomla Bible Study, Please modify location as you need."/>
+    </target>
+
     <!-- set global properties for this build -->
-    <property name="src" location="src"/>
-    <property name="build" location="/Users/bcordis/NetBeansProjects/joomla_churchdirectory/"/>
-    <property name="dist"  location="dist"/>
+    <property name="src" value="src"/>
+    <property name="build" value="/Users/bcordis/NetBeansProjects/joomla_churchdirectory/"/>
+    <property name="dist" value="dist"/>
+
     <target name="reset">
-        <echo message="Reset back to Dev State" />
-        <delete file="../admin/churchdirectory.xml" />
-        <delete file="../admin/churchdirectory.script.php" />
-        <symlink link="${build}/admin/churchdirectory.xml" resource="${build}/churchdirectory.xml"/>
-        <symlink link="${build}/admin/churchdirectory.script.php" resource="${build}/churchdirectory.script.php"/>
+        <echo msg="Reset back to Dev State"/>
+        <delete file="../admin/churchdirectory.xml"/>
+        <delete file="../admin/churchdirectory.script.php"/>
+        <symlink target="../admin/churchdirectory.xml" link="../churchdirectory.xml"/>
+        <symlink target="../admin/churchdirectory.script.php" link="../churchdirectory.script.php"/>
     </target>
+
     <target name="clean">
-        <echo message="Cleaning directories" />
-        <delete file="packages/com_churchdirectory.zip" />
+        <echo message="Cleaning directories"/>
+        <delete file="packages/com_churchdirectory.zip"/>
     </target>
+
+    <!-- ============================================  -->
+    <!-- (DEFAULT)  Target: build                      -->
+    <!-- ============================================  -->
     <target name="build">
-        <echo message="Building package" />
-        <mkdir dir="packages" />
-        <delete file="../admin/churchdirectory.xml" />
-        <delete file="../admin/file.script.php" />
-        <zip destfile="packages/com_churchdirectory.zip" basedir="../" excludes="build/**/*, build/*"/>
+        <echo message="Building package"/>
+        <mkdir dir="packages"/>
+        <delete file="../admin/churchdirectory.xml"/>
+        <delete file="../admin/churchdirectory.script.php"/>
+        <zip destfile="packages/com_churchdirectory.zip">
+            <fileset dir="../" defaultexcludes="true">
+                <patternset>
+                    <exclude name="build/**"/>
+                </patternset>
+            </fileset>
+        </zip>
+    </target>
+
+    <!-- ============================================  -->
+    <!-- (DEFAULT)  Target: dist                       -->
+    <!-- ============================================  -->
+    <target name="dist" depends="build">
+        <echo msg="Creating archive..."/>
+
+        <tar destfile="./build/build.tar.gz" compression="gzip">
+            <fileset dir="./build">
+                <include name="*"/>
+            </fileset>
+        </tar>
+
+        <echo msg="Files copied and compressed in build directory OK!"/>
     </target>
 </project>

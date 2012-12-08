@@ -17,7 +17,7 @@ defined('_JEXEC') or die;
  * @package	ChurchDirectory.Site
  * @since 1.7.0
  */
-class ChurchDirectoryViewCategories extends JView {
+class ChurchDirectoryViewCategories extends JViewLegacy {
 
     /**
      * Protected state

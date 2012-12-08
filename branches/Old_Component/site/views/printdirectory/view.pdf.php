@@ -28,7 +28,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 jimport('joomla.application.component.view');
 
-class QContactsViewPrintDirectory extends JView {
+class QContactsViewPrintDirectory extends JViewLegacy {
 	function display($tpl = null)
 	{
 		global $mainframe;

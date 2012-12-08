@@ -211,13 +211,13 @@
                    type="text"
                    label="COM_CHURCHDIRECTORY_FIELD_ROWS_PER_PAGE_LABEL"
                    description="COM_CHURCHDIRECTORY_FIELD_ROWS_PER_PAGE_DESC"
-                   class="inputbox" size="30"
+                   class="inputbox" size="30" default="3"
 			/>
             <field name="items_per_row"
                    type="text"
                    label="COM_CHURCHDIRECTORY_FIELD_ITEMS_PER_ROW_LABEL"
                    description="COM_CHURCHDIRECTORY_ITEMS_PER_ROW_DESC"
-                   class="inputbox" size="30"
+                   class="inputbox" size="30" default="2"
 			/>
 
             <field name="dinitial_sort" type="list"
@@ -267,8 +267,8 @@
 
             <field name="dr_show_position"
                    type="list"
-                   description="COM_CHURCHDIRECTORY_FIELD_PARAMS_CONTACT_POSITION_DESC"
-                   label="COM_CHURCHDIRECTORY_FIELD_PARAMS_CONTACT_POSITION_LABEL"
+                   description="COM_CHURCHDIRECTORY_FIELD_SHOW_POSITION_DESC"
+                   label="COM_CHURCHDIRECTORY_FIELD_SHOW_POSITION_LABEL"
             >
                 <option value="">JGLOBAL_USE_GLOBAL</option>
                 <option value="0">JHIDE</option>

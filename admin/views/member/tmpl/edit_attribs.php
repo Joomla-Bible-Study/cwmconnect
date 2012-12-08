@@ -10,7 +10,7 @@ defined('_JEXEC') or die;
 //Predefine for Access
 $itemacess = $this->state->params->get('protectedaccess');
 $groups = $this->groups;
-if ($groups[$itemacess] != null) {
+if (isset($groups[$itemacess])) {
     $access = true;
 } else {
     $access = false;
