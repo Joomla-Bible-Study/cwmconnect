@@ -16,7 +16,7 @@ jimport('joomla.form.formfield');
  * @package	ChurchDirectory.Admin
  * @since		1.7.0
  */
-class JFormFieldModal_Member extends JFormField {
+class JFormFieldModal_Members extends JFormField {
 
     /**
      * The form field type.
@@ -24,7 +24,7 @@ class JFormFieldModal_Member extends JFormField {
      * @var		string
      * @since	1.7.0
      */
-    protected $type = 'Modal_Member';
+    protected $type = 'Modal_Members';
 
     /**
      * Method to get the field input markup.
@@ -33,9 +33,17 @@ class JFormFieldModal_Member extends JFormField {
      * @since	1.7.0
      */
     protected function getInput() {
-        // Load the javascript
-        //JHtml::_('behavior.framework');
-        JHtml::_('behavior.modal', 'a.modal');
+		jimport('joomla.version');
+		$version = new JVersion();
+
+		if ($version->RELEASE == '3.0') {
+			JHtml::_('behavior.framework');
+			JHtml::_('behavior.modal', 'a.modal');
+			JHtml::_('bootstrap.tooltip');
+		} else {
+        	// Load the javascript
+        	JHtml::_('behavior.modal', 'a.modal');
+		}
 
         // Build the script.
         $script = array();
@@ -55,20 +63,28 @@ class JFormFieldModal_Member extends JFormField {
                 ' FROM #__churchdirectory_details' .
                 ' WHERE id = ' . (int) $this->value
         );
-        $title = $db->loadResult();
 
-        if ($error = $db->getErrorMsg()) {
-            JError::raiseWarning(500, $error);
-        }
+		try
+		{
+			$title = $db->loadResult();
+		}
+		catch (RuntimeException $e)
+		{
+			JError::raiseWarning(500, $e->getMessage);
+		}
 
         if (empty($title)) {
-            $title = JText::_('COM_CHURCHDIRECTORY_SELECT_A_CONTACT');
+            $title = JText::_('COM_CHURCHDIRECTORY_SELECT_A_MEMBER');
         }
 
         $link = 'index.php?option=com_churchdirectory&amp;view=members&amp;layout=modal&amp;tmpl=component&amp;function=jSelectChart_' . $this->id;
+		if($version->RELEASE != '3.0'):
+			$button = '<div class="button2-left"><div class="blank"><a class="modal" title="' . JText::_('COM_CHURCHDIRECTORY_CHANGE_MEMBER_BUTTON') . '"  href="' . $link . '" rel="{handler: \'iframe\', size: {x: 800, y: 450}}">' . JText::_('COM_CHURCHDIRECTROY_CHANGE_MEMBER_BUTTON') . '</a></div></div>';
+		else:
+			$button = '<a class="modal btn" title="'.JText::_('COM_CONTACT_CHANGE_CONTACT_BUTTON').'"  href="'.$link.'" rel="{handler: \'iframe\', size: {x: 800, y: 450}}"><i class="icon-address hasTooltip" title="'.JText::_('COM_CONTACT_CHANGE_CONTACT_BUTTON').'"></i> '.JText::_('JSELECT').'</a>';
+		endif;
+		$html = "\n".'<div class="input-append"><input type="text" class="input-medium" id="'.$this->id.'_name" value="'.htmlspecialchars($title, ENT_QUOTES, 'UTF-8').'" disabled="disabled" />'.$button.'</div>'."\n";
 
-        $html = "\n" . '<div class="fltlft"><input type="text" id="' . $this->id . '_name" value="' . htmlspecialchars($title, ENT_QUOTES, 'UTF-8') . '" disabled="disabled" /></div>';
-        $html .= '<div class="button2-left"><div class="blank"><a class="modal" title="' . JText::_('COM_CHURCHDIRECTORY_CHANGE_CONTACT_BUTTON') . '"  href="' . $link . '" rel="{handler: \'iframe\', size: {x: 800, y: 450}}">' . JText::_('COM_CHURCHDIRECTROY_CHANGE_CONTACT_BUTTON') . '</a></div></div>' . "\n";
         // The active contact id field.
         if (0 == (int) $this->value) {
             $value = '';

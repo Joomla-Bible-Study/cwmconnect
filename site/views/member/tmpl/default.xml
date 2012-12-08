@@ -15,7 +15,7 @@
                   addfieldpath="/administrator/components/com_churchdirectory/models/fields"
         >
             <field name="id"
-                   type="modal_churchdirectory"
+                   type="modal_members"
                    description="COM_CHURCHDIRECTORY_SELECT_MEMBER_DESC"
                    label="COM_CHURCHDIRECTORY_SELECT_MEMBER_LABEL"
                    required="true"
