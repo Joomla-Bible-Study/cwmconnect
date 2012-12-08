@@ -19,7 +19,7 @@ jimport('joomla.mail.helper');
  * @package	ChurchDirectory.Site
  * @since 		1.7.0
  */
-class ChurchDirectoryViewDirectory extends JView {
+class ChurchDirectoryViewDirectory extends JViewLegacy {
 
     /**
      * Protected
@@ -89,20 +89,16 @@ class ChurchDirectoryViewDirectory extends JView {
         $doc = JFactory::getDocument();
         $doc->setMetaData('Content-Type', 'application/xml', true);
         //$doc->setMetaData('Content-Type', 'text/html', true);
-        // Check for errors.
-        if (count($errors = $this->get('Errors'))) {
-            JError::raiseWarning(500, implode("\n", $errors));
-            return false;
-        }
 
         // Check whether category access level allows access.
         $user = JFactory::getUser();
         $groups = $user->getAuthorisedViewLevels();
-        // Check for errors.
-        if (count($errors = $this->get('Errors'))) {
-            JError::raiseWarning(500, implode("\n", $errors));
-            return false;
-        }
+
+		// Check for errors.
+		if (count($errors = $this->get('Errors'))) {
+			JError::raiseWarning(500, implode("\n", $errors));
+			return false;
+		}
 
         if ($items == false) {
             JError::raiseError(404, JText::_('COM_CHURCHDIRECTOY_ERROR_DIRECTORY_NOT_FOUND'));
@@ -261,7 +257,7 @@ class ChurchDirectoryViewDirectory extends JView {
                     if (empty($row->image)) {
                         $kml[] = '<img src="' . JURI::base() . 'media/com_churchdirectory/images/photo_not_available.jpg" alt="Photo" width="100" hight="100" /><br />';
                     } else {
-                        $kml[] = '<img src="' . JURI::base() . DS . $row->image . '" alt="Photo" width="100" hight="100" /><br />';
+                        $kml[] = '<img src="' . JURI::base() . '/' . $row->image . '" alt="Photo" width="100" hight="100" /><br />';
                     }
                     if (!empty($row->id)) {
                         $kml[] = '<b>Position: ' . $row->id . '</b><br />';
@@ -310,12 +306,14 @@ class ChurchDirectoryViewDirectory extends JView {
      * @param array $args
      * @return array
      */
-    function groupit($args) {
+    protected  function groupit($args) {
+		$items = null;
+		$field = null;
         extract($args);
 
         $result = array();
-        foreach ($items as $item) {
-            if (!empty($item->$field))
+		foreach ($items as $item) {
+			if (!empty($item->$field))
                 $key = $item->$field;
             else
                 $key = 'nomatch';

@@ -8,7 +8,7 @@
 // no direct access
 defined('_JEXEC') or die;
 
-JHtml::core();
+JHtml::_('behavior.framework');
 
 $listOrder = $this->escape($this->state->get('list.ordering'));
 $listDirn = $this->escape($this->state->get('list.direction'));
@@ -87,8 +87,6 @@ $listDirn = $this->escape($this->state->get('list.direction'));
                     </tr>
                 </thead>
             <?php endif; ?>
-
-            <tbody>
                 <?php foreach ($this->items as $i => $item) : ?>
                     <?php if ($this->items[$i]->published == 0) : ?>
                         <tr class="system-unpublished cat-list-row<?php echo $i % 2; ?>">
@@ -179,9 +177,7 @@ $listDirn = $this->escape($this->state->get('list.direction'));
 
                     </tr>
                 <?php endforeach; ?>
-
-            </tbody>
-        </table>
+			</ul>
 
         <?php if ($this->params->get('show_pagination')) : ?>
             <div class="pagination">

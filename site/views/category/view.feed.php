@@ -1,15 +1,13 @@
 <?php
-
 /**
  * Feed view for Category
  * @package		ChurchDirectory.Site
  * @copyright           (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
  * @license		GNU General Public License version 2 or later; see LICENSE.txt
  */
+
 // No direct access
 defined('_JEXEC') or die;
-
-
 
 /**
  * HTML View class for the ChurchDirectory component
@@ -17,16 +15,13 @@ defined('_JEXEC') or die;
  * @package	ChurchDirectory.Site
  * @since       1.7.0
  */
-class ChurchDirectoryViewCategory extends JView {
+class ChurchDirectoryViewCategory extends JViewLegacy {
 
     /**
      * Display Function
      * @return boolean
      */
-    function display() {
-        // Get some data from the models
-        $category = $this->get('Category');
-        $rows = $this->get('Items');
+    public function display($tpl = null) {
 
         // Check for errors.
         if (count($errors = $this->get('Errors'))) {
@@ -38,6 +33,14 @@ class ChurchDirectoryViewCategory extends JView {
 
         $doc = JFactory::getDocument();
         $params = $app->getParams();
+		$feedEmail = $app->getCfg('feed_email', 'author');
+		$siteEmail = $app->getCfg('mailfrom');
+		$fromName  = $app->getCfg('fromname');
+
+		$app->input->set('limit', $app->getCfg('feed_limit'));
+		// Get some data from the models
+		$category = $this->get('Category');
+		$rows = $this->get('Items');
 
         $doc->link = JRoute::_(ChurchDirectoryHelperRoute::getCategoryRoute($category->id));
 
@@ -57,12 +60,23 @@ class ChurchDirectoryViewCategory extends JView {
             @$date = ($row->created ? date('r', strtotime($row->created)) : '');
 
             // load individual item creator class
-            $item = new JFeedItem();
-            $item->title = $title;
-            $item->link = $link;
-            $item->description = $description;
-            $item->date = $date;
-            $item->category = $row->category;
+			$item = new JFeedItem;
+			$item->title       = $title;
+			$item->link        = $link;
+			$item->description = $description;
+			$item->date        = $date;
+			$item->category    = $category->title;
+			$item->author      = $author;
+
+			// We don't have the author email so we have to use site in both cases.
+			if ($feedEmail == 'site')
+			{
+				$item->authorEmail = $siteEmail;
+			}
+			elseif ($feedEmail == 'author')
+			{
+				$item->authorEmail = $row->author_email;
+			}
 
             // loads item info into rss array
             $doc->addItem($item);

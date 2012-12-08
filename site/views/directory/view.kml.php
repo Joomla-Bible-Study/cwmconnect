@@ -19,7 +19,7 @@ jimport('joomla.mail.helper');
  * @package	ChurchDirectory.Site
  * @since 		1.7.0
  */
-class ChurchDirectoryViewDirectory extends JView {
+class ChurchDirectoryViewDirectory extends JViewLegacy {
 
     /**
      * Protected
@@ -76,7 +76,6 @@ class ChurchDirectoryViewDirectory extends JView {
      */
     function display($tpl = null) {
         $app = JFactory::getApplication();
-        $user = JFactory::getUser();
         // Get some data from the models
         $state = $this->get('State');
         $params = $state->params;
@@ -85,16 +84,9 @@ class ChurchDirectoryViewDirectory extends JView {
         $children = $this->get('Children');
         $parent = $this->get('Parent');
         $pagination = $this->get('Pagination');
-        //$dispatcher = JDispatcher::getInstance();
         $doc = JFactory::getDocument();
         $doc->setMetaData('Content-Type', 'application/vnd.google-earth.kml+xml', true);
         JResponse::setHeader('Content-disposition', 'attachment; filename="' . $items[0]->kml_alias . '.kml"', true);
-
-        // Check for errors.
-        if (count($errors = $this->get('Errors'))) {
-            JError::raiseWarning(500, implode("\n", $errors));
-            return false;
-        }
 
         // Check whether category access level allows access.
         $user = JFactory::getUser();
@@ -142,14 +134,14 @@ class ChurchDirectoryViewDirectory extends JView {
         $children = array($category->id => $children);
 
         $maxLevel = $params->get('maxLevel', -1);
-        $this->assignRef('maxLevel', $maxLevel);
-        $this->assignRef('state', $state);
-        $this->assignRef('items', $items);
-        $this->assignRef('category', $category);
-        $this->assignRef('children', $children);
-        $this->assignRef('params', $params);
-        $this->assignRef('parent', $parent);
-        $this->assignRef('pagination', $pagination);
+        $this->maxLevel = $maxLevel;
+        $this->state = $state;
+        $this->items = $items;
+        $this->category = $category;
+        $this->children = $children;
+        $this->params = $params;
+        $this->parent = $parent;
+        $this->pagination = $pagination;
 
         // Creates an array of strings to hold the lines of the KML file.
         $kml = array('<?xml version="1.0" encoding="UTF-8"?>');
@@ -192,7 +184,7 @@ class ChurchDirectoryViewDirectory extends JView {
         if ($items[0]->category_params->get('image') === null) {
             $kml[] = JURI::base() . 'media/com_churchdirectory/images/kml_icons/iconb.png';
         } else {
-            $kml[] = JURI::base() . DS . $items[0]->category_params->get('image');
+            $kml[] = JURI::base() . '/' . $items[0]->category_params->get('image');
         }
         $kml[] = '</href>';
         $kml[] = '</Icon>';
@@ -229,7 +221,7 @@ class ChurchDirectoryViewDirectory extends JView {
         if ($items[0]->category_params->get('image') === null) {
             $kml[] = JURI::base() . 'media/com_churchdirectory/images/kml_icons/iconb.png';
         } else {
-            $kml[] = JURI::base() . DS . $items[0]->category_params->get('image');
+            $kml[] = JURI::base() . '/' . $items[0]->category_params->get('image');
         }
         $kml[] = '</href>';
         $kml[] = '</Icon>';
@@ -271,6 +263,35 @@ class ChurchDirectoryViewDirectory extends JView {
                 $kml[] = ' <open>' . $ckml_params->get('msropen') . '</open>           	   <!-- boolean -->';
 
                 foreach ($rows as $row) {
+					// Compute lastname, firstname and middlename
+					$row->name = trim($row->name);
+
+					// "Lastname, Firstname Midlename" format support
+					// e.g. "de Gaulle, Charles"
+					$namearray = explode(',', $row->name);
+					if (count($namearray) > 1 ) {
+						$lastname = $namearray[0];
+						$card_name = $lastname;
+						$name_and_midname = trim($namearray[1]);
+
+						$firstname = '';
+						if (!empty($name_and_midname)) {
+							$namearray = explode(' ', $name_and_midname);
+
+							$firstname = $namearray[0];
+							$middlename = (count($namearray) > 1) ? $namearray[1] : '';
+							$card_name = $firstname . ' ' . ($middlename ? $middlename . ' ' : '') .  $card_name;
+						}
+					}
+					// "Firstname Middlename Lastname" format support
+					else {
+						$namearray = explode(' ', $row->name);
+
+						$middlename = (count($namearray) > 2) ? $namearray[1] : '';
+						$firstname = array_shift($namearray);
+						$lastname = count($namearray) ? end($namearray) : '';
+						$card_name = $firstname . ($middlename ? ' ' . $middlename : '') . ($lastname ? ' ' . $lastname : '');
+					}
                     $kml[] = '<Placemark id="placemark' . $mycounter++ . ' "> ';
                     $kml[] = '<name>' . $row->name . '</name>';
                     $kml[] = '<visibility>';
@@ -311,7 +332,7 @@ class ChurchDirectoryViewDirectory extends JView {
                     if (empty($row->image)) {
                         $kml[] = '<img src="' . JURI::base() . 'media/com_churchdirectory/images/photo_not_available.jpg" alt="Photo" width="100" hight="100" /><br />';
                     } else {
-                        $kml[] = '<img src="' . JURI::base() . DS . $row->image . '" alt="Photo" width="100" hight="100" /><br />';
+                        $kml[] = '<img src="' . JURI::base() . '/' . $row->image . '" alt="Photo" width="100" hight="100" /><br />';
                     }
                     if (!empty($row->id)) {
                         $kml[] = '<b>Position:</b> Fixing sitll need to implement<br />';
@@ -353,6 +374,7 @@ class ChurchDirectoryViewDirectory extends JView {
         $kml[] = '</kml>';
         $kmlOutput = join("\n", $kml);
         echo $kmlOutput;
+		return true;
     }
 
     /**
@@ -361,11 +383,13 @@ class ChurchDirectoryViewDirectory extends JView {
      * @return array
      */
     public function groupit($args) {
-        extract($args);
+		$items = null;
+		$field = null;
+		extract($args);
 
         $result = array();
         foreach ($items as $item) {
-            if (!empty($item->$field))
+			if (!empty($item->$field))
                 $key = $item->$field;
             else
                 $key = 'nomatch';
