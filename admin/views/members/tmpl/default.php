@@ -11,12 +11,13 @@ defined('_JEXEC') or die;
 JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 if (CHURCHDIRECTORY_CHECKREL === TRUE):
     JHtml::_('bootstrap.tooltip');
+	JHtml::_('behavior.multiselect');
     JHtml::_('dropdown.init');
     JHtml::_('formbehavior.chosen', 'select');
 else :
+	JHtml::_('behavior.multiselect');
     JHtml::_('behavior.tooltip');
 endif;
-JHtml::_('behavior.multiselect');
 
 $user = JFactory::getUser();
 $userId = $user->get('id');
@@ -28,7 +29,7 @@ $canOrder = $user->authorise('core.edit.state', 'com_churchdirectory.category');
 $saveOrder = $listOrder == 'a.ordering';
 if ($saveOrder) {
     $saveOrderingUrl = 'index.php?option=com_churchdirectroy&task=memberss.saveOrderAjax&tmpl=component';
-    JHtml::_('sortablelist.sortable', 'articleList', 'adminForm', strtolower($listDirn), $saveOrderingUrl);
+    //JHtml::_('sortablelist.sortable', 'articleList', 'adminForm', strtolower($listDirn), $saveOrderingUrl);
 }
 $sortFields = $this->getSortFields();
 ?>

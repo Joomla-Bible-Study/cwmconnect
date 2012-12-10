@@ -292,7 +292,7 @@ CREATE TABLE IF NOT EXISTS `#__churchdirectory_update` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `version` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
 
 --
 -- Dumping data for table `#__churchdirectory_update`
@@ -302,4 +302,5 @@ INSERT INTO `#__churchdirectory_update` (`id`, `version`) VALUES
 (1, '1.7.1'),
 (2, '1.7.2'),
 (3, '1.7.3'),
-(4, '1.7.4');
+(4, '1.7.4'),
+(5, '1.7.5');

@@ -57,7 +57,7 @@ $cparams = JComponentHelper::getParams('com_media');
 
 	<?php if ($this->member->con_position && $this->params->get('show_position')) : ?>
 	<?php
-	if ($this->member->con_position['0'] !== '' && $this->member->con_position['0'] !== '-1'): ?>
+	if ($this->member->con_position !== '' && $this->member->con_position['0'] !== '-1'): ?>
         <div id="position-header">
             <h4>Position: </h4>
         </div>

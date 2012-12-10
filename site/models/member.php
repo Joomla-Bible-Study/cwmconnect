@@ -50,7 +50,7 @@ class ChurchDirectoryModelMember extends JModelForm {
         $app = JFactory::getApplication('site');
 
         // Load state from the request.
-        $pk = JRequest::getInt('id');
+        $pk = $app->input->getInt('id');
         $this->setState('member.id', $pk);
 
         // Load the parameters.
@@ -121,9 +121,24 @@ class ChurchDirectoryModelMember extends JModelForm {
                 $db = $this->getDbo();
                 $query = $db->getQuery(true);
 
-                $query->select($this->getState('item.select', 'a.*') . ','
-                        . ' CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug, '
-                        . ' CASE WHEN CHAR_LENGTH(c.alias) THEN CONCAT_WS(\':\', c.id, c.alias) ELSE c.id END AS catslug ');
+				//sqlsrv changes
+				$case_when = ' CASE WHEN ';
+				$case_when .= $query->charLength('a.alias', '!=', '0');
+				$case_when .= ' THEN ';
+				$a_id = $query->castAsChar('a.id');
+				$case_when .= $query->concatenate(array($a_id, 'a.alias'), ':');
+				$case_when .= ' ELSE ';
+				$case_when .= $a_id.' END as slug';
+
+				$case_when1 = ' CASE WHEN ';
+				$case_when1 .= $query->charLength('c.alias', '!=', '0');
+				$case_when1 .= ' THEN ';
+				$c_id = $query->castAsChar('c.id');
+				$case_when1 .= $query->concatenate(array($c_id, 'c.alias'), ':');
+				$case_when1 .= ' ELSE ';
+				$case_when1 .= $c_id.' END as catslug';
+
+				$query->select($this->getState('item.select', 'a.*') . ','.$case_when.','.$case_when1);
                 $query->from('#__churchdirectory_details AS a');
 
                 // Join on category table.
@@ -135,6 +150,7 @@ class ChurchDirectoryModelMember extends JModelForm {
                 $query->select('parent.title as parent_title, parent.id as parent_id, parent.path as parent_route, parent.alias as parent_alias');
                 $query->join('LEFT', '#__categories as parent ON parent.id = c.parent_id');
 
+				// Join over the family Unit to get info
                 $query->select('fu.name as fu_name, fu.id as fu_id, fu.description as fu_description');
                 $query->join('LEFT', '#__churchdirectory_familyunit AS fu ON fu.id = a.funitid');
 
@@ -163,12 +179,12 @@ class ChurchDirectoryModelMember extends JModelForm {
                 }
 
                 if (empty($data)) {
-                    throw new JException(JText::_('COM_CHURCHDIRECTORY_ERROR_CONTACT_NOT_FOUND'), 404);
+                    throw new JException(JText::_('COM_CHURCHDIRECTORY_ERROR_MEMBER_NOT_FOUND'), 404);
                 }
 
                 // Check for published state if filter set.
                 if (((is_numeric($published)) || (is_numeric($archived))) && (($data->published != $published) && ($data->published != $archived))) {
-                    JError::raiseError(404, JText::_('COM_CHURCHDIRECTORY_ERROR_CONTACT_NOT_FOUND'));
+                    JError::raiseError(404, JText::_('COM_CHURCHDIRECTORY_ERROR_MEMBER_NOT_FOUND'));
                 }
 
                 // Convert parameter fields to objects.
@@ -202,7 +218,7 @@ class ChurchDirectoryModelMember extends JModelForm {
                 }
 
                 $this->_item[$pk] = $data;
-            } catch (JException $e) {
+            } catch (Exception $e) {
                 $this->setError($e);
                 $this->_item[$pk] = false;
             }
@@ -232,11 +248,28 @@ class ChurchDirectoryModelMember extends JModelForm {
 
         $query = $db->getQuery(true);
         if ($pk) {
-            $query->select('a.*, cc.access as category_access, cc.title as category_name, '
-                    . ' CASE WHEN CHAR_LENGTH(a.alias) THEN CONCAT_WS(\':\', a.id, a.alias) ELSE a.id END as slug, '
-                    . ' CASE WHEN CHAR_LENGTH(cc.alias) THEN CONCAT_WS(\':\', cc.id, cc.alias) ELSE cc.id END AS catslug ');
+			//sqlsrv changes
+			$case_when = ' CASE WHEN ';
+			$case_when .= $query->charLength('a.alias', '!=', '0');
+			$case_when .= ' THEN ';
+			$a_id = $query->castAsChar('a.id');
+			$case_when .= $query->concatenate(array($a_id, 'a.alias'), ':');
+			$case_when .= ' ELSE ';
+			$case_when .= $a_id.' END as slug';
 
-            $query->from('#__churchdirectory_details AS a');
+			$case_when1 = ' CASE WHEN ';
+			$case_when1 .= $query->charLength('cc.alias', '!=', '0');
+			$case_when1 .= ' THEN ';
+			$c_id = $query->castAsChar('cc.id');
+			$case_when1 .= $query->concatenate(array($c_id, 'cc.alias'), ':');
+			$case_when1 .= ' ELSE ';
+			$case_when1 .= $c_id.' END as catslug';
+			$query->select(
+				'a.*, cc.access as category_access, cc.title as category_name, '
+						. $case_when . ',' . $case_when1
+			);
+
+			$query->from('#__contact_details AS a');
 
             $query->join('INNER', '#__categories AS cc on cc.id = a.catid');
 
@@ -259,7 +292,7 @@ class ChurchDirectoryModelMember extends JModelForm {
                 }
 
                 if (empty($result)) {
-                    throw new JException(JText::_('COM_CHURCHDIRECTORY_ERROR_CONTACT_NOT_FOUND'), 404);
+                    throw new JException(JText::_('COM_CHURCHDIRECTORY_ERROR_MEMBER_NOT_FOUND'), 404);
                 }
 
                 // If we are showing a member list, then the member parameters take priority
