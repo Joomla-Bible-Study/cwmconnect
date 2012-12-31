@@ -2,16 +2,16 @@
 <phpdocumentor>
   <parser>
       <default-package-name>ChurchDirecory</default-package-name>
-      <target>documintation/phpdoc</target>
+      <target>docs/phpdoc</target>
   </parser>
   <transformer>
-    <target>ocumintation/phpdoc</target>
+    <target>docs/phpdoc</target>
   </transformer>
   <files>
     <directory>.</directory>
-    <ignore>testing/*</ignore>
-    <ignore>documentaion/*</ignore>
-    <ignore>development/branches/*</ignore>
+    <ignore>tests/*</ignore>
+    <ignore>docs/*</ignore>
+    <ignore>branches/*</ignore>
   </files>
     <plugins>
         <plugin path="Core">
