@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="module" version="2.5" method="upgrade" client="site">
+    <name>mod_birthdayanniversary</name>
+    <author>Joomla Bible Study Team</author>
+    <creationDate>July 2012</creationDate>
+    <copyright>(C) 2007-2012 Joomla Bible Study</copyright>
+    <license>GPL/GNU</license>
+    <authorEmail>info@joomlabiblestudy.org</authorEmail>
+    <authorUrl>http://www.joomlabiblestudy.org</authorUrl>
+    <version>1.7.3</version>
+    <description>MOD_BIRTHDAYANNIVERSARY_XML_DESCRIPTION</description>
+    <files>
+        <filename module="mod_birthdayanniversary">mod_birthdayanniversary.php</filename>
+        <folder>tmpl</folder>
+        <folder>language</folder>
+        <filename>index.html</filename>
+        <filename>helper.php</filename>
+        <filename>mod_birthdayanniversary.xml</filename>
+    </files>
+
+    <help key="JHELP_EXTENSIONS_MODULE_MANAGER_WEBLINKS" />
+    <config>
+        <fields name="params">
+            <fieldset name="basic">
+                <field
+                    name="catid"
+                    type="category"
+                    extension="com_churchdirectory"
+                    label="JCATEGORY"
+                    description="MOD_BIRTHDAYANNIVERSARY_FIELD_CATEGORY_DESC" default="0">
+                    <option value="0">MOD_BIRTHDAYANNIVERSARY_FIELD_VALUE_CATEGORY</option>
+                </field>
+                <field
+                    name="show_page_heading"
+                    type="radio"
+                    default="1"
+                    label="MOD_BIRTHDAYANNIVERSARY_FIELD_SHOW_PAGE_HEADING_LABEL"
+                    description="MOD_BIRTHDAYANNIVERSARY_FIELD_SHOW_PAGE_HEADING_DESC">
+                    <option value="1">JSHOW</option>
+                    <option value="0">JHIDE</option>
+                </field>
+            </fieldset>
+            <fieldset
+                name="advanced">
+                <field
+                    name="layout"
+                    type="modulelayout"
+                    label="JFIELD_ALT_LAYOUT_LABEL"
+                    description="JFIELD_ALT_MODULE_LAYOUT_DESC" />
+                <field
+                    name="moduleclass_sfx"
+                    type="text"
+                    label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
+                    description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
+                <field
+                    name="cache"
+                    type="list"
+                    default="1"
+                    label="COM_MODULES_FIELD_CACHING_LABEL"
+                    description="COM_MODULES_FIELD_CACHING_DESC">
+                    <option
+                        value="1">JGLOBAL_USE_GLOBAL
+                    </option>
+                    <option
+                        value="0">COM_MODULES_FIELD_VALUE_NOCACHING
+                    </option>
+                </field>
+                <field
+                    name="cache_time"
+                    type="text"
+                    default="900"
+                    label="COM_MODULES_FIELD_CACHE_TIME_LABEL"
+                    description="COM_MODULES_FIELD_CACHE_TIME_DESC" />
+                <field
+                    name="cachemode"
+                    type="hidden"
+                    default="static">
+                    <option
+                        value="static">
+                    </option>
+                </field>
+            </fieldset>
+        </fields>
+    </config>
+
+    <!-- UPDATESERVER DEFINITION -->
+    <updateservers>
+        <!-- Note: No spaces or linebreaks allowed between the server tags -->
+        <server type="extension" priority="1" name="Joomla Bible Study Module"><![CDATA[http://www.joomlabiblestudy.org/index.php?option=com_ars&view=update&task=stream&format=xml&id=823&dummy=extension.xml]]>
+        </server>
+    </updateservers>
+
+	<!--  Dependencies -->
+	<dependencies>
+		<dependency type="platform" name="joomla" operator="=" version="2.5" />
+                <dependency type="component" name="com_churchdirectory" operator="=" version="1.7" />
+	</dependencies>
+</extension>
