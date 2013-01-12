@@ -35,7 +35,7 @@ class ChurchDirectoryModelDirHeaders extends JModelList {
                 'checked_out_time', 'a.checked_out_time',
                 'user_id', 'a.user_id',
                 'catid', 'a.catid',
-                'state', 'a.state',
+                'published', 'a.published',
                 'access', 'a.access', 'access_level',
                 'created', 'a.created',
                 'created_by', 'a.created_by',

@@ -12,7 +12,7 @@ defined('_JEXEC') or die();
 /**
  * The Live Update MVC view
  */
-class LiveUpdateView extends JView
+class LiveUpdateView extends JViewLegacy
 {
 	public function display($tpl = null)
 	{

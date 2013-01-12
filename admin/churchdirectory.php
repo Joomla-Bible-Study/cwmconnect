@@ -19,7 +19,7 @@ if (!JFactory::getUser()->authorise('core.manage', 'com_churchdirectory')) {
 }
 
 require_once(JPATH_COMPONENT_ADMINISTRATOR . '/liveupdate/liveupdate.php');
-if (JRequest::getCmd('view', '') == 'liveupdate') {
+if (JFactory::getApplication()->input->get('view', '') == 'liveupdate') {
     LiveUpdate::handleRequest();
     return;
 }
@@ -31,7 +31,7 @@ JLoader::register('ChurchDirectoryHelper', dirname(__FILE__) . '/helpers/churchd
 $controller = JControllerLegacy::getInstance('Churchdirectory');
 
 // Perform the Request task
-$controller->execute(JRequest::getCmd('task'));
+$controller->execute(JFactory::getApplication()->input->get('task'));
 
 // Redirect if set by the controller
 $controller->redirect();
@@ -42,6 +42,6 @@ $controller->redirect();
  * @since   1.7.0
  */
 function addCSS() {
-    JHTML::stylesheet('media/com_churchdirectory/css/general.css');
-    JHTML::stylesheet('media/com_churchdirectory/css/icons.css');
+    //JHTML::stylesheet('media/com_churchdirectory/css/general.css');
+    //JHTML::stylesheet('media/com_churchdirectory/css/icons.css');
 }

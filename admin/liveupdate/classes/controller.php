@@ -7,12 +7,12 @@
 
 defined('_JEXEC') or die();
 
-jimport('joomla.application.component.controller');
+jimport('joomla.application.component.controllerlegacy');
 
 /**
  * The Live Update MVC controller
  */
-class LiveUpdateController extends JController
+class LiveUpdateController extends JControllerLegacy
 {
 	private $jversion = '15';
 
@@ -172,7 +172,7 @@ class LiveUpdateController extends JController
 	 * Displays the current view
 	 * @param bool $cachable Ignored!
 	 */
-	public final function display($cachable = false)
+	public final function display($cachable = false, $urlparams = false)
 	{
 		$viewLayout	= JRequest::getCmd( 'layout', 'default' );
 
