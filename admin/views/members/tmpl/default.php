@@ -7,8 +7,9 @@
 // No direct access
 defined('_JEXEC') or die;
 
+$version   = version_compare(JVERSION, '3.0', 'ge');
 JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
-if (CHURCHDIRECTORY_CHECKREL):
+if ($version):
 	JHtml::_('bootstrap.tooltip');
 	JHtml::_('behavior.multiselect');
 	JHtml::_('dropdown.init');
@@ -26,7 +27,7 @@ $archived  = $this->state->get('filter.published') == 2 ? true : false;
 $trashed   = $this->state->get('filter.published') == -2 ? true : false;
 $canOrder  = $user->authorise('core.edit.state', 'com_churchdirectory.category');
 $saveOrder = $listOrder == 'a.ordering';
-if ($saveOrder && CHURCHDIRECTORY_CHECKREL)
+if ($saveOrder && $version)
 {
 	$saveOrderingUrl = 'index.php?option=com_churchdirectroy&task=memberss.saveOrderAjax&tmpl=component';
 	JHtml::_('sortablelist.sortable', 'articleList', 'adminForm', strtolower($listDirn), $saveOrderingUrl);
@@ -56,26 +57,26 @@ $sortFields = $this->getSortFields();
         <?php else : ?>
             <div id="j-main-container">
             <?php endif; ?>
-<?php if (CHURCHDIRECTORY_CHECKREL): ?>
-                <div id="filter-bar" class="btn-toolbar">
-                    <div class="filter-search btn-group pull-left">
-                        <label for="filter_search"
-                               class="element-invisible"><?php echo JText::_('JSEARCH_FILTER_LABEL'); ?></label>
-                        <input type="text" name="filter_search" id="filter_search"
-                               value="<?php echo $this->escape($this->state->get('filter.search')); ?>"
-                               title="<?php echo JText::_('COM_CHURCHDIRECTORY_SEARCH_IN_NAME'); ?>"/>
-                    </div>
-    <div class="btn-group pull-left">
+<div id="filter-bar" class="btn-toolbar">
+    <div class="fltlft filter-search btn-group pull-left">
+        <label for="filter_search"
+               class="element-invisible"><?php echo JText::_('JSEARCH_FILTER_LABEL'); ?></label>
+        <input type="text" name="filter_search" id="filter_search"
+               value="<?php echo $this->escape($this->state->get('filter.search')); ?>"
+               title="<?php echo JText::_('COM_CHURCHDIRECTORY_SEARCH_IN_NAME'); ?>"/>
+    </div>
+    <div class="filter-search fltlft btn-group pull-left">
         <button type="submit"><?php echo JText::_('JSEARCH_FILTER_SUBMIT'); ?></button>
         <button type="button"
                 onclick="document.id('filter_search').value='';this.form.submit();"><?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?></button>
     </div>
-    <div class="btn-group pull-right hidden-phone">
+	<?php if ($version): ?>
+    <div class="filter-select fltrt btn-group pull-right hidden-phone">
         <label for="limit"
                class="element-invisible"><?php echo JText::_('JFIELD_PLG_SEARCH_SEARCHLIMIT_DESC'); ?></label>
 		<?php echo $this->pagination->getLimitBox(); ?>
     </div>
-    <div class="btn-group pull-right hidden-phone">
+    <div class="filter-select fltrt btn-group pull-right hidden-phone">
         <label for="directionTable" class="element-invisible"><?php echo JText::_('JFIELD_ORDERING_DESC'); ?></label>
         <select name="directionTable" id="directionTable" class="input-medium" onchange="Joomla.orderTable()">
             <option value=""><?php echo JText::_('JFIELD_ORDERING_DESC'); ?></option>
@@ -83,24 +84,14 @@ $sortFields = $this->getSortFields();
             <option value="desc" <?php if ($listDirn == 'desc') echo 'selected="selected"'; ?>><?php echo JText::_('JGLOBAL_ORDER_DESCENDING'); ?></option>
         </select>
     </div>
-    <div class="btn-group pull-right">
+    <div class="filter-select fltrt btn-group pull-right">
         <label for="sortTable" class="element-invisible"><?php echo JText::_('JGLOBAL_SORT_BY'); ?></label>
         <select name="sortTable" id="sortTable" class="input-medium" onchange="Joomla.orderTable()">
             <option value=""><?php echo JText::_('JGLOBAL_SORT_BY'); ?></option>
 			<?php echo JHtml::_('select.options', $sortFields, 'value', 'text', $listOrder); ?>
         </select>
     </div>
-	<?php endif; ?>
-<?php if (!CHURCHDIRECTORY_CHECKREL): ?>
-    <div class="filter-search fltlft">
-        <label class="filter-search-lbl" for="filter_search"><?php echo JText::_('JSEARCH_FILTER_LABEL'); ?></label>
-        <input type="text" name="filter_search" id="filter_search"
-               value="<?php echo $this->escape($this->state->get('filter.search')); ?>"
-               title="<?php echo JText::_('COM_CHURCHDIRECTORY_SEARCH_IN_NAME'); ?>"/>
-        <button type="submit"><?php echo JText::_('JSEARCH_FILTER_SUBMIT'); ?></button>
-        <button type="button"
-                onclick="document.id('filter_search').value='';this.form.submit();"><?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?></button>
-    </div>
+	<?php else : ?>
     <div class="filter-select fltrt">
         <select name="filter_published" class="inputbox" onchange="this.form.submit()">
             <option value=""><?php echo JText::_('JOPTION_SELECT_PUBLISHED'); ?></option>
@@ -177,44 +168,7 @@ $sortFields = $this->getSortFields();
 		?>
     <tr class="row<?php echo $i % 2; ?>" sortable-group-id="<?php echo $item->catid?>">
         <td class="order nowrap center hidden-phone">
-
-	        <?php if(CHURCHDIRECTORY_CHECKREL){
-			 if ($canChange) :
-			$disableClassName = '';
-			$disabledLabel    = '';
-			if (!$saveOrder) :
-				$disabledLabel    = JText::_('JORDERINGDISABLED');
-				$disableClassName = 'inactive tip-top';
-			endif; ?>
-            <span class="sortable-handler hasTooltip<?php echo $disableClassName?>" title="<?php echo $disabledLabel?>">
-								<i class="icon-menu"></i>
-							</span>
-            <input type="text" style="display:none" name="order[]" size="5"
-                   value="<?php echo $item->ordering;?>" class="width-20 text-area-order "/>
-			<?php else : ?>
-            <span class="sortable-handler inactive">
-								<i class="icon-menu"></i>
-							</span>
-			<?php endif;
-	        }
-	        else{ ?>
-	        <?php if ($canChange) : ?>
-	        <?php if ($saveOrder) : ?>
-		        <?php if ($listDirn == 'asc') : ?>
-                    <span><?php echo $this->pagination->orderUpIcon($i, ($item->catid == @$this->items[$i - 1]->catid), 'members.orderup', 'JLIB_HTML_MOVE_UP', $ordering); ?></span>
-                    <span><?php echo $this->pagination->orderDownIcon($i, $n, ($item->catid == @$this->items[$i + 1]->catid), 'members.orderdown', 'JLIB_HTML_MOVE_DOWN', $ordering); ?></span>
-			        <?php elseif ($listDirn == 'desc') : ?>
-                    <span><?php echo $this->pagination->orderUpIcon($i, ($item->catid == @$this->items[$i - 1]->catid), 'members.orderdown', 'JLIB_HTML_MOVE_UP', $ordering); ?></span>
-                    <span><?php echo $this->pagination->orderDownIcon($i, $n, ($item->catid == @$this->items[$i + 1]->catid), 'members.orderup', 'JLIB_HTML_MOVE_DOWN', $ordering); ?></span>
-			        <?php endif; ?>
-		        <?php endif; ?>
-	        <?php $disabled = $saveOrder ? '' : 'disabled="disabled"'; ?>
-            <input type="text" name="order[]" size="5" value="<?php echo $item->ordering; ?>" <?php echo $disabled ?> class="text-area-order" />
-	        <?php else : ?>
-	        <?php echo $item->ordering; ?>
-	        <?php endif; ?>
-	        <?php } ?>
-        </td>
+			<?php echo ChurchDirectoryHelper::ordering($canChange, $saveOrder, $item, $this->items, $ordering, $i, $n, 'members', $this->pagination, $listDirn); ?>
         <td class="center hidden-phone">
 			<?php echo JHtml::_('grid.id', $i, $item->id); ?>
         </td>
@@ -242,7 +196,7 @@ $sortFields = $this->getSortFields();
             </div>
             <div class="pull-left">
 				<?php
-				if (CHURCHDIRECTORY_CHECKREL)
+				if ($version)
 				{
 					// Create dropdown items
 					JHtml::_('dropdown.edit', $item->id, 'member.');
@@ -311,7 +265,7 @@ $sortFields = $this->getSortFields();
     </tr>
 		<?php endforeach; ?>
     </tbody>
-	<?php if (CHURCHDIRECTORY_CHECKREL): ?>
+	<?php if ($version): ?>
     <tfoot>
     <tr>
         <td colspan="11">

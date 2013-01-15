@@ -64,13 +64,6 @@ class ChurchDirectoryViewMembers extends JViewLegacy
 			return false;
 		}
 
-		// Preprocess the list of items to find ordering divisions.
-		// TODO: Complete the ordering stuff with nested sets
-		foreach ($this->items as &$item) {
-			$item->order_up = true;
-			$item->order_dn = true;
-		}
-
 		// Set the toolbar
 		$this->addToolbar();
 

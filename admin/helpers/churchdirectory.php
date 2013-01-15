@@ -186,14 +186,25 @@ class ChurchDirectoryHelper
 	}
 
 	/**
-	 * Ordering for list views
+	 * Ordering presentation for list display
 	 *
-	 * @return string
+	 * @param   string  $canChange   True if can false if cannot change
+	 * @param   string  $saveOrder   True if can false if cannot order
+	 * @param   object  $item        Item information
+	 * @param   object  $items       Array of item information
+	 * @param   string  $ordering    Number of position in ordering
+	 * @param   int     $i           Number that record on
+	 * @param   int     $n           Number of records.
+	 * @param   string  $controller  Controller name
+	 * @param   string  $pagination  Paginatioin system
+	 * @param   string  $listDirn    asc or desc for direction of list
+	 *
+	 * @return null|string
 	 */
-	public static function ordering($canChange, $saveOrder, $item, $items, $ordering, $i, $controller, $pagination, $listDirn)
+	public static function ordering($canChange, $saveOrder, $item, $items, $ordering, $i, $n, $controller, $pagination, $listDirn)
 	{
 		$html = null;
-		if (CHURCHDIRECTORY_CHECKREL)
+		if (version_compare(JVERSION, '3.0', 'ge'))
 		{
 			if ($canChange)
 			{
@@ -209,7 +220,7 @@ class ChurchDirectoryHelper
 								<i class="icon-menu"></i>
 							</span>
             <input type="text" style="display:none" name="order[]" size="5"
-                   value="' . $item->ordering . '" class="width-20 text-area-order "/>'
+                   value="' . $item->ordering . '" class="width-20 text-area-order "/>';
 			}
 			else
 			{
@@ -220,23 +231,35 @@ class ChurchDirectoryHelper
 		}
 		else
 		{
-			?>
-		<?php if ($canChange) { ?>
-		<?php if ($saveOrder) { ?>
-			<?php if ($listDirn == 'asc') {
-					$html = '<span>' . $pagination->orderUpIcon($i, ($item->catid == @$items[$i - 1]->catid), $controller . '.orderup', 'JLIB_HTML_MOVE_UP', $ordering) . '</span>';
-					$html .= '<span>' . $pagination->orderDownIcon($i, $n, ($item->catid == @$items[$i + 1]->catid), $controller . '.orderdown', 'JLIB_HTML_MOVE_DOWN', $ordering) . '</span>';
-				elseif ($listDirn == 'desc') {
-					$html .= '<span>' . $pagination->orderUpIcon($i, ($item->catid == @$items[$i - 1]->catid), $controller . '.orderdown', 'JLIB_HTML_MOVE_UP', $ordering) . '</span>';
-					$html .= '<span>' . $pagination->orderDownIcon($i, $n, ($item->catid == @$items[$i + 1]->catid), $controller . '.orderup', 'JLIB_HTML_MOVE_DOWN', $ordering) . '</span>';
-				} ?>
-			<?php } ?>
-		<?php $disabled = $saveOrder ? '' : 'disabled="disabled"';
-			$html .= '<input type="text" name="order[]" size="5" value="' . $item->ordering . '"' . $disabled . ' class="text-area-order"/>';
-			} else { ?>
-		<?php $html .= $item->ordering; ?>
-		<?php } ?>
-		<?php
+			if ($canChange)
+			{
+				if ($saveOrder)
+				{
+					if ($listDirn == 'asc')
+					{
+						$html = '<span>' . $pagination->orderUpIcon($i, ($item->catid == @$items[$i - 1]->catid), $controller . '.orderup', 'JLIB_HTML_MOVE_UP', $ordering) . '</span>';
+						$html .= '<span>' . $pagination->orderDownIcon($i, $n, ($item->catid == @$items[$i + 1]->catid), $controller . '.orderdown', 'JLIB_HTML_MOVE_DOWN', $ordering) . '</span>';
+					}
+					elseif ($listDirn == 'desc')
+					{
+						$html = '<span>';
+						$html .= $pagination->orderUpIcon($i, ($item->catid == @$items[$i - 1]->catid), $controller . '.orderdown', 'JLIB_HTML_MOVE_UP', $ordering);
+						$html .= '</span>';
+						$html .= '<span>';
+						$html .= $pagination->orderDownIcon(
+							$i, $n, ($item->catid == @$items[$i + 1]->catid), $controller .
+							'.orderup', 'JLIB_HTML_MOVE_DOWN', $ordering
+						);
+						$html .= '</span>';
+					}
+				}
+				$disabled = $saveOrder ? '' : 'disabled="disabled"';
+				$html .= '<input type="text" name="order[]" size="5" value="' . $item->ordering . '"' . $disabled . ' class="text-area-order"/>';
+			}
+			else
+			{
+				$html .= $item->ordering;
+			}
 		}
 
 		return $html;
