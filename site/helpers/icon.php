@@ -1,90 +1,112 @@
 <?php
-
 /**
- * Icon creation helper
- * @package	ChurchDirectory.Site
- * @copyright	Copyright (C) 2005 - 2011 Open Source Matters, Inc. All rights reserved.
- * @license	GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    ChurchDirectory.Site
+ * @copyright  Copyright (C) 2005 - 2011 Open Source Matters, Inc. All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-// no direct access
+
 defined('_JEXEC') or die;
 
 /**
  * Class for Html Icons
+ *
+ * @package  ChurchDirectory.Site
+ * @since    1.7.1
  */
-class JHtmlIcon {
+class JHtmlIcon
+{
 
-    /**
-     * Icon for email
-     * @param string $churchdirectory
-     * @param array $params
-     * @param array $attribs
-     * @return string
-     */
-    static function email($churchdirectory, $params, $attribs = array()) {
-        require_once(JPATH_SITE . '/components/com_mailto/helpers/mailto.php');
-        $uri = JURI::getInstance();
-        $base = $uri->toString(array('scheme', 'host', 'port'));
-        $link = $base . JRoute::_(ContentHelperRoute::getArticleRoute($article->slug, $article->catid), false);
-        $url = 'index.php?option=com_mailto&tmpl=component&link=' . MailToHelper::addLink($link);
+	/**
+	 * Icon for email
+	 *
+	 * @param   object  $member   ?
+	 * @param   object  $params   ?
+	 * @param   array   $attribs  ?
+	 *
+	 * @return string
+	 */
+	public static function email($member, $params, $attribs = array())
+	{
+		require_once JPATH_SITE . '/components/com_mailto/helpers/mailto.php';
+		$uri  = JURI::getInstance();
+		$base = $uri->toString(array('scheme', 'host', 'port'));
+		$link = $base . JRoute::_(ContentHelperRoute::getArticleRoute($churchdirectory->slug, $churchdirectory->catid), false);
+		$url  = 'index.php?option=com_mailto&tmpl=component&link=' . MailToHelper::addLink($link);
 
-        $status = 'width=400,height=350,menubar=yes,resizable=yes';
+		$status = 'width=400,height=350,menubar=yes,resizable=yes';
 
-        if ($params->get('show_icons')) {
-            $text = JHtml::_('image', 'system/emailButton.png', JText::_('JGLOBAL_EMAIL'), NULL, true);
-        } else {
-            $text = '&#160;' . JText::_('JGLOBAL_EMAIL');
-        }
+		if ($params->get('show_icons'))
+		{
+			$text = JHtml::_('image', 'system/emailButton.png', JText::_('JGLOBAL_EMAIL'), null, true);
+		}
+		else
+		{
+			$text = '&#160;' . JText::_('JGLOBAL_EMAIL');
+		}
 
-        $attribs['title'] = JText::_('JGLOBAL_EMAIL');
-        $attribs['onclick'] = "window.open(this.href,'win2','" . $status . "'); return false;";
+		$attribs['title']   = JText::_('JGLOBAL_EMAIL');
+		$attribs['onclick'] = "window.open(this.href,'win2','" . $status . "'); return false;";
 
-        $output = JHtml::_('link', JRoute::_($url), $text, $attribs);
-        return $output;
-    }
+		$output = JHtml::_('link', JRoute::_($url), $text, $attribs);
 
-    /**
-     * Print Popup
-     * @param string $article
-     * @param array $params
-     * @param array $attribs
-     * @return string
-     */
-    static function print_popup($article, $params, $attribs = array()) {
-        $url = ContentHelperRoute::getChurchDirectoryRoute($churchdirectory->slug, $churchdirectory->catid);
-        $url .= '&tmpl=component&print=1&layout=default&page=' . @ $request->limitstart;
+		return $output;
+	}
 
-        $status = 'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no';
+	/**
+	 * Print Popup
+	 *
+	 * @param   object  $member   ?
+	 * @param   object  $params   ?
+	 * @param   array   $attribs  ?
+	 *
+	 * @return string
+	 */
+	public static function print_popup($member, $params, $attribs = array())
+	{
+		$url = ChurchDirectoryHelperRoute::getMemberRoute($member->slug, $member->catid);
+		$url .= '&tmpl=component&print=1&layout=default';
 
-        // checks template image directory for image, if non found default are loaded
-        if ($params->get('show_icons')) {
-            $text = JHtml::_('image', 'system/printButton.png', JText::_('JGLOBAL_PRINT'), NULL, true);
-        } else {
-            $text = JText::_('JGLOBAL_ICON_SEP') . '&#160;' . JText::_('JGLOBAL_PRINT') . '&#160;' . JText::_('JGLOBAL_ICON_SEP');
-        }
+		$status = 'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no';
 
-        $attribs['title'] = JText::_('JGLOBAL_PRINT');
-        $attribs['onclick'] = "window.open(this.href,'win2','" . $status . "'); return false;";
-        $attribs['rel'] = 'nofollow';
+		// Checks template image directory for image, if non found default are loaded
+		if ($params->get('show_icons'))
+		{
+			$text = JHtml::_('image', 'system/printButton.png', JText::_('JGLOBAL_PRINT'), null, true);
+		}
+		else
+		{
+			$text = JText::_('JGLOBAL_ICON_SEP') . '&#160;' . JText::_('JGLOBAL_PRINT') . '&#160;' . JText::_('JGLOBAL_ICON_SEP');
+		}
 
-        return JHtml::_('link', JRoute::_($url), $text, $attribs);
-    }
+		$attribs['title']   = JText::_('JGLOBAL_PRINT');
+		$attribs['onclick'] = "window.open(this.href,'win2','" . $status . "'); return false;";
+		$attribs['rel']     = 'nofollow';
 
-    /**
-     * Pring screen icon
-     * @param string $churchdirectory
-     * @param array $params
-     * @param array $attribs
-     * @return string
-     */
-    static function print_screen($churchdirectory, $params, $attribs = array()) {
-        // checks template image directory for image, if non found default are loaded
-        if ($params->get('show_icons')) {
-            $text = JHtml::_('image', 'system/printButton.png', JText::_('JGLOBAL_PRINT'), NULL, true);
-        } else {
-            $text = JText::_('JGLOBAL_ICON_SEP') . '&#160;' . JText::_('JGLOBAL_PRINT') . '&#160;' . JText::_('JGLOBAL_ICON_SEP');
-        }
-        return '<a href="#" onclick="window.print();return false;">' . $text . '</a>';
-    }
+		return JHtml::_('link', JRoute::_($url), $text, $attribs);
+	}
+
+	/**
+	 * Pring screen icon
+	 *
+	 * @param   object  $member   ?
+	 * @param   object  $params   ?
+	 * @param   array   $attribs  ?
+	 *
+	 * @return string
+	 */
+	public static function print_screen($member, $params, $attribs = array())
+	{
+		// Checks template image directory for image, if non found default are loaded
+		if ($params->get('show_icons'))
+		{
+			$text = JHtml::_('image', 'system/printButton.png', JText::_('JGLOBAL_PRINT'), null, true);
+		}
+		else
+		{
+			$text = JText::_('JGLOBAL_ICON_SEP') . '&#160;' . JText::_('JGLOBAL_PRINT') . '&#160;' . JText::_('JGLOBAL_ICON_SEP');
+		}
+
+		return '<a href="#" onclick="window.print();return false;">' . $text . '</a>';
+	}
 
 }

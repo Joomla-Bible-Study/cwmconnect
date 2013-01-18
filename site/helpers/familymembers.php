@@ -4,7 +4,7 @@
  * Family Member Helper
  *
  * @package ChurchDirectory.Site
- * @Copyright (C) 2007 - 2011 Joomla Bible Study Team All rights reserved
+ * @copyright (C) 2007 - 2011 Joomla Bible Study Team All rights reserved
  * @license http://www.gnu.org/copyleft/gpl.html GNU/GPL
  * @link    http://www.JoomlaBibleStudy.org
  * */
@@ -26,12 +26,12 @@ function getFamilyMembersPage($params, $id, $famid)
 {
 
 	$teacher = "\n" . '<div id="landing_table" width="100%">';
-	$db = JFactory::getDBO();
-	$query = $db->getQuery(true);
+	$db      = JFactory::getDBO();
+	$query   = $db->getQuery(true);
 
 	$query->select('members.*');
 	$query->from('#__churchdirectory_details AS members');
-	$query->where('members.funitid = ' . (int)$famid);
+	$query->where('members.funitid = ' . (int) $famid);
 	$query->order('members.name DESC');
 
 	$db->setQuery($query->__toString());
@@ -40,9 +40,10 @@ function getFamilyMembersPage($params, $id, $famid)
 		var_dump($famid);
 	endif;
 	$tresult = $db->loadObjectList();
-	$t = 0;
-	$i = 0;
-	foreach ($tresult as $b) {
+	$t       = 0;
+	$i       = 0;
+	foreach ($tresult as $b)
+	{
 		$attribs = json_decode($b->attribs);
 		$b->slug = $b->alias ? ($b->id . ':' . $b->alias) : $b->id;
 		$teacher .= '<div class="directory-familymembers-list">';
@@ -50,7 +51,8 @@ function getFamilyMembersPage($params, $id, $famid)
 		$teacher .= $b->name;
 		$teacher .= '</a></div>';
 		$teacher .= '<div class="directory-subtitle">';
-		switch ($attribs->familypostion) {
+		switch ($attribs->familypostion)
+		{
 			case -1:
 				$teacher .= '<span class="title">' . JText::_('COM_CHURCHDIRECTORY_SINGLE') . '</span>';
 				break;
@@ -81,10 +83,12 @@ function getFamilyMembersPage($params, $id, $famid)
 			$teacher .= '</div>';
 			$teacher .= '<br /><div class="clearfix"></div>';
 		endif;
-		if ($b->telephone && $params->get('dr_show_telephone')) {
+		if ($b->telephone && $params->get('dr_show_telephone'))
+		{
 			$teacher .= '<div class="directory-telephone"><span class="title">' . JText::_('COM_CHURCHDIRECTORY_HOME') . ':</span> ' . $b->telephone . '</div>';
 		}
-		if ($b->mobile && $params->get('dr_show_mobile')) {
+		if ($b->mobile && $params->get('dr_show_mobile'))
+		{
 			$teacher .= '<div class="directory-mobile"><span class="title">' . JText::_('COM_CHURCHDIRECTORY_MOBILE') . ':</span> ' . $b->mobile . '</div>';
 		}
 		$teacher .= '</div>';
@@ -96,7 +100,8 @@ function getFamilyMembersPage($params, $id, $famid)
 	}
 	$teacher .= '</div>';
 
-	if ($b->children && $params->get('dr_show_children')) {
+	if ($b->children && $params->get('dr_show_children'))
+	{
 		$teacher .= '<div class="directory-children"><br /><span class="title">' . JText::_('COM_CHURCHDIRECTORY_CHILDREN') . ':</span> ' . $b->children . '</div>';
 	}
 

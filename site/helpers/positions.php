@@ -1,32 +1,33 @@
 <?php
-
 /**
- * Helper for positions
- *
- * @package             ChurchDirectory.Site
- * @copyright           (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
- * @license             GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    ChurchDirectory.Site
+ * @copyright  (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-//No Direct Access
+
 defined('_JEXEC') or die;
 
 /**
  * Get Position
  *
- * @param int $id
+ * @param   int  $con_position  ID of Position
  *
  * @return object
  */
 function getPosition($con_position)
 {
-	$i = 0;
+	$i         = 0;
 	$positions = array();
-	$results = null;
-	$position = null;
-	if (strstr($con_position, ',')) {
+	$results   = null;
+	$position  = null;
+
+	if (strstr($con_position, ','))
+	{
 		$ids = explode(',', $con_position);
-		foreach ($ids AS $id):
-			$db = JFactory::getDBO();
+
+		foreach ($ids AS $id)
+		{
+			$db    = JFactory::getDBO();
 			$query = $db->getQuery(true);
 
 			$query->select('position.id, position.name');
@@ -34,12 +35,14 @@ function getPosition($con_position)
 			$query->where('position.id = ' . $id);
 
 			$db->setQuery($query->__toString());
-			$position = $db->loadObject();
+			$position      = $db->loadObject();
 			$positions[$i] = $position;
 			$i++;
-		endforeach;
-	} else {
-		$db = JFactory::getDBO();
+		}
+	}
+	else
+	{
+		$db    = JFactory::getDBO();
 		$query = $db->getQuery(true);
 
 		$query->select('position.id, position.name');
@@ -47,19 +50,25 @@ function getPosition($con_position)
 		$query->where('position.id = ' . $con_position);
 
 		$db->setQuery($query->__toString());
-		$position = $db->loadObject();
+		$position      = $db->loadObject();
 		$positions[$i] = $position;
 	}
-	$n = count($position);
+	$n  = count($position);
 	$pi = '0';
-	foreach ($positions AS $position):
-		if ($n != $pi):
+
+	foreach ($positions AS $position)
+	{
+		if ($n != $pi)
+		{
 			$results .= $position->name;
-			$results .= '<br />'; else:
+			$results .= '<br />';
+		}
+		else
+		{
 			$results .= $position->name;
-		endif;
+		}
 		$pi++;
-	endforeach;
+	}
 
 	return $results;
 }

@@ -15,5 +15,5 @@ JHTML::stylesheet('general.css', 'media/com_churchdirectory/css/');
 JHTML::stylesheet('churchdirectory.css', 'media/com_churchdirectory/css/');
 
 $controller = JControllerLegacy::getInstance('ChurchDirectory');
-$controller->execute(JRequest::getCmd('task'));
+$controller->execute(JFactory::getApplication()->input->get('task'));
 $controller->redirect();
