@@ -1,19 +1,16 @@
 <?php
-
 /**
- * ChurchDirectory Controller
- *
- * @package             ChurchDirectory.Admin
- * @copyright           (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
- * @license             GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    ChurchDirectory.Admin
+ * @copyright  (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-// no direct access
 defined('_JEXEC') or die;
 
 /**
  * Component Controller
  *
- * @package    ChurchDirectory.Admin
+ * @package  ChurchDirectory.Admin
+ * @since    1.7.2
  */
 class ChurchDirectoryController extends JControllerLegacy
 {
@@ -21,28 +18,30 @@ class ChurchDirectoryController extends JControllerLegacy
 	/**
 	 * The Default View
 	 *
-	 * @var        string    The default view.
-	 * @since    1.7.0
+	 * @var   string    The default view.
+	 * @since  1.7.0
 	 */
 	protected $default_view = 'cpanel';
 
 	/**
 	 * Method to display a view.
 	 *
-	 * @param    boolean  If true, the view output will be cached
-	 * @param    array    An array of safe url parameters and their variable types, for valid values see {@link JFilterInput::clean()}.
+	 * @param   boolean  $cachable   If true, the view output will be cached
+	 * @param   array    $urlparams  An array of safe url parameters and their variable types, for valid values see {@link JFilterInput::clean()}.
 	 *
-	 * @return    JController        This object to support chaining.
+	 * @return  JControllerLegacy  A JControllerLegacy object to support chaining.
+	 *
 	 * @since    1.7.0
 	 */
-	public function display($cachable = false, $urlparams = false)
+	public function display($cachable = false, $urlparams = array())
 	{
 		$this->input = new JInput;
-		$view   = $this->input->get('view', 'cpanel');
-		$layout = $this->input->get('layout', 'default');
-		$id     = $this->input->getInt('id');
+		$view        = $this->input->get('view', 'cpanel');
+		$layout      = $this->input->get('layout', 'default');
+		$id          = $this->input->getInt('id');
 
 		$type = $this->input->get('view');
+
 		if (!$type)
 		{
 			$this->input->get('view', 'cpanel');
@@ -83,10 +82,7 @@ class ChurchDirectoryController extends JControllerLegacy
 			return false;
 		}
 
-		jimport('joomla.version');
-		$version = new JVersion();
-
-		if ($version->RELEASE == '3.0')
+		if (version_compare(JVERSION, '3.0', 'ge'))
 		{
 			$versionName = true;
 		}
