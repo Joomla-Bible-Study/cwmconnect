@@ -4,7 +4,7 @@
  * @copyright  (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-// Check to ensure this file is included in Joomla!
+
 defined('_JEXEC') or die();
 
 require_once JPATH_COMPONENT_ADMINISTRATOR . '/liveupdate/liveupdate.php';
@@ -44,7 +44,7 @@ class ChurchDirectoryViewCpanel extends JViewLegacy
 	 *
 	 * @param   string  $tpl  ?
 	 *
-	 * @return void
+	 * @return mixed
 	 */
 	public function display($tpl = null)
 	{
@@ -58,6 +58,8 @@ class ChurchDirectoryViewCpanel extends JViewLegacy
 		if (count($errors = $this->get('Errors')))
 		{
 			JFactory::getApplication()->enqueueMessage(implode("\n", $errors), 'error');
+
+			return false;
 		}
 
 		// Set the toolbar
@@ -68,11 +70,11 @@ class ChurchDirectoryViewCpanel extends JViewLegacy
 			$this->sidebar = JHtmlSidebar::render();
 		}
 
-		// Display the template
-		parent::display($tpl);
-
 		// Set the document
 		$this->setDocument();
+
+		// Display the template
+		return parent::display($tpl);
 	}
 
 	/**

@@ -4,10 +4,10 @@
  * @copyright  (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-// No direct access
+
 defined('_JEXEC') or die;
 
-$version   = version_compare(JVERSION, '3.0', 'ge');
+$version = version_compare(JVERSION, '3.0', 'ge');
 JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 if ($version):
 	JHtml::_('bootstrap.tooltip');
@@ -111,10 +111,8 @@ $sortFields = $this->getSortFields();
             <option value=""><?php echo JText::_('JOPTION_SELECT_LANGUAGE'); ?></option>
 			<?php echo JHtml::_('select.options', JHtml::_('contentlanguage.existing', true, true), 'value', 'text', $this->state->get('filter.language')); ?>
         </select>
-
     </div>
 	<?php endif; ?>
-
 </div>
 <div class="clr"></div>
 <table class="adminlist table table-striped" id="articleList">
@@ -169,6 +167,7 @@ $sortFields = $this->getSortFields();
     <tr class="row<?php echo $i % 2; ?>" sortable-group-id="<?php echo $item->catid?>">
         <td class="order nowrap center hidden-phone">
 			<?php echo ChurchDirectoryHelper::ordering($canChange, $saveOrder, $item, $this->items, $ordering, $i, $n, 'members', $this->pagination, $listDirn); ?>
+        </td>
         <td class="center hidden-phone">
 			<?php echo JHtml::_('grid.id', $i, $item->id); ?>
         </td>

@@ -87,7 +87,6 @@ class ChurchDirectoryViewMembers extends JViewLegacy
 	 */
 	protected function addToolbar()
 	{
-		require_once JPATH_COMPONENT . '/helpers/churchdirectory.php';
 		$canDo = ChurchDirectoryHelper::getActions($this->state->get('filter.category_id'));
 		$user  = JFactory::getUser();
 

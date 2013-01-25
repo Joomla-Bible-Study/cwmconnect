@@ -29,7 +29,7 @@ if (JFactory::getApplication()->input->get('view', '') == 'liveupdate')
 }
 
 // Require helper file
-//JLoader::register('ChurchDirectoryHelper', dirname(__FILE__) . '/helpers/churchdirectory.php');
+JLoader::register('ChurchDirectoryHelper', dirname(__FILE__) . '/helpers/churchdirectory.php');
 
 
 $controller = JControllerLegacy::getInstance('Churchdirectory');
