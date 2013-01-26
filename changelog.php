@@ -12,3 +12,5 @@ defined('_JEXEC') or die;
  * @todo Need to finish this
  */
 ?>
+
+New change log start afte script is made.
