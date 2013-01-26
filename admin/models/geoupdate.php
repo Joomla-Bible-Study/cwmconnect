@@ -101,6 +101,8 @@ class ChurchDirectoryModelGeoUpdate extends JModelLegacy
 
 	/**
 	 * Loads the file/folder stack from the session
+	 *
+	 * @return void
 	 */
 	private function loadStack()
 	{
@@ -119,6 +121,7 @@ class ChurchDirectoryModelGeoUpdate extends JModelLegacy
 		if (function_exists('base64_encode') && function_exists('base64_decode'))
 		{
 			$stack = base64_decode($stack);
+
 			if (function_exists('gzdeflate') && function_exists('gzinflate'))
 			{
 				$stack = gzinflate($stack);
@@ -134,7 +137,9 @@ class ChurchDirectoryModelGeoUpdate extends JModelLegacy
 	/**
 	 * The $id of the Member to retrieve date from.
 	 *
-	 * @param string $id The id of the member to update
+	 * @param   string  $id  The id of the member to update
+	 *
+	 * @return void
 	 */
 	public function getMembers($id = null)
 	{
@@ -147,7 +152,10 @@ class ChurchDirectoryModelGeoUpdate extends JModelLegacy
 		$db->setQuery($query);
 		$members = $db->loadObjectList();
 
-		if (empty($members)) $members = array();
+		if (empty($members))
+		{
+			$members = array();
+		}
 
 		$this->membersStack = array_merge($this->membersStack, $members);
 
@@ -155,18 +163,23 @@ class ChurchDirectoryModelGeoUpdate extends JModelLegacy
 	}
 
 	/**
-	 * @param bool        $resetTimer
-	 * @param string|null $id
+	 *  ?
+	 *
+	 * @param   bool         $resetTimer  If the time must be reset
+	 * @param   string|null  $id          Record ID to update
 	 *
 	 * @return bool
 	 */
 	public function run($resetTimer = true, $id = null)
 	{
-		if ($resetTimer) $this->resetTimer();
+		if ($resetTimer)
+		{
+			$this->resetTimer();
+		}
 
 		$this->loadStack();
-
 		$result = true;
+
 		while ($result && $this->haveEnoughTime())
 		{
 			$result = $this->RealRun($id);
@@ -178,7 +191,9 @@ class ChurchDirectoryModelGeoUpdate extends JModelLegacy
 	}
 
 	/**
-	 * @param string|null $id
+	 * ?
+	 *
+	 * @param   string|null  $id  ID
 	 *
 	 * @return bool
 	 */
@@ -207,7 +222,9 @@ class ChurchDirectoryModelGeoUpdate extends JModelLegacy
 	}
 
 	/**
-	 * @param string|null $id
+	 * ?
+	 *
+	 * @param   string|null  $id  ?
 	 *
 	 * @return bool
 	 */
@@ -217,7 +234,10 @@ class ChurchDirectoryModelGeoUpdate extends JModelLegacy
 		$this->resetTimer();
 		$this->getMembers();
 
-		if (empty($this->membersStack)) $this->membersStack = array();
+		if (empty($this->membersStack))
+		{
+			$this->membersStack = array();
+		}
 		asort($this->membersStack);
 
 		$this->saveStack();
@@ -235,17 +255,20 @@ class ChurchDirectoryModelGeoUpdate extends JModelLegacy
 	/**
 	 * Update Lng & Lat
 	 *
-	 * @param object $row
-	 * @param string $id
+	 * @param   object  $row  ?
+	 * @param   string  $id   ?
 	 *
 	 * @return boolean
+	 *
 	 * @todo add system to remove member_id form db if info has bean updated.
 	 */
 	public function update($row = null, $id = null)
 	{
 		$geocode_pending = false;
 		$db              = $this->getDbo();
-		if ($row or $id):
+
+		if ($row or $id)
+		{
 			if ($id)
 			{
 				$query = $db->getQuery(true);
@@ -258,6 +281,7 @@ class ChurchDirectoryModelGeoUpdate extends JModelLegacy
 			// Initialize delay in geocode speed
 			$delay           = 0;
 			$geocode_pending = true;
+
 			while ($geocode_pending)
 			{
 				// Defining of Rows to look up
@@ -270,7 +294,7 @@ class ChurchDirectoryModelGeoUpdate extends JModelLegacy
 
 				if ($status == "OK" && $xml->result->type['0'] == 'street_address')
 				{
-					// successful geocode
+					// Successful geocode
 					$geocode_pending = false;
 
 					foreach ($xml->result AS $data):
@@ -286,15 +310,16 @@ class ChurchDirectoryModelGeoUpdate extends JModelLegacy
 						$db->execute();
 					endforeach;
 				}
-				else if ($status == "OVER_QUERY_LIMIT")
+				elseif ($status == "OVER_QUERY_LIMIT")
 				{
-					// sent geocodes too fast
+					// Sent geocodes too fast
 					$delay += 100000;
 				}
 				else
 				{
-					//failure to geocode
+					// Failure to geocode
 					$geocode_pending = false;
+
 					// Create a new query object.
 					$query = $db->getQuery(true);
 					$query->select($db->q('*'))
@@ -304,6 +329,7 @@ class ChurchDirectoryModelGeoUpdate extends JModelLegacy
 					$info = 'Status: ' . $status . '<br /><div style="float:left; padding:5px;">' .
 						'Type:</div><div style="float:left; padding:5px;">' . $xml->result->type['0'] .
 						'<br />' . $xml->result->type['1'] . '</div>';
+
 					if ($db->loadResult())
 					{
 						$query = $db->getQuery(true);
@@ -325,7 +351,7 @@ class ChurchDirectoryModelGeoUpdate extends JModelLegacy
 				}
 				usleep($delay);
 			}
-		endif;
+		}
 
 		return $geocode_pending;
 
