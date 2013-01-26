@@ -1,74 +1,104 @@
 <?php
-
 /**
- * View for Info
- * @package             ChurchDirectory.Admin
- * @copyright           (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    ChurchDirectory.Admin
+ * @copyright  (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-// Check to ensure this file is included in Joomla!
-defined('_JEXEC') or die;
 
+defined('_JEXEC') or die;
 
 
 /**
  * Class for Info
- * @package ChurchDirectory.Admin
- * @since 1.7.0
+ *
+ * @package  ChurchDirectory.Admin
+ * @since   1.7.0
  */
-class ChurchDirectoryViewInfo extends JViewLegacy {
+class ChurchDirectoryViewInfo extends JViewLegacy
+{
 
-    /**
-     * Protect Items
-     * @var array
-     */
-    protected $items;
+	/**
+	 * Protect Items
+	 *
+	 * @var array
+	 */
+	protected $items;
 
-    /**
-     * Protect Pagination
-     * @var array
-     */
-    protected $pagination;
+	/**
+	 * Protect Pagination
+	 *
+	 * @var array
+	 */
+	protected $pagination;
 
-    /**
-     * Protect State
-     * @var array
-     */
-    protected $state;
+	/**
+	 * Protect State
+	 *
+	 * @var array
+	 */
+	protected $state;
 
-    /**
-     * Display function
-     * @param  string $tpl
-     * @return boolean
-     * @since 1.7.0
-     */
-    public function display($tpl = null) {
-        $this->items = $this->get('Items');
-        $this->pagination = $this->get('Pagination');
-        $this->state = $this->get('State');
+	/**
+	 * Display function
+	 *
+	 * @param   string  $tpl  ?
+	 *
+	 * @return mixed
+	 * @since 1.7.0
+	 */
+	public function display($tpl = null)
+	{
+		$this->items      = $this->get('Items');
+		$this->pagination = $this->get('Pagination');
+		$this->state      = $this->get('State');
 
-        // Check for errors.
-        if (count($errors = $this->get('Errors'))) {
-            JError::raiseError(500, implode("\n", $errors));
-            return false;
-        }
+		ChurchDirectoryHelper::addSubmenu('info');
 
-        $this->addToolbar();
-        parent::display($tpl);
-    }
+		// Check for errors.
+		if (count($errors = $this->get('Errors')))
+		{
+			JFactory::getApplication()->enqueueMessage(implode("\n", $errors), 'error');
 
-    /**
-     * Add the page title and toolbar.
-     *
-     * @since	1.7.0
-     */
-    protected function addToolbar() {
-        require_once JPATH_COMPONENT . '/helpers/churchdirectory.php';
-        $user = JFactory::getUser();
-        JToolBarHelper::title(JText::_('COM_CHURCHDIRECTORY_MANAGER_INFO'), 'churchdirectory');
+			return false;
+		}
 
+		$this->addToolbar();
 
-        JToolBarHelper::help('churchdirectory', TRUE);
-    }
+		if (version_compare(JVERSION, '3.0', 'ge'))
+		{
+			$this->sidebar = JHtmlSidebar::render();
+		}
+
+		// Set the document
+		$this->setDocument();
+
+		// Display the template
+		return parent::display($tpl);
+	}
+
+	/**
+	 * Add the page title and toolbar.
+	 *
+	 * @since    1.7.0
+	 *
+	 * @return void
+	 */
+	protected function addToolbar()
+	{
+		JToolBarHelper::title(JText::_('COM_CHURCHDIRECTORY_MANAGER_INFO'), 'churchdirectory.png');
+		JToolBarHelper::help('churchdirectory', true);
+	}
+
+	/**
+	 * Set browser title
+	 *
+	 * @since 1.7.0
+	 * @return void
+	 */
+	protected function setDocument()
+	{
+		$document = JFactory::getDocument();
+		$document->setTitle(JText::_('COM_CHURCHDIRECTORY_INFO'));
+	}
 
 }

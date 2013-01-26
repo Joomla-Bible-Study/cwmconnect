@@ -1,10 +1,8 @@
 <?php
-
 /**
- * GeoUpdate System for KML
- * @package             ChurchDirectory.Admin
- * @copyright           (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
- * @license        GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    ChurchDirectory.Admin
+ * @copyright  (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 // Protect from unauthorized access
 defined('_JEXEC') or die;
@@ -12,14 +10,15 @@ defined('_JEXEC') or die;
 /**
  * For Getting GeoUpdate from Google
  *
- * @package             ChurchDirectory.Admin
- * @since               1.7.0
+ * @package  ChurchDirectory.Admin
+ * @since    1.7.0
  */
 class ChurchDirectoryModelGeoUpdate extends JModelLegacy
 {
 
 	/**
 	 * Set start Time
+	 *
 	 * @var float The time the process started
 	 */
 	private $startTime = null;
@@ -39,7 +38,8 @@ class ChurchDirectoryModelGeoUpdate extends JModelLegacy
 	private function microtime_float()
 	{
 		list($usec, $sec) = explode(" ", microtime());
-		return ((float)$usec + (float)$sec);
+
+		return ((float) $usec + (float) $sec);
 	}
 
 	/**
@@ -53,12 +53,14 @@ class ChurchDirectoryModelGeoUpdate extends JModelLegacy
 	/**
 	 * Makes sure that no more than 3 seconds since the start of the timer have
 	 * elapsed
+	 *
 	 * @return bool
 	 */
 	private function haveEnoughTime()
 	{
-		$now = $this->microtime_float();
+		$now     = $this->microtime_float();
 		$elapsed = abs($now - $this->startTime);
+
 		return $elapsed < 3;
 	}
 
@@ -69,12 +71,14 @@ class ChurchDirectoryModelGeoUpdate extends JModelLegacy
 	{
 		$stack = array(
 			'members' => $this->membersStack,
-			'total' => $this->totalMembers,
-			'done' => $this->doneMembers
+			'total'   => $this->totalMembers,
+			'done'    => $this->doneMembers
 		);
 		$stack = json_encode($stack);
-		if (function_exists('base64_encode') && function_exists('base64_decode')) {
-			if (function_exists('gzdeflate') && function_exists('gzinflate')) {
+		if (function_exists('base64_encode') && function_exists('base64_decode'))
+		{
+			if (function_exists('gzdeflate') && function_exists('gzinflate'))
+			{
 				$stack = gzdeflate($stack, 9);
 			}
 			$stack = base64_encode($stack);
@@ -92,7 +96,7 @@ class ChurchDirectoryModelGeoUpdate extends JModelLegacy
 		$session->set('geoupdate_stack', '', 'churchdirectory');
 		$this->membersStack = array();
 		$this->totalMembers = 0;
-		$this->doneMembers = 0;
+		$this->doneMembers  = 0;
 	}
 
 	/**
@@ -101,18 +105,22 @@ class ChurchDirectoryModelGeoUpdate extends JModelLegacy
 	private function loadStack()
 	{
 		$session = JFactory::getSession();
-		$stack = $session->get('geoupdate_stack', '', 'churchdirectory');
+		$stack   = $session->get('geoupdate_stack', '', 'churchdirectory');
 
-		if (empty($stack)) {
+		if (empty($stack))
+		{
 			$this->membersStack = array();
 			$this->totalMembers = 0;
-			$this->doneMembers = 0;
+			$this->doneMembers  = 0;
+
 			return;
 		}
 
-		if (function_exists('base64_encode') && function_exists('base64_decode')) {
+		if (function_exists('base64_encode') && function_exists('base64_decode'))
+		{
 			$stack = base64_decode($stack);
-			if (function_exists('gzdeflate') && function_exists('gzinflate')) {
+			if (function_exists('gzdeflate') && function_exists('gzinflate'))
+			{
 				$stack = gzinflate($stack);
 			}
 		}
@@ -120,16 +128,17 @@ class ChurchDirectoryModelGeoUpdate extends JModelLegacy
 
 		$this->membersStack = $stack['members'];
 		$this->totalMembers = $stack['total'];
-		$this->doneMembers = $stack['done'];
+		$this->doneMembers  = $stack['done'];
 	}
 
 	/**
 	 * The $id of the Member to retrieve date from.
+	 *
 	 * @param string $id The id of the member to update
 	 */
 	public function getMembers($id = null)
 	{
-		$db = JFactory::getDBO();
+		$db    = JFactory::getDBO();
 		$query = $db->getQuery(true);
 		$query->select('id, name, address, suburb, state, postcode, lat, lng , country');
 		$query->from($db->qn('#__churchdirectory_details'));
@@ -146,8 +155,9 @@ class ChurchDirectoryModelGeoUpdate extends JModelLegacy
 	}
 
 	/**
-	 * @param bool $resetTimer
+	 * @param bool        $resetTimer
 	 * @param string|null $id
+	 *
 	 * @return bool
 	 */
 	public function run($resetTimer = true, $id = null)
@@ -157,7 +167,8 @@ class ChurchDirectoryModelGeoUpdate extends JModelLegacy
 		$this->loadStack();
 
 		$result = true;
-		while ($result && $this->haveEnoughTime()) {
+		while ($result && $this->haveEnoughTime())
+		{
 			$result = $this->RealRun($id);
 		}
 
@@ -168,21 +179,26 @@ class ChurchDirectoryModelGeoUpdate extends JModelLegacy
 
 	/**
 	 * @param string|null $id
+	 *
 	 * @return bool
 	 */
 	private function RealRun($id = null)
 	{
-		if (!empty($this->membersStack)) {
-			while (!empty($this->membersStack) && $this->haveEnoughTime()) {
+		if (!empty($this->membersStack))
+		{
+			while (!empty($this->membersStack) && $this->haveEnoughTime())
+			{
 				$file = array_pop($this->membersStack);
 				$this->doneMembers++;
 				$this->update($file, $id);
 			}
 		}
 
-		if (empty($this->membersStack)) {
+		if (empty($this->membersStack))
+		{
 			// Just finished
 			$this->resetStack();
+
 			return false;
 		}
 
@@ -192,6 +208,7 @@ class ChurchDirectoryModelGeoUpdate extends JModelLegacy
 
 	/**
 	 * @param string|null $id
+	 *
 	 * @return bool
 	 */
 	public function startScanning($id = null)
@@ -205,26 +222,32 @@ class ChurchDirectoryModelGeoUpdate extends JModelLegacy
 
 		$this->saveStack();
 
-		if (!$this->haveEnoughTime()) {
+		if (!$this->haveEnoughTime())
+		{
 			return true;
-		} else {
+		}
+		else
+		{
 			return $this->run(false, $id);
 		}
 	}
 
 	/**
 	 * Update Lng & Lat
+	 *
 	 * @param object $row
 	 * @param string $id
+	 *
 	 * @return boolean
 	 * @todo add system to remove member_id form db if info has bean updated.
 	 */
 	public function update($row = null, $id = null)
 	{
 		$geocode_pending = false;
-		$db = $this->getDbo();
+		$db              = $this->getDbo();
 		if ($row or $id):
-			if ($id) {
+			if ($id)
+			{
 				$query = $db->getQuery(true);
 				$query->select('*')->from('#__churchdirectory_details')->where('id =' . $db->q($id));
 				$db->setQuery($query);
@@ -233,60 +256,69 @@ class ChurchDirectoryModelGeoUpdate extends JModelLegacy
 			$base_url = "http://maps.googleapis.com/maps/api/geocode/xml?address=";
 
 			// Initialize delay in geocode speed
-			$delay = 0;
+			$delay           = 0;
 			$geocode_pending = true;
-			while ($geocode_pending) {
+			while ($geocode_pending)
+			{
 				// Defining of Rows to look up
-				$address = str_replace(' ', '+', $row['address']);
+				$address     = str_replace(' ', '+', $row['address']);
 				$request_url = $base_url . $address . ",+" . str_replace(' ', '+', $row['suburb']) .
-						",+" . $row['state'] . '&sensor=true';
+					",+" . $row['state'] . '&sensor=true';
 				$xml = simplexml_load_file($request_url) or die("url not loading");
 
 				$status = $xml->status;
 
-				if ($status == "OK" && $xml->result->type['0'] == 'street_address') {
+				if ($status == "OK" && $xml->result->type['0'] == 'street_address')
+				{
 					// successful geocode
 					$geocode_pending = false;
 
 					foreach ($xml->result AS $data):
-						$ulat = $data->geometry->location->lat;
+						$ulat  = $data->geometry->location->lat;
 						$ulong = $data->geometry->location->lng;
 
 						// Create a new query object.
 						$query = $db->getQuery(true);
 						$query->update("#__churchdirectory_details")
-								->set("lat = " . $db->q($ulat) . ", lng = " . $db->q($ulong))
-								->where("id = " . $db->q($row['id']));
+							->set("lat = " . $db->q($ulat) . ", lng = " . $db->q($ulong))
+							->where("id = " . $db->q($row['id']));
 						$db->setQuery($query);
 						$db->execute();
 					endforeach;
-				} else if ($status == "OVER_QUERY_LIMIT") {
+				}
+				else if ($status == "OVER_QUERY_LIMIT")
+				{
 					// sent geocodes too fast
 					$delay += 100000;
-				} else {
+				}
+				else
+				{
 					//failure to geocode
 					$geocode_pending = false;
 					// Create a new query object.
 					$query = $db->getQuery(true);
 					$query->select($db->q('*'))
-							->from($db->qn('#__churchdirectory_geoupdate'))
-							->where('`member_id` = ' . $db->q($row['id']));
+						->from($db->qn('#__churchdirectory_geoupdate'))
+						->where('`member_id` = ' . $db->q($row['id']));
 					$db->setQuery($query);
 					$info = 'Status: ' . $status . '<br /><div style="float:left; padding:5px;">' .
-							'Type:</div><div style="float:left; padding:5px;">' . $xml->result->type['0'] .
-							'<br />' . $xml->result->type['1'] . '</div>';
-					if ($db->loadResult()) {
+						'Type:</div><div style="float:left; padding:5px;">' . $xml->result->type['0'] .
+						'<br />' . $xml->result->type['1'] . '</div>';
+					if ($db->loadResult())
+					{
 						$query = $db->getQuery(true);
 						$query->update("#__churchdirectory_geoupdate")
-								->set('member_id = ' . $db->q($row['id']))
-								->set('`status` = ' . $db->q($info));
+							->set('member_id = ' . $db->q($row['id']))
+							->set('`status` = ' . $db->q($info));
 						$db->setQuery($query);
 						$db->execute();
-					} else {
+					}
+					else
+					{
 						$query = $db->getQuery(true);
 						$query->insert("#__churchdirectory_geoupdate")
-								->set('member_id = ' . $db->q($row['id']))
-								->set('`status` = ' . $db->q($info));
+							->set('member_id = ' . $db->q($row['id']))
+							->set('`status` = ' . $db->q($info));
 						$db->setQuery($query);
 						$db->execute();
 					}
@@ -294,6 +326,7 @@ class ChurchDirectoryModelGeoUpdate extends JModelLegacy
 				usleep($delay);
 			}
 		endif;
+
 		return $geocode_pending;
 
 	}
