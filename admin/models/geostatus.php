@@ -7,6 +7,8 @@
 
 defined('_JEXEC') or die;
 
+jimport( 'joomla.application.component.modellist' );
+
 /**
  * For Getting GeoUpdate Status from Google
  *
@@ -102,6 +104,7 @@ class ChurchDirectoryModelGeoStatus extends JModelList
 	 * @param   string  $id  A prefix for the store id.
 	 *
 	 * @return    string        A store id.
+	 *
 	 * @since    1.7.0
 	 */
 	protected function getStoreId($id = '')
@@ -120,6 +123,7 @@ class ChurchDirectoryModelGeoStatus extends JModelList
 	 * Build an SQL query to load the list data.
 	 *
 	 * @return    JDatabaseQuery
+	 *
 	 * @since    1.7.0
 	 */
 	protected function getListQuery()
@@ -138,6 +142,9 @@ class ChurchDirectoryModelGeoStatus extends JModelList
 			)
 		);
 		$query->from('#__churchdirectory_details AS a');
+
+		$query->where('lat = ' . 0.000000);
+		$query->where('lng = ' . 0.000000);
 
 		// Join over the users for the linked user.
 		$query->select('ul.name AS linked_user');
@@ -174,6 +181,7 @@ class ChurchDirectoryModelGeoStatus extends JModelList
 
 		// Filter by published state
 		$published = $this->getState('filter.published');
+
 		if (is_numeric($published))
 		{
 			$query->where('a.published = ' . (int) $published);
@@ -185,6 +193,7 @@ class ChurchDirectoryModelGeoStatus extends JModelList
 
 		// Filter by a single or group of categories.
 		$categoryId = $this->getState('filter.category_id');
+
 		if (is_numeric($categoryId))
 		{
 			$query->where('a.catid = ' . (int) $categoryId);
@@ -198,6 +207,7 @@ class ChurchDirectoryModelGeoStatus extends JModelList
 
 		// Filter by search in name.
 		$search = $this->getState('filter.search');
+
 		if (!empty($search))
 		{
 			if (stripos($search, 'id:') === 0)
@@ -225,13 +235,13 @@ class ChurchDirectoryModelGeoStatus extends JModelList
 		// Add the list ordering clause.
 		$orderCol  = $this->state->get('list.ordering', 'a.name');
 		$orderDirn = $this->state->get('list.direction', 'asc');
+
 		if ($orderCol == 'a.ordering' || $orderCol == 'category_title')
 		{
 			$orderCol = 'c.title ' . $orderDirn . ', a.ordering';
 		}
 		$query->order($db->escape($orderCol . ' ' . $orderDirn));
 
-		//echo nl2br(str_replace('#__','jos_',$query));
 		return $query;
 	}
 
@@ -245,47 +255,32 @@ class ChurchDirectoryModelGeoStatus extends JModelList
 
 		$db    = $this->getDbo();
 		$query = $db->getQuery(true);
-		$query->select('u.*, m.*')->from('#__churchdirectory_details AS m');
-		$query->leftJoin('#__churchdirectory_geoupdate AS u ON m.id = u.member_id ');
-		$query->where('m.id = u.member_id');
+		$query->select('u.*, a.*')->from('#__churchdirectory_details AS a');
+		$query->leftJoin('#__churchdirectory_geoupdate AS u ON a.id = u.member_id ');
+		$query->where('a.id = u.member_id');
+
+		// Join over the users for the linked user.
+		$query->select('ul.name AS linked_user');
+		$query->join('LEFT', '#__users AS ul ON ul.id=a.user_id');
+
+		// Join over the language
+		$query->select('l.title AS language_title');
+		$query->join('LEFT', $db->quoteName('#__languages') . ' AS l ON l.lang_code = a.language');
+
+		// Join over the users for the checked out user.
+		$query->select('uc.name AS editor');
+		$query->join('LEFT', '#__users AS uc ON uc.id=a.checked_out');
+
+		// Join over the asset groups.
+		$query->select('ag.title AS access_level');
+		$query->join('LEFT', '#__viewlevels AS ag ON ag.id = a.access');
+
+		// Join over the categories.
+		$query->select('c.title AS category_title');
+		$query->join('LEFT', '#__categories AS c ON c.id = a.catid');
+
 		$db->setQuery($query);
 
 		return $db->loadObjectList();
-	}
-
-	/**
-	 * Get Geo Errors
-	 *
-	 * @return mixed
-	 */
-	public function getNoGeoInfo()
-	{
-		$results = array();
-		$db      = $this->getDbo();
-		$query   = $db->getQuery(true);
-		$query->select('*')->from('#__churchdirectory_details');
-		$query->where('lat = ' . 0.000000);
-		$query->where('lng = ' . 0.000000);
-		$db->setQuery($query);
-		$nogeo = $db->loadObjectList();
-
-		foreach ($nogeo AS $key => $member)
-		{
-			$member->status = 'No Geo Location Set ';
-			$results{$key}  = $member;
-		}
-
-		return $results;
-	}
-
-
-	/**
-	 * Get Geo Errors and Member without Geo Location Data.
-	 *
-	 * @return mixed
-	 */
-	public function getInfo()
-	{
-		return array_merge($this->getGeoErrors(), $this->getNoGeoInfo());
 	}
 }

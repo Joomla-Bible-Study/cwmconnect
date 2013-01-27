@@ -44,7 +44,8 @@ class ChurchDirectoryViewGeoStatus extends JViewLegacy
 	public function display($tpl = null)
 	{
 		// Assign data to the view
-		$this->items      = $this->get('Items');
+
+		$this->items      = array_merge($this->get('Items'), $this->get('GeoErrors'));
 		$this->pagination = $this->get('Pagination');
 		$this->state      = $this->get('State');
 

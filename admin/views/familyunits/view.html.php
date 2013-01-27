@@ -7,10 +7,6 @@
 
 defined('_JEXEC') or die;
 
-
-jimport('joomla.application.component.helper');
-jimport('joomla.i18n.help');
-
 /**
  * View class for a list of churchdirectories.
  *
@@ -37,9 +33,11 @@ class ChurchDirectoryViewFamilyUnits extends JViewLegacy
 	/**
 	 * Protect state
 	 *
-	 * @var array
+	 * @var object
 	 */
 	protected $state;
+
+	protected $sidebar;
 
 	/**
 	 * Display the view
@@ -154,12 +152,12 @@ class ChurchDirectoryViewFamilyUnits extends JViewLegacy
 	protected function getSortFields()
 	{
 		return array(
-			'a.ordering'     => JText::_('JGRID_HEADING_ORDERING'),
-			'a.state'        => JText::_('JSTATUS'),
-			'a.name'         => JText::_('JGLOBAL_TITLE'),
-			'a.access'       => JText::_('JGRID_HEADING_ACCESS'),
-			'a.language'     => JText::_('JGRID_HEADING_LANGUAGE'),
-			'a.id'           => JText::_('JGRID_HEADING_ID')
+			'a.ordering' => JText::_('JGRID_HEADING_ORDERING'),
+			'a.state'    => JText::_('JSTATUS'),
+			'a.name'     => JText::_('JGLOBAL_TITLE'),
+			'a.access'   => JText::_('JGRID_HEADING_ACCESS'),
+			'a.language' => JText::_('JGRID_HEADING_LANGUAGE'),
+			'a.id'       => JText::_('JGRID_HEADING_ID')
 		);
 	}
 

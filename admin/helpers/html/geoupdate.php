@@ -40,16 +40,12 @@ class JHtmlGeoUpdate extends JHtmlDropdown
 			$link = $customLink;
 		}
 
-		$link .= '&view=geoupdate&task=run&id=' . $id;
+		$link .= '&view=geoupdate&task=run&id=' . $id . '&tmpl=component';
 		$link = JRoute::_($link);
 
-		self::addCustomItem(JText::_('COM_CHURCHDIRECTORY_GEOUPDATE'), $link);
+		self::addCustomItem(JText::_('COM_CHURCHDIRECTORY_GEOUPDATE'), $link, 'class="modal" rel="{handler: \'iframe\', size: {x: 600, y: 250}}"');
 
 		return;
-		//$task = $prefix . 'geoupdate';
-		//self::addCustomItem(JText::_('COM_CHURCHDIRECTORY_GEOUPDATE'), 'javascript:void(0)', 'onclick="contextAction(\'' . $checkboxId . '\', \'' . $task . '\')"');
-
-		//return;
 	}
 
 }

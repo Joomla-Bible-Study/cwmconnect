@@ -29,6 +29,9 @@ if (JFactory::getApplication()->input->get('view', '') == 'liveupdate')
 }
 
 // Require helper file
+// Register all files in the /the/path/ folder as classes with a name like:
+// Prefix<Filename>
+JLoader::discover('j', '/the/path/');
 JLoader::register('ChurchDirectoryHelper', dirname(__FILE__) . '/helpers/churchdirectory.php');
 
 

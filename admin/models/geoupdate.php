@@ -4,7 +4,7 @@
  * @copyright  (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-// Protect from unauthorized access
+
 defined('_JEXEC') or die;
 
 /**
@@ -15,25 +15,29 @@ defined('_JEXEC') or die;
  */
 class ChurchDirectoryModelGeoUpdate extends JModelLegacy
 {
-
 	/**
 	 * Set start Time
 	 *
 	 * @var float The time the process started
 	 */
-	private $startTime = null;
+	private $_startTime = null;
 
 	/** @var array The members to process */
-	private $membersStack = array();
+	private $_membersStack = array();
 
 	/** @var int Total numbers of members in this site */
-	public $totalMembers = 0;
+	protected $totalMembers = 0;
 
 	/** @var int Numbers of members already processed */
-	public $doneMembers = 0;
+	protected $doneMembers = 0;
+
+	/** @var int Numbers of members already processed */
+	private $_memberID = null;
 
 	/**
 	 * Returns the current timestampt in decimal seconds
+	 *
+	 * @return string
 	 */
 	private function microtime_float()
 	{
@@ -44,37 +48,41 @@ class ChurchDirectoryModelGeoUpdate extends JModelLegacy
 
 	/**
 	 * Starts or resets the internal timer
+	 *
+	 * @return void
 	 */
 	private function resetTimer()
 	{
-		$this->startTime = $this->microtime_float();
+		$this->_startTime = $this->microtime_float();
 	}
 
 	/**
-	 * Makes sure that no more than 3 seconds since the start of the timer have
-	 * elapsed
+	 * Makes sure that no more than 3 seconds since the start of the timer have elapsed
 	 *
 	 * @return bool
 	 */
 	private function haveEnoughTime()
 	{
 		$now     = $this->microtime_float();
-		$elapsed = abs($now - $this->startTime);
+		$elapsed = abs($now - $this->_startTime);
 
 		return $elapsed < 3;
 	}
 
 	/**
 	 * Saves the file/folder stack in the session
+	 *
+	 * @return void
 	 */
 	private function saveStack()
 	{
 		$stack = array(
-			'members' => $this->membersStack,
+			'members' => $this->_membersStack,
 			'total'   => $this->totalMembers,
 			'done'    => $this->doneMembers
 		);
 		$stack = json_encode($stack);
+
 		if (function_exists('base64_encode') && function_exists('base64_decode'))
 		{
 			if (function_exists('gzdeflate') && function_exists('gzinflate'))
@@ -89,14 +97,16 @@ class ChurchDirectoryModelGeoUpdate extends JModelLegacy
 
 	/**
 	 * Resets the file/folder stack saved in the session
+	 *
+	 * @return void
 	 */
 	private function resetStack()
 	{
 		$session = JFactory::getSession();
 		$session->set('geoupdate_stack', '', 'churchdirectory');
-		$this->membersStack = array();
-		$this->totalMembers = 0;
-		$this->doneMembers  = 0;
+		$this->_membersStack = array();
+		$this->totalMembers  = 0;
+		$this->doneMembers   = 0;
 	}
 
 	/**
@@ -111,9 +121,9 @@ class ChurchDirectoryModelGeoUpdate extends JModelLegacy
 
 		if (empty($stack))
 		{
-			$this->membersStack = array();
-			$this->totalMembers = 0;
-			$this->doneMembers  = 0;
+			$this->_membersStack = array();
+			$this->totalMembers  = 0;
+			$this->doneMembers   = 0;
 
 			return;
 		}
@@ -129,9 +139,9 @@ class ChurchDirectoryModelGeoUpdate extends JModelLegacy
 		}
 		$stack = json_decode($stack, true);
 
-		$this->membersStack = $stack['members'];
-		$this->totalMembers = $stack['total'];
-		$this->doneMembers  = $stack['done'];
+		$this->_membersStack = $stack['members'];
+		$this->totalMembers  = $stack['total'];
+		$this->doneMembers   = $stack['done'];
 	}
 
 	/**
@@ -141,7 +151,7 @@ class ChurchDirectoryModelGeoUpdate extends JModelLegacy
 	 *
 	 * @return void
 	 */
-	public function getMembers($id = null)
+	private function getMembers($id = null)
 	{
 		$db    = JFactory::getDBO();
 		$query = $db->getQuery(true);
@@ -157,13 +167,13 @@ class ChurchDirectoryModelGeoUpdate extends JModelLegacy
 			$members = array();
 		}
 
-		$this->membersStack = array_merge($this->membersStack, $members);
+		$this->_membersStack = array_merge($this->_membersStack, $members);
 
 		$this->totalMembers += count($members);
 	}
 
 	/**
-	 *  ?
+	 *  Run the Update will there is time.
 	 *
 	 * @param   bool         $resetTimer  If the time must be reset
 	 * @param   string|null  $id          Record ID to update
@@ -191,25 +201,25 @@ class ChurchDirectoryModelGeoUpdate extends JModelLegacy
 	}
 
 	/**
-	 * ?
+	 * Start the Run through the members or member.
 	 *
-	 * @param   string|null  $id  ID
+	 * @param   string|null  $id  ID of a member if only updating a single one.
 	 *
 	 * @return bool
 	 */
 	private function RealRun($id = null)
 	{
-		if (!empty($this->membersStack))
+		if (!empty($this->_membersStack))
 		{
-			while (!empty($this->membersStack) && $this->haveEnoughTime())
+			while (!empty($this->_membersStack) && $this->haveEnoughTime())
 			{
-				$file = array_pop($this->membersStack);
+				$file = array_pop($this->_membersStack);
 				$this->doneMembers++;
 				$this->update($file, $id);
 			}
 		}
 
-		if (empty($this->membersStack))
+		if (empty($this->_membersStack))
 		{
 			// Just finished
 			$this->resetStack();
@@ -222,9 +232,9 @@ class ChurchDirectoryModelGeoUpdate extends JModelLegacy
 	}
 
 	/**
-	 * ?
+	 * Start Looking though the members
 	 *
-	 * @param   string|null  $id  ?
+	 * @param   string|null  $id  Run the ID if needed.
 	 *
 	 * @return bool
 	 */
@@ -234,11 +244,11 @@ class ChurchDirectoryModelGeoUpdate extends JModelLegacy
 		$this->resetTimer();
 		$this->getMembers();
 
-		if (empty($this->membersStack))
+		if (empty($this->_membersStack))
 		{
-			$this->membersStack = array();
+			$this->_membersStack = array();
 		}
-		asort($this->membersStack);
+		asort($this->_membersStack);
 
 		$this->saveStack();
 
@@ -253,16 +263,14 @@ class ChurchDirectoryModelGeoUpdate extends JModelLegacy
 	}
 
 	/**
-	 * Update Lng & Lat
+	 * Update Lng & Lat of Member
 	 *
-	 * @param   object  $row  ?
-	 * @param   string  $id   ?
+	 * @param   object  $row  Row to look through
+	 * @param   string  $id   ID of member to update
 	 *
 	 * @return boolean
-	 *
-	 * @todo add system to remove member_id form db if info has bean updated.
 	 */
-	public function update($row = null, $id = null)
+	private function update($row = null, $id = null)
 	{
 		$geocode_pending = false;
 		$db              = $this->getDbo();
@@ -271,10 +279,18 @@ class ChurchDirectoryModelGeoUpdate extends JModelLegacy
 		{
 			if ($id)
 			{
+				// Set Member ID for Latter Use
+				$this->_memberID = $id;
+
 				$query = $db->getQuery(true);
 				$query->select('*')->from('#__churchdirectory_details')->where('id =' . $db->q($id));
 				$db->setQuery($query);
 				$row = $db->loadObject();
+			}
+			else
+			{
+				// Set Member ID for Latter Use
+				$this->_memberID = $row['id'];
 			}
 			$base_url = "http://maps.googleapis.com/maps/api/geocode/xml?address=";
 
@@ -308,6 +324,22 @@ class ChurchDirectoryModelGeoUpdate extends JModelLegacy
 							->where("id = " . $db->q($row['id']));
 						$db->setQuery($query);
 						$db->execute();
+
+						// Check to see if record is int GeoErrors
+						$query = $db->getQuery(true);
+						$query->select('member_id')->from('#__churchdirectory_geoupdate');
+						$query->where('member_id = ' . $this->_memberID);
+						$db->setQuery($query);
+
+						// If member found remove record
+						if ($db->loadResult())
+						{
+							$query = $db->getQuery(true);
+							$query->delete('#__churchdirectory_geoupdate');
+							$query->where('member_id = ' . $this->_memberID);
+							$db->setQuery($query);
+							$db->execute();
+						}
 					endforeach;
 				}
 				elseif ($status == "OVER_QUERY_LIMIT")

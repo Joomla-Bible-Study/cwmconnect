@@ -12,7 +12,7 @@ defined('_JEXEC') or die;
  * Class for Info
  *
  * @package  ChurchDirectory.Admin
- * @since   1.7.0
+ * @since    1.7.0
  */
 class ChurchDirectoryViewInfo extends JViewLegacy
 {
@@ -38,13 +38,14 @@ class ChurchDirectoryViewInfo extends JViewLegacy
 	 */
 	protected $state;
 
+	protected $sidebar;
+
 	/**
 	 * Display function
 	 *
-	 * @param   string  $tpl  ?
+	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
 	 *
-	 * @return mixed
-	 * @since 1.7.0
+	 * @return  mixed  A string if successful, otherwise a Error object.
 	 */
 	public function display($tpl = null)
 	{
