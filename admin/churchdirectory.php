@@ -46,6 +46,6 @@ $controller->redirect();
  */
 function addCSS()
 {
-	//JHTML::stylesheet('media/com_churchdirectory/css/general.css');
+	//JHTML::stylesheet('media/com_churchdirectory/jui/css/bootstrap.min.css');
 	//JHTML::stylesheet('media/com_churchdirectory/css/icons.css');
 }

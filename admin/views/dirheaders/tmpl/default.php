@@ -198,12 +198,6 @@ $sortFields = $this->getSortFields();
 						JHtml::_('dropdown.publish', 'cb' . $i, 'dirheaders.');
 					endif;
 
-					if ($item->featured) :
-						JHtml::_('dropdown.unfeatured', 'cb' . $i, 'dirheaders.');
-					else :
-						JHtml::_('dropdown.featured', 'cb' . $i, 'dirheaders.');
-					endif;
-
 					JHtml::_('dropdown.divider');
 
 					if ($archived) :
@@ -248,7 +242,7 @@ $sortFields = $this->getSortFields();
     </tr>
 		<?php endforeach; ?>
     </tbody>
-	<?php if (CHURCHDIRECTORY_CHECKREL): ?>
+	<?php if ($version): ?>
     <tfoot>
     <tr>
         <td colspan="11">
