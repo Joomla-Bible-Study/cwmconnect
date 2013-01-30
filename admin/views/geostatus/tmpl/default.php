@@ -5,7 +5,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-defined('_JEXEC') or die();
+defined('_JEXEC') or die;
 
 $version = version_compare(JVERSION, '3.0', 'ge');
 JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
@@ -14,15 +14,27 @@ if ($version):
 	JHtml::_('behavior.multiselect');
 	JHtml::_('dropdown.init');
 	JHtml::_('formbehavior.chosen', 'select');
+	JHTML::_('behavior.modal');
 else :
 	JHtml::_('behavior.multiselect');
 	JHtml::_('behavior.tooltip');
+	JHTML::_('behavior.modal');
 endif;
 
 $user      = JFactory::getUser();
 $userId    = $user->get('id');
 $listOrder = $this->escape($this->state->get('list.ordering'));
 $listDirn  = $this->escape($this->state->get('list.direction'));
+$archived  = $this->state->get('filter.published') == 2 ? true : false;
+$trashed   = $this->state->get('filter.published') == -2 ? true : false;
+$canOrder  = $user->authorise('core.edit.state', 'com_churchdirectory.category');
+$saveOrder = $listOrder == 'a.ordering';
+if ($saveOrder && $version)
+{
+	$saveOrderingUrl = 'index.php?option=com_churchdirectroy&task=geostatus.saveOrderAjax&tmpl=component';
+	JHtml::_('sortablelist.sortable', 'articleList', 'adminForm', strtolower($listDirn), $saveOrderingUrl);
+}
+$sortFields = $this->getSortFields();
 ?>
 <script type="text/javascript">
     Joomla.orderTable = function () {
@@ -39,100 +51,192 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 </script>
 <form action="<?php echo JRoute::_('index.php?option=com_churchdirectory&view=geostatus'); ?>" method="post"
       name="adminForm" id="adminForm">
-	<?php if (!empty($this->sidebar)): ?>
-    <div id="j-sidebar-container" class="span2">
-		<?php echo $this->sidebar; ?>
-    </div>
+<?php if (!empty($this->sidebar)): ?>
+<div id="j-sidebar-container" class="span2">
+	<?php echo $this->sidebar; ?>
+</div>
         <div id="j-main-container" class="span10">
         <?php else : ?>
             <div id="j-main-container">
             <?php endif; ?>
-<table class="adminlist table table-striped" id="articleList">
-    <thead>
-    <tr>
-        <th width="1%" class="title">
-            <input type="checkbox" name="checkall-toggle" value="" title="<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>"
-                   onclick="Joomla.checkAll(this)"/>
-        </th>
-        <th>
-            <span>Name</span>
-        </th>
-        <th>
-            Address
-        </th>
-        <th width="5%">
-            State
-        </th>
-        <th width="10%">
-            Zip
-        </th>
-        <th width="15%" class="nowrap center">
-            <span>Status</span>
-        </th>
-        <th width="1%" class="nowrap center hidden-phone">
-			<?php echo JText::_('JGRID_HEADING_ID'); ?>
-        </th>
-    </tr>
-    </thead>
-<tbody>
-	<?php if (!empty($this->info)):
-	$n = count($this->info);
-	foreach ($this->info AS $i => $data):
-		$ordering   = $listOrder == 'm.ordering';
-		$canCreate  = $user->authorise('core.create');
-		$canEdit    = $user->authorise('core.edit');
-		$canCheckin = $user->authorise('core.manage', 'com_checkin') || $data->checked_out == $userId || $data->checked_out == 0;
-		$canEditOwn = $user->authorise('core.edit.own') && $data->created_by == $userId;
-		$canChange  = $user->authorise('core.edit.state') && $canCheckin;?>
-    <tr class="row<?php echo $i % 2; ?>" sortable-group-id="1">
-        <td class="center hidden-phone">
-			<?php echo JHtml::_('grid.id', $i, $data->id); ?>
-        </td>
-        <td class="nowrap has-context"
-            style="<?php if ($data->status != 'No Geo Location Set'): ?> background-color: #F8B9B7<?php endif;?>">
-            <div class="pull-left">
-                <a href="<?php echo JRoute::_('index.php?option=com_churchdirectory&task=member.edit&id=' . (int) $data->id); ?>">
-					<?php echo $this->escape($data->name); ?></a>
-            </div>
-            <div class="pull-left">
-				<?php
-				if ($version)
-				{
-					// Create dropdown items
-					JHtml::_('dropdown.edit', $data->id, 'member.');
+    <div id="filter-bar" class="btn-toolbar">
+        <div class="fltlft filter-search btn-group pull-left">
+            <label for="filter_search"
+                   class="element-invisible"><?php echo JText::_('JSEARCH_FILTER_LABEL'); ?></label>
+            <input type="text" name="filter_search" id="filter_search"
+                   value="<?php echo $this->escape($this->state->get('filter.search')); ?>"
+                   title="<?php echo JText::_('COM_CHURCHDIRECTORY_SEARCH_IN_NAME'); ?>"/>
+        </div>
+        <div class="filter-search fltlft btn-group pull-left">
+            <button type="submit"><?php echo JText::_('JSEARCH_FILTER_SUBMIT'); ?></button>
+            <button type="button"
+                    onclick="document.id('filter_search').value='';this.form.submit();"><?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?></button>
+        </div>
+		<?php if ($version): ?>
+        <div class="filter-select fltrt btn-group pull-right hidden-phone">
+            <label for="limit"
+                   class="element-invisible"><?php echo JText::_('JFIELD_PLG_SEARCH_SEARCHLIMIT_DESC'); ?></label>
+			<?php echo $this->pagination->getLimitBox(); ?>
+        </div>
+        <div class="filter-select fltrt btn-group pull-right hidden-phone">
+            <label for="directionTable"
+                   class="element-invisible"><?php echo JText::_('JFIELD_ORDERING_DESC'); ?></label>
+            <select name="directionTable" id="directionTable" class="input-medium" onchange="Joomla.orderTable()">
+                <option value=""><?php echo JText::_('JFIELD_ORDERING_DESC'); ?></option>
+                <option value="asc" <?php if ($listDirn == 'asc') echo 'selected="selected"'; ?>><?php echo JText::_('JGLOBAL_ORDER_ASCENDING'); ?></option>
+                <option value="desc" <?php if ($listDirn == 'desc') echo 'selected="selected"'; ?>><?php echo JText::_('JGLOBAL_ORDER_DESCENDING'); ?></option>
+            </select>
+        </div>
+        <div class="filter-select fltrt btn-group pull-right">
+            <label for="sortTable" class="element-invisible"><?php echo JText::_('JGLOBAL_SORT_BY'); ?></label>
+            <select name="sortTable" id="sortTable" class="input-medium" onchange="Joomla.orderTable()">
+                <option value=""><?php echo JText::_('JGLOBAL_SORT_BY'); ?></option>
+				<?php echo JHtml::_('select.options', $sortFields, 'value', 'text', $listOrder); ?>
+            </select>
+        </div>
+		<?php else : ?>
+        <div class="filter-select fltrt">
+            <select name="filter_published" class="inputbox" onchange="this.form.submit()">
+                <option value=""><?php echo JText::_('JOPTION_SELECT_PUBLISHED'); ?></option>
+				<?php echo JHtml::_('select.options', JHtml::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.published'), true); ?>
+            </select>
 
-					//JHtml::_('member.geoupdate', $data->id, 'members');
+            <select name="filter_category_id" class="inputbox" onchange="this.form.submit()">
+                <option value=""><?php echo JText::_('JOPTION_SELECT_CATEGORY'); ?></option>
+				<?php echo JHtml::_('select.options', JHtml::_('category.options', 'com_churchdirectory'), 'value', 'text', $this->state->get('filter.category_id')); ?>
+            </select>
+            <select name="filter_access" class="inputbox" onchange="this.form.submit()">
+                <option value=""><?php echo JText::_('JOPTION_SELECT_ACCESS'); ?></option>
+				<?php echo JHtml::_('select.options', JHtml::_('access.assetgroups'), 'value', 'text', $this->state->get('filter.access')); ?>
+            </select>
 
-				}
-				?>
-            </div>
-        </td>
-        <td class="small">
-			<?php echo $data->address; ?>
-        </td>
-        <td class="small">
-			<?php echo $data->state; ?>
-        </td>
-        <td class="small">
-			<?php echo $data->postcode; ?>
-        </td>
-        <td class="small center">
-			<?php echo $data->status; ?>
-        </td>
-        <td class="center hidden-phone">
-			<?php echo $data->id; ?>
-        </td>
-    </tr>
-            </tbody>
-        </table>
-		<?php endforeach;
-else: ?>
-    <div>
-        <p>No errors</p>
+            <select name="filter_language" class="inputbox" onchange="this.form.submit()">
+                <option value=""><?php echo JText::_('JOPTION_SELECT_LANGUAGE'); ?></option>
+				<?php echo JHtml::_('select.options', JHtml::_('contentlanguage.existing', true, true), 'value', 'text', $this->state->get('filter.language')); ?>
+            </select>
+        </div>
+		<?php endif; ?>
     </div>
-	<?php endif; ?>
+    <div class="clr"></div>
+    <table class="adminlist table table-striped" id="articleList">
+        <thead>
+        <tr>
+            <th width="1%" class="order nowrap center hidden-phone">
+				<?php echo JHtml::_('grid.sort', '<i class="icon-menu-2"></i>', 'a.ordering', $listDirn, $listOrder, null, 'asc', 'JGRID_HEADING_ORDERING'); ?>
+            </th>
+            <th width="1%" class="title">
+                <input type="checkbox" name="checkall-toggle" value=""
+                       title="<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>"
+                       onclick="Joomla.checkAll(this)"/>
+            </th>
+            <th>
+				<?php echo JHtml::_('grid.sort', 'JGLOBAL_TITLE', 'a.name', $listDirn, $listOrder); ?>
+            </th>
+            <th class="norap center">
+				<?php echo JHtml::_('grid.sort', 'COM_CHURCHDIRECTORY_FIELD_ADDRESS', 'a.address', $listDirn, $listOrder); ?>
+            </th>
+            <th class="nowrap hidden-phone">
+				<?php echo JHtml::_('grid.sort', 'COM_CHURCHDIRECTORY_FIELD_STATE', 'a.state', $listDirn, $listOrder); ?>
+            </th>
+            <th width="5%" class="nowrap hidden-phone">
+		        <?php echo JHtml::_('grid.sort', 'COM_CHURCHDIRECTORY_FIELD_SUBURB', 'a.suburb', $listDirn, $listOrder); ?>
+            </th>
+            <th width="5%" class="nowrap hidden-phone">
+				<?php echo JHtml::_('grid.sort', 'COM_CHURCHDIRECTORY_FIELD_ZIP', 'a.postcode', $listDirn, $listOrder); ?>
+            </th>
+            <th class="nowrap">
+				<?php echo JHtml::_('grid.sort', 'COM_CHURCHDIRECTORY_FIELD_STATUS', 'u.status', $listDirn, $listOrder); ?>
+            </th>
+            <th width="1%" class="nowrap center hidden-phone">
+				<?php echo JHtml::_('grid.sort', 'JGRID_HEADING_ID', 'a.id', $listDirn, $listOrder); ?>
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+		<?php
+		$n = count($this->items);
+		foreach ($this->items as $i => $item) :
+			$ordering   = $listOrder == 'a.ordering';
+			$canCreate  = $user->authorise('core.create', 'com_churchdirectory.category.' . $item->catid);
+			$canEdit    = $user->authorise('core.edit', 'com_churchdirectory.category.' . $item->catid);
+			$canCheckin = $user->authorise('core.manage', 'com_checkin') || $item->checked_out == $userId || $item->checked_out == 0;
+			$canEditOwn = $user->authorise('core.edit.own', 'com_churchdirectory.category.' . $item->catid) && $item->created_by == $userId;
+			$canChange  = $user->authorise('core.edit.state', 'com_churchdirectory.category.' . $item->catid) && $canCheckin;
+
+			$item->cat_link = JRoute::_('index.php?option=com_categories&extension=com_churchdirectory&task=edit&type=other&id=' . $item->catid);
+			?>
+        <tr class="row<?php echo $i % 2; ?>" sortable-group-id="<?php echo $item->catid?>">
+            <td class="order nowrap center hidden-phone">
+				<?php echo ChurchDirectoryHelper::ordering($canChange, $saveOrder, $item, $this->items, $ordering, $i, $n, 'geostatus', $this->pagination, $listDirn); ?>
+            </td>
+            <td class="center hidden-phone">
+				<?php echo JHtml::_('grid.id', $i, $item->id); ?>
+            </td>
+            <td class="nowrap has-context">
+                <div class="pull-left">
+					<?php if ($canEdit || $canEditOwn) : ?>
+                    <a href="<?php echo JRoute::_('index.php?option=com_churchdirectory&task=member.edit&id=' . (int) $item->id); ?>">
+						<?php echo $this->escape($item->name); ?></a>
+					<?php else : ?>
+					<?php echo $this->escape($item->name); ?>
+					<?php endif; ?>
+                    <span class="small">
+								<?php echo JText::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($item->alias));?>
+							</span>
+                    <div class="small">
+						<?php echo $item->category_title; ?>
+                    </div>
+                </div>
+                <div class="pull-left">
+					<?php
+					if ($version)
+					{
+						// Create dropdown items
+						JHtml::_('dropdown.edit', $item->id, 'member.');
+						JHtml::_('dropdown.divider');
+						JHtml::_('geoupdate.update', $item->id, 'geoupdate.');
+
+						// Render dropdown list
+						echo JHtml::_('dropdown.render');
+					}
+					?>
+                </div>
+            </td>
+            <td class="center hidden-phone">
+	            <?php if(!empty($item->address)){echo $item->address;} else {echo JText::_('COM_CHURCHDIRECTORY_LBL_EMPTY');} ?>
+            </td>
+            <td class="small hidden-phone">
+	            <?php if(!empty($item->state)){echo $item->state;} else {echo JText::_('COM_CHURCHDIRECTORY_LBL_EMPTY');} ?>
+            </td>
+            <td class="center hidden-phone">
+	            <?php if(!empty($item->suburb)){echo $item->suburb;} else {echo JText::_('COM_CHURCHDIRECTORY_LBL_EMPTY');} ?>
+            </td>
+            <td class="small hidden-phone">
+	            <?php if(!empty($item->postcode)){echo $item->postcode;} else {echo JText::_('COM_CHURCHDIRECTORY_LBL_EMPTY');} ?>
+            </td>
+            <td class="small hidden-phone">
+	            <?php if(!empty($item->status)){echo $item->status;} else {echo JText::_('COM_CHURCHDIRECTORY_LBL_EMPTY');} ?>
+            </td>
+            <td class="center hidden-phone">
+				<?php echo $item->id; ?>
+            </td>
+        </tr>
+			<?php endforeach; ?>
+        </tbody>
+		<?php if ($version): ?>
+        <tfoot>
+        <tr>
+            <td colspan="11">
+				<?php echo $this->pagination->getListFooter(); ?>
+            </td>
+        </tr>
+        </tfoot>
+		<?php endif; ?>
+    </table>
     <input type="hidden" name="task" value=""/>
     <input type="hidden" name="boxchecked" value="0"/>
-	<?php echo JHtml::_('form.token'); ?>
+    <input type="hidden" name="filter_order" value="<?php echo $listOrder; ?>"/>
+    <input type="hidden" name="filter_order_Dir" value="<?php echo $listDirn; ?>"/>
+<?php echo JHtml::_('form.token'); ?>
 </div>
 </form>

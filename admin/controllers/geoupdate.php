@@ -9,12 +9,16 @@
 
 class ChurchDirectoryControllerGeoupdate extends JControllerAdmin
 {
+	/**
+	 * Constructor.
+	 *
+	 * @param   array  $config  An optional associative array of configuration settings.
+	 */
 	public function __construct($config = array())
 	{
 		parent::__construct($config);
 
 		$this->modelName = 'geoupdate';
-		die;
 	}
 
 	public function execute($task)
@@ -33,13 +37,21 @@ class ChurchDirectoryControllerGeoupdate extends JControllerAdmin
 		$this->display(false);
 	}
 
+	/**
+	 * Start the Update
+	 *
+	 * @return void
+ 	 */
 	public function run()
 	{
-		die;
+		$id = JFactory::getApplication()->input->getInt('id');
+		if(empty($id)){
+			die('no id');
+		}
 		$model = $this->getModel('geoupdate');
-		$state = $model->run();
+		$state = $model->run(true, $id);
 		$model->setState('scanstate', $state);
 
-		$this->display(false);
+		$this->setRedirect(JRoute::_('index.php?option=com_churchdirectory&view=cpanel', false));
 	}
 }

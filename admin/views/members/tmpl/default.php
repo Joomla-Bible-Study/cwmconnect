@@ -9,15 +9,11 @@ defined('_JEXEC') or die;
 
 $version = version_compare(JVERSION, '3.0', 'ge');
 JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
-if ($version):
-	JHtml::_('bootstrap.tooltip');
-	JHtml::_('behavior.multiselect');
-	JHtml::_('dropdown.init');
-	JHtml::_('formbehavior.chosen', 'select');
-else :
-	JHtml::_('behavior.multiselect');
-	JHtml::_('behavior.tooltip');
-endif;
+JHtml::_('bootstrap.framework');
+JHtml::_('bootstrap.tooltip');
+JHtml::_('behavior.multiselect');
+JHtml::_('dropdown.init');
+JHtml::_('formbehavior.chosen', 'select');
 
 $user      = JFactory::getUser();
 $userId    = $user->get('id');
@@ -29,7 +25,7 @@ $canOrder  = $user->authorise('core.edit.state', 'com_churchdirectory.category')
 $saveOrder = $listOrder == 'a.ordering';
 if ($saveOrder && $version)
 {
-	$saveOrderingUrl = 'index.php?option=com_churchdirectroy&task=memberss.saveOrderAjax&tmpl=component';
+	$saveOrderingUrl = 'index.php?option=com_churchdirectroy&task=members.saveOrderAjax&tmpl=component';
 	JHtml::_('sortablelist.sortable', 'articleList', 'adminForm', strtolower($listDirn), $saveOrderingUrl);
 }
 $sortFields = $this->getSortFields();
@@ -138,7 +134,7 @@ $sortFields = $this->getSortFields();
 			<?php echo JHtml::_('grid.sort', 'COM_CHURCHDIRECTORY_FIELD_LINKED_USER_LABEL', 'ul.name', $listDirn, $listOrder); ?>
         </th>
         <th width="5%" class="nowrap hidden-phone">
-			<?php echo JHtml::_('grid.sort', 'JFEATURED', 'a.featured', $listDirn, $listOrder, null, 'desc'); ?>
+			<?php echo JHtml::_('grid.sort', 'JGRID_HEADING_ACCESS', 'a.access', $listDirn, $listOrder); ?>
         </th>
         <th width="10%" class="nowrap hidden-phone">
 			<?php echo JHtml::_('grid.sort', 'JGRID_HEADING_ACCESS', 'access_level', $listDirn, $listOrder); ?>

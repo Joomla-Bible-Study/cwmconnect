@@ -1,7 +1,5 @@
 <?php
 /**
- * Default view for cpanel
- *
  * @package    ChurchDirectory.Admin
  * @copyright  (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
@@ -30,14 +28,11 @@ JHtml::_('behavior.multiselect');
             <?php endif; ?>
     <!-- Begin Content -->
     <div class="fltlft pull-left">
-        <p>Welcome to the new and improved Church Directory System this i a alpha release and has lot of bugs
+        <p>Welcome to the new and improved Church Directory System this is a alpha release and has lot of bugs
             and things not completed.<br/>
-
             All core function should be working. Directory rendering is till not fully functional and working on
             family unit.<br/><br/>
-
             Thanks for supporting the work.<br/><br/>
-
             Joomla Bible Study Team</p>
     </div>
     <div class="fltrt pull-right span1">
@@ -55,8 +50,7 @@ JHtml::_('behavior.multiselect');
         <div class="icon">
             <a href="index.php?option=com_churchdirectory&view=geoupdate&tmpl=component" class="modal"
                rel="{handler: 'iframe', size: {x: 600, y: 250}}">
-                <img
-                        src="<?php echo rtrim(JURI::base(), '/'); ?>/../media/com_admintools/images/cleantmp-32.png"
+                <img src="<?php echo rtrim(JURI::base(), '/'); ?>/../media/com_admintools/images/cleantmp-32.png"
                         border="0" alt="<?php echo JText::_('COM_CHURCHDIRECTORY_TITLE_GEOUPDATE') ?>"/>
 					<span>
 						<?php echo JText::_('COM_CHURCHDIRECTORY_TITLE_GEOUPDATE') ?><br/>
@@ -66,5 +60,4 @@ JHtml::_('behavior.multiselect');
     </div>
 </div>
     <!-- End Content -->
-</div>
 </form>

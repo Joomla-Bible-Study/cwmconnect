@@ -10,28 +10,28 @@ defined('_JEXEC') or die;
 /**
  * View to fix Database.
  *
- * @package ChurchDirectory.Admin
- * @since   1.7.0
+ * @package  ChurchDirectory.Admin
+ * @since    1.7.0
  */
 class ChurchDirectoryViewDatabase extends JViewLegacy
 {
 	protected $changeSet;
 
-	protected  $errors;
+	protected $errors;
 
-	protected  $results;
+	protected $results;
 
-	protected  $schemaVersion;
+	protected $schemaVersion;
 
-	protected  $updateVersion;
+	protected $updateVersion;
 
-	protected  $filterParams;
+	protected $filterParams;
 
-	protected  $pagination;
+	protected $pagination;
 
-	protected  $errorCount;
+	protected $errorCount;
 
-	protected  $jversion;
+	protected $jversion;
 
 	/**
 	 * Display the view
@@ -88,17 +88,18 @@ class ChurchDirectoryViewDatabase extends JViewLegacy
 		// Set the toolbar
 		$this->addToolBar();
 
-		// Display the template
-		parent::display($tpl);
-
 		// Set the document
 		$this->setDocument();
+
+		// Display the template
+		return parent::display($tpl);
 	}
 
 	/**
 	 * Add the page title and toolbar.
 	 *
 	 * @return void
+	 *
 	 * @since    1.7.0
 	 */
 	protected function addToolbar()
@@ -117,6 +118,7 @@ class ChurchDirectoryViewDatabase extends JViewLegacy
 	 * Set document browser title
 	 *
 	 * @return void
+	 *
 	 * @since 1.7.0
 	 */
 	protected function setDocument()

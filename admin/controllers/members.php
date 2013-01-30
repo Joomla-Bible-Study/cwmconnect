@@ -1,22 +1,17 @@
 <?php
-
 /**
- * Controller for Members
- *
- * @package             ChurchDirectory.Admin
- * @copyright           (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
- * @license             GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    ChurchDirectory.Admin
+ * @copyright  (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-// No direct access.
-defined('_JEXEC') or die;
 
-jimport('joomla.application.component.controlleradmin');
+defined('_JEXEC') or die;
 
 /**
  * Member list controller class.
  *
- * @package    ChurchDirectory.Admin
- * @since      1.7.0
+ * @package  ChurchDirectory.Admin
+ * @since    1.7.0
  */
 class ChurchDirectoryControllerMembers extends JControllerAdmin
 {
@@ -25,10 +20,6 @@ class ChurchDirectoryControllerMembers extends JControllerAdmin
 	 * Constructor.
 	 *
 	 * @param   array  $config  An optional associative array of configuration settings.
-	 *
-	 * @return    ChurchDirectoryControllerMembers
-	 * @see        JController
-	 * @since      1.7.0
 	 */
 	public function __construct($config = array())
 	{
@@ -41,19 +32,22 @@ class ChurchDirectoryControllerMembers extends JControllerAdmin
 	 * Method to toggle the featured setting of a list of contacts.
 	 *
 	 * @return    void
+	 *
 	 * @since    1.7.0
 	 */
 	function featured()
 	{
 		// Check for request forgeries
-		JRequest::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
 
 		// Initialise variables.
+		$app    = JFactory::getApplication();
 		$user   = JFactory::getUser();
-		$ids    = JRequest::getVar('cid', array(), '', 'array');
+		$ids    = $this->input->get('cid', array(), '', 'array');
 		$values = array('featured' => 1, 'unfeatured' => 0);
 		$task   = $this->getTask();
 		$value  = JArrayHelper::getValue($values, $task, 0, 'int');
+
 		// Get the model.
 		$model = $this->getModel();
 
@@ -61,24 +55,25 @@ class ChurchDirectoryControllerMembers extends JControllerAdmin
 		foreach ($ids as $i => $id)
 		{
 			$item = $model->getItem($id);
+
 			if (!$user->authorise('core.edit.state', 'com_churchdirectory.category.' . (int) $item->catid))
 			{
 				// Prune items that you can't change.
 				unset($ids[$i]);
-				JError::raiseNotice(403, JText::_('JLIB_APPLICATION_ERROR_EDITSTATE_NOT_PERMITTED'));
+				$app->enqueueMessage(JText::_('JLIB_APPLICATION_ERROR_EDITSTATE_NOT_PERMITTED'), 'notice');
 			}
 		}
 
 		if (empty($ids))
 		{
-			JError::raiseWarning(500, JText::_('COM_CHURCHDIRECTORY_NO_ITEM_SELECTED'));
+			$app->enqueueMessage(JText::_('COM_CHURCHDIRECTORY_NO_ITEM_SELECTED'), 'error');
 		}
 		else
 		{
 			// Publish the items.
 			if (!$model->featured($ids, $value))
 			{
-				JError::raiseWarning(500, $model->getError());
+				$app->enqueueMessage($model->getError(), 'error');
 			}
 		}
 
@@ -88,11 +83,12 @@ class ChurchDirectoryControllerMembers extends JControllerAdmin
 	/**
 	 * Proxy for getModel.
 	 *
-	 * @param    string    $name      The name of the model.
-	 * @param    string    $prefix    The prefix for the PHP class name.
-	 * @param array        $config    Ingnore info
+	 * @param   string  $name    The name of the model.
+	 * @param   string  $prefix  The prefix for the PHP class name.
+	 * @param   array   $config  Ingnore info
 	 *
 	 * @return    JModel
+	 *
 	 * @since    1.7.0
 	 */
 	public function getModel($name = 'Member', $prefix = 'ChurchDirectoryModel', $config = array('ignore_request' => true))

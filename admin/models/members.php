@@ -7,6 +7,8 @@
 
 defined('_JEXEC') or die;
 
+jimport( 'joomla.application.component.modellist' );
+
 /**
  * Methods supporting a list of Member records.
  *
@@ -48,6 +50,13 @@ class ChurchDirectoryModelMembers extends JModelList
 				'publish_down', 'a.publish_down',
 				'ul.name', 'linked_user',
 			);
+
+			$app = JFactory::getApplication();
+			$assoc = isset($app->item_associations) ? $app->item_associations : 0;
+			if ($assoc)
+			{
+				$config['filter_fields'][] = 'association';
+			}
 		}
 
 		parent::__construct($config);

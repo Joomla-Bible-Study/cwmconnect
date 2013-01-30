@@ -4,12 +4,8 @@
  * @copyright  (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-// No direct access
+
 defined('_JEXEC') or die;
-
-
-jimport('joomla.application.component.helper');
-jimport('joomla.i18n.help');
 
 /**
  * View class for a list of Positions.
@@ -30,23 +26,25 @@ class ChurchDirectoryViewPositions extends JViewLegacy
 	/**
 	 * Protect items
 	 *
-	 * @var array protect pagination
+	 * @var object protect pagination
 	 */
 	protected $pagination;
 
 	/**
 	 * Protect state
 	 *
-	 * @var array protect state
+	 * @var object protect state
 	 */
 	protected $state;
+
+	protected $sidebar;
 
 	/**
 	 * Display the view
 	 *
-	 * @param string $tpl
+	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
 	 *
-	 * @return    mixed
+	 * @return  mixed  A string if successful, otherwise a Error object.
 	 */
 	public function display($tpl = null)
 	{
@@ -88,6 +86,7 @@ class ChurchDirectoryViewPositions extends JViewLegacy
 	 */
 	protected function addToolbar()
 	{
+		$user = JFactory::getUser();
 		$canDo = ChurchDirectoryHelper::getActions($this->state->get('filter.category_id'));
 		JToolBarHelper::title(JText::_('COM_CHURCHDIRECTORY_MANAGER_POSITIONS'), 'churchdirectory');
 

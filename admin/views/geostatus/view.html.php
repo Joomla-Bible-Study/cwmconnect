@@ -30,7 +30,7 @@ class ChurchDirectoryViewGeoStatus extends JViewLegacy
 	 */
 	protected $state;
 
-	protected $info;
+	protected $items;
 
 	protected $sidebar;
 
@@ -44,9 +44,10 @@ class ChurchDirectoryViewGeoStatus extends JViewLegacy
 	public function display($tpl = null)
 	{
 		// Assign data to the view
+
+		$this->items      = array_merge($this->get('Items'), $this->get('GeoErrors'));
 		$this->pagination = $this->get('Pagination');
 		$this->state      = $this->get('State');
-		$this->info  = $this->get('Info');
 
 		ChurchDirectoryHelper::addSubmenu('geostatus');
 
@@ -109,6 +110,28 @@ class ChurchDirectoryViewGeoStatus extends JViewLegacy
 	{
 		$document = JFactory::getDocument();
 		$document->setTitle(JText::_('COM_CHURCHDIRECTORY_ADMINISTRATION_MEMBERS'));
+	}
+
+	/**
+	 * Returns an array of fields the table can be sorted by
+	 *
+	 * @return  array  Array containing the field name to sort by as the key and display text as value
+	 *
+	 * @since   3.0
+	 */
+	protected function getSortFields()
+	{
+		return array(
+			'a.ordering'     => JText::_('JGRID_HEADING_ORDERING'),
+			'a.state'        => JText::_('JSTATUS'),
+			'a.name'         => JText::_('JGLOBAL_TITLE'),
+			'category_title' => JText::_('JCATEGORY'),
+			'ul.name'        => JText::_('COM_CONTACT_FIELD_LINKED_USER_LABEL'),
+			'a.featured'     => JText::_('JFEATURED'),
+			'a.access'       => JText::_('JGRID_HEADING_ACCESS'),
+			'a.language'     => JText::_('JGRID_HEADING_LANGUAGE'),
+			'a.id'           => JText::_('JGRID_HEADING_ID')
+		);
 	}
 
 }

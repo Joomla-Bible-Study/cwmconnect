@@ -7,6 +7,8 @@
 
 defined('_JEXEC') or die;
 
+jimport( 'joomla.application.component.modellist' );
+
 /**
  * For Getting GeoUpdate Status from Google
  *
@@ -15,6 +17,44 @@ defined('_JEXEC') or die;
  */
 class ChurchDirectoryModelGeoStatus extends JModelList
 {
+
+	/**
+	 * Constructor.
+	 *
+	 * @param   array  $config  An optional associative array of configuration settings.
+	 *
+	 * @see        JController
+	 * @since      1.7.0
+	 */
+	public function __construct($config = array())
+	{
+		if (empty($config['filter_fields']))
+		{
+			$config['filter_fields'] = array(
+				'id', 'a.id',
+				'name', 'a.name',
+				'lname', 'a.lname',
+				'alias', 'a.alias',
+				'checked_out', 'a.checked_out',
+				'checked_out_time', 'a.checked_out_time',
+				'catid', 'a.catid', 'category_title',
+				'user_id', 'a.user_id',
+				'state', 'a.state',
+				'access', 'a.access', 'access_level',
+				'created', 'a.created',
+				'created_by', 'a.created_by',
+				'ordering', 'a.ordering',
+				'featured', 'a.featured',
+				'language', 'a.language',
+				'publish_up', 'a.publish_up',
+				'publish_down', 'a.publish_down',
+				'ul.name', 'linked_user',
+			);
+		}
+
+		parent::__construct($config);
+	}
+
 	/**
 	 * Method to auto-populate the model state.
 	 *
@@ -55,13 +95,154 @@ class ChurchDirectoryModelGeoStatus extends JModelList
 	}
 
 	/**
-	 * Overrides Pagination
+	 * Method to get a store id based on model configuration state.
 	 *
-	 * @return boolean
+	 * This is necessary because the model is used by the component and
+	 * different modules that might need different sets of data or different
+	 * ordering requirements.
+	 *
+	 * @param   string  $id  A prefix for the store id.
+	 *
+	 * @return    string        A store id.
+	 *
+	 * @since    1.7.0
 	 */
-	public function getPagination()
+	protected function getStoreId($id = '')
 	{
-		return false;
+		// Compile the store id.
+		$id .= ':' . $this->getState('filter.search');
+		$id .= ':' . $this->getState('filter.access');
+		$id .= ':' . $this->getState('filter.published');
+		$id .= ':' . $this->getState('filter.category_id');
+		$id .= ':' . $this->getState('filter.language');
+
+		return parent::getStoreId($id);
+	}
+
+	/**
+	 * Build an SQL query to load the list data.
+	 *
+	 * @return    JDatabaseQuery
+	 *
+	 * @since    1.7.0
+	 */
+	protected function getListQuery()
+	{
+		// Create a new query object.
+		$db    = $this->getDbo();
+		$query = $db->getQuery(true);
+		$user  = JFactory::getUser();
+
+		// Select the required fields from the table.
+		$query->select(
+			$this->getState(
+				'list.select', 'a.id, a.name, a.lname, a.alias, a.checked_out, a.checked_out_time, a.catid, a.user_id' .
+				', a.published, a.access, a.created, a.created_by, a.ordering, a.featured, a.language' .
+				', a.publish_up, a.publish_down'
+			)
+		);
+		$query->from('#__churchdirectory_details AS a');
+
+		$query->where('lat = ' . 0.000000);
+		$query->where('lng = ' . 0.000000);
+
+		// Join over the users for the linked user.
+		$query->select('ul.name AS linked_user');
+		$query->join('LEFT', '#__users AS ul ON ul.id=a.user_id');
+
+		// Join over the language
+		$query->select('l.title AS language_title');
+		$query->join('LEFT', $db->quoteName('#__languages') . ' AS l ON l.lang_code = a.language');
+
+		// Join over the users for the checked out user.
+		$query->select('uc.name AS editor');
+		$query->join('LEFT', '#__users AS uc ON uc.id=a.checked_out');
+
+		// Join over the asset groups.
+		$query->select('ag.title AS access_level');
+		$query->join('LEFT', '#__viewlevels AS ag ON ag.id = a.access');
+
+		// Join over the categories.
+		$query->select('c.title AS category_title');
+		$query->join('LEFT', '#__categories AS c ON c.id = a.catid');
+
+		// Filter by access level.
+		if ($access = $this->getState('filter.access'))
+		{
+			$query->where('a.access = ' . (int) $access);
+		}
+
+		// Implement View Level Access
+		if (!$user->authorise('core.admin'))
+		{
+			$groups = implode(',', $user->getAuthorisedViewLevels());
+			$query->where('a.access IN (' . $groups . ')');
+		}
+
+		// Filter by published state
+		$published = $this->getState('filter.published');
+
+		if (is_numeric($published))
+		{
+			$query->where('a.published = ' . (int) $published);
+		}
+		elseif ($published === '')
+		{
+			$query->where('(a.published = 0 OR a.published = 1)');
+		}
+
+		// Filter by a single or group of categories.
+		$categoryId = $this->getState('filter.category_id');
+
+		if (is_numeric($categoryId))
+		{
+			$query->where('a.catid = ' . (int) $categoryId);
+		}
+		elseif (is_array($categoryId))
+		{
+			JArrayHelper::toInteger($categoryId);
+			$categoryId = implode(',', $categoryId);
+			$query->where('a.catid IN (' . $categoryId . ')');
+		}
+
+		// Filter by search in name.
+		$search = $this->getState('filter.search');
+
+		if (!empty($search))
+		{
+			if (stripos($search, 'id:') === 0)
+			{
+				$query->where('a.id = ' . (int) substr($search, 3));
+			}
+			elseif (stripos($search, 'author:') === 0)
+			{
+				$search = $db->Quote('%' . $db->escape(substr($search, 7), true) . '%');
+				$query->where('(ua.name LIKE ' . $search . ' OR ua.username LIKE ' . $search . ')');
+			}
+			else
+			{
+				$search = $db->Quote('%' . $db->escape($search, true) . '%');
+				$query->where('(a.name LIKE ' . $search . ' OR a.alias LIKE ' . $search . ')');
+			}
+		}
+
+		// Filter on the language.
+		if ($language = $this->getState('filter.language'))
+		{
+			$query->where('a.language = ' . $db->quote($language));
+		}
+
+		// Add the list ordering clause.
+		$orderCol  = $this->state->get('list.ordering', 'a.name');
+		$orderDirn = $this->state->get('list.direction', 'asc');
+
+		if ($orderCol == 'a.ordering' || $orderCol == 'category_title')
+		{
+			$orderCol = 'c.title ' . $orderDirn . ', a.ordering';
+		}
+		$query->order($db->escape($orderCol . ' ' . $orderDirn));
+
+		return $query;
 	}
 
 	/**
@@ -74,47 +255,32 @@ class ChurchDirectoryModelGeoStatus extends JModelList
 
 		$db    = $this->getDbo();
 		$query = $db->getQuery(true);
-		$query->select('u.*, m.*')->from('#__churchdirectory_details AS m');
-		$query->leftJoin('#__churchdirectory_geoupdate AS u ON m.id = u.member_id ');
-		$query->where('m.id = u.member_id');
+		$query->select('u.*, a.*')->from('#__churchdirectory_details AS a');
+		$query->leftJoin('#__churchdirectory_geoupdate AS u ON a.id = u.member_id ');
+		$query->where('a.id = u.member_id');
+
+		// Join over the users for the linked user.
+		$query->select('ul.name AS linked_user');
+		$query->join('LEFT', '#__users AS ul ON ul.id=a.user_id');
+
+		// Join over the language
+		$query->select('l.title AS language_title');
+		$query->join('LEFT', $db->quoteName('#__languages') . ' AS l ON l.lang_code = a.language');
+
+		// Join over the users for the checked out user.
+		$query->select('uc.name AS editor');
+		$query->join('LEFT', '#__users AS uc ON uc.id=a.checked_out');
+
+		// Join over the asset groups.
+		$query->select('ag.title AS access_level');
+		$query->join('LEFT', '#__viewlevels AS ag ON ag.id = a.access');
+
+		// Join over the categories.
+		$query->select('c.title AS category_title');
+		$query->join('LEFT', '#__categories AS c ON c.id = a.catid');
+
 		$db->setQuery($query);
 
 		return $db->loadObjectList();
-	}
-
-	/**
-	 * Get Geo Errors
-	 *
-	 * @return mixed
-	 */
-	public function getNoGeoInfo()
-	{
-		$results = array();
-		$db      = $this->getDbo();
-		$query   = $db->getQuery(true);
-		$query->select('*')->from('#__churchdirectory_details');
-		$query->where('lat = ' . 0.000000);
-		$query->where('lng = ' . 0.000000);
-		$db->setQuery($query);
-		$nogeo = $db->loadObjectList();
-
-		foreach ($nogeo AS $key => $member)
-		{
-			$member->status = 'No Geo Location Set ';
-			$results{$key}  = $member;
-		}
-
-		return $results;
-	}
-
-
-	/**
-	 * Get Geo Errors and Member without Geo Location Data.
-	 *
-	 * @return mixed
-	 */
-	public function getInfo()
-	{
-		return array_merge($this->getGeoErrors(), $this->getNoGeoInfo());
 	}
 }
