@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<extension type="library" version="2.5" method="upgrade">
+    <name>lib_fof</name>
+	<libraryname>fof</libraryname>
+	<description>Framework-on-Framework (FOF) – A rapid component development framework extension for Joomla!</description>
+	<creationDate>2012-12-13</creationDate>
+	<author>Nicholas K. Dionysopoulos / AkeebaBackup.com</author>
+	<authorEmail>nicholas@akeebabackup.com</authorEmail>
+	<authorUrl>https://www.akeebabackup.com</authorUrl>
+	<copyright>(C)2011-2012 Nicholas K. Dionysopoulos</copyright>
+	<license>GNU GPLv3 or later</license>
+	<version>2.0.a1</version>
+	<packager>AkeebaBackup.com</packager>
+	<packagerurl>https://www.AkeebaBackup.com</packagerurl>
+	<scriptfile>script.fof.php</scriptfile>
+	<files folder="fof">
+		<folder>controller</folder>
+		<folder>dispatcher</folder>
+		<folder>encrypt</folder>
+		<folder>form</folder>
+		<folder>inflector</folder>
+		<folder>input</folder>
+		<folder>model</folder>
+		<folder>query</folder>
+		<folder>render</folder>
+		<folder>string</folder>
+		<folder>table</folder>
+		<folder>template</folder>
+		<folder>toolbar</folder>
+		<folder>view</folder>
+
+		<file>LICENSE.txt</file>
+		<file>version.txt</file>
+		<file>index.html</file>
+		<file>include.php</file>
+	</files>
+</extension>
