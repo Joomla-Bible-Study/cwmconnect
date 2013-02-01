@@ -13,7 +13,7 @@ defined('_JEXEC') or die;
  * @package  ChurchDirectory.Site
  * @since    1.7.0
  */
-class ChurchDirectoryModelCategories extends JModelLegacy
+class ChurchDirectoryModelCategories extends JModelList
 {
 
 	/**
@@ -49,9 +49,12 @@ class ChurchDirectoryModelCategories extends JModelLegacy
 	 *
 	 * Note. Calling getState in this method will result in recursion.
 	 *
-	 * @return void
+	 * @param   string  $ordering   An optional ordering field.
+	 * @param   string  $direction  An optional direction (asc|desc).
+	 *
+	 * @return  void
 	 */
-	protected function populateState()
+	protected function populateState($ordering = null, $direction = null)
 	{
 		$app = JFactory::getApplication();
 		$this->setState('filter.extension', $this->_extension);
@@ -109,7 +112,7 @@ class ChurchDirectoryModelCategories extends JModelLegacy
 			}
 			$options               = array();
 			$options['countItems'] = $params->get('show_cat_items_cat', 1) || !$params->get('show_empty_categories_cat', 0);
-			$categories            = JCategories::getInstance('ChurchDirectory', $options);
+			$categories            = JCategories::getInstance('Churchdirectory', $options);
 			$this->_parent         = $categories->get($this->getState('filter.parentId', 'root'));
 
 			if (is_object($this->_parent))
