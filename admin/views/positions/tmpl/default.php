@@ -1,26 +1,18 @@
 <?php
-
 /**
- * Default view for positions
- *
- * @package             ChurchDirectory.Admin
- * @copyright           (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
- * @license             GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    ChurchDirectory.Admin
+ * @copyright  (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-// no direct access
+
 defined('_JEXEC') or die;
 
 $version = version_compare(JVERSION, '3.0', 'ge');
 JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
-if ($version):
-	JHtml::_('bootstrap.tooltip');
-	JHtml::_('behavior.multiselect');
-	JHtml::_('dropdown.init');
-	JHtml::_('formbehavior.chosen', 'select');
-else :
-	JHtml::_('behavior.multiselect');
-	JHtml::_('behavior.tooltip');
-endif;
+JHtml::_('bootstrap.tooltip');
+JHtml::_('behavior.multiselect');
+JHtml::_('dropdown.init');
+JHtml::_('formbehavior.chosen', 'select');
 
 $user       = JFactory::getUser();
 $userId     = $user->get('id');
@@ -28,7 +20,7 @@ $listOrder  = $this->escape($this->state->get('list.ordering'));
 $listDirn   = $this->escape($this->state->get('list.direction'));
 $archived   = $this->state->get('filter.published') == 2 ? true : false;
 $trashed    = $this->state->get('filter.published') == -2 ? true : false;
-$canOrder   = $user->authorise('core.edit.state', 'com_churchdirectory.category');
+$canOrder   = $user->authorise('core.edit.state');
 $saveOrder  = $listOrder == 'a.ordering';
 $sortFields = $this->getSortFields();
 ?>
@@ -56,25 +48,25 @@ $sortFields = $this->getSortFields();
             <div id="j-main-container">
             <?php endif; ?>
     <div id="filter-bar" class="btn-toolbar">
-        <div class="fltlft filter-search btn-group pull-left">
+        <div class="filter-search btn-group pull-left">
             <label for="filter_search"
                    class="element-invisible"><?php echo JText::_('JSEARCH_FILTER_LABEL'); ?></label>
             <input type="text" name="filter_search" id="filter_search"
                    value="<?php echo $this->escape($this->state->get('filter.search')); ?>"
                    title="<?php echo JText::_('COM_CHURCHDIRECTORY_SEARCH_IN_NAME'); ?>"/>
         </div>
-        <div class="filter-search fltlft btn-group pull-left">
+        <div class="filter-search btn-group pull-left">
             <button type="submit"><?php echo JText::_('JSEARCH_FILTER_SUBMIT'); ?></button>
             <button type="button"
                     onclick="document.id('filter_search').value='';this.form.submit();"><?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?></button>
         </div>
-		<?php if ($version): ?>
-        <div class="filter-select fltrt btn-group pull-right hidden-phone">
+
+        <div class="filter-select btn-group pull-right hidden-phone">
             <label for="limit"
                    class="element-invisible"><?php echo JText::_('JFIELD_PLG_SEARCH_SEARCHLIMIT_DESC'); ?></label>
 			<?php echo $this->pagination->getLimitBox(); ?>
         </div>
-        <div class="filter-select fltrt btn-group pull-right hidden-phone">
+        <div class="filter-select btn-group pull-right hidden-phone">
             <label for="directionTable"
                    class="element-invisible"><?php echo JText::_('JFIELD_ORDERING_DESC'); ?></label>
             <select name="directionTable" id="directionTable" class="input-medium" onchange="Joomla.orderTable()">
@@ -83,22 +75,22 @@ $sortFields = $this->getSortFields();
                 <option value="desc" <?php if ($listDirn == 'desc') echo 'selected="selected"'; ?>><?php echo JText::_('JGLOBAL_ORDER_DESCENDING'); ?></option>
             </select>
         </div>
-        <div class="filter-select fltrt btn-group pull-right">
+        <div class="filter-select btn-group pull-right">
             <label for="sortTable" class="element-invisible"><?php echo JText::_('JGLOBAL_SORT_BY'); ?></label>
             <select name="sortTable" id="sortTable" class="input-medium" onchange="Joomla.orderTable()">
                 <option value=""><?php echo JText::_('JGLOBAL_SORT_BY'); ?></option>
 				<?php echo JHtml::_('select.options', $sortFields, 'value', 'text', $listOrder); ?>
             </select>
         </div>
-		<?php else : ?>
-        <div class="filter-select fltrt">
+		<?php if (!$version): ?>
+        <div class="filter-select btn-group pull-right">
 
-            <select name="filter_published" class="inputbox" onchange="this.form.submit()">
+            <select name="filter_published" class="input-medium" onchange="this.form.submit()">
                 <option value=""><?php echo JText::_('JOPTION_SELECT_PUBLISHED'); ?></option>
 				<?php echo JHtml::_('select.options', JHtml::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.published'), true); ?>
             </select>
 
-            <select name="filter_language" class="inputbox" onchange="this.form.submit()">
+            <select name="filter_language" class="input-medium" onchange="this.form.submit()">
                 <option value=""><?php echo JText::_('JOPTION_SELECT_LANGUAGE'); ?></option>
 				<?php echo JHtml::_('select.options', JHtml::_('contentlanguage.existing', true, true), 'value', 'text', $this->state->get('filter.language')); ?>
             </select>
@@ -107,7 +99,7 @@ $sortFields = $this->getSortFields();
     </div>
     <div class="clr"></div>
 
-    <table class="adminlist table table-striped" id="articleList">
+    <table class="table table-striped" id="articleList">
         <thead>
         <tr>
             <th width="1%" class="title">
@@ -169,12 +161,6 @@ $sortFields = $this->getSortFields();
 							JHtml::_('dropdown.publish', 'cb' . $i, 'positions.');
 						endif;
 
-						if ($item->featured) :
-							JHtml::_('dropdown.unfeatured', 'cb' . $i, 'positions.');
-						else :
-							JHtml::_('dropdown.featured', 'cb' . $i, 'positions.');
-						endif;
-
 						JHtml::_('dropdown.divider');
 
 						if ($archived) :
@@ -216,15 +202,6 @@ $sortFields = $this->getSortFields();
         </tr>
 			<?php endforeach; ?>
         </tbody>
-		<?php if ($version): ?>
-        <tfoot>
-        <tr>
-            <td colspan="11">
-				<?php echo $this->pagination->getListFooter(); ?>
-            </td>
-        </tr>
-        </tfoot>
-		<?php endif; ?>
     </table>
     <input type="hidden" name="task" value=""/>
     <input type="hidden" name="boxchecked" value="0"/>

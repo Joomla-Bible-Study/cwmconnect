@@ -1,12 +1,10 @@
 <?php
 /**
- * Edit view member
- *
  * @package    ChurchDirectory.Admin
  * @copyright  (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-// Nmo direct access
+
 defined('_JEXEC') or die;
 
 // Include the component HTML helpers.
@@ -29,7 +27,6 @@ JHtml::_('behavior.keepalive'); // Predefine for Access
 <div class="row-fluid">
 <!-- Begin Member -->
 <div class="span8 form-horizontal">
-<fieldset>
 <ul class="nav nav-tabs">
     <li class="active"><a href="#details"
                           data-toggle="tab"><?php echo empty($this->item->id) ? JText::_('COM_CHURCHDIRECTORY_NEW_MEMBER') : JText::sprintf('COM_CHURCHDIRECTORY_EDIT_MEMBER', $this->item->id); ?></a>
@@ -247,9 +244,9 @@ JHtml::_('behavior.keepalive'); // Predefine for Access
        value="<?php echo JRequest::getCmd('return'); ?>"/>
 <?php echo JHtml::_('form.token'); ?>
 </div>
-<!-- End Sidebar -->    <!-- Begin Sidebar -->
+<!-- End Sidebar -->
+<!-- Begin Sidebar -->
 <div class="span4">
-
     <h4><?php echo JText::_('JDETAILS');?></h4>
     <hr/>
     <fieldset class="form-vertical">
@@ -257,7 +254,8 @@ JHtml::_('behavior.keepalive'); // Predefine for Access
             <li class="active"><a href="#detailsr"
                                   data-toggle="tab"><?php echo empty($this->item->id) ? JText::_('COM_CHURCHDIRECTORY_NEW_MEMBER') : JText::sprintf('COM_CHURCHDIRECTORY_EDIT_MEMBER', $this->item->id); ?></a>
             </li>
-            <li><a href="#kmloptions" data-toggle="tab"><?php echo JText::_('COM_CHURCHDIRECTORY_KML_OPTIONS');?></a></li>
+            <li><a href="#kmloptions" data-toggle="tab"><?php echo JText::_('COM_CHURCHDIRECTORY_KML_OPTIONS');?></a>
+            </li>
 			<?php $fieldSets = $this->form->getFieldsets('attribs');
 			foreach ($fieldSets as $name => $fieldSet) :
 				if (($name === 'protected' && $this->access) || $name != 'protected')
@@ -273,7 +271,7 @@ JHtml::_('behavior.keepalive'); // Predefine for Access
             <div class="tab-pane active" id="detailsr">
                 <div class="control-group">
                     <div class="control-group">
-                        <div class="controls">
+                        <div class="control-label">
 							<?php echo $this->form->getValue('name'); ?>
                         </div>
                     </div>

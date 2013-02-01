@@ -86,8 +86,12 @@ class ChurchDirectoryViewPositions extends JViewLegacy
 	 */
 	protected function addToolbar()
 	{
-		$user = JFactory::getUser();
+		$user  = JFactory::getUser();
 		$canDo = ChurchDirectoryHelper::getActions($this->state->get('filter.category_id'));
+
+		// Get the toolbar object instance
+		$bar = JToolBar::getInstance('toolbar');
+
 		JToolBarHelper::title(JText::_('COM_CHURCHDIRECTORY_MANAGER_POSITIONS'), 'churchdirectory');
 
 		if ($canDo->get('core.create') || (count($user->getAuthorisedCategories('com_churchdirectory', 'core.create'))) > 0)
@@ -125,8 +129,36 @@ class ChurchDirectoryViewPositions extends JViewLegacy
 			JToolBarHelper::preferences('com_churchdirectory');
 			JToolBarHelper::divider();
 		}
+		// Add a batch button
+		if ($user->authorise('core.edit'))
+		{
+			JHtml::_('bootstrap.modal', 'collapseModal');
+			$title = JText::_('JTOOLBAR_BATCH');
+			$dhtml = "<button data-toggle=\"modal\" data-target=\"#collapseModal\" class=\"btn btn-small\">
+						<i class=\"icon-checkbox-partial\" title=\"$title\"></i>
+						$title</button>";
+			$bar->appendButton('Custom', $dhtml, 'batch');
+		}
 
 		JToolBarHelper::help('churchdirectory_position', true);
+
+		if (version_compare(JVERSION, '3.0.0', 'ge'))
+		{
+			JToolBarHelper::help('churchdirectory_positions', true);
+			JHtmlSidebar::setAction('index.php?option=com_churchdirectory&amp;view=positions');
+
+			JHtmlSidebar::addFilter(
+				JText::_('JOPTION_SELECT_PUBLISHED'),
+				'filter_published',
+				JHtml::_('select.options', JHtml::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.published'), true)
+			);
+
+			JHtmlSidebar::addFilter(
+				JText::_('JOPTION_SELECT_LANGUAGE'),
+				'filter_language',
+				JHtml::_('select.options', JHtml::_('contentlanguage.existing', true, true), 'value', 'text', $this->state->get('filter.language'))
+			);
+		}
 	}
 
 	/**
@@ -150,12 +182,12 @@ class ChurchDirectoryViewPositions extends JViewLegacy
 	protected function getSortFields()
 	{
 		return array(
-			'a.ordering'     => JText::_('JGRID_HEADING_ORDERING'),
-			'a.state'        => JText::_('JSTATUS'),
-			'a.name'         => JText::_('JGLOBAL_TITLE'),
-			'a.access'       => JText::_('JGRID_HEADING_ACCESS'),
-			'a.language'     => JText::_('JGRID_HEADING_LANGUAGE'),
-			'a.id'           => JText::_('JGRID_HEADING_ID')
+			'a.ordering' => JText::_('JGRID_HEADING_ORDERING'),
+			'a.state'    => JText::_('JSTATUS'),
+			'a.name'     => JText::_('JGLOBAL_TITLE'),
+			'a.access'   => JText::_('JGRID_HEADING_ACCESS'),
+			'a.language' => JText::_('JGRID_HEADING_LANGUAGE'),
+			'a.id'       => JText::_('JGRID_HEADING_ID')
 		);
 	}
 

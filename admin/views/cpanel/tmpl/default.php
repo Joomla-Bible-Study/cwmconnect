@@ -7,6 +7,7 @@
 defined('_JEXEC') or die;
 JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 JHtml::_('bootstrap.tooltip');
+JHTML::_('behavior.modal');
 JHtml::_('dropdown.init');
 JHtml::_('formbehavior.chosen', 'select');
 JHtml::_('behavior.multiselect');
@@ -34,8 +35,7 @@ JHtml::_('behavior.multiselect');
         <div id="cpanel">
 			<?php //echo LiveUpdate::getIcon(); ?>
             <div class="icon">
-                <a href="index.php?option=com_churchdirectory&view=geoupdate&tmpl=component" class="modal"
-                   rel="{handler: 'iframe', size: {x: 600, y: 250}}">
+                <a href="index.php?option=com_churchdirectory&view=geoupdate&tmpl=component" class="modal" rel="{handler: 'iframe', size: {x: 600, y: 250}}">
                     <div>
                         <img src="<?php echo rtrim(JURI::base(), '/'); ?>/../media/com_churchdirectory/images/icons/icon-32-geoupdate.png"
                              border="0" alt="<?php echo JText::_('COM_CHURCHDIRECTORY_TITLE_GEOUPDATE') ?>" width="32"

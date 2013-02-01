@@ -56,15 +56,15 @@
 			class="inputbox"
 			size="10"
 		/>
-        <field name="open" type="list" default="1" label="COM_CHURCHDIRECTORY_FIELD_KML_OPEN" description="COM_CHURCHDIRECTORY_FIELD_KML_OPEN_DESC">
+        <field name="open" type="list" default="1" label="COM_CHURCHDIRECTORY_FIELD_KML_OPEN_LABEL" description="COM_CHURCHDIRECTORY_FIELD_KML_OPEN_DESC">
             <option value="0">JHIDE</option>
             <option value="1">JSHOW</option>
         </field>
-        <field name="mcropen" type="list" default="0" label="COM_CHURCHDIRECTORY_FIELD_KML_OPEN" description="COM_CHURCHDIRECTORY_FIELD_KML_OPEN_DESC">
+        <field name="mcropen" type="list" default="0" label="COM_CHURCHDIRECTORY_FIELD_KML_OPEN_LABEL" description="COM_CHURCHDIRECTORY_FIELD_KML_OPEN_DESC">
             <option value="0">JHIDE</option>
             <option value="1">JSHOW</option>
         </field>
-        <field name="msropen" type="list" default="0" label="COM_CHURCHDIRECTORY_FIELD_KML_OPEN" description="COM_CHURCHDIRECTORY_FIELD_KML_OPEN_DESC">
+        <field name="msropen" type="list" default="0" label="COM_CHURCHDIRECTORY_FIELD_KML_OPEN_LABEL" description="COM_CHURCHDIRECTORY_FIELD_KML_OPEN_DESC">
             <option value="0">JHIDE</option>
             <option value="1">JSHOW</option>
         </field>

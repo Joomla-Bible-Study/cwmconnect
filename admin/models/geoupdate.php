@@ -26,10 +26,10 @@ class ChurchDirectoryModelGeoUpdate extends JModelLegacy
 	private $_membersStack = array();
 
 	/** @var int Total numbers of members in this site */
-	protected $totalMembers = 0;
+	public $totalMembers = 0;
 
 	/** @var int Numbers of members already processed */
-	protected $doneMembers = 0;
+	public $doneMembers = 0;
 
 	/** @var int Numbers of members already processed */
 	private $_memberID = null;
