@@ -11,15 +11,10 @@ defined('_JEXEC') or die;
 
 JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 $version   = version_compare(JVERSION, '3.0', 'ge');
-if ($version):
 	JHtml::_('bootstrap.tooltip');
 	JHtml::_('behavior.multiselect');
 	JHtml::_('dropdown.init');
 	JHtml::_('formbehavior.chosen', 'select');
-else :
-	JHtml::_('behavior.multiselect');
-	JHtml::_('behavior.tooltip');
-endif;
 
 $user      = JFactory::getUser();
 $userId    = $user->get('id');
@@ -67,8 +62,6 @@ $sortFields = $this->getSortFields();
             <button type="button"
                     onclick="document.id('filter_search').value='';this.form.submit();"><?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?></button>
         </div>
-
-		<?php if ($version): ?>
         <div class="filter-select fltrt btn-group pull-right hidden-phone">
             <label for="limit"
                    class="element-invisible"><?php echo JText::_('JFIELD_PLG_SEARCH_SEARCHLIMIT_DESC'); ?></label>
@@ -90,7 +83,7 @@ $sortFields = $this->getSortFields();
 				<?php echo JHtml::_('select.options', $sortFields, 'value', 'text', $listOrder); ?>
             </select>
         </div>
-		<?php else : ?>
+		<?php if (!$version): ?>
         <div class="filter-select fltrt">
 
             <select name="filter_published" class="inputbox" onchange="this.form.submit()">

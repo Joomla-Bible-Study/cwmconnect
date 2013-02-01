@@ -58,11 +58,11 @@ abstract class JHtmlMember
 		{
 			if ($associated != $contactid)
 			{
-				$text[] = JText::sprintf('COM_CONTACT_TIP_ASSOCIATED_LANGUAGE', JHtml::_('image', 'mod_languages/' . $items[$associated]->image . '.gif', $items[$associated]->language_title, array('title' => $items[$associated]->language_title), true), $items[$associated]->name, $items[$associated]->category_title);
+				$text[] = JText::sprintf('COM_CHURCHDIRECTORY_TIP_ASSOCIATED_LANGUAGE', JHtml::_('image', 'mod_languages/' . $items[$associated]->image . '.gif', $items[$associated]->language_title, array('title' => $items[$associated]->language_title), true), $items[$associated]->name, $items[$associated]->category_title);
 			}
 		}
 
-		return JHtml::_('tooltip', implode('<br />', $text), JText::_('COM_CONTACT_TIP_ASSOCIATION'), 'admin/icon-16-links.png');
+		return JHtml::_('tooltip', implode('<br />', $text), JText::_('COM_CHURCHDIRECTORY_TIP_ASSOCIATION'), 'admin/icon-16-links.png');
 	}
 
 	/**
@@ -77,8 +77,8 @@ abstract class JHtmlMember
 	{
 		// Array of image, task, title, action
 		$states = array(
-			0 => array('disabled.png', 'members.featured', 'COM_CONTACT_UNFEATURED', 'COM_CONTACT_TOGGLE_TO_FEATURE'),
-			1 => array('featured.png', 'members.unfeatured', 'JFEATURED', 'COM_CONTACT_TOGGLE_TO_UNFEATURE'),
+			0 => array('disabled.png', 'members.featured', 'COM_CHURCHDIRECTORY_UNFEATURED', 'COM_CHURCHDIRECTORY_TOGGLE_TO_FEATURE'),
+			1 => array('featured.png', 'members.unfeatured', 'JFEATURED', 'COM_CHURCHDIRECTORY_TOGGLE_TO_UNFEATURE'),
 		);
 		$state  = JArrayHelper::getValue($states, (int) $value, $states[1]);
 		$html   = JHtml::_('image', 'admin/' . $state[0], JText::_($state[2]), null, true);

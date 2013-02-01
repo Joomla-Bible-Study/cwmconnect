@@ -39,6 +39,8 @@ class ChurchDirectoryViewCpanel extends JViewLegacy
 	 */
 	protected $state;
 
+	protected $sidebar;
+
 	/**
 	 * Display Function
 	 *

@@ -5,15 +5,10 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die;
-$version = version_compare(JVERSION, '3.0', 'ge');
 JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
-if ($version):
-	JHtml::_('bootstrap.tooltip');
-	JHtml::_('dropdown.init');
-	JHtml::_('formbehavior.chosen', 'select');
-else :
-	JHtml::_('behavior.tooltip');
-endif;
+JHtml::_('bootstrap.tooltip');
+JHtml::_('dropdown.init');
+JHtml::_('formbehavior.chosen', 'select');
 JHtml::_('behavior.multiselect');
 ?>
 <form action="<?php echo JRoute::_('index.php?option=com_churchdirectory'); ?>" method="post" name="adminForm"
@@ -27,7 +22,7 @@ JHtml::_('behavior.multiselect');
             <div id="j-main-container">
             <?php endif; ?>
     <!-- Begin Content -->
-    <div class="fltlft pull-left">
+    <div class="pull-left span8">
         <p>Welcome to the new and improved Church Directory System this is a alpha release and has lot of bugs
             and things not completed.<br/>
             All core function should be working. Directory rendering is till not fully functional and working on
@@ -35,29 +30,25 @@ JHtml::_('behavior.multiselect');
             Thanks for supporting the work.<br/><br/>
             Joomla Bible Study Team</p>
     </div>
-    <div class="fltrt pull-right span1">
+    <div class="pull-right span4">
         <div id="cpanel">
-			<?php
-			if (!$version)
-			{
-				echo LiveUpdate::getIcon();
-			}
-			?>
-        </div>
-    </div>
-
-    <div style="float:<?php echo ($lang->isRTL()) ? 'right' : 'left'; ?>;">
-        <div class="icon">
-            <a href="index.php?option=com_churchdirectory&view=geoupdate&tmpl=component" class="modal"
-               rel="{handler: 'iframe', size: {x: 600, y: 250}}">
-                <img src="<?php echo rtrim(JURI::base(), '/'); ?>/../media/com_admintools/images/cleantmp-32.png"
-                        border="0" alt="<?php echo JText::_('COM_CHURCHDIRECTORY_TITLE_GEOUPDATE') ?>"/>
+			<?php //echo LiveUpdate::getIcon(); ?>
+            <div class="icon">
+                <a href="index.php?option=com_churchdirectory&view=geoupdate&tmpl=component" class="modal"
+                   rel="{handler: 'iframe', size: {x: 600, y: 250}}">
+                    <div>
+                        <img src="<?php echo rtrim(JURI::base(), '/'); ?>/../media/com_churchdirectory/images/icons/icon-32-geoupdate.png"
+                             border="0" alt="<?php echo JText::_('COM_CHURCHDIRECTORY_TITLE_GEOUPDATE') ?>" width="32"
+                             height="32" align='middle' style="float: none"/>
+                    </div>
 					<span>
 						<?php echo JText::_('COM_CHURCHDIRECTORY_TITLE_GEOUPDATE') ?><br/>
 					</span>
-            </a>
+                </a>
+            </div>
+
         </div>
     </div>
-</div>
     <!-- End Content -->
+</div>
 </form>

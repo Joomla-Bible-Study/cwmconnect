@@ -50,10 +50,9 @@ abstract class JHtmlJquery
 			$config = JFactory::getConfig();
 			$debug  = (boolean) $config->get('debug');
 		}
-		$version = $version = version_compare(JVERSION, '3.0', 'ge');
 		$url     = null;
 
-		if (!$version)
+		if (!version_compare(JVERSION, '3.0', 'ge'))
 		{
 			$url = 'com_churchdirectory/';
 		}
@@ -96,15 +95,13 @@ abstract class JHtmlJquery
 			$config = JFactory::getConfig();
 			$debug  = (boolean) $config->get('debug');
 		}
-		$version = $version = version_compare(JVERSION, '3.0', 'ge');
-
 
 		// Load each of the requested components
 		foreach ($components as $component)
 		{
 			$url = null;
 
-			if (!$version)
+			if (!version_compare(JVERSION, '3.0', 'ge'))
 			{
 				$url = 'com_churchdirectory/';
 			}

@@ -7,6 +7,8 @@
 
 defined('_JEXEC') or die;
 
+jimport( 'joomla.application.component.controlleradmin' );
+
 /**
  * Member list controller class.
  *
@@ -35,7 +37,7 @@ class ChurchDirectoryControllerMembers extends JControllerAdmin
 	 *
 	 * @since    1.7.0
 	 */
-	function featured()
+	public function featured()
 	{
 		// Check for request forgeries
 		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));

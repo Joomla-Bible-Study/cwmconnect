@@ -84,7 +84,7 @@ abstract class JHtmlBootstrap
 			$opt['interval'] = (isset($params['interval']) && ($params['interval'])) ? (int) $params['interval'] : 5000;
 			$opt['pause']    = (isset($params['pause']) && ($params['pause'])) ? $params['pause'] : 'hover';
 
-			$options = self::_getJSObject($opt);
+			$options = self::getJSObject($opt);
 
 			// Attach the carousel to document
 			JFactory::getDocument()->addScriptDeclaration(
@@ -150,28 +150,17 @@ abstract class JHtmlBootstrap
 		{
 			return;
 		}
-		$version = version_compare(JVERSION, '3.0', 'ge');
+		$url     = null;
 
-		if (!$version)
+		if (!version_compare(JVERSION, '3.0', 'ge'))
 		{
 			$url = 'com_churchdirectory/';
-		}
-		else
-		{
-			$url = null;
 		}
 
 		// Load jQuery
 		JHtml::_('jquery.framework');
 
-		// If no debugging value is set, use the configuration setting
-		if ($debug === null)
-		{
-			$config = JFactory::getConfig();
-			$debug  = (boolean) $config->get('debug');
-		}
-
-		var_dump(JHtml::_('script', $url . 'jui/js/bootstrap.min.js', false, true, false, false, $debug));
+		JHtml::script('media/'. $url . 'jui/js/bootstrap.min.js');
 		self::$loaded[__METHOD__] = true;
 
 		return;
@@ -207,7 +196,7 @@ abstract class JHtmlBootstrap
 			$opt['show']     = (isset($params['show']) && ($params['show'])) ? (boolean) $params['show'] : true;
 			$opt['remote']   = (isset($params['remote']) && ($params['remote'])) ? (boolean) $params['remote'] : '';
 
-			$options = JHtml::getJSObject($opt);
+			$options = self::getJSObject($opt);
 
 			// Attach the modal to document
 			JFactory::getDocument()->addScriptDeclaration(
@@ -301,7 +290,7 @@ abstract class JHtmlBootstrap
 		$opt['content']   = isset($params['content']) ? $params['content'] : null;
 		$opt['delay']     = isset($params['delay']) ? $params['delay'] : null;
 
-		$options = JHtml::getJSObject($opt);
+		$options = self::getJSObject($opt);
 
 		// Attach the popover to the document
 		JFactory::getDocument()->addScriptDeclaration(
@@ -396,7 +385,7 @@ abstract class JHtmlBootstrap
 			$opt['trigger']   = (isset($params['trigger']) && ($params['trigger'])) ? (string) $params['trigger'] : null;
 			$opt['delay']     = (isset($params['delay']) && ($params['delay'])) ? (int) $params['delay'] : null;
 
-			$options = JHtml::getJSObject($opt);
+			$options = self::getJSObject($opt);
 
 			// Attach tooltips to document
 			JFactory::getDocument()->addScriptDeclaration(
@@ -532,7 +521,7 @@ abstract class JHtmlBootstrap
 			// Setup options object
 			$opt['active'] = (isset($params['active']) && ($params['active'])) ? (string) $params['active'] : '';
 
-			$options = JHtml::getJSObject($opt);
+			$options = self::getJSObject($opt);
 
 			// Attach tooltips to document
 			JFactory::getDocument()->addScriptDeclaration(
@@ -607,28 +596,75 @@ abstract class JHtmlBootstrap
 	 */
 	public static function loadCss($includeMainCss = true, $direction = 'ltr', $attribs = array())
 	{
-		$version = version_compare(JVERSION, '3.0', 'ge');
+		$url     = null;
 
-		if (!$version)
+		if (!version_compare(JVERSION, '3.0', 'ge'))
 		{
-			$url = 'com_churchdirectory';
-		}
-		else
-		{
-			$url = 'media';
+			$url = 'com_churchdirectory/';
 		}
 		// Load Bootstrap main CSS
 		if ($includeMainCss)
 		{
-			JHtml::_('stylesheet', $url . '/jui/css/bootstrap.min.css', $attribs, false);
-			JHtml::_('stylesheet', $url . '/jui/css/bootstrap-responsive.min.css', $attribs, false);
-			JHtml::_('stylesheet', $url . '/jui/css/bootstrap-extended.css', $attribs, false);
+			JHtml::_('stylesheet', 'media/' . $url . 'jui/css/bootstrap.min.css', $attribs, false);
+			JHtml::_('stylesheet', 'media/' . $url . 'jui/css/bootstrap-responsive.min.css', $attribs, false);
+			if(version_compare(JVERSION, '3.0', 'ge')){
+			JHtml::_('stylesheet', 'media/' . $url . 'jui/css/bootstrap-extended.css', $attribs, false);}
 		}
 
 		// Load Bootstrap RTL CSS
 		if ($direction === 'rtl')
 		{
-			JHtml::_('stylesheet', $url . '/jui/css/bootstrap-rtl.css', $attribs, false);
+			JHtml::_('stylesheet', 'media/' . $url . 'jui/css/bootstrap-rtl.css', $attribs, false);
 		}
+	}
+
+
+	/**
+	 * Internal method to get a JavaScript object notation string from an array
+	 *
+	 * @param   array  $array  The array to convert to JavaScript object notation
+	 *
+	 * @return  string  JavaScript object notation representation of the array
+	 *
+	 * @since   12.2
+	 */
+	public static function getJSObject(array $array = array())
+	{
+		$object = '{';
+
+		// Iterate over array to build objects
+		foreach ((array) $array as $k => $v)
+		{
+			if (is_null($v))
+			{
+				continue;
+			}
+
+			if (is_bool($v))
+			{
+				$object .= ' ' . $k . ': ';
+				$object .= ($v) ? 'true' : 'false';
+				$object .= ',';
+			}
+			elseif (!is_array($v) && !is_object($v))
+			{
+				$object .= ' ' . $k . ': ';
+				$object .= (is_numeric($v) || strpos($v, '\\') === 0) ? (is_numeric($v)) ? $v : substr($v, 1) : "'" . str_replace("'", "\\'", trim($v, "'")) . "'";
+				$object .= ',';
+			}
+			else
+			{
+				$object .= ' ' . $k . ': ' . self::getJSObject($v) . ',';
+			}
+		}
+
+		if (substr($object, -1) == ',')
+		{
+			$object = substr($object, 0, -1);
+		}
+
+		$object .= '}';
+
+		return $object;
 	}
 }

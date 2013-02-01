@@ -30,10 +30,13 @@ if (JFactory::getApplication()->input->get('view', '') == 'liveupdate')
 
 // Require helper file
 // Register all files in the /the/path/ folder as classes with a name like:
-// Prefix<Filename>
-JLoader::discover('j', '/the/path/');
 JLoader::register('ChurchDirectoryHelper', dirname(__FILE__) . '/helpers/churchdirectory.php');
 
+if (!version_compare(JVERSION, '3.0', 'ge'))
+{
+	$language = JFactory::getLanguage();
+	$language->load('com_churchdirectory-25', JPATH_COMPONENT_ADMINISTRATOR, 'en-GB', true);
+}
 
 $controller = JControllerLegacy::getInstance('Churchdirectory');
 $controller->execute(JFactory::getApplication()->input->get('task'));
@@ -46,6 +49,13 @@ $controller->redirect();
  */
 function addCSS()
 {
-	//JHTML::stylesheet('media/com_churchdirectory/jui/css/bootstrap.min.css');
-	//JHTML::stylesheet('media/com_churchdirectory/css/icons.css');
+	if (!version_compare(JVERSION, '3.0', 'ge'))
+	{
+		JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
+		JHtml::_('bootstrap.framework');
+		JHTML::stylesheet('/media/com_biblestudy/jui/css/icomoon.css');
+		JHtml::_('bootstrap.loadCss');
+		JHtml::stylesheet('media/com_churchdirectory/css/bootstrap-j2.5.css');
+	}
+	JHTML::stylesheet('media/com_churchdirectory/css/icons.css');
 }

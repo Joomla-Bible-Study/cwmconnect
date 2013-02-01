@@ -43,6 +43,8 @@ class ChurchDirectoryViewMember extends JViewLegacy
 
 	protected $age;
 
+	protected $access;
+
 	/**
 	 * Display the view
 	 *
@@ -70,7 +72,17 @@ class ChurchDirectoryViewMember extends JViewLegacy
 
 			return false;
 		}
+		$itemacess = $this->state->params->get('protectedaccess');
+		$groups    = $this->groups;
 
+		if (isset($groups[$itemacess]))
+		{
+			$this->access = true;
+		}
+		else
+		{
+			$this->access = false;
+		}
 		// Set the toolbar
 		$this->addToolBar();
 

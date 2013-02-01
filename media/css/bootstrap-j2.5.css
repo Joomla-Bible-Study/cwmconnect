@@ -104,3 +104,12 @@ input, select {
 .table td.center {
     text-align: center;
 }
+
+.form-inline #jform_id {
+    float: none;
+    display: inline-block;
+}
+
+.churchdirectory_paddingtop20 {
+    margin-top: 20px;
+}

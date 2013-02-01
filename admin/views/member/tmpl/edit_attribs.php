@@ -9,23 +9,10 @@
 // No direct access.
 defined('_JEXEC') or die;
 
-// Predefine for Access
-$itemacess = $this->state->params->get('protectedaccess');
-$groups    = $this->groups;
-
-if (isset($groups[$itemacess]))
-{
-	$access = true;
-}
-else
-{
-	$access = false;
-}
 // Start of Form
 ?>
-<div class="tab-pane" id="kml-options">;
-    <p>
-		<?php echo empty($this->item->id) ? JText::_('COM_CHURCHDIRECTORY_DETAILS') : JText::sprintf('COM_CHURCHDIRECTORY_EDIT_MEMBER_KML', $this->item->id); ?></p>
+<div class="tab-pane" id="kmloptions">
+    <p><?php echo empty($this->item->id) ? JText::_('COM_CHURCHDIRECTORY_DETAILS') : JText::sprintf('COM_CHURCHDIRECTORY_EDIT_MEMBER_KML', $this->item->id); ?></p>
 
     <div class="control-group">
         <div class="control-label"><?php echo $this->form->getLabel('lat'); ?></div>
@@ -58,18 +45,14 @@ else
     </div>
 
     <!-- Protected Access info -->
-    <div class="control-group">
-        <div class="control-label"><?php $fieldSets = $this->form->getFieldsets('attribs'); ?></div>
-    </div>
 </div>
-
-<?php
-if ($access === true):
+<?php $fieldSets = $this->form->getFieldsets('attribs');
+if ($this->access):
 	foreach ($fieldSets as $name => $fieldSet) :
 		if ($name === 'protected')
 		{
 			?>
-        <div id="tab-pane" id="<?php echo $name . '-options'; ?>">
+        <div class="tab-pane" id="<?php echo $name . '-options'; ?>">
 			<?php if (isset($fieldSet->description) && trim($fieldSet->description)) : ?>
             <p class="tip">
 				<?php echo $this->escape(JText::_($fieldSet->description)); ?></p>

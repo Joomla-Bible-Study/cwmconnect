@@ -11,7 +11,7 @@ defined('_JEXEC') or die;
  * Member list controller class.
  *
  * @package  ChurchDirectory.Admin
- * @since    1.7.0
+ * @since    1.7.5
  */
 class ChurchDirectoryControllerGeoStatus extends JControllerAdmin
 {

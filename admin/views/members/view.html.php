@@ -121,18 +121,15 @@ class ChurchDirectoryViewMembers extends JViewLegacy
 		{
 			JToolBarHelper::trash('members.trash');
 		}
-		if (version_compare(JVERSION, '3.0.0', 'ge'))
+		// Add a batch button
+		if ($user->authorise('core.edit'))
 		{
-			// Add a batch button
-			if ($user->authorise('core.edit'))
-			{
-				JHtml::_('bootstrap.modal', 'collapseModal');
-				$title = JText::_('JTOOLBAR_BATCH');
-				$dhtml = "<button data-toggle=\"modal\" data-target=\"#collapseModal\" class=\"btn btn-small\">
+			JHtml::_('bootstrap.modal', 'collapseModal');
+			$title = JText::_('JTOOLBAR_BATCH');
+			$dhtml = "<button data-toggle=\"modal\" data-target=\"#collapseModal\" class=\"btn btn-small\">
 						<i class=\"icon-checkbox-partial\" title=\"$title\"></i>
 						$title</button>";
-				$bar->appendButton('Custom', $dhtml, 'batch');
-			}
+			$bar->appendButton('Custom', $dhtml, 'batch');
 		}
 
 		if ($canDo->get('core.admin'))
@@ -140,10 +137,9 @@ class ChurchDirectoryViewMembers extends JViewLegacy
 			JToolBarHelper::preferences('com_churchdirectory');
 		}
 
-		JToolBarHelper::help('churchdirectory_members', true);
-
-		if (version_compare(JVERSION, '3.0', 'ge'))
+		if (version_compare(JVERSION, '3.0.0', 'ge'))
 		{
+			JToolBarHelper::help('churchdirectory_members', true);
 			JHtmlSidebar::setAction('index.php?option=com_churchdirectory&amp;view=members');
 
 			JHtmlSidebar::addFilter(
@@ -197,7 +193,7 @@ class ChurchDirectoryViewMembers extends JViewLegacy
 			'a.state'        => JText::_('JSTATUS'),
 			'a.name'         => JText::_('JGLOBAL_TITLE'),
 			'category_title' => JText::_('JCATEGORY'),
-			'ul.name'        => JText::_('COM_CONTACT_FIELD_LINKED_USER_LABEL'),
+			'ul.name'        => JText::_('COM_CHURCHDIRECTORY_FIELD_LINKED_USER_LABEL'),
 			'a.featured'     => JText::_('JFEATURED'),
 			'a.access'       => JText::_('JGRID_HEADING_ACCESS'),
 			'a.language'     => JText::_('JGRID_HEADING_LANGUAGE'),
