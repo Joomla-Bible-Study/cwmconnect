@@ -33,6 +33,10 @@ class ChurchDirectoryController extends JControllerLegacy
 		// Get the document object.
 		$document = JFactory::getDocument();
 
+		if(!version_compare(JVERSION, '3.0', 'ge')){
+			$this->input = JFactory::getApplication()->input;
+		}
+
 		// Set the default view name and format from the Request.
 		$vName = $this->input->get('view', 'categories');
 		$this->input->set('view', $vName);
