@@ -53,7 +53,7 @@ class ChurchDirectoryModelCategory extends JModelList
 	 * Protect _parent
 	 *
 	 * @access protected
-	 * @var $_parent
+	 * @var object
 	 */
 	protected $_parent = null;
 
@@ -94,6 +94,7 @@ class ChurchDirectoryModelCategory extends JModelList
 				'state', 'a.state',
 				'country', 'a.country',
 				'ordering', 'a.ordering',
+				'sortname',
 				'sortname1', 'a.sortname1',
 				'sortname2', 'a.sortname2',
 				'sortname3', 'a.sortname3'
@@ -174,6 +175,13 @@ class ChurchDirectoryModelCategory extends JModelList
 			$query->where('c.access IN (' . $groups . ')');
 		}
 
+		// Join over the users for the author and modified_by names.
+		$query->select("CASE WHEN a.created_by_alias > ' ' THEN a.created_by_alias ELSE ua.name END AS author");
+		$query->select("ua.email AS author_email");
+
+		$query->join('LEFT', '#__users AS ua ON ua.id = a.created_by');
+		$query->join('LEFT', '#__users AS uam ON uam.id = a.modified_by');
+
 		// Filter by state
 		$state = $this->getState('filter.published');
 
@@ -190,6 +198,15 @@ class ChurchDirectoryModelCategory extends JModelList
 		{
 			$query->where('(a.publish_up = ' . $nullDate . ' OR a.publish_up <= ' . $nowDate . ')');
 			$query->where('(a.publish_down = ' . $nullDate . ' OR a.publish_down >= ' . $nowDate . ')');
+		}
+
+		// Filter by search in title
+		$search = $this->getState('list.filter');
+
+		if (!empty($search))
+		{
+			$search = $db->Quote('%' . $db->escape($search, true) . '%');
+			$query->where('(a.name LIKE ' . $search . ')');
 		}
 
 		// Filter by language
@@ -246,6 +263,9 @@ class ChurchDirectoryModelCategory extends JModelList
 
 		$limitstart = $app->input->get('limitstart', 0, '', 'int');
 		$this->setState('list.start', $limitstart);
+
+		// Optional filter text
+		$this->setState('list.filter', $app->input->getString('filter-search'));
 
 		// Get list ordering default from the parameters
 		$menuParams = new JRegistry;
@@ -357,7 +377,7 @@ class ChurchDirectoryModelCategory extends JModelList
 	 *
 	 * @return    mixed    An array of categories or false if an error occurs.
 	 */
-	protected function &getLeftSibling()
+	public function &getLeftSibling()
 	{
 		if (!is_object($this->_item))
 		{
@@ -372,7 +392,7 @@ class ChurchDirectoryModelCategory extends JModelList
 	 *
 	 * @return string
 	 */
-	protected function &getRightSibling()
+	public function &getRightSibling()
 	{
 		if (!is_object($this->_item))
 		{
@@ -387,7 +407,7 @@ class ChurchDirectoryModelCategory extends JModelList
 	 *
 	 * @return    mixed    An array of categories or false if an error occurs.
 	 */
-	protected function &getChildren()
+	public function &getChildren()
 	{
 		if (!is_object($this->_item))
 		{

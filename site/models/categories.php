@@ -7,6 +7,8 @@
 
 defined('_JEXEC') or die;
 
+jimport('joomla.application.component.modellist');
+
 /**
  * This models supports retrieving lists of churchdirectory categories.
  *

@@ -20,6 +20,7 @@ function getPosition($con_position)
 	$positions = array();
 	$results   = null;
 	$position  = null;
+	$db        = JFactory::getDBO();
 
 	if (strstr($con_position, ','))
 	{
@@ -27,22 +28,20 @@ function getPosition($con_position)
 
 		foreach ($ids AS $id)
 		{
-			$db    = JFactory::getDBO();
 			$query = $db->getQuery(true);
 
-			$query->select('position.id, position.name');
-			$query->from('#__churchdirectory_position AS position');
-			$query->where('position.id = ' . $id);
+			$query->select('id, name');
+			$query->from('#__churchdirectory_position');
+			$query->where('id = ' . $id);
 
-			$db->setQuery($query->__toString());
+			$db->setQuery($query);
 			$position      = $db->loadObject();
 			$positions[$i] = $position;
 			$i++;
 		}
 	}
-	else
+	elseif ($con_position != '-1')
 	{
-		$db    = JFactory::getDBO();
 		$query = $db->getQuery(true);
 
 		$query->select('position.id, position.name');
@@ -54,20 +53,23 @@ function getPosition($con_position)
 		$positions[$i] = $position;
 	}
 	$n  = count($position);
-	$pi = '0';
+	$pi = '1';
 
 	foreach ($positions AS $position)
 	{
-		if ($n != $pi)
+		if ($position)
 		{
-			$results .= $position->name;
-			$results .= '<br />';
+			if ($n != $pi)
+			{
+				$results .= $position->name;
+				$results .= '<br />';
+			}
+			else
+			{
+				$results .= $position->name;
+			}
+			$pi++;
 		}
-		else
-		{
-			$results .= $position->name;
-		}
-		$pi++;
 	}
 
 	return $results;
