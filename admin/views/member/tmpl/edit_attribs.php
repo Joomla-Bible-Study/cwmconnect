@@ -14,7 +14,7 @@ defined('_JEXEC') or die;
 <div class="accordion-group">
     <div class="accordion-heading">
         <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion6" href="#kml">
-			<?php echo JText::_('COM_CHURCHDIRECTORY_KML_DETAILS');?>
+			<?php echo JText::_('COM_CHURCHDIRECTORY_KML_OPTIONS');?>
         </a>
     </div>
     <div id="kml" class="accordion-body collapse">
