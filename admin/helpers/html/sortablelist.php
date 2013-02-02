@@ -55,6 +55,7 @@ abstract class JHtmlSortablelist
 		{
 			$url = 'com_churchdirectory/';
 		}
+
 		JHtml::script($url . 'jui/sortablelist.js', false, true);
 		JHtml::stylesheet($url . 'jui/sortablelist.css', false, true, false);
 

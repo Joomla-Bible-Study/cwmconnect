@@ -105,7 +105,6 @@ abstract class JHtmlJquery
 			{
 				$url = 'com_churchdirectory/';
 			}
-
 			// Only attempt to load the component if it's supported in core and hasn't already been loaded
 			if (in_array($component, $supported) && empty(self::$loaded[__METHOD__][$component]))
 			{

@@ -157,10 +157,18 @@ abstract class JHtmlBootstrap
 			$url = 'com_churchdirectory/';
 		}
 
+		// If no debugging value is set, use the configuration setting
+		if ($debug === null)
+		{
+			$config = JFactory::getConfig();
+			$debug  = (boolean) $config->get('debug');
+		}
+
+		JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 		// Load jQuery
 		JHtml::_('jquery.framework');
 
-		JHtml::script('media/'. $url . 'jui/js/bootstrap.min.js');
+		JHtml::_('script',$url . 'jui/bootstrap.min.js', false, true, false, false, $debug);
 		self::$loaded[__METHOD__] = true;
 
 		return;
