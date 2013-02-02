@@ -33,7 +33,6 @@ JHtml::_('behavior.keepalive'); // Predefine for Access
     </li>
     <li><a href="#publishing" data-toggle="tab"><?php echo JText::_('JGLOBAL_FIELDSET_PUBLISHING');?></a></li>
     <li><a href="#basic" data-toggle="tab"><?php echo JText::_('COM_CHURCHDIRECTORY_MEMBER_DETAILS');?></a></li>
-    <li><a href="#im" data-toggle="tab"><?php echo JText::_('COM_CHURCHDIRECTORY_IM_DETAILS');?></a></li>
 	<?php
 	$fieldSets = $this->form->getFieldsets('params');
 	foreach ($fieldSets as $name => $fieldSet) :
@@ -221,18 +220,6 @@ JHtml::_('behavior.keepalive'); // Predefine for Access
 		<?php endif; ?>
     </div>
 
-    <div class="tab-pane" id="im">
-        <div class="control-group">
-            <div class="control-label"><?php echo $this->form->getLabel('skype'); ?></div>
-            <div class="controls"><?php echo $this->form->getInput('skype'); ?></div>
-        </div>
-
-        <div class="control-group">
-            <div class="control-label"><?php echo $this->form->getLabel('yahoo_msg'); ?></div>
-            <div class="controls"><?php echo $this->form->getInput('yahoo_msg'); ?></div>
-        </div>
-    </div>
-
 	<?php echo $this->loadTemplate('params'); ?>
 
 	<?php echo $this->loadTemplate('metadata'); ?>
@@ -247,63 +234,73 @@ JHtml::_('behavior.keepalive'); // Predefine for Access
 <!-- End Sidebar -->
 <!-- Begin Sidebar -->
 <div class="span4">
-    <h4><?php echo JText::_('JDETAILS');?></h4>
-    <hr/>
     <fieldset class="form-vertical">
-        <ul class="nav nav-stacked nav-pills">
-            <li class="active"><a href="#detailsr"
-                                  data-toggle="tab"><?php echo empty($this->item->id) ? JText::_('COM_CHURCHDIRECTORY_NEW_MEMBER') : JText::sprintf('COM_CHURCHDIRECTORY_EDIT_MEMBER', $this->item->id); ?></a>
-            </li>
-            <li><a href="#kmloptions" data-toggle="tab"><?php echo JText::_('COM_CHURCHDIRECTORY_KML_OPTIONS');?></a>
-            </li>
-			<?php $fieldSets = $this->form->getFieldsets('attribs');
-			foreach ($fieldSets as $name => $fieldSet) :
-				if (($name === 'protected' && $this->access) || $name != 'protected')
-				{
-					?>
-                    <li><a href="<?php echo '#' . $name . '-options'; ?>"
-                           data-toggle="tab"><?php echo JText::_($fieldSet->label);?></a></li>
-					<?php
-				}
-			endforeach; ?>
-        </ul>
-        <div class="tab-content">
-            <div class="tab-pane active" id="detailsr">
-                <div class="control-group">
-                    <div class="control-group">
-                        <div class="control-label">
-							<?php echo $this->form->getValue('name'); ?>
+        <div class="accordion" id="accordion6">
+            <div class="accordion-group">
+                <div class="accordion-heading">
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion6" href="#detailsr">
+						<?php echo JText::_('JDETAILS');?>
+                    </a>
+                </div>
+                <div id="detailsr" class="accordion-body collapse in">
+                    <div class="accordion-inner">
+                        <div class="control-group">
+                            <div class="control-group">
+                                <div class="control-label">
+									<?php echo $this->form->getValue('name'); ?>
+                                </div>
+                            </div>
+                            <div class="control-label">
+								<?php echo $this->form->getLabel('published'); ?>
+                            </div>
+                            <div class="controls">
+								<?php echo $this->form->getInput('published'); ?>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <div class="control-label">
+								<?php echo $this->form->getLabel('access'); ?>
+                            </div>
+                            <div class="controls">
+								<?php echo $this->form->getInput('access'); ?>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <div class="control-label">
+								<?php echo $this->form->getLabel('featured'); ?>
+                            </div>
+                            <div class="controls">
+								<?php echo $this->form->getInput('featured'); ?>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <div class="control-label">
+								<?php echo $this->form->getLabel('language'); ?>
+                            </div>
+                            <div class="controls">
+								<?php echo $this->form->getInput('language'); ?>
+                            </div>
                         </div>
                     </div>
-                    <div class="control-label">
-						<?php echo $this->form->getLabel('published'); ?>
-                    </div>
-                    <div class="controls">
-						<?php echo $this->form->getInput('published'); ?>
-                    </div>
                 </div>
-                <div class="control-group">
-                    <div class="control-label">
-						<?php echo $this->form->getLabel('access'); ?>
-                    </div>
-                    <div class="controls">
-						<?php echo $this->form->getInput('access'); ?>
-                    </div>
+            </div>
+            <div class="accordion-group">
+                <div class="accordion-heading">
+                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion6" href="#im">
+						<?php echo JText::_('COM_CHURCHDIRECTORY_IM_DETAILS');?>
+                    </a>
                 </div>
-                <div class="control-group">
-                    <div class="control-label">
-						<?php echo $this->form->getLabel('featured'); ?>
-                    </div>
-                    <div class="controls">
-						<?php echo $this->form->getInput('featured'); ?>
-                    </div>
-                </div>
-                <div class="control-group">
-                    <div class="control-label">
-						<?php echo $this->form->getLabel('language'); ?>
-                    </div>
-                    <div class="controls">
-						<?php echo $this->form->getInput('language'); ?>
+                <div id="im" class="accordion-body collapse">
+                    <div class="accordion-inner">
+                        <div class="control-group">
+                            <div class="control-label"><?php echo $this->form->getLabel('skype'); ?></div>
+                            <div class="controls"><?php echo $this->form->getInput('skype'); ?></div>
+                        </div>
+
+                        <div class="control-group">
+                            <div class="control-label"><?php echo $this->form->getLabel('yahoo_msg'); ?></div>
+                            <div class="controls"><?php echo $this->form->getInput('yahoo_msg'); ?></div>
+                        </div>
                     </div>
                 </div>
             </div>
