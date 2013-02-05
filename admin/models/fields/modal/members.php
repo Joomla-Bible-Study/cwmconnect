@@ -6,7 +6,7 @@
  */
 defined('JPATH_BASE') or die;
 
-jimport('joomla.form.formfield');
+// jimport('joomla.form.formfield');
 
 /**
  * Supports a modal contact picker.
@@ -34,13 +34,17 @@ class JFormFieldModal_Members extends JFormField
 	 */
 	protected function getInput()
 	{
+
 		JHtml::_('behavior.framework');
 		JHtml::_('behavior.modal', 'a.modal');
-		JHtml::_('bootstrap.tooltip');
+		if (version_compare(JVERSION, '3.0', 'ge'))
+		{
+			JHtml::_('bootstrap.tooltip');
+		}
 
 		// Build the script.
 		$script   = array();
-		$script[] = '	function jSelectChart_' . $this->id . '(id, name, catid, object) {';
+		$script[] = '	function jSelectChart_' . $this->id . '(id, name, object) {';
 		$script[] = '		document.id("' . $this->id . '_id").value = id;';
 		$script[] = '		document.id("' . $this->id . '_name").value = name;';
 		$script[] = '		SqueezeBox.close();';
@@ -73,12 +77,12 @@ class JFormFieldModal_Members extends JFormField
 
 		$link = 'index.php?option=com_churchdirectory&amp;view=members&amp;layout=modal&amp;tmpl=component&amp;function=jSelectChart_' . $this->id;
 
-		$button = '<a class="modal btn" title="' . JText::_('COM_CHURCHDIRECTORY_CHANGE_MEMBER_BUTTON') . '"  href="' . $link
-			. '" rel="{handler: \'iframe\', size: {x: 800, y: 450}}"><i class="icon-address hasTooltip" title="'
-			. JText::_('COM_CHURCHDIRECTORY_CHANGE_MEMBER_BUTTON')
-			. '"></i> ' . JText::_('JSELECT') . '</a>';
-		$html   = "\n" . '<div class="input-append"><input type="text" class="input-medium" id="' . $this->id . '_name" value="'
-			. htmlspecialchars($title, ENT_QUOTES, 'UTF-8') . '" disabled="disabled" />' . $button . '</div>' . "\n";
+		if (isset($this->element['language']))
+		{
+			$link .= '&amp;forcedLanguage=' . $this->element['language'];
+		}
+
+		$html = "\n" . '<div class="input-append"><input type="text" class="input-medium" id="' . $this->id . '_name" value="' . htmlspecialchars($title, ENT_QUOTES, 'UTF-8') . '" disabled="disabled" /><a class="modal btn" title="' . JText::_('COM_CHURCHDIRECTORY_CHANGE_MEMBER_BUTTON') . '"  href="' . $link . '" rel="{handler: \'iframe\', size: {x: 800, y: 450}}"><i class="icon-address hasTooltip" title="' . JText::_('COM_CHURCHDIRECTORY_CHANGE_MEMBER_BUTTON') . '"></i> ' . JText::_('JSELECT') . '</a></div>' . "\n";
 
 		// The active contact id field.
 		if (0 == (int) $this->value)

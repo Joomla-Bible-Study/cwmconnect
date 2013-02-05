@@ -16,7 +16,7 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 <p> <?php echo JText::_('COM_CHURCHDIRECTORY_NO_ARTICLES'); ?>     </p>
 <?php else : ?>
 
-<form action="<?php echo htmlspecialchars(JFactory::getURI()->toString()); ?>" method="post" name="adminForm"
+<form action="<?php echo htmlspecialchars(JUri::getInstance()->toString()); ?>" method="post" name="adminForm"
       id="adminForm">
 	<?php if ($this->params->get('show_pagination_limit')) : ?>
     <fieldset class="filters btn-toolbar">
@@ -34,25 +34,24 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 		<?php endif; ?>
 
 		<?php if ($this->params->get('show_pagination_limit')) : ?>
-        <div class="display-limit">
-	        <div class="btn-group pull-right">
-                <label for="limit" class="element-invisible">
-			        <?php echo JText::_('JGLOBAL_DISPLAY_NUM'); ?>
-                </label>
-		        <?php echo $this->pagination->getLimitBox(); ?>
-            </div>
+        <div class="btn-group pull-right">
+            <label for="limit" class="element-invisible">
+				<?php echo JText::_('JGLOBAL_DISPLAY_NUM'); ?>
+            </label>
+			<?php echo $this->pagination->getLimitBox(); ?>
+        </div>
 		<?php endif; ?>
     </fieldset>
 	<?php endif; ?>
 
-    <ul class="category list-striped">
+    <ul class="category list-striped" style="list-style: none; padding: 0;">
 		<?php foreach ($this->items as $i => $item) : ?>
 
 		<?php if (in_array($item->access, $this->user->getAuthorisedViewLevels())) : ?>
 			<?php if ($this->items[$i]->state == 0) : ?>
-						<li class="system-unpublished cat-list-row<?php echo $i % 2; ?>">
+						<li class="churchdirectory-list system-unpublished cat-list-row<?php echo $i % 2; ?>">
 					<?php else: ?>
-						<li class="cat-list-row<?php echo $i % 2; ?>">
+						<li class="churchdirectory-list cat-list-row<?php echo $i % 2; ?>">
 					<?php endif; ?>
 
             <span class="pull-right">
@@ -82,7 +81,7 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
                     <span class="label label-warning"><?php echo JText::_('JUNPUBLISHED'); ?></span>
 					<?php endif; ?>
 
-                </strong><br />
+                </strong><br/>
 				<?php if ($this->params->get('show_position_headings')) : ?>
 				<?php
 				$this->loadHelper('positions');
