@@ -11,6 +11,9 @@ JHtml::_('behavior.framework');
 
 $listOrder = $this->escape($this->state->get('list.ordering'));
 $listDirn  = $this->escape($this->state->get('list.direction'));
+
+$this->loadHelper('render');
+$renderHelper = new renderHelper();
 ?>
 <?php if (empty($this->items)) : ?>
 <p> <?php echo JText::_('COM_CHURCHDIRECTORY_NO_ARTICLES'); ?>     </p>
@@ -83,12 +86,19 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 
                 </strong><br/>
 				<?php if ($this->params->get('show_position_headings')) : ?>
-				<?php
-				$this->loadHelper('positions');
-				$position = getPosition($item->con_position);
-				echo $position;
-				if ($position) echo '<br />';
-				?>
+
+			    <?php if ($item->con_position && $this->params->get('show_position')) : ?>
+                    <dl class="contact-position dl-horizontal">
+                        <dt>
+						    <?php if($item->con_position != '-1'): ?>
+						    <?php echo JText::_('COM_CHURCHDIRECTORY_POSITION'); ?>
+						    <?php endif; ?>
+                        </dt>
+                        <dd>
+						    <?php echo $renderHelper->getPosition($item->con_position); ?>
+                        </dd>
+                    </dl>
+				    <?php endif; ?>
 				<?php endif; ?>
 				<?php if ($this->params->get('show_email_headings')) : ?>
 				<?php echo $item->email_to; ?>

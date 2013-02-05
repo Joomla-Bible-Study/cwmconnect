@@ -9,17 +9,15 @@ defined('_JEXEC') or die;
 
 $printed_items = 0;
 $printed_rows = 0;
-
-
-//$heading_call = null;
+$this->loadHelper('render');
+$renderHelper = new renderHelper();
 $heading = null;
-
-//$listOrder = $this->escape($this->state->get('list.ordering'));
-//$listDirn = $this->escape($this->state->get('list.direction'));
 ?>
 <?php if (empty($this->items)) : ?>
-    <p> <?php echo JText::_('COM_CHURCHDIRECTORY_NO_CONTACTS'); ?>	 </p>
+<p xmlns="http://www.w3.org/1999/html"> <?php echo JText::_('COM_CHURCHDIRECTORY_NO_CONTACTS'); ?>	 </p>
 <?php endif; ?>
+<div class="row-fluid">
+<div class="churchdirectory-container">
 <?php
 foreach ($this->items as $item) {
     if ($printed_rows == $this->params->get('rows_per_page')) {
@@ -27,13 +25,14 @@ foreach ($this->items as $item) {
         $printed_rows = 0;
     }
     if ($printed_items == $this->params->get('items_per_row')) {
+	    echo '</div><hr><div class="churchdirectory-container">';
         $printed_items = 0;
     }
     if ($printed_items <= $this->params->get('items_per_row') && $printed_items > '0' && $item->attribs->get('familypostion') <= '0') {
         echo '<div class="vertical-line"></div>';
     }
     if ($item->funitid != '0' && $item->attribs->get('familypostion') === '0') :
-        ?><div id="directory-items" class="sectiontableentry<?php echo $item->id + 1; ?> paddingitem">
+        ?><div id="directory-items<?php echo $item->id + 1; ?>" class="paddingitem pull-left span<?php echo $this->span; ?>">
         <?php echo $item->funit_name; ?>
         <?php
         if ($item->image && $this->params->get('dr_show_image')) :
@@ -93,8 +92,7 @@ foreach ($this->items as $item) {
             <div class="clearfix"></div>
             <div class="familymembers-list">
                 <?php
-                JView::loadHelper('familymembers');
-                $heading = getFamilyMembersPage($item->params, $item->id, $item->funitid);
+                $heading = $renderHelper->getFamilyMembersPage($item->params, $item->id, $item->funitid);
                 if ($heading) {
                     echo $heading;
                 }
@@ -103,15 +101,15 @@ foreach ($this->items as $item) {
         </div>
     <?php elseif ($item->funitid === '0'):
         ?>
-        <div id="directory-items" class="sectiontableentry<?php echo $item->id + 1; ?> paddingitem">
+        <div id="directory-items<?php echo $item->id + 1; ?>" class="paddingitem pull-left span<?php echo $this->span; ?>">
             <?php
             if ($item->image && $this->params->get('dr_show_image')) :
 
-                echo '<img src="' . $this->baseurl . DIRECTORY_SEPARATOR . $item->image . '" align="center" hspace="6" alt="' . $item->name . '" class="directory-img" />';
+                echo '<img src="' . $this->baseurl . DIRECTORY_SEPARATOR . $item->image . '" align="center" hspace="6" alt="' . $item->name . '" class="directory-img pull-right" />';
             elseif ($this->params->get('image') != NULL && $this->params->get('dr_show_image')):
-                echo '<img src="' . $this->baseurl . DIRECTORY_SEPARATOR . $this->params - get('image') . '" align="center" hspace="6" alt="' . JText::_('COM_CHURCHDIRECTORY_NO_PHOTO_AVALIBLE') . '" class="directory-img" />';
+                echo '<img src="' . $this->baseurl . DIRECTORY_SEPARATOR . $this->params - get('image') . '" align="center" hspace="6" alt="' . JText::_('COM_CHURCHDIRECTORY_NO_PHOTO_AVALIBLE') . '" class="directory-img pull-right" />';
             elseif ($this->params->get('dr_show_image')):
-                echo '<img src="' . $this->baseurl . '/media/com_churchdirectory/images/200-photo_not_available.jpg" align="center" hspace="6" alt="' . JText::_('COM_CHURCHDIRECTORY_NO_PHOTO_AVALIBLE') . '" class="directory-img" />';
+                echo '<img src="' . $this->baseurl . '/media/com_churchdirectory/images/200-photo_not_available.jpg" align="center" hspace="6" alt="' . JText::_('COM_CHURCHDIRECTORY_NO_PHOTO_AVALIBLE') . '" class="directory-img pull-right" />';
             endif;
             ?>
             <div class="churchdirectory-contact">
@@ -123,23 +121,19 @@ foreach ($this->items as $item) {
                     <a href="<?php echo JRoute::_(ChurchDirectoryHelperRoute::getMemberRoute($item->slug, $item->catid)); ?>">
                         <?php echo $item->name; ?>
                     </a></span><br /><br />
-                <?php if ($item->con_position['0'] >= '1' && $this->params->get('dr_show_position')) : ?>
-                    <div class="clearfix"></div>
-                    <div id="position-header">
-                            <h4>Position: </h4>
-                    </div>
-                    <div id="position-name">
-                        <span class="contact-position">
-                            <?php
-                                    JView::loadHelper('positions');
-                                    echo getPosition($item->con_position);
-                            ?>
-                            <br />
-                        </span>
-                    </div>
-                    <br />
-                <?php endif;
-                ?>
+
+	            <?php if ($item->con_position && $this->params->get('show_position')) : ?>
+                <dl class="contact-position dl-horizontal">
+                    <dt>
+			            <?php if($item->con_position != '-1'): ?>
+			            <?php echo JText::_('COM_CHURCHDIRECTORY_POSITION'); ?>
+			            <?php endif; ?>
+                    </dt>
+                    <dd>
+			            <?php echo $renderHelper->getPosition($item->con_position); ?>
+                    </dd>
+                </dl>
+	            <?php endif; ?>
                 <div class="clearfix" ></div>
                 <?php if (($this->params->get('address_check') > 0) && ($item->address || $item->suburb || $item->state || $item->country || $item->postcode)) : ?>
                     <div class="churchdirectory-address">
@@ -273,4 +267,6 @@ foreach ($this->items as $item) {
         }
     endif;
 }
-echo '<div style="page-break-after:always"></div>';
+?><div style="page-break-after:always"></div>
+</div>
+</div>

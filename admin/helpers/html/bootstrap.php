@@ -439,7 +439,7 @@ abstract class JHtmlBootstrap
 			$opt['toggle'] = (isset($params['toggle']) && ($params['toggle'])) ? (boolean) $params['toggle'] : true;
 			$opt['active'] = (isset($params['active']) && ($params['active'])) ? (string) $params['active'] : '';
 
-			$options = JHtml::getJSObject($opt);
+			$options = self::getJSObject($opt);
 
 			// Attach accordion to document
 			JFactory::getDocument()->addScriptDeclaration(

@@ -178,4 +178,33 @@ class renderHelper
 
 		return $teacher;
 	}
+
+	/**
+	 * Calculate rows into span's
+	 *
+	 * @param   int  $items_per_row  Number of Rows we want to see.
+	 *
+	 * @return int
+	 */
+	public function rowWidth($items_per_row)
+	{
+		$results = 12;
+		if ($items_per_row == 2)
+		{
+			/* span6 */
+			$results = 6;
+		}
+		elseif ($items_per_row == 3)
+		{
+			/* span4 */
+			$results = 4;
+		}
+		elseif ($items_per_row == 4)
+		{
+			/* span2 */
+			$results = 2;
+		}
+
+		return $results;
+	}
 }
