@@ -53,7 +53,8 @@ function addCSS()
 	{
 		JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 		JHtml::_('bootstrap.framework');
-		JHTML::stylesheet('/media/com_biblestudy/jui/css/icomoon.css');
+		JHTML::stylesheet('media/com_churchdirectory/css/icomoonload.css');
+		JHTML::stylesheet('media/com_churchdirectory/jui/css/icomoon.css');
 		JHtml::_('bootstrap.loadCss');
 		JHtml::stylesheet('media/com_churchdirectory/css/bootstrap-j2.5.css');
 	}
