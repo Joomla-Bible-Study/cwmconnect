@@ -83,7 +83,7 @@ $sortFields = $this->getSortFields();
             </select>
         </div>
 		<?php if (!$version): ?>
-        <div class="filter-select btn-group pull-right">
+        <div class="filter-select pull-right">
 
             <select name="filter_published" class="input-medium" onchange="this.form.submit()">
                 <option value=""><?php echo JText::_('JOPTION_SELECT_PUBLISHED'); ?></option>
