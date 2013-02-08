@@ -72,6 +72,10 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 	 */
 	protected $pagination;
 
+	protected $maxLevel;
+
+	protected $parent;
+
 	/**
 	 * Display function
 	 *
