@@ -9,12 +9,12 @@
 
 defined('_JEXEC') or die;
 
-
-jimport('joomla.mail.helper');
+require_once JPATH_COMPONENT . '/models/category.php';
 
 /**
  * HTML Member View class for the ChurchDirectory component
  *
+ * @property mixed document
  * @package  ChurchDirectory.Site
  * @since    1.7.0
  */
@@ -24,7 +24,7 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 	/**
 	 * Protected
 	 *
-	 * @var array
+	 * @var object
 	 */
 	protected $state = null;
 
@@ -56,14 +56,27 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 	 */
 	protected $pagination = null;
 
+	protected $span;
+
+	protected $maxLevel;
+
+	protected $params;
+
+	protected $children;
+
+	protected $parent;
+
+	protected $pageclass_sfx;
+
+
 	/**
 	 * Display the view
 	 *
-	 * @param string $tpl
+	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
 	 *
-	 * @return    mixed    False on error, null otherwise.
+	 * @return  mixed  A string if successful, otherwise a Error object.
 	 */
-	function display($tpl = null)
+	public function display($tpl = null)
 	{
 		$app    = JFactory::getApplication();
 		$params = $app->getParams();
@@ -76,19 +89,12 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 		$pagination = $this->get('Pagination');
 
 		$this->loadHelper('render');
-		$renderHelper = new renderHelper();
-		$this->span = $renderHelper->rowWidth($params->get('items_per_row'));
-
-		if (count($errors = $this->get('Errors')))
-		{
-			JError::raiseError(500, implode("\n", $errors));
-
-			return false;
-		}
+		$renderHelper = new renderHelper;
+		$this->span   = $renderHelper->rowWidth($params->get('items_per_row'));
 
 		if ($items == false)
 		{
-			JError::raiseError(404, JText::_('COM_CHURCHDIRECTOY_ERROR_DIRECTORY_NOT_FOUND'));
+			$app->enqueueMessage(JText::_('COM_CHURCHDIRECTOY_ERROR_DIRECTORY_NOT_FOUND'), 'error');
 
 			return false;
 		}
@@ -96,9 +102,12 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 		// Check whether category access level allows access.
 		$user   = JFactory::getUser();
 		$groups = $user->getAuthorisedViewLevels();
+
 		if (!in_array($category->access, $groups))
 		{
-			return JError::raiseError(403, JText::_('JERROR_ALERTNOAUTHOR'));
+			$app->enqueueMessage(JText::_('JERROR_ALERTNOAUTHOR'), 'error');
+
+			return false;
 		}
 
 		// Check whether category access level allows access.
@@ -111,7 +120,7 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 		{
 			$item       = & $items[$i];
 			$item->slug = $item->alias ? ($item->id . ':' . $item->alias) : $item->id;
-			$temp       = new JRegistry();
+			$temp       = new JRegistry;
 			$temp->loadString($item->params);
 			$item->params = clone($params);
 			$item->params->merge($temp);
@@ -145,51 +154,50 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 			{
 				$params->set('other_check', 0);
 			}
+
+			switch ($params->get('dr_churchdirectory_icons'))
+			{
+				case 1 :
+					// Text
+					$params->set('marker_address', JText::_('COM_CHURCHDIRECTORY_ADDRESS') . ": ");
+					$params->set('marker_email', JText::_('JGLOBAL_EMAIL') . ": ");
+					$params->set('marker_telephone', JText::_('COM_CHURCHDIRECTORY_TELEPHONE') . ": ");
+					$params->set('marker_fax', JText::_('COM_CHURCHDIRECTORY_FAX') . ": ");
+					$params->set('marker_mobile', JText::_('COM_CHURCHDIRECTORY_MOBILE') . ": ");
+					$params->set('marker_misc', JText::_('COM_CHURCHDIRECTORY_OTHER_INFORMATION') . ": ");
+					$params->set('marker_class', 'jicons-text');
+					break;
+
+				case 2 :
+					// None
+					$params->set('marker_address', '');
+					$params->set('marker_email', '');
+					$params->set('marker_telephone', '');
+					$params->set('marker_mobile', '');
+					$params->set('marker_fax', '');
+					$params->set('marker_misc', '');
+					$params->set('marker_class', 'jicons-none');
+					break;
+
+				default :
+					// Icons
+					$image1 = JHtml::_('image', 'contacts/' . $params->get('icon_address', 'con_address.png'), JText::_('COM_CHURCHDIRECTORY_ADDRESS') . ": ", null, true);
+					$image2 = JHtml::_('image', 'contacts/' . $params->get('icon_email', 'emailButton.png'), JText::_('JGLOBAL_EMAIL') . ": ", null, true);
+					$image3 = JHtml::_('image', 'contacts/' . $params->get('icon_telephone', 'con_tel.png'), JText::_('COM_CHURCHDIRECTORY_TELEPHONE') . ": ", null, true);
+					$image4 = JHtml::_('image', 'contacts/' . $params->get('icon_fax', 'con_fax.png'), JText::_('COM_CHURCHDIRECTORY_FAX') . ": ", null, true);
+					$image5 = JHtml::_('image', 'contacts/' . $params->get('icon_misc', 'con_info.png'), JText::_('COM_CHURCHDIRECTORY_OTHER_INFORMATION') . ": ", null, true);
+					$image6 = JHtml::_('image', 'contacts/' . $params->get('icon_mobile', 'con_mobile.png'), JText::_('COM_CHURCHDIRECTORY_MOBILE') . ": ", null, true);
+
+					$params->set('marker_address', $image1);
+					$params->set('marker_email', $image2);
+					$params->set('marker_telephone', $image3);
+					$params->set('marker_fax', $image4);
+					$params->set('marker_misc', $image5);
+					$params->set('marker_mobile', $image6);
+					$params->set('marker_class', 'jicons-icons');
+					break;
+			}
 		}
-
-		switch ($item->params->get('dr_churchdirectory_icons'))
-		{
-			case 1 :
-				// text
-				$params->set('marker_address', JText::_('COM_CHURCHDIRECTORY_ADDRESS') . ": ");
-				$params->set('marker_email', JText::_('JGLOBAL_EMAIL') . ": ");
-				$params->set('marker_telephone', JText::_('COM_CHURCHDIRECTORY_TELEPHONE') . ": ");
-				$params->set('marker_fax', JText::_('COM_CHURCHDIRECTORY_FAX') . ": ");
-				$params->set('marker_mobile', JText::_('COM_CHURCHDIRECTORY_MOBILE') . ": ");
-				$params->set('marker_misc', JText::_('COM_CHURCHDIRECTORY_OTHER_INFORMATION') . ": ");
-				$params->set('marker_class', 'jicons-text');
-				break;
-
-			case 2 :
-				// none
-				$params->set('marker_address', '');
-				$params->set('marker_email', '');
-				$params->set('marker_telephone', '');
-				$params->set('marker_mobile', '');
-				$params->set('marker_fax', '');
-				$params->set('marker_misc', '');
-				$params->set('marker_class', 'jicons-none');
-				break;
-
-			default :
-				// icons
-				$image1 = JHtml::_('image', 'contacts/' . $params->get('icon_address', 'con_address.png'), JText::_('COM_CHURCHDIRECTORY_ADDRESS') . ": ", null, true);
-				$image2 = JHtml::_('image', 'contacts/' . $params->get('icon_email', 'emailButton.png'), JText::_('JGLOBAL_EMAIL') . ": ", null, true);
-				$image3 = JHtml::_('image', 'contacts/' . $params->get('icon_telephone', 'con_tel.png'), JText::_('COM_CHURCHDIRECTORY_TELEPHONE') . ": ", null, true);
-				$image4 = JHtml::_('image', 'contacts/' . $params->get('icon_fax', 'con_fax.png'), JText::_('COM_CHURCHDIRECTORY_FAX') . ": ", null, true);
-				$image5 = JHtml::_('image', 'contacts/' . $params->get('icon_misc', 'con_info.png'), JText::_('COM_CHURCHDIRECTORY_OTHER_INFORMATION') . ": ", null, true);
-				$image6 = JHtml::_('image', 'contacts/' . $params->get('icon_mobile', 'con_mobile.png'), JText::_('COM_CHURCHDIRECTORY_MOBILE') . ": ", null, true);
-
-				$params->set('marker_address', $image1);
-				$params->set('marker_email', $image2);
-				$params->set('marker_telephone', $image3);
-				$params->set('marker_fax', $image4);
-				$params->set('marker_misc', $image5);
-				$params->set('marker_mobile', $image6);
-				$params->set('marker_class', 'jicons-icons');
-				break;
-		}
-
 		// Setup the category parameters.
 		$cparams          = $category->getParams();
 		$category->params = clone($params);
@@ -206,7 +214,7 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 		$this->parent     = & $parent;
 		$this->pagination = & $pagination;
 
-		//Escape strings for HTML output
+		// Escape strings for HTML output
 		$this->pageclass_sfx = htmlspecialchars($params->get('pageclass_sfx'));
 
 		$this->_prepareDocument();
@@ -231,6 +239,7 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 		// Because the application sets a default page title,
 		// we need to get it from the menu item itself
 		$menu = $menus->getActive();
+
 		if ($menu)
 		{
 			$this->params->def('page_heading', $this->params->get('page_title', $menu->title));
@@ -240,8 +249,8 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 			$this->params->def('page_heading', JText::_('COM_CHURCHDIRECTORY_DEFAULT_PAGE_TITLE'));
 		}
 		$id = (int) @$menu->query['id'];
-
 		$title = $this->params->get('page_title', '');
+
 		if (empty($title))
 		{
 			$title = $app->getCfg('sitename');

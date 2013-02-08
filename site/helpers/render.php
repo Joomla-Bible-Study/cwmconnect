@@ -120,6 +120,7 @@ class renderHelper
 			$teacher .= $b->name;
 			$teacher .= '</a></div>';
 			$teacher .= '<div class="directory-subtitle">';
+
 			switch ($attribs->familypostion)
 			{
 				case -1:
@@ -137,21 +138,21 @@ class renderHelper
 			}
 			$teacher .= '</div>';
 			$teacher .= '<div class="clearfix"></div><div class="directory-submemberinfo">';
+
 			if (!empty($b->con_position) && $params->get('dr_show_position')) :
 				$teacher .= '<div class="clearfix"></div>';
-				$teacher .= '<div id="position-header"><span id="contact-position">';
-				$teacher .= '<b>Position: </b>';
-				$teacher .= '</span>';
-				$teacher .= '</div>';
-				$teacher .= '<div id="position-name">';
-				$teacher .= '<span id="contact-position">';
-				$positions = self::getPosition($b->con_position);
-				$teacher .= $positions;
-				$teacher .= '<br />';
-				$teacher .= '</span>';
-				$teacher .= '</div>';
-				$teacher .= '<br /><div class="clearfix"></div>';
+				$teacher .= '<dl class="contact-position dl-horizontal">';
+				$teacher .= '<dt>';
+				if ($b->con_position != '-1'):
+					$teacher .= JText::_('COM_CHURCHDIRECTORY_POSITION') . ':';
+				endif;
+				$teacher .= '</dt>';
+				$teacher .= '<dd>';
+				$teacher .=  self::getPosition($b->con_position);
+				$teacher .= '</dd></dl>';
+				// $teacher .= '<br /><div class="clearfix"></div>';
 			endif;
+
 			if ($b->telephone && $params->get('dr_show_telephone'))
 			{
 				$teacher .= '<div class="directory-telephone"><span class="title">' . JText::_('COM_CHURCHDIRECTORY_HOME') . ':</span> ' . $b->telephone . '</div>';
