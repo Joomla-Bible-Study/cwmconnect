@@ -4,7 +4,7 @@
  * @copyright  (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-// no direct access
+
 defined('_JEXEC') or die;
 
 // Component Helper
@@ -14,9 +14,8 @@ jimport('joomla.application.categories');
 /**
  * ChurchDirectory Component Route Helper
  *
- * @static
- * @package    ChurchDirectory.Site
- * @since      1.5
+ * @package  ChurchDirectory.Site
+ * @since    1.5
  */
 abstract class ChurchDirectoryHelperRoute
 {
@@ -41,12 +40,15 @@ abstract class ChurchDirectoryHelperRoute
 		$needles = array(
 			'churchdirectory' => array((int) $id)
 		);
-		//Create the link
+
+		// Create the link
 		$link = 'index.php?option=com_churchdirectory&view=member&id=' . $id;
+
 		if ($catid > 1)
 		{
 			$categories = JCategories::getInstance('ChurchDirectory');
 			$category   = $categories->get($catid);
+
 			if ($category)
 			{
 				$needles['category']   = array_reverse($category->getPath());
@@ -68,9 +70,9 @@ abstract class ChurchDirectoryHelperRoute
 	}
 
 	/**
-	 * Get Categroy Route
+	 * Get Category Route
 	 *
-	 * @param JCategoryNode $catid
+	 * @param   JCategoryNode  $catid  Category ID
 	 *
 	 * @return string
 	 */
@@ -103,8 +105,9 @@ abstract class ChurchDirectoryHelperRoute
 			}
 			else
 			{
-				//Create the link
+				// Create the link
 				$link = 'index.php?option=com_churchdirectory&view=category&id=' . $id;
+
 				if ($category)
 				{
 					$catids  = array_reverse($category->getPath());
@@ -112,6 +115,7 @@ abstract class ChurchDirectoryHelperRoute
 						'category'   => $catids,
 						'categories' => $catids
 					);
+
 					if ($item = self::_findItem($needles))
 					{
 						$link .= '&Itemid=' . $item;
@@ -130,9 +134,9 @@ abstract class ChurchDirectoryHelperRoute
 	/**
 	 * Find Item
 	 *
-	 * @param string $needles
+	 * @param   array  $needles  ?
 	 *
-	 * @return null
+	 * @return mixed
 	 */
 	protected static function _findItem($needles = null)
 	{
@@ -146,11 +150,13 @@ abstract class ChurchDirectoryHelperRoute
 
 			$component = JComponentHelper::getComponent('com_churchdirectory');
 			$items     = $menus->getItems('component_id', $component->id);
+
 			foreach ($items as $item)
 			{
 				if (isset($item->query) && isset($item->query['view']))
 				{
 					$view = $item->query['view'];
+
 					if (!isset(self::$lookup[$view]))
 					{
 						self::$lookup[$view] = array();
@@ -182,6 +188,7 @@ abstract class ChurchDirectoryHelperRoute
 		else
 		{
 			$active = $menus->getActive();
+
 			if ($active)
 			{
 				return $active->id;

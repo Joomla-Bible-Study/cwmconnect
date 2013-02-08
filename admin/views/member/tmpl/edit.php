@@ -21,6 +21,18 @@ JHtml::_('behavior.keepalive'); // Predefine for Access
         }
     }
 </script>
+<script type="text/javascript">
+	function setClassFamilyUnite(thisForm){
+		switch (document.getElementById('funitid').value) {
+        case '-1':
+            document.getElementById('jform_attribs_familypostion-lbl').style = 'display:hiddon';
+            break;
+        default:
+            document.getElementById('jform_attribs_familypostion-lbl').style = '';
+            break;
+    }
+	}
+</script>
 
 <form action="<?php echo JRoute::_('index.php?option=com_churchdirectory&layout=edit&id=' . (int) $this->item->id); ?>"
       method="post" name="adminForm" id="member-form" class="form-validate form-horizontal">
@@ -63,6 +75,10 @@ JHtml::_('behavior.keepalive'); // Predefine for Access
         <div class="control-group">
             <div class="control-label"><?php echo $this->form->getLabel('funitid'); ?></div>
             <div class="controls"><?php echo $this->form->getInput('funitid'); ?></div>
+        </div>
+        <div class="control-group">
+            <div class="control-label"><?php echo $this->form->getLabel('familypostion', 'attribs'); ?></div>
+            <div class="controls"><?php echo $this->form->getInput('familypostion', 'attribs'); ?></div>
         </div>
         <div class="control-group">
             <div class="control-label"><?php echo $this->form->getLabel('alias'); ?></div>
