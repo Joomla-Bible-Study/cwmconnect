@@ -39,7 +39,7 @@ JHtml::_('behavior.keepalive'); // Predefine for Access
       method="post" name="adminForm" id="member-form" class="form-validate form-horizontal">
 <div class="row-fluid">
 <!-- Begin Member -->
-<div class="span8 form-horizontal">
+<div class="span10 form-horizontal">
 <ul class="nav nav-tabs">
     <li class="active"><a href="#details"
                           data-toggle="tab"><?php echo empty($this->item->id) ? JText::_('COM_CHURCHDIRECTORY_NEW_MEMBER') : JText::sprintf('COM_CHURCHDIRECTORY_EDIT_MEMBER', $this->item->id); ?></a>
@@ -258,7 +258,7 @@ JHtml::_('behavior.keepalive'); // Predefine for Access
 </div>
 <!-- End Sidebar -->
 <!-- Begin Sidebar -->
-<div class="span4">
+<div class="span2">
     <fieldset class="form-vertical">
         <div class="accordion" id="accordion6">
             <div class="accordion-group">

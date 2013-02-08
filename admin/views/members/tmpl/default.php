@@ -202,6 +202,11 @@ $sortFields = $this->getSortFields();
                 <div class="small">
 					<?php echo $item->category_title; ?>
                 </div>
+				<?php if ($item->funitname): ?>
+                <div class="small">
+					<?php echo JText::sprintf('COM_CHURCHDIRECTORY_FUNITNAME_SPRINTF', $item->funitname); ?>
+                </div>
+				<?php endif; ?>
             </div>
             <div class="pull-left">
 				<?php
