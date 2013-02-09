@@ -34,7 +34,6 @@ JHtml::_('behavior.keepalive'); // Predefine for Access
 	    .change();
     });
 </script>
-
 <form action="<?php echo JRoute::_('index.php?option=com_churchdirectory&layout=edit&id=' . (int) $this->item->id); ?>"
       method="post" name="adminForm" id="member-form" class="form-validate form-horizontal">
 <div class="row-fluid">
