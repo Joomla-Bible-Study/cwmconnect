@@ -20,13 +20,26 @@ JHtml::_('behavior.keepalive'); // Predefine for Access
             Joomla.submitform(task, document.getElementById('member-form'));
         }
     }
+    jQuery(document).ready(function ($) {
+        $('#jform_funitid').change(function () {
+            var funitid = $('#jform_funitid').val();
+            if (funitid == '-1') {
+                $('#jform_attribs_familypostion-lbl').css('display', 'none');
+                $('#jform_attribs_familypostion').css('display', 'none');
+            } else {
+                $('#jform_attribs_familypostion-lbl').css('display', 'inline');
+                $('#jform_attribs_familypostion').css('display', 'inline');
+            }
+        })
+	    .change();
+    });
 </script>
 
 <form action="<?php echo JRoute::_('index.php?option=com_churchdirectory&layout=edit&id=' . (int) $this->item->id); ?>"
       method="post" name="adminForm" id="member-form" class="form-validate form-horizontal">
 <div class="row-fluid">
 <!-- Begin Member -->
-<div class="span8 form-horizontal">
+<div class="span10 form-horizontal">
 <ul class="nav nav-tabs">
     <li class="active"><a href="#details"
                           data-toggle="tab"><?php echo empty($this->item->id) ? JText::_('COM_CHURCHDIRECTORY_NEW_MEMBER') : JText::sprintf('COM_CHURCHDIRECTORY_EDIT_MEMBER', $this->item->id); ?></a>
@@ -51,41 +64,53 @@ JHtml::_('behavior.keepalive'); // Predefine for Access
 </ul>
 <div class="tab-content">
     <div class="tab-pane active" id="details">
-        <div class="control-group">
-            <div class="control-label"><?php echo $this->form->getLabel('name'); ?></div>
-            <div class="controls"><?php echo $this->form->getInput('name'); ?></div>
-        </div>
+        <div class="span6">
+            <div class="control-group">
+                <div class="control-label"><?php echo $this->form->getLabel('name'); ?></div>
+                <div class="controls"><?php echo $this->form->getInput('name'); ?></div>
+            </div>
 
-        <div class="control-group">
-            <div class="control-label"><?php echo $this->form->getLabel('lname'); ?></div>
-            <div class="controls"><?php echo $this->form->getInput('lname'); ?></div>
+            <div class="control-group">
+                <div class="control-label"><?php echo $this->form->getLabel('lname'); ?></div>
+                <div class="controls"><?php echo $this->form->getInput('lname'); ?></div>
+            </div>
+            <div class="control-group">
+                <div class="control-label"><?php echo $this->form->getLabel('funitid'); ?></div>
+                <div class="controls"><?php echo $this->form->getInput('funitid'); ?></div>
+            </div>
+            <div class="control-group">
+                <div class="control-label"><?php echo $this->form->getLabel('familypostion', 'attribs'); ?></div>
+                <div class="controls"><?php echo $this->form->getInput('familypostion', 'attribs'); ?></div>
+            </div>
+            <div class="control-group">
+                <div class="control-label"><?php echo $this->form->getLabel('alias'); ?></div>
+                <div class="controls"><?php echo $this->form->getInput('alias'); ?></div>
+            </div>
         </div>
-        <div class="control-group">
-            <div class="control-label"><?php echo $this->form->getLabel('funitid'); ?></div>
-            <div class="controls"><?php echo $this->form->getInput('funitid'); ?></div>
-        </div>
-        <div class="control-group">
-            <div class="control-label"><?php echo $this->form->getLabel('alias'); ?></div>
-            <div class="controls"><?php echo $this->form->getInput('alias'); ?></div>
-        </div>
+        <div class="span6">
+            <div class="control-group">
+                <div class="control-label"><?php echo $this->form->getLabel('surname'); ?></div>
+                <div class="controls"><?php echo $this->form->getInput('surname'); ?></div>
+            </div>
+            <div class="control-group">
+                <div class="control-label"><?php echo $this->form->getLabel('user_id'); ?></div>
+                <div class="controls"><?php echo $this->form->getInput('user_id'); ?></div>
+            </div>
 
-        <div class="control-group">
-            <div class="control-label"><?php echo $this->form->getLabel('user_id'); ?></div>
-            <div class="controls"><?php echo $this->form->getInput('user_id'); ?></div>
+            <div class="control-group">
+                <div class="control-label"><?php echo $this->form->getLabel('catid'); ?></div>
+                <div class="controls"><?php echo $this->form->getInput('catid'); ?></div>
+            </div>
+            <div class="control-group">
+                <div class="control-label"><?php echo $this->form->getLabel('ordering'); ?></div>
+                <div class="controls"><?php echo $this->form->getInput('ordering'); ?></div>
+            </div>
+            <div class="control-group">
+                <div class="control-label"><?php echo $this->form->getLabel('id'); ?></div>
+                <div class="controls"><?php echo $this->form->getInput('id'); ?></div>
+            </div>
         </div>
-
-        <div class="control-group">
-            <div class="control-label"><?php echo $this->form->getLabel('catid'); ?></div>
-            <div class="controls"><?php echo $this->form->getInput('catid'); ?></div>
-        </div>
-        <div class="control-group">
-            <div class="control-label"><?php echo $this->form->getLabel('ordering'); ?></div>
-            <div class="controls"><?php echo $this->form->getInput('ordering'); ?></div>
-        </div>
-        <div class="control-group">
-            <div class="control-label"><?php echo $this->form->getLabel('id'); ?></div>
-            <div class="controls"><?php echo $this->form->getInput('id'); ?></div>
-        </div>
+        <div class="clearfix"></div>
         <div class="control-group">
             <div class="control-label"><?php echo $this->form->getLabel('misc'); ?></div>
             <div class="controls"><?php echo $this->form->getInput('misc'); ?></div>
@@ -233,7 +258,7 @@ JHtml::_('behavior.keepalive'); // Predefine for Access
 </div>
 <!-- End Sidebar -->
 <!-- Begin Sidebar -->
-<div class="span4">
+<div class="span2">
     <fieldset class="form-vertical">
         <div class="accordion" id="accordion6">
             <div class="accordion-group">

@@ -1,24 +1,21 @@
 <?php
 /**
- * Direcotry Default Items
- *
- * @package             ChurchDirectory.Site
- * @copyright           (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
- * @license             GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    ChurchDirectory.Site
+ * @copyright  (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * */
 defined('_JEXEC') or die;
 
 $printed_items = 0;
 $printed_rows  = 0;
 $this->loadHelper('render');
-$renderHelper = new renderHelper();
+$renderHelper = new renderHelper;
 $heading      = null;
 $letter       = null;
 ?>
 <?php if (empty($this->items)) : ?>
 <p xmlns="http://www.w3.org/1999/html"> <?php echo JText::_('COM_CHURCHDIRECTORY_NO_CONTACTS'); ?>     </p>
 <?php endif; ?>
-<div class="row-fluid">
 <div class="churchdirectory-container">
 <?php
 foreach ($this->items as $item)
@@ -285,5 +282,4 @@ foreach ($this->items as $item)
 }
 ?>
 <div style="page-break-after:always"></div>
-</div>
 </div>

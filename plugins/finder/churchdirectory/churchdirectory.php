@@ -1,9 +1,10 @@
 <?php
 /**
- * @package      Finder.ChurchDirectory
- * @copyright    (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
- * @license      GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    Finder.ChurchDirectory
+ * @copyright  (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
+
 defined('JPATH_BASE') or die;
 
 jimport('joomla.application.component.helper');
@@ -17,7 +18,7 @@ require_once JPATH_ADMINISTRATOR . '/components/com_finder/helpers/indexer/adapt
  * @package  Finder.ChurchDirectory
  * @since    1.7.0
  */
-class plgFinderChurchDirectory extends FinderIndexerAdapter
+class PlgFinderChurchDirectory extends FinderIndexerAdapter
 {
 
 	/**
@@ -286,10 +287,10 @@ class plgFinderChurchDirectory extends FinderIndexerAdapter
 		 * Add the meta-data processing instructions based on the member
 		 * configuration parameters.
 		 */
-		// Handle the member position.
-		//if ($item->params->get('show_position', true)) {
-		//    $item->addInstruction(FinderIndexer::META_CONTEXT, 'position');
-		//}
+		/* Handle the member position.
+		 if ($item->params->get('show_position', true)) {
+		    $item->addInstruction(FinderIndexer::META_CONTEXT, 'position');
+		 } */
 		// Handle the member street address.
 		if ($item->params->get('show_street_address', true))
 		{
@@ -417,6 +418,7 @@ class plgFinderChurchDirectory extends FinderIndexerAdapter
 	protected function getListQuery($sql = null)
 	{
 		$db = JFactory::getDbo();
+
 		// Check if we can use the supplied SQL query.
 		$sql = is_a($sql, 'JDatabaseQuery') ? $sql : $db->getQuery(true);
 		$sql->select('a.id, a.name AS title, a.alias, a.address, a.created AS start_date');

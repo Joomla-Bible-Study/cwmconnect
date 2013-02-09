@@ -34,6 +34,7 @@ class ChurchDirectoryModelMembers extends JModelList
 				'id', 'a.id',
 				'name', 'a.name',
 				'lname', 'a.lname',
+				'funitid', 'funitname',
 				'alias', 'a.alias',
 				'checked_out', 'a.checked_out',
 				'checked_out_time', 'a.checked_out_time',
@@ -134,7 +135,7 @@ class ChurchDirectoryModelMembers extends JModelList
 		// Select the required fields from the table.
 		$query->select(
 			$this->getState(
-				'list.select', 'a.id, a.name, a.lname, a.alias, a.checked_out, a.checked_out_time, a.catid, a.user_id' .
+				'list.select', 'a.id, a.name, a.lname, a.funitid, a.alias, a.checked_out, a.checked_out_time, a.catid, a.user_id' .
 				', a.published, a.access, a.created, a.created_by, a.ordering, a.featured, a.language' .
 				', a.publish_up, a.publish_down'
 			)
@@ -144,6 +145,10 @@ class ChurchDirectoryModelMembers extends JModelList
 		// Join over the users for the linked user.
 		$query->select('ul.name AS linked_user');
 		$query->join('LEFT', '#__users AS ul ON ul.id=a.user_id');
+
+		// Join over the Fiamily Units.
+		$query->select('fu.name AS funitname');
+		$query->join('LEFT', '#__churchdirectory_familyunit AS fu ON fu.id=a.funitid');
 
 		// Join over the language
 		$query->select('l.title AS language_title');

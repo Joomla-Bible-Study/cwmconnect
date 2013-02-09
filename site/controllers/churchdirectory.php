@@ -53,7 +53,6 @@ class ChurchDirectoryControllerChurchDirectory extends JControllerForm
 
 		$churchdirectory = $model->getItem($id);
 
-
 		$params->merge($churchdirectory->params);
 
 		// Check for a valid session cookie

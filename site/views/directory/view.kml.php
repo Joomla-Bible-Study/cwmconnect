@@ -306,7 +306,7 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 						$lastname         = $namearray[0];
 						$card_name        = $lastname;
 						$name_and_midname = trim($namearray[1]);
-						$firstname = '';
+						$firstname        = '';
 
 						if (!empty($name_and_midname))
 						{

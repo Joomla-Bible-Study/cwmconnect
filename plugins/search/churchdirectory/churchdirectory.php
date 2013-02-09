@@ -116,9 +116,11 @@ class plgSearchChurchdirectory extends JPlugin
 		$text = $db->Quote('%' . $db->escape($text, true) . '%', false);
 
 		$rows = array();
+
 		if (!empty($state))
 		{
 			$query = $db->getQuery(true);
+
 			// -- sqlsrv changes
 			$case_when = ' CASE WHEN ';
 			$case_when .= $query->charLength('a.alias');
