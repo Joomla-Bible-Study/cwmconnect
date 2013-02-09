@@ -7,7 +7,6 @@
 
 defined('_JEXEC') or die;
 
-
 /**
  * ChurchDirectory categories view.
  *

@@ -130,7 +130,7 @@ $sortFields = $this->getSortFields();
 			<?php echo JHtml::_('grid.sort', 'COM_CHURCHDIRECTORY_FIELD_LINKED_USER_LABEL', 'ul.name', $listDirn, $listOrder); ?>
         </th>
         <th width="5%" class="nowrap hidden-phone">
-			<?php echo JHtml::_('grid.sort', 'JGRID_HEADING_ACCESS', 'a.access', $listDirn, $listOrder); ?>
+			<?php echo JHtml::_('grid.sort', 'COM_CHURCHDIRECTORY_FIELD_FEATURED_LABEL', 'a.featured', $listDirn, $listOrder); ?>
         </th>
         <th width="10%" class="nowrap hidden-phone">
 			<?php echo JHtml::_('grid.sort', 'JGRID_HEADING_ACCESS', 'access_level', $listDirn, $listOrder); ?>
@@ -202,6 +202,11 @@ $sortFields = $this->getSortFields();
                 <div class="small">
 					<?php echo $item->category_title; ?>
                 </div>
+				<?php if ($item->funitname): ?>
+                <div class="small">
+					<?php echo JText::sprintf('COM_CHURCHDIRECTORY_FUNITNAME_SPRINTF', $item->funitname); ?>
+                </div>
+				<?php endif; ?>
             </div>
             <div class="pull-left">
 				<?php

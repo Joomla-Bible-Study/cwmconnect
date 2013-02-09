@@ -17,6 +17,10 @@
                description="COM_CHURCHDIRECTORY_FIELD_NAME_DESC" class="inputbox"
                size="30" required="true"/>
 
+        <field name="surname" type="text" label="COM_CHURCHDIRECTORY_FIELD_SURNAME_LABEL"
+               description="COM_CHURCHDIRECTORY_FIELD_SURNAME_DESC" class="inputbox"
+               size="30"/>
+
         <field name="lname" type="text" label="COM_CHURCHDIRECTORY_FIELD_LNAME_LABEL"
                description="COM_CHURCHDIRECTORY_FIELD_LNAME_DESC" class="inputbox"
                size="30" required="true"/>
@@ -34,13 +38,17 @@
                size="1"
                default="1">
             <option value="1">
-                JPUBLISHED</option>
+                JPUBLISHED
+            </option>
             <option value="0">
-                JUNPUBLISHED</option>
+                JUNPUBLISHED
+            </option>
             <option value="2">
-                JARCHIVED</option>
+                JARCHIVED
+            </option>
             <option value="-2">
-                JTRASHED</option>
+                JTRASHED
+            </option>
         </field>
 
         <field name="catid" type="categoryedit" extension="com_churchdirectory"
@@ -73,15 +81,15 @@
         </field>
 
         <field name="funitid"
-                type="sql"
-                class="inputbox"
-                query="SELECT id, name FROM #__churchdirectory_familyunit WHERE published = 1 ORDER by name ASC"
-                key_field="id"
-                value_field="name"
-                default="-1"
-                label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_FAMILYUNIT_LABEL"
-                description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_FAMILYUNIT_DESC"
-                required=""
+               type="sql"
+               class="inputbox"
+               query="SELECT id, name FROM #__churchdirectory_familyunit WHERE published = 1 ORDER by name ASC"
+               key_field="id"
+               value_field="name"
+               default="-1"
+               label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_FAMILYUNIT_LABEL"
+               description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_FAMILYUNIT_DESC"
+               required=""
                 >
             <option value="-1">COM_CHURCHDIRECTORY_SELECT_FAMILYUNIT</option>
         </field>
@@ -624,8 +632,8 @@
             <field name="familypostion" type="list"
                    label="COM_CHURCHDIRECTORY_FAMILYPOSTION_LABEL"
                    description="COM_CHURCHDIRECTORY_FAMILYPOSTION_DESC"
-                   class="inputbox span12 small"
-                   default="-1">
+                   class="inputbox"
+                   default="-1" OnChange="setTypeEmail(this.form);">
                 <option value="-1">COM_CHURCHDIRECTORY_SINGLE</option>
                 <option value="0">COM_CHURCHDIRECTORY_HEAD_OF_HOUSEHOLD</option>
                 <option value="1">COM_CHURCHDIRECTORY_SPOUSE</option>
@@ -659,6 +667,72 @@
             <field name="mailingcountry" type="text"
                    label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_COUNTRY_LABEL"
                    description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_COUNTRY_DESC"
+                   class="inputbox" size="30"/>
+        </fieldset>
+        <fieldset name="occupation"
+                  label="COM_CHURCHDIRECTORY_OCCUPATOIN_INFO_FIELDSET_LABEL"
+                  description="COM_CHURCHDIRECTORY_OCCUPATOIN_INFO_FIELDSET_DESC">
+
+            <field name="jobtitle" type="text"
+                   label="COM_CHURCHDIRECTORY_FIELD_JOB_TITLE_LABEL"
+                   description="COM_CHURCHDIRECTORY_FIELD_JOB_TITLE_DESC"
+                   class="inputbox" size="30"/>
+
+            <field name="employer" type="text"
+                   label="COM_CHURCHDIRECTORY_FIELD_EMPLOYER_LABEL"
+                   description="COM_CHURCHDIRECTORY_FIELD_EMPLOYER_DESC"
+                   class="inputbox" size="30"/>
+
+            <field name="email_to" type="email"
+                   label="JGLOBAL_EMAIL"
+                   description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_EMAIL_DESC"
+                   class="inputbox"
+                   cols="30"
+                    />
+
+            <field name="address" type="textarea"
+                   label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_ADDRESS_LABEL"
+                   description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_ADDRESS_DESC"
+                   class="inputbox" rows="3" cols="30"/>
+
+            <field name="suburb" type="text"
+                   label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_SUBURB_LABEL"
+                   description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_SUBURB_DESC"
+                   class="inputbox" size="30"/>
+
+            <field name="state" type="text"
+                   label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_STATE_LABEL"
+                   description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_STATE_DESC" class="inputbox"
+                   size="30"/>
+
+            <field name="postcode" type="text"
+                   label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_POSTCODE_LABEL"
+                   description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_POSTCODE_DESC"
+                   class="inputbox" size="30"/>
+
+            <field name="country" type="text"
+                   label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_COUNTRY_LABEL"
+                   description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_COUNTRY_DESC"
+                   class="inputbox" size="30"/>
+
+            <field name="telephone" type="text"
+                   label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_TELEPHONE_LABEL"
+                   description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_TELEPHONE_DESC"
+                   class="inputbox" size="30"/>
+
+            <field name="mobile" type="text"
+                   label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_MOBILE_LABEL"
+                   description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_MOBILE_DESC"
+                   class="inputbox" size="30"/>
+
+            <field name="fax" type="text"
+                   label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_FAX_LABEL"
+                   description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_FAX_DESC"
+                   class="inputbox" size="30"/>
+
+            <field name="webpage" type="url"
+                   label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_WEBPAGE_LABEL"
+                   description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_WEBPAGE_DESC"
                    class="inputbox" size="30"/>
         </fieldset>
     </fields>

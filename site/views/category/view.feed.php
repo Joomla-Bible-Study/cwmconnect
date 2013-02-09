@@ -88,7 +88,7 @@ class ChurchDirectoryViewCategory extends JViewLegacy
 			$doc->addItem($item);
 		}
 
-		return;
+		return true;
 	}
 
 }

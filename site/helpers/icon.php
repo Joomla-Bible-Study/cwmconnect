@@ -19,9 +19,9 @@ class JHtmlIcon
 	/**
 	 * Icon for email
 	 *
-	 * @param   object  $member   ?
-	 * @param   object  $params   ?
-	 * @param   array   $attribs  ?
+	 * @param   object     $member   Member info
+	 * @param   JRegistry  $params   HTML Params
+	 * @param   array      $attribs  Member attribs
 	 *
 	 * @return string
 	 */
@@ -30,7 +30,7 @@ class JHtmlIcon
 		require_once JPATH_SITE . '/components/com_mailto/helpers/mailto.php';
 		$uri  = JURI::getInstance();
 		$base = $uri->toString(array('scheme', 'host', 'port'));
-		$link = $base . JRoute::_(ContentHelperRoute::getArticleRoute($churchdirectory->slug, $churchdirectory->catid), false);
+		$link = $base . JRoute::_(ContentHelperRoute::getArticleRoute($member->slug, $member->catid), false);
 		$url  = 'index.php?option=com_mailto&tmpl=component&link=' . MailToHelper::addLink($link);
 
 		$status = 'width=400,height=350,menubar=yes,resizable=yes';
@@ -55,9 +55,9 @@ class JHtmlIcon
 	/**
 	 * Print Popup
 	 *
-	 * @param   object  $member   ?
-	 * @param   object  $params   ?
-	 * @param   array   $attribs  ?
+	 * @param   object     $member   Member info
+	 * @param   JRegistry  $params   HTML Params
+	 * @param   array      $attribs  Member attribs
 	 *
 	 * @return string
 	 */
@@ -86,11 +86,11 @@ class JHtmlIcon
 	}
 
 	/**
-	 * Pring screen icon
+	 * Print screen icon
 	 *
-	 * @param   object  $member   ?
-	 * @param   object  $params   ?
-	 * @param   array   $attribs  ?
+	 * @param   object     $member   Member info
+	 * @param   JRegistry  $params   HTML Params
+	 * @param   array      $attribs  Member attribs
 	 *
 	 * @return string
 	 */

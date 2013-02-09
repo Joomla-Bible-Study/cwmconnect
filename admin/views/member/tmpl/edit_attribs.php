@@ -96,7 +96,7 @@ if ($this->access):
 endif;?>
 <!-- End of Protected Access -->
 <?php foreach ($fieldSets as $name => $fieldSet) :
-	if ($name != 'protected')
+	if ($name != 'protected' && $name != 'memberstate')
 	{
 		?>
     <div class="accordion-group">
