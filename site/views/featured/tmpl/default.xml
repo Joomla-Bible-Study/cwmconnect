@@ -3,7 +3,7 @@
 <metadata>
     <layout title="com_churchdirectory_featured_view_default_title" option="com_churchdirectory_featured_view_default_option">
         <help
-			key = "JHELP_MENUS_MENU_ITEM_CONTACT_FEATURED"
+			key = "JHELP_MENUS_MENU_ITEM_MEMBER_FEATURED"
 		/>
         <message>
 			<![CDATA[COM_CHURCHDIRECTORY_FEATURED_VIEW_DEFAULT_DESC]]>
@@ -140,7 +140,7 @@
 
         </fieldset>
 
-        <fieldset name="churchdirectory" label="COM_CHURCHDIRECTORY_FIELDSET_CONTACT_LABEL">
+        <fieldset name="churchdirectory" label="COM_CHURCHDIRECTORY_FIELDSET_MEMBER_LABEL">
 
             <field name="presentation_style" type="list"
 				description="COM_CHURCHDIRECTORY_FIELD_PRESENTATION_DESC"
@@ -171,7 +171,7 @@
             </field>
 
             <field name="show_email" type="list"
-				description="COM_CHURCHDIRECTORY_FIELD_PARAMS_CONTACT_E_MAIL_DESC"
+				description="COM_CHURCHDIRECTORY_FIELD_PARAMS_MEMBER_E_MAIL_DESC"
 				label="JGLOBAL_EMAIL"
 			>
                 <option value="">JGLOBAL_USE_GLOBAL</option>
@@ -336,7 +336,7 @@
 			/>
         </fieldset>
 
-        <fieldset name="ChurchDirectory_Form" label="COM_CHURCHDIRECTORY_FIELDSET_CONTACTFORM_LABEL">
+        <fieldset name="ChurchDirectory_Form" label="COM_CHURCHDIRECTORY_FIELDSET_MEMBERFORM_LABEL">
 
             <field name="show_email_form" type="list"
 				description="COM_CHURCHDIRECTORY_FIELD_EMAIL_SHOW_FORM_DESC"
