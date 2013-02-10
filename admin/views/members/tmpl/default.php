@@ -107,7 +107,7 @@ $sortFields = $this->getSortFields();
 	<?php endif; ?>
 </div>
 <div class="clr"></div>
-<table class="adminlist table table-striped" id="articleList">
+<table class="table table-striped" id="articleList">
     <thead>
     <tr>
         <th width="1%" class="order nowrap center hidden-phone">

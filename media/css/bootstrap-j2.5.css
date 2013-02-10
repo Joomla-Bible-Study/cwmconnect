@@ -92,7 +92,9 @@ div.pagetitle {
     float: left;
     margin-left: 0;
 }
-
+.form-search label, .form-inline label, .form-search .btn-group, .form-inline .btn-group {
+    display: inline-block;
+}
 .form-vertical .control-label {
     float: none;
     width: auto;
