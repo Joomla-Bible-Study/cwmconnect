@@ -36,7 +36,7 @@ class JFormFieldSpouse extends JFormField
 	protected function getInput()
 	{
 		// Initialize variables.
-		$html = array();
+		$html = '';
 		$attr = '';
 		$find = '';
 
@@ -49,6 +49,7 @@ class JFormFieldSpouse extends JFormField
 		$attr .= $this->element['onchange'] ? ' onchange="' . (string) $this->element['onchange'] . '"' : '';
 
 		// Get some field values from the form.
+		$memberId      = (int) $this->form->getValue('id');
 		$categoryId    = (int) $this->form->getValue('catid');
 		$funitid       = (int) $this->form->getValue('funitid');
 		$familypostion = (int) $this->form->getValue('familypostion');
@@ -63,39 +64,35 @@ class JFormFieldSpouse extends JFormField
 			$find = 0;
 		}
 
-		if ($funitid >= '0')
+		// Build the query for the ordering list.
+		$db    = JFactory::getDbo();
+		$query = $db->getQuery(true);
+		$query->select('id, name, funitid, attribs, spouse')
+			->from('#__churchdirectory_details')
+			->where('catid = ' . (int) $categoryId)
+			->where('funitid = ' . (int) $funitid);
+		$db->setQuery($query);
+		$results = $db->loadObjectList();
+
+		foreach ($results AS $item)
 		{
+			$registry = new JRegistry;
+			$registry->loadString($item->attribs);
+			$familypostion = $registry->toObject('familypostion');
+			$item          = (object) array_merge((array) $item, (array) $familypostion);
 
-			// Build the query for the ordering list.
-			$db    = JFactory::getDbo();
-			$query = $db->getQuery(true);
-			$query->select('id, name, funitid, attribs')
-				->from('#__churchdirectory_details')
-				->where('catid = ' . (int) $categoryId)
-				->where('funitid = ' . (int) $funitid);
-			$db->setQuery($query);
-			$results = $db->loadObjectList();
-
-			foreach ($results AS $item)
+			if ($item->funitid >= '1' && $item->familypostion == $find)
 			{
-				$registry = new JRegistry;
-				$registry->loadString($item->attribs);
-				$familypostion = $registry->toObject('familypostion');
-				$item          = (object) array_merge((array) $item, (array) $familypostion);
+				$html = '<h4>' . $item->name . '</h4>';
+			}
+			elseif ($item->funitid <= '0' && $item->id == $memberId)
+			{
 
-				if ($item->funitid == $funitid && $item->familypostion == $find)
-				{
-					// Create a read-only list (no name) with a hidden input to store the value.
-					if ((string) $this->element['readonly'] == 'true')
-					{
-						$html[] = '<input type="text" name="jform[spouse]" id="jform_spouse" value="' . $item->name .
-							'" class="readonly" size="10" readonly="readonly" aria-invalid="false">';
-					}
-				}
+				$html = '<h4>Old: ' . $item->spouse . '</h4>';
 			}
 		}
 
-		return implode($html);
+		return $html;
 	}
 
 }
