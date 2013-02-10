@@ -1,9 +1,11 @@
 <?php
 /**
  * Sub view member for form
- * @package        ChurchDirectory.Site
- * @copyright           (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
- * @license        GNU General Public License version 2 or later; see LICENSE.txt
+ *
+ * @package    ChurchDirectory.Site
+ *
+ * @copyright  (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 defined('_JEXEC') or die;
@@ -36,13 +38,14 @@ if (isset($this->error)) : ?>
                 <div class="control-label"><?php echo $this->form->getLabel('churchdirectory_message'); ?></div>
                 <div class="controls"><?php echo $this->form->getInput('churchdirectory_message'); ?></div>
             </div>
-			<?php if ($this->params->get('show_email_copy')) { ?>
+			<?php if ($this->params->get('show_email_copy'))
+		{ ?>
             <div class="control-group">
                 <div class="control-label"><?php echo $this->form->getLabel('churchdirectory_email_copy'); ?></div>
                 <div class="controls"><?php echo $this->form->getInput('churchdirectory_email_copy'); ?></div>
             </div>
 			<?php } ?>
-			<?php //Dynamically load any additional fields from plugins. ?>
+			<?php // Dynamically load any additional fields from plugins. ?>
 			<?php foreach ($this->form->getFieldsets() as $fieldset): ?>
 			<?php if ($fieldset->name != 'member'): ?>
 				<?php $fields = $this->form->getFieldset($fieldset->name); ?>

@@ -56,22 +56,21 @@
 			class="inputbox"
 			size="10"
 		/>
-        <field name="open" type="list" default="1" label="COM_CHURCHDIRECTORY_FIELD_KML_OPEN" description="COM_CHURCHDIRECTORY_FIELD_KML_OPEN_DESC">
+        <field name="open" type="list" default="1" label="COM_CHURCHDIRECTORY_FIELD_KML_OPEN_LABEL" description="COM_CHURCHDIRECTORY_FIELD_KML_OPEN_DESC">
             <option value="0">JHIDE</option>
             <option value="1">JSHOW</option>
         </field>
-        <field name="mcropen" type="list" default="0" label="COM_CHURCHDIRECTORY_FIELD_KML_OPEN" description="COM_CHURCHDIRECTORY_FIELD_KML_OPEN_DESC">
+        <field name="mcropen" type="list" default="0" label="COM_CHURCHDIRECTORY_FIELD_KML_OPEN_LABEL" description="COM_CHURCHDIRECTORY_FIELD_KML_OPEN_DESC">
             <option value="0">JHIDE</option>
             <option value="1">JSHOW</option>
         </field>
-        <field name="msropen" type="list" default="0" label="COM_CHURCHDIRECTORY_FIELD_KML_OPEN" description="COM_CHURCHDIRECTORY_FIELD_KML_OPEN_DESC">
+        <field name="msropen" type="list" default="0" label="COM_CHURCHDIRECTORY_FIELD_KML_OPEN_LABEL" description="COM_CHURCHDIRECTORY_FIELD_KML_OPEN_DESC">
             <option value="0">JHIDE</option>
             <option value="1">JSHOW</option>
         </field>
-        <field name="lscolor" default="ffffffff" type="colorpicker"
+        <field name="lscolor" class="color {hash:true}" default="ffffffff" type="text"
                 description="COM_CHURCHDIRECTORY_FIELD_KML_COLOR_DESC"
                 label="COM_CHURCHDIRECTORY_FIELD_KML_COLOR"
-                scriptpath="../media/com_churchdirectory/js/color-picker.js"
                 />
         <field name="gxaltitudeMode" type="list" default="relativeToSeaFloor" label="COM_CHURCHDIRECTORY_FIELD_KML_GXALTITUDEMODE" description="COM_CHURCHDIRECTORY_FIELD_KML_GXALTITUDEMODE_DESC">
             <option value="relativeToSeaFloor">COM_CHURCHDIRECTORY_KML_RELATIVETOSEAFLOOR</option>

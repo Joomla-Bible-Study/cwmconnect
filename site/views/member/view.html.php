@@ -1,21 +1,18 @@
 <?php
-
 /**
- * View for Member
- *
- * @package             ChurchDirectory.Site
- * @copyright           (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
- * @license             GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    ChurchDirectory.Site
+ * @copyright  (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-// No direct access
-defined('_JEXEC') or die;
 
+defined('_JEXEC') or die;
 
 require_once JPATH_COMPONENT . '/models/category.php';
 
 /**
  * HTML Member View class for the ChurchDirectory component
  *
+ * @property mixed document
  * @package       ChurchDirectory.Site
  * @since         1.7.0
  */
@@ -39,7 +36,7 @@ class ChurchDirectoryViewMember extends JViewLegacy
 	/**
 	 * Protected
 	 *
-	 * @var array
+	 * @var JObject
 	 */
 	protected $item;
 
@@ -50,6 +47,23 @@ class ChurchDirectoryViewMember extends JViewLegacy
 	 */
 	protected $return_page;
 
+	protected $pageclass_sfx;
+
+	protected $member;
+
+	/**
+	 * Protected
+	 *
+	 * @var JObject
+	 */
+	protected $params;
+
+	protected $return;
+
+	protected $user;
+
+	protected $members;
+
 	/**
 	 * Dispaly function
 	 *
@@ -57,20 +71,20 @@ class ChurchDirectoryViewMember extends JViewLegacy
 	 *
 	 * @return boolean
 	 */
-	function display($tpl = null)
+	public function display($tpl = null)
 	{
-		// Initialise variables.
-		$app = JFactory::getApplication();
-		$user = JFactory::getUser();
+		$app        = JFactory::getApplication();
+		$user       = JFactory::getUser();
 		$dispatcher = JDispatcher::getInstance();
-		$state = $this->get('State');
-		$item = $this->get('Item');
+		$state      = $this->get('State');
+		$item       = $this->get('Item');
 		$this->form = $this->get('Form');
 
 		// Get the parameters
 		$params = JComponentHelper::getParams('com_churchdirectory');
 
-		if ($item) {
+		if ($item)
+		{
 			// If we found an item, merge the item parameters
 			$params->merge($item->params);
 
@@ -85,8 +99,9 @@ class ChurchDirectoryViewMember extends JViewLegacy
 		}
 
 		// Check for errors.
-		if (count($errors = $this->get('Errors'))) {
-			JError::raiseWarning(500, implode("\n", $errors));
+		if (count($errors = $this->get('Errors')))
+		{
+			$app->enqueueMessage(implode("\n", $errors), 'error');
 
 			return false;
 		}
@@ -96,33 +111,37 @@ class ChurchDirectoryViewMember extends JViewLegacy
 
 		$return = '';
 
-		if ((!in_array($item->access, $groups)) || (!in_array($item->category_access, $groups))) {
-			$uri = JFactory::getURI();
-			$return = (string)$uri;
+		if ((!in_array($item->access, $groups)) || (!in_array($item->category_access, $groups)))
+		{
+			$app->enqueueMessage(JText::_('JERROR_ALERTNOAUTHOR'), 'warning');
 
-			JError::raiseWarning(403, JText::_('JERROR_ALERTNOAUTHOR'));
-
-			return;
+			return false;
 		}
 
 		$options['category_id'] = $item->catid;
-		$options['order by'] = 'a.default_con DESC, a.ordering ASC';
+		$options['order by']    = 'a.default_con DESC, a.ordering ASC';
 
 
 		// Handle email cloaking
-		if ($item->email_to && $params->get('show_email')) {
+		if ($item->email_to && $params->get('show_email'))
+		{
 			$item->email_to = JHtml::_('email.cloak', $item->email_to);
 		}
-		if ($params->get('show_street_address') || $params->get('show_suburb') || $params->get('show_state') || $params->get('show_postcode') || $params->get('show_country')) {
-			if (!empty($item->address) || !empty($item->suburb) || !empty($item->state) || !empty($item->country) || !empty($item->postcode)) {
+		if ($params->get('show_street_address') || $params->get('show_suburb') || $params->get('show_state') || $params->get('show_postcode') || $params->get('show_country'))
+		{
+			if (!empty($item->address) || !empty($item->suburb) || !empty($item->state) || !empty($item->country) || !empty($item->postcode))
+			{
 				$params->set('address_check', 1);
 			}
-		} else {
+		}
+		else
+		{
 			$params->set('address_check', 0);
 		}
 
 		// Manage the display mode for contact detail groups
-		switch ($params->get('churchdirectory_icons')) {
+		switch ($params->get('churchdirectory_icons'))
+		{
 			case 1 :
 				// text
 				$params->set('marker_address', JText::_('COM_CHURCHDIRECTORY_ADDRESS') . ": ");
@@ -165,8 +184,10 @@ class ChurchDirectoryViewMember extends JViewLegacy
 		}
 
 		// Add links to contacts
-		if ($params->get('show_churchdirectory_list') && count($contacts) > 1) {
-			foreach ($contacts as &$contact) {
+		if ($params->get('show_churchdirectory_list') && count($contacts) > 1)
+		{
+			foreach ($contacts as &$contact)
+			{
 				$contact->link = JRoute::_(ChurchDirectoryHelperRoute::getMemberRoute($contact->slug, $contact->catid));
 			}
 			$item->link = JRoute::_(ChurchDirectoryHelperRoute::getMemberRoute($item->slug, $item->catid));
@@ -177,29 +198,33 @@ class ChurchDirectoryViewMember extends JViewLegacy
 		//Escape strings for HTML output
 		$this->pageclass_sfx = htmlspecialchars($params->get('pageclass_sfx'));
 
-		$this->member   = &$item;
-		$this->params   = &$params;
-		$this->return   = &$return;
-		$this->state    = &$state;
-		$this->item     = &$item;
-		$this->user     = &$user;
-		$this->contacts = &$contacts;
+		$this->member   = & $item;
+		$this->params   = & $params;
+		$this->return   = & $return;
+		$this->state    = & $state;
+		$this->item     = & $item;
+		$this->user     = & $user;
+		$this->members = & $contacts;
 
 		// Override the layout only if this is not the active menu item
 		// If it is the active menu item, then the view and item id will match
 		$active = $app->getMenu()->getActive();
-		if ((!$active) || ((strpos($active->link, 'view=member') === false) || (strpos($active->link, '&id=' . (string)$this->item->id) === false))) {
-			if ($layout = $params->get('churchdirectory_layout')) {
+		if ((!$active) || ((strpos($active->link, 'view=member') === false) || (strpos($active->link, '&id=' . (string) $this->item->id) === false)))
+		{
+			if ($layout = $params->get('churchdirectory_layout'))
+			{
 				$this->setLayout($layout);
 			}
-		} elseif (isset($active->query['layout'])) {
+		}
+		elseif (isset($active->query['layout']))
+		{
 			// We need to set the layout in case this is an alternative menu item (with an alternative layout)
 			$this->setLayout($active->query['layout']);
 		}
 
 		$this->_prepareDocument();
 
-		parent::display($tpl);
+		return parent::display($tpl);
 	}
 
 	/**
@@ -207,80 +232,102 @@ class ChurchDirectoryViewMember extends JViewLegacy
 	 */
 	protected function _prepareDocument()
 	{
-		$app = JFactory::getApplication();
-		$menus = $app->getMenu();
+		$app     = JFactory::getApplication();
+		$menus   = $app->getMenu();
 		$pathway = $app->getPathway();
-		$title = null;
+		$title   = null;
 
 		// Because the application sets a default page title,
 		// we need to get it from the menu item itself
 		$menu = $menus->getActive();
 
-		if ($menu) {
+		if ($menu)
+		{
 			$this->params->def('page_heading', $this->params->get('page_title', $menu->title));
-		} else {
+		}
+		else
+		{
 			$this->params->def('page_heading', JText::_('COM_CHURCHDIRECTORY_DEFAULT_PAGE_TITLE'));
 		}
 
 		$title = $this->params->get('page_title', '');
 
-		$id = (int)@$menu->query['id'];
+		$id = (int) @$menu->query['id'];
 
 		// if the menu item does not concern this contact
-		if ($menu && ($menu->query['option'] != 'com_churchdirectory' || $menu->query['view'] != 'member' || $id != $this->item->id)) {
+		if ($menu && ($menu->query['option'] != 'com_churchdirectory' || $menu->query['view'] != 'member' || $id != $this->item->id))
+		{
 
 			// If this is not a single churchdirectory menu item, set the page title to the contact title
-			if ($this->item->name) {
+			if ($this->item->name)
+			{
 				$title = $this->item->name;
 			}
-			$path = array(array('title' => $this->member->name, 'link' => ''));
+			$path     = array(array('title' => $this->member->name, 'link' => ''));
 			$category = JCategories::getInstance('ChurchDirectory')->get($this->member->catid);
 
-			while ($category && ($menu->query['option'] != 'com_churchdirectory' || $menu->query['view'] == 'member' || $id != $category->id) && $category->id > 1) {
-				$path[] = array('title' => $category->title, 'link' => ChurchDirectoryHelperRoute::getCategoryRoute($this->member->catid));
+			while ($category && ($menu->query['option'] != 'com_churchdirectory' || $menu->query['view'] == 'member' || $id != $category->id) && $category->id > 1)
+			{
+				$path[]   = array('title' => $category->title, 'link' => ChurchDirectoryHelperRoute::getCategoryRoute($this->member->catid));
 				$category = $category->getParent();
 			}
 
 			$path = array_reverse($path);
 
-			foreach ($path as $item) {
+			foreach ($path as $item)
+			{
 				$pathway->addItem($item['title'], $item['link']);
 			}
 		}
 
-		if (empty($title)) {
+		if (empty($title))
+		{
 			$title = $app->getCfg('sitename');
-		} elseif ($app->getCfg('sitename_pagetitles', 0) == 1) {
+		}
+		elseif ($app->getCfg('sitename_pagetitles', 0) == 1)
+		{
 			$title = JText::sprintf('JPAGETITLE', $app->getCfg('sitename'), $title);
-		} elseif ($app->getCfg('sitename_pagetitles', 0) == 2) {
+		}
+		elseif ($app->getCfg('sitename_pagetitles', 0) == 2)
+		{
 			$title = JText::sprintf('JPAGETITLE', $title, $app->getCfg('sitename'));
 		}
 
-		if (empty($title)) {
+		if (empty($title))
+		{
 			$title = $this->item->name;
 		}
 		$this->document->setTitle($title);
 
-		if ($this->item->metadesc) {
+		if ($this->item->metadesc)
+		{
 			$this->document->setDescription($this->item->metadesc);
-		} elseif (!$this->item->metadesc && $this->params->get('menu-meta_description')) {
+		}
+		elseif (!$this->item->metadesc && $this->params->get('menu-meta_description'))
+		{
 			$this->document->setDescription($this->params->get('menu-meta_description'));
 		}
 
-		if ($this->item->metakey) {
+		if ($this->item->metakey)
+		{
 			$this->document->setMetadata('keywords', $this->item->metakey);
-		} elseif (!$this->item->metakey && $this->params->get('menu-meta_keywords')) {
+		}
+		elseif (!$this->item->metakey && $this->params->get('menu-meta_keywords'))
+		{
 			$this->document->setMetadata('keywords', $this->params->get('menu-meta_keywords'));
 		}
 
-		if ($this->params->get('robots')) {
+		if ($this->params->get('robots'))
+		{
 			$this->document->setMetadata('robots', $this->params->get('robots'));
 		}
 
 		$mdata = $this->item->metadata->toArray();
 
-		foreach ($mdata as $k => $v) {
-			if ($v) {
+		foreach ($mdata as $k => $v)
+		{
+			if ($v)
+			{
 				$this->document->setMetadata($k, $v);
 			}
 		}

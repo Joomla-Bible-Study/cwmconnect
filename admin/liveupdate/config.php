@@ -10,18 +10,20 @@ defined('_JEXEC') or die();
 /**
  * Configuration class for your extension's updates. Override to your liking.
  */
-class LiveUpdateConfig extends LiveUpdateAbstractConfig {
+class LiveUpdateConfig extends LiveUpdateAbstractConfig
+{
 
-    var $_extensionName = 'com_churchdirectory';
-    var $_extensionTitle = 'Church Directory Component';
-    var $_updateURL = 'http://www.joomlabiblestudy.org/index.php?option=com_ars&view=update&format=ini&id=11';
-    var $_requiresAuthorization = false;
-    var $_versionStrategy = 'vcompare';
+	var $_extensionName = 'com_churchdirectory';
+	var $_extensionTitle = 'Church Directory Component';
+	var $_updateURL = 'http://www.joomlabiblestudy.org/index.php?option=com_ars&view=update&format=ini&id=11';
+	var $_requiresAuthorization = false;
+	var $_versionStrategy = 'vcompare';
 
-    function __construct() {
-        $this->_cacerts = dirname(__FILE__) . '/../assets/cacert.pem';
+	function __construct()
+	{
+		$this->_cacerts = dirname(__FILE__) . '/../assets/cacert.pem';
 
-        parent::__construct();
-    }
+		parent::__construct();
+	}
 
 }

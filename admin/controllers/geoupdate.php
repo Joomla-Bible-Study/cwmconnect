@@ -1,29 +1,52 @@
 <?php
 /**
- * Created by JetBrains PhpStorm.
- * User: bcordis
- * Date: 12/9/12
- * Time: 4:08 PM
- * To change this template use File | Settings | File Templates.
+ * @package    ChurchDirectory.Admin
+ * @copyright  (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
+jimport('joomla.application.component.controlleradmin');
+/**
+ * Class for GeoUpdate
+ *
+ * @package  ChurchDirectory.Admin
+ * @since    1.7.5
+ */
 class ChurchDirectoryControllerGeoupdate extends JControllerAdmin
 {
+	/**
+	 * Constructor.
+	 *
+	 * @param   array  $config  An optional associative array of configuration settings.
+	 */
 	public function __construct($config = array())
 	{
 		parent::__construct($config);
 
 		$this->modelName = 'geoupdate';
-		die;
 	}
 
+	/**
+	 * Constructor.
+	 *
+	 * @param   string  $task  An optional associative array of configuration settings.
+	 *
+	 * @return void
+	 */
 	public function execute($task)
 	{
-		die;
-		if ($task != 'run') $task = 'browse';
+		if ($task != 'run')
+		{
+			$task = 'browse';
+		}
 		parent::execute($task);
 	}
 
+	/**
+	 * Constructor.
+	 *
+	 * @return void
+	 */
 	public function browse()
 	{
 		$model = $this->getModel('geoupdate');
@@ -33,13 +56,19 @@ class ChurchDirectoryControllerGeoupdate extends JControllerAdmin
 		$this->display(false);
 	}
 
+	/**
+	 * Start the Update
+	 *
+	 * @return void
+	 */
 	public function run()
 	{
-		die;
+		$id = JFactory::getApplication()->input->getInt('id');
+
 		$model = $this->getModel('geoupdate');
-		$state = $model->run();
+		$state = $model->run(true, $id);
 		$model->setState('scanstate', $state);
 
-		$this->display(false);
+		$this->setRedirect(JRoute::_('index.php?option=com_churchdirectory&view=cpanel', false));
 	}
 }
