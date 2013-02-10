@@ -24,7 +24,7 @@ $assoc = isset($app->item_associations) ? $app->item_associations : 0;
 		<?php echo $this->form->getField('misc')->save(); ?>
             Joomla.submitform(task, document.getElementById('member-form'));
         }
-    }
+    };
     jQuery(document).ready(function ($) {
         $('#jform_funitid').change(function () {
             var funitid = $('#jform_funitid').val();
@@ -117,7 +117,7 @@ $assoc = isset($app->item_associations) ? $app->item_associations : 0;
         <div class="clearfix"></div>
         <div class="control-group">
             <div class="control-label"><?php echo $this->form->getLabel('misc'); ?></div>
-            <div class="controls"><?php echo $this->form->getInput('misc'); ?></div>
+			<?php echo $this->form->getInput('misc'); ?>
         </div>
     </div>
     <div class="tab-pane" id="publishing">

@@ -1,12 +1,10 @@
 <?php
 /**
- * ChurchDirectory Contact manager component for Joomla! 1.7
- *
- * @package             ChurchDirectory.Admin
- * @copyright           (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
- * @license             GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    ChurchDirectory.Admin
+ * @copyright  (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-// No direct access
+
 defined('_JEXEC') or die;
 
 JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');

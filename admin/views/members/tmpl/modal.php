@@ -76,7 +76,7 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
         </div>
     </fieldset>
 
-    <table class="adminlist table table-striped table-condensed"">
+    <table class="adminlist table table-striped table-condensed">
         <thead>
         <tr>
             <th class="title">

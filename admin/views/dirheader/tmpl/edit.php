@@ -1,12 +1,10 @@
 <?php
 /**
- * Edit dirheader
- *
- * @package      ChurchDirectory.Admin
- * @copyright    (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
- * @license      GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    ChurchDirectory.Admin
+ * @copyright  (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-// no direct access
+
 defined('_JEXEC') or die;
 
 // Include the component HTML helpers.
@@ -35,7 +33,6 @@ JHtml::_('behavior.formvalidation');
                 </li>
                 <li><a href="#publishing"
                        data-toggle="tab"><?php echo JText::_('JGLOBAL_FIELDSET_PUBLISHING');?></a></li>
-                </li>
             </ul>
             <div class="tab-content">
                 <div class="tab-pane active" id="details">

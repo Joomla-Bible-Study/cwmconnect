@@ -1,13 +1,10 @@
 <?php
-
 /**
- * Sube view member metadata
- *
- * @package             ChurchDirectory.Admin
- * @copyright           (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
- * @license             GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    ChurchDirectory.Admin
+ * @copyright  (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-// No direct access.
+
 defined('_JEXEC') or die;
 
 $fieldSets = $this->form->getFieldsets('metadata');

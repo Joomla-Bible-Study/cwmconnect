@@ -60,7 +60,7 @@ class ChurchDirectoryViewPosition extends JViewLegacy
 		// Check for errors.
 		if (count($errors = $this->get('Errors')))
 		{
-			JError::raiseError(500, implode("\n", $errors));
+			JFactory::getApplication()->enqueueMessage(implode("\n", $errors), 'error');
 
 			return false;
 		}
@@ -68,11 +68,11 @@ class ChurchDirectoryViewPosition extends JViewLegacy
 		// Set the toolbar
 		$this->addToolBar();
 
-		// Display the template
-		parent::display($tpl);
-
 		// Set the document
 		$this->setDocument();
+
+		// Display the template
+		return parent::display($tpl);
 	}
 
 	/**
