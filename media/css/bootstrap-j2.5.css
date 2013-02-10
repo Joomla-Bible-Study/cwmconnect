@@ -15,7 +15,8 @@ form .controls label {
 }
 
 .control-group label {
-    margin-right: 2em;
+    display: block;
+    margin-bottom: 5px;
 }
 
 form .controls fieldset {
@@ -87,8 +88,27 @@ div.pagetitle {
     width: auto;
 }
 
+.radio input[type="radio"], .checkbox input[type="checkbox"] {
+    float: left;
+    margin-left: 0;
+}
+
+.form-vertical .control-label {
+    float: none;
+    width: auto;
+    padding-right: 0;
+    padding-top: 0;
+    text-align: left;
+}
+
+.form-vertical .controls {
+    margin-left: 0px;
+}
+
 .form-horizontal .control-label {
     width: auto;
+    padding-right: 5px;
+    text-align: left;
 }
 
 form .btn-group label {

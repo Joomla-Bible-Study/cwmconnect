@@ -253,34 +253,34 @@
 
         <field name="skype" type="text"
                label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_SKYPE_LABEL"
-               description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_SKYPE_DESC" class="inputbox"
+               description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_SKYPE_DESC" class="inputbox span12 small"
                size="30"/>
 
         <field name="yahoo_msg" type="text"
                label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_YAHOO_MSG_LABEL"
                description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_YAHOO_MSG_DESC"
-               class="inputbox" size="30"/>
+               class="inputbox span12 small" size="30"/>
         <field name="lat" type="text" label="COM_CHURCHDIRECTORY_FIELD_KML_LAT_LABEL"
-               description="COM_CHURCHDIRECTORY_FIELD_KML_LAT_DESC" class="inputbox"
+               description="COM_CHURCHDIRECTORY_FIELD_KML_LAT_DESC" class="inputbox span12 small"
                size="11"/>
 
         <field name="lng" type="text" label="COM_CHURCHDIRECTORY_FIELD_KML_LNG_LABEL"
-               description="COM_CHURCHDIRECTORY_FIELD_KML_LNG_DESC" class="inputbox"
+               description="COM_CHURCHDIRECTORY_FIELD_KML_LNG_DESC" class="inputbox span12 small"
                size="11"/>
-        <field name="spouse" type="text"
+        <field name="spouse" type="spouse"
                label="COM_CHURCHDIRECTORY_FIELD_SPOUSE_LABEL" description="COM_CHURCHDIRECTORY_FIELD_SPOUSE_DESC"
-               class="readonly" size="30" readonly="true"/>
+               class="readonly span12 small" size="30" readonly="true"/>
         <field name="children" type="textarea"
                label="COM_CHURCHDIRECTORY_FIELD_CHILDREN_LABEL" description="COM_CHURCHDIRECTORY_FIELD_CHILDREN_DESC"
-               class="inputbox" rows="3" cols="30"/>
+               class="inputbox span12 small" rows="3" cols="30"/>
         <field name="anniversary" type="calendar"
                label="COM_CHURCHDIRECTORY_FIELD_MEMBER_ANNIVERSARY_LABEL"
                description="COM_CHURCHDIRECTORY_FIELD_MEMBER_ANNIVERSARY_DESC"
-               class="inputbox" format="%Y-%m-%d" size="22"/>
+               class="inputbox span12 small" format="%Y-%m-%d" size="22"/>
         <field name="birthdate" type="calendar"
                label="COM_CHURCHDIRECTORY_FIELD_MEMBER_BIRTHDATE_LABEL"
                description="COM_CHURCHDIRECTORY_FIELD_MEMBER_BIRTHDATE_DESC"
-               class="inputbox" format="%Y-%m-%d" size="22"/>
+               class="inputbox span12 small" format="%Y-%m-%d" size="22"/>
     </fieldset>
 
     <fields name="params">
@@ -294,7 +294,7 @@
         </field>
         <field name="scale" type="text"
                label="COM_CHURCHDIRECTORY_FIELD_KML_SCALE_LABEL" description="COM_CHURCHDIRECTORY_FIELD_KML_SCALE_DESC"
-               class="inputbox" size="30" default="1.1"/>
+               class="inputbox span12 small" size="30" default="1.1"/>
         <field name="open" type="list"
                label="COM_CHURCHDIRECTORY_FIELD_KML_OPEN_LABEL"
                description="COM_CHURCHDIRECTORY_FIELD_KML_OPEN_DESC"
@@ -620,11 +620,11 @@
                 <option value="1">COM_CHURCHDIRECTORY_INACTIVE</option>
                 <option value="2">COM_CHURCHDIRECTORY_OTHER</option>
             </field>
-            <field name="memberstatusother" type="text" label="COM_CHURCHDIRECTORY_OTHER" class="inputbox" size="30"/>
+            <field name="memberstatusother" type="text" label="COM_CHURCHDIRECTORY_OTHER" class="inputbox span12 small" size="30"/>
             <field name="memberotherinfo" type="textarea"
                    label="COM_CHURCHDIRECTORY_FIELD_MEMBER_OTHER_INFO_LABEL"
                    description="COM_CHURCHDIRECTORY_FIELD_MEMBER_OTHER_INFO_DESC"
-                   class="inputbox" rows="3" cols="30"/>
+                   class="inputbox span12 small" rows="3" cols="30"/>
         </fieldset>
         <fieldset name="memberstate"
                   label="COM_CHURCHDIRECTORY_MEMBER_STATE_INFO_FIELDSET_LABEL"
@@ -632,7 +632,7 @@
             <field name="familypostion" type="list"
                    label="COM_CHURCHDIRECTORY_FAMILYPOSTION_LABEL"
                    description="COM_CHURCHDIRECTORY_FAMILYPOSTION_DESC"
-                   class="inputbox"
+                   class="inputbox span12 small"
                    default="-1" OnChange="setTypeEmail(this.form);">
                 <option value="-1">COM_CHURCHDIRECTORY_SINGLE</option>
                 <option value="0">COM_CHURCHDIRECTORY_HEAD_OF_HOUSEHOLD</option>
@@ -647,27 +647,27 @@
             <field name="mailingaddress" type="textarea"
                    label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_MAILING_ADDRESS_LABEL"
                    description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_MAILING_ADDRESS_DESC"
-                   class="inputbox" rows="3" cols="30"/>
+                   class="inputbox span12 small" rows="3" cols="30"/>
 
             <field name="mailingsuburb" type="text"
                    label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_SUBURB_LABEL"
                    description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_SUBURB_DESC"
-                   class="inputbox" size="30"/>
+                   class="inputbox span12 small" size="30"/>
 
             <field name="mailingstate" type="text"
                    label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_STATE_LABEL"
                    description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_STATE_DESC"
-                   class="inputbox" size="30"/>
+                   class="inputbox span12 small" size="30"/>
 
             <field name="mailingpostcode" type="text"
                    label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_POSTCODE_LABEL"
                    description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_POSTCODE_DESC"
-                   class="inputbox" size="30"/>
+                   class="inputbox span12 small" size="30"/>
 
             <field name="mailingcountry" type="text"
                    label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_COUNTRY_LABEL"
                    description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_COUNTRY_DESC"
-                   class="inputbox" size="30"/>
+                   class="inputbox span12 small" size="30"/>
         </fieldset>
         <fieldset name="occupation"
                   label="COM_CHURCHDIRECTORY_OCCUPATOIN_INFO_FIELDSET_LABEL"
@@ -676,64 +676,64 @@
             <field name="jobtitle" type="text"
                    label="COM_CHURCHDIRECTORY_FIELD_JOB_TITLE_LABEL"
                    description="COM_CHURCHDIRECTORY_FIELD_JOB_TITLE_DESC"
-                   class="inputbox" size="30"/>
+                   class="inputbox span12 small" size="30"/>
 
             <field name="employer" type="text"
                    label="COM_CHURCHDIRECTORY_FIELD_EMPLOYER_LABEL"
                    description="COM_CHURCHDIRECTORY_FIELD_EMPLOYER_DESC"
-                   class="inputbox" size="30"/>
+                   class="inputbox span12 small" size="30"/>
 
             <field name="email_to" type="email"
                    label="JGLOBAL_EMAIL"
                    description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_EMAIL_DESC"
-                   class="inputbox"
+                   class="inputbox span12 small"
                    cols="30"
                     />
 
             <field name="address" type="textarea"
                    label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_ADDRESS_LABEL"
                    description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_ADDRESS_DESC"
-                   class="inputbox" rows="3" cols="30"/>
+                   class="inputbox span12 small" rows="3" cols="30"/>
 
             <field name="suburb" type="text"
                    label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_SUBURB_LABEL"
                    description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_SUBURB_DESC"
-                   class="inputbox" size="30"/>
+                   class="inputbox span12 small" size="30"/>
 
             <field name="state" type="text"
                    label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_STATE_LABEL"
-                   description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_STATE_DESC" class="inputbox"
+                   description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_STATE_DESC" class="inputbox span12 small"
                    size="30"/>
 
             <field name="postcode" type="text"
                    label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_POSTCODE_LABEL"
                    description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_POSTCODE_DESC"
-                   class="inputbox" size="30"/>
+                   class="inputbox span12 small" size="30"/>
 
             <field name="country" type="text"
                    label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_COUNTRY_LABEL"
                    description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_COUNTRY_DESC"
-                   class="inputbox" size="30"/>
+                   class="inputbox span12 small" size="30"/>
 
             <field name="telephone" type="text"
                    label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_TELEPHONE_LABEL"
                    description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_TELEPHONE_DESC"
-                   class="inputbox" size="30"/>
+                   class="inputbox span12 small" size="30"/>
 
             <field name="mobile" type="text"
                    label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_MOBILE_LABEL"
                    description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_MOBILE_DESC"
-                   class="inputbox" size="30"/>
+                   class="inputbox span12 small" size="30"/>
 
             <field name="fax" type="text"
                    label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_FAX_LABEL"
                    description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_FAX_DESC"
-                   class="inputbox" size="30"/>
+                   class="inputbox span12 small" size="30"/>
 
             <field name="webpage" type="url"
                    label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_WEBPAGE_LABEL"
                    description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_WEBPAGE_DESC"
-                   class="inputbox" size="30"/>
+                   class="inputbox span12 small" size="30"/>
         </fieldset>
     </fields>
 </form>

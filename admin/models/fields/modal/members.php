@@ -37,6 +37,7 @@ class JFormFieldModal_Members extends JFormField
 
 		JHtml::_('behavior.framework');
 		JHtml::_('behavior.modal', 'a.modal');
+
 		if (version_compare(JVERSION, '3.0', 'ge'))
 		{
 			JHtml::_('bootstrap.tooltip');
