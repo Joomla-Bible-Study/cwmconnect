@@ -269,7 +269,6 @@ $assoc = isset($app->item_associations) ? $app->item_associations : 0;
 <!-- End Member -->
 <!-- Begin Sidebar -->
 <div class="span2 form-vertical">
-<<<<<<< HEAD
     <div class="accordion" id="accordion6">
         <div class="accordion-group">
             <div class="accordion-heading">
@@ -280,17 +279,6 @@ $assoc = isset($app->item_associations) ? $app->item_associations : 0;
             <div id="detailsr" class="accordion-body collapse in">
                 <div class="accordion-inner">
                     <div class="control-group">
-=======
-        <div class="accordion" id="accordion6">
-            <div class="accordion-group">
-                <div class="accordion-heading">
-                    <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion6" href="#detailsr">
-						<?php echo JText::_('JDETAILS');?>
-                    </a>
-                </div>
-                <div id="detailsr" class="accordion-body collapse in">
-                    <div class="accordion-inner">
->>>>>>> Fixed some css and layouts.
                         <div class="control-group">
                             <div class="control-label">
 								<?php echo $this->form->getValue('name'); ?>
@@ -350,12 +338,9 @@ $assoc = isset($app->item_associations) ? $app->item_associations : 0;
                 </div>
             </div>
         </div>
-<<<<<<< HEAD
 
 		<?php echo $this->loadTemplate('attribs'); ?>
     </div>
-=======
->>>>>>> Fixed some css and layouts.
 </div>
 <!-- End Sidebar -->
 </form>
