@@ -58,14 +58,14 @@ label, input, button, select, textarea {
 [class^="icon-32"], [class*=" icon-32"] {
     width: 32px;
     height: 32px;
-    background-position: 0px 0px;
+    background-position: 0 0;
     display: block;
 }
 
 [class^="icon-48"], [class*=" icon-48"] {
     width: 48px;
     height: 48px;
-    background-position: 0px 0px;
+    background-position: 0 0;
     display: block;
 }
 
@@ -76,7 +76,7 @@ label, input, button, select, textarea {
 }
 
 #j-main-container .pagination {
-    margin: 0px;
+    margin: 0;
     float: right;
 }
 
@@ -133,4 +133,29 @@ input, select {
 
 .churchdirectory_paddingtop20 {
     margin-top: 20px;
+}
+
+.form-vertical .control-label {
+    float: none;
+    width: auto;
+    padding-right: 0;
+    padding-top: 0;
+    text-align: left;
+}
+
+fieldset {
+    margin-bottom: 0;
+    border: none;
+    padding: 0;
+    text-align: left;
+}
+
+.row-fluid [class*="span"]:first-child {
+    margin-left: 0;
+}
+
+@media (min-width: 1200px) {
+    .row-fluid [class*="span"]:first-child {
+        margin-left: 0;
+    }
 }
