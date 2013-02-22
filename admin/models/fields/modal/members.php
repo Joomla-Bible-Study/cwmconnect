@@ -9,7 +9,7 @@ defined('JPATH_BASE') or die;
 // jimport('joomla.form.formfield');
 
 /**
- * Supports a modal contact picker.
+ * Supports a modal member picker.
  *
  * @package  ChurchDirectory.Admin
  * @since    1.7.0
@@ -85,7 +85,7 @@ class JFormFieldModal_Members extends JFormField
 
 		$html = "\n" . '<div class="input-append"><input type="text" class="input-medium" id="' . $this->id . '_name" value="' . htmlspecialchars($title, ENT_QUOTES, 'UTF-8') . '" disabled="disabled" /><a class="modal btn" title="' . JText::_('COM_CHURCHDIRECTORY_CHANGE_MEMBER_BUTTON') . '"  href="' . $link . '" rel="{handler: \'iframe\', size: {x: 800, y: 450}}"><i class="icon-address hasTooltip" title="' . JText::_('COM_CHURCHDIRECTORY_CHANGE_MEMBER_BUTTON') . '"></i> ' . JText::_('JSELECT') . '</a></div>' . "\n";
 
-		// The active contact id field.
+		// The active member id field.
 		if (0 == (int) $this->value)
 		{
 			$value = '';

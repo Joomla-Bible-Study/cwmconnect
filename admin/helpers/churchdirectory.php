@@ -121,7 +121,7 @@ class ChurchDirectoryHelper
 	 * Gets a list of the actions that can be performed.
 	 *
 	 * @param   int  $categoryId  The category ID.
-	 * @param   int  $contactId   The contact ID.
+	 * @param   int  $contactId   The member ID.
 	 *
 	 * @return    JObject
 	 *

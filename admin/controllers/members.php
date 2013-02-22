@@ -31,7 +31,7 @@ class ChurchDirectoryControllerMembers extends JControllerAdmin
 	}
 
 	/**
-	 * Method to toggle the featured setting of a list of contacts.
+	 * Method to toggle the featured setting of a list of members.
 	 *
 	 * @return    void
 	 *

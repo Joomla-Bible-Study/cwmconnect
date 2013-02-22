@@ -46,6 +46,8 @@ $controller->redirect();
  * Global css
  *
  * @since   1.7.0
+ *
+ * @return void
  */
 function addCSS()
 {

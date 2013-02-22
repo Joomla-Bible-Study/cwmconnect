@@ -70,7 +70,7 @@ class ChurchDirectoryTableMember extends JTable
 	}
 
 	/**
-	 * Stores a contact
+	 * Stores a Member
 	 *
 	 * @param   boolean  $updateNulls  True to update fields even if they are null.
 	 *

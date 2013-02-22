@@ -140,7 +140,7 @@ class ChurchDirectoryViewFamilyUnits extends JViewLegacy
 			JHtmlSidebar::addFilter(
 				JText::_('JOPTION_SELECT_CATEGORY'),
 				'filter_category_id',
-				JHtml::_('select.options', JHtml::_('category.options', 'com_contact'), 'value', 'text', $this->state->get('filter.category_id'))
+				JHtml::_('select.options', JHtml::_('category.options', 'com_churchdirectory'), 'value', 'text', $this->state->get('filter.category_id'))
 			);
 
 			JHtmlSidebar::addFilter(

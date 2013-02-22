@@ -21,7 +21,7 @@ JHtml::_('behavior.multiselect');
         <?php else : ?>
             <div id="j-main-container">
             <?php endif; ?>
-    <p>A Church Directory manager component. Displays a list of contacts and contact details pages with various
+    <p>A Church Directory manager component. Displays a list of members and member details pages with various
         informations and a mail-to form.</p>
 
     <h2>Online Documentation</h2>

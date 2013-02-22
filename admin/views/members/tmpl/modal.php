@@ -11,7 +11,7 @@ JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 JHtml::_('bootstrap.tooltip');
 
 $input     = JFactory::getApplication()->input;
-$function  = $input->getCmd('function', 'jSelectContact');
+$function  = $input->getCmd('function', 'jSelectMember');
 $listOrder = $this->escape($this->state->get('list.ordering'));
 $listDirn  = $this->escape($this->state->get('list.direction'));
 ?>
@@ -57,7 +57,7 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 			<?php if ($this->state->get('filter.forcedLanguage')) : ?>
             <select name="filter_category_id" class="input-medium" onchange="this.form.submit()">
                 <option value=""><?php echo JText::_('JOPTION_SELECT_CATEGORY');?></option>
-				<?php echo JHtml::_('select.options', JHtml::_('category.options', 'com_contact', array('filter.language' => array('*', $this->state->get('filter.forcedLanguage')))), 'value', 'text', $this->state->get('filter.category_id'));?>
+				<?php echo JHtml::_('select.options', JHtml::_('category.options', 'com_churchdirectory', array('filter.language' => array('*', $this->state->get('filter.forcedLanguage')))), 'value', 'text', $this->state->get('filter.category_id'));?>
             </select>
             <input type="hidden" name="forcedLanguage"
                    value="<?php echo $this->escape($this->state->get('filter.forcedLanguage')); ?>"/>

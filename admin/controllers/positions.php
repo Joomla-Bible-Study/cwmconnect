@@ -4,7 +4,7 @@
  * @copyright  (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-// No direct access.
+
 defined('_JEXEC') or die;
 
 jimport('joomla.application.component.controlleradmin');
@@ -29,9 +29,10 @@ class ChurchDirectoryControllerPositions extends JControllerAdmin
 	}
 
 	/**
-	 * Method to toggle the featured setting of a list of contacts.
+	 * Method to toggle the featured setting of a list of memberss.
 	 *
 	 * @return    void
+	 *
 	 * @since    1.7.0
 	 */
 	function featured()
@@ -45,6 +46,7 @@ class ChurchDirectoryControllerPositions extends JControllerAdmin
 		$ids   = $app->input->get('id', array(), '', 'array');
 		$task  = $this->getTask();
 		$value = JArrayHelper::getValue($values, $task, 0, 'int');
+
 		// Get the model.
 		$model = $this->getModel();
 
@@ -80,11 +82,12 @@ class ChurchDirectoryControllerPositions extends JControllerAdmin
 	/**
 	 * Proxy for getModel.
 	 *
-	 * @param    string    $name      The name of the model.
-	 * @param    string    $prefix    The prefix for the PHP class name.
-	 * @param array        $config    Ingnore info
+	 * @param   string  $name    The name of the model.
+	 * @param   string  $prefix  The prefix for the PHP class name.
+	 * @param   array   $config  Ingnore info
 	 *
 	 * @return    JModel
+	 *
 	 * @since    1.7.0
 	 */
 	public function getModel($name = 'Position', $prefix = 'ChurchDirectoryModel', $config = array('ignore_request' => true))
