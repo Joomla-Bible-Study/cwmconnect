@@ -123,13 +123,13 @@ $sortFields = $this->getSortFields();
         <th>
 			<?php echo JHtml::_('grid.sort', 'JGLOBAL_TITLE', 'a.name', $listDirn, $listOrder); ?>
         </th>
-        <th>
+        <th class="center">
 			<?php echo JHtml::_('grid.sort', 'COM_CHURCHDIRECTORY_FIELD_LASTNAME', 'a.lname', $listDirn, $listOrder); ?>
         </th>
         <th class="nowrap hidden-phone">
 			<?php echo JHtml::_('grid.sort', 'COM_CHURCHDIRECTORY_FIELD_LINKED_USER_LABEL', 'ul.name', $listDirn, $listOrder); ?>
         </th>
-        <th width="5%" class="nowrap hidden-phone">
+        <th width="5%" class="center nowrap hidden-phone">
 			<?php echo JHtml::_('grid.sort', 'COM_CHURCHDIRECTORY_FIELD_FEATURED_LABEL', 'a.featured', $listDirn, $listOrder); ?>
         </th>
         <th width="10%" class="nowrap hidden-phone">

@@ -98,7 +98,7 @@ class ChurchDirectoryControllerMember extends JControllerForm
 		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
 
 		// Set the model
-		$model = $this->getModel('ChurchDirectory', '', array());
+		$model = $this->getModel('Member', '', array());
 
 		// Preset the redirect
 		$this->setRedirect(JRoute::_('index.php?option=com_churchdirectory&view=members' . $this->getRedirectToListAppend(), false));
