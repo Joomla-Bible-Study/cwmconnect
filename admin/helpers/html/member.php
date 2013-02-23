@@ -1,10 +1,8 @@
 <?php
 /**
- * @package     Joomla.Administrator
- * @subpackage  com_contact
- *
- * @copyright   Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
- * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    ChurchDirectory.Admin
+ * @copyright  (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 defined('_JEXEC') or die;
@@ -12,18 +10,24 @@ defined('_JEXEC') or die;
 JLoader::register('ChurchDirectoryHelper', JPATH_ADMINISTRATOR . '/components/com_churchdirectory/helpers/churchdirectory.php');
 
 /**
- * @package     Joomla.Administrator
- * @subpackage  com_contact
+ * Abstract class for JhtmlMember
+ *
+ * @package  ChurchDirecotry.Admin
+ * @since    1.7.5
  */
 abstract class JHtmlMember
 {
 	/**
-	 * @param   int $contactid    The contact item id
+	 * ?
+	 *
+	 * @param   int  $memberid  The Member item id
+	 *
+	 * @return mixed
 	 */
-	public static function association($contactid)
+	public static function association($memberid)
 	{
 		// Get the associations
-		$associations = ChurchDirectoryHelper::getAssociations($contactid);
+		$associations = ChurchDirectoryHelper::getAssociations($memberid);
 
 		foreach ($associations as $tag => $associated)
 		{
@@ -54,9 +58,10 @@ abstract class JHtmlMember
 
 		// Construct html
 		$text = array();
+
 		foreach ($associations as $tag => $associated)
 		{
-			if ($associated != $contactid)
+			if ($associated != $memberid)
 			{
 				$text[] = JText::sprintf('COM_CHURCHDIRECTORY_TIP_ASSOCIATED_LANGUAGE', JHtml::_('image', 'mod_languages/' . $items[$associated]->image . '.gif', $items[$associated]->language_title, array('title' => $items[$associated]->language_title), true), $items[$associated]->name, $items[$associated]->category_title);
 			}
@@ -66,11 +71,14 @@ abstract class JHtmlMember
 	}
 
 	/**
-	 * @param   int  $value     The featured value
-	 * @param   int  $i
-	 * @param   bool $canChange Whether the value can be changed or not
+	 * Fetured
+	 *
+	 * @param   int   $value      The featured value
+	 * @param   int   $i          ?
+	 * @param   bool  $canChange  Whether the value can be changed or not
 	 *
 	 * @return  string    The anchor tag to toggle featured/unfeatured contacts.
+	 *
 	 * @since   1.6
 	 */
 	public static function featured($value = 0, $i, $canChange = true)
@@ -82,6 +90,7 @@ abstract class JHtmlMember
 		);
 		$state  = JArrayHelper::getValue($states, (int) $value, $states[1]);
 		$html   = JHtml::_('image', 'admin/' . $state[0], JText::_($state[2]), null, true);
+
 		if ($canChange)
 		{
 			$html = '<a href="#" onclick="return listItemTask(\'cb' . $i . '\',\'' . $state[1] . '\')" title="' . JText::_($state[3]) . '">'

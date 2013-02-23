@@ -45,12 +45,18 @@ class ChurchDirectoryControllerGeoupdate extends JControllerAdmin
 	/**
 	 * Constructor.
 	 *
+	 * @param   int  $id  Id of member
+	 *
 	 * @return void
 	 */
-	public function browse()
+	public function browse($id = null)
 	{
+		if (empty($id))
+		{
+			$id = JFactory::getApplication()->input->getInt('id');
+		}
 		$model = $this->getModel('geoupdate');
-		$state = $model->startScanning();
+		$state = $model->startScanning($id);
 		$model->setState('scanstate', $state);
 
 		$this->display(false);
@@ -69,6 +75,6 @@ class ChurchDirectoryControllerGeoupdate extends JControllerAdmin
 		$state = $model->run(true, $id);
 		$model->setState('scanstate', $state);
 
-		$this->setRedirect(JRoute::_('index.php?option=com_churchdirectory&view=cpanel', false));
+		$this->display(false);
 	}
 }

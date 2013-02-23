@@ -202,16 +202,13 @@ $sortFields = $this->getSortFields();
             </div>
             <div class="pull-left">
 				<?php
-				if ($version)
-				{
-					// Create dropdown items
-					JHtml::_('dropdown.edit', $item->id, 'member.');
-					JHtml::_('dropdown.divider');
-					JHtml::_('geoupdate.update', $item->id, 'geoupdate.');
+				// Create dropdown items
+				JHtml::_('dropdown.edit', $item->id, 'member.');
+				JHtml::_('dropdown.divider');
+				JHtml::_('geoupdate.update', $item->id, 'geoupdate.');
 
-					// Render dropdown list
-					echo JHtml::_('dropdown.render');
-				}
+				// Render dropdown list
+				echo JHtml::_('dropdown.render');
 				?>
             </div>
         </td>

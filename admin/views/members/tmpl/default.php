@@ -9,6 +9,7 @@ defined('_JEXEC') or die;
 JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 JHtml::_('bootstrap.tooltip');
 JHtml::_('behavior.multiselect');
+JHtml::_('behavior.modal');
 JHtml::_('dropdown.init');
 JHtml::_('formbehavior.chosen', 'select');
 
@@ -242,6 +243,10 @@ $sortFields = $this->getSortFields();
 				else :
 					JHtml::_('dropdown.trash', 'cb' . $i, 'members.');
 				endif;
+
+				JHtml::_('dropdown.divider');
+
+				JHtml::_('geoupdate.update', $item->id, 'geoupdate.');
 
 				// Render dropdown list
 				echo JHtml::_('dropdown.render');

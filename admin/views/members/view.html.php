@@ -121,6 +121,7 @@ class ChurchDirectoryViewMembers extends JViewLegacy
 		{
 			JToolBarHelper::trash('members.trash');
 		}
+
 		// Add a batch button
 		if ($user->authorise('core.edit'))
 		{

@@ -54,27 +54,13 @@ class ChurchDirectoryViewGeoUpdate extends JViewLegacy
 	{
 		// Set the toolbar title
 		JToolBarHelper::title(JText::_('COM_CHURCHDIRECTORY_TITLE_GEOUPDATE'), 'churchdirectory');
-		$app = JFactory::getApplication();
 
-		$model  = $this->getModel();
-		$state1 = $model->startScanning();
-		$model->setState('scanstate', $state1);
-		$state2 = $model->run();
-		$model->setState('scanstate', $state2);
-		$state = $model->getState('scanstate');
+		$model = $this->getModel();
+		$model->startScanning();
+		$state = $model->getState('scanstate', false);
 
 		$total = max(1, $model->totalMembers);
 		$done  = $model->doneMembers;
-
-		$layout = $app->input->getString('layout', 'default');
-
-		// Check for errors.
-		if (count($errors = $this->get('Errors')))
-		{
-			$app->enqueueMessage(implode("\n", $errors), 'eroor');
-
-			return false;
-		}
 
 		if ($state)
 		{
@@ -92,11 +78,7 @@ class ChurchDirectoryViewGeoUpdate extends JViewLegacy
 		}
 
 		$this->more = $more;
-
-		/** @var $percent int Start Percentage */
-		$this->percentage = $percent;
-
-		$this->setLayout($layout);
+		$this->setLayout('default');
 
 		if (version_compare(JVERSION, '3.0', 'ge'))
 		{
@@ -107,6 +89,9 @@ class ChurchDirectoryViewGeoUpdate extends JViewLegacy
 			JHTML::_('behavior.mootools');
 		}
 
+		/** @var $percent int Start Percentage */
+		$this->percentage = $percent;
+
 		if ($more)
 		{
 			$script = "window.addEvent( 'domready' ,  function() {\n";
@@ -115,7 +100,7 @@ class ChurchDirectoryViewGeoUpdate extends JViewLegacy
 			JFactory::getDocument()->addScriptDeclaration($script);
 		}
 
-		return parent::display($tpl);
+		return parent::display();
 	}
 
 }
