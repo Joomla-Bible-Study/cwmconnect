@@ -13,6 +13,8 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 
 // Create a shortcut for params.
 $params = & $this->item->params;
+$this->loadHelper('render');
+$renderHelper = new renderHelper();
 ?>
 
 <?php if (empty($this->items)) : ?>
@@ -41,7 +43,7 @@ $params = & $this->item->params;
 				<?php echo JText::_('JGLOBAL_NUM'); ?>
             </th>
             <th class="item-title">
-				<?php echo JHtml::_('grid.sort', 'COM_CHURCHDIRECTORY_CONTACT_EMAIL_NAME_LABEL', 'a.name', $listDirn, $listOrder); ?>
+				<?php echo JHtml::_('grid.sort', 'COM_CHURCHDIRECTORY_MEMBER_EMAIL_NAME_LABEL', 'a.name', $listDirn, $listOrder); ?>
             </th>
 			<?php if ($this->params->get('show_position_headings')) : ?>
             <th class="item-position">
@@ -101,13 +103,13 @@ $params = & $this->item->params;
             </td>
 
             <td class="item-title">
-                <a href="<?php echo JRoute::_(ContactHelperRoute::getContactRoute($item->slug, $item->catid)); ?>">
+                <a href="<?php echo JRoute::_(ChurchDirectoryHelperRoute::getMemberRoute($item->slug, $item->catid)); ?>">
 					<?php echo $item->name; ?></a>
             </td>
 
 			<?php if ($this->params->get('show_position_headings')) : ?>
             <td class="item-position">
-				<?php echo $item->con_position; ?>
+				<?php echo $renderHelper->getPosition($item->con_position); ?>
             </td>
 			<?php endif; ?>
 
