@@ -15,33 +15,18 @@ defined('_JEXEC') or die;
  */
 class ChurchDirectoryViewGeoUpdate extends JViewLegacy
 {
-
-	/**
-	 * Protect form
-	 *
-	 * @var array
-	 */
-	protected $form;
-
-	/**
-	 * Protect items
-	 *
-	 * @var array
-	 */
-	protected $item;
-
-	/**
-	 * Protect state
-	 *
-	 * @var array
-	 */
-	protected $state;
-
 	protected $more;
 
-	protected $percent;
-
 	protected $percentage;
+
+	/** @var array The members to process */
+	private $_membersStack = array();
+
+	/** @var int Total numbers of members in this site */
+	public $totalMembers = 0;
+
+	/** @var int Numbers of members already processed */
+	public $doneMembers = 0;
 
 	/**
 	 * Display the view
@@ -59,8 +44,8 @@ class ChurchDirectoryViewGeoUpdate extends JViewLegacy
 		$model->startScanning();
 		$state = $model->getState('scanstate', false);
 
-		$total = max(1, $model->totalMembers);
-		$done  = $model->doneMembers;
+		$total = $this->totalMembers;
+		$done  = $this->doneMembers;
 
 		if ($state)
 		{
@@ -80,17 +65,7 @@ class ChurchDirectoryViewGeoUpdate extends JViewLegacy
 		$this->more = $more;
 		$this->setLayout('default');
 
-		if (version_compare(JVERSION, '3.0', 'ge'))
-		{
-			JHTML::_('behavior.framework');
-		}
-		else
-		{
-			JHTML::_('behavior.mootools');
-		}
-
-		/** @var $percent int Start Percentage */
-		$this->percentage = $percent;
+		$this->percentage = & $percent;
 
 		if ($more)
 		{
@@ -100,7 +75,42 @@ class ChurchDirectoryViewGeoUpdate extends JViewLegacy
 			JFactory::getDocument()->addScriptDeclaration($script);
 		}
 
-		return parent::display();
+		return parent::display($tpl);
+	}
+
+	/**
+	 * Loads the file/folder stack from the session
+	 *
+	 * @return void
+	 */
+	private function loadStack()
+	{
+		$session = JFactory::getSession();
+		$stack   = $session->get('geoupdate_stack', '', 'churchdirectory');
+
+		if (empty($stack))
+		{
+			$this->_membersStack = array();
+			$this->totalMembers  = 0;
+			$this->doneMembers   = 0;
+
+			return;
+		}
+
+		if (function_exists('base64_encode') && function_exists('base64_decode'))
+		{
+			$stack = base64_decode($stack);
+
+			if (function_exists('gzdeflate') && function_exists('gzinflate'))
+			{
+				$stack = gzinflate($stack);
+			}
+		}
+		$stack = json_decode($stack, true);
+
+		$this->_membersStack = $stack['members'];
+		$this->totalMembers  = $stack['total'];
+		$this->doneMembers   = $stack['done'];
 	}
 
 }

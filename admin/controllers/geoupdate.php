@@ -51,13 +51,15 @@ class ChurchDirectoryControllerGeoupdate extends JControllerAdmin
 	 */
 	public function browse($id = null)
 	{
+		$app = JFactory::getApplication();
+
 		if (empty($id))
 		{
-			$id = JFactory::getApplication()->input->getInt('id');
+			$id = $app->input->getInt('id');
 		}
 		$model = $this->getModel('geoupdate');
 		$state = $model->startScanning($id);
-		$model->setState('scanstate', $state);
+		$app->input->set('scanstate', $state);
 
 		$this->display(false);
 	}
@@ -69,11 +71,11 @@ class ChurchDirectoryControllerGeoupdate extends JControllerAdmin
 	 */
 	public function run()
 	{
-		$id = JFactory::getApplication()->input->getInt('id');
-
+		$app = JFactory::getApplication();
+		$id = $app->input->getInt('id');
 		$model = $this->getModel('geoupdate');
 		$state = $model->run(true, $id);
-		$model->setState('scanstate', $state);
+		$app->input->set('scanstate', $state);
 
 		$this->display(false);
 	}

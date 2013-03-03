@@ -7,9 +7,12 @@
 
 defined('_JEXEC') or die();
 
-
-JHTML::_('behavior.framework');
-JHtml::_('behavior.modal');
+if(version_compare(JVERSION, '3.0', 'ge')) {
+	JHTML::_('behavior.framework');
+	JHtml::_('behavior.modal');
+} else {
+	JHTML::_('behavior.mootools');
+}
 ?>
 <?php if ($this->more): ?>
 <h1><?php echo JText::_('COM_CHURCHDIRECTORY_LBL_GEOUPDATEINPROGRESS'); ?></h1>
@@ -25,7 +28,7 @@ JHtml::_('behavior.modal');
 <form action="index.php" name="adminForm" id="adminForm">
     <input type="hidden" name="option" value="com_churchdirectory"/>
     <input type="hidden" name="view" value="geoupdate"/>
-    <input type="hidden" name="task" value="run"/>
+    <input type="hidden" name="task" value="geoupdate.run"/>
     <input type="hidden" name="tmpl" value="component"/>
 </form>
 
