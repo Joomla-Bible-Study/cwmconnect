@@ -99,7 +99,7 @@ class ChurchDirectoryControllerDirHeader extends JControllerForm
 	/**
 	 * Method to run batch operations.
 	 *
-	 * @param   array  $model  Description
+	 * @param   JModelLegacy  $model  The model of the component being processed.
 	 *
 	 * @return    void
 	 *
@@ -110,6 +110,7 @@ class ChurchDirectoryControllerDirHeader extends JControllerForm
 		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
 
 		// Set the model
+		/** @var $model JModelLegacy */
 		$model = $this->getModel('dirheader', '', array());
 
 		// Preset the redirect

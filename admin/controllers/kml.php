@@ -108,7 +108,7 @@ class ChurchDirectoryControllerKML extends JControllerForm
 	/**
 	 * Method to run batch operations.
 	 *
-	 * @param   object  $model  The model.
+	 * @param   JModelLegacy  $model  The model of the component being processed.
 	 *
 	 * @return  boolean     True if successful, false otherwise and internal error is set.
 	 *
@@ -119,6 +119,7 @@ class ChurchDirectoryControllerKML extends JControllerForm
 		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
 
 		// Set the model
+		/** @var $model JModelLegacy */
 		$model = $this->getModel('ChurchDirectory', '', array());
 
 		// Preset the redirect
