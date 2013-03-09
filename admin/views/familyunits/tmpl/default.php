@@ -213,15 +213,13 @@ $sortFields = $this->getSortFields();
         </tr>
 			<?php endforeach; ?>
         </tbody>
-		<?php if ($version): ?>
         <tfoot>
         <tr>
-            <td colspan="11">
-				<?php echo $this->pagination->getListFooter(); ?>
+            <td colspan="10">
+				<?php echo $this->pagination->getPagesLinks(); ?>
             </td>
         </tr>
         </tfoot>
-		<?php endif; ?>
     </table>
     <input type="hidden" name="task" value=""/>
     <input type="hidden" name="boxchecked" value="0"/>

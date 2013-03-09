@@ -26,15 +26,15 @@ JHtml::_('behavior.multiselect');
 
     <h2>Online Documentation</h2>
 
-    <p><a href="">English</a></p>
+    <p><a href="#">English</a></p>
 
     <h2>Support ChurchDirectory</h2>
 
-    <p>If you like this component please rate it at the Joomla Extensions Directory. <a href="">Rate here</a></p>
+    <p>If you like this component please rate it at the Joomla Extensions Directory. <a href="#">Rate here</a></p>
 
     <h2>Need help?</h2>
 
-    <p>Feel free to ask a question in our <a href="">support forum</a>.</p>
+    <p>Feel free to ask a question in our <a href="#">support forum</a>.</p>
 
     <h2>Copyright</h2>
 
@@ -42,7 +42,7 @@ JHtml::_('behavior.multiselect');
         License v3</a>.</p>
 
     <p>Some parts of ChurchDirectory are derived from Joomla! contact component (com_contact). Copyright
-        (C) 2005 - 2011 Joomla Bible Studys, Inc. All rights reserved. </p>
+        (C) 2005 - 2013 Joomla Bible Studys, Inc. All rights reserved. </p>
 </div>
 </form>
 

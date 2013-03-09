@@ -280,6 +280,13 @@ $sortFields = $this->getSortFields();
     </tr>
 		<?php endforeach; ?>
     </tbody>
+    <tfoot>
+    <tr>
+        <td colspan="10">
+			<?php echo $this->pagination->getPagesLinks(); ?>
+        </td>
+    </tr>
+    </tfoot>
 </table>
 <?php //Load the batch processing form. ?>
 <?php echo $this->loadTemplate('batch'); ?>
