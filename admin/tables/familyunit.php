@@ -1,18 +1,26 @@
 <?php
-
 /**
- * FamilyUnit JTable
- *
- * @package      ChurchDirectory.Admin
- * @copyright    (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
- * @license      GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    ChurchDirectory.Admin
+ * @copyright  (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-// No direct access
+
 defined('_JEXEC') or die;
 
 /**
  * FamilyUnit Table Class
  *
+ * @property mixed params
+ * @property mixed id
+ * @property mixed modified
+ * @property mixed modified_by
+ * @property mixed created
+ * @property mixed created_by
+ * @property mixed webpage
+ * @property mixed name
+ * @property mixed alias
+ * @property mixed publish_down
+ * @property mixed publish_up
  * @package  ChurchDirectory.Admin
  * @since    1.7.1
  */
@@ -22,7 +30,7 @@ class ChurchDirectoryTableFamilyUnit extends JTable
 	/**
 	 * Constructor
 	 *
-	 * @param   JDatabaseDriver  $db  DatabaseDriver object.
+	 * @param   JDatabaseDriver  &$db  DatabaseDriver object.
 	 *
 	 * @since 1.7.0
 	 */
@@ -74,6 +82,7 @@ class ChurchDirectoryTableFamilyUnit extends JTable
 
 		$date = JFactory::getDate();
 		$user = JFactory::getUser();
+
 		if ($this->id)
 		{
 			// Existing item
@@ -138,6 +147,7 @@ class ChurchDirectoryTableFamilyUnit extends JTable
 		$this->_db->setQuery($query);
 
 		$xid = intval($this->_db->loadResult());
+
 		if ($xid && $xid != intval($this->id))
 		{
 			$this->setError(JText::_('COM_CHURCHDIRECTORY_WARNING_SAME_NAME'));
