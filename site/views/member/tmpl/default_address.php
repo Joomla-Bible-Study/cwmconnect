@@ -20,7 +20,6 @@ defined('_JEXEC') or die;
             <dt>
             <span class="<?php echo $this->params->get('marker_class'); ?>">
                     <?php echo $this->params->get('marker_address'); ?>
-	            <?php echo JText::_('COM_CHURCHDIRECTORY_MAILING_ADDRESS'); ?>
                 </span>
             </dt>
 			<?php endif; ?>
@@ -69,7 +68,6 @@ defined('_JEXEC') or die;
             <dt>
             <span class="<?php echo $this->params->get('marker_class'); ?>">
                     <?php echo $this->params->get('marker_address'); ?>
-	            <?php echo JText::_('COM_CHURCHDIRECTORY_PHYSICAL_ADDRESS'); ?>
                 </span>
             </dt>
 			<?php endif; ?>
@@ -120,7 +118,6 @@ defined('_JEXEC') or die;
             <dt>
             <span class="<?php echo $this->params->get('marker_class'); ?>">
                     <?php echo $this->params->get('marker_address'); ?>
-	            <?php echo JText::_('COM_CHURCHDIRECTORY_MAILING_ADDRESS'); ?>
                 </span>
             </dt>
 			<?php endif; ?>
@@ -170,7 +167,6 @@ defined('_JEXEC') or die;
                 <dt>
                 <span class="<?php echo $this->params->get('marker_class'); ?>">
                     <?php echo $this->params->get('marker_address'); ?>
-	                <?php echo JText::_('COM_CHURCHDIRECTORY_PHYSICAL_ADDRESS'); ?>
                 </span>
                 </dt>
 				<?php endif; ?>

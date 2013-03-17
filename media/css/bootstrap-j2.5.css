@@ -134,3 +134,9 @@ input, select {
 .churchdirectory_paddingtop20 {
     margin-top: 20px;
 }
+
+#main .contact ul.nav {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
