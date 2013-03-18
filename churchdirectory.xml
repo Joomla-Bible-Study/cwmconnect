@@ -51,6 +51,8 @@
         <folder>images</folder>
         <folder>css</folder>
         <folder>js</folder>
+        <folder>jui</folder>
+        <filename>index.html</filename>
     </media>
 
     <administration>
