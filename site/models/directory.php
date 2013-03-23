@@ -305,7 +305,7 @@ class ChurchDirectoryModelDirectory extends JModelList
 		}
 		else
 		{
-			$limit = $app->getUserStateFromRequest('global.list.limit', 'limit', $app->getCfg('list_limit'), 'uint');
+			$limit = 0;
 		}
 		$this->setState('list.limit', $limit);
 
