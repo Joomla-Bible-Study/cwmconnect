@@ -56,42 +56,4 @@ class DirectoryHeaderHelper
 		return $header;
 	}
 
-	/**
-	 * Ror passing records out to put then in order and not repeat the records.
-	 *
-	 * @param   array  $args  Array of Items to group
-	 *
-	 * @return array
-	 */
-	public static function groupit($args)
-	{
-		$items = null;
-		$field = null;
-		extract($args);
-		$result = array();
-
-		foreach ($items as $item)
-		{
-			if (!empty($item->$field))
-			{
-				$key = $item->$field;
-			}
-			else
-			{
-				$key = 'nomatch';
-			}
-			if (array_key_exists($key, $result))
-			{
-				$result[$key][] = $item;
-			}
-			else
-			{
-				$result[$key]   = array();
-				$result[$key][] = $item;
-			}
-		}
-
-		return $result;
-	}
-
 }
