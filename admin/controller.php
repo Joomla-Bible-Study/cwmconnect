@@ -38,7 +38,7 @@ class ChurchDirectoryController extends JControllerLegacy
 		$this->input = new JInput;
 		$view        = $this->input->get('view', 'cpanel');
 		$layout      = $this->input->get('layout', 'default');
-		$id          = $this->input->getInt('id');
+		$id          = $this->input->getInt('id', 0);
 
 		$type = $this->input->get('view');
 

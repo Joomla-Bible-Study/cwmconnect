@@ -55,7 +55,7 @@ class ChurchDirectoryControllerGeoupdate extends JControllerAdmin
 
 		if (empty($id))
 		{
-			$id = $app->input->getInt('id');
+			$id = $app->input->getInt('id', 0);
 		}
 		$model = $this->getModel('geoupdate');
 		$state = $model->startScanning($id);
@@ -72,7 +72,7 @@ class ChurchDirectoryControllerGeoupdate extends JControllerAdmin
 	public function run()
 	{
 		$app = JFactory::getApplication();
-		$id = $app->input->getInt('id');
+		$id = $app->input->getInt('id', 0);
 		$model = $this->getModel('geoupdate');
 		$state = $model->run(true, $id);
 		$app->input->set('scanstate', $state);

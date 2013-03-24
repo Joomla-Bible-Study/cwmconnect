@@ -11,7 +11,7 @@ defined('_JEXEC') or die;
 JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.formvalidation');
-JHtml::_('behavior.keepalive');
+JHtml::_('formbehavior.chosen', 'select');
 
 $app   = JFactory::getApplication();
 $input = $app->input;
@@ -263,7 +263,6 @@ $assoc = isset($app->item_associations) ? $app->item_associations : 0;
 
 </div>
 <input type="hidden" name="task" value=""/>
-<input type="hidden" name="return" value="<?php echo $input->getCmd('return');?>"/>
 <?php echo JHtml::_('form.token'); ?>
 </div>
 <!-- End Member -->

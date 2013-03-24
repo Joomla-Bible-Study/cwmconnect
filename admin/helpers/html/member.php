@@ -20,7 +20,7 @@ abstract class JHtmlMember
 	/**
 	 * ?
 	 *
-	 * @param   int  $memberid  The Member item id
+	 * @param   int $memberid  The Member item id
 	 *
 	 * @return mixed
 	 */
@@ -63,7 +63,8 @@ abstract class JHtmlMember
 		{
 			if ($associated != $memberid)
 			{
-				$text[] = JText::sprintf('COM_CHURCHDIRECTORY_TIP_ASSOCIATED_LANGUAGE', JHtml::_('image', 'mod_languages/' . $items[$associated]->image . '.gif', $items[$associated]->language_title, array('title' => $items[$associated]->language_title), true), $items[$associated]->name, $items[$associated]->category_title);
+				$text[] = JText::sprintf('COM_CHURCHDIRECTORY_TIP_ASSOCIATED_LANGUAGE', JHtml::_('image', 'mod_languages/'
+					. $items[$associated]->image . '.gif', $items[$associated]->language_title, array('title' => $items[$associated]->language_title), true), $items[$associated]->name, $items[$associated]->category_title);
 			}
 		}
 
@@ -73,9 +74,9 @@ abstract class JHtmlMember
 	/**
 	 * Fetured
 	 *
-	 * @param   int   $value      The featured value
-	 * @param   int   $i          ?
-	 * @param   bool  $canChange  Whether the value can be changed or not
+	 * @param   int  $value      The featured value
+	 * @param   int  $i          ?
+	 * @param   bool $canChange  Whether the value can be changed or not
 	 *
 	 * @return  string    The anchor tag to toggle featured/unfeatured contacts.
 	 *
