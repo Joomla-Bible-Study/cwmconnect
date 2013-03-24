@@ -27,9 +27,10 @@ class Com_ChurchdirectoryInstallerScript
 	 * The list of extra modules and plugins to install
 	 *
 	 * @author Nicholas K. Dionysopoulos
-	 * @var   array  $_installation_queue  Array of Items to install
+	 * @var   array $_installation_queue  Array of Items to install
 	 */
-	private $_installation_queue = array( // -- modules => { (folder) => { (module) => { (position), (published) } }* }*
+	private $_installation_queue = array(
+		// -- modules => { (folder) => { (module) => { (position), (published) } }* }*
 		'modules'  => array(
 			'admin' => array(),
 			'site'  => array('birthdayanniversary' => 0,)
@@ -49,7 +50,7 @@ class Com_ChurchdirectoryInstallerScript
 	/**
 	 * Variables to set default params
 	 *
-	 * @var   array  $_param_array  Array of default settings
+	 * @var   array $_param_array  Array of default settings
 	 */
 	private $_param_array = array(
 		'protectedaccess'               => "8",
@@ -164,8 +165,8 @@ class Com_ChurchdirectoryInstallerScript
 	/**
 	 * Joomla! pre-flight event
 	 *
-	 * @param   string      $type    is the type of change (install, update or discover_install, not uninstall).
-	 * @param   JInstaller  $parent  is the class calling this method.
+	 * @param   string     $type    is the type of change (install, update or discover_install, not uninstall).
+	 * @param   JInstaller $parent  is the class calling this method.
 	 *
 	 * @return boolean
 	 */
@@ -178,8 +179,8 @@ class Com_ChurchdirectoryInstallerScript
 	/**
 	 * Runs after install, update or discover_update
 	 *
-	 * @param   string      $type    is the type of change (install, update or discover_install, not uninstall).
-	 * @param   JInstaller  $parent  is the class calling this method.
+	 * @param   string     $type    is the type of change (install, update or discover_install, not uninstall).
+	 * @param   JInstaller $parent  is the class calling this method.
 	 *
 	 * @return void
 	 */
@@ -198,7 +199,7 @@ class Com_ChurchdirectoryInstallerScript
 	/**
 	 * Install is run on every new install.
 	 *
-	 * @param   JInstaller  $parent  is the class calling this method.
+	 * @param   JInstaller $parent  is the class calling this method.
 	 *
 	 * @return void
 	 */
@@ -214,7 +215,7 @@ class Com_ChurchdirectoryInstallerScript
 	/**
 	 * Uninstall runs before any other action is taken (file removal or database processing)
 	 *
-	 * @param   JInstaller  $parent  is the class calling this method.
+	 * @param   JInstaller $parent  is the class calling this method.
 	 *
 	 * @return void
 	 */
@@ -230,8 +231,8 @@ class Com_ChurchdirectoryInstallerScript
 	/**
 	 * Renders the post-installation message
 	 *
-	 * @param   object      $status  ?
-	 * @param   JInstaller  $parent  is the class calling this method.
+	 * @param   object     $status  ?
+	 * @param   JInstaller $parent  is the class calling this method.
 	 *
 	 * @since 1.7.4
 	 * @return void
@@ -241,144 +242,145 @@ class Com_ChurchdirectoryInstallerScript
 	private function _renderPostInstallation($status, $parent)
 	{
 		$rows = 1; ?>
-    <img src="../media/com_churchdirectory/images/icons/icon-48-churchdirectory.png" width="48" height="48"
-         alt="ChurchDirectory"/>
+		<img src="../media/com_churchdirectory/images/icons/icon-48-churchdirectory.png" width="48" height="48"
+		     alt="ChurchDirectory"/>
 
-    <h2>Welcome to Church Directory System</h2>
+		<h2>Welcome to Church Directory System</h2>
 
-    <table class="adminlist">
-        <thead>
-        <tr>
-            <th class="title" colspan="2">Extension</th>
-            <th style="width: 30%"><?php echo JTEXT::_('COM_CHURCHDIRECTORY_STATUS'); ?></th>
-        </tr>
-        </thead>
-        <tfoot>
-        <tr>
-            <td colspan="3"></td>
-        </tr>
-        </tfoot>
-        <tbody>
-        <tr class="row0">
-            <td class="key" colspan="2"><?php echo JTEXT::_('COM_CHURCHDIRECTORY_COMPONENT'); ?></td>
-            <td><strong style="color: green"><?php echo JTEXT::_('COM_CHURCHDIRECTORY_INSTALLED'); ?></strong></td>
-        </tr>
+		<table class="adminlist">
+			<thead>
+			<tr>
+				<th class="title" colspan="2">Extension</th>
+				<th style="width: 30%"><?php echo JTEXT::_('COM_CHURCHDIRECTORY_STATUS'); ?></th>
+			</tr>
+			</thead>
+			<tfoot>
+			<tr>
+				<td colspan="3"></td>
+			</tr>
+			</tfoot>
+			<tbody>
+			<tr class="row0">
+				<td class="key" colspan="2"><?php echo JTEXT::_('COM_CHURCHDIRECTORY_COMPONENT'); ?></td>
+				<td><strong style="color: green"><?php echo JTEXT::_('COM_CHURCHDIRECTORY_INSTALLED'); ?></strong></td>
+			</tr>
 			<?php if (count($status->modules)) : ?>
-        <tr>
-            <th>Module</th>
-            <th>Client</th>
-            <th></th>
-        </tr>
-			<?php foreach ($status->modules as $module) : ?>
-            <tr class="row<?php echo ($rows++ % 2); ?>">
-                <td class="key"><?php echo $module['name']; ?></td>
-                <td class="key"><?php echo ucfirst($module['client']); ?></td>
-                <td>
-                    <strong style="color: <?php echo ($module['result']) ? "green" : "red" ?>">
-						<?php echo ($module['result']) ? JTEXT::_('COM_CHURCHDIRECTORY_INSTALLED') : JTEXT::_('COM_CHURCHDIRECTORY_NOT_INSTALLED'); ?>
-                    </strong>
-                </td>
-            </tr>
+				<tr>
+					<th>Module</th>
+					<th>Client</th>
+					<th></th>
+				</tr>
+				<?php foreach ($status->modules as $module) : ?>
+					<tr class="row<?php echo ($rows++ % 2); ?>">
+						<td class="key"><?php echo $module['name']; ?></td>
+						<td class="key"><?php echo ucfirst($module['client']); ?></td>
+						<td>
+							<strong style="color: <?php echo ($module['result']) ? "green" : "red" ?>">
+								<?php echo ($module['result']) ? JTEXT::_('COM_CHURCHDIRECTORY_INSTALLED') : JTEXT::_('COM_CHURCHDIRECTORY_NOT_INSTALLED'); ?>
+							</strong>
+						</td>
+					</tr>
 				<?php endforeach; ?>
 			<?php endif; ?>
 			<?php if (count($status->plugins)) : ?>
-        <tr>
-            <th>Plugin</th>
-            <th>Group</th>
-            <th></th>
-        </tr>
-			<?php foreach ($status->plugins as $plugin) : ?>
-            <tr class="row<?php echo ($rows++ % 2); ?>">
-                <td class="key"><?php echo ucfirst($plugin['name']); ?></td>
-                <td class="key"><?php echo ucfirst($plugin['group']); ?></td>
-                <td>
-                    <strong style="color: <?php echo ($plugin['result']) ? "green" : "red" ?>">
-						<?php echo ($plugin['result']) ? JTEXT::_('COM_CHURCHDIRECTORY_INSTALLED') : JTEXT::_('COM_CHURCHDIRECTORY_NOT_INSTALLED'); ?>
-                    </strong>
-                </td>
-            </tr>
+				<tr>
+					<th>Plugin</th>
+					<th>Group</th>
+					<th></th>
+				</tr>
+				<?php foreach ($status->plugins as $plugin) : ?>
+					<tr class="row<?php echo ($rows++ % 2); ?>">
+						<td class="key"><?php echo ucfirst($plugin['name']); ?></td>
+						<td class="key"><?php echo ucfirst($plugin['group']); ?></td>
+						<td>
+							<strong style="color: <?php echo ($plugin['result']) ? "green" : "red" ?>">
+								<?php echo ($plugin['result']) ? JTEXT::_('COM_CHURCHDIRECTORY_INSTALLED') : JTEXT::_('COM_CHURCHDIRECTORY_NOT_INSTALLED'); ?>
+							</strong>
+						</td>
+					</tr>
 				<?php endforeach; ?>
 			<?php endif; ?>
-        </tbody>
-    </table>
+			</tbody>
+		</table>
 
-    <fieldset>
-        <p></p>
-    </fieldset>
+		<fieldset>
+			<p></p>
+		</fieldset>
 	<?php
 	}
 
 	/**
 	 * Render Post Uninstallation
 	 *
-	 * @param   object      $status  ?
-	 * @param   JInstaller  $parent  is the class calling this method.
+	 * @param   object     $status  ?
+	 * @param   JInstaller $parent  is the class calling this method.
 	 *
 	 * @return void
 	 */
 	private function _renderPostUninstallation($status, $parent)
 	{
 		?>
-	<?php $rows = 0; ?>
-    <h2><?php echo JText::_('COM_CHURCHDIRECTORY_UNINSTALL'); ?></h2>
-    <table class="adminlist">
-        <thead>
-        <tr>
-            <th class="title" colspan="2"><?php echo JText::_('COM_CHURCHDIRECTORY_EXTENSION'); ?></th>
-            <th width="30%"><?php echo JText::_('COM_CHURCHDIRECTORY_STATUS'); ?></th>
-        </tr>
-        </thead>
-        <tfoot>
-        <tr>
-            <td colspan="3"></td>
-        </tr>
-        </tfoot>
-        <tbody>
-        <tr class="row0">
-            <td class="key" colspan="2"><?php echo JText::_('COM_CHURCHDIRECTORY'); ?></td>
-            <td><strong style="color: green"><?php echo JText::_('COM_CHURCHDIRECTORY_REMOVED'); ?></strong></td>
-        </tr>
+		<?php $rows = 0; ?>
+		<h2><?php echo JText::_('COM_CHURCHDIRECTORY_UNINSTALL'); ?></h2>
+		<table class="adminlist">
+			<thead>
+			<tr>
+				<th class="title" colspan="2"><?php echo JText::_('COM_CHURCHDIRECTORY_EXTENSION'); ?></th>
+				<th width="30%"><?php echo JText::_('COM_CHURCHDIRECTORY_STATUS'); ?></th>
+			</tr>
+			</thead>
+			<tfoot>
+			<tr>
+				<td colspan="3"></td>
+			</tr>
+			</tfoot>
+			<tbody>
+			<tr class="row0">
+				<td class="key" colspan="2"><?php echo JText::_('COM_CHURCHDIRECTORY'); ?></td>
+				<td><strong style="color: green"><?php echo JText::_('COM_CHURCHDIRECTORY_REMOVED'); ?></strong></td>
+			</tr>
 			<?php if (count($status->modules)) : ?>
-        <tr>
-            <th><?php echo JText::_('COM_CHURCHDIRECTORY_MODULE'); ?></th>
-            <th><?php echo JText::_('COM_CHURCHDIRECTORY_CLIENT'); ?></th>
-            <th></th>
-        </tr>
-			<?php foreach ($status->modules as $module) : ?>
-            <tr class="row<?php echo (++$rows % 2); ?>">
-                <td class="key"><?php echo $module['name']; ?></td>
-                <td class="key"><?php echo ucfirst($module['client']); ?></td>
-                <td><strong
-                        style="color: <?php echo ($module['result']) ? "green" : "red" ?>"><?php echo ($module['result']) ? JText::_('COM_CHURCHDIRECTORY_REMOVED') : JText::_('COM_CHURCHDIRECTORY_NOT_REMOVED'); ?></strong>
-                </td>
-            </tr>
+				<tr>
+					<th><?php echo JText::_('COM_CHURCHDIRECTORY_MODULE'); ?></th>
+					<th><?php echo JText::_('COM_CHURCHDIRECTORY_CLIENT'); ?></th>
+					<th></th>
+				</tr>
+				<?php foreach ($status->modules as $module) : ?>
+					<tr class="row<?php echo (++$rows % 2); ?>">
+						<td class="key"><?php echo $module['name']; ?></td>
+						<td class="key"><?php echo ucfirst($module['client']); ?></td>
+						<td><strong
+								style="color: <?php echo ($module['result']) ? "green" : "red" ?>"><?php echo ($module['result']) ? JText::_('COM_CHURCHDIRECTORY_REMOVED') : JText::_('COM_CHURCHDIRECTORY_NOT_REMOVED'); ?></strong>
+						</td>
+					</tr>
 				<?php endforeach; ?>
 			<?php endif; ?>
 			<?php if (count($status->plugins)) : ?>
-        <tr>
-            <th><?php echo JText::_('Plugin'); ?></th>
-            <th><?php echo JText::_('Group'); ?></th>
-            <th></th>
-        </tr>
-			<?php foreach ($status->plugins as $plugin) : ?>
-            <tr class="row<?php echo (++$rows % 2); ?>">
-                <td class="key"><?php echo ucfirst($plugin['name']); ?></td>
-                <td class="key"><?php echo ucfirst($plugin['group']); ?></td>
-                <td><strong
-                        style="color: <?php echo ($plugin['result']) ? "green" : "red" ?>"><?php echo ($plugin['result']) ? JText::_('COM_CHURCHDIRECTORY_REMOVED') : JText::_('COM_CHURCHDIRECTORY_NOT_REMOVED'); ?></strong>
-                </td>
-            </tr>
+				<tr>
+					<th><?php echo JText::_('Plugin'); ?></th>
+					<th><?php echo JText::_('Group'); ?></th>
+					<th></th>
+				</tr>
+				<?php foreach ($status->plugins as $plugin) : ?>
+					<tr class="row<?php echo (++$rows % 2); ?>">
+						<td class="key"><?php echo ucfirst($plugin['name']); ?></td>
+						<td class="key"><?php echo ucfirst($plugin['group']); ?></td>
+						<td><strong style="color: <?php echo ($plugin['result']) ? "green" : "red" ?>">
+								<?php echo ($plugin['result']) ? JText::_('COM_CHURCHDIRECTORY_REMOVED') : JText::_('COM_CHURCHDIRECTORY_NOT_REMOVED'); ?>
+							</strong>
+						</td>
+					</tr>
 				<?php endforeach; ?>
 			<?php endif; ?>
-        </tbody>
-    </table>
+			</tbody>
+		</table>
 	<?php
 	}
 
 	/**
 	 * Installs subextensions (modules, plugins) bundled with the main extension
 	 *
-	 * @param   JInstaller  $parent  is the class calling this method.
+	 * @param   JInstaller $parent  is the class calling this method.
 	 *
 	 * @return JObject The subextension installation status
 	 */
@@ -577,7 +579,7 @@ class Com_ChurchdirectoryInstallerScript
 	/**
 	 * Uninstalls subextensions (modules, plugins) bundled with the main extension
 	 *
-	 * @param   JInstaller  $parent  is the class calling this method.
+	 * @param   JInstaller $parent  is the class calling this method.
 	 *
 	 * @return JObject The subextension uninstallation status
 	 */
