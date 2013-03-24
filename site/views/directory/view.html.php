@@ -89,8 +89,8 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 		$pagination = $this->get('Pagination');
 
 		$this->loadHelper('render');
-		$renderHelper = new renderHelper;
-		$this->span   = $renderHelper->rowWidth($params->get('items_per_row'));
+		$this->renderHelper = new renderHelper;
+		$this->span   = $this->renderHelper->rowWidth($params->get('items_per_row'));
 
 		if ($items == false)
 		{

@@ -41,10 +41,6 @@ class Com_ChurchdirectoryInstallerScript
 			'search' => array('churchdirectory' => 0,),
 		),
 		// -- template => { (folder) => { (element) => (published) }* }*
-		'template' => array(
-			'admin' => array(),
-			'site'  => array('churchdirectory_print' => 1,),
-		)
 	);
 
 	/**
