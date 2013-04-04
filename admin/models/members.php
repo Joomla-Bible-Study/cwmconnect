@@ -41,6 +41,7 @@ class ChurchDirectoryModelMembers extends JModelList
 				'catid', 'a.catid', 'category_title',
 				'user_id', 'a.user_id',
 				'state', 'a.state',
+				'postcode', 'a.postcode',
 				'access', 'a.access', 'access_level',
 				'created', 'a.created',
 				'created_by', 'a.created_by',
@@ -214,7 +215,13 @@ class ChurchDirectoryModelMembers extends JModelList
 			elseif (stripos($search, 'author:') === 0)
 			{
 				$search = $db->Quote('%' . $db->escape(substr($search, 7), true) . '%');
-				$query->where('(ua.name LIKE ' . $search . ' OR ua.username LIKE ' . $search . ')');
+				$query->where('(uc.name LIKE ' . $search . ' OR uc.username LIKE ' . $search . ')');
+			}
+			elseif (stripos($search, 'zip:') === 0)
+			{
+				$search = $db->q('%' . $db->escape(substr($search, 4), true) . '%');
+				$search = trim($search);
+				$query->where('a.postcode LIKE ' . $search);
 			}
 			else
 			{
