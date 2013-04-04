@@ -166,6 +166,12 @@ class ChurchDirectoryViewMembers extends JViewLegacy
 				'filter_language',
 				JHtml::_('select.options', JHtml::_('contentlanguage.existing', true, true), 'value', 'text', $this->state->get('filter.language'))
 			);
+
+			JHtmlSidebar::addFilter(
+				JText::_('COM_CHURCHODIRECTORY_OPTION_SELECT_MSTATUS'),
+				'filter_mstatus',
+				JHtml::_('select.options', JHtml::_('memberstatus.existing', true, true), 'value', 'text', $this->state->get('filter.mstatus'))
+			);
 		}
 	}
 

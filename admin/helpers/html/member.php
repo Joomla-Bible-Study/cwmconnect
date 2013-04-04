@@ -99,4 +99,29 @@ abstract class JHtmlMember
 
 		return $html;
 	}
+
+	/**
+	 * Method to get the field options.
+	 *
+	 * @return   array    The field option objects.
+	 *
+	 * @since    1.6
+	 */
+	public static function status()
+	{
+		$options = array();
+
+		$options[] = array('value' => 0, 'text' => JText::_('COM_CHURCHDIRECTORY_ACTIVE_MEMBER'));
+		$options[] = array('value' => 1, 'text' => JText::_('COM_CHURCHDIRECTORY_INACTIVE'));
+		$options[] = array('value' => 2, 'text' => JText::_('COM_CHURCHDIRECTORY_ACTIVE_ATTENDEE'));
+
+		$object = new stdClass;
+
+		foreach ($options as $key => $value)
+		{
+			$object->$key = $value;
+		}
+
+		return $object;
+	}
 }
