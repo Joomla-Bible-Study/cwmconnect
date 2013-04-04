@@ -245,7 +245,7 @@ $assoc = isset($app->item_associations) ? $app->item_associations : 0;
             <div class="controls"><?php echo $this->form->getInput('anniversary'); ?></div>
         </div>
 
-		<?php if ($this->age != '0'): ?>
+		<?php if ($this->age != '0'){ ?>
         <div class="control-group">
             <div class="control-label"><label id="jform_age-lbl" for="jform_age" class="hasTip"
                                               title="<?php echo JText::_('COM_CHURCHDIRECTORY_AGE_HASTIP'); ?> "><?php echo JText::_('COM_CHURCHDIRECTORY_AGE_LABEL'); ?></label>
@@ -254,7 +254,7 @@ $assoc = isset($app->item_associations) ? $app->item_associations : 0;
                                          value="<?php echo $this->age . ' ' . JText::_('COM_CHURCHDIRECTORY_YEARS_OLD'); ?>"
                                          class="readonly" size="10" readonly="readonly"/></div>
         </div>
-		<?php endif; ?>
+		<?php } ?>
     </div>
 
 	<?php echo $this->loadTemplate('params'); ?>
