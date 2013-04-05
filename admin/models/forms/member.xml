@@ -156,6 +156,15 @@
                hide="readmore,pagebreak"
                 />
 
+        <field name="note" type="editor"
+               label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_NOTE_LABEL"
+               description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_NOTE_DESC"
+               class="inputbox"
+               filter="JComponentHelper::filterText"
+               buttons="true"
+               hide="readmore,pagebreak"
+                />
+
         <field name="image" type="media" hide_none="1"
                label="COM_CHURCHDIRECTORY_FIELD_PARAMS_IMAGE_LABEL"
                description="COM_CHURCHDIRECTORY_FIELD_PARAMS_IMAGE_DESC"/>
