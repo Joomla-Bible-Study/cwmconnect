@@ -26,6 +26,7 @@ foreach ($this->items as $item)
 	if ($letter != ucfirst($item->name[0]))
 	{
 		$letter = ucfirst($item->name[0]);
+		// @FIXME still need to fix this error. It is not working quite right yet.
 		echo '<div class="clearfix"></div><hr/><a name="' . $letter . '"></a><h2>' . $letter . '</h2>';
 	}
 	if ($printed_rows == $this->params->get('rows_per_page'))
