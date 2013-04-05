@@ -634,15 +634,6 @@
                 extension="com_churchdirectory"
                 view="directory"
                 />
-        <field name="dr_presentation_style"
-               type="list"
-               description="COM_CHURCHDIRECTORY_FIELD_PRESENTATION_DESC"
-               label="COM_CHURCHDIRECTORY_FIELD_PRESENTATION_LABEL"
-                >
-            <option value="sliders">COM_CHURCHDIRECTORY_FIELD_VALUE_SLIDERS</option>
-            <option value="tabs">COM_CHURCHDIRECTORY_FIELD_VALUE_TABS</option>
-            <option value="plain">COM_CHURCHDIRECTORY_FIELD_VALUE_PLAIN</option>
-        </field>
         <field name="dr_churchdirectory_icons"
                type="list"
                default="0"
