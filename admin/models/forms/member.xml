@@ -631,7 +631,7 @@
             <field name="familypostion" type="list"
                    label="COM_CHURCHDIRECTORY_FAMILYPOSTION_LABEL"
                    description="COM_CHURCHDIRECTORY_FAMILYPOSTION_DESC"
-                   class="inputbox span12 small"
+                   class="inputbox"
                    default="-1" OnChange="setTypeEmail(this.form);">
                 <option value="-1">COM_CHURCHDIRECTORY_SINGLE</option>
                 <option value="0">COM_CHURCHDIRECTORY_HEAD_OF_HOUSEHOLD</option>

@@ -12,6 +12,9 @@ $this->loadHelper('render');
 $renderHelper = new renderHelper;
 $heading      = null;
 $letter       = null;
+if ($this->params->get('dr_show_debug')) :
+echo "<b>Number of Members: " . count($this->items) . "</b>";
+endif;
 ?>
 <?php if (empty($this->items)) : ?>
 <p xmlns="http://www.w3.org/1999/html"> <?php echo JText::_('COM_CHURCHDIRECTORY_NO_CONTACTS'); ?>     </p>

@@ -36,3 +36,7 @@ div.current .panelform {
 .clearfix {
     clear: both
 }
+
+select#jform_attribs_familypostion[style] {
+    display: none !important;
+}

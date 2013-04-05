@@ -109,6 +109,7 @@ class ChurchDirectoryModelDirectory extends JModelList
 			$config['filter_fields'] = array(
 				'id', 'a.id',
 				'name', 'a.name',
+				'lname', 'a.lname',
 				'suburb', 'a.suburb',
 				'state', 'a.state',
 				'country', 'a.country',
@@ -305,7 +306,7 @@ class ChurchDirectoryModelDirectory extends JModelList
 		}
 		else
 		{
-			$limit = $app->getUserStateFromRequest('global.list.limit', 'limit', $app->getCfg('list_limit'), 'uint');
+			$limit = 0;
 		}
 		$this->setState('list.limit', $limit);
 
@@ -320,7 +321,7 @@ class ChurchDirectoryModelDirectory extends JModelList
 		$mergedParams = clone $params;
 		$mergedParams->merge($menuParams);
 
-		$orderCol	= $app->input->get('filter_order', $mergedParams->get('initial_sort', 'ordering'));
+		$orderCol	= $app->input->get('filter_order', $mergedParams->get('dinitial_sort', 'ordering'));
 		if (!in_array($orderCol, $this->filter_fields)) {
 			$orderCol = 'ordering';
 		}

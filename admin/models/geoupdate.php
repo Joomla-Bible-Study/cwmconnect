@@ -244,7 +244,7 @@ class ChurchDirectoryModelGeoUpdate extends JModelLegacy
 		$this->resetTimer();
 		$this->getMembers();
 
-		$id = JFactory::getApplication()->input->getInt('id');
+		$id = JFactory::getApplication()->input->getInt('id', 0);
 
 		if (empty($this->_membersStack))
 		{

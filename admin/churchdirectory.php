@@ -61,4 +61,5 @@ function addCSS()
 		JHtml::stylesheet('media/com_churchdirectory/css/bootstrap-j2.5.css');
 	}
 	JHTML::stylesheet('media/com_churchdirectory/css/icons.css');
+	JHTML::stylesheet('media/com_churchdirectory/css/general.css');
 }
