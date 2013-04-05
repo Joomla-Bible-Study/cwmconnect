@@ -48,11 +48,11 @@ class ChurchDirectoryViewMember extends JViewLegacy
 	/**
 	 * Display the view
 	 *
-	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
+	 * @param   string $tpl  The name of the template file to parse; automatically searches through the template paths.
 	 *
 	 * @return  mixed  A string if successful, otherwise a Error object.
 	 */
-	public function display($tpl = null)
+	public function display ($tpl = null)
 	{
 		// Initialiase variables.
 		$this->form   = $this->get('Form');
@@ -75,7 +75,7 @@ class ChurchDirectoryViewMember extends JViewLegacy
 		$itemacess = $this->state->params->get('protectedaccess');
 		$groups    = $this->groups;
 
-		if (isset($groups[$itemacess]))
+		if (isset($groups[$itemacess]) || isset($groups['8']))
 		{
 			$this->access = true;
 		}
@@ -99,7 +99,7 @@ class ChurchDirectoryViewMember extends JViewLegacy
 	 * @since    1.7.0
 	 * @return void
 	 */
-	protected function addToolbar()
+	protected function addToolbar ()
 	{
 		JFactory::getApplication()->input->set('hidemainmenu', true);
 		$user       = JFactory::getUser();
@@ -158,7 +158,7 @@ class ChurchDirectoryViewMember extends JViewLegacy
 	 *
 	 * @return void
 	 */
-	protected function setDocument()
+	protected function setDocument ()
 	{
 		$isNew    = ($this->item->id < 1);
 		$document = JFactory::getDocument();

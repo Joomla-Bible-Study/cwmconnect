@@ -20,11 +20,11 @@ class RenderHelper
 	/**
 	 * Get Position
 	 *
-	 * @param   int  $con_position  ID of Position
+	 * @param   int $con_position  ID of Position
 	 *
 	 * @return object
 	 */
-	public function getPosition($con_position)
+	public function getPosition ($con_position)
 	{
 		$i         = 0;
 		$positions = array();
@@ -88,16 +88,16 @@ class RenderHelper
 	/**
 	 * Get Family Members Build
 	 *
-	 * @param   object  $params  Parameters
-	 * @param   int     $id      ID of Primary Record
-	 * @param   int     $famid   Family Unit ID
+	 * @param   object $params  Parameters
+	 * @param   int    $id      ID of Primary Record
+	 * @param   int    $famid   Family Unit ID
 	 *
 	 * @return string
 	 */
-	public function getFamilyMembersPage($params, $id, $famid)
+	public function getFamilyMembersPage ($params, $id, $famid)
 	{
 
-		$teacher = "\n" . '<div id="landing_table" width="100%">';
+		$member = "\n" . '<div id="landing_table" width="100%">';
 		$db      = JFactory::getDBO();
 		$query   = $db->getQuery(true);
 
@@ -121,81 +121,85 @@ class RenderHelper
 		{
 			$attribs = json_decode($b->attribs);
 			$b->slug = $b->alias ? ($b->id . ':' . $b->alias) : $b->id;
-			$teacher .= '<div class="directory-familymembers-list">';
-			$teacher .= '<div class="directory-name"><a href="' . JRoute::_(ChurchDirectoryHelperRoute::getMemberRoute($b->slug, $b->catid)) . '">';
-			$teacher .= $b->name;
-			$teacher .= '</a></div>';
-			$teacher .= '<div class="directory-subtitle">';
+			$member .= '<div class="directory-familymembers-list">';
+			if ($params->get('dr_show_member_title_link')) :
+				$member .= '<div class="directory-name"><a href="' . JRoute::_(ChurchDirectoryHelperRoute::getMemberRoute($b->slug, $b->catid)) . '">';
+				$member .= $b->name;
+				$member .= '</a></div>';
+			else :
+				$member .= '<span id="contact-name">' . $b->name . '</span>';
+			endif;
+			$member .= '<div class="directory-subtitle">';
 
 			switch ($attribs->familypostion)
 			{
 				case -1:
-					$teacher .= '<span class="title">' . JText::_('COM_CHURCHDIRECTORY_SINGLE') . '</span>';
+					$member .= '<span class="title">' . JText::_('COM_CHURCHDIRECTORY_SINGLE') . '</span>';
 					break;
 				case 0:
-					$teacher .= '<span class="title">' . JText::_('COM_CHURCHDIRECTORY_HEAD_OF_HOUSEHOLD') . '</span>';
+					$member .= '<span class="title">' . JText::_('COM_CHURCHDIRECTORY_HEAD_OF_HOUSEHOLD') . '</span>';
 					break;
 				case 1:
-					$teacher .= '<span class="title">' . JText::_('COM_CHURCHDIRECTORY_SPOUSE') . '</span>';
+					$member .= '<span class="title">' . JText::_('COM_CHURCHDIRECTORY_SPOUSE') . '</span>';
 					break;
 				case 2:
-					$teacher .= '<span class="title">' . JText::_('COM_CHURCHDIRECTORY_CHILED') . '</span>';
+					$member .= '<span class="title">' . JText::_('COM_CHURCHDIRECTORY_CHILED') . '</span>';
 					break;
 			}
-			$teacher .= '</div>';
-			$teacher .= '<div class="clearfix"></div><div class="directory-submemberinfo">';
+			$member .= '</div>';
+			$member .= '<div class="clearfix"></div><div class="directory-submemberinfo">';
 
 			if (!empty($b->con_position) && $params->get('dr_show_position'))
 			{
-				$teacher .= '<div class="clearfix"></div>';
-				$teacher .= '<dl class="contact-position dl-horizontal">';
-				$teacher .= '<dt>';
+				$member .= '<div class="clearfix"></div>';
+				$member .= '<dl class="contact-position dl-horizontal">';
+				$member .= '<dt>';
 
 				if ($b->con_position != '-1')
 				{
-					$teacher .= JText::_('COM_CHURCHDIRECTORY_POSITION') . ':';
+					$member .= JText::_('COM_CHURCHDIRECTORY_POSITION') . ':';
 				}
-				$teacher .= '</dt>';
-				$teacher .= '<dd>';
-				$teacher .= self::getPosition($b->con_position);
-				$teacher .= '</dd></dl>';
+				$member .= '</dt>';
+				$member .= '<dd>';
+				$member .= self::getPosition($b->con_position);
+				$member .= '</dd></dl>';
 			}
 
 			if ($b->telephone && $params->get('dr_show_telephone'))
 			{
-				$teacher .= '<div class="directory-telephone"><span class="title">' . JText::_('COM_CHURCHDIRECTORY_HOME') . ':</span> ' . $b->telephone . '</div>';
+				$member .= '<div class="directory-telephone"><span class="title">' . JText::_('COM_CHURCHDIRECTORY_HOME') . ':</span> ' . $b->telephone . '</div>';
 			}
 			if ($b->mobile && $params->get('dr_show_mobile'))
 			{
-				$teacher .= '<div class="directory-mobile"><span class="title">' . JText::_('COM_CHURCHDIRECTORY_MOBILE') . ':</span> ' . $b->mobile . '</div>';
+				$member .= '<div class="directory-mobile"><span class="title">' . JText::_('COM_CHURCHDIRECTORY_MOBILE') . ':</span> ' . $b->mobile . '</div>';
 			}
-			$teacher .= '</div>';
+			$member .= '</div>';
 			$i++;
 			$t++;
-			$teacher .= '</div><div class="clearfix"></div>';
+			$member .= '</div><div class="clearfix"></div>';
 
-			$teacher .= '<hr />';
+			$member .= '<hr />';
 
 			$this->children = $b->children;
 		}
-		$teacher .= '</div>';
+		$member .= '</div>';
 
 		if ($this->children && $params->get('dr_show_children'))
 		{
-			$teacher .= '<div class="directory-children"><br /><span class="title">' . JText::_('COM_CHURCHDIRECTORY_CHILDREN') . ':</span> ' . $this->children . '</div>';
+			$member .= '<div class="directory-children"><br /><span class="title">' . JText::_('COM_CHURCHDIRECTORY_CHILDREN') . ':</span> ' . $this->children . '</div>';
 		}
 
-		return $teacher;
+		return $member;
 	}
 
 	/**
 	 * Calculate rows into span's
 	 *
-	 * @param   int  $items_per_row  Number of Rows we want to see.
+	 * @param   int $items_per_row  Number of Rows we want to see.
 	 *
 	 * @return int
 	 */
-	public function rowWidth($items_per_row)
+	public function rowWidth ($items_per_row)
 	{
 		$results = 12;
 
@@ -221,11 +225,11 @@ class RenderHelper
 	/**
 	 * Ror passing records out to put then in order and not repeat the records.
 	 *
-	 * @param   array  $args  Array of Items to group
+	 * @param   array $args  Array of Items to group
 	 *
 	 * @return array
 	 */
-	public static function groupit($args)
+	public static function groupit ($args)
 	{
 		$items = null;
 		$field = null;

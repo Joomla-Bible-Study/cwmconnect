@@ -64,6 +64,7 @@ CREATE TABLE IF NOT EXISTS `#__churchdirectory_details` (
   `version` int(10) unsigned NOT NULL DEFAULT '1',
   `hits` int(10) unsigned NOT NULL DEFAULT '0',
   `surname` varchar(255) NOT NULL DEFAULT '',
+  `mstatus` tinyint(3) NOT NULL DEFAULT '0' COMMENT 'Used to track Members Status',
   PRIMARY KEY (`id`),
   KEY `idx_catid` (`catid`),
   KEY `idx_access` (`access`),
