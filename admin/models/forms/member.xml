@@ -156,6 +156,15 @@
                hide="readmore,pagebreak"
                 />
 
+        <field name="note" type="editor"
+               label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_NOTE_LABEL"
+               description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_NOTE_DESC"
+               class="inputbox"
+               filter="JComponentHelper::filterText"
+               buttons="true"
+               hide="readmore,pagebreak"
+                />
+
         <field name="image" type="media" hide_none="1"
                label="COM_CHURCHDIRECTORY_FIELD_PARAMS_IMAGE_LABEL"
                description="COM_CHURCHDIRECTORY_FIELD_PARAMS_IMAGE_DESC"/>
@@ -281,6 +290,15 @@
                label="COM_CHURCHDIRECTORY_FIELD_MEMBER_BIRTHDATE_LABEL"
                description="COM_CHURCHDIRECTORY_FIELD_MEMBER_BIRTHDATE_DESC"
                class="inputbox span12 small" format="%Y-%m-%d" size="22"/>
+        <field name="mstatus" type="list"
+               label="COM_CHURCHDIRECTORY_FIELD_MEMBERSSTATUS_LABEL"
+               description="COM_CHURCHDIRECTORY_FIELD_MEMBERSSTATUS_DESC"
+               class="inputbox span12 small"
+               default="0">
+            <option value="0">COM_CHURCHDIRECTORY_ACTIVE_MEMBER</option>
+            <option value="1">COM_CHURCHDIRECTORY_INACTIVE</option>
+            <option value="2">COM_CHURCHDIRECTORY_ACTIVE_ATTENDEE</option>
+        </field>
     </fieldset>
 
     <fields name="params">
@@ -611,16 +629,6 @@
         <fieldset name="protected"
                   label="COM_CHURCHDIRECTORY_MEMBER_PROTECTED_INFO_FIELDSET_LABEL"
                   description="COM_CHURCHDIRECTORY_MEMBER_PROTECTED_INFO_FIELDSET_DESC">
-            <field name="memberstatus" type="list"
-                   label="COM_CHURCHDIRECTORY_FIELD_MEMBERSSTATUS_LABEL"
-                   description="COM_CHURCHDIRECTORY_FIELD_MEMBERSSTATUS_DESC"
-                   class="inputbox span12 small"
-                   default="0">
-                <option value="0">COM_CHURCHDIRECTORY_ACTIVE</option>
-                <option value="1">COM_CHURCHDIRECTORY_INACTIVE</option>
-                <option value="2">COM_CHURCHDIRECTORY_OTHER</option>
-            </field>
-            <field name="memberstatusother" type="text" label="COM_CHURCHDIRECTORY_OTHER" class="inputbox span12 small" size="30"/>
             <field name="memberotherinfo" type="textarea"
                    label="COM_CHURCHDIRECTORY_FIELD_MEMBER_OTHER_INFO_LABEL"
                    description="COM_CHURCHDIRECTORY_FIELD_MEMBER_OTHER_INFO_DESC"

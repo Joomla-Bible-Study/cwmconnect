@@ -104,6 +104,11 @@ $sortFields = $this->getSortFields();
             <option value=""><?php echo JText::_('JOPTION_SELECT_LANGUAGE'); ?></option>
 			<?php echo JHtml::_('select.options', JHtml::_('contentlanguage.existing', true, true), 'value', 'text', $this->state->get('filter.language')); ?>
         </select>
+
+	    <select name="filter_mstatus" class="inputbox" onchange="this.form.submit()">
+		    <option value=""><?php echo JText::_('COM_CHURCHDIRECTORY_SELECT_MSTATUS'); ?></option>
+		    <?php echo JHtml::_('select.options', JHtml::_('member.status', true, true), 'value', 'text', $this->state->get('filter.mstatus')); ?>
+	    </select>
     </div>
 	<?php endif; ?>
 </div>

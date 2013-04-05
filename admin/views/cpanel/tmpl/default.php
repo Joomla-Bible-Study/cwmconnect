@@ -30,6 +30,7 @@ JHtml::_('behavior.multiselect');
             family unit.<br/><br/>
             Thanks for supporting the work.<br/><br/>
             Joomla Bible Study Team</p>
+	        <p>Version: 1.7.6</p>
     </div>
     <div class="pull-right span4">
         <div id="cpanel">

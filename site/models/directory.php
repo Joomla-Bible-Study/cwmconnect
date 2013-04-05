@@ -97,12 +97,12 @@ class ChurchDirectoryModelDirectory extends JModelList
 	/**
 	 * Constructor.
 	 *
-	 * @param   array  $config  An optional associative array of configuration settings.
+	 * @param   array $config  An optional associative array of configuration settings.
 	 *
 	 * @see        JController
 	 * @since      1.6
 	 */
-	public function __construct($config = array())
+	public function __construct ($config = array())
 	{
 		if (empty($config['filter_fields']))
 		{
@@ -128,7 +128,7 @@ class ChurchDirectoryModelDirectory extends JModelList
 	 *
 	 * @return    mixed    An array of objects on success, false on failure.
 	 */
-	public function getItems()
+	public function getItems ()
 	{
 		// Invoke the parent getItems method to get the main list
 		$items = parent::getItems();
@@ -173,7 +173,7 @@ class ChurchDirectoryModelDirectory extends JModelList
 	 * @return    string    An SQL query
 	 * @since    1.6
 	 */
-	protected function getListQuery()
+	protected function getListQuery ()
 	{
 		$user   = JFactory::getUser();
 		$groups = implode(',', $user->getAuthorisedViewLevels());
@@ -183,7 +183,7 @@ class ChurchDirectoryModelDirectory extends JModelList
 		$query = $db->getQuery(true);
 
 		// Select required fields from the categories.
-		//sqlsrv changes
+		// sqlsrv changes
 		$case_when = ' CASE WHEN ';
 		$case_when .= $query->charLength('a.alias', '!=', '0');
 		$case_when .= ' THEN ';
@@ -219,9 +219,10 @@ class ChurchDirectoryModelDirectory extends JModelList
 
 
 		// Filter by category.
-		if ($categoryId = $this->getState('category.id')) {
-			$query->where('a.catid = '.(int) $categoryId);
-			$query->where('c.access IN ('.$groups.')');
+		if ($categoryId = $this->getState('category.id'))
+		{
+			$query->where('a.catid = ' . (int) $categoryId);
+			$query->where('c.access IN (' . $groups . ')');
 		}
 
 		// Join to check for category published state in parent categories up the tree
@@ -246,6 +247,7 @@ class ChurchDirectoryModelDirectory extends JModelList
 
 		// Filter by state
 		$state = $this->getState('filter.published');
+
 		if (is_numeric($state))
 		{
 			$query->where('a.published = ' . (int) $state);
@@ -259,6 +261,9 @@ class ChurchDirectoryModelDirectory extends JModelList
 			$query->where('(a.publish_up = ' . $nullDate . ' OR a.publish_up <= ' . $nowDate . ')');
 			$query->where('(a.publish_down = ' . $nullDate . ' OR a.publish_down >= ' . $nowDate . ')');
 		}
+
+		// Filter by Member Status
+		$query->where('a.mstatus = ' . $this->getState('filter.mstatus'));
 
 		// Filter by language
 		if ($this->getState('filter.language'))
@@ -283,7 +288,6 @@ class ChurchDirectoryModelDirectory extends JModelList
 
 	/**
 	 * Method to auto-populate the model state.
-	 *
 	 * Note. Calling getState in this method will result in recursion.
 	 *
 	 * @param string $ordering
@@ -291,15 +295,15 @@ class ChurchDirectoryModelDirectory extends JModelList
 	 *
 	 * @since    1.6
 	 */
-	protected function populateState($ordering = null, $direction = null)
+	protected function populateState ($ordering = null, $direction = null)
 	{
 		// Initialise variables.
 		$app    = JFactory::getApplication();
 		$params = JComponentHelper::getParams('com_churchdirectory');
-		$db     = $this->getDbo();
 
 		// List state information
-		$format = $app->input->getWord('format');
+		$format = $app->input->getWord('format', '');
+
 		if ($format == 'feed')
 		{
 			$limit = $app->getCfg('feed_limit');
@@ -315,28 +319,33 @@ class ChurchDirectoryModelDirectory extends JModelList
 
 		// Get list ordering default from the parameters
 		$menuParams = new JRegistry;
-		if ($menu = $app->getMenu()->getActive()) {
+
+		if ($menu = $app->getMenu()->getActive())
+		{
 			$menuParams->loadString($menu->params);
 		}
 		$mergedParams = clone $params;
 		$mergedParams->merge($menuParams);
+		$orderCol = $app->input->get('filter_order', $mergedParams->get('dinitial_sort', 'ordering'));
 
-		$orderCol	= $app->input->get('filter_order', $mergedParams->get('dinitial_sort', 'ordering'));
-		if (!in_array($orderCol, $this->filter_fields)) {
+		if (!in_array($orderCol, $this->filter_fields))
+		{
 			$orderCol = 'ordering';
 		}
 		$this->setState('list.ordering', $orderCol);
 
-		$listOrder	= $app->input->get('filter_order_Dir', 'ASC');
-		if (!in_array(strtoupper($listOrder), array('ASC', 'DESC', ''))) {
+		$listOrder = $app->input->get('filter_order_Dir', 'ASC');
+
+		if (!in_array(strtoupper($listOrder), array('ASC', 'DESC', '')))
+		{
 			$listOrder = 'ASC';
 		}
 		$this->setState('list.direction', $listOrder);
 
 		$id = $app->input->get('id', 0, 'int');
 		$this->setState('category.id', $id);
-
 		$user = JFactory::getUser();
+
 		if ((!$user->authorise('core.edit.state', 'com_churchdirectory')) && (!$user->authorise('core.edit', 'com_churchdirectory')))
 		{
 			// limit to published for people who can't edit or edit.state.
@@ -345,6 +354,8 @@ class ChurchDirectoryModelDirectory extends JModelList
 			// Filter by start and end dates.
 			$this->setState('filter.publish_date', true);
 		}
+		$mstatus = $app->input->get('filter_mstatus', $mergedParams->get('mstatus', '0'));
+		$this->setState('filter.mstatus', $mstatus);
 		$this->setState('filter.language', $app->getLanguageFilter());
 
 		// Load the parameters.
@@ -357,7 +368,7 @@ class ChurchDirectoryModelDirectory extends JModelList
 	 * @return    object
 	 * @since    1.5
 	 */
-	public function getCategory()
+	public function getCategory ()
 	{
 		if (!is_object($this->_item))
 		{
@@ -375,6 +386,7 @@ class ChurchDirectoryModelDirectory extends JModelList
 			$options['countItems'] = $params->get('db_show_cat_items', 1) || $params->get('db_show_empty_categories', 0);
 			$categories            = JCategories::getInstance('ChurchDirectory', $options);
 			$this->_item           = $categories->get($this->getState('category.id', 'root'));
+
 			if (is_object($this->_item))
 			{
 				$this->_children = $this->_item->getChildren();
@@ -401,7 +413,7 @@ class ChurchDirectoryModelDirectory extends JModelList
 	 *
 	 * @return    mixed    An array of categories or false if an error occurs.
 	 */
-	public function getParent()
+	public function getParent ()
 	{
 		if (!is_object($this->_item))
 		{
@@ -416,7 +428,7 @@ class ChurchDirectoryModelDirectory extends JModelList
 	 *
 	 * @return    mixed    An array of categories or false if an error occurs.
 	 */
-	function &getLeftSibling()
+	function &getLeftSibling ()
 	{
 		if (!is_object($this->_item))
 		{
@@ -431,7 +443,7 @@ class ChurchDirectoryModelDirectory extends JModelList
 	 *
 	 * @return    mixed    An array of categories or false if an error occurs.
 	 */
-	function &getRightSibling()
+	function &getRightSibling ()
 	{
 		if (!is_object($this->_item))
 		{
@@ -446,7 +458,7 @@ class ChurchDirectoryModelDirectory extends JModelList
 	 *
 	 * @return    mixed    An array of categories or false if an error occurs.
 	 */
-	function &getChildren()
+	function &getChildren ()
 	{
 		if (!is_object($this->_item))
 		{
