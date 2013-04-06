@@ -10,8 +10,19 @@ defined('_JEXEC') or die;
 /**
  * Position Table Class
  *
- * @package ChurchDirectory.Admin
- * @since   1.7.0
+ * @property mixed webpage
+ * @property mixed name
+ * @property mixed id
+ * @property mixed alias
+ * @property mixed publish_down
+ * @property mixed publish_up
+ * @property mixed created
+ * @property mixed created_by
+ * @property mixed modified
+ * @property mixed modified_by
+ * @property mixed params
+ * @package  ChurchDirectory.Admin
+ * @since    1.7.0
  */
 class ChurchDirectoryTablePosition extends JTable
 {
@@ -72,6 +83,7 @@ class ChurchDirectoryTablePosition extends JTable
 
 		$date = JFactory::getDate();
 		$user = JFactory::getUser();
+
 		if ($this->id)
 		{
 			// Existing item
@@ -144,6 +156,7 @@ class ChurchDirectoryTablePosition extends JTable
 			$this->alias = $this->name;
 		}
 		$this->alias = JApplication::stringURLSafe($this->alias);
+
 		if (trim(str_replace('-', '', $this->alias)) == '')
 		{
 			$this->alias = JFactory::getDate()->format("Y-m-d-H-i-s");

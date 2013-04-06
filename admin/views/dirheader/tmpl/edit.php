@@ -1,12 +1,10 @@
 <?php
 /**
- * Edit dirheader
- *
- * @package      ChurchDirectory.Admin
- * @copyright    (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
- * @license      GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    ChurchDirectory.Admin
+ * @copyright  (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-// no direct access
+
 defined('_JEXEC') or die;
 
 // Include the component HTML helpers.
@@ -28,21 +26,20 @@ JHtml::_('behavior.formvalidation');
 <form action="<?php echo JRoute::_('index.php?option=com_churchdirectory&view=dirheader&layout=edit&id=' . (int) $this->item->id); ?>"
       method="post" name="adminForm" id="dirheader-form" class="form-validate">
     <div class="row-fluid">
-        <div class="span9 form-horizontal">
+        <div class="span10 form-horizontal">
             <ul class="nav nav-tabs">
                 <li class="active"><a href="#details"
                                       data-toggle="tab"><?php echo empty($this->item->id) ? JText::_('COM_CHURCHDIRECTORY_NEW_DIRHEADER') : JText::sprintf('COM_CHURCHDIRECTORY_EDIT_DIRHEADER', $this->item->id); ?></a>
                 </li>
                 <li><a href="#publishing"
                        data-toggle="tab"><?php echo JText::_('JGLOBAL_FIELDSET_PUBLISHING');?></a></li>
-                </li>
             </ul>
             <div class="tab-content">
                 <div class="tab-pane active" id="details">
                     <div class="control-group form-inline">
-						<?php echo $this->form->getLabel('name'); ?><?php echo $this->form->getInput('name'); ?>
-						<?php echo $this->form->getLabel('alias'); ?><?php echo $this->form->getInput('alias'); ?>
-						<?php echo $this->form->getLabel('id'); ?><?php echo $this->form->getInput('id'); ?>
+						<?php echo $this->form->getLabel('name'); ?> <?php echo $this->form->getInput('name'); ?>
+						<?php echo $this->form->getLabel('alias'); ?> <?php echo $this->form->getInput('alias'); ?>
+						<?php echo $this->form->getLabel('id'); ?> <?php echo $this->form->getInput('id'); ?>
                     </div>
                     <div class="clr"></div>
 					<?php echo $this->form->getLabel('description'); ?>
@@ -81,12 +78,12 @@ JHtml::_('behavior.formvalidation');
                     </div>
 					<?php endif; ?>
                 </div>
-	            <div class="clearfix"></div>
+                <div class="clearfix"></div>
                 <div class="row-fluid">
                     <div class="span6">
                         <div class="control-group churchdirectory_paddingtop20">
                             <div class="control-label"><?php echo $this->form->getLabel('image'); ?></div>
-                                <div class="controls"><?php echo $this->form->getInput('image'); ?></div>
+                            <div class="controls"><?php echo $this->form->getInput('image'); ?></div>
                         </div>
                     </div>
                 </div>
@@ -97,48 +94,46 @@ JHtml::_('behavior.formvalidation');
         </div>
         <!-- End DirHeader -->
         <!-- Begin Sidebar -->
-        <div class="span3">
+        <div class="span2 form-vertical">
             <h4><?php echo JText::_('COM_CHURCHDIRECTORY_DIRHEADERE_DETAILS'); ?></h4>
             <hr/>
-            <fieldset class="form-vertical">
+            <div class="control-group">
                 <div class="control-group">
-                    <div class="control-group">
-                        <div class="controls">
-							<?php echo $this->form->getValue('name'); ?>
-                        </div>
-                    </div>
-                    <div class="control-label">
-						<?php echo $this->form->getLabel('published'); ?>
-                    </div>
                     <div class="controls">
-						<?php echo $this->form->getInput('published'); ?>
+						<?php echo $this->form->getValue('name'); ?>
                     </div>
                 </div>
-                <div class="control-group">
-                    <div class="control-label">
-						<?php echo $this->form->getLabel('access'); ?>
-                    </div>
-                    <div class="controls">
-						<?php echo $this->form->getInput('access'); ?>
-                    </div>
+                <div class="control-label">
+					<?php echo $this->form->getLabel('published'); ?>
                 </div>
-                <div class="control-group">
-                    <div class="control-label">
-						<?php echo $this->form->getLabel('featured'); ?>
-                    </div>
-                    <div class="controls">
-						<?php echo $this->form->getInput('featured'); ?>
-                    </div>
+                <div class="controls">
+					<?php echo $this->form->getInput('published'); ?>
                 </div>
-                <div class="control-group">
-                    <div class="control-label">
-						<?php echo $this->form->getLabel('language'); ?>
-                    </div>
-                    <div class="controls">
-						<?php echo $this->form->getInput('language'); ?>
-                    </div>
+            </div>
+            <div class="control-group">
+                <div class="control-label">
+					<?php echo $this->form->getLabel('access'); ?>
                 </div>
-            </fieldset>
+                <div class="controls">
+					<?php echo $this->form->getInput('access'); ?>
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="control-label">
+					<?php echo $this->form->getLabel('featured'); ?>
+                </div>
+                <div class="controls">
+					<?php echo $this->form->getInput('featured'); ?>
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="control-label">
+					<?php echo $this->form->getLabel('language'); ?>
+                </div>
+                <div class="controls">
+					<?php echo $this->form->getInput('language'); ?>
+                </div>
+            </div>
         </div>
     </div>
 </form>

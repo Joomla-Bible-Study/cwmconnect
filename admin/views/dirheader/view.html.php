@@ -8,7 +8,7 @@
 defined('_JEXEC') or die;
 
 /**
- * View to edit a contact.
+ * View to edit a DirHeaders.
  *
  * @package  ChurchDirectory.Admin
  * @since    1.7.0

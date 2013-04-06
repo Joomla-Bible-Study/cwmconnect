@@ -20,7 +20,7 @@ class ChurchDirectoryControllerFamilyUnits extends JControllerAdmin
 	/**
 	 * Constructor.
 	 *
-	 * @param    array    $config    An optional associative array of configuration settings.
+	 * @param   array  $config  An optional associative array of configuration settings.
 	 */
 	public function __construct($config = array())
 	{
@@ -28,9 +28,10 @@ class ChurchDirectoryControllerFamilyUnits extends JControllerAdmin
 	}
 
 	/**
-	 * Method to toggle the featured setting of a list of contacts.
+	 * Method to toggle the featured setting of a list of Memberss.
 	 *
 	 * @return    void
+	 *
 	 * @since    1.7.0
 	 */
 	function featured()
@@ -84,6 +85,7 @@ class ChurchDirectoryControllerFamilyUnits extends JControllerAdmin
 	 * @param   array   $config  Ingnore info
 	 *
 	 * @return    JModel
+	 *
 	 * @since    1.7.0
 	 */
 	public function getModel($name = 'FamilyUnit', $prefix = 'ChurchDirectoryModel', $config = array('ignore_request' => true))

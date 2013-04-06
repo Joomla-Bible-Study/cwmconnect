@@ -46,6 +46,8 @@ $controller->redirect();
  * Global css
  *
  * @since   1.7.0
+ *
+ * @return void
  */
 function addCSS()
 {
@@ -59,4 +61,5 @@ function addCSS()
 		JHtml::stylesheet('media/com_churchdirectory/css/bootstrap-j2.5.css');
 	}
 	JHTML::stylesheet('media/com_churchdirectory/css/icons.css');
+	JHTML::stylesheet('media/com_churchdirectory/css/general.css');
 }

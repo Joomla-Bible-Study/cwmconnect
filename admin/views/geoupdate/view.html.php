@@ -15,33 +15,18 @@ defined('_JEXEC') or die;
  */
 class ChurchDirectoryViewGeoUpdate extends JViewLegacy
 {
-
-	/**
-	 * Protect form
-	 *
-	 * @var array
-	 */
-	protected $form;
-
-	/**
-	 * Protect items
-	 *
-	 * @var array
-	 */
-	protected $item;
-
-	/**
-	 * Protect state
-	 *
-	 * @var array
-	 */
-	protected $state;
-
 	protected $more;
 
-	protected $percent;
-
 	protected $percentage;
+
+	/** @var array The members to process */
+	private $_membersStack = array();
+
+	/** @var int Total numbers of members in this site */
+	public $totalMembers = 0;
+
+	/** @var int Numbers of members already processed */
+	public $doneMembers = 0;
 
 	/**
 	 * Display the view
@@ -54,27 +39,13 @@ class ChurchDirectoryViewGeoUpdate extends JViewLegacy
 	{
 		// Set the toolbar title
 		JToolBarHelper::title(JText::_('COM_CHURCHDIRECTORY_TITLE_GEOUPDATE'), 'churchdirectory');
-		$app = JFactory::getApplication();
 
-		$model  = $this->getModel();
-		$state1 = $model->startScanning();
-		$model->setState('scanstate', $state1);
-		$state2 = $model->run();
-		$model->setState('scanstate', $state2);
-		$state = $model->getState('scanstate');
+		$model = $this->getModel();
+		$model->startScanning();
+		$state = $model->getState('scanstate', false);
 
-		$total = max(1, $model->totalMembers);
-		$done  = $model->doneMembers;
-
-		$layout = $app->input->getString('layout', 'default');
-
-		// Check for errors.
-		if (count($errors = $this->get('Errors')))
-		{
-			$app->enqueueMessage(implode("\n", $errors), 'eroor');
-
-			return false;
-		}
+		$total = $this->totalMembers;
+		$done  = $this->doneMembers;
 
 		if ($state)
 		{
@@ -92,20 +63,9 @@ class ChurchDirectoryViewGeoUpdate extends JViewLegacy
 		}
 
 		$this->more = $more;
+		$this->setLayout('default');
 
-		/** @var $percent int Start Percentage */
-		$this->percentage = $percent;
-
-		$this->setLayout($layout);
-
-		if (version_compare(JVERSION, '3.0', 'ge'))
-		{
-			JHTML::_('behavior.framework');
-		}
-		else
-		{
-			JHTML::_('behavior.mootools');
-		}
+		$this->percentage = & $percent;
 
 		if ($more)
 		{
@@ -116,6 +76,41 @@ class ChurchDirectoryViewGeoUpdate extends JViewLegacy
 		}
 
 		return parent::display($tpl);
+	}
+
+	/**
+	 * Loads the file/folder stack from the session
+	 *
+	 * @return void
+	 */
+	private function loadStack()
+	{
+		$session = JFactory::getSession();
+		$stack   = $session->get('geoupdate_stack', '', 'churchdirectory');
+
+		if (empty($stack))
+		{
+			$this->_membersStack = array();
+			$this->totalMembers  = 0;
+			$this->doneMembers   = 0;
+
+			return;
+		}
+
+		if (function_exists('base64_encode') && function_exists('base64_decode'))
+		{
+			$stack = base64_decode($stack);
+
+			if (function_exists('gzdeflate') && function_exists('gzinflate'))
+			{
+				$stack = gzinflate($stack);
+			}
+		}
+		$stack = json_decode($stack, true);
+
+		$this->_membersStack = $stack['members'];
+		$this->totalMembers  = $stack['total'];
+		$this->doneMembers   = $stack['done'];
 	}
 
 }

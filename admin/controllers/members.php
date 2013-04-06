@@ -31,7 +31,7 @@ class ChurchDirectoryControllerMembers extends JControllerAdmin
 	}
 
 	/**
-	 * Method to toggle the featured setting of a list of contacts.
+	 * Method to toggle the featured setting of a list of members.
 	 *
 	 * @return    void
 	 *
@@ -45,7 +45,7 @@ class ChurchDirectoryControllerMembers extends JControllerAdmin
 		// Initialise variables.
 		$app    = JFactory::getApplication();
 		$user   = JFactory::getUser();
-		$ids    = $this->input->get('cid', array(), '', 'array');
+		$ids    = $app->input->get('cid', array(), '', 'array');
 		$values = array('featured' => 1, 'unfeatured' => 0);
 		$task   = $this->getTask();
 		$value  = JArrayHelper::getValue($values, $task, 0, 'int');

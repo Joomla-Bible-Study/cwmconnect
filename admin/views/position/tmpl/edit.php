@@ -55,69 +55,67 @@ JHtml::_('behavior.keepalive'); /* Predefine for Access */
             <input type="hidden" name="task" value=""/>
 			<?php echo JHtml::_('form.token'); ?>
         </div>
-        <div class="span2">
+        <div class="span2 form-vertical">
             <h4><?php echo JText::_('COM_CHURCHDIRECTORY_FAMILY_MEMBERS'); ?></h4>
             <hr/>
-            <fieldset class="form-vertical">
-                <div class="control-group">
-                    <div class="control-group">
-                        <div class="control-label">
-							<?php echo $this->form->getValue('name'); ?>
-                        </div>
-                    </div>
-                    <div class="control-label">
-						<?php echo $this->form->getLabel('published'); ?>
-                    </div>
-                    <div class="controls">
-						<?php echo $this->form->getInput('published'); ?>
-                    </div>
-                </div>
+            <div class="control-group">
                 <div class="control-group">
                     <div class="control-label">
-						<?php echo $this->form->getLabel('access'); ?>
-                    </div>
-                    <div class="controls">
-						<?php echo $this->form->getInput('access'); ?>
+						<?php echo $this->form->getValue('name'); ?>
                     </div>
                 </div>
-                <div class="control-group">
-                    <div class="control-label">
-						<?php echo $this->form->getLabel('language'); ?>
-                    </div>
-                    <div class="controls">
-						<?php echo $this->form->getInput('language'); ?>
-                    </div>
+                <div class="control-label">
+					<?php echo $this->form->getLabel('published'); ?>
                 </div>
-                <hr/>
-                <table class="table table-striped" style="width: 100%">
-                    <thead>
-                    <tr>
-                        <th style="text-align: center"><?php echo JText::_('COM_CHURCHDIRECTORY_FIELD_NAME_LABEL'); ?></th>
-                        <th style="text-align: center"><?php echo JText::_('COM_CHURCHDIRECTORY_ID_LABEL'); ?></th>
+                <div class="controls">
+					<?php echo $this->form->getInput('published'); ?>
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="control-label">
+					<?php echo $this->form->getLabel('access'); ?>
+                </div>
+                <div class="controls">
+					<?php echo $this->form->getInput('access'); ?>
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="control-label">
+					<?php echo $this->form->getLabel('language'); ?>
+                </div>
+                <div class="controls">
+					<?php echo $this->form->getInput('language'); ?>
+                </div>
+            </div>
+            <hr/>
+            <table class="table table-striped" style="width: 100%">
+                <thead>
+                <tr>
+                    <th style="text-align: center"><?php echo JText::_('COM_CHURCHDIRECTORY_FIELD_NAME_LABEL'); ?></th>
+                    <th style="text-align: center"><?php echo JText::_('COM_CHURCHDIRECTORY_ID_LABEL'); ?></th>
 
-                    </tr>
-                    </thead>
-                    <tbody>
+                </tr>
+                </thead>
+                <tbody>
+				<?php
+				if ($this->members != null): foreach ($this->members as $members) : ?>
+                <tr>
+                    <td style="text-align: center">
+						<?php echo $members['name'] ?></td>
+                    <td style="text-align: center"><?php echo $members['id'] ?></td>
+                </tr>
 					<?php
-					if ($this->members != null): foreach ($this->members as $members) : ?>
-                    <tr>
-                        <td style="text-align: center">
-							<?php echo $members['name'] ?></td>
-                        <td style="text-align: center"><?php echo $members['id'] ?></td>
-                    </tr>
-						<?php
-					endforeach;
-					else:
-						?>
-                    <tr>
-                        <td colspan="2" style="text-align: center">
-							<?php echo JText::_('COM_CHURCHDIRECTORY_FIELD_NO_RECORDS'); ?>
-                        </td>
-                    </tr>
-						<?php endif; ?>
-                    </tbody>
-                </table>
-            </fieldset>
+				endforeach;
+				else:
+					?>
+                <tr>
+                    <td colspan="2" style="text-align: center">
+						<?php echo JText::_('COM_CHURCHDIRECTORY_FIELD_NO_RECORDS'); ?>
+                    </td>
+                </tr>
+					<?php endif; ?>
+                </tbody>
+            </table>
         </div>
     </div>
 </form>

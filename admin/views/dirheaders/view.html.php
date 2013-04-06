@@ -37,6 +37,8 @@ class ChurchDirectoryViewDirHeaders extends JViewLegacy
 	 */
 	protected $state;
 
+	protected $sidebar;
+
 	/**
 	 * Display the view
 	 *

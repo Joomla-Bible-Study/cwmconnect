@@ -1,12 +1,10 @@
 <?php
 /**
- * ChurchDirectory Contact manager component for Joomla! 1.7
- *
- * @package             ChurchDirectory.Admin
- * @copyright           (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
- * @license             GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    ChurchDirectory.Admin
+ * @copyright  (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-// No direct access
+
 defined('_JEXEC') or die;
 
 JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
@@ -23,20 +21,20 @@ JHtml::_('behavior.multiselect');
         <?php else : ?>
             <div id="j-main-container">
             <?php endif; ?>
-    <p>A Church Directory manager component. Displays a list of contacts and contact details pages with various
+    <p>A Church Directory manager component. Displays a list of members and member details pages with various
         informations and a mail-to form.</p>
 
     <h2>Online Documentation</h2>
 
-    <p><a href="">English</a></p>
+    <p><a href="#">English</a></p>
 
     <h2>Support ChurchDirectory</h2>
 
-    <p>If you like this component please rate it at the Joomla Extensions Directory. <a href="">Rate here</a></p>
+    <p>If you like this component please rate it at the Joomla Extensions Directory. <a href="#">Rate here</a></p>
 
     <h2>Need help?</h2>
 
-    <p>Feel free to ask a question in our <a href="">support forum</a>.</p>
+    <p>Feel free to ask a question in our <a href="#">support forum</a>.</p>
 
     <h2>Copyright</h2>
 
@@ -44,7 +42,7 @@ JHtml::_('behavior.multiselect');
         License v3</a>.</p>
 
     <p>Some parts of ChurchDirectory are derived from Joomla! contact component (com_contact). Copyright
-        (C) 2005 - 2011 Joomla Bible Studys, Inc. All rights reserved. </p>
+        (C) 2005 - 2013 Joomla Bible Studys, Inc. All rights reserved. </p>
 </div>
 </form>
 

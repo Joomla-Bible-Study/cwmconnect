@@ -121,6 +121,7 @@ class ChurchDirectoryViewMembers extends JViewLegacy
 		{
 			JToolBarHelper::trash('members.trash');
 		}
+
 		// Add a batch button
 		if ($user->authorise('core.edit'))
 		{
@@ -151,7 +152,7 @@ class ChurchDirectoryViewMembers extends JViewLegacy
 			JHtmlSidebar::addFilter(
 				JText::_('JOPTION_SELECT_CATEGORY'),
 				'filter_category_id',
-				JHtml::_('select.options', JHtml::_('category.options', 'com_contact'), 'value', 'text', $this->state->get('filter.category_id'))
+				JHtml::_('select.options', JHtml::_('category.options', 'com_churchdirectory'), 'value', 'text', $this->state->get('filter.category_id'))
 			);
 
 			JHtmlSidebar::addFilter(
@@ -164,6 +165,12 @@ class ChurchDirectoryViewMembers extends JViewLegacy
 				JText::_('JOPTION_SELECT_LANGUAGE'),
 				'filter_language',
 				JHtml::_('select.options', JHtml::_('contentlanguage.existing', true, true), 'value', 'text', $this->state->get('filter.language'))
+			);
+
+			JHtmlSidebar::addFilter(
+				JText::_('COM_CHURCHODIRECTORY_OPTION_SELECT_MSTATUS'),
+				'filter_mstatus',
+				JHtml::_('select.options', JHtml::_('memberstatus.existing', true, true), 'value', 'text', $this->state->get('filter.mstatus'))
 			);
 		}
 	}

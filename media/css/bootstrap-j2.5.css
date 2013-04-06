@@ -4,9 +4,10 @@
     Author     : bcordis
     Description:
         Purpose of the stylesheet follows.
+        This Correct some bootstraps for joomla 2.5
 */
 
-form .controls label {
+form .tab-content .controls label, form .controls #batch-move-copy label {
     float: left;
     clear: none;
     padding-left: 10px;
@@ -15,11 +16,11 @@ form .controls label {
 }
 
 .control-group label {
-    margin-right: 2em;
+    display: block;
+    margin-bottom: 5px;
 }
 
 form .controls fieldset {
-
     border: none;
 }
 
@@ -44,11 +45,6 @@ label, input, button, select, textarea {
     line-height: 18px;
 }
 
-.modal-footer {
-    float: right;
-    clear: left;
-}
-
 [class^="icon-16"], [class*=" icon-16"] {
     width: auto;
     height: 100%;
@@ -57,14 +53,14 @@ label, input, button, select, textarea {
 [class^="icon-32"], [class*=" icon-32"] {
     width: 32px;
     height: 32px;
-    background-position: 0px 0px;
+    background-position: 0 0;
     display: block;
 }
 
 [class^="icon-48"], [class*=" icon-48"] {
     width: 48px;
     height: 48px;
-    background-position: 0px 0px;
+    background-position: 0 0;
     display: block;
 }
 
@@ -75,7 +71,7 @@ label, input, button, select, textarea {
 }
 
 #j-main-container .pagination {
-    margin: 0px;
+    margin: 0;
     float: right;
 }
 
@@ -87,8 +83,31 @@ div.pagetitle {
     width: auto;
 }
 
+.radio input[type="radio"], .checkbox input[type="checkbox"] {
+    float: left;
+    margin-left: 0;
+}
+
+.form-search label, .form-inline label, .form-search .btn-group, .form-inline .btn-group {
+    display: inline-block;
+}
+
+.form-vertical .control-label {
+    float: none;
+    width: auto;
+    padding-right: 0;
+    padding-top: 0;
+    text-align: left;
+}
+
+.form-vertical .controls {
+    margin-left: 0;
+}
+
 .form-horizontal .control-label {
     width: auto;
+    padding-right: 5px;
+    text-align: left;
 }
 
 form .btn-group label {
@@ -109,6 +128,15 @@ input, select {
     display: inline-block;
 }
 
+/*
+  Church Directory only
+*/
 .churchdirectory_paddingtop20 {
     margin-top: 20px;
+}
+
+#main .contact ul.nav {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
 }

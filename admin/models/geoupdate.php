@@ -244,6 +244,8 @@ class ChurchDirectoryModelGeoUpdate extends JModelLegacy
 		$this->resetTimer();
 		$this->getMembers();
 
+		$id = JFactory::getApplication()->input->getInt('id', 0);
+
 		if (empty($this->_membersStack))
 		{
 			$this->_membersStack = array();
@@ -272,6 +274,7 @@ class ChurchDirectoryModelGeoUpdate extends JModelLegacy
 	 */
 	private function update($row = null, $id = null)
 	{
+
 		$geocode_pending = false;
 		$db              = $this->getDbo();
 
@@ -286,6 +289,11 @@ class ChurchDirectoryModelGeoUpdate extends JModelLegacy
 				$query->select('*')->from('#__churchdirectory_details')->where('id =' . $db->q($id));
 				$db->setQuery($query);
 				$row = $db->loadObject();
+
+				if (is_object($row))
+				{
+					$row = get_object_vars($row);
+				}
 			}
 			else
 			{

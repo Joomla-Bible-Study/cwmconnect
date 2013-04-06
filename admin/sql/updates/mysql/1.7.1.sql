@@ -19,7 +19,7 @@ UPDATE  `#__menu` SET  `title` =  'COM_CHURCHDIRECTORY_MEMBERS',
 `alias` =  'com-churchdirectory-members',
 `path` =  'com-churchdirectory/com-churchdirectory-members',
 `link` =  'index.php?option=com_churchdirectory&view=members',
-`img` =  '../media/com_churchdirectory/images/menu/icon-16-members.png' WHERE  `#__menu`.`title` = 'COM_CHURCHDIRECTORY_CONTACTS';
+`img` =  '../media/com_churchdirectory/images/menu/icon-16-members.png' WHERE  `#__menu`.`title` = 'COM_CHURCHDIRECTORY_MEMBERS';
 
 CREATE TABLE IF NOT EXISTS `#__churchdirectory_dirheader` (
   `id` int(11) NOT NULL AUTO_INCREMENT,

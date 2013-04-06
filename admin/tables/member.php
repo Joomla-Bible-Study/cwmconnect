@@ -10,6 +10,17 @@ defined('_JEXEC') or die;
 /**
  * Member Table Class
  *
+ * @property mixed default_con
+ * @property mixed publish_up
+ * @property mixed publish_down
+ * @property mixed created_by
+ * @property mixed modified_by
+ * @property mixed modified
+ * @property mixed created
+ * @property string xreference
+ * @property \JRegistry params
+ * @property mixed      alias
+ * @property mixed      attribs
  * @package  ChurchDirectory.Admin
  * @since    1.7.0
  */
@@ -70,7 +81,7 @@ class ChurchDirectoryTableMember extends JTable
 	}
 
 	/**
-	 * Stores a contact
+	 * Stores a Member
 	 *
 	 * @param   boolean  $updateNulls  True to update fields even if they are null.
 	 *

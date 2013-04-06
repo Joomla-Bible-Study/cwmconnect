@@ -41,6 +41,7 @@ class ChurchDirectoryModelMembers extends JModelList
 				'catid', 'a.catid', 'category_title',
 				'user_id', 'a.user_id',
 				'state', 'a.state',
+				'postcode', 'a.postcode',
 				'access', 'a.access', 'access_level',
 				'created', 'a.created',
 				'created_by', 'a.created_by',
@@ -50,6 +51,7 @@ class ChurchDirectoryModelMembers extends JModelList
 				'publish_up', 'a.publish_up',
 				'publish_down', 'a.publish_down',
 				'ul.name', 'linked_user',
+				'mstatus', 'a.mstatus',
 			);
 		}
 
@@ -91,6 +93,9 @@ class ChurchDirectoryModelMembers extends JModelList
 		$language = $this->getUserStateFromRequest($this->context . '.filter.language', 'filter_language', '');
 		$this->setState('filter.language', $language);
 
+		$mstatus = $this->getUserStateFromRequest($this->context . '.filter.mstatus', 'filter_mstatus', '');
+		$this->setState('filter.mstatus', $mstatus);
+
 		// List state information.
 		parent::populateState('a.name', 'asc');
 	}
@@ -115,6 +120,7 @@ class ChurchDirectoryModelMembers extends JModelList
 		$id .= ':' . $this->getState('filter.published');
 		$id .= ':' . $this->getState('filter.category_id');
 		$id .= ':' . $this->getState('filter.language');
+		$id .= ':' . $this->getState('filter.mstatus');
 
 		return parent::getStoreId($id);
 	}
@@ -136,7 +142,7 @@ class ChurchDirectoryModelMembers extends JModelList
 		$query->select(
 			$this->getState(
 				'list.select', 'a.id, a.name, a.lname, a.funitid, a.alias, a.checked_out, a.checked_out_time, a.catid, a.user_id' .
-				', a.published, a.access, a.created, a.created_by, a.ordering, a.featured, a.language' .
+				', a.published, a.access, a.created, a.created_by, a.ordering, a.featured, a.language, a.mstatus' .
 				', a.publish_up, a.publish_down'
 			)
 		);
@@ -214,7 +220,13 @@ class ChurchDirectoryModelMembers extends JModelList
 			elseif (stripos($search, 'author:') === 0)
 			{
 				$search = $db->Quote('%' . $db->escape(substr($search, 7), true) . '%');
-				$query->where('(ua.name LIKE ' . $search . ' OR ua.username LIKE ' . $search . ')');
+				$query->where('(uc.name LIKE ' . $search . ' OR uc.username LIKE ' . $search . ')');
+			}
+			elseif (stripos($search, 'zip:') === 0)
+			{
+				$search = $db->q('%' . $db->escape(substr($search, 4), true) . '%');
+				$search = trim($search);
+				$query->where('a.postcode LIKE ' . $search);
 			}
 			else
 			{
@@ -227,6 +239,12 @@ class ChurchDirectoryModelMembers extends JModelList
 		if ($language = $this->getState('filter.language'))
 		{
 			$query->where('a.language = ' . $db->quote($language));
+		}
+
+		// Filter on the language.
+		if ($mstatus = $this->getState('filter.mstatus'))
+		{
+			$query->where('a.mstatus = ' . $db->quote($mstatus));
 		}
 
 		// Add the list ordering clause.

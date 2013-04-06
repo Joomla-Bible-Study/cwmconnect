@@ -9,6 +9,7 @@ defined('_JEXEC') or die;
 JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 JHtml::_('bootstrap.tooltip');
 JHtml::_('behavior.multiselect');
+JHtml::_('behavior.modal');
 JHtml::_('dropdown.init');
 JHtml::_('formbehavior.chosen', 'select');
 
@@ -103,11 +104,16 @@ $sortFields = $this->getSortFields();
             <option value=""><?php echo JText::_('JOPTION_SELECT_LANGUAGE'); ?></option>
 			<?php echo JHtml::_('select.options', JHtml::_('contentlanguage.existing', true, true), 'value', 'text', $this->state->get('filter.language')); ?>
         </select>
+
+	    <select name="filter_mstatus" class="inputbox" onchange="this.form.submit()">
+		    <option value=""><?php echo JText::_('COM_CHURCHDIRECTORY_SELECT_MSTATUS'); ?></option>
+		    <?php echo JHtml::_('select.options', JHtml::_('member.status', true, true), 'value', 'text', $this->state->get('filter.mstatus')); ?>
+	    </select>
     </div>
 	<?php endif; ?>
 </div>
 <div class="clr"></div>
-<table class="adminlist table table-striped" id="articleList">
+<table class="table table-striped" id="articleList">
     <thead>
     <tr>
         <th width="1%" class="order nowrap center hidden-phone">
@@ -123,13 +129,13 @@ $sortFields = $this->getSortFields();
         <th>
 			<?php echo JHtml::_('grid.sort', 'JGLOBAL_TITLE', 'a.name', $listDirn, $listOrder); ?>
         </th>
-        <th>
+        <th class="center">
 			<?php echo JHtml::_('grid.sort', 'COM_CHURCHDIRECTORY_FIELD_LASTNAME', 'a.lname', $listDirn, $listOrder); ?>
         </th>
         <th class="nowrap hidden-phone">
 			<?php echo JHtml::_('grid.sort', 'COM_CHURCHDIRECTORY_FIELD_LINKED_USER_LABEL', 'ul.name', $listDirn, $listOrder); ?>
         </th>
-        <th width="5%" class="nowrap hidden-phone">
+        <th width="5%" class="center nowrap hidden-phone">
 			<?php echo JHtml::_('grid.sort', 'COM_CHURCHDIRECTORY_FIELD_FEATURED_LABEL', 'a.featured', $listDirn, $listOrder); ?>
         </th>
         <th width="10%" class="nowrap hidden-phone">
@@ -243,6 +249,10 @@ $sortFields = $this->getSortFields();
 					JHtml::_('dropdown.trash', 'cb' . $i, 'members.');
 				endif;
 
+				JHtml::_('dropdown.divider');
+
+				JHtml::_('geoupdate.update', $item->id, 'geoupdate.');
+
 				// Render dropdown list
 				echo JHtml::_('dropdown.render');
 				?>
@@ -275,7 +285,16 @@ $sortFields = $this->getSortFields();
     </tr>
 		<?php endforeach; ?>
     </tbody>
+    <tfoot>
+    <tr>
+        <td colspan="10">
+			<?php echo $this->pagination->getPagesLinks(); ?>
+        </td>
+    </tr>
+    </tfoot>
 </table>
+<?php //Load the batch processing form. ?>
+<?php echo $this->loadTemplate('batch'); ?>
 <input type="hidden" name="task" value=""/>
 <input type="hidden" name="boxchecked" value="0"/>
 <input type="hidden" name="filter_order" value="<?php echo $listOrder; ?>"/>

@@ -76,7 +76,7 @@
 
             <field name="show_empty_categories" type="list"
                    label="JGLOBAL_SHOW_EMPTY_CATEGORIES_LABEL"
-                   description="COM_CHURCHDIRECTOYR_SHOW_EMPTY_CATEGORIES_DESC"
+                   description="COM_CHURCHDIRECTORY_SHOW_EMPTY_CATEGORIES_DESC"
                     >
                 <option value="">JGLOBAL_USE_GLOBAL</option>
                 <option value="0">JHIDE</option>
@@ -94,8 +94,8 @@
             </field>
 
             <field name="show_cat_items" type="list"
-                   label="COM_CHURCHDIRECTOYR_FIELD_SHOW_CAT_ITEMS_LABEL"
-                   description="COM_CHURCHDIRECTOYR_FIELD_SHOW_CAT_ITEMS_DESC"
+                   label="COM_CHURCHDIRECTORY_FIELD_SHOW_CAT_ITEMS_LABEL"
+                   description="COM_CHURCHDIRECTORY_FIELD_SHOW_CAT_ITEMS_DESC"
                     >
                 <option value="">JGLOBAL_USE_GLOBAL</option>
                 <option value="0">JHIDE</option>

@@ -144,7 +144,6 @@ class ChurchDirectoryViewPositions extends JViewLegacy
 
 		if (version_compare(JVERSION, '3.0.0', 'ge'))
 		{
-			JToolBarHelper::help('churchdirectory_positions', true);
 			JHtmlSidebar::setAction('index.php?option=com_churchdirectory&amp;view=positions');
 
 			JHtmlSidebar::addFilter(

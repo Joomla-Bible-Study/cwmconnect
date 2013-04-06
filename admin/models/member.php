@@ -436,7 +436,7 @@ class ChurchDirectoryModelMember extends JModelAdmin
 			if ($this->getState('member.id') == 0)
 			{
 				$app = JFactory::getApplication();
-				$data->set('catid', JRequest::getInt('catid', $app->getUserState('com_churchdirectory.members.filter.category_id')));
+				$data->set('catid', JFactory::getApplication()->input->getInt('catid', $app->getUserState('com_churchdirectory.members.filter.category_id')));
 			}
 		}
 
@@ -497,12 +497,16 @@ class ChurchDirectoryModelMember extends JModelAdmin
 	}
 
 	/**
-	 * Method to toggle the featured setting of contacts.
+	 * Method to toggle the featured setting of members.
 	 *
-	 * @param    array      $pks      The ids of the items to toggle.
-	 * @param    int        $value    The value to toggle to.
+	 * @param   array  $pks    The ids of the items to toggle.
+	 * @param   int    $value  The value to toggle to.
 	 *
-	 * @return    boolean    True on success.
+	 * @throws  string  errors
+	 * @throws  string  errors
+	 *
+	 * @return  boolean    True on success.
+	 *
 	 * @since    1.7.0
 	 */
 	public function featured($pks, $value = 0)
@@ -520,23 +524,15 @@ class ChurchDirectoryModelMember extends JModelAdmin
 
 		$table = $this->getTable();
 
-		try
-		{
-			$db = $this->getDbo();
+		$db = $this->getDbo();
 
-			$db->setQuery(
-				'UPDATE #__churchdirectory_details AS a' .
-					' SET a.featured = ' . (int) $value .
-					' WHERE a.id IN (' . implode(',', $pks) . ')'
-			);
-			if (!$db->execute())
-			{
-				throw new Exception($db->getErrorMsg());
-			}
-		}
-		catch (Exception $e)
+		$db->setQuery(
+			'UPDATE #__churchdirectory_details AS a' .
+				' SET a.featured = ' . (int) $value .
+				' WHERE a.id IN (' . implode(',', $pks) . ')'
+		);
+		if (!$db->execute())
 		{
-			$this->setError($e->getMessage());
 
 			return false;
 		}

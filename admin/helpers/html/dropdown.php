@@ -135,7 +135,7 @@ abstract class JHtmlDropdown
 
 		if (!$customLink)
 		{
-			$option = JFactory::getApplication()->input->getCmd('option');
+			$option = JFactory::getApplication()->input->getCmd('option', 'com_churchdirectory');
 			$link = 'index.php?option=' . $option;
 		}
 		else
