@@ -6,29 +6,21 @@
  * */
 defined('_JEXEC') or die;
 
-$printed_items = 0;
-$printed_rows = 0;
 $this->loadHelper('render');
 $renderHelper = new renderHelper;
-$heading = null;
-$letter = null;
+
 if ($this->params->get('dr_show_debug')) :
-	echo "<b>Number of Members: " . count($this->items) . "</b>";
+	echo "<b>Number of Members: " . count($this->sort2) . "</b>";
 endif;
 ?>
-<?php if (empty($this->items)) : ?>
-	<p xmlns="http://www.w3.org/1999/html"> <?php echo JText::_('COM_CHURCHDIRECTORY_NO_CONTACTS'); ?>     </p>
+<?php if (empty($this->sort2)) : ?>
+	<p xmlns="http://www.w3.org/1999/html"> <?php echo JText::_('COM_CHURCHDIRECTORY_NO_MEMBERS'); ?>     </p>
 <?php endif; ?>
 <div class="churchdirectory-container">
 <?php
-foreach ($this->items as $item)
+foreach ($this->sort2 as $item)
 {
-	if ($letter != ucfirst($item->name[0]))
-	{
-		$letter = ucfirst($item->name[0]);
-		// @FIXME still need to fix this error. It is not working quite right yet.
-		echo '<div class="clearfix"></div><hr/><a name="' . $letter . '"></a><h2>' . $letter . '</h2>';
-	}
+
 	if ($printed_rows == $this->params->get('rows_per_page'))
 	{
 		echo '<div style="page-break-after:always"></div>';

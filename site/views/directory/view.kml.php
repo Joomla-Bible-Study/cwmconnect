@@ -267,16 +267,16 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 		$kml[] = '</scale>';
 		$kml[] = '</LabelStyle>';
 		$kml[] = '</Style> ';
-		$teams = $this->groupit(array('items' => $items, 'field' => 'category_title'));
+		$teams = RenderHelper::groupit(array('items' => $items, 'field' => 'category_title'));
 
 		foreach ($teams as $c => $catid)
 		{
-			$newrows[$c] = $this->groupit(array('items' => $teams[$c], 'field' => 'suburb'));
+			$new_rows[$c] = RenderHelper::groupit(array('items' => $teams[$c], 'field' => 'suburb'));
 			$ckml_params = $catid[0]->kml_params;
 		}
 		$mycounter = '0';
 
-		foreach ($newrows as $c => $suburb)
+		foreach ($new_rows as $c => $suburb)
 		{
 			$mycounter++;
 			$kml[] = '<Folder id="' . $mycounter . '"> ';
@@ -442,44 +442,6 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 		echo $kmlOutput;
 
 		return true;
-	}
-
-	/**
-	 * Ror passing records out to put then in order and not repeat the records.
-	 *
-	 * @param   array  $args  Array of Items to group
-	 *
-	 * @return array
-	 */
-	public function groupit($args)
-	{
-		$items = null;
-		$field = null;
-		extract($args);
-		$result = array();
-
-		foreach ($items as $item)
-		{
-			if (!empty($item->$field))
-			{
-				$key = $item->$field;
-			}
-			else
-			{
-				$key = 'nomatch';
-			}
-			if (array_key_exists($key, $result))
-			{
-				$result[$key][] = $item;
-			}
-			else
-			{
-				$result[$key]   = array();
-				$result[$key][] = $item;
-			}
-		}
-
-		return $result;
 	}
 
 }
