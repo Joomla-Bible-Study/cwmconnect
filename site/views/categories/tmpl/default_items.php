@@ -1,16 +1,15 @@
 <?php
 /**
- * Sub view of Categoris for items
- * @package		ChurchDirectory.Site
- * @copyright           (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ * @package  ChurchDirectory.Site
+ * @copyright  (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
+ * @license  GNU General Public License version 2 or later; see LICENSE.txt
  */
-// no direct access
+
 defined('_JEXEC') or die;
 $class = ' class="first"';
 if (count($this->items[$this->parent->id]) > 0 && $this->maxLevelcat != 0) :
     ?>
-    <ul>
+    <ul class="list-striped list-condensed">
         <?php foreach ($this->items[$this->parent->id] as $id => $item) : ?>
             <?php
             if ($this->params->get('show_empty_categories_cat') || $item->numitems || count($item->getChildren())) :
@@ -20,9 +19,15 @@ if (count($this->items[$this->parent->id]) > 0 && $this->maxLevelcat != 0) :
                 ?>
                 <li<?php echo $class; ?>>
                     <?php $class = ''; ?>
-                    <span class="item-title"><a href="<?php echo JRoute::_(ChurchDirectoryHelperRoute::getCategoryRoute($item->id)); ?>">
-                            <?php echo $this->escape($item->title); ?></a>
-                    </span>
+                    <h4 class="item-title">
+	                    <a href="<?php echo JRoute::_(ChurchDirectoryHelperRoute::getCategoryRoute($item->id)); ?>">
+                            <?php echo $this->escape($item->title); ?>
+	                    </a>
+
+	                    <?php if ($this->params->get('show_cat_items_cat') == 1) :?>
+	                        <span class="badge badge-info pull-right" title="<?php echo JText::_('COM_CHURCHDIRECTORY_COUNT'); ?>"><?php echo $item->numitems; ?></span>
+	                    <?php endif; ?>
+                    </h4>
 
                     <?php if ($this->params->get('show_subcat_desc_cat') == 1) : ?>
                         <?php if ($item->description) : ?>
@@ -30,13 +35,6 @@ if (count($this->items[$this->parent->id]) > 0 && $this->maxLevelcat != 0) :
                                 <?php echo JHtml::_('content.prepare', $item->description); ?>
                             </div>
                         <?php endif; ?>
-                    <?php endif; ?>
-
-                    <?php if ($this->params->get('show_cat_items_cat') == 1) : ?>
-                        <dl><dt>
-                            <?php echo JText::_('COM_CHURCHDIRECTORY_COUNT'); ?></dt>
-                            <dd><?php echo $item->numitems; ?></dd>
-                        </dl>
                     <?php endif; ?>
 
                     <?php

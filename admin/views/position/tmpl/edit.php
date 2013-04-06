@@ -1,21 +1,20 @@
 <?php
 /**
- * Edit for position
- * @package	ChurchDirectory.Admin
- * @copyright	(C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
- * @license	GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    ChurchDirectory.Admin
+ * @copyright  (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-// no direct access
+
 defined('_JEXEC') or die;
 
 // Include the component HTML helpers.
 JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.formvalidation');
+JHtml::_('behavior.keepalive'); /* Predefine for Access */
 ?>
 <script type="text/javascript">
-    Joomla.submitbutton = function(task)
-    {
+    Joomla.submitbutton = function (task) {
         if (task == 'position.cancel' || document.formvalidator.isValid(document.id('position-form'))) {
             Joomla.submitform(task, document.getElementById('position-form'));
         }
@@ -25,60 +24,98 @@ JHtml::_('behavior.formvalidation');
     }
 </script>
 
-<form action="<?php echo JRoute::_('index.php?option=com_churchdirectory&view=position&layout=edit&id=' . (int) $this->item->id); ?>" method="post" name="adminForm" id="position-form" class="form-validate">
-    <div class="width-60 fltlft">
-        <fieldset class="adminform">
-            <legend><?php echo empty($this->item->id) ? JText::_('COM_CHURCHDIRECTORY_NEW_POSITION') : JText::sprintf('COM_CHURCHDIRECTORY_EDIT_POSITION', $this->item->id); ?></legend>
-            <ul class="adminformlist">
-                <li><?php echo $this->form->getLabel('name'); ?>
-                    <?php echo $this->form->getInput('name'); ?></li>
-                <li><?php echo $this->form->getLabel('alias'); ?>
-                    <?php echo $this->form->getInput('alias'); ?></li>
-                <li><?php echo $this->form->getLabel('published'); ?>
-                    <?php echo $this->form->getInput('published'); ?></li>
-                <li><?php echo $this->form->getLabel('language'); ?>
-                    <?php echo $this->form->getInput('language'); ?></li>
-                <li><?php echo $this->form->getLabel('id'); ?>
-                    <?php echo $this->form->getInput('id'); ?></li>
+<form action="<?php echo JRoute::_('index.php?option=com_churchdirectory&view=position&layout=edit&id=' . (int) $this->item->id); ?>"
+      method="post" name="adminForm" id="position-form" class="form-validate form-horizontal">
+    <div class="row-fluid">
+        <!-- Begin Position -->
+        <div class="span10 form-horizontal">
+            <ul class="nav nav-tabs">
+                <li class="active">
+                    <a href="#details"
+                       data-toggle="tab"><?php echo empty($this->item->id) ? JText::_('COM_CHURCHDIRECTORY_NEW_POSITION') : JText::sprintf('COM_CHURCHDIRECTORY_EDIT_POSITION', $this->item->id); ?></a>
+                </li>
             </ul>
-        </fieldset>
-    </div>
-    <div class="width-40 fltrt">
-        <fieldset class="adminform">
-            <legend><?php echo JText::_('COM_CHURCHDIRECTORY_FAMILY_MEMBERS'); ?></legend>
-            <table class="adminlist">
-                <thead>
-                    <tr>
-                        <th align="center"><?php echo JText::_('COM_CHURCHDIRECTORY_FIELD_NAME_LABEL'); ?></th>
-                        <th align="center"><?php echo JText::_('COM_CHURCHDIRECTORY_ID_LABEL'); ?></th>
+            <div class="tab-content">
+                <div class="tab-pane active" id="details">
+                    <div class="control-group">
+                        <div class="control-label"><?php echo $this->form->getLabel('name'); ?></div>
+                        <div class="controls"><?php echo $this->form->getInput('name'); ?></div>
+                    </div>
+                    <div class="control-group">
+                        <div class="control-label"><?php echo $this->form->getLabel('alias'); ?></div>
+                        <div class="controls"><?php echo $this->form->getInput('alias'); ?></div>
+                    </div>
+                    <div class="control-group">
+                        <div class="control-label"><?php echo $this->form->getLabel('id'); ?></div>
+                        <div class="controls"><?php echo $this->form->getInput('id'); ?></div>
+                    </div>
+                </div>
+            </div>
 
-                    </tr>
+            <input type="hidden" name="task" value=""/>
+			<?php echo JHtml::_('form.token'); ?>
+        </div>
+        <div class="span2 form-vertical">
+            <h4><?php echo JText::_('COM_CHURCHDIRECTORY_FAMILY_MEMBERS'); ?></h4>
+            <hr/>
+            <div class="control-group">
+                <div class="control-group">
+                    <div class="control-label">
+						<?php echo $this->form->getValue('name'); ?>
+                    </div>
+                </div>
+                <div class="control-label">
+					<?php echo $this->form->getLabel('published'); ?>
+                </div>
+                <div class="controls">
+					<?php echo $this->form->getInput('published'); ?>
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="control-label">
+					<?php echo $this->form->getLabel('access'); ?>
+                </div>
+                <div class="controls">
+					<?php echo $this->form->getInput('access'); ?>
+                </div>
+            </div>
+            <div class="control-group">
+                <div class="control-label">
+					<?php echo $this->form->getLabel('language'); ?>
+                </div>
+                <div class="controls">
+					<?php echo $this->form->getInput('language'); ?>
+                </div>
+            </div>
+            <hr/>
+            <table class="table table-striped" style="width: 100%">
+                <thead>
+                <tr>
+                    <th style="text-align: center"><?php echo JText::_('COM_CHURCHDIRECTORY_FIELD_NAME_LABEL'); ?></th>
+                    <th style="text-align: center"><?php echo JText::_('COM_CHURCHDIRECTORY_ID_LABEL'); ?></th>
+
+                </tr>
                 </thead>
                 <tbody>
-                    <?php
-                    if ($this->members != null): foreach ($this->members as $members) : ?>
-                            <tr><td>
-                                    <?php echo $members['name'] ?></td>
-                                <td><?php echo $members['id'] ?></td>
-                            </tr>
-                            <?php
-                        endforeach;
-                    else:
-                        ?>
-                        <tr>
-                            <td colspan="2" align="center">
-                                <?php echo JText::_('COM_CHURCHDIRECTORY_FIELD_NO_RECORDS'); ?>
-                            </td>
-                        </tr>
-                    <?php endif; ?>
+				<?php
+				if ($this->members != null): foreach ($this->members as $members) : ?>
+                <tr>
+                    <td style="text-align: center">
+						<?php echo $members['name'] ?></td>
+                    <td style="text-align: center"><?php echo $members['id'] ?></td>
+                </tr>
+					<?php
+				endforeach;
+				else:
+					?>
+                <tr>
+                    <td colspan="2" style="text-align: center">
+						<?php echo JText::_('COM_CHURCHDIRECTORY_FIELD_NO_RECORDS'); ?>
+                    </td>
+                </tr>
+					<?php endif; ?>
                 </tbody>
             </table>
-
-        </fieldset>
-    </div>
-    <div>
-        <input type="hidden" name="task" value="" />
-        <?php echo JHtml::_('form.token'); ?>
+        </div>
     </div>
 </form>
-<div class="clr"></div>

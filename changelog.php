@@ -12,3 +12,11 @@ defined('_JEXEC') or die;
  * @todo Need to finish this
  */
 ?>
+
+1.7.6
+
+	**New function to search members in admin view by zip "zip:XXXXX"
+
+
+    #Fixed problem form cms on serching by authur: in members view.
+	#Fixed name for admin menu form Unite to Units.

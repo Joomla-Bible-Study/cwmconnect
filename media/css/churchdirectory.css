@@ -126,7 +126,6 @@ div.separator {
 #directory-items {
     float: left;
     width: 46%;
-    /* padding: 10px; */
 }
 p {
     font-weight: normal;
@@ -235,4 +234,16 @@ div.vert-line>div{float:left; padding-bottom:2000px; margin-bottom:-2000px;}
 
 .paddingitem {
     padding: 5px;
+}
+
+.churchdirectory-container {
+    overflow: hidden;
+}
+
+.churchdirectory-container hr
+{
+    margin: 0;
+    border-width:1px;
+    border-style: solid;
+    border-color: #000;
 }

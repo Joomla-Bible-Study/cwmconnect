@@ -3,7 +3,7 @@
 --
 -- Table structure for table `#__churchdirectory_details`
 --
-DROP TABLE IF EXISTS `#__churchdirectory_details`;
+
 CREATE TABLE IF NOT EXISTS `#__churchdirectory_details` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL DEFAULT '',
@@ -61,6 +61,10 @@ CREATE TABLE IF NOT EXISTS `#__churchdirectory_details` (
   `birthdate` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `anniversary` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `attribs` varchar(5120) NOT NULL,
+  `version` int(10) unsigned NOT NULL DEFAULT '1',
+  `hits` int(10) unsigned NOT NULL DEFAULT '0',
+  `surname` varchar(255) NOT NULL DEFAULT '',
+  `mstatus` tinyint(3) NOT NULL DEFAULT '0' COMMENT 'Used to track Members Status',
   PRIMARY KEY (`id`),
   KEY `idx_catid` (`catid`),
   KEY `idx_access` (`access`),
@@ -78,10 +82,10 @@ CREATE TABLE IF NOT EXISTS `#__churchdirectory_details` (
 -- Dumping data for table `#__churchdirectory_details`
 --
 
-INSERT INTO `#__churchdirectory_details` (`id`, `name`, `lname`, `alias`, `con_position`, `contact_id`, `address`, `suburb`, `state`, `country`, `postcode`, `postcodeaddon`, `telephone`, `fax`, `misc`, `spouse`, `children`, `image`, `imagepos`, `email_to`, `default_con`, `published`, `checked_out`, `checked_out_time`, `ordering`, `params`, `user_id`, `catid`, `kmlid`, `funitid`, `access`, `mobile`, `webpage`, `sortname1`, `sortname2`, `sortname3`, `language`, `created`, `created_by`, `created_by_alias`, `modified`, `modified_by`, `metakey`, `metadesc`, `metadata`, `featured`, `xreference`, `publish_up`, `publish_down`, `skype`, `yahoo_msg`, `lat`, `lng`, `birthdate`, `anniversary`, `attribs`) VALUES
-(1, 'Brent Cordis', 'Cordis', 'brent-cordis', '44,35', 0, '2800 Blair Blvd', 'Nashville', 'TN', 'USA', '37212', NULL, '(615) 657-9749', '(615) 657-9749', '', '', 'Child1, Child2', 'images/sampledata/fruitshop/apple.jpg', NULL, 'info@joomlabiblestudy.com', 0, 1, 0, '0000-00-00 00:00:00', 1, '{"visibility":"1","scale":"1.1","open":"0","gxballoonvisibility":"0","show_contact_category":"","show_contact_list":"","presentation_style":"","show_name":"","show_position":"","show_email":"","show_street_address":"","show_suburb":"","show_state":"","show_postcode":"","show_country":"","show_telephone":"","show_mobile":"","show_fax":"","show_webpage":"","show_misc":"","show_image":"","allow_vcard":"","show_articles":"","show_profile":"","show_links":"","linka_name":"","linka":"","linkb_name":"","linkb":"","linkc_name":"","linkc":"","linkd_name":"","linkd":"","linke_name":"","linke":"","contact_layout":"","show_email_form":"","show_email_copy":"","banned_email":"","banned_subject":"","banned_text":"","validate_session":"","custom_reply":"","redirect":""}', 0, 8, 1, 3, 1, '(615) 657-9749', 'www.joomlabiblestudy.com', 'Last', 'First', 'Middle', '*', '2012-12-03 19:10:08', 53, '', '2012-12-06 19:04:09', 53, '', '', '{"robots":"","rights":""}', 0, '', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'skeebrent', 'bcordis', 36.131973, -86.812370, '1981-12-03 00:00:00', '2012-12-18 00:00:00', '{"memberstatus":"0","memberotherinfo":"","familypostion":"0","mailingaddress":"","mailingsuburb":"","mailingstate":"","mailingpostcode":"","mailingcountry":""}'),
-(2, 'Amy Cordis', 'Cordis', 'amy-cordis', '41', 0, '2800 Blare Blvd', 'Nashville', 'TN', 'USA', '37212', NULL, '(615) 657-9749', '(615) 657-9749', '', '', 'child1, child2', 'images/joomla_black.gif', NULL, 'info@joomlabiblestudy.com', 0, 1, 0, '0000-00-00 00:00:00', 2, '{"visibility":"1","scale":"1.1","open":"0","gxballoonvisibility":"0","show_contact_category":"","show_contact_list":"","presentation_style":"","show_name":"","show_position":"","show_email":"","show_street_address":"","show_suburb":"","show_state":"","show_postcode":"","show_country":"","show_telephone":"","show_mobile":"","show_fax":"","show_webpage":"","show_misc":"","show_image":"","allow_vcard":"","show_articles":"","show_profile":"","show_links":"","linka_name":"","linka":"","linkb_name":"","linkb":"","linkc_name":"","linkc":"","linkd_name":"","linkd":"","linke_name":"","linke":"","contact_layout":"","show_email_form":"","show_email_copy":"","banned_email":"","banned_subject":"","banned_text":"","validate_session":"","custom_reply":"","redirect":""}', 0, 8, 1, 3, 1, '(615) 657-9749', 'www.joomlabiblestudy.com', '', '', '', '*', '2012-12-05 22:22:32', 53, '', '2012-12-06 19:08:24', 53, '', '', '{"robots":"","rights":""}', 0, '', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'test2', 'test1', 36.131973, -86.812370, '1976-12-13 00:00:00', '2007-12-25 00:00:00', '{"memberstatus":"0","memberotherinfo":"","familypostion":"1","mailingaddress":"","mailingsuburb":"","mailingstate":"","mailingpostcode":"","mailingcountry":""}'),
-(3, 'James Smith', 'Smith', 'james-smith', '32', 0, '999 test St', 'Test', 'TN', 'USA', '99999', NULL, '(XXX) XXX-XXXX', '(XXX) XXX-XXXX', '<p>Demo contact</p>', '', '', 'images/sampledata/fruitshop/apple.jpg', NULL, 'info@joomlabiblestudy.com', 0, 1, 0, '0000-00-00 00:00:00', 3, '{"visibility":"1","scale":"1.1","open":"0","gxballoonvisibility":"0","show_contact_category":"","show_contact_list":"","presentation_style":"","show_name":"","show_position":"","show_email":"","show_street_address":"","show_suburb":"","show_state":"","show_postcode":"","show_country":"","show_telephone":"","show_mobile":"","show_fax":"","show_webpage":"","show_misc":"","show_image":"","allow_vcard":"","show_articles":"","show_profile":"","show_links":"","linka_name":"","linka":"","linkb_name":"","linkb":"","linkc_name":"","linkc":"","linkd_name":"","linkd":"","linke_name":"","linke":"","contact_layout":"","show_email_form":"","show_email_copy":"","banned_email":"","banned_subject":"","banned_text":"","validate_session":"","custom_reply":"","redirect":""}', 0, 8, 1, 0, 1, '(XXX) XXX-XXXX', 'www.joomlabiblestudy.com', '', '', '', '*', '2012-12-05 22:23:11', 53, '', '2012-12-06 19:10:22', 53, '', '', '{"robots":"","rights":""}', 0, '', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', '', 0.000000, 0.000000, '1991-07-22 00:00:00', '0000-00-00 00:00:00', '{"memberstatus":"0","memberotherinfo":"","familypostion":"-1","mailingaddress":"","mailingsuburb":"","mailingstate":"","mailingpostcode":"","mailingcountry":""}');
+INSERT INTO `#__churchdirectory_details` (`id`, `name`, `lname`, `alias`, `con_position`, `contact_id`, `address`, `suburb`, `state`, `country`, `postcode`, `postcodeaddon`, `telephone`, `fax`, `misc`, `spouse`, `children`, `image`, `imagepos`, `email_to`, `default_con`, `published`, `checked_out`, `checked_out_time`, `ordering`, `params`, `user_id`, `catid`, `kmlid`, `funitid`, `access`, `mobile`, `webpage`, `sortname1`, `sortname2`, `sortname3`, `language`, `created`, `created_by`, `created_by_alias`, `modified`, `modified_by`, `metakey`, `metadesc`, `metadata`, `featured`, `xreference`, `publish_up`, `publish_down`, `skype`, `yahoo_msg`, `lat`, `lng`, `birthdate`, `anniversary`, `attribs`, `version`, `hits`, `surname`) VALUES
+(1, 'Brent Cordis', 'Cordis', 'brent-cordis', '44,35', 0, '2800 Blair Blvd', 'Nashville', 'TN', 'USA', '37212', NULL, '(615) 657-9749', '(615) 657-9749', '', '', 'Child1, Child2', 'images/sampledata/fruitshop/apple.jpg', NULL, 'info@joomlabiblestudy.com', 0, 1, 0, '0000-00-00 00:00:00', 1, '{"visibility":"1","scale":"1.1","open":"0","gxballoonvisibility":"0","show_contact_category":"","show_contact_list":"","presentation_style":"","show_name":"","show_position":"","show_email":"","show_street_address":"","show_suburb":"","show_state":"","show_postcode":"","show_country":"","show_telephone":"","show_mobile":"","show_fax":"","show_webpage":"","show_misc":"","show_image":"","allow_vcard":"","show_articles":"","show_profile":"","show_links":"","linka_name":"","linka":"","linkb_name":"","linkb":"","linkc_name":"","linkc":"","linkd_name":"","linkd":"","linke_name":"","linke":"","contact_layout":"","show_email_form":"","show_email_copy":"","banned_email":"","banned_subject":"","banned_text":"","validate_session":"","custom_reply":"","redirect":""}', 0, 8, 1, 3, 1, '(615) 657-9749', 'www.joomlabiblestudy.com', 'Last', 'First', 'Middle', '*', '2012-12-03 19:10:08', 53, '', '2012-12-06 19:04:09', 53, '', '', '{"robots":"","rights":""}', 0, '', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'skeebrent', 'bcordis', 36.131973, -86.812370, '1981-12-03 00:00:00', '2012-12-18 00:00:00', '{"memberstatus":"0","memberotherinfo":"","familypostion":"0","mailingaddress":"","mailingsuburb":"","mailingstate":"","mailingpostcode":"","mailingcountry":""}', 1, 0, ''),
+(2, 'Amy Cordis', 'Cordis', 'amy-cordis', '41', 0, '2800 Blare Blvd', 'Nashville', 'TN', 'USA', '37212', NULL, '(615) 657-9749', '(615) 657-9749', '', '', 'child1, child2', 'images/joomla_black.gif', NULL, 'info@joomlabiblestudy.com', 0, 1, 0, '0000-00-00 00:00:00', 2, '{"visibility":"1","scale":"1.1","open":"0","gxballoonvisibility":"0","show_contact_category":"","show_contact_list":"","presentation_style":"","show_name":"","show_position":"","show_email":"","show_street_address":"","show_suburb":"","show_state":"","show_postcode":"","show_country":"","show_telephone":"","show_mobile":"","show_fax":"","show_webpage":"","show_misc":"","show_image":"","allow_vcard":"","show_articles":"","show_profile":"","show_links":"","linka_name":"","linka":"","linkb_name":"","linkb":"","linkc_name":"","linkc":"","linkd_name":"","linkd":"","linke_name":"","linke":"","contact_layout":"","show_email_form":"","show_email_copy":"","banned_email":"","banned_subject":"","banned_text":"","validate_session":"","custom_reply":"","redirect":""}', 0, 8, 1, 3, 1, '(615) 657-9749', 'www.joomlabiblestudy.com', '', '', '', '*', '2012-12-05 22:22:32', 53, '', '2012-12-06 19:08:24', 53, '', '', '{"robots":"","rights":""}', 0, '', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'test2', 'test1', 36.131973, -86.812370, '1976-12-13 00:00:00', '2007-12-25 00:00:00', '{"memberstatus":"0","memberotherinfo":"","familypostion":"1","mailingaddress":"","mailingsuburb":"","mailingstate":"","mailingpostcode":"","mailingcountry":""}', 1, 0, ''),
+(3, 'James Smith', 'Smith', 'james-smith', '32', 0, '999 test St', 'Test', 'TN', 'USA', '99999', NULL, '(XXX) XXX-XXXX', '(XXX) XXX-XXXX', '<p>Demo contact</p>', '', '', 'images/sampledata/fruitshop/apple.jpg', NULL, 'info@joomlabiblestudy.com', 0, 1, 0, '0000-00-00 00:00:00', 3, '{"visibility":"1","scale":"1.1","open":"0","gxballoonvisibility":"0","show_contact_category":"","show_contact_list":"","presentation_style":"","show_name":"","show_position":"","show_email":"","show_street_address":"","show_suburb":"","show_state":"","show_postcode":"","show_country":"","show_telephone":"","show_mobile":"","show_fax":"","show_webpage":"","show_misc":"","show_image":"","allow_vcard":"","show_articles":"","show_profile":"","show_links":"","linka_name":"","linka":"","linkb_name":"","linkb":"","linkc_name":"","linkc":"","linkd_name":"","linkd":"","linke_name":"","linke":"","contact_layout":"","show_email_form":"","show_email_copy":"","banned_email":"","banned_subject":"","banned_text":"","validate_session":"","custom_reply":"","redirect":""}', 0, 8, 1, 0, 1, '(XXX) XXX-XXXX', 'www.joomlabiblestudy.com', '', '', '', '*', '2012-12-05 22:23:11', 53, '', '2012-12-06 19:10:22', 53, '', '', '{"robots":"","rights":""}', 0, '', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', '', 0.000000, 0.000000, '1991-07-22 00:00:00', '0000-00-00 00:00:00', '{"memberstatus":"0","memberotherinfo":"","familypostion":"-1","mailingaddress":"","mailingsuburb":"","mailingstate":"","mailingpostcode":"","mailingcountry":""}', 1, 0, '');
 
 -- --------------------------------------------------------
 
@@ -89,7 +93,6 @@ INSERT INTO `#__churchdirectory_details` (`id`, `name`, `lname`, `alias`, `con_p
 -- Table structure for table `#__churchdirectory_dirheader`
 --
 
-DROP TABLE IF EXISTS `#__churchdirectory_dirheader`;
 CREATE TABLE IF NOT EXISTS `#__churchdirectory_dirheader` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL DEFAULT '',
@@ -132,7 +135,6 @@ INSERT INTO `#__churchdirectory_dirheader` (`id`, `name`, `alias`, `description`
 -- Table structure for table `#__churchdirectory_familyunit`
 --
 
-DROP TABLE IF EXISTS `#__churchdirectory_familyunit`;
 CREATE TABLE IF NOT EXISTS `#__churchdirectory_familyunit` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL DEFAULT '',
@@ -170,10 +172,21 @@ INSERT INTO `#__churchdirectory_familyunit` (`id`, `name`, `alias`, `description
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `#__churchdirectory_geoupdate`
+--
+
+CREATE TABLE IF NOT EXISTS `#__churchdirectory_geoupdate` (
+  `member_id` int(11) NOT NULL,
+  `status` varchar(255) NOT NULL,
+  PRIMARY KEY (`member_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `#__churchdirectory_kml`
 --
 
-DROP TABLE IF EXISTS `#__churchdirectory_kml`;
 CREATE TABLE IF NOT EXISTS `#__churchdirectory_kml` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL DEFAULT '',
@@ -219,7 +232,6 @@ INSERT INTO `#__churchdirectory_kml` (`id`, `name`, `alias`, `description`, `pub
 -- Table structure for table `#__churchdirectory_position`
 --
 
-DROP TABLE IF EXISTS `#__churchdirectory_position`;
 CREATE TABLE IF NOT EXISTS `#__churchdirectory_position` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL DEFAULT '',
@@ -287,7 +299,6 @@ INSERT INTO `#__churchdirectory_position` (`id`, `name`, `alias`, `published`, `
 -- Table structure for table `#__churchdirectory_update`
 --
 
-DROP TABLE IF EXISTS `#__churchdirectory_update`;
 CREATE TABLE IF NOT EXISTS `#__churchdirectory_update` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `version` varchar(255) DEFAULT NULL,

@@ -10,7 +10,7 @@
     <author>Joomla Bible Study Team</author>
     <copyright>(C) 2007 - 2012 Joomla Bible Study Team All rights reserved</copyright>
     <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
-    <version>1.7.5</version>
+    <version>1.7.6</version>
     <creationDate>December 2012</creationDate>
     <authorEmail>info@joomlabiblestudy.org</authorEmail>
     <authorUrl>http://www.joomlabiblestudy.org</authorUrl>
@@ -51,6 +51,8 @@
         <folder>images</folder>
         <folder>css</folder>
         <folder>js</folder>
+        <folder>jui</folder>
+        <filename>index.html</filename>
     </media>
 
     <administration>
@@ -63,7 +65,7 @@
             <menu link="option=com_churchdirectory&amp;task=kml.edit&amp;id=1" img="../media/com_churchdirectory/images/menu/icon-16-kml.png" alt="Churchdirectory/KML">COM_CHURCHDIRECTORY_KML</menu>
             <menu link="option=com_churchdirectory&amp;view=familyunits" img="../media/com_churchdirectory/images/menu/icon-16-familyunit.png" alt="Churchdirectory/Family Units">COM_CHURCHDIRECTORY_FAMILYUNITE</menu>
             <menu link="option=com_churchdirectory&amp;view=dirheaders" img="../media/com_churchdirectory/images/menu/icon-16-dirheader.png" alt="Churchdirectory/DirectoryHeaders">COM_CHURCHDIRECTORY_DIRHEADER</menu>
-            <menu link="option=com_churchdirectory&amp;view=positions" img="../media/com_churchdirectory/images/menu/icon-16-position.png" alt="Churchdirectory/Position">COM_CHURCHDIRECTORY_POSITION</menu>
+            <menu link="option=com_churchdirectory&amp;view=positions" img="../media/com_churchdirectory/images/menu/icon-16-position.png" alt="Churchdirectory/Positions">COM_CHURCHDIRECTORY_POSITIONS</menu>
         </submenu>
         <files folder="admin">
             <filename>churchdirectory.php</filename>
@@ -72,7 +74,6 @@
             <filename>access.xml</filename>
             <filename>index.html</filename>
             <folder>controllers</folder>
-            <folder>elements</folder>
             <folder>help</folder>
             <folder>helpers</folder>
             <folder>language</folder>

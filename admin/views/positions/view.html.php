@@ -1,124 +1,193 @@
 <?php
-
 /**
- * View for Postions
- * @package             ChurchDirectory.Admin
- * @copyright           (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    ChurchDirectory.Admin
+ * @copyright  (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-// No direct access
+
 defined('_JEXEC') or die;
-
-
-jimport('joomla.application.component.helper');
-jimport('joomla.i18n.help');
 
 /**
  * View class for a list of Positions.
  *
- * @package         ChurchDirectory.Admin
- * @since		1.7.0
+ * @package  ChurchDirectory.Admin
+ * @since    1.7.0
  */
-class ChurchDirectoryViewPositions extends JViewLegacy {
+class ChurchDirectoryViewPositions extends JViewLegacy
+{
 
-    /**
-     * Protect items
-     * @var array protect items
-     */
-    protected $items;
+	/**
+	 * Protect items
+	 *
+	 * @var array protect items
+	 */
+	protected $items;
 
-    /**
-     * Protect items
-     * @var array protect pagination
-     */
-    protected $pagination;
+	/**
+	 * Protect items
+	 *
+	 * @var object protect pagination
+	 */
+	protected $pagination;
 
-    /**
-     * Protect state
-     * @var array protect state
-     */
-    protected $state;
+	/**
+	 * Protect state
+	 *
+	 * @var object protect state
+	 */
+	protected $state;
 
-    /**
-     * Display the view
-     * @param string $tpl
-     * @return	void
-     */
-    public function display($tpl = null) {
-        $this->items = $this->get('Items');
-        $this->pagination = $this->get('Pagination');
-        $this->state = $this->get('State');
+	protected $sidebar;
 
-        // Check for errors.
-        if (count($errors = $this->get('Errors'))) {
-            JError::raiseError(500, implode("\n", $errors));
-            return false;
-        }
+	/**
+	 * Display the view
+	 *
+	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
+	 *
+	 * @return  mixed  A string if successful, otherwise a Error object.
+	 */
+	public function display($tpl = null)
+	{
+		$this->items      = $this->get('Items');
+		$this->pagination = $this->get('Pagination');
+		$this->state      = $this->get('State');
 
-        // Preprocess the list of items to find ordering divisions.
-        // TODO: Complete the ordering stuff with nested sets
-        foreach ($this->items as &$item) {
-            $item->order_up = true;
-            $item->order_dn = true;
-        }
+		ChurchDirectoryHelper::addSubmenu('positions');
 
-        // Set the toolbar
-        $this->addToolbar();
+		// Check for errors.
+		if (count($errors = $this->get('Errors')))
+		{
+			JFactory::getApplication()->enqueueMessage(implode("\n", $errors), 'error');
 
-        // Display the template
-        parent::display($tpl);
+			return false;
+		}
 
-        // Set the document
-        $this->setDocument();
-    }
+		// Set the toolbar
+		$this->addToolbar();
 
-    /**
-     * Add the page title and toolbar.
-     *
-     * @since	1.7.0
-     */
-    protected function addToolbar() {
-        $canDo = ChurchDirectoryHelper::getActions($this->state->get('filter.category_id'));
-        JToolBarHelper::title(JText::_('COM_CHURCHDIRECTORY_MANAGER_POSITIONS'), 'churchdirectory');
+		if (version_compare(JVERSION, '3.0', 'ge'))
+		{
+			$this->sidebar = JHtmlSidebar::render();
+		}
 
-        if ($canDo->get('core.create') || (count($user->getAuthorisedCategories('com_churchdirectory', 'core.create'))) > 0) {
-            JToolBarHelper::addNew('position.add');
-        }
+		// Set the document
+		$this->setDocument();
 
-        if (($canDo->get('core.edit')) || ($canDo->get('core.edit.own'))) {
-            JToolBarHelper::editList('position.edit');
-        }
+		// Display the template
+		return parent::display($tpl);
+	}
 
-        if ($canDo->get('core.edit.state')) {
-            JToolBarHelper::divider();
-            JToolBarHelper::publish('positions.publish', 'JTOOLBAR_PUBLISH', true);
-            JToolBarHelper::unpublish('positions.unpublish', 'JTOOLBAR_UNPUBLISH', true);
-            JToolBarHelper::divider();
-            JToolBarHelper::checkin('positions.checkin');
-        }
+	/**
+	 * Add the page title and toolbar.
+	 *
+	 * @since    1.7.0
+	 *
+	 * @return void
+	 */
+	protected function addToolbar()
+	{
+		$user  = JFactory::getUser();
+		$canDo = ChurchDirectoryHelper::getActions($this->state->get('filter.category_id'));
 
-        if ($this->state->get('filter.published') == -2 && $canDo->get('core.delete')) {
-            JToolBarHelper::deleteList('', 'positions.delete', 'JTOOLBAR_EMPTY_TRASH');
-            JToolBarHelper::divider();
-        } elseif ($canDo->get('core.edit.state')) {
-            JToolBarHelper::trash('positions.trash');
-            JToolBarHelper::divider();
-        }
+		// Get the toolbar object instance
+		$bar = JToolBar::getInstance('toolbar');
 
-        if ($canDo->get('core.admin')) {
-            JToolBarHelper::preferences('com_churchdirectory');
-            JToolBarHelper::divider();
-        }
+		JToolBarHelper::title(JText::_('COM_CHURCHDIRECTORY_MANAGER_POSITIONS'), 'churchdirectory');
 
-        JToolBarHelper::help('churchdirectory_position', TRUE);
-    }
+		if ($canDo->get('core.create') || (count($user->getAuthorisedCategories('com_churchdirectory', 'core.create'))) > 0)
+		{
+			JToolBarHelper::addNew('position.add');
+		}
 
-    /**
-     * Set Document title
-     */
-    protected function setDocument() {
-        $document = JFactory::getDocument();
-        $document->setTitle(JText::_('COM_CHURCHDIRECTORY_POSITIONS'));
-    }
+		if (($canDo->get('core.edit')) || ($canDo->get('core.edit.own')))
+		{
+			JToolBarHelper::editList('position.edit');
+		}
+
+		if ($canDo->get('core.edit.state'))
+		{
+			JToolBarHelper::divider();
+			JToolBarHelper::publish('positions.publish', 'JTOOLBAR_PUBLISH', true);
+			JToolBarHelper::unpublish('positions.unpublish', 'JTOOLBAR_UNPUBLISH', true);
+			JToolBarHelper::divider();
+			JToolBarHelper::checkin('positions.checkin');
+		}
+
+		if ($this->state->get('filter.published') == -2 && $canDo->get('core.delete'))
+		{
+			JToolBarHelper::deleteList('', 'positions.delete', 'JTOOLBAR_EMPTY_TRASH');
+			JToolBarHelper::divider();
+		}
+		elseif ($canDo->get('core.edit.state'))
+		{
+			JToolBarHelper::trash('positions.trash');
+			JToolBarHelper::divider();
+		}
+
+		if ($canDo->get('core.admin'))
+		{
+			JToolBarHelper::preferences('com_churchdirectory');
+			JToolBarHelper::divider();
+		}
+		// Add a batch button
+		if ($user->authorise('core.edit'))
+		{
+			JHtml::_('bootstrap.modal', 'collapseModal');
+			$title = JText::_('JTOOLBAR_BATCH');
+			$dhtml = "<button data-toggle=\"modal\" data-target=\"#collapseModal\" class=\"btn btn-small\">
+						<i class=\"icon-checkbox-partial\" title=\"$title\"></i>
+						$title</button>";
+			$bar->appendButton('Custom', $dhtml, 'batch');
+		}
+
+		JToolBarHelper::help('churchdirectory_position', true);
+
+		if (version_compare(JVERSION, '3.0.0', 'ge'))
+		{
+			JHtmlSidebar::setAction('index.php?option=com_churchdirectory&amp;view=positions');
+
+			JHtmlSidebar::addFilter(
+				JText::_('JOPTION_SELECT_PUBLISHED'),
+				'filter_published',
+				JHtml::_('select.options', JHtml::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.published'), true)
+			);
+
+			JHtmlSidebar::addFilter(
+				JText::_('JOPTION_SELECT_LANGUAGE'),
+				'filter_language',
+				JHtml::_('select.options', JHtml::_('contentlanguage.existing', true, true), 'value', 'text', $this->state->get('filter.language'))
+			);
+		}
+	}
+
+	/**
+	 * Set Document title
+	 *
+	 * @return void
+	 */
+	protected function setDocument()
+	{
+		$document = JFactory::getDocument();
+		$document->setTitle(JText::_('COM_CHURCHDIRECTORY_POSITIONS'));
+	}
+
+	/**
+	 * Returns an array of fields the table can be sorted by
+	 *
+	 * @return  array  Array containing the field name to sort by as the key and display text as value
+	 *
+	 * @since   3.0
+	 */
+	protected function getSortFields()
+	{
+		return array(
+			'a.ordering' => JText::_('JGRID_HEADING_ORDERING'),
+			'a.state'    => JText::_('JSTATUS'),
+			'a.name'     => JText::_('JGLOBAL_TITLE'),
+			'a.access'   => JText::_('JGRID_HEADING_ACCESS'),
+			'a.language' => JText::_('JGRID_HEADING_LANGUAGE'),
+			'a.id'       => JText::_('JGRID_HEADING_ID')
+		);
+	}
 
 }

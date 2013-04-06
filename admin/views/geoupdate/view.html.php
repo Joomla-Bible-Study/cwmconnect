@@ -1,76 +1,57 @@
 <?php
 /**
- * @package             ChurchDirectory.Admin
- * @copyright           (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
- * @license        GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    ChurchDirectory.Admin
+ * @copyright  (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
-// Protect from unauthorized access
 defined('_JEXEC') or die;
 
 /**
  * Class for GeoUpdate
- * @package ChurchDirectory.Admin
- * @since 1.7.1
+ *
+ * @package  ChurchDirectory.Admin
+ * @since    1.7.1
  */
 class ChurchDirectoryViewGeoUpdate extends JViewLegacy
 {
+	protected $more;
 
-	/**
-	 * Protect form
-	 * @var array
-	 */
-	protected $form;
+	protected $percentage;
 
-	/**
-	 * Protect items
-	 * @var array
-	 */
-	protected $item;
+	/** @var array The members to process */
+	private $_membersStack = array();
 
-	/**
-	 * Protect state
-	 * @var array
-	 */
-	protected $state;
+	/** @var int Total numbers of members in this site */
+	public $totalMembers = 0;
 
-	public $more;
-
-	public $percent;
+	/** @var int Numbers of members already processed */
+	public $doneMembers = 0;
 
 	/**
 	 * Display the view
-	 * @return    void
+	 *
+	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
+	 *
+	 * @return  mixed  A string if successful, otherwise a Error object.
 	 */
 	public function display($tpl = null)
 	{
 		// Set the toolbar title
 		JToolBarHelper::title(JText::_('COM_CHURCHDIRECTORY_TITLE_GEOUPDATE'), 'churchdirectory');
-		$app = JFactory::getApplication()->input;
 
 		$model = $this->getModel();
-		$state1 = $model->startScanning();
-		$model->setState('scanstate', $state1);
-		$state2 = $model->run();
-		$model->setState('scanstate', $state2);
-		$state = $model->getState('scanstate');
+		$model->startScanning();
+		$state = $model->getState('scanstate', false);
 
-		$total = max(1, $model->totalMembers);
-		$done = $model->doneMembers;
+		$total = $this->totalMembers;
+		$done  = $this->doneMembers;
 
-		$layout = $app->getString('layout', 'default');
-
-		// Check for errors.
-		if (count($errors = $this->get('Errors'))) {
-			JError::raiseError(500, implode("\n", $errors));
-			return false;
-		}
-
-		if($state)
+		if ($state)
 		{
-			if($total > 0)
+			if ($total > 0)
 			{
-				$percent = min(max(round(100 * $done / $total),1),100);
+				$percent = min(max(round(100 * $done / $total), 1), 100);
 			}
 
 			$more = true;
@@ -78,30 +59,58 @@ class ChurchDirectoryViewGeoUpdate extends JViewLegacy
 		else
 		{
 			$percent = 100;
-			$more = false;
+			$more    = false;
 		}
 
 		$this->more = $more;
+		$this->setLayout('default');
 
-		/** @var $percent Start Percentage */
-		$this->percentage = $percent;
+		$this->percentage = & $percent;
 
-		$this->setLayout($layout);
-
-		if(version_compare(JVERSION, '3.0', 'ge')) {
-			JHTML::_('behavior.framework');
-		} else {
-			JHTML::_('behavior.mootools');
-		}
-
-		if($more) {
+		if ($more)
+		{
 			$script = "window.addEvent( 'domready' ,  function() {\n";
 			$script .= "document.forms.adminForm.submit();\n";
 			$script .= "});\n";
 			JFactory::getDocument()->addScriptDeclaration($script);
 		}
 
-		parent::display();
+		return parent::display($tpl);
+	}
+
+	/**
+	 * Loads the file/folder stack from the session
+	 *
+	 * @return void
+	 */
+	private function loadStack()
+	{
+		$session = JFactory::getSession();
+		$stack   = $session->get('geoupdate_stack', '', 'churchdirectory');
+
+		if (empty($stack))
+		{
+			$this->_membersStack = array();
+			$this->totalMembers  = 0;
+			$this->doneMembers   = 0;
+
+			return;
+		}
+
+		if (function_exists('base64_encode') && function_exists('base64_decode'))
+		{
+			$stack = base64_decode($stack);
+
+			if (function_exists('gzdeflate') && function_exists('gzinflate'))
+			{
+				$stack = gzinflate($stack);
+			}
+		}
+		$stack = json_decode($stack, true);
+
+		$this->_membersStack = $stack['members'];
+		$this->totalMembers  = $stack['total'];
+		$this->doneMembers   = $stack['done'];
 	}
 
 }
