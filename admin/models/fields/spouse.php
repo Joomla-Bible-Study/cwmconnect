@@ -33,7 +33,7 @@ class JFormFieldSpouse extends JFormField
 	 *
 	 * @since    1.7.0
 	 */
-	protected function getInput()
+	protected function getInput ()
 	{
 		// Initialize variables.
 		$html = '';
@@ -49,28 +49,18 @@ class JFormFieldSpouse extends JFormField
 		$attr .= $this->element['onchange'] ? ' onchange="' . (string) $this->element['onchange'] . '"' : '';
 
 		// Get some field values from the form.
-		$memberId      = (int) $this->form->getValue('id');
-		$categoryId    = (int) $this->form->getValue('catid');
-		$funitid       = (int) $this->form->getValue('funitid');
-		$familypostion = (int) $this->form->getValue('familypostion');
-
-
-		if ($familypostion == '0')
-		{
-			$find = 1;
-		}
-		elseif ($familypostion == '1')
-		{
-			$find = 0;
-		}
+		$memberId        = (int) $this->form->getValue('id');
+		$categoryId      = (int) $this->form->getValue('catid');
+		$funitid         = (int) $this->form->getValue('funitid');
 
 		// Build the query for the ordering list.
 		$db    = JFactory::getDbo();
 		$query = $db->getQuery(true);
 		$query->select('id, name, funitid, attribs, spouse')
-			->from('#__churchdirectory_details')
-			->where('catid = ' . (int) $categoryId)
-			->where('funitid = ' . (int) $funitid);
+				->from('#__churchdirectory_details')
+				->where('catid = ' . (int) $categoryId)
+				->where('published = 1')
+				->where('funitid = ' . (int) $funitid);
 		$db->setQuery($query);
 		$results = $db->loadObjectList();
 
@@ -78,17 +68,22 @@ class JFormFieldSpouse extends JFormField
 		{
 			$registry = new JRegistry;
 			$registry->loadString($item->attribs);
-			$familypostion = $registry->toObject('familypostion');
-			$item          = (object) array_merge((array) $item, (array) $familypostion);
+			$family_position = $registry->toObject('familypostion');
+			$item            = (object) array_merge((array) $item, (array) $family_position);
 
-			if ($item->funitid >= '1' && $item->familypostion == $find)
+			if ($item->funitid >= '1' && $item->id != $memberId)
 			{
-				$html = '<h4>' . $item->name . '</h4>';
+				$link = 'index.php?option=com_churchdirectory&task=member.edit&id=' . (int) $item->id . '&tmpl=component&layout=modal';
+				$html = '<h4><a class="btn btn-primary" onclick="SqueezeBox.fromElement(this, {handler:\'iframe\', size: {x: 900, y: 550}, url:\'' . $link . '\'})"
+			   title="' . $item->name . '">';
+
+				$html .= $db->escape($item->name);
+				$html .= '</a>';
 			}
 			elseif ($item->funitid <= '0' && $item->id == $memberId)
 			{
 
-				$html = '<h4>Old: ' . $item->spouse . '</h4>';
+				$html = '<h4>Old Record: ' . $item->spouse . '</h4>';
 			}
 		}
 
