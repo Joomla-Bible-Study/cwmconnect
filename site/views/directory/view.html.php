@@ -90,7 +90,7 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 
 		$this->loadHelper('render');
 		$this->renderHelper = new renderHelper;
-		$this->span         = $this->renderHelper->rowWidth($params->get('items_per_row'));
+		$this->span         = $this->renderHelper->rowWidth($params->get('rows_per_page'));
 
 		if ($items == false)
 		{
@@ -206,9 +206,20 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 
 		$maxLevel = $params->get('maxLevel', -1);
 
+		$items = RenderHelper::groupit(array('items' => & $items, 'field' => 'lname'));
+
+		if (0)
+		{
+			foreach ($items as $s1 => $sort1)
+			{
+				$items[$s1] = RenderHelper::groupit(array('items' => $items[$s1], 'field' => 'suburb'));
+
+			}
+		}
+
 		$this->maxLevel   = & $maxLevel;
 		$this->state      = & $state;
-		$this->items      = & $items;
+		$this->items      = $items;
 		$this->category   = & $category;
 		$this->children   = & $children;
 		$this->params     = & $params;

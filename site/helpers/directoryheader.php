@@ -44,8 +44,8 @@ class DirectoryHeaderHelper
 
 			if ($params->get('dr_show_debug'))
 			{
-				$header .= '<p>ID: ' . $b->id . '</p>';
-				$header .= '<p>Count: ' . $h . '</p>';
+				$header .= '<p>ID: ' . $b->id . '<br />';
+				$header .= 'Count: ' . $h . '</p>';
 			}
 			$header .= $b->description;
 			$header .= '</div>';

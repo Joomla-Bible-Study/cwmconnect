@@ -19,14 +19,13 @@ class ChurchDirectoryController extends JControllerLegacy
 	/**
 	 * Method to display a view.
 	 *
-	 * @param   boolean  $cachable   If true, the view output will be cached
-	 * @param   array    $urlparams  An array of safe url parameters and their variable types, for valid values see {@link JFilterInput::clean()}.
+	 * @param   boolean $cachable   If true, the view output will be cached
+	 * @param   array   $urlparams  An array of safe url parameters and their variable types, for valid values see {@link JFilterInput::clean()}.
 	 *
 	 * @return  JControllerLegacy  A JControllerLegacy object to support chaining.
-	 *
 	 * @since    1.7.0
 	 */
-	public function display($cachable = false, $urlparams = array())
+	public function display ($cachable = false, $urlparams = array())
 	{
 		$cachable = true;
 
@@ -40,6 +39,11 @@ class ChurchDirectoryController extends JControllerLegacy
 
 		// Set the default view name and format from the Request.
 		$vName = $this->input->get('view', 'categories');
+
+		if ($vName == 'directory')
+		{
+			$this->input->set('tmpl', 'component');
+		}
 		$this->input->set('view', $vName);
 
 		$user = JFactory::getUser();

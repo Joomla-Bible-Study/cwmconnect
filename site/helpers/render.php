@@ -88,132 +88,68 @@ class RenderHelper
 	/**
 	 * Get Family Members Build
 	 *
-	 * @param   object $params  Parameters
-	 * @param   int    $id      ID of Primary Record
-	 * @param   int    $famid   Family Unit ID
+	 * @param   object $funit_id  ID of Primary Record
 	 *
 	 * @return string
 	 */
-	public function getFamilyMembersPage ($params, $id, $famid)
+	public function getFamilyMembersPage ($funit_id)
 	{
 
-		$member = "\n" . '<div id="landing_table" width="100%">';
-		$db      = JFactory::getDBO();
-		$query   = $db->getQuery(true);
+		$db    = JFactory::getDBO();
+		$query = $db->getQuery(true);
 
 		$query->select('members.*');
 		$query->from('#__churchdirectory_details AS members');
-		$query->where('members.funitid = ' . (int) $famid);
+		$query->where('members.funitid = ' . (int) $funit_id);
 		$query->order('members.name DESC');
 
 		$db->setQuery($query->__toString());
+		$items = $db->loadObjectList();
 
-		if ($params->get('dr_show_debug'))
+		// Convert the params field into an object, saving original in _params
+		for ($i = 0, $n = count($items); $i < $n; $i++)
 		{
-			var_dump($id);
-			var_dump($famid);
-		}
-		$tresult = $db->loadObjectList();
-		$t       = 0;
-		$i       = 0;
+			$item = & $items[$i];
 
-		foreach ($tresult as $b)
-		{
-			$attribs = json_decode($b->attribs);
-			$b->slug = $b->alias ? ($b->id . ':' . $b->alias) : $b->id;
-			$member .= '<div class="directory-familymembers-list">';
-			if ($params->get('dr_show_member_title_link')) :
-				$member .= '<div class="directory-name"><a href="' . JRoute::_(ChurchDirectoryHelperRoute::getMemberRoute($b->slug, $b->catid)) . '">';
-				$member .= $b->name;
-				$member .= '</a></div>';
-			else :
-				$member .= '<span id="contact-name">' . $b->name . '</span>';
-			endif;
-			$member .= '<div class="directory-subtitle">';
-
-			switch ($attribs->familypostion)
+			if (!isset($this->_params))
 			{
-				case -1:
-					$member .= '<span class="title">' . JText::_('COM_CHURCHDIRECTORY_SINGLE') . '</span>';
-					break;
-				case 0:
-					$member .= '<span class="title">' . JText::_('COM_CHURCHDIRECTORY_HEAD_OF_HOUSEHOLD') . '</span>';
-					break;
-				case 1:
-					$member .= '<span class="title">' . JText::_('COM_CHURCHDIRECTORY_SPOUSE') . '</span>';
-					break;
-				case 2:
-					$member .= '<span class="title">' . JText::_('COM_CHURCHDIRECTORY_CHILED') . '</span>';
-					break;
+				$params = new JRegistry;
+				$params->loadString($item->params);
+				$item->params = $params;
 			}
-			$member .= '</div>';
-			$member .= '<div class="clearfix"></div><div class="directory-submemberinfo">';
-
-			if (!empty($b->con_position) && $params->get('dr_show_position'))
+			if (!isset($this->_attribs))
 			{
-				$member .= '<div class="clearfix"></div>';
-				$member .= '<dl class="contact-position dl-horizontal">';
-				$member .= '<dt>';
-
-				if ($b->con_position != '-1')
-				{
-					$member .= JText::_('COM_CHURCHDIRECTORY_POSITION') . ':';
-				}
-				$member .= '</dt>';
-				$member .= '<dd>';
-				$member .= self::getPosition($b->con_position);
-				$member .= '</dd></dl>';
+				$params = new JRegistry;
+				$params->loadString($item->attribs);
+				$item->attribs = $params;
 			}
-
-			if ($b->telephone && $params->get('dr_show_telephone'))
-			{
-				$member .= '<div class="directory-telephone"><span class="title">' . JText::_('COM_CHURCHDIRECTORY_HOME') . ':</span> ' . $b->telephone . '</div>';
-			}
-			if ($b->mobile && $params->get('dr_show_mobile'))
-			{
-				$member .= '<div class="directory-mobile"><span class="title">' . JText::_('COM_CHURCHDIRECTORY_MOBILE') . ':</span> ' . $b->mobile . '</div>';
-			}
-			$member .= '</div>';
-			$i++;
-			$t++;
-			$member .= '</div><div class="clearfix"></div>';
-
-			$member .= '<hr />';
-
-			$this->children = $b->children;
-		}
-		$member .= '</div>';
-
-		if ($this->children && $params->get('dr_show_children'))
-		{
-			$member .= '<div class="directory-children"><br /><span class="title">' . JText::_('COM_CHURCHDIRECTORY_CHILDREN') . ':</span> ' . $this->children . '</div>';
 		}
 
-		return $member;
+		return $items;
 	}
 
 	/**
 	 * Calculate rows into span's
 	 *
-	 * @param   int $items_per_row  Number of Rows we want to see.
+	 * @param   int $rows_per_page  Number of Rows we want to see.
 	 *
 	 * @return int
 	 */
-	public function rowWidth ($items_per_row)
+	public function rowWidth ($rows_per_page)
 	{
 		$results = 12;
 
-		if ($items_per_row == 2)
+		if ($rows_per_page == 2)
 		{
 			/* span6 */
 			$results = 6;
 		}
-		elseif ($items_per_row == 3)
+		elseif ($rows_per_page == 3)
 		{
 			/* span4 */
 			$results = 4;
 		}
-		elseif ($items_per_row == 4)
+		elseif ($rows_per_page == 4)
 		{
 			/* span2 */
 			$results = 2;
@@ -256,6 +192,59 @@ class RenderHelper
 				$result[$key][] = $item;
 			}
 		}
+
+		return $result;
+	}
+
+	/**
+	 * Compute lastname, firstname and middlename
+	 *
+	 * @param    string  $name Name of member
+	 *
+	 * @return stdClass
+	 */
+	public function getName($name)
+	{
+		// Compute lastname, firstname and middlename
+		$name = trim($name);
+
+		/* "Lastname, Firstname Midlename" format support
+		 e.g. "de Gaulle, Charles" */
+		$namearray = explode(',', $name);
+		$middlename = '';
+
+		if (count($namearray) > 1)
+		{
+			$lastname         = $namearray[0];
+			$card_name        = $lastname;
+			$name_and_midname = trim($namearray[1]);
+			$firstname        = '';
+
+			if (!empty($name_and_midname))
+			{
+				$namearray = explode(' ', $name_and_midname);
+
+				$firstname  = $namearray[0];
+				$middlename = (count($namearray) > 1) ? $namearray[1] : '';
+				$card_name  = $firstname . ' ' . ($middlename ? $middlename . ' ' : '') . $card_name;
+			}
+		}
+		// "Firstname Middlename Lastname" format support
+		else
+		{
+			$namearray = explode(' ', $name);
+
+			$middlename = (count($namearray) > 2) ? $namearray[1] : '';
+			$firstname  = array_shift($namearray);
+			$lastname   = count($namearray) ? end($namearray) : '';
+			$card_name  = $firstname . ($middlename ? ' ' . $middlename : '') . ($lastname ? ' ' . $lastname : '');
+		}
+
+		$result = new stdClass;
+		$result->firstname = $firstname;
+		$result->middlename = $middlename;
+		$result->firstname = $firstname;
+		$result->card_name = $card_name;
 
 		return $result;
 	}

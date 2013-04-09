@@ -6,54 +6,62 @@
  * */
 defined('_JEXEC') or die;
 
-$this->loadHelper('render');
-$renderHelper = new renderHelper;
+$heading = null;
 
-if ($this->params->get('dr_show_debug')) :
-	echo "<b>Number of Members: " . count($this->sort2) . "</b>";
-endif;
 ?>
-<?php if (empty($this->sort2)) : ?>
-	<p xmlns="http://www.w3.org/1999/html"> <?php echo JText::_('COM_CHURCHDIRECTORY_NO_MEMBERS'); ?>     </p>
+<?php if (empty($this->items)) : ?>
+	<p xmlns="http://www.w3.org/1999/html"><?php echo JText::_('COM_CHURCHDIRECTORY_NO_MEMBERS'); ?></p>
 <?php endif; ?>
-<div class="churchdirectory-container">
 <?php
-foreach ($this->sort2 as $item)
-{
 
-	if ($printed_rows == $this->params->get('rows_per_page'))
+foreach ($this->items as $item)
+{
+	if ($this->printed_items == '0' && $this->printed_rows == '0')
 	{
-		echo '<div style="page-break-after:always"></div>';
-		$printed_rows = 0;
+		echo '<!-- new start ' . $item->name . '-->';
+		echo '<table class="table churchdirectory-table"><tbody><tr><td class="span6">';
 	}
-	if ($printed_items == $this->params->get('items_per_row'))
+	if ($this->letter != ucfirst($this->items[0]->lname[0]))
 	{
-		echo '</div><hr><div class="churchdirectory-container">';
-		$printed_items = 0;
-	}
-	if ($letter != ucfirst($item->name[0]) && $printed_items <= $this->params->get('items_per_row') && $printed_items > '0' && $item->attribs->get('familypostion') <= '0')
-	{
-		echo '<div class="vertical-line"></div>';
+		$this->letter = ucfirst($this->items[0]->lname[0]);
+		echo '<a name="' . $this->letter . '"></a><h2>' . $this->letter . '</h2><hr />';
 	}
 	if ($item->funitid != '0' && $item->attribs->get('familypostion') === '0') :
 		?>
 		<div id="directory-items<?php echo $item->id + 1; ?>"
-		     class="paddingitem pull-left span<?php echo $this->span; ?>">
-			<?php echo $item->funit_name; ?>
+		     class="paddingitem">
 			<?php
-			if ($item->image && $this->params->get('dr_show_image')) :
-
-				echo '<img src="' . $this->baseurl . DIRECTORY_SEPARATOR . $item->image . '" align="center" hspace="6" alt="' . $item->name . '" class="directory-img" />';
+			dump($item);
+			if ($item->funit_image && $this->params->get('dr_show_image')) :
+				echo '<img src="' . $this->baseurl . DIRECTORY_SEPARATOR . $item->funit_image . '" align="center" hspace="6" alt="' . $item->funit_name . '" class="directory-img pull-right" />';
 			elseif ($this->params->get('image') != null && $this->params->get('dr_show_image')):
-				echo '<img src="' . $this->baseurl . DIRECTORY_SEPARATOR . $this->params - get('image') . '" align="center" hspace="6" alt="' . JText::_('COM_CHURCHDIRECTORY_NO_PHOTO_AVALIBLE') . '" class="directory-img" />';
+				echo '<img src="' . $this->baseurl . DIRECTORY_SEPARATOR . $this->params - get('image') . '" align="center" hspace="6" alt="' . JText::_('COM_CHURCHDIRECTORY_NO_PHOTO_AVALIBLE') . '" class="directory-img pull-right" />';
 			elseif ($this->params->get('dr_show_image')):
-				echo '<img src="' . $this->baseurl . '/media/com_churchdirectory/images/200-photo_not_available.jpg" align="center" hspace="6" alt="' . JText::_('COM_CHURCHDIRECTORY_NO_PHOTO_AVALIBLE') . '" class="directory-img" />';
+				echo '<img src="' . $this->baseurl . '/media/com_churchdirectory/images/200-photo_not_available.jpg" align="center" hspace="6" alt="' . JText::_('COM_CHURCHDIRECTORY_NO_PHOTO_AVALIBLE') . '" class="directory-img pull-right" />';
 			endif;
 			?>
+			<?php
+			$families = $this->renderHelper->getFamilyMembersPage($item->funit_id); ?>
+			<span id="contact-name"><?php echo $item->funit_name; ?></span>
+			<?php
+			foreach ($families as $member)
+			{
+				if ($member->attribs->get('familypostion') == '2')
+				{
+					echo $member->name;
+				}
+			}?>
+			<?php if ($item->children && $this->params->get('dr_show_children')) :
+				?>
+				<p>
+					<?php echo '<span class="jicons-text">' . JText::_('COM_CHURCHDIRECTORY_CHILDREN') . ': </span>' . $item->children; ?>
+				</p>
+			<?php endif; ?>
 			<div class="churchdirectory-contact">
 				<?php if ($this->params->get('dr_show_debug')) : ?>
-					<p>ID: <?php echo $item->funit_id; ?> </p>
-					<p>Count: <?php echo $printed_rows; ?> </p>
+					<p>ID: <?php echo $item->funit_id; ?> <br/>
+						Item Count: <?php echo $this->printed_items; ?> <br/>
+						Row Count: <?php echo $this->printed_rows; ?> </p>
 				<?php endif; ?>
 				<?php if (($this->params->get('address_check') > 0) && ($item->address || $item->suburb || $item->state || $item->country || $item->postcode)) : ?>
 				<div class="churchdirectory-address">
@@ -96,24 +104,89 @@ foreach ($this->sort2 as $item)
 			<?php endif; ?>
 			</div>
 			<div class="clearfix"></div>
-			<div class="familymembers-list">
+			<?php if (($this->params->get('other_check') > 0) && ($item->email_to || $item->telephone || $item->fax || $item->mobile || $item->webpage || $item->spouse || $item->children)) : ?>
+			<div class="churchdirectory-churchdirectoryinfo inner">
+				<?php endif; ?>
 				<?php
-				$heading = $renderHelper->getFamilyMembersPage($item->params, $item->id, $item->funitid);
-				if ($heading)
+				foreach ($families as $member)
 				{
-					echo $heading;
-				}
-				?>
+					$name = $this->renderHelper->getName($member->name);
+					?>
+					<?php if ($member->email_to && $this->params->get('dr_show_email')) : ?>
+					<p>
+                        <span class="<?php echo $this->params->get('marker_class'); ?>">
+                            <?php echo $name->firstname . ' : ' . $this->params->get('marker_email'); ?>
+                        </span>
+                        <span class="churchdirectory-emailto">
+                            <?php echo $member->email_to; ?>
+                        </span>
+					</p>
+				<?php endif; ?>
+
+					<?php if ($member->telephone && $this->params->get('dr_show_telephone')) : ?>
+					<p>
+                        <span class="<?php echo $this->params->get('marker_class'); ?>">
+                            <?php echo $name->firstname . ' : ' . $this->params->get('marker_telephone'); ?>
+                        </span>
+                        <span class="churchdirectory-telephone">
+                            <?php echo nl2br($member->telephone); ?>
+                        </span>
+					</p>
+				<?php endif; ?>
+					<?php if ($member->fax && $this->params->get('dr_show_fax')) : ?>
+					<p>
+                        <span class="<?php echo $this->params->get('marker_class'); ?>">
+                            <?php echo $name->firstname . ' : ' . $this->params->get('marker_fax'); ?>
+                        </span>
+                        <span class="churchdirectory-fax">
+                            <?php echo nl2br($member->fax); ?>
+                        </span>
+					</p>
+				<?php endif; ?>
+					<?php if ($member->mobile && $this->params->get('dr_show_mobile')) : ?>
+
+					<span class="<?php echo $this->params->get('marker_class'); ?>">
+                        <?php echo $name->firstname . ' : ' . $this->params->get('marker_mobile'); ?>
+                    </span>
+					<span class="churchdirectory-mobile">
+                        <?php echo nl2br($member->mobile); ?>
+                    </span>
+
+				<?php endif; ?>
+					<?php if ($member->webpage && $this->params->get('dr_show_webpage')) : ?>
+					<p>
+                        <span class="<?php echo $name->firstname . ' : ' . $this->params->get('marker_class'); ?>">
+                        </span>
+                        <span class="churchdirectory-webpage">
+                            <a href="<?php echo $member->webpage; ?>" target="_blank">
+	                            <?php echo JText::_('COM_CHURCHDIRECTORY_WEBPAGE'); ?></a>
+                        </span>
+					</p>
+				<?php endif; ?>
+				<?php } ?>
+				<?php if ($this->params->get('other_check') > 0 && ($item->email_to || $item->telephone || $item->fax || $item->mobile || $item->webpage || $item->spouse || $item->children)) : ?>
 			</div>
+		<?php endif; ?>
+			<div class="clearfix"></div>
+			<?php if (!empty($item->misc) && $this->params->get('dr_show_misc')) :
+				?>
+				<div class="contact-miscinfo inner">
+					<div class="<?php echo $this->params->get('marker_class'); ?>">
+						<?php echo $this->params->get('marker_misc'); ?>
+					</div>
+					<div class="contact-misc">
+						<?php echo $item->misc; ?>
+					</div>
+				</div>
+			<?php endif; ?>
 		</div>
 	<?php
-	elseif ($item->funitid === '0'):
+	elseif ($item->funitid == '0'):
 		?>
 		<div id="directory-items<?php echo $item->id + 1; ?>"
-		     class="paddingitem pull-left span<?php echo $this->span; ?>">
+		     class="paddingitem">
 			<?php
 			if ($item->image && $this->params->get('dr_show_image')) :
-
 				echo '<img src="' . $this->baseurl . DIRECTORY_SEPARATOR . $item->image . '" align="center" hspace="6" alt="' . $item->name . '" class="directory-img pull-right" />';
 			elseif ($this->params->get('image') != null && $this->params->get('dr_show_image')):
 				echo '<img src="' . $this->baseurl . DIRECTORY_SEPARATOR . $this->params - get('image') . '" align="center" hspace="6" alt="' . JText::_('COM_CHURCHDIRECTORY_NO_PHOTO_AVALIBLE') . '" class="directory-img pull-right" />';
@@ -123,8 +196,9 @@ foreach ($this->sort2 as $item)
 			?>
 			<div class="churchdirectory-contact">
 				<?php if ($this->params->get('dr_show_debug')) : ?>
-					<p>ID: <?php echo $item->id; ?> </p>
-					<p>Count: <?php echo $printed_rows; ?> </p>
+					<p>ID: <?php echo $item->funit_id; ?> <br/>
+						Item Count: <?php echo $this->printed_items; ?> <br/>
+						Row Count: <?php echo $this->printed_rows; ?> </p>
 				<?php endif; ?>
 				<?php if ($this->params->get('dr_show_member_title_link')) : ?>
 					<span id="contact-name">
@@ -134,6 +208,12 @@ foreach ($this->sort2 as $item)
 				<?php else : ?>
 					<span id="contact-name"><?php echo $item->name; ?></span>
 				<?php endif; ?>
+				<?php if ($item->children && $this->params->get('dr_show_children')) :
+					?>
+					<p>
+						<?php echo '<span class="jicons-text">' . JText::_('COM_CHURCHDIRECTORY_CHILDREN') . ': </span>' . $item->children; ?>
+					</p>
+				<?php endif; ?>
 				<?php if ($item->con_position && $this->params->get('show_position')) : ?>
 					<dl class="contact-position dl-horizontal">
 						<dt>
@@ -142,7 +222,7 @@ foreach ($this->sort2 as $item)
 							<?php endif; ?>
 						</dt>
 						<dd>
-							<?php echo $renderHelper->getPosition($item->con_position); ?>
+							<?php echo $this->renderHelper->getPosition($item->con_position); ?>
 						</dd>
 					</dl>
 				<?php endif; ?>
@@ -241,20 +321,12 @@ foreach ($this->sort2 as $item)
 	                            <?php echo JText::_('COM_CHURCHDIRECTORY_WEBPAGE'); ?></a>
                         </span>
 					</p>
-				<?php endif;
-				if ($item->children && $this->params->get('dr_show_children')) :
-					?>
-					<p>
-						<?php echo '<span class="jicons-text">' . JText::_('COM_CHURCHDIRECTORY_CHILDREN') . ': </span>' . $item->children; ?>
-					</p>
 				<?php endif; ?>
 				<?php if ($this->params->get('other_check') > 0 && ($item->email_to || $item->telephone || $item->fax || $item->mobile || $item->webpage || $item->spouse || $item->children)) : ?>
 			</div>
 		<?php endif; ?>
-			<?php
-			echo '<div class="clearfix"></div>';
-
-			if (!empty($item->misc) && $this->params->get('dr_show_misc')) :
+			<div class="clearfix"></div>
+			<?php if (!empty($item->misc) && $this->params->get('dr_show_misc')) :
 				?>
 				<div class="contact-miscinfo inner">
 					<div class="<?php echo $this->params->get('marker_class'); ?>">
@@ -268,19 +340,24 @@ foreach ($this->sort2 as $item)
 		</div>
 	<?php
 	endif;
-	if ($item->funitid != '0' && $item->attribs->get('familypostion') === '0' || $item->funitid === '0')
+
+	if (($item->funitid != '0' && $item->attribs->get('familypostion', '0') == '0') || ($item->funitid == '0' && $item->attribs->get('familypostion', '-1') == '-1' || $item->attribs->get('familypostion', '0') == '0'))
 	{
-		$printed_items++;
-		if ($printed_items == $this->params->get('items_per_row'))
+		$this->printed_items++;
+		if ($this->printed_items == $this->items_per_row && $this->printed_rows != $this->rows_per_page - 1)
 		{
-			?>
-			<div class="clearfix"></div>
-			<hr/>
-			<?php
-			$printed_rows++;
+			echo '<!-- new column -->';
+			echo '</td><td class="span6">';
+			$this->printed_rows++;
+			$this->printed_items = 0;
+		}
+		elseif ($this->printed_items == $this->items_per_row)
+		{
+			echo '</td></tr></tbody></table><div style="page-break-after:always"></div>';
+			echo '<!-- End column -->';
+			$this->printed_rows  = 0;
+			$this->printed_items = 0;
 		}
 	}
 }
 ?>
-<div style="page-break-after:always"></div>
-</div>
