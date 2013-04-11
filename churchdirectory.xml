@@ -38,12 +38,12 @@
     <files folder="site">
         <filename>churchdirectory.php</filename>
         <filename>controller.php</filename>
-        <filename>router.php</filename>
-        <filename>metadata.xml</filename>
         <filename>index.html</filename>
+        <filename>metadata.xml</filename>
+        <filename>router.php</filename>
         <folder>controllers</folder>
-        <folder>language</folder>
         <folder>helpers</folder>
+        <folder>language</folder>
         <folder>models</folder>
         <folder>views</folder>
     </files>
@@ -63,15 +63,17 @@
             <menu link="option=com_categories&amp;extension=com_churchdirectory" view="categories" img="class:contact-cat" alt="Churchdirectory/Categories">COM_CHURCHDIRECTORY_CATEGORIES</menu>
             <menu link="option=com_churchdirectory&amp;view=info" img="../media/com_churchdirectory/images/menu/icon-16-info.png" alt="Churchdirectory/Info">COM_CHURCHDIRECTORY_INFO</menu>
             <menu link="option=com_churchdirectory&amp;task=kml.edit&amp;id=1" img="../media/com_churchdirectory/images/menu/icon-16-kml.png" alt="Churchdirectory/KML">COM_CHURCHDIRECTORY_KML</menu>
-            <menu link="option=com_churchdirectory&amp;view=familyunits" img="../media/com_churchdirectory/images/menu/icon-16-familyunit.png" alt="Churchdirectory/Family Units">COM_CHURCHDIRECTORY_FAMILYUNITE</menu>
+            <menu link="option=com_churchdirectory&amp;view=familyunits" img="../media/com_churchdirectory/images/menu/icon-16-familyunit.png" alt="Churchdirectory/Family Units">COM_CHURCHDIRECTORY_FAMILYUNIT</menu>
             <menu link="option=com_churchdirectory&amp;view=dirheaders" img="../media/com_churchdirectory/images/menu/icon-16-dirheader.png" alt="Churchdirectory/DirectoryHeaders">COM_CHURCHDIRECTORY_DIRHEADER</menu>
             <menu link="option=com_churchdirectory&amp;view=positions" img="../media/com_churchdirectory/images/menu/icon-16-position.png" alt="Churchdirectory/Positions">COM_CHURCHDIRECTORY_POSITIONS</menu>
         </submenu>
         <files folder="admin">
-            <filename>churchdirectory.php</filename>
-            <filename>controller.php</filename>
-            <filename>config.xml</filename>
             <filename>access.xml</filename>
+            <filename>churchdirectory.php</filename>
+            <!-- Holder for churchdirectory.scropt.php -->
+            <!-- Holder for churchdirectory.xml -->
+            <filename>config.xml</filename>
+            <filename>controller.php</filename>
             <filename>index.html</filename>
             <folder>controllers</folder>
             <folder>help</folder>

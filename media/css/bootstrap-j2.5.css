@@ -129,6 +129,17 @@ input, select {
 }
 
 /*
+  For Church Team output (Category)
+*/
+.pagination a, .pagination span {
+    border: 0;
+}
+
+.churchdirectory-category .pagination ul li {
+    float: left;
+}
+
+/*
   Church Directory only
 */
 .churchdirectory_paddingtop20 {

@@ -31,6 +31,25 @@
                     <option value="0">MOD_BIRTHDAYANNIVERSARY_FIELD_VALUE_CATEGORY</option>
                 </field>
                 <field
+                        name="month"
+                        type="list"
+                        label="MOD_BIRTHDAYANNIVERSARY_FIELD_MONTH_LABEL"
+                        description="MOD_BIRTHDAYANNIVERSARY_FIELD_MONTH_DESC" default="0">
+                    <option value="">MOD_BIRTHDAYANNIVERSARY_FIELD_VALUE_MONTH_DEFAULT</option>
+                    <option value="01">JANUARY</option>
+                    <option value="02">FEBRUARY</option>
+                    <option value="03">MARCH</option>
+                    <option value="04">APRIL</option>
+                    <option value="05">MAY</option>
+                    <option value="06">JUNE</option>
+                    <option value="07">JULY</option>
+                    <option value="08">AUGUST</option>
+                    <option value="09">SEPTEMBER</option>
+                    <option value="10">OCTOBER</option>
+                    <option value="11">NOVEMBER</option>
+                    <option value="12">DECEMBER</option>
+                </field>
+                <field
                     name="show_page_heading"
                     type="radio"
                     default="1"
