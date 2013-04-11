@@ -641,8 +641,7 @@
                    label="COM_CHURCHDIRECTORY_FAMILYPOSTION_LABEL"
                    description="COM_CHURCHDIRECTORY_FAMILYPOSTION_DESC"
                    class="inputbox"
-                   default="-1" OnChange="setTypeEmail(this.form);">
-                <option value="-1">COM_CHURCHDIRECTORY_SINGLE</option>
+                   default="0" OnChange="setTypeEmail(this.form);">
                 <option value="0">COM_CHURCHDIRECTORY_HEAD_OF_HOUSEHOLD</option>
                 <option value="1">COM_CHURCHDIRECTORY_SPOUSE</option>
                 <option value="2">COM_CHURCHDIRECTORY_CHILED</option>
