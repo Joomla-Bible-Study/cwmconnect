@@ -269,6 +269,7 @@
                label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_YAHOO_MSG_LABEL"
                description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_YAHOO_MSG_DESC"
                class="inputbox span12 small" size="30"/>
+
         <field name="lat" type="text" label="COM_CHURCHDIRECTORY_FIELD_KML_LAT_LABEL"
                description="COM_CHURCHDIRECTORY_FIELD_KML_LAT_DESC" class="inputbox span12 small"
                size="11"/>
@@ -626,8 +627,30 @@
         </fieldset>
     </fields>
     <fields name="attribs">
-
-
+        <fieldset name="msg"
+                  label="COM_CHURCHDIRECTORY_IM_DETAILS"
+                  description="COM_CHURCHDIRECTORY_MEMBER_MSG_INFO_FIELDSET_DESC">
+            <field name="msn_msg" type="text"
+                   label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_MSN_MSG_LABEL"
+                   description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_MSN_MSG_DESC"
+                   class="inputbox span12 small" size="30"/>
+            <field name="google_msg" type="text"
+                   label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_GOOGLE_MSG_LABEL"
+                   description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_GOOGLE_MSG_DESC"
+                   class="inputbox span12 small" size="30"/>
+            <field name="aol_msg" type="text"
+                   label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_AOL_MSG_LABEL"
+                   description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_AOL_MSG_DESC"
+                   class="inputbox span12 small" size="30"/>
+            <field name="facebook_msg" type="text"
+                   label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_FACEBOOK_MSG_LABEL"
+                   description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_FACEBOOK_MSG_DESC"
+                   class="inputbox span12 small" size="30"/>
+            <field name="twitter_msg" type="text"
+                   label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_TWITTER_MSG_LABEL"
+                   description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_TWITTER_MSG_DESC"
+                   class="inputbox span12 small" size="30"/>
+        </fieldset>
         <field name="sex"
                type="list"
                class="btn-group span12"
@@ -645,9 +668,6 @@
                    description="COM_CHURCHDIRECTORY_FIELD_MEMBER_OTHER_INFO_DESC"
                    class="inputbox span12 small" rows="3" cols="30"/>
         </fieldset>
-        <fieldset name="memberstate"
-                  label="COM_CHURCHDIRECTORY_MEMBER_STATE_INFO_FIELDSET_LABEL"
-                  description="COM_CHURCHDIRECTORY_MEMBER_STATE_INFO_FIELDSET_DESC">
             <field name="familypostion" type="list"
                    label="COM_CHURCHDIRECTORY_FAMILYPOSTION_LABEL"
                    description="COM_CHURCHDIRECTORY_FAMILYPOSTION_DESC"
@@ -657,8 +677,6 @@
                 <option value="1">COM_CHURCHDIRECTORY_SPOUSE</option>
                 <option value="2">COM_CHURCHDIRECTORY_CHILED</option>
             </field>
-
-        </fieldset>
         <fieldset name="mailingaddress"
                   label="COM_CHURCHDIRECTORY_MAILING_ADDRESS_FIELDSET_LABEL"
                   description="COM_CHURCHDIRECTORY_MAILING_ADDRESS_FIELDSET_DESC">
