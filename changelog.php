@@ -10,7 +10,7 @@
 defined('_JEXEC') or die;
 ?>
 
---1.7.6
+--1.7.6 April 11, 2013
 
 ** New function to search members in admin view by zip "zip:XXXXX"
 ** Add Male/Female switch not sure what I will use if for in the fucher.
