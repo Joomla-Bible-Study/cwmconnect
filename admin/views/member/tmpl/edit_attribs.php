@@ -118,15 +118,15 @@ if ($this->access):
 							<p class="tip"><?php echo $this->escape(JText::_($fieldSet->description)); ?></p>
 						<?php } ?>
 						<div class="clearfix"></div>
-						<?php foreach ($this->form->getFieldset($name) as $field) : ?>
-							<div class="control-group">
-								<div class="control-label">
-									<?php echo $this->form->getLabel('mstatus'); ?>
-								</div>
-								<div class="controls">
-									<?php echo $this->form->getInput('mstatus'); ?>
-								</div>
+						<div class="control-group">
+							<div class="control-label">
+								<?php echo $this->form->getLabel('mstatus'); ?>
 							</div>
+							<div class="controls">
+								<?php echo $this->form->getInput('mstatus'); ?>
+							</div>
+						</div>
+						<?php foreach ($this->form->getFieldset($name) as $field) : ?>
 							<?php if ($field->name != 'jform[attribs][memberstatusother]')
 							{
 								?>
