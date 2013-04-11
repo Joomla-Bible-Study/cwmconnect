@@ -66,6 +66,7 @@ class ChurchDirectoryViewCategory extends JViewLegacy
 	 */
 	function display ($tpl = null)
 	{
+
 		$app    = JFactory::getApplication();
 		$params = $app->getParams();
 
@@ -90,7 +91,7 @@ class ChurchDirectoryViewCategory extends JViewLegacy
 			return JError::raiseError(404, JText::_('JGLOBAL_CATEGORY_NOT_FOUND'));
 		}
 
-		if ($parent == false)
+		if ($parent === false)
 		{
 			return JError::raiseError(404, JText::_('JGLOBAL_CATEGORY_NOT_FOUND'));
 		}
@@ -133,7 +134,8 @@ class ChurchDirectoryViewCategory extends JViewLegacy
 		$cparams          = $category->getParams();
 		$category->params = clone($params);
 		$category->params->merge($cparams);
-		$children = array($category->id => $children);
+		$children = array($category->id =>$children);$this->loadHelper('render');
+		$this->renderHelper = new renderHelper();
 
 		$maxLevel         = $params->get('maxLevel', -1);
 		$this->maxLevel   = & $maxLevel;
