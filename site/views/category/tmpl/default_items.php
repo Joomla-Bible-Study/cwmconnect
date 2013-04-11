@@ -16,9 +16,8 @@ $this->loadHelper('render');
 $renderHelper = new renderHelper();
 ?>
 <?php if (empty($this->items)) : ?>
-<p> <?php echo JText::_('COM_CHURCHDIRECTORY_NO_ARTICLES'); ?>     </p>
+<p> <?php echo JText::_('COM_CHURCHDIRECTORY_NO_MEMBERS'); ?>     </p>
 <?php else : ?>
-
 <form action="<?php echo htmlspecialchars(JUri::getInstance()->toString()); ?>" method="post" name="adminForm"
       id="adminForm">
 	<?php if ($this->params->get('show_pagination_limit')) : ?>
