@@ -301,6 +301,14 @@ $assoc = isset($app->item_associations) ? $app->item_associations : 0;
 					</div>
 					<div class="control-group">
 						<div class="control-label">
+							<?php echo $this->form->getLabel('sex', 'attribs'); ?>
+						</div>
+						<div class="controls">
+							<?php echo $this->form->getInput('sex', 'attribs'); ?>
+						</div>
+					</div>
+					<div class="control-group">
+						<div class="control-label">
 							<?php echo $this->form->getLabel('access'); ?>
 						</div>
 						<div class="controls">

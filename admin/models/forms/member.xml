@@ -626,6 +626,17 @@
         </fieldset>
     </fields>
     <fields name="attribs">
+
+
+        <field name="sex"
+               type="list"
+               class="btn-group span12"
+               label="COM_CHURCHDIRECTORY_FIELD_SEX_LABEL"
+               description="COM_CHURCHDIRECTORY_FIELD_SEX_DESC"
+               required="true">
+            <option value="0">COM_CHURCHDIRECTORY_FEMALE</option>
+            <option value="1">COM_CHURCHDIRECTORY_MALE</option>
+        </field>
         <fieldset name="protected"
                   label="COM_CHURCHDIRECTORY_MEMBER_PROTECTED_INFO_FIELDSET_LABEL"
                   description="COM_CHURCHDIRECTORY_MEMBER_PROTECTED_INFO_FIELDSET_DESC">
