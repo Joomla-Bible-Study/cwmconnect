@@ -249,7 +249,7 @@ class ChurchDirectoryModelCategory extends JModelList
 		$db     = $this->getDbo();
 
 		// List state information
-		$format = $app->input->getWord('format');
+		$format = $app->input->getWord('format', 'default');
 
 		if ($format == 'feed')
 		{
@@ -265,7 +265,7 @@ class ChurchDirectoryModelCategory extends JModelList
 		$this->setState('list.start', $limitstart);
 
 		// Optional filter text
-		$this->setState('list.filter', $app->input->getString('filter-search'));
+		$this->setState('list.filter', $app->input->getString('filter-search', ''));
 
 		// Get list ordering default from the parameters
 		$menuParams = new JRegistry;

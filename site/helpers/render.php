@@ -15,20 +15,20 @@ defined('_JEXEC') or die;
  */
 class RenderHelper
 {
-	public $children;
-
 	/**
 	 * Get Position
 	 *
-	 * @param   int $con_position  ID of Position
+	 * @param   string    $con_position  ID of Position
+	 * @param   bool      $getint        ID of Position
+	 * @param   JRegistry $params        ID of Position
 	 *
-	 * @return object
+	 * @return string|bool
 	 */
-	public function getPosition ($con_position)
+	public function getPosition ($con_position, $getint = false, $params = null)
 	{
 		$i         = 0;
 		$positions = array();
-		$results   = null;
+		$results   = '';
 		$position  = null;
 		$db        = JFactory::getDBO();
 
@@ -50,7 +50,7 @@ class RenderHelper
 				$i++;
 			}
 		}
-		elseif ($con_position != '-1')
+		elseif ($con_position != '-1' && $con_position != '0' && $con_position != '')
 		{
 			$query = $db->getQuery(true);
 
@@ -65,21 +65,38 @@ class RenderHelper
 		$n  = count($positions);
 		$pi = '1';
 
-		foreach ($positions AS $position)
+		if (!$getint)
 		{
-			if ($position)
+			foreach ($positions AS $position)
 			{
-				if ($n != $pi)
+				if ($position)
 				{
-					$results .= $position->name;
-					$results .= '</dd><dd>';
+					if ($n != $pi)
+					{
+						$results .= $position->name;
+						$results .= '</dd><dd>';
+					}
+					else
+					{
+						$results .= $position->name;
+					}
+					$pi++;
 				}
-				else
-				{
-					$results .= $position->name;
-				}
-				$pi++;
 			}
+		}
+		else
+		{
+			foreach ($positions AS $position)
+			{
+				var_dump($getint);
+				var_dump($position);
+				$teamleaders = $params->get('teamleaders', '');
+				if($position->id == $teamleaders){
+					$results = true;
+					var_dump($position);
+				}
+			}
+
 		}
 
 		return $results;
@@ -199,18 +216,18 @@ class RenderHelper
 	/**
 	 * Compute lastname, firstname and middlename
 	 *
-	 * @param    string  $name Name of member
+	 * @param    string $name Name of member
 	 *
 	 * @return stdClass
 	 */
-	public function getName($name)
+	public function getName ($name)
 	{
 		// Compute lastname, firstname and middlename
 		$name = trim($name);
 
 		/* "Lastname, Firstname Midlename" format support
 		 e.g. "de Gaulle, Charles" */
-		$namearray = explode(',', $name);
+		$namearray  = explode(',', $name);
 		$middlename = '';
 
 		if (count($namearray) > 1)
@@ -240,12 +257,163 @@ class RenderHelper
 			$card_name  = $firstname . ($middlename ? ' ' . $middlename : '') . ($lastname ? ' ' . $lastname : '');
 		}
 
-		$result = new stdClass;
-		$result->firstname = $firstname;
+		$result             = new stdClass;
+		$result->firstname  = $firstname;
 		$result->middlename = $middlename;
-		$result->firstname = $firstname;
-		$result->card_name = $card_name;
+		$result->firstname  = $firstname;
+		$result->card_name  = $card_name;
 
 		return $result;
+	}
+
+	/**
+	 * Get Birthdays for This Month
+	 *
+	 * @param   JRegistry $params  Model Params
+	 *
+	 * @return array
+	 */
+	public function getBirthdays ($params)
+	{
+		$user   = JFactory::getUser();
+		$groups = implode(',', $user->getAuthorisedViewLevels());
+
+		$db      = JFactory::getDbo();
+		$results = false;
+		$query   = $db->getQuery(true);
+
+		// Select required fields from the categories.
+		// sqlsrv changes
+		$case_when = ' CASE WHEN ';
+		$case_when .= $query->charLength('a.alias', '!=', '0');
+		$case_when .= ' THEN ';
+		$a_id = $query->castAsChar('a.id');
+		$case_when .= $query->concatenate(array($a_id, 'a.alias'), ':');
+		$case_when .= ' ELSE ';
+		$case_when .= $a_id . ' END as slug';
+
+		$case_when1 = ' CASE WHEN ';
+		$case_when1 .= $query->charLength('c.alias', '!=', '0');
+		$case_when1 .= ' THEN ';
+		$c_id = $query->castAsChar('c.id');
+		$case_when1 .= $query->concatenate(array($c_id, 'c.alias'), ':');
+		$case_when1 .= ' ELSE ';
+		$case_when1 .= $c_id . ' END as catslug';
+		$query->select('a.*' . ',' . $case_when . ',' . $case_when1);
+		$query->from($db->quoteName('#__churchdirectory_details') . ' AS a');
+		$query->where('a.published = 1');
+
+		// Join on category table.
+		$query->select('c.title AS category_title, c.params AS category_params, c.alias AS category_alias, c.access AS category_access');
+		$query->where('a.access IN (' . $groups . ')');
+		$query->join('INNER', '#__categories AS c ON c.id = a.catid');
+		$query->where('c.access IN (' . $groups . ')');
+
+		// Join to check for category published state in parent categories up the tree
+		// TODO need to redo the Query;
+		$query->select('c.published, CASE WHEN badcats.id is null THEN c.published ELSE 0 END AS parents_published');
+		$subquery = 'SELECT cat.id as id FROM #__categories AS cat JOIN #__categories AS parent ';
+		$subquery .= 'ON cat.lft BETWEEN parent.lft AND parent.rgt ';
+		$subquery .= 'WHERE parent.extension = ' . $db->quote('com_churchdirectory');
+		// Find any up-path categories that are not published
+		// If all categories are published, badcats.id will be null, and we just use the churchdirectory state
+		$subquery .= ' AND parent.published != 1 GROUP BY cat.id ';
+		// Select state to unpublished if up-path category is unpublished
+		$publishedWhere = 'CASE WHEN badcats.id is null THEN a.published ELSE 0 END';
+		$query->join('LEFT OUTER', '(' . $subquery . ') AS badcats ON badcats.id = c.id');
+
+		// Filter of birthdates to show
+		$date = $params->get('month', date('m'));
+		$query->where('MONTH(a.birthdate) = ' . $date);
+
+		$query->where('a.birthdate != "0000-00-00"')
+				->order('a.birthdate DESC');
+		$db->setQuery($query);
+		$records = $db->loadObjectList();
+
+		foreach ($records as $record)
+		{
+			list($byear, $bmonth, $bday) = explode('-', $record->birthdate);
+			$results[] = array('name' => $record->name, 'id' => $record->id, 'day' => $bday, 'access' => $record->access);
+		}
+
+		return $results;
+	}
+
+	/**
+	 * Get Anniversary's for this Month
+	 *
+	 * @param   JRegistry $params  Model Params
+	 *
+	 * @return array
+	 */
+	public function getAnniversary ($params)
+	{
+		$db      = JFactory::getDbo();
+		$results = false;
+		$query   = $db->getQuery(true);
+		$user    = JFactory::getUser();
+		$groups  = implode(',', $user->getAuthorisedViewLevels());
+
+		$db      = JFactory::getDbo();
+		$results = false;
+		$query   = $db->getQuery(true);
+
+		// Select required fields from the categories.
+		// sqlsrv changes
+		$case_when = ' CASE WHEN ';
+		$case_when .= $query->charLength('a.alias', '!=', '0');
+		$case_when .= ' THEN ';
+		$a_id = $query->castAsChar('a.id');
+		$case_when .= $query->concatenate(array($a_id, 'a.alias'), ':');
+		$case_when .= ' ELSE ';
+		$case_when .= $a_id . ' END as slug';
+
+		$case_when1 = ' CASE WHEN ';
+		$case_when1 .= $query->charLength('c.alias', '!=', '0');
+		$case_when1 .= ' THEN ';
+		$c_id = $query->castAsChar('c.id');
+		$case_when1 .= $query->concatenate(array($c_id, 'c.alias'), ':');
+		$case_when1 .= ' ELSE ';
+		$case_when1 .= $c_id . ' END as catslug';
+		$query->select('a.*' . ',' . $case_when . ',' . $case_when1);
+		$query->from($db->quoteName('#__churchdirectory_details') . ' AS a');
+		$query->where('a.published = 1');
+
+		// Join on category table.
+		$query->select('c.title AS category_title, c.params AS category_params, c.alias AS category_alias, c.access AS category_access');
+		$query->where('a.access IN (' . $groups . ')');
+		$query->join('INNER', '#__categories AS c ON c.id = a.catid');
+		$query->where('c.access IN (' . $groups . ')');
+
+		// Join to check for category published state in parent categories up the tree
+		// TODO need to redo the Query;
+		$query->select('c.published, CASE WHEN badcats.id is null THEN c.published ELSE 0 END AS parents_published');
+		$subquery = 'SELECT cat.id as id FROM #__categories AS cat JOIN #__categories AS parent ';
+		$subquery .= 'ON cat.lft BETWEEN parent.lft AND parent.rgt ';
+		$subquery .= 'WHERE parent.extension = ' . $db->quote('com_churchdirectory');
+		// Find any up-path categories that are not published
+		// If all categories are published, badcats.id will be null, and we just use the churchdirectory state
+		$subquery .= ' AND parent.published != 1 GROUP BY cat.id ';
+		// Select state to unpublished if up-path category is unpublished
+		$publishedWhere = 'CASE WHEN badcats.id is null THEN a.published ELSE 0 END';
+		$query->join('LEFT OUTER', '(' . $subquery . ') AS badcats ON badcats.id = c.id');
+
+		// Filter of birthdates to show
+		$date = $params->get('month', date('m'));
+		$query->where('MONTH(a.anniversary) = ' . $date);
+
+		$query->where('a.anniversary != "0000-00-00"')
+				->order('a.anniversary DESC');
+		$db->setQuery($query);
+		$records = $db->loadObjectList();
+
+		foreach ($records as $record)
+		{
+			list($byear, $bmonth, $bday) = explode('-', $record->anniversary);
+			$results[] = array('name' => $record->name, 'id' => $record->id, 'day' => $bday, 'access' => $record->access);
+		}
+
+		return $results;
 	}
 }

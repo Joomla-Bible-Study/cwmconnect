@@ -194,7 +194,7 @@ p {
 
 /*Directory Layout*/
 .churchdirectory-table {
-    overflow:auto;
+    overflow: auto;
     max-height: 830px;
     font-size: 90%;
 }
@@ -306,4 +306,8 @@ div.vert-line>div {
     border-width: 1px;
     border-style: solid;
     border-color: #000;
+}
+
+.cd_margin_top_20 {
+    margin-top: 20px;
 }

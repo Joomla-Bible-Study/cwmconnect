@@ -301,6 +301,14 @@ $assoc = isset($app->item_associations) ? $app->item_associations : 0;
 					</div>
 					<div class="control-group">
 						<div class="control-label">
+							<?php echo $this->form->getLabel('sex', 'attribs'); ?>
+						</div>
+						<div class="controls">
+							<?php echo $this->form->getInput('sex', 'attribs'); ?>
+						</div>
+					</div>
+					<div class="control-group">
+						<div class="control-label">
 							<?php echo $this->form->getLabel('access'); ?>
 						</div>
 						<div class="controls">
@@ -326,27 +334,6 @@ $assoc = isset($app->item_associations) ? $app->item_associations : 0;
 				</div>
 			</div>
 		</div>
-		<div class="accordion-group">
-			<div class="accordion-heading">
-				<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion6" href="#im">
-					<?php echo JText::_('COM_CHURCHDIRECTORY_IM_DETAILS');?>
-				</a>
-			</div>
-			<div id="im" class="accordion-body collapse">
-				<div class="accordion-inner">
-					<div class="control-group">
-						<div class="control-label"><?php echo $this->form->getLabel('skype'); ?></div>
-						<div class="controls"><?php echo $this->form->getInput('skype'); ?></div>
-					</div>
-
-					<div class="control-group">
-						<div class="control-label"><?php echo $this->form->getLabel('yahoo_msg'); ?></div>
-						<div class="controls"><?php echo $this->form->getInput('yahoo_msg'); ?></div>
-					</div>
-				</div>
-			</div>
-		</div>
-
 		<?php echo $this->loadTemplate('attribs'); ?>
 	</div>
 </div>

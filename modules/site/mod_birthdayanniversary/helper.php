@@ -22,97 +22,13 @@ class ModBirthdayAnniversaryHelper
 {
 
 	/**
-	 * Get Birthdays for This Month
-	 *
-	 * @param   JObject|JRegistry  $params  Model Params
-	 *
-	 * @return array
-	 */
-	public static function getBirthdays($params)
-	{
-		$db      = JFactory::getDbo();
-		$results = false;
-		$query   = "SELECT * FROM " . $db->qn('#__churchdirectory_details') . " WHERE published = 1 ORDER BY MONTH(birthdate) DESC";
-		$records = self::performDB($query);
-
-		foreach ($records as $record)
-		{
-			if ($record->birthdate !== '0000-00-00')
-			{
-				list($byear, $bmonth, $bday) = explode('-', $record->birthdate);
-
-				if ($bmonth === date('m'))
-				{
-					$results[] = array('name' => $record->name, 'id' => $record->id, 'day' => $bday, 'access' => $record->access);
-				}
-			}
-		}
-
-		return $results;
-	}
-
-	/**
-	 * Get Anniversarys for This Month
-	 *
-	 * @param   JObject|JRegistry  $params  Model Params
-	 *
-	 * @return array
-	 */
-	public static function getAnniversary($params)
-	{
-		$db      = JFactory::getDbo();
-		$results = false;
-		$query   = "SELECT * FROM " . $db->qn('#__churchdirectory_details') . " WHERE published = 1 ORDER BY MONTH(anniversary) DESC";
-		$records = self::performDB($query);
-
-		foreach ($records as $record)
-		{
-			if ($record->anniversary !== '0000-00-00')
-			{
-				list($byear, $bmonth, $bday) = explode('-', $record->anniversary);
-
-				if ($bmonth === date('m'))
-				{
-					$results[] = array('name' => $record->name, 'id' => $record->id, 'day' => $bday, 'access' => $record->access);
-				}
-			}
-		}
-
-		return $results;
-	}
-
-	/**
-	 * Performs a database query
-	 *
-	 * @param   string  $query  is a Joomla ready query
-	 *
-	 * @return mixed
-	 */
-	protected static function performDB($query)
-	{
-		if (!$query)
-		{
-			return false;
-		}
-		$db = JFactory::getDbo();
-		$db->setQuery($query);
-
-		if ($db->execute())
-		{
-			return $db->loadObjectList();
-		}
-
-		return false;
-	}
-
-	/**
 	 * Convert a stdClass to an Array.
 	 *
-	 * @param   stdClass  $Class  Setup Variable
+	 * @param   stdClass $Class  Setup Variable
 	 *
 	 * @return array
 	 */
-	static public function object_to_array(stdClass $Class)
+	static public function object_to_array (stdClass $Class)
 	{
 		// Typecast to (array) automatically converts stdClass -> array.
 		$Class = (array) $Class;
