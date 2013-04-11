@@ -15,20 +15,20 @@ defined('_JEXEC') or die;
  */
 class RenderHelper
 {
-	public $children;
-
 	/**
 	 * Get Position
 	 *
-	 * @param   int $con_position  ID of Position
+	 * @param   string    $con_position  ID of Position
+	 * @param   bool      $getint        ID of Position
+	 * @param   JRegistry $params        ID of Position
 	 *
-	 * @return object
+	 * @return string|bool
 	 */
-	public function getPosition ($con_position)
+	public function getPosition ($con_position, $getint = false, $params = null)
 	{
 		$i         = 0;
 		$positions = array();
-		$results   = null;
+		$results   = '';
 		$position  = null;
 		$db        = JFactory::getDBO();
 
@@ -50,7 +50,7 @@ class RenderHelper
 				$i++;
 			}
 		}
-		elseif ($con_position != '-1')
+		elseif ($con_position != '-1' && $con_position != '0' && $con_position != '')
 		{
 			$query = $db->getQuery(true);
 
@@ -65,21 +65,38 @@ class RenderHelper
 		$n  = count($positions);
 		$pi = '1';
 
-		foreach ($positions AS $position)
+		if (!$getint)
 		{
-			if ($position)
+			foreach ($positions AS $position)
 			{
-				if ($n != $pi)
+				if ($position)
 				{
-					$results .= $position->name;
-					$results .= '</dd><dd>';
+					if ($n != $pi)
+					{
+						$results .= $position->name;
+						$results .= '</dd><dd>';
+					}
+					else
+					{
+						$results .= $position->name;
+					}
+					$pi++;
 				}
-				else
-				{
-					$results .= $position->name;
-				}
-				$pi++;
 			}
+		}
+		else
+		{
+			foreach ($positions AS $position)
+			{
+				var_dump($getint);
+				var_dump($position);
+				$teamleaders = $params->get('teamleaders', '');
+				if($position->id == $teamleaders){
+					$results = true;
+					var_dump($position);
+				}
+			}
+
 		}
 
 		return $results;
@@ -324,7 +341,7 @@ class RenderHelper
 	}
 
 	/**
-	 * Get Anniversarys for This Month
+	 * Get Anniversary's for this Month
 	 *
 	 * @param   JRegistry $params  Model Params
 	 *
