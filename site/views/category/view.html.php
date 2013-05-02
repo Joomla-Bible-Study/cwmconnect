@@ -2,9 +2,10 @@
 
 /**
  * View for Category
- * @package		ChurchDirectory.Site
+ *
+ * @package             ChurchDirectory.Site
  * @copyright           (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ * @license             GNU General Public License version 2 or later; see LICENSE.txt
  */
 // No direct access
 defined('_JEXEC') or die;
@@ -15,222 +16,270 @@ defined('_JEXEC') or die;
 /**
  * HTML View class for the ChurchDirectorys component
  *
- * @package	ChurchDirectory.Site
- * @since		1.7.0
+ * @package      ChurchDirectory.Site
+ * @since        1.7.0
  */
-class ChurchDirectoryViewCategory extends JViewLegacy {
+class ChurchDirectoryViewCategory extends JViewLegacy
+{
 
-    /**
-     * Protected state
-     * @var array
-     */
-    protected $state;
+	/**
+	 * Protected state
+	 *
+	 * @var array
+	 */
+	protected $state;
 
-    /**
-     * Protected items
-     * @var array
-     */
-    protected $items;
+	/**
+	 * Protected items
+	 *
+	 * @var array
+	 */
+	protected $items;
 
-    /**
-     * Protected category
-     * @var array
-     */
-    protected $category;
+	/**
+	 * Protected category
+	 *
+	 * @var array
+	 */
+	protected $category;
 
-    /**
-     * Protected categories
-     * @var array
-     */
-    protected $categories;
+	/**
+	 * Protected categories
+	 *
+	 * @var array
+	 */
+	protected $categories;
 
-    /**
-     * Protected pagination
-     * @var array
-     */
-    protected $pagination;
+	/**
+	 * Protected pagination
+	 *
+	 * @var array
+	 */
+	protected $pagination;
 
-    /**
-     * Display Function
-     * @param string $tpl
-     * @return boolean
-     */
-    function display($tpl = null) {
-        $app = JFactory::getApplication();
-        $params = $app->getParams();
+	/**
+	 * Display Function
+	 *
+	 * @param string $tpl
+	 *
+	 * @return boolean
+	 */
+	function display ($tpl = null)
+	{
 
-        // Get some data from the models
-        $state = $this->get('State');
-        $items = $this->get('Items');
-        $category = $this->get('Category');
-        $children = $this->get('Children');
-        $parent = $this->get('Parent');
-        $pagination = $this->get('Pagination');
+		$app    = JFactory::getApplication();
+		$params = $app->getParams();
 
-        // Check for errors.
-        if (count($errors = $this->get('Errors'))) {
-            JError::raiseError(500, implode("\n", $errors));
-            return false;
-        }
+		// Get some data from the models
+		$state      = $this->get('State');
+		$items      = $this->get('Items');
+		$category   = $this->get('Category');
+		$children   = $this->get('Children');
+		$parent     = $this->get('Parent');
+		$pagination = $this->get('Pagination');
 
-        if ($category == false) {
-            return JError::raiseError(404, JText::_('JGLOBAL_CATEGORY_NOT_FOUND'));
-        }
+		// Check for errors.
+		if (count($errors = $this->get('Errors')))
+		{
+			JError::raiseError(500, implode("\n", $errors));
 
-        if ($parent == false) {
-            return JError::raiseError(404, JText::_('JGLOBAL_CATEGORY_NOT_FOUND'));
-        }
+			return false;
+		}
 
-        // Check whether category access level allows access.
-        $user = JFactory::getUser();
-        $groups = $user->getAuthorisedViewLevels();
-        if (!in_array($category->access, $groups)) {
-            return JError::raiseError(403, JText::_('JERROR_ALERTNOAUTHOR'));
-        }
+		if ($category == false)
+		{
+			return JError::raiseError(404, JText::_('JGLOBAL_CATEGORY_NOT_FOUND'));
+		}
 
-        // Prepare the data.
-        // Compute the churchdirectory slug.
-        for ($i = 0, $n = count($items); $i < $n; $i++) {
-            $item = &$items[$i];
-            $item->slug = $item->alias ? ($item->id . ':' . $item->alias) : $item->id;
-            $temp = new JRegistry();
-            $temp->loadString($item->params);
-            $item->params = clone($params);
-            $item->params->merge($temp);
+		if ($parent === false)
+		{
+			return JError::raiseError(404, JText::_('JGLOBAL_CATEGORY_NOT_FOUND'));
+		}
 
-            if ($item->params->get('show_email', 0) == 1) {
-                $item->email_to = trim($item->email_to);
+		// Check whether category access level allows access.
+		$user   = JFactory::getUser();
+		$groups = $user->getAuthorisedViewLevels();
+		if (!in_array($category->access, $groups))
+		{
+			return JError::raiseError(403, JText::_('JERROR_ALERTNOAUTHOR'));
+		}
 
-                if (!empty($item->email_to) && JMailHelper::isEmailAddress($item->email_to)) {
-                    $item->email_to = JHtml::_('email.cloak', $item->email_to);
-                } else {
-                    $item->email_to = '';
-                }
-            }
-        }
+		// Prepare the data.
+		// Compute the churchdirectory slug.
+		for ($i = 0, $n = count($items); $i < $n; $i++)
+		{
+			$item       = & $items[$i];
+			$item->slug = $item->alias ? ($item->id . ':' . $item->alias) : $item->id;
+			$temp       = new JRegistry();
+			$temp->loadString($item->params);
+			$item->params = clone($params);
+			$item->params->merge($temp);
 
-        // Setup the category parameters.
-        $cparams = $category->getParams();
-        $category->params = clone($params);
-        $category->params->merge($cparams);
-        $children = array($category->id => $children);
+			if ($item->params->get('show_email', 0) == 1)
+			{
+				$item->email_to = trim($item->email_to);
 
-		$maxLevel = $params->get('maxLevel', -1);
-		$this->maxLevel   = &$maxLevel;
-		$this->state      = &$state;
-		$this->items      = &$items;
-		$this->category   = &$category;
-		$this->children   = &$children;
-		$this->params     = &$params;
-		$this->parent     = &$parent;
-		$this->pagination = &$pagination;
-		$this->user       = &$user;
+				if (!empty($item->email_to) && JMailHelper::isEmailAddress($item->email_to))
+				{
+					$item->email_to = JHtml::_('email.cloak', $item->email_to);
+				}
+				else
+				{
+					$item->email_to = '';
+				}
+			}
+		}
 
-        //Escape strings for HTML output
-        $this->pageclass_sfx = htmlspecialchars($this->params->get('pageclass_sfx'));
+		// Setup the category parameters.
+		$cparams          = $category->getParams();
+		$category->params = clone($params);
+		$category->params->merge($cparams);
+		$children = array($category->id =>$children);$this->loadHelper('render');
+		$this->renderHelper = new renderHelper();
 
-        // Check for layout override only if this is not the active menu item
-        // If it is the active menu item, then the view and category id will match
-        $active = $app->getMenu()->getActive();
-        if ((!$active) || ((strpos($active->link, 'view=category') === false) || (strpos($active->link, '&id=' . (string) $this->category->id) === false))) {
-            if ($layout = $category->params->get('category_layout')) {
-                $this->setLayout($layout);
-            }
-        } elseif (isset($active->query['layout'])) {
-            // We need to set the layout in case this is an alternative menu item (with an alternative layout)
-            $this->setLayout($active->query['layout']);
-        }
+		$maxLevel         = $params->get('maxLevel', -1);
+		$this->maxLevel   = & $maxLevel;
+		$this->state      = & $state;
+		$this->items      = & $items;
+		$this->category   = & $category;
+		$this->children   = & $children;
+		$this->params     = & $params;
+		$this->parent     = & $parent;
+		$this->pagination = & $pagination;
+		$this->user       = & $user;
 
-        $this->_prepareDocument();
+		//Escape strings for HTML output
+		$this->pageclass_sfx = htmlspecialchars($this->params->get('pageclass_sfx'));
 
-        parent::display($tpl);
-    }
+		// Check for layout override only if this is not the active menu item
+		// If it is the active menu item, then the view and category id will match
+		$active = $app->getMenu()->getActive();
+		if ((!$active) || ((strpos($active->link, 'view=category') === false) || (strpos($active->link, '&id=' . (string) $this->category->id) === false)))
+		{
+			if ($layout = $category->params->get('category_layout'))
+			{
+				$this->setLayout($layout);
+			}
+		}
+		elseif (isset($active->query['layout']))
+		{
+			// We need to set the layout in case this is an alternative menu item (with an alternative layout)
+			$this->setLayout($active->query['layout']);
+		}
 
-    /**
-     * Prepares the document
-     */
-    protected function _prepareDocument() {
-        $app = JFactory::getApplication();
-        $menus = $app->getMenu();
-        $pathway = $app->getPathway();
-        $title = null;
+		$this->_prepareDocument();
 
-        // Because the application sets a default page title,
-        // we need to get it from the menu item itself
-        $menu = $menus->getActive();
+		parent::display($tpl);
+	}
 
-        if ($menu) {
-            $this->params->def('page_heading', $this->params->get('page_title', $menu->title));
-        } else {
-            $this->params->def('page_heading', JText::_('COM_CHURCHDIRECTORY_DEFAULT_PAGE_TITLE'));
-        }
+	/**
+	 * Prepares the document
+	 */
+	protected function _prepareDocument ()
+	{
+		$app     = JFactory::getApplication();
+		$menus   = $app->getMenu();
+		$pathway = $app->getPathway();
+		$title   = null;
 
-        $id = (int) @$menu->query['id'];
+		// Because the application sets a default page title,
+		// we need to get it from the menu item itself
+		$menu = $menus->getActive();
 
-        if ($menu && ($menu->query['option'] != 'com_churchdirectory' || $menu->query['view'] == 'churchdirectory' || $id != $this->category->id)) {
-            $path = array(array('title' => $this->category->title, 'link' => ''));
-            $category = $this->category->getParent();
+		if ($menu)
+		{
+			$this->params->def('page_heading', $this->params->get('page_title', $menu->title));
+		}
+		else
+		{
+			$this->params->def('page_heading', JText::_('COM_CHURCHDIRECTORY_DEFAULT_PAGE_TITLE'));
+		}
 
-            while (($menu->query['option'] != 'com_churchdirectory' || $menu->query['view'] == 'churchdirectory' || $id != $category->id) && $category->id > 1) {
-                $path[] = array('title' => $category->title, 'link' => ChurchDirectoryHelperRoute::getCategoryRoute($category->id));
-                $category = $category->getParent();
-            }
+		$id = (int) @$menu->query['id'];
 
-            $path = array_reverse($path);
+		if ($menu && ($menu->query['option'] != 'com_churchdirectory' || $menu->query['view'] == 'churchdirectory' || $id != $this->category->id))
+		{
+			$path     = array(array('title' => $this->category->title, 'link' => ''));
+			$category = $this->category->getParent();
 
-            foreach ($path as $item) {
-                $pathway->addItem($item['title'], $item['link']);
-            }
-        }
+			while (($menu->query['option'] != 'com_churchdirectory' || $menu->query['view'] == 'churchdirectory' || $id != $category->id) && $category->id > 1)
+			{
+				$path[]   = array('title' => $category->title, 'link' => ChurchDirectoryHelperRoute::getCategoryRoute($category->id));
+				$category = $category->getParent();
+			}
 
-        $title = $this->params->get('page_title', '');
+			$path = array_reverse($path);
 
-        if (empty($title)) {
-            $title = $app->getCfg('sitename');
-        } elseif ($app->getCfg('sitename_pagetitles', 0) == 1) {
-            $title = JText::sprintf('JPAGETITLE', $app->getCfg('sitename'), $title);
-        } elseif ($app->getCfg('sitename_pagetitles', 0) == 2) {
-            $title = JText::sprintf('JPAGETITLE', $title, $app->getCfg('sitename'));
-        }
+			foreach ($path as $item)
+			{
+				$pathway->addItem($item['title'], $item['link']);
+			}
+		}
 
-        $this->document->setTitle($title);
+		$title = $this->params->get('page_title', '');
 
-        if ($this->category->metadesc) {
-            $this->document->setDescription($this->category->metadesc);
-        } elseif (!$this->category->metadesc && $this->params->get('menu-meta_description')) {
-            $this->document->setDescription($this->params->get('menu-meta_description'));
-        }
+		if (empty($title))
+		{
+			$title = $app->getCfg('sitename');
+		}
+		elseif ($app->getCfg('sitename_pagetitles', 0) == 1)
+		{
+			$title = JText::sprintf('JPAGETITLE', $app->getCfg('sitename'), $title);
+		}
+		elseif ($app->getCfg('sitename_pagetitles', 0) == 2)
+		{
+			$title = JText::sprintf('JPAGETITLE', $title, $app->getCfg('sitename'));
+		}
 
-        if ($this->category->metakey) {
-            $this->document->setMetadata('keywords', $this->category->metakey);
-        } elseif (!$this->category->metakey && $this->params->get('menu-meta_keywords')) {
-            $this->document->setMetadata('keywords', $this->params->get('menu-meta_keywords'));
-        }
+		$this->document->setTitle($title);
 
-        if ($this->params->get('robots')) {
-            $this->document->setMetadata('robots', $this->params->get('robots'));
-        }
+		if ($this->category->metadesc)
+		{
+			$this->document->setDescription($this->category->metadesc);
+		}
+		elseif (!$this->category->metadesc && $this->params->get('menu-meta_description'))
+		{
+			$this->document->setDescription($this->params->get('menu-meta_description'));
+		}
 
-        if ($app->getCfg('MetaAuthor') == '1') {
-            $this->document->setMetaData('author', $this->category->getMetadata()->get('author'));
-        }
+		if ($this->category->metakey)
+		{
+			$this->document->setMetadata('keywords', $this->category->metakey);
+		}
+		elseif (!$this->category->metakey && $this->params->get('menu-meta_keywords'))
+		{
+			$this->document->setMetadata('keywords', $this->params->get('menu-meta_keywords'));
+		}
 
-        $mdata = $this->category->getMetadata()->toArray();
+		if ($this->params->get('robots'))
+		{
+			$this->document->setMetadata('robots', $this->params->get('robots'));
+		}
 
-        foreach ($mdata as $k => $v) {
-            if ($v) {
-                $this->document->setMetadata($k, $v);
-            }
-        }
+		if ($app->getCfg('MetaAuthor') == '1')
+		{
+			$this->document->setMetaData('author', $this->category->getMetadata()->get('author'));
+		}
 
-        // Add alternative feed link
-        if ($this->params->get('show_feed_link', 1) == 1) {
-            $link = '&format=feed&limitstart=';
-            $attribs = array('type' => 'application/rss+xml', 'title' => 'RSS 2.0');
-            $this->document->addHeadLink(JRoute::_($link . '&type=rss'), 'alternate', 'rel', $attribs);
-            $attribs = array('type' => 'application/atom+xml', 'title' => 'Atom 1.0');
-            $this->document->addHeadLink(JRoute::_($link . '&type=atom'), 'alternate', 'rel', $attribs);
-        }
-    }
+		$mdata = $this->category->getMetadata()->toArray();
+
+		foreach ($mdata as $k => $v)
+		{
+			if ($v)
+			{
+				$this->document->setMetadata($k, $v);
+			}
+		}
+
+		// Add alternative feed link
+		if ($this->params->get('show_feed_link', 1) == 1)
+		{
+			$link    = '&format=feed&limitstart=';
+			$attribs = array('type' => 'application/rss+xml', 'title' => 'RSS 2.0');
+			$this->document->addHeadLink(JRoute::_($link . '&type=rss'), 'alternate', 'rel', $attribs);
+			$attribs = array('type' => 'application/atom+xml', 'title' => 'Atom 1.0');
+			$this->document->addHeadLink(JRoute::_($link . '&type=atom'), 'alternate', 'rel', $attribs);
+		}
+	}
 
 }

@@ -9,6 +9,8 @@ defined('_JEXEC') or die;
 
 require_once JPATH_COMPONENT . '/helpers/route.php';
 
+JLoader::register('RenderHelper', JPATH_SITE . '/components/com_churchdirectory/helpers/render.php');
+
 if (!version_compare(JVERSION, '3.0', 'ge'))
 {
 	JHtml::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_churchdirectory/helpers/html');

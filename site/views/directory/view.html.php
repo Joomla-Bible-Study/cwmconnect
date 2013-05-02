@@ -72,11 +72,11 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 	/**
 	 * Display the view
 	 *
-	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
+	 * @param   string $tpl  The name of the template file to parse; automatically searches through the template paths.
 	 *
 	 * @return  mixed  A string if successful, otherwise a Error object.
 	 */
-	public function display($tpl = null)
+	public function display ($tpl = null)
 	{
 		$app    = JFactory::getApplication();
 		$params = $app->getParams();
@@ -90,7 +90,7 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 
 		$this->loadHelper('render');
 		$this->renderHelper = new renderHelper;
-		$this->span   = $this->renderHelper->rowWidth($params->get('items_per_row'));
+		$this->span         = $this->renderHelper->rowWidth($params->get('rows_per_page'));
 
 		if ($items == false)
 		{
@@ -204,10 +204,22 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 		$category->params->merge($cparams);
 		$children = array($category->id => $children);
 
-		$maxLevel         = $params->get('maxLevel', -1);
+		$maxLevel = $params->get('maxLevel', -1);
+
+		$items = RenderHelper::groupit(array('items' => & $items, 'field' => 'lname'));
+
+		if (0)
+		{
+			foreach ($items as $s1 => $sort1)
+			{
+				$items[$s1] = RenderHelper::groupit(array('items' => $items[$s1], 'field' => 'suburb'));
+
+			}
+		}
+
 		$this->maxLevel   = & $maxLevel;
 		$this->state      = & $state;
-		$this->items      = & $items;
+		$this->items      = $items;
 		$this->category   = & $category;
 		$this->children   = & $children;
 		$this->params     = & $params;
@@ -229,7 +241,7 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 	 *
 	 * @return void
 	 */
-	protected function _prepareDocument()
+	protected function _prepareDocument ()
 	{
 		$app     = JFactory::getApplication();
 		$menus   = $app->getMenu();
@@ -248,7 +260,7 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 		{
 			$this->params->def('page_heading', JText::_('COM_CHURCHDIRECTORY_DEFAULT_PAGE_TITLE'));
 		}
-		$id = (int) @$menu->query['id'];
+		$id    = (int) @$menu->query['id'];
 		$title = $this->params->get('page_title', '');
 
 		if (empty($title))

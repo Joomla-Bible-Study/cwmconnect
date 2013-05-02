@@ -10,19 +10,24 @@
  * */
 defined('_JEXEC') or die;
 
-// Include the Birthdy/Annversary functions only once
+// Include the Birthday/Anniversary functions only once
 require_once dirname(__FILE__) . '/helper.php';
+
+JLoader::register('RenderHelper', JPATH_SITE . '/components/com_churchdirectory/helpers/render.php');
 
 /* Set some global property */
 addCSS();
 
-/* Retun members that have Birthdays of this month. */
-$birthdays = ModBirthdayAnniversaryHelper::getBirthdays($params);
+/* Get the RenderHelper Class for the Module to us */
+$render = new RenderHelper;
 
-/* Retun members that have Anniversary of this month. */
-$anniversary = ModBirthdayAnniversaryHelper::getAnniversary($params);
+/* Return members that have Birthdays of this month. */
+$birthdays = $render->getBirthdays($params);
 
-// Get Groups infore for checking permisions
+/* Return members that have Anniversary of this month. */
+$anniversary = $render->getAnniversary($params);
+
+// Get Groups for checking permissions
 $user   = JFactory::getUser();
 $groups = $user->getAuthorisedViewLevels();
 
@@ -54,7 +59,7 @@ for ($i = 0; $i < $count; $i++)
  * @since   1.7.0
  * @return void
  */
-function addCSS()
+function addCSS ()
 {
 	JHtml::stylesheet('media/com_churchdirectory/css/general.css');
 	JHtml::stylesheet('media/com_churchdirectory/css/model.css');

@@ -511,6 +511,15 @@
             <option value="1">JSHOW</option>
         </field>
 
+        <field name="show_page_birthann" type="list"
+               default="1"
+               label="COM_CHURCHDIRECTORY_FIELD_SHOW_BIRTHANN_ITEMS_LABEL"
+               description="COM_CHURCHDIRECTORY_FIELD_SHOW_BIRTHANN_ITEMS_DESC"
+                >
+            <option value="0">JHIDE</option>
+            <option value="1">JSHOW</option>
+        </field>
+
         <field name="show_email_headings" type="radio"
                default="1"
                label="JGLOBAL_EMAIL"
@@ -1035,6 +1044,14 @@
                description="COM_CHURCHDIRECTORY_FIELD_MEMBER_PROTECTED_ACCESS_DESC"
                class="inputbox"
                size="1"
+                />
+        <field name="teamleaders"
+               type="SQL"
+               query="SELECT id , name FROM #__churchdirectory_position where published=1"
+               key_field="id"
+               value_field="name"
+               label="COM_CHURCHDIRECTORY_FIELD_TEAM_LEADER_POSITION_LABEL"
+               description="COM_CHURCHDIRECTORY_FIELD_TEAM_LEADER_POSITION_DESC"
                 />
         <field name="sef_advanced_link"
                type="radio"

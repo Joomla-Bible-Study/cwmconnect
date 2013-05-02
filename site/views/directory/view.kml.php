@@ -267,16 +267,16 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 		$kml[] = '</scale>';
 		$kml[] = '</LabelStyle>';
 		$kml[] = '</Style> ';
-		$teams = $this->groupit(array('items' => $items, 'field' => 'category_title'));
+		$teams = RenderHelper::groupit(array('items' => $items, 'field' => 'category_title'));
 
 		foreach ($teams as $c => $catid)
 		{
-			$newrows[$c] = $this->groupit(array('items' => $teams[$c], 'field' => 'suburb'));
+			$new_rows[$c] = RenderHelper::groupit(array('items' => $teams[$c], 'field' => 'suburb'));
 			$ckml_params = $catid[0]->kml_params;
 		}
 		$mycounter = '0';
 
-		foreach ($newrows as $c => $suburb)
+		foreach ($new_rows as $c => $suburb)
 		{
 			$mycounter++;
 			$kml[] = '<Folder id="' . $mycounter . '"> ';
@@ -294,39 +294,6 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 
 				foreach ($rows as $row)
 				{
-					// Compute lastname, firstname and middlename
-					$row->name = trim($row->name);
-
-					/* "Lastname, Firstname Midlename" format support
-					 e.g. "de Gaulle, Charles" */
-					$namearray = explode(',', $row->name);
-
-					if (count($namearray) > 1)
-					{
-						$lastname         = $namearray[0];
-						$card_name        = $lastname;
-						$name_and_midname = trim($namearray[1]);
-						$firstname        = '';
-
-						if (!empty($name_and_midname))
-						{
-							$namearray = explode(' ', $name_and_midname);
-
-							$firstname  = $namearray[0];
-							$middlename = (count($namearray) > 1) ? $namearray[1] : '';
-							$card_name  = $firstname . ' ' . ($middlename ? $middlename . ' ' : '') . $card_name;
-						}
-					}
-					// "Firstname Middlename Lastname" format support
-					else
-					{
-						$namearray = explode(' ', $row->name);
-
-						$middlename = (count($namearray) > 2) ? $namearray[1] : '';
-						$firstname  = array_shift($namearray);
-						$lastname   = count($namearray) ? end($namearray) : '';
-						$card_name  = $firstname . ($middlename ? ' ' . $middlename : '') . ($lastname ? ' ' . $lastname : '');
-					}
 					$mycounter++;
 					$kml[] = '<Placemark id="placemark' . $mycounter . ' "> ';
 					$kml[] = '<name>' . $row->name . '</name>';
@@ -442,44 +409,6 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 		echo $kmlOutput;
 
 		return true;
-	}
-
-	/**
-	 * Ror passing records out to put then in order and not repeat the records.
-	 *
-	 * @param   array  $args  Array of Items to group
-	 *
-	 * @return array
-	 */
-	public function groupit($args)
-	{
-		$items = null;
-		$field = null;
-		extract($args);
-		$result = array();
-
-		foreach ($items as $item)
-		{
-			if (!empty($item->$field))
-			{
-				$key = $item->$field;
-			}
-			else
-			{
-				$key = 'nomatch';
-			}
-			if (array_key_exists($key, $result))
-			{
-				$result[$key][] = $item;
-			}
-			else
-			{
-				$result[$key]   = array();
-				$result[$key][] = $item;
-			}
-		}
-
-		return $result;
 	}
 
 }

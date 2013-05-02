@@ -10,7 +10,7 @@ defined('_JEXEC') or die;
 
 <ul class="category list-striped" style="list-style: none; padding: 0;">
 	<?php foreach ($this->items as $i => $item) : ?>
-		<?php if (!strstr($item->con_position, $this->params->get('teamleaders', ''), true))
+		<?php if (strstr($item->con_position, $this->params->get('teamleaders', ''), true))
 		{
 			?>
 			<?php if (in_array($item->access, $this->user->getAuthorisedViewLevels())) : ?>
