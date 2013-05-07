@@ -288,7 +288,7 @@ $sortFields = $this->getSortFields();
     <tfoot>
     <tr>
         <td colspan="10">
-			<?php echo $this->pagination->getPagesLinks(); ?>
+			<?php echo $this->pagination->getListFooter(); ?>
         </td>
     </tr>
     </tfoot>
