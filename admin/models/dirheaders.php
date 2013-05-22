@@ -38,6 +38,7 @@ class ChurchDirectoryModelDirHeaders extends JModelList
 				'checked_out_time', 'a.checked_out_time',
 				'user_id', 'a.user_id',
 				'catid', 'a.catid',
+				'section', 'a.section',
 				'published', 'a.published',
 				'access', 'a.access', 'access_level',
 				'created', 'a.created',
@@ -133,7 +134,7 @@ class ChurchDirectoryModelDirHeaders extends JModelList
 		$query->select(
 			$this->getState(
 				'list.select', 'a.id, a.name, a.alias, a.checked_out, a.checked_out_time, a.user_id' .
-				', a.catid, a.published, a.access, a.created, a.created_by, a.ordering, a.language' .
+				', a.catid, a.section, a.published, a.access, a.created, a.created_by, a.ordering, a.language' .
 				', a.publish_up, a.publish_down'
 			)
 		);

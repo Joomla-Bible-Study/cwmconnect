@@ -76,7 +76,7 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 	 *
 	 * @return  mixed  A string if successful, otherwise a Error object.
 	 */
-	public function display ($tpl = null)
+	public function display($tpl = null)
 	{
 		$app    = JFactory::getApplication();
 		$params = $app->getParams();
@@ -89,8 +89,11 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 		$pagination = $this->get('Pagination');
 
 		$this->loadHelper('render');
-		$this->renderHelper = new renderHelper;
-		$this->span         = $this->renderHelper->rowWidth($params->get('rows_per_page'));
+		$renderHelper = new RenderHelper;
+		$this->span   = $renderHelper->rowWidth($params->get('rows_per_page'));
+		JLoader::register('DirectoryHeaderHelper', JPATH_SITE . '/components/com_churchdirectory/helpers/directoryheader.php');
+		$this->header = new DirectoryHeaderHelper;
+		$this->header->setPages($params);
 
 		if ($items == false)
 		{
@@ -217,14 +220,15 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 			}
 		}
 
-		$this->maxLevel   = & $maxLevel;
-		$this->state      = & $state;
-		$this->items      = $items;
-		$this->category   = & $category;
-		$this->children   = & $children;
-		$this->params     = & $params;
-		$this->parent     = & $parent;
-		$this->pagination = & $pagination;
+		$this->renderHelper = $renderHelper;
+		$this->maxLevel     = & $maxLevel;
+		$this->state        = & $state;
+		$this->items        = $items;
+		$this->category     = & $category;
+		$this->children     = & $children;
+		$this->params       = & $params;
+		$this->parent       = & $parent;
+		$this->pagination   = & $pagination;
 
 		// Escape strings for HTML output
 		$this->pageclass_sfx = htmlspecialchars($params->get('pageclass_sfx'));
@@ -241,7 +245,7 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 	 *
 	 * @return void
 	 */
-	protected function _prepareDocument ()
+	protected function _prepareDocument()
 	{
 		$app     = JFactory::getApplication();
 		$menus   = $app->getMenu();

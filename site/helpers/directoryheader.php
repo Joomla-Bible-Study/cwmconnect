@@ -16,15 +16,24 @@ defined('_JEXEC') or die;
  */
 class DirectoryHeaderHelper
 {
+	/**
+	 * @var string  Headers
+	 */
+	public $header = null;
 
 	/**
-	 * Get Header html
+	 * @var string  Footers
+	 */
+	public $footer = null;
+
+	/**
+	 * set Header or Footer html
 	 *
-	 * @param   JRegistry  $params  HTML Params
+	 * @param   JRegistry $params   HTML Params
 	 *
 	 * @return string
 	 */
-	public static function getHeader($params)
+	public function setPages($params)
 	{
 		$db    = JFactory::getDBO();
 		$query = $db->getQuery(true);
@@ -47,13 +56,23 @@ class DirectoryHeaderHelper
 				$header .= '<p>ID: ' . $b->id . '<br />';
 				$header .= 'Count: ' . $h . '</p>';
 			}
+			$header .= '<h2>' . $b->name . '</h2>';
 			$header .= $b->description;
 			$header .= '</div>';
 			$header .= '<div style="page-break-after:always"></div>';
 			$h++;
-		}
 
-		return $header;
+			if ($b->section == '1')
+			{
+				$this->footer = $this->footer . $header;
+			}
+			else
+			{
+				$this->header = $this->header . $header;
+			}
+
+			$header = null;
+		}
 	}
 
 }

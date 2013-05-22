@@ -31,7 +31,6 @@ foreach ($this->items as $item)
 		<div id="directory-items<?php echo $item->id + 1; ?>"
 		     class="paddingitem">
 			<?php
-			dump($item);
 			if ($item->funit_image && $this->params->get('dr_show_image')) :
 				echo '<img src="' . $this->baseurl . DIRECTORY_SEPARATOR . $item->funit_image . '" align="center" hspace="6" alt="' . $item->funit_name . '" class="directory-img pull-right" />';
 			elseif ($this->params->get('image') != null && $this->params->get('dr_show_image')):

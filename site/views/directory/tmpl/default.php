@@ -14,7 +14,7 @@ $this->rows_per_page = (int) $this->params->get('rows_per_page');
 $this->items_per_row = (int) $this->params->get('items_per_row');
 
 JHtml::addIncludePath(JPATH_COMPONENT . '/helpers');
-JLoader::register('DirectoryHeaderHelper', JPATH_SITE . '/components/com_churchdirectory/helpers/directoryheader.php');
+
 ?>
 
 <div class="directory<?php echo $this->pageclass_sfx; ?> row-fluid">
@@ -42,7 +42,7 @@ JLoader::register('DirectoryHeaderHelper', JPATH_SITE . '/components/com_churchd
 		<?php
 		}
 	}
-	echo DirectoryHeaderHelper::getHeader($params = $this->params);
+	echo $this->header->header;
 	echo '<div class="clearfix"></div><hr />';
 
 	foreach ($this->items as $s1 => $sort1)
@@ -66,5 +66,6 @@ JLoader::register('DirectoryHeaderHelper', JPATH_SITE . '/components/com_churchd
 		}
 	}
 	// Last call to close out table.
-	echo '</td></tr></tbody></table>'; ?>
+	echo '</td></tr></tbody></table>';
+	echo $this->header->footer;?>
 </div>
