@@ -189,11 +189,25 @@ class Com_ChurchdirectoryInstallerScript
 		// Install TCPDF Libraries
 		$tcpdfStatus = $this->_installTCPDF($parent);
 
+		// Install FOF
+		$fofStatus = $this->_installFOF($parent);
+
 		// Remove old stuff
 		$this->deleteUnexistingFiles();
 
 		// Show the post-installation page
 		$this->_renderPostInstallation($status, $parent);
+
+		// Clear FOF's cache
+		if (!defined('FOF_INCLUDED'))
+		{
+			@include_once JPATH_LIBRARIES . '/fof/include.php';
+		}
+
+		if (defined('FOF_INCLUDED'))
+		{
+			FOFPlatform::getInstance()->clearCache();
+		}
 	}
 
 	/**
