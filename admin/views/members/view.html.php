@@ -88,6 +88,7 @@ class ChurchDirectoryViewMembers extends JViewLegacy
 	protected function addToolbar()
 	{
 		$canDo = ChurchDirectoryHelper::getActions($this->state->get('filter.category_id'));
+		JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 		$user  = JFactory::getUser();
 
 		// Get the toolbar object instance
@@ -170,7 +171,7 @@ class ChurchDirectoryViewMembers extends JViewLegacy
 			JHtmlSidebar::addFilter(
 				JText::_('COM_CHURCHODIRECTORY_OPTION_SELECT_MSTATUS'),
 				'filter_mstatus',
-				JHtml::_('select.options', JHtml::_('memberstatus.existing', true, true), 'value', 'text', $this->state->get('filter.mstatus'))
+				JHtml::_('select.options', JHtml::_('member.status', true, true), 'value', 'text', $this->state->get('filter.mstatus'))
 			);
 		}
 	}

@@ -31,16 +31,17 @@ class Com_ChurchdirectoryInstallerScript
 	 */
 	private $_installation_queue = array(
 		// -- modules => { (folder) => { (module) => { (position), (published) } }* }*
-		'modules'  => array(
+		'modules' => array(
 			'admin' => array(),
 			'site'  => array('birthdayanniversary' => 0,)
 		),
 		// -- plugins => { (folder) => { (element) => (published) }* }*
-		'plugins'  => array(
+		'plugins' => array(
 			'finder' => array('churchdirectory' => 1,),
 			'search' => array('churchdirectory' => 0,),
 		),
 		// -- template => { (folder) => { (element) => (published) }* }*
+		// -- Libraries => { (folder) => { (element) => (
 	);
 
 	/**
@@ -166,7 +167,7 @@ class Com_ChurchdirectoryInstallerScript
 	 *
 	 * @return boolean
 	 */
-	public function preflight($type, $parent)
+	public function preflight ($type, $parent)
 	{
 		// Only allow to install on Joomla! 2.5.0 or later
 		return version_compare(JVERSION, '2.5.0', 'ge');
@@ -180,10 +181,13 @@ class Com_ChurchdirectoryInstallerScript
 	 *
 	 * @return void
 	 */
-	public function postflight($type, $parent)
+	public function postflight ($type, $parent)
 	{
 		// Install subextensions
 		$status = $this->_installSubextensions($parent);
+
+		// Install TCPDF Libraries
+		$tcpdfStatus = $this->_installTCPDF($parent);
 
 		// Remove old stuff
 		$this->deleteUnexistingFiles();
@@ -199,7 +203,7 @@ class Com_ChurchdirectoryInstallerScript
 	 *
 	 * @return void
 	 */
-	public function install($parent)
+	public function install ($parent)
 	{
 		// Set params
 		$this->setParams();
@@ -215,7 +219,7 @@ class Com_ChurchdirectoryInstallerScript
 	 *
 	 * @return void
 	 */
-	public function uninstall($parent)
+	public function uninstall ($parent)
 	{
 		// Uninstall subextensions
 		$status = $this->_uninstallSubextensions($parent);
@@ -235,7 +239,7 @@ class Com_ChurchdirectoryInstallerScript
 	 *
 	 * @todo  need to add verion check system.
 	 */
-	private function _renderPostInstallation($status, $parent)
+	private function _renderPostInstallation ($status, $parent)
 	{
 		$rows = 1; ?>
 		<img src="../media/com_churchdirectory/images/icons/icon-48-churchdirectory.png" width="48" height="48"
@@ -267,7 +271,7 @@ class Com_ChurchdirectoryInstallerScript
 					<th></th>
 				</tr>
 				<?php foreach ($status->modules as $module) : ?>
-					<tr class="row<?php echo ($rows++ % 2); ?>">
+					<tr class="row<?php echo($rows++ % 2); ?>">
 						<td class="key"><?php echo $module['name']; ?></td>
 						<td class="key"><?php echo ucfirst($module['client']); ?></td>
 						<td>
@@ -285,7 +289,7 @@ class Com_ChurchdirectoryInstallerScript
 					<th></th>
 				</tr>
 				<?php foreach ($status->plugins as $plugin) : ?>
-					<tr class="row<?php echo ($rows++ % 2); ?>">
+					<tr class="row<?php echo($rows++ % 2); ?>">
 						<td class="key"><?php echo ucfirst($plugin['name']); ?></td>
 						<td class="key"><?php echo ucfirst($plugin['group']); ?></td>
 						<td>
@@ -313,7 +317,7 @@ class Com_ChurchdirectoryInstallerScript
 	 *
 	 * @return void
 	 */
-	private function _renderPostUninstallation($status, $parent)
+	private function _renderPostUninstallation ($status, $parent)
 	{
 		?>
 		<?php $rows = 0; ?>
@@ -342,11 +346,11 @@ class Com_ChurchdirectoryInstallerScript
 					<th></th>
 				</tr>
 				<?php foreach ($status->modules as $module) : ?>
-					<tr class="row<?php echo (++$rows % 2); ?>">
+					<tr class="row<?php echo(++$rows % 2); ?>">
 						<td class="key"><?php echo $module['name']; ?></td>
 						<td class="key"><?php echo ucfirst($module['client']); ?></td>
 						<td><strong
-								style="color: <?php echo ($module['result']) ? "green" : "red" ?>"><?php echo ($module['result']) ? JText::_('COM_CHURCHDIRECTORY_REMOVED') : JText::_('COM_CHURCHDIRECTORY_NOT_REMOVED'); ?></strong>
+									style="color: <?php echo ($module['result']) ? "green" : "red" ?>"><?php echo ($module['result']) ? JText::_('COM_CHURCHDIRECTORY_REMOVED') : JText::_('COM_CHURCHDIRECTORY_NOT_REMOVED'); ?></strong>
 						</td>
 					</tr>
 				<?php endforeach; ?>
@@ -358,7 +362,7 @@ class Com_ChurchdirectoryInstallerScript
 					<th></th>
 				</tr>
 				<?php foreach ($status->plugins as $plugin) : ?>
-					<tr class="row<?php echo (++$rows % 2); ?>">
+					<tr class="row<?php echo(++$rows % 2); ?>">
 						<td class="key"><?php echo ucfirst($plugin['name']); ?></td>
 						<td class="key"><?php echo ucfirst($plugin['group']); ?></td>
 						<td><strong style="color: <?php echo ($plugin['result']) ? "green" : "red" ?>">
@@ -380,7 +384,7 @@ class Com_ChurchdirectoryInstallerScript
 	 *
 	 * @return JObject The subextension installation status
 	 */
-	private function _installSubextensions($parent)
+	private function _installSubextensions ($parent)
 	{
 		$src = $parent->getParent()->getPath('source');
 
@@ -425,8 +429,8 @@ class Com_ChurchdirectoryInstallerScript
 
 						// Was the module already installed?
 						$sql = $db->getQuery(true)->select('COUNT(*)')
-							->from('#__modules')
-							->where($db->qn('module') . ' = ' . $db->q('mod_' . $module));
+								->from('#__modules')
+								->where($db->qn('module') . ' = ' . $db->q('mod_' . $module));
 						$db->setQuery($sql);
 						$count             = $db->loadResult();
 						$installer         = new JInstaller;
@@ -448,9 +452,9 @@ class Com_ChurchdirectoryInstallerScript
 								$modulePosition = 'icon';
 							}
 							$sql = $db->getQuery(true)
-								->update($db->qn('#__modules'))
-								->set($db->qn('position') . ' = ' . $db->q($modulePosition))
-								->where($db->qn('module') . ' = ' . $db->q('mod_' . $module));
+									->update($db->qn('#__modules'))
+									->set($db->qn('position') . ' = ' . $db->q($modulePosition))
+									->where($db->qn('module') . ' = ' . $db->q('mod_' . $module));
 
 							if ($modulePublished)
 							{
@@ -464,16 +468,16 @@ class Com_ChurchdirectoryInstallerScript
 							{
 								$query = $db->getQuery(true);
 								$query->select('MAX(' . $db->qn('ordering') . ')')
-									->from($db->qn('#__modules'))
-									->where($db->qn('position') . '=' . $db->q($modulePosition));
+										->from($db->qn('#__modules'))
+										->where($db->qn('position') . '=' . $db->q($modulePosition));
 								$db->setQuery($query);
 								$position = $db->loadResult();
 								$position++;
 
 								$query = $db->getQuery(true);
 								$query->update($db->qn('#__modules'))
-									->set($db->qn('ordering') . ' = ' . $db->q($position))
-									->where($db->qn('module') . ' = ' . $db->q('mod_' . $module));
+										->set($db->qn('ordering') . ' = ' . $db->q($position))
+										->where($db->qn('module') . ' = ' . $db->q('mod_' . $module));
 								$db->setQuery($query);
 								$db->execute();
 							}
@@ -481,15 +485,15 @@ class Com_ChurchdirectoryInstallerScript
 							// C. Link to all pages
 							$query = $db->getQuery(true);
 							$query->select('id')
-								->from($db->qn('#__modules'))
-								->where($db->qn('module') . ' = ' . $db->q('mod_' . $module));
+									->from($db->qn('#__modules'))
+									->where($db->qn('module') . ' = ' . $db->q('mod_' . $module));
 							$db->setQuery($query);
 							$moduleid = $db->loadResult();
 
 							$query = $db->getQuery(true);
 							$query->select('*')
-								->from($db->qn('#__modules_menu'))
-								->where($db->qn('moduleid') . ' = ' . $db->q($moduleid));
+									->from($db->qn('#__modules_menu'))
+									->where($db->qn('moduleid') . ' = ' . $db->q($moduleid));
 							$db->setQuery($query);
 							$assignments = $db->loadObjectList();
 							$isAssigned  = !empty($assignments);
@@ -538,10 +542,10 @@ class Com_ChurchdirectoryInstallerScript
 
 						// Was the plugin already installed?
 						$query = $db->getQuery(true)
-							->select('COUNT(*)')
-							->from($db->qn('#__extensions'))
-							->where($db->qn('element') . ' = ' . $db->q($plugin))
-							->where($db->qn('folder') . ' = ' . $db->q($folder));
+								->select('COUNT(*)')
+								->from($db->qn('#__extensions'))
+								->where($db->qn('element') . ' = ' . $db->q($plugin))
+								->where($db->qn('folder') . ' = ' . $db->q($folder));
 						$db->setQuery($query);
 						$count = $db->loadResult();
 
@@ -557,10 +561,10 @@ class Com_ChurchdirectoryInstallerScript
 						if ($published && !$count)
 						{
 							$query = $db->getQuery(true)
-								->update($db->qn('#__extensions'))
-								->set($db->qn('enabled') . ' = ' . $db->q('1'))
-								->where($db->qn('element') . ' = ' . $db->q($plugin))
-								->where($db->qn('folder') . ' = ' . $db->q($folder));
+									->update($db->qn('#__extensions'))
+									->set($db->qn('enabled') . ' = ' . $db->q('1'))
+									->where($db->qn('element') . ' = ' . $db->q($plugin))
+									->where($db->qn('folder') . ' = ' . $db->q($folder));
 							$db->setQuery($query);
 							$db->execute();
 						}
@@ -579,7 +583,7 @@ class Com_ChurchdirectoryInstallerScript
 	 *
 	 * @return JObject The subextension uninstallation status
 	 */
-	private function _uninstallSubextensions($parent)
+	private function _uninstallSubextensions ($parent)
 	{
 		jimport('joomla.installer.installer');
 
@@ -602,10 +606,10 @@ class Com_ChurchdirectoryInstallerScript
 					{
 						// Find the module ID
 						$sql = $db->getQuery(true)
-							->select($db->qn('extension_id'))
-							->from($db->qn('#__extensions'))
-							->where($db->qn('element') . ' = ' . $db->q('mod_' . $module))
-							->where($db->qn('type') . ' = ' . $db->q('module'));
+								->select($db->qn('extension_id'))
+								->from($db->qn('#__extensions'))
+								->where($db->qn('element') . ' = ' . $db->q('mod_' . $module))
+								->where($db->qn('type') . ' = ' . $db->q('module'));
 						$db->setQuery($sql);
 						$id = $db->loadResult();
 
@@ -635,11 +639,11 @@ class Com_ChurchdirectoryInstallerScript
 					foreach ($plugins as $plugin => $published)
 					{
 						$sql = $db->getQuery(true)
-							->select($db->qn('extension_id'))
-							->from($db->qn('#__extensions'))
-							->where($db->qn('type') . ' = ' . $db->q('plugin'))
-							->where($db->qn('element') . ' = ' . $db->q($plugin))
-							->where($db->qn('folder') . ' = ' . $db->q($folder));
+								->select($db->qn('extension_id'))
+								->from($db->qn('#__extensions'))
+								->where($db->qn('type') . ' = ' . $db->q('plugin'))
+								->where($db->qn('element') . ' = ' . $db->q($plugin))
+								->where($db->qn('folder') . ' = ' . $db->q($folder));
 						$db->setQuery($sql);
 
 						$id = $db->loadResult();
@@ -662,13 +666,165 @@ class Com_ChurchdirectoryInstallerScript
 		return $status;
 	}
 
+	private function _installFOF ($parent)
+	{
+		$src = $parent->getParent()->getPath('source');
+
+		// Install the FOF framework
+		JLoader::import('joomla.filesystem.folder');
+		JLoader::import('joomla.filesystem.file');
+		JLoader::import('joomla.utilities.date');
+
+		$source = $src . '/libraries/fof';
+
+		if (!defined('JPATH_LIBRARIES'))
+		{
+			$target = JPATH_ROOT . '/libraries/fof';
+		}
+		else
+		{
+			$target = JPATH_LIBRARIES . '/fof';
+		}
+
+		$haveToInstallFOF = false;
+
+		if (!JFolder::exists($target))
+		{
+			$haveToInstallFOF = true;
+		}
+		else
+		{
+			$fofVersion = array();
+
+			if (JFile::exists($target . '/version.txt'))
+			{
+				$rawData                 = JFile::read($target . '/version.txt');
+				$info                    = explode("\n", $rawData);
+				$fofVersion['installed'] = array(
+					'version' => trim($info[0]),
+					'date'    => new JDate(trim($info[1]))
+				);
+			}
+			else
+			{
+				$fofVersion['installed'] = array(
+					'version' => '0.0',
+					'date'    => new JDate('2011-01-01')
+				);
+			}
+
+			$rawData               = JFile::read($source . '/version.txt');
+			$info                  = explode("\n", $rawData);
+			$fofVersion['package'] = array(
+				'version' => trim($info[0]),
+				'date'    => new JDate(trim($info[1]))
+			);
+
+			$haveToInstallFOF = $fofVersion['package']['date']->toUNIX() > $fofVersion['installed']['date']->toUNIX();
+		}
+
+		$installedFOF = false;
+
+		if ($haveToInstallFOF)
+		{
+			$versionSource = 'package';
+			$installer     = new JInstaller;
+			$installedFOF  = $installer->install($source);
+		}
+		else
+		{
+			$versionSource = 'installed';
+		}
+
+		if (!isset($fofVersion))
+		{
+			$fofVersion = array();
+
+			if (JFile::exists($target . '/version.txt'))
+			{
+				$rawData                 = JFile::read($target . '/version.txt');
+				$info                    = explode("\n", $rawData);
+				$fofVersion['installed'] = array(
+					'version' => trim($info[0]),
+					'date'    => new JDate(trim($info[1]))
+				);
+			}
+			else
+			{
+				$fofVersion['installed'] = array(
+					'version' => '0.0',
+					'date'    => new JDate('2011-01-01')
+				);
+			}
+
+			$rawData               = JFile::read($source . '/version.txt');
+			$info                  = explode("\n", $rawData);
+			$fofVersion['package'] = array(
+				'version' => trim($info[0]),
+				'date'    => new JDate(trim($info[1]))
+			);
+			$versionSource         = 'installed';
+		}
+
+		if (!($fofVersion[$versionSource]['date'] instanceof JDate))
+		{
+			$fofVersion[$versionSource]['date'] = new JDate();
+		}
+
+		return array(
+			'required'  => $haveToInstallFOF,
+			'installed' => $installedFOF,
+			'version'   => $fofVersion[$versionSource]['version'],
+			'date'      => $fofVersion[$versionSource]['date']->format('Y-m-d'),
+		);
+	}
+
+	private function _installTCPDF ($parent)
+	{
+		$src = $parent->getParent()->getPath('source');
+
+		// Install the TCPDF library
+		jimport('joomla.filesystem.folder');
+		jimport('joomla.filesystem.file');
+		jimport('joomla.utilities.date');
+		$source = $src . '/libraries/tcpdf';
+		if (!defined('JPATH_LIBRARIES'))
+		{
+			$target = JPATH_ROOT . '/libraries/tcpdf';
+		}
+		else
+		{
+			$target = JPATH_LIBRARIES . '/tcpdf';
+		}
+
+		$installer      = new JInstaller;
+		$installedTCPDF = $installer->install($source);
+
+		$extension = JTable::getInstance('extension');
+		$tcpdf     = $extension->find(array('element' => 'tcpdf'));
+
+		$params = json_decode($tcpdf->manifest_cache, true);
+
+		$tcpdfVersion = array(
+			'version' => $params['version'],
+			'date'    => new JDate($params['creationdate'])
+		);
+
+		return array(
+			'required'  => true,
+			'installed' => $installedTCPDF,
+			'version'   => $tcpdfVersion['version'],
+			'date'      => $tcpdfVersion['date']->toFormat('%Y-%m-%d'),
+		);
+	}
+
 	/**
 	 * Remove Old Files and Folders
 	 *
 	 * @since 7.1.0
 	 * @return void
 	 */
-	public function deleteUnexistingFiles()
+	public function deleteUnexistingFiles ()
 	{
 		$files = array('/media/com_churchdirectory/startfile.php',);
 
@@ -696,7 +852,7 @@ class Com_ChurchdirectoryInstallerScript
 	 *
 	 * @return void
 	 */
-	private function setParams()
+	private function setParams ()
 	{
 		if (count($this->_param_array) > 0)
 		{
@@ -704,8 +860,8 @@ class Com_ChurchdirectoryInstallerScript
 			$db    = JFactory::getDbo();
 			$query = $db->getQuery(true);
 			$query->select('params')
-				->from('#__extensions')
-				->where('name = ' . $db->quote($this->churchdirectory_extension));
+					->from('#__extensions')
+					->where('name = ' . $db->quote($this->churchdirectory_extension));
 			$db->setQuery($query);
 			$params = json_decode($db->loadResult(), true);
 
@@ -718,8 +874,8 @@ class Com_ChurchdirectoryInstallerScript
 			$paramsString = json_encode($params);
 			$query        = $db->getQuery(true);
 			$query->update('#__extensions')
-				->set('params = ' . $db->quote($paramsString))
-				->where('name = ' . $db->quote($this->churchdirectory_extension));
+					->set('params = ' . $db->quote($paramsString))
+					->where('name = ' . $db->quote($this->churchdirectory_extension));
 			$db->setQuery($query);
 			$db->query();
 		}
@@ -730,7 +886,7 @@ class Com_ChurchdirectoryInstallerScript
 	 *
 	 * @return void
 	 */
-	private function setDefaultDB()
+	private function setDefaultDB ()
 	{
 
 		// Create categories for our component
