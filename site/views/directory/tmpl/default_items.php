@@ -28,8 +28,7 @@ foreach ($this->items as $item)
 	}
 	if ($item->funitid != '0' && $item->attribs->get('familypostion') === '0') :
 		?>
-		<div id="directory-items<?php echo $item->id + 1; ?>"
-		     class="paddingitem">
+		<div id="directory-items<?php echo $item->id + 1; ?>" class="paddingitem">
 			<?php
 			if ($item->funit_image && $this->params->get('dr_show_image')) :
 				echo '<img src="' . $this->baseurl . DIRECTORY_SEPARATOR . $item->funit_image . '" align="center" hspace="6" alt="' . $item->funit_name . '" class="directory-img pull-right" />';
