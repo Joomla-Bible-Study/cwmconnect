@@ -6,21 +6,44 @@
  * */
 defined('_JEXEC') or die;
 
+jimport('joomla.html.html.bootstrap');
+
 $heading = null;
 
 ?>
-<?php if (empty($this->items)) : ?>
+<?php if (empty($this->items))
+{
+	?>
 	<p xmlns="http://www.w3.org/1999/html"><?php echo JText::_('COM_CHURCHDIRECTORY_NO_MEMBERS'); ?></p>
-<?php endif; ?>
+<?php } ?>
 <?php
 
 foreach ($this->items as $item)
 {
-	if ($this->printed_items == '0' && $this->printed_rows == '0')
+	if ($this->printed_items == 0 && $this->printed_rows == 0)
 	{
 		echo '<!-- new start ' . $item->name . '-->';
-		echo '<table class="table churchdirectory-table"><tbody><tr><td class="span6">';
+//		var_dump(($item->attribs->get('familypostion') === '0' && $item->funitid !== '0'));
+//		var_dump($this->subcount == $this->count);
+//		var_dump($this->subcount);
+//		var_dump($this->count);
+//		var_dump($item->name . ' ' . $item->id);
+		if ($this->params->get('dr_show_debug'))
+		{
+			echo JHtml::tooltip('ID:' . $item->id . ' ' . gettype($item->id) . '
+						FUnit ID:' . $item->funitid . ' ' . gettype($item->funitid) . '
+						Item Count:' . $this->printed_items . ' ' . gettype($this->printed_items) . '
+						Row Count:' . $this->printed_rows . ' ' . gettype($this->printed_rows) . '
+		FamilyPosiion: ' . $item->attribs->get('familypostion') . ' ' . gettype($item->attribs->get('familypostion')), '', '', 'debug');
+		}
+		if (($item->funitid != '0' && $item->attribs->get('familypostion', '0') === '0') || ($item->funitid == '0' && $item->attribs->get('familypostion', '-1') === '-1' || $item->attribs->get('familypostion', '0') === '0'))
+		{
+
+			echo '<table class="table churchdirectory-table"><tbody><tr><td class="span6">';
+		}
 	}
+	$this->subcount--;
+
 	if ($this->letter != ucfirst($this->items[0]->lname[0]))
 	{
 		$this->letter = ucfirst($this->items[0]->lname[0]);
@@ -56,11 +79,13 @@ foreach ($this->items as $item)
 				</p>
 			<?php endif; ?>
 			<div class="churchdirectory-contact">
-				<?php if ($this->params->get('dr_show_debug')) : ?>
-					<p>ID: <?php echo $item->funit_id; ?> <br/>
-						Item Count: <?php echo $this->printed_items; ?> <br/>
-						Row Count: <?php echo $this->printed_rows; ?> </p>
-				<?php endif; ?>
+				<?php if ($this->params->get('dr_show_debug'))
+				{
+					echo JHtml::tooltip('ID:' . $item->id . '
+						FUnit ID:' . $item->funitid . '
+						Item Count:' . $this->printed_items . '
+						Row Count:' . $this->printed_rows, 'debug');
+				} ?>
 				<?php if (($this->params->get('address_check') > 0) && ($item->address || $item->suburb || $item->state || $item->country || $item->postcode)) : ?>
 				<div class="churchdirectory-address">
 					<?php if ($this->params->get('address_check') > 0) : ?>
@@ -179,7 +204,7 @@ foreach ($this->items as $item)
 			<?php endif; ?>
 		</div>
 	<?php
-	elseif ($item->funitid == '0'):
+	elseif ($item->funitid === '0'):
 		?>
 		<div id="directory-items<?php echo $item->id + 1; ?>"
 		     class="paddingitem">
@@ -193,11 +218,6 @@ foreach ($this->items as $item)
 			endif;
 			?>
 			<div class="churchdirectory-contact">
-				<?php if ($this->params->get('dr_show_debug')) : ?>
-					<p>ID: <?php echo $item->funit_id; ?> <br/>
-						Item Count: <?php echo $this->printed_items; ?> <br/>
-						Row Count: <?php echo $this->printed_rows; ?> </p>
-				<?php endif; ?>
 				<?php if ($this->params->get('dr_show_member_title_link')) : ?>
 					<span id="contact-name">
                     <a href="<?php echo JRoute::_(ChurchDirectoryHelperRoute::getMemberRoute($item->slug, $item->catid)); ?>">
@@ -339,9 +359,10 @@ foreach ($this->items as $item)
 	<?php
 	endif;
 
-	if (($item->funitid != '0' && $item->attribs->get('familypostion', '0') == '0') || ($item->funitid == '0' && $item->attribs->get('familypostion', '-1') == '-1' || $item->attribs->get('familypostion', '0') == '0'))
+	if (($item->funitid != '0' && $item->attribs->get('familypostion', '0') === '0') || ($item->funitid == '0' && $item->attribs->get('familypostion', '-1') === '-1' || $item->attribs->get('familypostion', '0') === '0'))
 	{
 		$this->printed_items++;
+
 		if ($this->printed_items == $this->items_per_row && $this->printed_rows != $this->rows_per_page - 1)
 		{
 			echo '<!-- new column -->';
@@ -351,6 +372,7 @@ foreach ($this->items as $item)
 		}
 		elseif ($this->printed_items == $this->items_per_row)
 		{
+//			var_dump($this->printed_items == $this->items_per_row);
 			echo '</td></tr></tbody></table><div style="page-break-after:always"></div>';
 			echo '<!-- End column -->';
 			$this->printed_rows  = 0;

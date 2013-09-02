@@ -21,39 +21,19 @@ require_once JPATH_COMPONENT . '/models/category.php';
 class ChurchDirectoryViewDirectory extends JViewLegacy
 {
 
-	/**
-	 * Protected
-	 *
-	 * @var object
-	 */
+	/** Protected @var object */
 	protected $state = null;
 
-	/**
-	 * Protected
-	 *
-	 * @var array
-	 */
+	/** Protected @var array */
 	protected $items = null;
 
-	/**
-	 * Protected
-	 *
-	 * @var array
-	 */
+	/** Protected @var array */
 	protected $category = null;
 
-	/**
-	 * Protected
-	 *
-	 * @var array
-	 */
+	/** Protected @var array */
 	protected $categories = null;
 
-	/**
-	 * Protected
-	 *
-	 * @var array
-	 */
+	/**  Protected  @var array */
 	protected $pagination = null;
 
 	protected $span;
@@ -66,8 +46,9 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 
 	protected $parent;
 
-	protected $pageclass_sfx;
+	protected $header;
 
+	protected $renderHelper;
 
 	/**
 	 * Display the view
@@ -79,15 +60,16 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 	public function display($tpl = null)
 	{
 		$app    = JFactory::getApplication();
-		$params = $app->getParams();
+		$params = JComponentHelper::getParams('com_churchdirectory');
 
 		// Get some data from the models
-		$state      = $this->get('State');
-		$items      = $this->get('Items');
-		$category   = $this->get('Category');
-		$children   = $this->get('Children');
-		$pagination = $this->get('Pagination');
-
+		$state          = $this->get('State');
+		$items          = $this->get('Items');
+		$this->count    = count($items);
+		$this->subcount = count($items);
+		$category       = $this->get('Category');
+		$children       = $this->get('Children');
+		$pagination     = $this->get('Pagination');
 		$this->loadHelper('render');
 		$renderHelper = new RenderHelper;
 		$this->span   = $renderHelper->rowWidth($params->get('rows_per_page'));
@@ -119,7 +101,7 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 
 		// Prepare the data.
 		// Compute the contact slug.
-		for ($i = 0, $n = count($items); $i < $n; $i++)
+		for ($i = 0, $n = $this->count; $i < $n; $i++)
 		{
 			$item       = & $items[$i];
 			$item->slug = $item->alias ? ($item->id . ':' . $item->alias) : $item->id;
@@ -201,19 +183,18 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 					break;
 			}
 		}
+
 		// Setup the category parameters.
 		$cparams          = $category->getParams();
 		$category->params = clone($params);
 		$category->params->merge($cparams);
 		$children = array($category->id => $children);
-
 		$maxLevel = $params->get('maxLevel', -1);
-
-		$items = RenderHelper::groupit(array('items' => & $items, 'field' => 'lname'));
+		$items    = RenderHelper::groupit(array('items' => & $items, 'field' => 'lname'));
 
 		if (0)
 		{
-			foreach ($items as $s1 => $sort1)
+			foreach ($items as $s1)
 			{
 				$items[$s1] = RenderHelper::groupit(array('items' => $items[$s1], 'field' => 'suburb'));
 
@@ -227,13 +208,11 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 		$this->category     = & $category;
 		$this->children     = & $children;
 		$this->params       = & $params;
-		$this->parent       = & $parent;
 		$this->pagination   = & $pagination;
 
 		// Escape strings for HTML output
 		$this->pageclass_sfx = htmlspecialchars($params->get('pageclass_sfx'));
-
-		$this->_prepareDocument();
+		$this->prepareDocument();
 		JHTML::stylesheet('general.css', 'media/com_churchdirectory/css/');
 		JHTML::stylesheet('churchdirectory.css', 'media/com_churchdirectory/css/');
 
@@ -245,12 +224,11 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 	 *
 	 * @return void
 	 */
-	protected function _prepareDocument()
+	protected function prepareDocument()
 	{
-		$app     = JFactory::getApplication();
-		$menus   = $app->getMenu();
-		$pathway = $app->getPathway();
-		$title   = null;
+		$app   = JFactory::getApplication();
+		$menus = $app->getMenu();
+		$title = null;
 
 		// Because the application sets a default page title,
 		// we need to get it from the menu item itself
@@ -264,7 +242,6 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 		{
 			$this->params->def('page_heading', JText::_('COM_CHURCHDIRECTORY_DEFAULT_PAGE_TITLE'));
 		}
-		$id    = (int) @$menu->query['id'];
 		$title = $this->params->get('page_title', '');
 
 		if (empty($title))

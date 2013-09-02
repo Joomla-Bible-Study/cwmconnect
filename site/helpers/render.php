@@ -191,6 +191,7 @@ class RenderHelper
 
 		foreach ($items as $item)
 		{
+
 			if (!empty($item->$field))
 			{
 				$key = $item->$field;
