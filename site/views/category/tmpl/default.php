@@ -92,22 +92,22 @@ else
 							<label for="limit" class="element-invisible">
 								<?php echo JText::_('JGLOBAL_DISPLAY_NUM'); ?>
 							</label>
-							<?php //echo $this->pagination->getLimitBox(); ?>
+							<?php echo $this->pagination->getLimitBox(); ?>
 						</div>
 					<?php endif; ?>
 				</fieldset>
 			<?php endif; ?>
-			<?php //echo $this->loadTemplate('teamleaders'); ?>
-			<?php //echo $this->loadTemplate('items'); ?>
+			<?php echo $this->loadTemplate('teamleaders'); ?>
+			<?php echo $this->loadTemplate('items'); ?>
 
 			<?php if ($this->params->get('show_pagination')) : ?>
 				<div class="pagination">
 					<?php if ($this->params->def('show_pagination_results', 1)) : ?>
 						<p class="counter">
-							<?php //echo $this->pagination->getPagesCounter(); ?>
+							<?php echo $this->pagination->getPagesCounter(); ?>
 						</p>
 					<?php endif; ?>
-					<?php //echo $this->pagination->getPagesLinks(); ?>
+					<?php echo $this->pagination->getPagesLinks(); ?>
 				</div>
 			<?php endif; ?>
 			<div>
@@ -122,7 +122,7 @@ else
 		?>
 		<div class="cat-children">
 			<h3><?php echo JText::_('JGLOBAL_SUBCATEGORIES'); ?></h3>
-			<?php //echo $this->loadTemplate('children'); ?>
+			<?php echo $this->loadTemplate('children'); ?>
 		</div>
 	<?php } ?>
 	<div class="clearfix"></div>

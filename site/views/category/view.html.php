@@ -64,11 +64,11 @@ class ChurchDirectoryViewCategory extends JViewLegacy
 	 *
 	 * @return boolean
 	 */
-	function display ($tpl = null)
+	function display($tpl = null)
 	{
 
 		$app    = JFactory::getApplication();
-		$params = $app->getParams();
+		$params = JComponentHelper::getParams('com_churchdirectory');
 
 		// Get some data from the models
 		$state      = $this->get('State');
@@ -99,6 +99,7 @@ class ChurchDirectoryViewCategory extends JViewLegacy
 		// Check whether category access level allows access.
 		$user   = JFactory::getUser();
 		$groups = $user->getAuthorisedViewLevels();
+
 		if (!in_array($category->access, $groups))
 		{
 			return JError::raiseError(403, JText::_('JERROR_ALERTNOAUTHOR'));
@@ -110,7 +111,7 @@ class ChurchDirectoryViewCategory extends JViewLegacy
 		{
 			$item       = & $items[$i];
 			$item->slug = $item->alias ? ($item->id . ':' . $item->alias) : $item->id;
-			$temp       = new JRegistry();
+			$temp       = new JRegistry;
 			$temp->loadString($item->params);
 			$item->params = clone($params);
 			$item->params->merge($temp);
@@ -134,8 +135,9 @@ class ChurchDirectoryViewCategory extends JViewLegacy
 		$cparams          = $category->getParams();
 		$category->params = clone($params);
 		$category->params->merge($cparams);
-		$children = array($category->id =>$children);$this->loadHelper('render');
-		$this->renderHelper = new renderHelper();
+		$children = array($category->id => $children);
+		$this->loadHelper('render');
+		$this->renderHelper = new renderHelper;
 
 		$maxLevel         = $params->get('maxLevel', -1);
 		$this->maxLevel   = & $maxLevel;
@@ -148,12 +150,13 @@ class ChurchDirectoryViewCategory extends JViewLegacy
 		$this->pagination = & $pagination;
 		$this->user       = & $user;
 
-		//Escape strings for HTML output
+		// Escape strings for HTML output
 		$this->pageclass_sfx = htmlspecialchars($this->params->get('pageclass_sfx'));
 
 		// Check for layout override only if this is not the active menu item
 		// If it is the active menu item, then the view and category id will match
 		$active = $app->getMenu()->getActive();
+
 		if ((!$active) || ((strpos($active->link, 'view=category') === false) || (strpos($active->link, '&id=' . (string) $this->category->id) === false)))
 		{
 			if ($layout = $category->params->get('category_layout'))
@@ -175,7 +178,7 @@ class ChurchDirectoryViewCategory extends JViewLegacy
 	/**
 	 * Prepares the document
 	 */
-	protected function _prepareDocument ()
+	protected function _prepareDocument()
 	{
 		$app     = JFactory::getApplication();
 		$menus   = $app->getMenu();

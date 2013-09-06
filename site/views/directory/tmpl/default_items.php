@@ -17,23 +17,17 @@ $heading = null;
 	<p xmlns="http://www.w3.org/1999/html"><?php echo JText::_('COM_CHURCHDIRECTORY_NO_MEMBERS'); ?></p>
 <?php } ?>
 <?php
-
 foreach ($this->items as $item)
 {
 	if ($this->printed_items == 0 && $this->printed_rows == 0)
 	{
 		echo '<!-- new start ' . $item->name . '-->';
-//		var_dump(($item->attribs->get('familypostion') === '0' && $item->funitid !== '0'));
-//		var_dump($this->subcount == $this->count);
-//		var_dump($this->subcount);
-//		var_dump($this->count);
-//		var_dump($item->name . ' ' . $item->id);
 		if ($this->params->get('dr_show_debug'))
 		{
-			echo JHtml::tooltip('ID:' . $item->id . ' ' . gettype($item->id) . '
-						FUnit ID:' . $item->funitid . ' ' . gettype($item->funitid) . '
-						Item Count:' . $this->printed_items . ' ' . gettype($this->printed_items) . '
-						Row Count:' . $this->printed_rows . ' ' . gettype($this->printed_rows) . '
+			echo JHtml::tooltip('ID: ' . $item->id . ' ' . gettype($item->id) . '
+						FUnit ID: ' . $item->funitid . ' ' . gettype($item->funitid) . '
+						Item Count: ' . $this->printed_items . ' ' . gettype($this->printed_items) . '
+						Row Count: ' . $this->printed_rows . ' ' . gettype($this->printed_rows) . '
 		FamilyPosiion: ' . $item->attribs->get('familypostion') . ' ' . gettype($item->attribs->get('familypostion')), '', '', 'debug');
 		}
 		if (($item->funitid != '0' && $item->attribs->get('familypostion', '0') === '0') || ($item->funitid == '0' && $item->attribs->get('familypostion', '-1') === '-1' || $item->attribs->get('familypostion', '0') === '0'))
@@ -63,15 +57,28 @@ foreach ($this->items as $item)
 			?>
 			<?php
 			$families = $this->renderHelper->getFamilyMembersPage($item->funit_id); ?>
-			<span id="contact-name"><?php echo $item->funit_name; ?></span>
+			<span id="contact-name"><?php echo $item->funit_name; ?></span><br/>
 			<?php
-			foreach ($families as $member)
+			$n2 = count($families);
+			$i2 = $n2;
+
+			foreach ($families as $i => $member)
 			{
-				if ($member->attribs->get('familypostion') == '2')
+				if (($n2 == $i2 && $n2 < 2) || ($n2 == 2 && $n2 == $i2))
 				{
-					echo $member->name;
+					echo $member->name . ' ';
 				}
-			}?>
+				elseif ($n2 > 2 && $i2 > 1)
+				{
+					echo $member->name . ', ';
+				}
+				elseif ($i2 == 1 && $n2 > 2)
+				{
+					echo 'and ' . $member->name;
+				}
+				$i2--;
+			}
+			?>
 			<?php if ($item->children && $this->params->get('dr_show_children')) :
 				?>
 				<p>
@@ -372,7 +379,6 @@ foreach ($this->items as $item)
 		}
 		elseif ($this->printed_items == $this->items_per_row)
 		{
-//			var_dump($this->printed_items == $this->items_per_row);
 			echo '</td></tr></tbody></table><div style="page-break-after:always"></div>';
 			echo '<!-- End column -->';
 			$this->printed_rows  = 0;

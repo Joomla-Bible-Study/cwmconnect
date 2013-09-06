@@ -24,7 +24,7 @@ class RenderHelper
 	 *
 	 * @return string|bool
 	 */
-	public function getPosition ($con_position, $getint = false, $params = null)
+	public function getPosition($con_position, $getint = false, $params = null)
 	{
 		$i         = 0;
 		$positions = array();
@@ -91,7 +91,8 @@ class RenderHelper
 				var_dump($getint);
 				var_dump($position);
 				$teamleaders = $params->get('teamleaders', '');
-				if($position->id == $teamleaders){
+				if ($position->id == $teamleaders)
+				{
 					$results = true;
 					var_dump($position);
 				}
@@ -109,7 +110,7 @@ class RenderHelper
 	 *
 	 * @return string
 	 */
-	public function getFamilyMembersPage ($funit_id)
+	public function getFamilyMembersPage($funit_id)
 	{
 
 		$db    = JFactory::getDBO();
@@ -140,6 +141,10 @@ class RenderHelper
 				$params->loadString($item->attribs);
 				$item->attribs = $params;
 			}
+			if ($item->attribs->get('familypostion') != '2')
+			{
+				unset($items[$i]);
+			}
 		}
 
 		return $items;
@@ -152,7 +157,7 @@ class RenderHelper
 	 *
 	 * @return int
 	 */
-	public function rowWidth ($rows_per_page)
+	public function rowWidth($rows_per_page)
 	{
 		$results = 12;
 
@@ -182,7 +187,7 @@ class RenderHelper
 	 *
 	 * @return array
 	 */
-	public static function groupit ($args)
+	public static function groupit($args)
 	{
 		$items = null;
 		$field = null;
@@ -221,7 +226,7 @@ class RenderHelper
 	 *
 	 * @return stdClass
 	 */
-	public function getName ($name)
+	public function getName($name)
 	{
 		// Compute lastname, firstname and middlename
 		$name = trim($name);
@@ -274,7 +279,7 @@ class RenderHelper
 	 *
 	 * @return array
 	 */
-	public function getBirthdays ($params)
+	public function getBirthdays($params)
 	{
 		$user   = JFactory::getUser();
 		$groups = implode(',', $user->getAuthorisedViewLevels());
@@ -328,7 +333,7 @@ class RenderHelper
 		$query->where('MONTH(a.birthdate) = ' . $date);
 
 		$query->where('a.birthdate != "0000-00-00"')
-				->order('a.birthdate DESC');
+			->order('a.birthdate DESC');
 		$db->setQuery($query);
 		$records = $db->loadObjectList();
 
@@ -348,7 +353,7 @@ class RenderHelper
 	 *
 	 * @return array
 	 */
-	public function getAnniversary ($params)
+	public function getAnniversary($params)
 	{
 		$db      = JFactory::getDbo();
 		$results = false;
@@ -405,7 +410,7 @@ class RenderHelper
 		$query->where('MONTH(a.anniversary) = ' . $date);
 
 		$query->where('a.anniversary != "0000-00-00"')
-				->order('a.anniversary DESC');
+			->order('a.anniversary DESC');
 		$db->setQuery($query);
 		$records = $db->loadObjectList();
 
