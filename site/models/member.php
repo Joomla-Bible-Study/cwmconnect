@@ -112,6 +112,8 @@ class ChurchDirectoryModelMember extends JModelForm
 	{
 		$data = (array) JFactory::getApplication()->getUserState('com_churchdirectory.member.data', array());
 
+		$this->preprocessData('com_churchdirectory.member', $data);
+
 		return $data;
 	}
 
@@ -157,23 +159,23 @@ class ChurchDirectoryModelMember extends JModelForm
 				$case_when1 .= ' ELSE ';
 				$case_when1 .= $c_id . ' END as catslug';
 
-				$query->select($this->getState('item.select', 'a.*') . ',' . $case_when . ',' . $case_when1);
-				$query->from('#__churchdirectory_details AS a');
+				$query->select($this->getState('item.select', 'a.*') . ',' . $case_when . ',' . $case_when1)
+					->from('#__churchdirectory_details AS a')
 
 				// Join on category table.
-				$query->select('c.title AS category_title, c.alias AS category_alias, c.access AS category_access');
-				$query->join('LEFT', '#__categories AS c on c.id = a.catid');
+					->select('c.title AS category_title, c.alias AS category_alias, c.access AS category_access')
+					->join('LEFT', '#__categories AS c on c.id = a.catid')
 
 
 				// Join over the categories to get parent category titles
-				$query->select('parent.title as parent_title, parent.id as parent_id, parent.path as parent_route, parent.alias as parent_alias');
-				$query->join('LEFT', '#__categories as parent ON parent.id = c.parent_id');
+				    ->select('parent.title as parent_title, parent.id as parent_id, parent.path as parent_route, parent.alias as parent_alias')
+				    ->join('LEFT', '#__categories as parent ON parent.id = c.parent_id')
 
 				// Join over the family Unit to get info
-				$query->select('fu.name as fu_name, fu.id as fu_id, fu.description as fu_description');
-				$query->join('LEFT', '#__churchdirectory_familyunit AS fu ON fu.id = a.funitid');
+					->select('fu.name as fu_name, fu.id as fu_id, fu.description as fu_description')
+					->join('LEFT', '#__churchdirectory_familyunit AS fu ON fu.id = a.funitid')
 
-				$query->where('a.id = ' . (int) $pk);
+					->where('a.id = ' . (int) $pk);
 
 				// Filter by start and end dates.
 				$nullDate = $db->Quote($db->getNullDate());
@@ -183,6 +185,7 @@ class ChurchDirectoryModelMember extends JModelForm
 				// Filter by published state.
 				$published = $this->getState('filter.published');
 				$archived  = $this->getState('filter.archived');
+
 				if (is_numeric($published))
 				{
 					$query->where('(a.published = ' . (int) $published . ' OR a.published =' . (int) $archived . ')');

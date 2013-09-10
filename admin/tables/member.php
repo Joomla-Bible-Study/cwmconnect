@@ -34,7 +34,7 @@ class ChurchDirectoryTableMember extends JTable
 	 *
 	 * @since 1.0
 	 */
-	public function __construct (& $db)
+	public function __construct(& $db)
 	{
 		parent::__construct('#__churchdirectory_details', 'id', $db);
 	}
@@ -49,7 +49,7 @@ class ChurchDirectoryTableMember extends JTable
 	 * @link     http://docs.joomla.org/JTable/bind
 	 * @since    1.7.0
 	 */
-	public function bind ($array, $ignore = '')
+	public function bind($array, $ignore = '')
 	{
 		if (isset($array['params']) && is_array($array['params']))
 		{
@@ -87,7 +87,7 @@ class ChurchDirectoryTableMember extends JTable
 	 * @return    boolean    True on success, false on failure.
 	 * @since    1.7.0
 	 */
-	public function store ($updateNulls = false)
+	public function store($updateNulls = false)
 	{
 		// Transform the params field
 		if (is_array($this->params))
@@ -113,6 +113,7 @@ class ChurchDirectoryTableMember extends JTable
 		}
 		$date = JFactory::getDate();
 		$user = JFactory::getUser();
+
 		if ($this->id)
 		{
 			// Existing item
@@ -153,6 +154,7 @@ class ChurchDirectoryTableMember extends JTable
 
 		// Verify that the alias is unique
 		$table = JTable::getInstance('Member', 'ChurchDirectoryTable');
+
 		if ($table->load(array('alias' => $this->alias, 'catid' => $this->catid)) && ($table->id != $this->id || $this->id == 0))
 		{
 			$this->setError(JText::_('COM_CHURCHDIRECTORY_ERROR_UNIQUE_ALIAS'));
@@ -171,7 +173,7 @@ class ChurchDirectoryTableMember extends JTable
 	 * @see   JTable::check
 	 * @since 1.7.0
 	 */
-	function check ()
+	public function check()
 	{
 		$this->default_con = intval($this->default_con);
 
@@ -194,6 +196,7 @@ class ChurchDirectoryTableMember extends JTable
 		$this->_db->setQuery($query);
 
 		$xid = intval($this->_db->loadResult());
+
 		if ($xid && $xid != intval($this->id))
 		{
 			$this->setError(JText::_('COM_CHURCHDIRECTORY_WARNING_SAME_NAME'));
@@ -206,6 +209,7 @@ class ChurchDirectoryTableMember extends JTable
 			$this->alias = $this->name;
 		}
 		$this->alias = JApplication::stringURLSafe($this->alias);
+
 		if (trim(str_replace('-', '', $this->alias)) == '')
 		{
 			$this->alias = JFactory::getDate()->format("Y-m-d-H-i-s");
@@ -226,11 +230,11 @@ class ChurchDirectoryTableMember extends JTable
 			return false;
 		}
 
-		// clean up keywords -- eliminate extra spaces between phrases
+		// Clean up keywords -- eliminate extra spaces between phrases
 		// and cr (\r) and lf (\n) characters from string
 		if (!empty($this->metakey))
 		{
-			// only process if not empty
+			// Only process if not empty
 			$bad_characters = array("\n", "\r", "\"", "<", ">"); // array of characters to remove
 			$after_clean    = JString::str_ireplace($bad_characters, "", $this->metakey); // remove bad characters
 			$keys           = explode(',', $after_clean); // create array using commas as delimiter
@@ -238,14 +242,14 @@ class ChurchDirectoryTableMember extends JTable
 			foreach ($keys as $key)
 			{
 				if (trim($key))
-				{ // ignore blank keywords
+				{ // Ignore blank keywords
 					$clean_keys[] = trim($key);
 				}
 			}
-			$this->metakey = implode(", ", $clean_keys); // put array back together delimited by ", "
+			$this->metakey = implode(", ", $clean_keys); // Put array back together delimited by ", "
 		}
 
-		// clean up description -- eliminate quotes and <> brackets
+		// Clean up description -- eliminate quotes and <> brackets
 		if (!empty($this->metadesc))
 		{
 			// only process if not empty
@@ -259,13 +263,13 @@ class ChurchDirectoryTableMember extends JTable
 	/**
 	 * Pre load items
 	 *
-	 * @param   mixed   $pk        An optional primary key value to load the row by, or an array of fields to match.  If not
-	 *                             set the instance property value is used.
-	 * @param   boolean $reset     True to reset the default values before loading the new row.
+	 * @param   mixed   $pk          An optional primary key value to load the row by, or an array of fields to match.  If not
+	 *                               set the instance property value is used.
+	 * @param   boolean $reset       True to reset the default values before loading the new row.
 	 *
 	 * @return  boolean  True if successful. False if row not found.
 	 */
-	public function load ($pk = null, $reset = true)
+	public function load($pk = null, $reset = true)
 	{
 		if (parent::load($pk, $reset))
 		{
@@ -290,7 +294,7 @@ class ChurchDirectoryTableMember extends JTable
 	 * @return      string
 	 * @since       1.6
 	 */
-	protected function _getAssetName ()
+	protected function _getAssetName()
 	{
 		$k = $this->_tbl_key;
 
@@ -303,7 +307,7 @@ class ChurchDirectoryTableMember extends JTable
 	 * @return      string
 	 * @since       1.6
 	 */
-	protected function _getAssetTitle ()
+	protected function _getAssetTitle()
 	{
 		$title = $this->name;
 
@@ -319,7 +323,7 @@ class ChurchDirectoryTableMember extends JTable
 	 * @return      int
 	 * @since       1.6
 	 */
-	protected function _getAssetParentId ($table = null, $id = null)
+	protected function _getAssetParentId($table = null, $id = null)
 	{
 		$asset = JTable::getInstance('Asset');
 		$asset->loadByName('com_churchdirectory');

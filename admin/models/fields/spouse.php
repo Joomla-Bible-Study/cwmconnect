@@ -38,7 +38,6 @@ class JFormFieldSpouse extends JFormField
 		// Initialize variables.
 		$html = '';
 		$attr = '';
-		$find = '';
 
 		// Initialize some field attributes.
 		$attr .= $this->element['class'] ? ' class="' . (string) $this->element['class'] . '"' : '';
@@ -71,7 +70,7 @@ class JFormFieldSpouse extends JFormField
 			$family_position = $registry->toObject('familypostion');
 			$item            = (object) array_merge((array) $item, (array) $family_position);
 
-			if ($item->funitid >= '1' && $item->id != $memberId)
+			if ($item->funitid >= '1' && $item->id != $memberId && $family_position->familypostion == '1')
 			{
 				$link = 'index.php?option=com_churchdirectory&task=member.edit&id=' . (int) $item->id . '&tmpl=component&layout=modal';
 				$html = '<h4><a class="btn btn-primary" onclick="SqueezeBox.fromElement(this, {handler:\'iframe\', size: {x: 900, y: 550}, url:\'' . $link . '\'})"

@@ -363,10 +363,11 @@ class ChurchDirectoryModelMember extends JModelAdmin
 	public function getForm($data = array(), $loadData = true)
 	{
 
-		JForm::addFieldPath('JPATH_ADMINISTRATOR/components/com_users/models/fields');
+		JForm::addFieldPath(JPATH_ADMINISTRATOR . '/components/com_users/models/fields');
 
 		// Get the form.
 		$form = $this->loadForm('com_churchdirectory.member', 'member', array('control' => 'jform', 'load_data' => $loadData));
+
 		if (empty($form))
 		{
 			return false;
