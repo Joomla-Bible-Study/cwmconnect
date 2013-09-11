@@ -10,9 +10,6 @@
 // No direct access
 defined('_JEXEC') or die;
 
-
-//jimport('joomla.mail.helper');
-
 /**
  * HTML View class for the ChurchDirectorys component
  *
@@ -64,7 +61,7 @@ class ChurchDirectoryViewCategory extends JViewLegacy
 	 *
 	 * @return boolean
 	 */
-	function display($tpl = null)
+	public function display($tpl = null)
 	{
 
 		$app    = JFactory::getApplication();

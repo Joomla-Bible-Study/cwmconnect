@@ -2,9 +2,10 @@
 
 /**
  * View for VCF
- * @package		ChurchDirectory.Site
- * @copyright           (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ *
+ * @package    ChurchDirectory.Site
+ * @copyright  (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 // No direct access
 defined('_JEXEC') or die;
@@ -12,99 +13,105 @@ defined('_JEXEC') or die;
 
 /**
  * Class for Member VCF
- * @package		ChurchDirectory.Site
- * @since 1.7.0
+ *
+ * @package        ChurchDirectory.Site
+ * @since          1.7.0
  */
-class ChurchDirectoryViewMember extends JViewLegacy {
+class ChurchDirectoryViewMember extends JViewLegacy
+{
 
-    /**
-     * Protected
-     * @var array
-     */
-    protected $state;
+	/**
+	 * Protected
+	 *
+	 * @var array
+	 */
+	protected $state;
 
-    /**
-     * Protected
-     * @var array
-     */
-    protected $item;
+	/**
+	 * Protected
+	 *
+	 * @var array
+	 */
+	protected $item;
 
-    /**
-     * Display function
-     * @return boolean
-     */
-    public function display() {
-        // Get model data.
-        $state = $this->get('State');
-        $item = $this->get('Item');
+	/**
+	 * Display function
+	 *
+	 * @return boolean
+	 */
+	public function display()
+	{
+		// Get model data.
+		$item = $this->get('Item');
 
-        // Check for errors.
-        if (count($errors = $this->get('Errors'))) {
-            JError::raiseWarning(500, implode("\n", $errors));
-            return false;
-        }
+		// Check for errors.
+		if (count($errors = $this->get('Errors')))
+		{
+			JError::raiseWarning(500, implode("\n", $errors));
 
-        $doc = JFactory::getDocument();
-        $doc->setMetaData('Content-Type', 'text/directory', true);
+			return false;
+		}
 
-        // Initialise variables.
-        $app = JFactory::getApplication();
-        $params = $app->getParams();
-        $user = JFactory::getUser();
-        $dispatcher = & JDispatcher::getInstance();
+		JFactory::getDocument()->setMetaData('Content-Type', 'text/directory', true);
 
-        // Compute lastname, firstname and middlename
-        $item->name = trim($item->name);
+		// Compute lastname, firstname and middlename
+		$item->name = trim($item->name);
 
-        // "Lastname, Firstname Midlename" format support
-        // e.g. "de Gaulle, Charles"
-        $namearray = explode(',', $item->name);
-        if (count($namearray) > 1) {
-            $lastname = $namearray[0];
-            $card_name = $lastname;
-            $name_and_midname = trim($namearray[1]);
+		// "Lastname, Firstname Midlename" format support
+		// e.g. "de Gaulle, Charles"
+		$namearray = explode(',', $item->name);
 
-            $firstname = '';
-            if (!empty($name_and_midname)) {
-                $namearray = explode(' ', $name_and_midname);
+		if (count($namearray) > 1)
+		{
+			$lastname         = $namearray[0];
+			$card_name        = $lastname;
+			$name_and_midname = trim($namearray[1]);
 
-                $firstname = $namearray[0];
-                $middlename = (count($namearray) > 1) ? $namearray[1] : '';
-                $card_name = $firstname . ' ' . ($middlename ? $middlename . ' ' : '') . $card_name;
-            }
-        }
-        // "Firstname Middlename Lastname" format support
-        else {
-            $namearray = explode(' ', $item->name);
+			$firstname = '';
 
-            $middlename = (count($namearray) > 2) ? $namearray[1] : '';
-            $firstname = array_shift($namearray);
-            $lastname = count($namearray) ? end($namearray) : '';
-            $card_name = $firstname . ($middlename ? ' ' . $middlename : '') . ($lastname ? ' ' . $lastname : '');
-        }
+			if (!empty($name_and_midname))
+			{
+				$namearray = explode(' ', $name_and_midname);
 
-        $rev = date('c', strtotime($item->modified));
+				$firstname  = $namearray[0];
+				$middlename = (count($namearray) > 1) ? $namearray[1] : '';
+				$card_name  = $firstname . ' ' . ($middlename ? $middlename . ' ' : '') . $card_name;
+			}
+		}
+		// "Firstname Middlename Lastname" format support
+		else
+		{
+			$namearray = explode(' ', $item->name);
 
-        JResponse::setHeader('Content-disposition', 'attachment; filename="' . $card_name . '.vcf"', true);
+			$middlename = (count($namearray) > 2) ? $namearray[1] : '';
+			$firstname  = array_shift($namearray);
+			$lastname   = count($namearray) ? end($namearray) : '';
+			$card_name  = $firstname . ($middlename ? ' ' . $middlename : '') . ($lastname ? ' ' . $lastname : '');
+		}
 
-        $vcard = array();
-        $vcard[].= 'BEGIN:VCARD';
-        $vcard[].= 'VERSION:3.0';
-        $vcard[] = 'N:' . $lastname . ';' . $firstname . ';' . $middlename;
-        $vcard[] = 'FN:' . $item->name;
-        $vcard[] = 'TITLE:' . $item->con_position;
-        $vcard[] = 'TEL;TYPE=WORK,VOICE:' . $item->telephone;
-        $vcard[] = 'TEL;TYPE=WORK,FAX:' . $item->fax;
-        $vcard[] = 'TEL;TYPE=WORK,MOBILE:' . $item->mobile;
-        $vcard[] = 'ADR;TYPE=WORK:;;' . $item->address . ';' . $item->suburb . ';' . $item->state . ';' . $item->postcode . ';' . $item->country;
-        $vcard[] = 'LABEL;TYPE=WORK:' . $item->address . "\n" . $item->suburb . "\n" . $item->state . "\n" . $item->postcode . "\n" . $item->country;
-        $vcard[] = 'EMAIL;TYPE=PREF,INTERNET:' . $item->email_to;
-        $vcard[] = 'URL:' . $item->webpage;
-        $vcard[] = 'REV:' . $rev . 'Z';
-        $vcard[] = 'END:VCARD';
+		$rev = date('c', strtotime($item->modified));
 
-        echo implode("\n", $vcard);
-        return true;
-    }
+		JResponse::setHeader('Content-disposition', 'attachment; filename="' . $card_name . '.vcf"', true);
+
+		$vcard = array();
+		$vcard[] .= 'BEGIN:VCARD';
+		$vcard[] .= 'VERSION:3.0';
+		$vcard[] = 'N:' . $lastname . ';' . $firstname . ';' . $middlename;
+		$vcard[] = 'FN:' . $item->name;
+		$vcard[] = 'TITLE:' . $item->con_position;
+		$vcard[] = 'TEL;TYPE=WORK,VOICE:' . $item->telephone;
+		$vcard[] = 'TEL;TYPE=WORK,FAX:' . $item->fax;
+		$vcard[] = 'TEL;TYPE=WORK,MOBILE:' . $item->mobile;
+		$vcard[] = 'ADR;TYPE=WORK:;;' . $item->address . ';' . $item->suburb . ';' . $item->state . ';' . $item->postcode . ';' . $item->country;
+		$vcard[] = 'LABEL;TYPE=WORK:' . $item->address . "\n" . $item->suburb . "\n" . $item->state . "\n" . $item->postcode . "\n" . $item->country;
+		$vcard[] = 'EMAIL;TYPE=PREF,INTERNET:' . $item->email_to;
+		$vcard[] = 'URL:' . $item->webpage;
+		$vcard[] = 'REV:' . $rev . 'Z';
+		$vcard[] = 'END:VCARD';
+
+		echo implode("\n", $vcard);
+
+		return true;
+	}
 
 }

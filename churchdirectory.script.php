@@ -169,8 +169,8 @@ class Com_ChurchdirectoryInstallerScript
 	 */
 	public function preflight ($type, $parent)
 	{
-		// Only allow to install on Joomla! 2.5.0 or later
-		return version_compare(JVERSION, '2.5.0', 'ge');
+		// Only allow to install on Joomla! 2.5.14 or later
+		return version_compare(JVERSION, '2.5.14', 'ge');
 	}
 
 	/**
@@ -187,10 +187,7 @@ class Com_ChurchdirectoryInstallerScript
 		$status = $this->_installSubextensions($parent);
 
 		// Install TCPDF Libraries
-		$tcpdfStatus = $this->_installTCPDF($parent);
-
-		// Install FOF
-		$fofStatus = $this->_installFOF($parent);
+		$this->_installTCPDF($parent);
 
 		// Remove old stuff
 		$this->deleteUnexistingFiles();
@@ -256,8 +253,7 @@ class Com_ChurchdirectoryInstallerScript
 	private function _renderPostInstallation ($status, $parent)
 	{
 		$rows = 1; ?>
-		<img src="../media/com_churchdirectory/images/icons/icon-48-churchdirectory.png" width="48" height="48"
-		     alt="ChurchDirectory"/>
+		<img src="../media/com_churchdirectory/images/icons/icon-48-churchdirectory.png" width="48" height="48" alt="ChurchDirectory"/>
 
 		<h2>Welcome to Church Directory System</h2>
 

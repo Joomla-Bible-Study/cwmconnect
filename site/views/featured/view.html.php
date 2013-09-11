@@ -52,7 +52,7 @@ class ChurchDirectoryViewFeatured extends JViewLegacy
 	 *
 	 * @return    mixed    False on error, null otherwise.
 	 */
-	function display($tpl = null)
+	public function display($tpl = null)
 	{
 		$params = JComponentHelper::getParams('com_churchdirectory');
 

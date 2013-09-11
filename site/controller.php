@@ -29,9 +29,6 @@ class ChurchDirectoryController extends JControllerLegacy
 	{
 		$cachable = true;
 
-		// Get the document object.
-		$document = JFactory::getDocument();
-
 		if (!version_compare(JVERSION, '3.0', 'ge'))
 		{
 			$this->input = JFactory::getApplication()->input;
@@ -45,8 +42,6 @@ class ChurchDirectoryController extends JControllerLegacy
 			$this->input->set('tmpl', 'component');
 		}
 		$this->input->set('view', $vName);
-
-		$user = JFactory::getUser();
 
 		$safeurlparams = array(
 			'catid'            => 'INT', 'id' => 'INT', 'cid' => 'ARRAY', 'year' => 'INT', 'month' => 'INT', 'limit' => 'UINT',

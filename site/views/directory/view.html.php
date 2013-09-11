@@ -50,6 +50,8 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 
 	protected $renderHelper;
 
+	protected $count;
+
 	/**
 	 * Display the view
 	 *

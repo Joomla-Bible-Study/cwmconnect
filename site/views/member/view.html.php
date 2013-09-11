@@ -75,7 +75,6 @@ class ChurchDirectoryViewMember extends JViewLegacy
 	{
 		$app        = JFactory::getApplication();
 		$user       = JFactory::getUser();
-		$dispatcher = JDispatcher::getInstance();
 		$state      = $this->get('State');
 		$item       = $this->get('Item');
 		$this->form = $this->get('Form');
@@ -106,7 +105,7 @@ class ChurchDirectoryViewMember extends JViewLegacy
 			return false;
 		}
 
-		// check if access is not public
+		// Check if access is not public
 		$groups = $user->getAuthorisedViewLevels();
 
 		$return = '';
@@ -143,7 +142,7 @@ class ChurchDirectoryViewMember extends JViewLegacy
 		switch ($params->get('churchdirectory_icons'))
 		{
 			case 1 :
-				// text
+				// Text
 				$params->set('marker_address', JText::_('COM_CHURCHDIRECTORY_ADDRESS') . ": ");
 				$params->set('marker_email', JText::_('JGLOBAL_EMAIL') . ": ");
 				$params->set('marker_telephone', JText::_('COM_CHURCHDIRECTORY_TELEPHONE') . ": ");
@@ -154,7 +153,7 @@ class ChurchDirectoryViewMember extends JViewLegacy
 				break;
 
 			case 2 :
-				// none
+				// None
 				$params->set('marker_address', '');
 				$params->set('marker_email', '');
 				$params->set('marker_telephone', '');
@@ -165,7 +164,7 @@ class ChurchDirectoryViewMember extends JViewLegacy
 				break;
 
 			default :
-				// icons
+				// Icons
 				$image1 = JHtml::_('image', 'contacts/' . $params->get('icon_address', 'con_address.png'), JText::_('COM_CHURCHDIRECTORY_ADDRESS') . ": ", null, true);
 				$image2 = JHtml::_('image', 'contacts/' . $params->get('icon_email', 'emailButton.png'), JText::_('JGLOBAL_EMAIL') . ": ", null, true);
 				$image3 = JHtml::_('image', 'contacts/' . $params->get('icon_telephone', 'con_tel.png'), JText::_('COM_CHURCHDIRECTORY_TELEPHONE') . ": ", null, true);
@@ -195,7 +194,7 @@ class ChurchDirectoryViewMember extends JViewLegacy
 
 		JHtml::_('behavior.formvalidation');
 
-		//Escape strings for HTML output
+		// Escape strings for HTML output
 		$this->pageclass_sfx = htmlspecialchars($params->get('pageclass_sfx'));
 
 		$this->member   = & $item;
@@ -209,6 +208,7 @@ class ChurchDirectoryViewMember extends JViewLegacy
 		// Override the layout only if this is not the active menu item
 		// If it is the active menu item, then the view and item id will match
 		$active = $app->getMenu()->getActive();
+
 		if ((!$active) || ((strpos($active->link, 'view=member') === false) || (strpos($active->link, '&id=' . (string) $this->item->id) === false)))
 		{
 			if ($layout = $params->get('churchdirectory_layout'))
@@ -254,7 +254,7 @@ class ChurchDirectoryViewMember extends JViewLegacy
 
 		$id = (int) @$menu->query['id'];
 
-		// if the menu item does not concern this contact
+		// If the menu item does not concern this contact
 		if ($menu && ($menu->query['option'] != 'com_churchdirectory' || $menu->query['view'] != 'member' || $id != $this->item->id))
 		{
 

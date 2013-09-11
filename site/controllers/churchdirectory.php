@@ -126,9 +126,6 @@ class ChurchDirectoryControllerChurchDirectory extends JControllerForm
 			}
 		}
 
-		// Passed Validation: Process the churchdirectory plugins to integrate with other applications
-		$results = $dispatcher->trigger('onSubmitChurchDirectory', array(&$churchdirectory, &$data));
-
 		// Send the email
 		$sent = false;
 
