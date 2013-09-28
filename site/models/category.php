@@ -7,7 +7,7 @@
 
 defined('_JEXEC') or die;
 
-jimport( 'joomla.application.component.modellist' );
+jimport('joomla.application.component.modellist');
 /**
  * Class list category
  *
@@ -80,7 +80,7 @@ class ChurchDirectoryModelCategory extends JModelList
 	/**
 	 * Constructor.
 	 *
-	 * @param   array  $config  An optional associative array of configuration settings.
+	 * @param   array $config  An optional associative array of configuration settings.
 	 */
 	public function __construct($config = array())
 	{
@@ -235,8 +235,8 @@ class ChurchDirectoryModelCategory extends JModelList
 	 *
 	 * Note. Calling getState in this method will result in recursion.
 	 *
-	 * @param   string  $ordering   An optional ordering field.
-	 * @param   string  $direction  An optional direction (asc|desc).
+	 * @param   string $ordering   An optional ordering field.
+	 * @param   string $direction  An optional direction (asc|desc).
 	 *
 	 * @since   1.6
 	 * @return  void
@@ -259,10 +259,13 @@ class ChurchDirectoryModelCategory extends JModelList
 		{
 			$limit = $app->getUserStateFromRequest('global.list.limit', 'limit', $app->getCfg('list_limit'));
 		}
-		$this->setState('list.limit', $limit);
+		if (!$app->input->getInt('print'))
+		{
+			$this->setState('list.limit', $limit);
 
-		$limitstart = $app->input->get('limitstart', 0, '', 'int');
-		$this->setState('list.start', $limitstart);
+			$limitstart = $app->input->get('limitstart', 0, '', 'int');
+			$this->setState('list.start', $limitstart);
+		}
 
 		// Optional filter text
 		$this->setState('list.filter', $app->input->getString('filter-search', ''));
