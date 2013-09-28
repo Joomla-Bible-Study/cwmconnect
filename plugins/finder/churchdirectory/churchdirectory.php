@@ -70,27 +70,21 @@ class PlgFinderChurchDirectory extends FinderIndexerAdapter
 	protected $state_field = 'published';
 
 	/**
-	 * Constructor
+	 * Load the language file on instantiation.
 	 *
-	 * @param   object  &$subject  The object to observe
-	 * @param   array   $config    An array that holds the plugin configuration
-	 *
-	 * @since   1.7.0
+	 * @var    boolean
+	 * @since  3.1
 	 */
-	public function __construct(&$subject, $config)
-	{
-		parent::__construct($subject, $config);
-		$this->loadLanguage();
-	}
+	protected $autoloadLanguage = true;
 
 	/**
 	 * Method to update the item link information when the item category is
 	 * changed. This is fired when the item category is published or unpublished
 	 * from the list view.
 	 *
-	 * @param   string   $extension  The extension whose category has been updated.
-	 * @param   array    $pks        A list of primary key ids of the content that has changed state.
-	 * @param   integer  $value      The value of the state that the content has been changed to.
+	 * @param   string  $extension  The extension whose category has been updated.
+	 * @param   array   $pks        A list of primary key ids of the content that has changed state.
+	 * @param   integer $value      The value of the state that the content has been changed to.
 	 *
 	 * @return  void
 	 *
@@ -110,8 +104,8 @@ class PlgFinderChurchDirectory extends FinderIndexerAdapter
 	 *
 	 * This event will fire when ChurchDirectory are deleted and when an indexed item is deleted.
 	 *
-	 * @param   string  $context  The context of the action being performed.
-	 * @param   JTable  $table    A JTable object containing the record to be deleted
+	 * @param   string $context  The context of the action being performed.
+	 * @param   JTable $table    A JTable object containing the record to be deleted
 	 *
 	 * @return  boolean  True on success.
 	 *
@@ -140,9 +134,9 @@ class PlgFinderChurchDirectory extends FinderIndexerAdapter
 	/**
 	 * Method to determine if the access level of an item changed.
 	 *
-	 * @param   string   $context  The context of the content passed to the plugin.
-	 * @param   JTable   $row      A JTable object
-	 * @param   boolean  $isNew    If the content has just been created
+	 * @param   string  $context  The context of the content passed to the plugin.
+	 * @param   JTable  $row      A JTable object
+	 * @param   boolean $isNew    If the content has just been created
 	 *
 	 * @return  boolean  True on success.
 	 *
@@ -183,9 +177,9 @@ class PlgFinderChurchDirectory extends FinderIndexerAdapter
 	 * This event is fired before the data is actually saved so we are going
 	 * to queue the item to be indexed later.
 	 *
-	 * @param   string   $context  The context of the content passed to the plugin.
-	 * @param   JTable   $row      A JTable object
-	 * @param   boolean  $isNew    If the content is just about to be created
+	 * @param   string  $context  The context of the content passed to the plugin.
+	 * @param   JTable  $row      A JTable object
+	 * @param   boolean $isNew    If the content is just about to be created
 	 *
 	 * @return  boolean  True on success.
 	 *
@@ -222,9 +216,9 @@ class PlgFinderChurchDirectory extends FinderIndexerAdapter
 	 * from outside the edit screen. This is fired when the item is published,
 	 * unpublished, archived, or unarchived from the list view.
 	 *
-	 * @param   string   $context  The context for the content passed to the plugin.
-	 * @param   array    $pks      A list of primary key ids of the content that has changed state.
-	 * @param   integer  $value    The value of the state that the content has been changed to.
+	 * @param   string  $context  The context for the content passed to the plugin.
+	 * @param   array   $pks      A list of primary key ids of the content that has changed state.
+	 * @param   integer $value    The value of the state that the content has been changed to.
 	 *
 	 * @return  void
 	 *
@@ -248,8 +242,8 @@ class PlgFinderChurchDirectory extends FinderIndexerAdapter
 	/**
 	 * Method to index an item. The item must be a FinderIndexerResult object.
 	 *
-	 * @param   FinderIndexerResult  $item    The item to index as an FinderIndexerResult object.
-	 * @param   string               $format  The item format
+	 * @param   FinderIndexerResult $item    The item to index as an FinderIndexerResult object.
+	 * @param   string              $format  The item format
 	 *
 	 * @return  void
 	 *
@@ -409,54 +403,54 @@ class PlgFinderChurchDirectory extends FinderIndexerAdapter
 	/**
 	 * Method to get the SQL query used to retrieve the list of content items.
 	 *
-	 * @param   mixed  $sql  A JDatabaseQuery object or null.
+	 * @param   mixed $query  A JDatabaseQuery object or null.
 	 *
 	 * @return  JDatabaseQuery  A database object.
 	 *
 	 * @since   1.7.0
 	 */
-	protected function getListQuery($sql = null)
+	protected function getListQuery($query = null)
 	{
 		$db = JFactory::getDbo();
 
 		// Check if we can use the supplied SQL query.
-		$sql = is_a($sql, 'JDatabaseQuery') ? $sql : $db->getQuery(true);
-		$sql->select('a.id, a.name AS title, a.alias, a.address, a.created AS start_date');
-		$sql->select('a.created_by_alias, a.modified, a.modified_by');
-		$sql->select('a.metakey, a.metadesc, a.metadata, a.language');
-		$sql->select('a.sortname1, a.sortname2, a.sortname3');
-		$sql->select('a.children');
-		$sql->select('a.publish_up AS publish_start_date, a.publish_down AS publish_end_date');
-		$sql->select('a.suburb AS city, a.state AS region, a.country, a.postcode AS zip');
-		$sql->select('a.telephone, a.fax, a.misc AS summary, a.email_to AS email, a.mobile');
-		$sql->select('a.webpage, a.access, a.published AS state, a.ordering, a.params, a.catid');
-		$sql->select('c.title AS category, c.published AS cat_state, c.access AS cat_access');
+		$query = $query instanceof JDatabaseQuery ? $query : $db->getQuery(true)
+			->select('a.id, a.name AS title, a.alias, a.address, a.created AS start_date')
+			->select('a.created_by_alias, a.modified, a.modified_by')
+			->select('a.metakey, a.metadesc, a.metadata, a.language')
+			->select('a.sortname1, a.sortname2, a.sortname3')
+			->select('a.children')
+			->select('a.publish_up AS publish_start_date, a.publish_down AS publish_end_date')
+			->select('a.suburb AS city, a.state AS region, a.country, a.postcode AS zip')
+			->select('a.telephone, a.fax, a.misc AS summary, a.email_to AS email, a.mobile')
+			->select('a.webpage, a.access, a.published AS state, a.ordering, a.params, a.catid')
+			->select('c.title AS category, c.published AS cat_state, c.access AS cat_access');
 
 		// Handle the alias CASE WHEN portion of the query
 		$case_when_item_alias = ' CASE WHEN ';
-		$case_when_item_alias .= $sql->charLength('a.alias');
+		$case_when_item_alias .= $query->charLength('a.alias');
 		$case_when_item_alias .= ' THEN ';
-		$a_id = $sql->castAsChar('a.id');
-		$case_when_item_alias .= $sql->concatenate(array($a_id, 'a.alias'), ':');
+		$a_id = $query->castAsChar('a.id');
+		$case_when_item_alias .= $query->concatenate(array($a_id, 'a.alias'), ':');
 		$case_when_item_alias .= ' ELSE ';
 		$case_when_item_alias .= $a_id . ' END as slug';
-		$sql->select($case_when_item_alias);
+		$query->select($case_when_item_alias);
 
 		$case_when_category_alias = ' CASE WHEN ';
-		$case_when_category_alias .= $sql->charLength('c.alias');
+		$case_when_category_alias .= $query->charLength('c.alias');
 		$case_when_category_alias .= ' THEN ';
-		$c_id = $sql->castAsChar('c.id');
-		$case_when_category_alias .= $sql->concatenate(array($c_id, 'c.alias'), ':');
+		$c_id = $query->castAsChar('c.id');
+		$case_when_category_alias .= $query->concatenate(array($c_id, 'c.alias'), ':');
 		$case_when_category_alias .= ' ELSE ';
 		$case_when_category_alias .= $c_id . ' END as catslug';
-		$sql->select($case_when_category_alias);
+		$query->select($case_when_category_alias)
 
-		$sql->select('u.name AS user');
-		$sql->from('#__churchdirectory_details AS a');
-		$sql->join('LEFT', '#__categories AS c ON c.id = a.catid');
-		$sql->join('LEFT', '#__users AS u ON u.id = a.user_id');
+			->select('u.name')
+			->from('#__churchdirectory_details AS a')
+			->join('LEFT', '#__categories AS c ON c.id = a.catid')
+			->join('LEFT', '#__users AS u ON u.id = a.user_id');
 
-		return $sql;
+		return $query;
 	}
 
 }
