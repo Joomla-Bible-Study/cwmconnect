@@ -94,7 +94,6 @@ class ChurchDirectoryViewKML extends JViewLegacy
 			{
 				JToolBarHelper::apply('kml.apply');
 				JToolBarHelper::save('kml.save');
-				JToolBarHelper::save2new('kml.save2new');
 			}
 
 			JToolBarHelper::cancel('kml.cancel');
@@ -109,19 +108,7 @@ class ChurchDirectoryViewKML extends JViewLegacy
 				{
 					JToolBarHelper::apply('kml.apply');
 					JToolBarHelper::save('kml.save');
-
-					// We can save this record, but check the create permission to see if we can return to make a new one.
-					if ($canDo->get('core.create'))
-					{
-						JToolBarHelper::save2new('kml.save2new');
-					}
 				}
-			}
-
-			// If checked out, we can still save
-			if ($canDo->get('core.create'))
-			{
-				JToolBarHelper::save2copy('kml.save2copy');
 			}
 
 			JToolBarHelper::cancel('kml.cancel', 'JTOOLBAR_CLOSE');

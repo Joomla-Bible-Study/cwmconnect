@@ -107,7 +107,7 @@ class ChurchDirectoryViewMember extends JViewLegacy
 		$isNew      = ($this->item->id == 0);
 		$checkedOut = !($this->item->checked_out == 0 || $this->item->checked_out == $userId);
 		$canDo      = ChurchDirectoryHelper::getActions($this->item->catid, 0);
-		JToolBarHelper::title($isNew ? JText::_('COM_CHURCHDIRECTORY_MANAGER_MEMBER_NEW') : JText::_('COM_CHURCHDIRECTORY_MANAGER_MEMBER_EDIT'), 'members');
+		JToolBarHelper::title($isNew ? JText::_('COM_CHURCHDIRECTORY_MANAGER_MEMBER_NEW') : JText::_('COM_CHURCHDIRECTORY_MANAGER_MEMBER_EDIT'), 'churchdirectory');
 
 		// Build the actions for new and existing records.
 		if ($isNew)

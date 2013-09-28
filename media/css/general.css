@@ -40,3 +40,11 @@ div.current .panelform {
 select#jform_attribs_familypostion[style] {
     display: none !important;
 }
+
+/* Icons */
+.icon-48-churchdirectory {
+    background-image: url('../images/icons/icon-48-churchdirectory.png');
+}
+.icon-48-kml {
+    background-image: url('../images/icons/icon-48-kml.png');
+}

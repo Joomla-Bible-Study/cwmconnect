@@ -299,6 +299,7 @@
             <option value="0">COM_CHURCHDIRECTORY_ACTIVE_MEMBER</option>
             <option value="1">COM_CHURCHDIRECTORY_INACTIVE</option>
             <option value="2">COM_CHURCHDIRECTORY_ACTIVE_ATTENDEE</option>
+            <option value="3">COM_CHURCHDIRECTORY_NONE_MEMBER</option>
         </field>
     </fieldset>
 

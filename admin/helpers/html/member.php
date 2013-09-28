@@ -115,6 +115,7 @@ abstract class JHtmlMember
 		$options[] = array('value' => 0, 'text' => JText::_('COM_CHURCHDIRECTORY_ACTIVE_MEMBER'));
 		$options[] = array('value' => 1, 'text' => JText::_('COM_CHURCHDIRECTORY_INACTIVE'));
 		$options[] = array('value' => 2, 'text' => JText::_('COM_CHURCHDIRECTORY_ACTIVE_ATTENDEE'));
+		$options[] = array('value' => 3, 'text' => JText::_('COM_CHURCHDIRECTORY_NONE_MEMBER'));
 
 		$object = new stdClass;
 
