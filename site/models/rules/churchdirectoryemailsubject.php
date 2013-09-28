@@ -7,8 +7,6 @@
 
 defined('_JEXEC') or die;
 
-jimport('joomla.form.formrule');
-
 /**
  * Rule checker for email subject
  *

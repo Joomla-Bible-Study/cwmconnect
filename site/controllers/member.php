@@ -14,7 +14,7 @@ jimport('joomla.application.component.controllerform');
  * @package  ChurchDirectory.Site
  * @since    1.7.0
  */
-class ChurchDirectoryControllerChurchDirectory extends JControllerForm
+class ChurchDirectoryControllerMember extends JControllerForm
 {
 
 	/**
@@ -49,7 +49,7 @@ class ChurchDirectoryControllerChurchDirectory extends JControllerForm
 		$id     = (int) $stub;
 
 		// Get the data from POST
-		$data = $this->input->get('jform', array(), 'post', 'array');
+		$data = $this->input->post->get('jform', array(), 'post', 'array');
 
 		$churchdirectory = $model->getItem($id);
 
@@ -74,7 +74,7 @@ class ChurchDirectoryControllerChurchDirectory extends JControllerForm
 
 		// ChurchDirectory plugins
 		JPluginHelper::importPlugin('churchdirectory');
-		$dispatcher = JDispatcher::getInstance();
+		$dispatcher = JEventDispatcher::getInstance();
 
 		// Validate the posted data.
 		$form = $model->getForm();
@@ -171,7 +171,6 @@ class ChurchDirectoryControllerChurchDirectory extends JControllerForm
 	private function _sendEmail($data, $churchdirectory)
 	{
 		$app    = JFactory::getApplication();
-		$params = JComponentHelper::getParams('com_churchdirectory');
 
 		if ($churchdirectory->email_to == '' && $churchdirectory->user_id != 0)
 		{
@@ -181,10 +180,9 @@ class ChurchDirectoryControllerChurchDirectory extends JControllerForm
 		$mailfrom = $app->getCfg('mailfrom');
 		$fromname = $app->getCfg('fromname');
 		$sitename = $app->getCfg('sitename');
-		$copytext = JText::sprintf('COM_CHURCHDIRECTORY_COPYTEXT_OF', $churchdirectory->name, $sitename);
 
 		$name    = $data['churchdirectory_name'];
-		$email   = $data['churchdirectory_email'];
+		$email   = JstringPunycode::emailToPunycode($data['churchdirectory_email']);
 		$subject = $data['churchdirectory_subject'];
 		$body    = $data['churchdirectory_message'];
 

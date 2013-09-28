@@ -7,9 +7,7 @@
 
 defined('_JEXEC') or die;
 
-jimport('joomla.form.formrule');
-
-require_once 'libraries/joomla/form/rules/email.php';
+JFormHelper::loadRuleClass('email');
 
 /**
  * Rule to check email
