@@ -60,8 +60,8 @@ class ChurchDirectoryModelMember extends JModelForm
 		// Load the parameters.
 		$params = $app->getParams();
 		$this->setState('params', $params);
-
 		$user = JFactory::getUser();
+
 		if ((!$user->authorise('core.edit.state', 'com_churchdirectory')) && (!$user->authorise('core.edit', 'com_churchdirectory')))
 		{
 			$this->setState('filter.published', 1);
@@ -74,9 +74,8 @@ class ChurchDirectoryModelMember extends JModelForm
 	 *
 	 * The base form is loaded from XML and then an event is fired
 	 *
-	 *
-	 * @param    array      $data        An optional array of data for the form to interrogate.
-	 * @param    boolean    $loadData    True if the form is to load its own data (default case), false if not.
+	 * @param    array   $data        An optional array of data for the form to interrogate.
+	 * @param    boolean $loadData    True if the form is to load its own data (default case), false if not.
 	 *
 	 * @return    JForm    A JForm object on success, false on failure
 	 * @since    1.6
@@ -85,6 +84,7 @@ class ChurchDirectoryModelMember extends JModelForm
 	{
 		// Get the form.
 		$form = $this->loadForm('com_churchdirectory.member', 'member', array('control' => 'jform', 'load_data' => true));
+
 		if (empty($form))
 		{
 			return false;
@@ -112,7 +112,10 @@ class ChurchDirectoryModelMember extends JModelForm
 	{
 		$data = (array) JFactory::getApplication()->getUserState('com_churchdirectory.member.data', array());
 
-		$this->preprocessData('com_churchdirectory.member', $data);
+		if (version_compare(JVERSION, '3.0', 'ge'))
+		{
+			$this->preprocessData('com_churchdirectory.member', $data);
+		}
 
 		return $data;
 	}
@@ -162,16 +165,16 @@ class ChurchDirectoryModelMember extends JModelForm
 				$query->select($this->getState('item.select', 'a.*') . ',' . $case_when . ',' . $case_when1)
 					->from('#__churchdirectory_details AS a')
 
-				// Join on category table.
+					// Join on category table.
 					->select('c.title AS category_title, c.alias AS category_alias, c.access AS category_access')
 					->join('LEFT', '#__categories AS c on c.id = a.catid')
 
 
-				// Join over the categories to get parent category titles
-				    ->select('parent.title as parent_title, parent.id as parent_id, parent.path as parent_route, parent.alias as parent_alias')
-				    ->join('LEFT', '#__categories as parent ON parent.id = c.parent_id')
+					// Join over the categories to get parent category titles
+					->select('parent.title as parent_title, parent.id as parent_id, parent.path as parent_route, parent.alias as parent_alias')
+					->join('LEFT', '#__categories as parent ON parent.id = c.parent_id')
 
-				// Join over the family Unit to get info
+					// Join over the family Unit to get info
 					->select('fu.name as fu_name, fu.id as fu_id, fu.description as fu_description')
 					->join('LEFT', '#__churchdirectory_familyunit AS fu ON fu.id = a.funitid')
 
@@ -277,9 +280,9 @@ class ChurchDirectoryModelMember extends JModelForm
 	protected function getChurchDirectoryQuery($pk = null)
 	{
 		// TODO: Cache on the fingerprint of the arguments
-		$db     = $this->getDbo();
-		$user   = JFactory::getUser();
-		$pk     = (!empty($pk)) ? $pk : (int) $this->getState('member.id');
+		$db   = $this->getDbo();
+		$user = JFactory::getUser();
+		$pk   = (!empty($pk)) ? $pk : (int) $this->getState('member.id');
 
 		$query = $db->getQuery(true);
 		if ($pk)
@@ -302,7 +305,7 @@ class ChurchDirectoryModelMember extends JModelForm
 			$case_when1 .= $c_id . ' END as catslug';
 			$query->select(
 				'a.*, cc.access as category_access, cc.title as category_name, '
-					. $case_when . ',' . $case_when1
+				. $case_when . ',' . $case_when1
 			);
 
 			$query->from('#__churchdirectory_details AS a');
@@ -423,7 +426,7 @@ class ChurchDirectoryModelMember extends JModelForm
 	/**
 	 * Increment the hit counter for the contact.
 	 *
-	 * @param   int  $pk  Optional primary key of the article to increment.
+	 * @param   int $pk  Optional primary key of the article to increment.
 	 *
 	 * @return  boolean  True if successful; false otherwise and internal error set.
 	 *
@@ -441,8 +444,8 @@ class ChurchDirectoryModelMember extends JModelForm
 
 			$db->setQuery(
 				'UPDATE #__churchdirectory_details' .
-					' SET hits = hits + 1' .
-					' WHERE id = ' . (int) $pk
+				' SET hits = hits + 1' .
+				' WHERE id = ' . (int) $pk
 			);
 
 			try

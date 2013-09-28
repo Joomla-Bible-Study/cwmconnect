@@ -20,9 +20,9 @@ class ChurchDirectoryControllerMember extends JControllerForm
 	/**
 	 * Get model
 	 *
-	 * @param   string  $name    The model name. Optional.
-	 * @param   string  $prefix  The class prefix. Optional.
-	 * @param   array   $config  Configuration array for model. Optional.
+	 * @param   string $name    The model name. Optional.
+	 * @param   string $prefix  The class prefix. Optional.
+	 * @param   array  $config  Configuration array for model. Optional.
 	 *
 	 * @return  object  The model.
 	 */
@@ -45,11 +45,11 @@ class ChurchDirectoryControllerMember extends JControllerForm
 		$app    = JFactory::getApplication();
 		$model  = $this->getModel('member');
 		$params = JComponentHelper::getParams('com_churchdirectory');
-		$stub   = $this->input->getString('id');
+		$stub   = $app->input->getString('id');
 		$id     = (int) $stub;
 
 		// Get the data from POST
-		$data = $this->input->post->get('jform', array(), 'post', 'array');
+		$data = $app->input->post->get('jform', array(), 'post', 'array');
 
 		$churchdirectory = $model->getItem($id);
 
@@ -74,7 +74,15 @@ class ChurchDirectoryControllerMember extends JControllerForm
 
 		// ChurchDirectory plugins
 		JPluginHelper::importPlugin('churchdirectory');
-		$dispatcher = JEventDispatcher::getInstance();
+
+		if (version_compare(JVERSION, '3.0', 'ge'))
+		{
+			$dispatcher = JEventDispatcher::getInstance();
+		}
+		else
+		{
+			$dispatcher = JDispatcher::getInstance();
+		}
 
 		// Validate the posted data.
 		$form = $model->getForm();
@@ -163,14 +171,14 @@ class ChurchDirectoryControllerMember extends JControllerForm
 	/**
 	 * Send email
 	 *
-	 * @param   array   $data             ?
-	 * @param   object  $churchdirectory  ?
+	 * @param   array  $data             ?
+	 * @param   object $churchdirectory  ?
 	 *
 	 * @return array
 	 */
 	private function _sendEmail($data, $churchdirectory)
 	{
-		$app    = JFactory::getApplication();
+		$app = JFactory::getApplication();
 
 		if ($churchdirectory->email_to == '' && $churchdirectory->user_id != 0)
 		{
@@ -182,7 +190,7 @@ class ChurchDirectoryControllerMember extends JControllerForm
 		$sitename = $app->getCfg('sitename');
 
 		$name    = $data['churchdirectory_name'];
-		$email   = JstringPunycode::emailToPunycode($data['churchdirectory_email']);
+		$email   = $data['churchdirectory_email'];
 		$subject = $data['churchdirectory_subject'];
 		$body    = $data['churchdirectory_message'];
 
