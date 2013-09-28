@@ -146,7 +146,7 @@ jimport('joomla.html.html.bootstrap');
 
 <?php endif; ?>
 
-<?php if ($this->params->get('show_links')) : ?>
+<?php if ($this->params->get('show_links') && $this->member->params->get('link'.'a') != null) : ?>
 
 	<?php if ($this->params->get('presentation_style') == 'sliders'): ?>
 		<?php echo JHtml::_('bootstrap.addSlide', 'slide-links', JText::_('COM_CHURCHDIRECTORY_LINKS'), 'display-form'); ?>
