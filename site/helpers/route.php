@@ -30,8 +30,8 @@ abstract class ChurchDirectoryHelperRoute
 	/**
 	 * Get member route
 	 *
-	 * @param   int  $id     The route of the newsfeed
-	 * @param   int  $catid  Catigory id
+	 * @param   int  $id     The route of the Member
+	 * @param   int  $catid  Category id
 	 *
 	 * @return string
 	 */
@@ -134,7 +134,7 @@ abstract class ChurchDirectoryHelperRoute
 	/**
 	 * Find Item
 	 *
-	 * @param   array  $needles  ?
+	 * @param   array  $needles  Not sure what this is
 	 *
 	 * @return mixed
 	 */

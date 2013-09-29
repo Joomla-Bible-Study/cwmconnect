@@ -54,7 +54,7 @@ class ChurchDirectoryModelMember extends JModelForm
 		$app = JFactory::getApplication('site');
 
 		// Load state from the request.
-		$pk = $app->input->getInt('id');
+		$pk = $app->input->get('id');
 		$this->setState('member.id', $pk);
 
 		// Load the parameters.

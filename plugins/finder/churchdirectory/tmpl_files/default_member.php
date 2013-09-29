@@ -34,9 +34,6 @@ else
 	<?php echo JHtml::_('string.truncate', $this->result->description, $this->params->get('description_length', 255)); ?>
 </dd>
 <?php endif; ?>
-<dd>
-    Children: <?php echo $this->result->children; ?>
-</dd>
 <?php if ($this->params->get('show_url', 1)): ?>
 <dd class="result-url<?php echo $this->pageclass_sfx; ?>">
 	<?php echo $base . JRoute::_($this->result->route); ?>

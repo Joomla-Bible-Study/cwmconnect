@@ -76,6 +76,20 @@ class PlgFinderChurchDirectory extends FinderIndexerAdapter
 	protected $autoloadLanguage = true;
 
 	/**
+	 * Constructor
+	 *
+	 * @param   object &$subject  The object to observe
+	 * @param   array  $config    An array that holds the plugin configuration
+	 *
+	 * @since   2.5
+	 */
+	public function __construct (&$subject, $config)
+	{
+		parent::__construct($subject, $config);
+		$this->loadLanguage();
+	}
+
+	/**
 	 * Method to update the item link information when the item category is
 	 * changed. This is fired when the item category is published or unpublished
 	 * from the list view.
@@ -88,7 +102,7 @@ class PlgFinderChurchDirectory extends FinderIndexerAdapter
 	 *
 	 * @since   1.7.0
 	 */
-	public function onFinderCategoryChangeState($extension, $pks, $value)
+	public function onFinderCategoryChangeState ($extension, $pks, $value)
 	{
 		// Make sure we're handling com_churchdirectory categories
 		if ($extension == 'com_churchdirectory')
@@ -110,7 +124,7 @@ class PlgFinderChurchDirectory extends FinderIndexerAdapter
 	 * @since   1.7.0
 	 * @throws  Exception on database error.
 	 */
-	public function onFinderAfterDelete($context, $table)
+	public function onFinderAfterDelete ($context, $table)
 	{
 		if ($context == 'com_churchdirectory.member')
 		{
@@ -141,7 +155,7 @@ class PlgFinderChurchDirectory extends FinderIndexerAdapter
 	 * @since   1.7.0
 	 * @throws  Exception on database error.
 	 */
-	public function onFinderAfterSave($context, $row, $isNew)
+	public function onFinderAfterSave ($context, $row, $isNew)
 	{
 		// We only want to handle churchdirectory here
 		if ($context == 'com_churchdirectory.member')
@@ -184,7 +198,7 @@ class PlgFinderChurchDirectory extends FinderIndexerAdapter
 	 * @since   1.7.0
 	 * @throws  Exception on database error.
 	 */
-	public function onFinderBeforeSave($context, $row, $isNew)
+	public function onFinderBeforeSave ($context, $row, $isNew)
 	{
 		// We only want to handle members here
 		if ($context == 'com_churchdirectory.member')
@@ -222,7 +236,7 @@ class PlgFinderChurchDirectory extends FinderIndexerAdapter
 	 *
 	 * @since   1.7.0
 	 */
-	public function onFinderChangeState($context, $pks, $value)
+	public function onFinderChangeState ($context, $pks, $value)
 	{
 		// We only want to handle members here
 		if ($context == 'com_churchdirectory.member')
@@ -248,7 +262,7 @@ class PlgFinderChurchDirectory extends FinderIndexerAdapter
 	 * @since   1.7.0
 	 * @throws  Exception on database error.
 	 */
-	protected function index(FinderIndexerResult $item, $format = 'html')
+	protected function index (FinderIndexerResult $item, $format = 'html')
 	{
 		// Check if the extension is enabled
 		if (JComponentHelper::isEnabled($this->extension) == false)
@@ -376,8 +390,16 @@ class PlgFinderChurchDirectory extends FinderIndexerAdapter
 		// Get content extras.
 		FinderIndexerHelper::getContentExtras($item);
 
-		// Index the item.
-		$this->indexer->index($item);
+		if (version_compare(JVERSION, '3.0', 'ge'))
+		{
+			// Index the item.
+			$this->indexer->index($item);
+		}
+		else
+		{
+			// Index the item.
+			FinderIndexer::index($item);
+		}
 	}
 
 	/**
@@ -387,7 +409,7 @@ class PlgFinderChurchDirectory extends FinderIndexerAdapter
 	 *
 	 * @since   1.7.0
 	 */
-	protected function setup()
+	protected function setup ()
 	{
 		// Load dependent classes.
 		require_once JPATH_SITE . '/components/com_churchdirectory/helpers/route.php';
@@ -407,22 +429,22 @@ class PlgFinderChurchDirectory extends FinderIndexerAdapter
 	 *
 	 * @since   1.7.0
 	 */
-	protected function getListQuery($query = null)
+	protected function getListQuery ($query = null)
 	{
 		$db = JFactory::getDbo();
 
 		// Check if we can use the supplied SQL query.
 		$query = $query instanceof JDatabaseQuery ? $query : $db->getQuery(true)
-			->select('a.id, a.name AS title, a.alias, a.address, a.created AS start_date')
-			->select('a.created_by_alias, a.modified, a.modified_by')
-			->select('a.metakey, a.metadesc, a.metadata, a.language')
-			->select('a.sortname1, a.sortname2, a.sortname3')
-			->select('a.children')
-			->select('a.publish_up AS publish_start_date, a.publish_down AS publish_end_date')
-			->select('a.suburb AS city, a.state AS region, a.country, a.postcode AS zip')
-			->select('a.telephone, a.fax, a.misc AS summary, a.email_to AS email, a.mobile')
-			->select('a.webpage, a.access, a.published AS state, a.ordering, a.params, a.catid')
-			->select('c.title AS category, c.published AS cat_state, c.access AS cat_access');
+				->select('a.id, a.name AS title, a.alias, a.address, a.created AS start_date')
+				->select('a.created_by_alias, a.modified, a.modified_by')
+				->select('a.metakey, a.metadesc, a.metadata, a.language')
+				->select('a.sortname1, a.sortname2, a.sortname3')
+				->select('a.children')
+				->select('a.publish_up AS publish_start_date, a.publish_down AS publish_end_date')
+				->select('a.suburb AS city, a.state AS region, a.country, a.postcode AS zip')
+				->select('a.telephone, a.fax, a.misc AS summary, a.email_to AS email, a.mobile')
+				->select('a.webpage, a.access, a.published AS state, a.ordering, a.params, a.catid')
+				->select('c.title AS category, c.published AS cat_state, c.access AS cat_access');
 
 		// Handle the alias CASE WHEN portion of the query
 		$case_when_item_alias = ' CASE WHEN ';
@@ -443,10 +465,10 @@ class PlgFinderChurchDirectory extends FinderIndexerAdapter
 		$case_when_category_alias .= $c_id . ' END as catslug';
 		$query->select($case_when_category_alias)
 
-			->select('u.name')
-			->from('#__churchdirectory_details AS a')
-			->join('LEFT', '#__categories AS c ON c.id = a.catid')
-			->join('LEFT', '#__users AS u ON u.id = a.user_id');
+				->select('u.name')
+				->from('#__churchdirectory_details AS a')
+				->join('LEFT', '#__categories AS c ON c.id = a.catid')
+				->join('LEFT', '#__users AS u ON u.id = a.user_id');
 
 		return $query;
 	}
