@@ -193,7 +193,11 @@ function churchdirectoryParseRoute($segments)
 			if ($advanced)
 			{
 				$db    = JFactory::getDBO();
-				$query = 'SELECT id FROM #__churchdirectory_details WHERE catid = ' . $vars['catid'] . ' AND alias = ' . $db->Quote($segment);
+				$query = $db->getQuery(true)
+				$query->select($db->quoteName('id'))
+					->from('#__churchdirectory_details')
+					->where($db->quoteName('catid') . ' = ' . (int) $vars['catid'])
+					->where($db->quoteName('alias') . ' = ' . $db->quote($db->quote($segment)));
 				$db->setQuery($query);
 				$nid = $db->loadResult();
 			}
