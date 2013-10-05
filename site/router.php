@@ -193,7 +193,7 @@ function churchdirectoryParseRoute($segments)
 			if ($advanced)
 			{
 				$db    = JFactory::getDBO();
-				$query = $db->getQuery(true)
+				$query = $db->getQuery(true);
 				$query->select($db->quoteName('id'))
 					->from('#__churchdirectory_details')
 					->where($db->quoteName('catid') . ' = ' . (int) $vars['catid'])
