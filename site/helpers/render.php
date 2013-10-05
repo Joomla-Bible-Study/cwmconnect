@@ -15,16 +15,29 @@ defined('_JEXEC') or die;
  */
 class RenderHelper
 {
+
+	protected $burthday;
+
+	protected $burthyear;
+
+	protected $burthmonth;
+
+	protected $byear;
+
+	protected $bmonth;
+
+	protected $bday;
+
 	/**
 	 * Get Position
 	 *
-	 * @param   string    $con_position  ID of Position
-	 * @param   bool      $getint        ID of Position
-	 * @param   JRegistry $params        ID of Position
+	 * @param   string     $con_position  ID of Position
+	 * @param   bool       $getint        ID of Position
+	 * @param   JRegistry  $params        ID of Position
 	 *
 	 * @return string|bool
 	 */
-	public function getPosition ($con_position, $getint = false, $params = null)
+	public function getPosition($con_position, $getint = false, $params = null)
 	{
 		$i         = 0;
 		$positions = array();
@@ -88,13 +101,11 @@ class RenderHelper
 		{
 			foreach ($positions AS $position)
 			{
-				var_dump($getint);
-				var_dump($position);
 				$teamleaders = $params->get('teamleaders', '');
+
 				if ($position->id == $teamleaders)
 				{
 					$results = true;
-					var_dump($position);
 				}
 			}
 
@@ -106,11 +117,12 @@ class RenderHelper
 	/**
 	 * Get Family Members Build
 	 *
-	 * @param   object $funit_id  ID of Primary Record
+	 * @param   int     $funit_id  ID of Family unit
+	 * @param   string  $fm        ID the Family Position that you want to return.
 	 *
-	 * @return array
+	 * @return array  Array of family members
 	 */
-	public function getFamilyMembersPage ($funit_id)
+	public function getFamilyMembersPage($funit_id, $fm = '2')
 	{
 
 		$db    = JFactory::getDBO();
@@ -141,7 +153,7 @@ class RenderHelper
 				$params->loadString($item->attribs);
 				$item->attribs = $params;
 			}
-			if ($item->attribs->get('familypostion') != '2')
+			if ($item->attribs->get('familypostion') != $fm)
 			{
 				unset($items[$i]);
 			}
@@ -153,19 +165,22 @@ class RenderHelper
 	/**
 	 * Get Children from families
 	 *
-	 * @param $families
+	 * @param   int|array  $families  Int if family id and Array of family members
 	 *
-	 * @return string
+	 * @return string HTML string
 	 */
-	public function getChildren ($families)
+	public function getChildren($families)
 	{
+		if (is_int($families))
+		{
+			$families = self::getFamilyMembersPage($families);
+		}
 		$n2   = count($families);
 		$i2   = $n2;
 		$name = '';
 
 		foreach ($families as $member)
 		{
-
 			if (($n2 == $i2 && $n2 < 2) || ($n2 == 2 && $n2 == $i2))
 			{
 				$name .= self::getMemberStatus($member) . ' ';
@@ -187,11 +202,11 @@ class RenderHelper
 	/**
 	 * Get Member Status
 	 *
-	 * @param $member
+	 * @param   object  $member  Member info
 	 *
-	 * @return string
+	 * @return string HTML string returned
 	 */
-	public function getMemberStatus ($member)
+	public function getMemberStatus($member)
 	{
 		$mstatus = null;
 
@@ -218,11 +233,11 @@ class RenderHelper
 	/**
 	 * Calculate rows into span's
 	 *
-	 * @param   int $rows_per_page  Number of Rows we want to see.
+	 * @param   int  $rows_per_page  Number of Rows we want to see.
 	 *
 	 * @return int
 	 */
-	public function rowWidth ($rows_per_page)
+	public function rowWidth($rows_per_page)
 	{
 		$results = 12;
 
@@ -248,11 +263,11 @@ class RenderHelper
 	/**
 	 * Ror passing records out to put then in order and not repeat the records.
 	 *
-	 * @param   array $args  Array of Items to group
+	 * @param   array  $args  Array of Items to group
 	 *
 	 * @return array
 	 */
-	public static function groupit ($args)
+	public static function groupit($args)
 	{
 		$items = null;
 		$field = null;
@@ -285,13 +300,13 @@ class RenderHelper
 	}
 
 	/**
-	 * Compute lastname, firstname and middlename
+	 * Compute last name, first name and middle name
 	 *
-	 * @param    string $name Name of member
+	 * @param    string  $name Name of member
 	 *
 	 * @return stdClass
 	 */
-	public function getName ($name)
+	public function getName($name)
 	{
 		// Compute lastname, firstname and middlename
 		$name = trim($name);
@@ -340,11 +355,11 @@ class RenderHelper
 	/**
 	 * Get Birthdays for This Month
 	 *
-	 * @param   JRegistry $params  Model Params
+	 * @param   JRegistry  $params  Model Params
 	 *
 	 * @return array
 	 */
-	public function getBirthdays ($params)
+	public function getBirthdays($params)
 	{
 		$user   = JFactory::getUser();
 		$groups = implode(',', $user->getAuthorisedViewLevels());
@@ -354,7 +369,7 @@ class RenderHelper
 		$query   = $db->getQuery(true);
 
 		// Select required fields from the categories.
-		// sqlsrv changes
+		// Sqlsrv changes
 		$case_when = ' CASE WHEN ';
 		$case_when .= $query->charLength('a.alias', '!=', '0');
 		$case_when .= ' THEN ';
@@ -386,11 +401,10 @@ class RenderHelper
 		$subquery = 'SELECT cat.id as id FROM #__categories AS cat JOIN #__categories AS parent ';
 		$subquery .= 'ON cat.lft BETWEEN parent.lft AND parent.rgt ';
 		$subquery .= 'WHERE parent.extension = ' . $db->quote('com_churchdirectory');
+
 		// Find any up-path categories that are not published
 		// If all categories are published, badcats.id will be null, and we just use the churchdirectory state
 		$subquery .= ' AND parent.published != 1 GROUP BY cat.id ';
-		// Select state to unpublished if up-path category is unpublished
-		$publishedWhere = 'CASE WHEN badcats.id is null THEN a.published ELSE 0 END';
 		$query->join('LEFT OUTER', '(' . $subquery . ') AS badcats ON badcats.id = c.id');
 
 		// Filter of birthdates to show
@@ -398,14 +412,14 @@ class RenderHelper
 		$query->where('MONTH(a.birthdate) = ' . $date);
 
 		$query->where('a.birthdate != "0000-00-00"')
-				->order('a.birthdate DESC');
+			->order('a.birthdate DESC');
 		$db->setQuery($query);
 		$records = $db->loadObjectList();
 
 		foreach ($records as $record)
 		{
-			list($byear, $bmonth, $bday) = explode('-', $record->birthdate);
-			$results[] = array('name' => $record->name, 'id' => $record->id, 'day' => $bday, 'access' => $record->access);
+			list($this->burthyear, $this->burthmonth, $this->burthday) = explode('-', $record->birthdate);
+			$results[] = array('name' => $record->name, 'id' => $record->id, 'day' => $this->burthday, 'access' => $record->access);
 		}
 
 		return $results;
@@ -414,15 +428,12 @@ class RenderHelper
 	/**
 	 * Get Anniversary's for this Month
 	 *
-	 * @param   JRegistry $params  Model Params
+	 * @param   JRegistry  $params  Model Params
 	 *
 	 * @return array
 	 */
-	public function getAnniversary ($params)
+	public function getAnniversary($params)
 	{
-		$db      = JFactory::getDbo();
-		$results = false;
-		$query   = $db->getQuery(true);
 		$user    = JFactory::getUser();
 		$groups  = implode(',', $user->getAuthorisedViewLevels());
 
@@ -431,7 +442,7 @@ class RenderHelper
 		$query   = $db->getQuery(true);
 
 		// Select required fields from the categories.
-		// sqlsrv changes
+		// Sqlsrv changes
 		$case_when = ' CASE WHEN ';
 		$case_when .= $query->charLength('a.alias', '!=', '0');
 		$case_when .= ' THEN ';
@@ -463,11 +474,10 @@ class RenderHelper
 		$subquery = 'SELECT cat.id as id FROM #__categories AS cat JOIN #__categories AS parent ';
 		$subquery .= 'ON cat.lft BETWEEN parent.lft AND parent.rgt ';
 		$subquery .= 'WHERE parent.extension = ' . $db->quote('com_churchdirectory');
+
 		// Find any up-path categories that are not published
 		// If all categories are published, badcats.id will be null, and we just use the churchdirectory state
 		$subquery .= ' AND parent.published != 1 GROUP BY cat.id ';
-		// Select state to unpublished if up-path category is unpublished
-		$publishedWhere = 'CASE WHEN badcats.id is null THEN a.published ELSE 0 END';
 		$query->join('LEFT OUTER', '(' . $subquery . ') AS badcats ON badcats.id = c.id');
 
 		// Filter of birthdates to show
@@ -475,14 +485,14 @@ class RenderHelper
 		$query->where('MONTH(a.anniversary) = ' . $date);
 
 		$query->where('a.anniversary != "0000-00-00"')
-				->order('a.anniversary DESC');
+			->order('a.anniversary DESC');
 		$db->setQuery($query);
 		$records = $db->loadObjectList();
 
 		foreach ($records as $record)
 		{
-			list($byear, $bmonth, $bday) = explode('-', $record->anniversary);
-			$results[] = array('name' => $record->name, 'id' => $record->id, 'day' => $bday, 'access' => $record->access);
+			list($this->byear, $this->bmonth, $this->bday) = explode('-', $record->anniversary);
+			$results[] = array('name' => $record->name, 'id' => $record->id, 'day' => $this->bday, 'access' => $record->access);
 		}
 
 		return $results;

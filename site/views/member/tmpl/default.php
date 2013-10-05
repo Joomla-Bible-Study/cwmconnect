@@ -31,6 +31,12 @@ jimport('joomla.html.html.bootstrap');
 		</h2>
 	</div>
 <?php endif; ?>
+<?php if ($this->member->attribs->get('familypostion') == '1') : ?>
+	<p>
+		<?php echo '<span class="jicons-text">' . JText::_('COM_CHURCHDIRECTORY_SPOUSE') . ': </span>' . $renderHelper->getSpouse($this->member->fu_id)
+			. '<br />' . $this->member->children; ?>
+	</p>
+<?php endif; ?>
 <?php if ($this->member->attribs->get('familypostion') < '2' && $this->params->get('dr_show_children')) :
 	?>
 	<p>
