@@ -9,6 +9,7 @@ defined('_JEXEC') or die;
 jimport('joomla.html.html.bootstrap');
 
 $heading = null;
+$this->renderHelper = new RenderHelper;
 
 ?>
 <?php if (empty($this->items))
@@ -58,30 +59,10 @@ foreach ($this->items as $item)
 			<?php
 			$families = $this->renderHelper->getFamilyMembersPage($item->funit_id); ?>
 			<span id="contact-name"><?php echo $item->funit_name; ?></span><br/>
-			<?php
-			$n2 = count($families);
-			$i2 = $n2;
-
-			foreach ($families as $i => $member)
-			{
-				if (($n2 == $i2 && $n2 < 2) || ($n2 == 2 && $n2 == $i2))
-				{
-					echo $member->name . ' ';
-				}
-				elseif ($n2 > 2 && $i2 > 1)
-				{
-					echo $member->name . ', ';
-				}
-				elseif ($i2 == 1 && $n2 > 2)
-				{
-					echo 'and ' . $member->name;
-				}
-				$i2--;
-			}
-			?>
 			<?php if ($item->children && $this->params->get('dr_show_children')) :
 				?>
 				<p>
+					<?php echo $this->renderHelper->getChildren($families); ?>
 					<?php echo '<span class="jicons-text">' . JText::_('COM_CHURCHDIRECTORY_CHILDREN') . ': </span>' . $item->children; ?>
 				</p>
 			<?php endif; ?>

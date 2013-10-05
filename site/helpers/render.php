@@ -24,7 +24,7 @@ class RenderHelper
 	 *
 	 * @return string|bool
 	 */
-	public function getPosition($con_position, $getint = false, $params = null)
+	public function getPosition ($con_position, $getint = false, $params = null)
 	{
 		$i         = 0;
 		$positions = array();
@@ -108,9 +108,9 @@ class RenderHelper
 	 *
 	 * @param   object $funit_id  ID of Primary Record
 	 *
-	 * @return string
+	 * @return array
 	 */
-	public function getFamilyMembersPage($funit_id)
+	public function getFamilyMembersPage ($funit_id)
 	{
 
 		$db    = JFactory::getDBO();
@@ -151,13 +151,78 @@ class RenderHelper
 	}
 
 	/**
+	 * Get Children from families
+	 *
+	 * @param $families
+	 *
+	 * @return string
+	 */
+	public function getChildren ($families)
+	{
+		$n2   = count($families);
+		$i2   = $n2;
+		$name = '';
+
+		foreach ($families as $member)
+		{
+
+			if (($n2 == $i2 && $n2 < 2) || ($n2 == 2 && $n2 == $i2))
+			{
+				$name .= self::getMemberStatus($member) . ' ';
+			}
+			elseif ($n2 > 2 && $i2 > 1)
+			{
+				$name .= self::getMemberStatus($member) . ', ';
+			}
+			elseif ($i2 == 1 && $n2 >= 2)
+			{
+				$name .= '&amp; ' . self::getMemberStatus($member);
+			}
+			$i2--;
+		}
+
+		return $name;
+	}
+
+	/**
+	 * Get Member Status
+	 *
+	 * @param $member
+	 *
+	 * @return string
+	 */
+	public function getMemberStatus ($member)
+	{
+		$mstatus = null;
+
+		if ($member->mstatus == '0') // Active Member
+		{
+			$mstatus = '<a href="index.php?option=com_churchdirectory&view=member&id= ' . $member->id . '"><span><b>' . $member->name . '</b></span></a>';
+		}
+		elseif ($member->mstatus == '1') // Inactive Member
+		{
+			$mstatus = '<a href="index.php?option=com_churchdirectory&view=member&id= ' . $member->id . '"><span><b>' . $member->name . '</b></span></a>';
+		}
+		elseif ($member->mstatus == '2') // Active Attendee
+		{
+			$mstatus = '<a href="index.php?option=com_churchdirectory&view=member&id= ' . $member->id . '"><span>( ' . $member->name . ' )</span></a>';
+		}
+		elseif ($member->mstatus == '3') // None Member
+		{
+			$mstatus = '<a href="index.php?option=com_churchdirectory&view=member&id= ' . $member->id . '"><span style="color: red;">( ' . $member->name . ' )</span></a>';
+		}
+
+		return $mstatus;
+	}
+
+	/**
 	 * Calculate rows into span's
 	 *
 	 * @param   int $rows_per_page  Number of Rows we want to see.
 	 *
 	 * @return int
 	 */
-	public function rowWidth($rows_per_page)
+	public function rowWidth ($rows_per_page)
 	{
 		$results = 12;
 
@@ -187,7 +252,7 @@ class RenderHelper
 	 *
 	 * @return array
 	 */
-	public static function groupit($args)
+	public static function groupit ($args)
 	{
 		$items = null;
 		$field = null;
@@ -226,7 +291,7 @@ class RenderHelper
 	 *
 	 * @return stdClass
 	 */
-	public function getName($name)
+	public function getName ($name)
 	{
 		// Compute lastname, firstname and middlename
 		$name = trim($name);
@@ -279,7 +344,7 @@ class RenderHelper
 	 *
 	 * @return array
 	 */
-	public function getBirthdays($params)
+	public function getBirthdays ($params)
 	{
 		$user   = JFactory::getUser();
 		$groups = implode(',', $user->getAuthorisedViewLevels());
@@ -333,7 +398,7 @@ class RenderHelper
 		$query->where('MONTH(a.birthdate) = ' . $date);
 
 		$query->where('a.birthdate != "0000-00-00"')
-			->order('a.birthdate DESC');
+				->order('a.birthdate DESC');
 		$db->setQuery($query);
 		$records = $db->loadObjectList();
 
@@ -353,7 +418,7 @@ class RenderHelper
 	 *
 	 * @return array
 	 */
-	public function getAnniversary($params)
+	public function getAnniversary ($params)
 	{
 		$db      = JFactory::getDbo();
 		$results = false;
@@ -410,7 +475,7 @@ class RenderHelper
 		$query->where('MONTH(a.anniversary) = ' . $date);
 
 		$query->where('a.anniversary != "0000-00-00"')
-			->order('a.anniversary DESC');
+				->order('a.anniversary DESC');
 		$db->setQuery($query);
 		$records = $db->loadObjectList();
 

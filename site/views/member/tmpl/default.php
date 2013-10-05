@@ -31,6 +31,13 @@ jimport('joomla.html.html.bootstrap');
 		</h2>
 	</div>
 <?php endif; ?>
+<?php if ($this->member->attribs->get('familypostion') < '2' && $this->params->get('dr_show_children')) :
+	?>
+	<p>
+		<?php echo '<span class="jicons-text">' . JText::_('COM_CHURCHDIRECTORY_CHILDREN') . ': </span>' . $renderHelper->getChildren($renderHelper->getFamilyMembersPage($this->member->fu_id))
+				. '<br />' . $this->member->children; ?>
+	</p>
+<?php endif; ?>
 <?php if ($this->params->get('show_contact_category') == 'show_no_link') : ?>
 	<h3>
 		<span class="contact-category"><?php echo $this->member->category_title; ?></span>
@@ -146,7 +153,7 @@ jimport('joomla.html.html.bootstrap');
 
 <?php endif; ?>
 
-<?php if ($this->params->get('show_links') && $this->member->params->get('link'.'a') != null) : ?>
+<?php if ($this->params->get('show_links') && $this->member->params->get('link' . 'a') != null) : ?>
 
 	<?php if ($this->params->get('presentation_style') == 'sliders'): ?>
 		<?php echo JHtml::_('bootstrap.addSlide', 'slide-links', JText::_('COM_CHURCHDIRECTORY_LINKS'), 'display-form'); ?>
