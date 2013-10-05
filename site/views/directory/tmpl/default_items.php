@@ -15,7 +15,7 @@ $this->renderHelper = new RenderHelper;
 <?php if (empty($this->items))
 {
 	?>
-	<p xmlns="http://www.w3.org/1999/html"><?php echo JText::_('COM_CHURCHDIRECTORY_NO_MEMBERS'); ?></p>
+	<p><?php echo JText::_('COM_CHURCHDIRECTORY_NO_MEMBERS'); ?></p>
 <?php } ?>
 <?php
 foreach ($this->items as $item)
@@ -57,13 +57,16 @@ foreach ($this->items as $item)
 			endif;
 			?>
 			<?php
-			$families = $this->renderHelper->getFamilyMembersPage($item->funit_id); ?>
+			$families = $this->renderHelper->getFamilyMembers($item->funit_id); ?>
 			<span id="contact-name"><?php echo $item->funit_name; ?></span><br/>
-			<?php if ($item->children && $this->params->get('dr_show_children')) :
+			<?php if ($this->params->get('dr_show_children')) :
 				?>
 				<p>
-					<?php echo $this->renderHelper->getChildren($families); ?>
-					<?php echo '<span class="jicons-text">' . JText::_('COM_CHURCHDIRECTORY_CHILDREN') . ': </span>' . $item->children; ?>
+					<?php echo '<span class="jicons-text">' . JText::_('COM_CHURCHDIRECTORY_CHILDREN') . ': </span>' . $this->renderHelper->getChildren($families);
+					if ($item->children)
+					{
+						echo '<br />' . $item->children;
+					} ?>
 				</p>
 			<?php endif; ?>
 			<div class="churchdirectory-contact">

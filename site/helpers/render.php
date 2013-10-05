@@ -117,12 +117,12 @@ class RenderHelper
 	/**
 	 * Get Family Members Build
 	 *
-	 * @param   int     $funit_id  ID of Family unit
-	 * @param   string  $fm        ID the Family Position that you want to return.
+	 * @param   int     $fu_id  ID of Family unit
+	 * @param   string  $fm     ID the Family Position that you want to return.
 	 *
 	 * @return array  Array of family members
 	 */
-	public function getFamilyMembersPage($funit_id, $fm = '2')
+	public function getFamilyMembers($fu_id, $fm = '2')
 	{
 
 		$db    = JFactory::getDBO();
@@ -130,7 +130,7 @@ class RenderHelper
 
 		$query->select('members.*');
 		$query->from('#__churchdirectory_details AS members');
-		$query->where('members.funitid = ' . (int) $funit_id);
+		$query->where('members.funitid = ' . (int) $fu_id);
 		$query->order('members.name DESC');
 
 		$db->setQuery($query->__toString());
@@ -173,7 +173,7 @@ class RenderHelper
 	{
 		if (is_int($families))
 		{
-			$families = self::getFamilyMembersPage($families);
+			$families = self::getFamilyMembers($families);
 		}
 		$n2   = count($families);
 		$i2   = $n2;
@@ -197,6 +197,32 @@ class RenderHelper
 		}
 
 		return $name;
+	}
+
+	/**
+	 * Get Spouse of Member
+	 *
+	 * @param   int  $fu_id            ID of family unit
+	 * @param   int  $family_position  ID of members family position.
+	 *
+	 * @return string
+	 */
+	public function getSpouse($fu_id, $family_position)
+	{
+		if($family_position == 1){
+			$fm = 0;
+		}else{
+			$fm = 1;
+		}
+		$members = self::getFamilyMembers($fu_id, $fm);
+		$spouse  = null;
+
+		foreach ($members as $member)
+		{
+			$spouse = self::getMemberStatus($member);
+		}
+
+		return $spouse;
 	}
 
 	/**
@@ -224,7 +250,7 @@ class RenderHelper
 		}
 		elseif ($member->mstatus == '3') // None Member
 		{
-			$mstatus = '<a href="index.php?option=com_churchdirectory&view=member&id= ' . $member->id . '"><span style="color: red;">( ' . $member->name . ' )</span></a>';
+			$mstatus = '<a href="index.php?option=com_churchdirectory&view=member&id= ' . $member->id . '"><span style="color: gray;">( ' . $member->name . ' )</span></a>';
 		}
 
 		return $mstatus;
