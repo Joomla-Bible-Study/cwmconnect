@@ -13,8 +13,8 @@ jimport('joomla.event.dispatcher');
 /**
  * Module for Members
  *
- * @package    ChurchDirectory.Site
- * @since      2.5
+ * @package  ChurchDirectory.Site
+ * @since    2.5
  */
 class ChurchDirectoryModelMember extends JModelForm
 {
@@ -29,7 +29,7 @@ class ChurchDirectoryModelMember extends JModelForm
 	/**
 	 * Protect item
 	 *
-	 * @var string
+	 * @var int
 	 */
 	protected $_item = null;
 
@@ -48,13 +48,14 @@ class ChurchDirectoryModelMember extends JModelForm
 	 * Note. Calling getState in this method will result in recursion.
 	 *
 	 * @since    1.6
+	 * @return  void
 	 */
 	protected function populateState()
 	{
 		$app = JFactory::getApplication('site');
 
 		// Load state from the request.
-		$pk = $app->input->get('id');
+		$pk = $app->input->getInt('id');
 		$this->setState('member.id', $pk);
 
 		// Load the parameters.
@@ -74,8 +75,8 @@ class ChurchDirectoryModelMember extends JModelForm
 	 *
 	 * The base form is loaded from XML and then an event is fired
 	 *
-	 * @param    array   $data        An optional array of data for the form to interrogate.
-	 * @param    boolean $loadData    True if the form is to load its own data (default case), false if not.
+	 * @param    array    $data      An optional array of data for the form to interrogate.
+	 * @param    boolean  $loadData  True if the form is to load its own data (default case), false if not.
 	 *
 	 * @return    JForm    A JForm object on success, false on failure
 	 * @since    1.6
@@ -90,7 +91,7 @@ class ChurchDirectoryModelMember extends JModelForm
 			return false;
 		}
 
-		$id     = $this->getState('member.id');
+		$id     = (int) $this->getState('member.id');
 		$params = $this->getState('params');
 		$member = $this->_item[$id];
 		$params->merge($member->params);
@@ -123,7 +124,7 @@ class ChurchDirectoryModelMember extends JModelForm
 	/**
 	 * Gets a list of members
 	 *
-	 * @param array
+	 * @param   int  $pk  Id of member
 	 *
 	 * @return mixed Object or null
 	 */
@@ -145,7 +146,7 @@ class ChurchDirectoryModelMember extends JModelForm
 				$db    = $this->getDbo();
 				$query = $db->getQuery(true);
 
-				//sqlsrv changes
+				// Sqlsrv changes
 				$case_when = ' CASE WHEN ';
 				$case_when .= $query->charLength('a.alias', '!=', '0');
 				$case_when .= ' THEN ';
@@ -271,9 +272,10 @@ class ChurchDirectoryModelMember extends JModelForm
 	/**
 	 * Get ChurchDirectory query
 	 *
-	 * @param string $pk
+	 * @param   int  $pk  ID of church member
 	 *
-	 * @return boolean
+	 * @return object|boolean
+	 *
 	 * @throws Exception
 	 * @throws JException
 	 */
@@ -283,11 +285,11 @@ class ChurchDirectoryModelMember extends JModelForm
 		$db   = $this->getDbo();
 		$user = JFactory::getUser();
 		$pk   = (!empty($pk)) ? $pk : (int) $this->getState('member.id');
-
 		$query = $db->getQuery(true);
+
 		if ($pk)
 		{
-			//sqlsrv changes
+			// Sqlsrv changes
 			$case_when = ' CASE WHEN ';
 			$case_when .= $query->charLength('a.alias', '!=', '0');
 			$case_when .= ' THEN ';
@@ -315,6 +317,7 @@ class ChurchDirectoryModelMember extends JModelForm
 			$query->where('a.id = ' . (int) $pk);
 			$published = $this->getState('filter.published');
 			$archived  = $this->getState('filter.archived');
+
 			if (is_numeric($published))
 			{
 				$query->where('a.published IN (1,2)');
@@ -354,7 +357,7 @@ class ChurchDirectoryModelMember extends JModelForm
 				$user   = JFactory::getUser();
 				$groups = implode(',', $user->getAuthorisedViewLevels());
 
-				//get the content by the linked user
+				// Get the content by the linked user
 				$query = $db->getQuery(true);
 				$query->select('a.id');
 				$query->select('a.title');
@@ -384,7 +387,8 @@ class ChurchDirectoryModelMember extends JModelForm
 				$query->where('created_by = ' . (int) $result->user_id);
 				$query->where('a.access IN (' . $groups . ')');
 				$query->order('a.state DESC, a.created DESC');
-				// filter per language if plugin published
+
+				// Filter per language if plugin published
 				if (JFactory::getApplication()->getLanguageFilter())
 				{
 					$query->where(('a.created_by = ' . (int) $result->user_id) AND ('a.language=' . $db->quote(JFactory::getLanguage()->getTag()) . ' OR a.language=' . $db->quote('*')));
@@ -397,18 +401,20 @@ class ChurchDirectoryModelMember extends JModelForm
 				$articles         = $db->loadObjectList();
 				$result->articles = $articles;
 
-				//get the profile information for the linked user
+				// Get the profile information for the linked user
 				require_once JPATH_ADMINISTRATOR . '/components/com_users/models/user.php';
 				$userModel = JModelLegacy::getInstance('User', 'UsersModel', array('ignore_request' => true));
 				$data      = $userModel->getItem((int) $result->user_id);
 
 				JPluginHelper::importPlugin('user');
 				$form = new JForm('com_users.profile');
+
 				// Get the dispatcher.
 				$dispatcher = JDispatcher::getInstance();
 
 				// Trigger the form preparation event.
 				$dispatcher->trigger('onContentPrepareForm', array($form, $data));
+
 				// Trigger the data preparation event.
 				$dispatcher->trigger('onContentPrepareData', array('com_users.profile', $data));
 
@@ -426,7 +432,7 @@ class ChurchDirectoryModelMember extends JModelForm
 	/**
 	 * Increment the hit counter for the contact.
 	 *
-	 * @param   int $pk  Optional primary key of the article to increment.
+	 * @param   int  $pk  Optional primary key of the article to increment.
 	 *
 	 * @return  boolean  True if successful; false otherwise and internal error set.
 	 *

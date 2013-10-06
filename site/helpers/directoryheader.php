@@ -62,14 +62,14 @@ class DirectoryHeaderHelper
 			$header .= '<div style="page-break-after:always"></div>';
 			$h++;
 
-//			if ($b->section == '1')
-//			{
-//				$this->footer = $this->footer . $header;
-//			}
-//			else
-//			{
+			if ($b->section == '1')
+			{
+				$this->footer = $this->footer . $header;
+			}
+			else
+			{
 				$this->header = $this->header . $header;
-//			}
+			}
 
 			$header = null;
 		}
