@@ -5,86 +5,91 @@
 --
 
 CREATE TABLE IF NOT EXISTS `#__churchdirectory_details` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL DEFAULT '',
-  `lname` varchar(255) NOT NULL DEFAULT '',
-  `alias` varchar(255) NOT NULL DEFAULT '',
-  `con_position` varchar(255) NOT NULL DEFAULT '',
-  `contact_id` int(3) DEFAULT '0',
-  `address` text,
-  `suburb` varchar(100) DEFAULT NULL,
-  `state` varchar(100) DEFAULT NULL,
-  `country` varchar(100) DEFAULT NULL,
-  `postcode` varchar(255) DEFAULT NULL,
-  `postcodeaddon` varchar(255) DEFAULT NULL,
-  `telephone` varchar(255) DEFAULT NULL,
-  `fax` varchar(255) DEFAULT NULL,
-  `misc` mediumtext,
-  `spouse` varchar(255) NOT NULL DEFAULT '',
-  `children` varchar(255) NOT NULL DEFAULT '',
-  `image` varchar(255) DEFAULT NULL,
-  `imagepos` varchar(20) DEFAULT NULL,
-  `email_to` varchar(255) DEFAULT NULL,
-  `default_con` tinyint(1) unsigned NOT NULL DEFAULT '0',
-  `published` tinyint(3) NOT NULL DEFAULT '0',
-  `checked_out` int(11) unsigned NOT NULL DEFAULT '0',
-  `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `ordering` int(11) NOT NULL DEFAULT '0',
-  `params` text NOT NULL,
-  `user_id` int(11) NOT NULL DEFAULT '0',
-  `catid` int(10) unsigned NOT NULL DEFAULT '0',
-  `kmlid` int(10) unsigned NOT NULL DEFAULT '1',
-  `funitid` int(10) unsigned NOT NULL DEFAULT '0',
-  `access` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  `mobile` varchar(255) NOT NULL DEFAULT '',
-  `webpage` varchar(255) NOT NULL DEFAULT '',
-  `sortname1` varchar(255) NOT NULL,
-  `sortname2` varchar(255) NOT NULL,
-  `sortname3` varchar(255) NOT NULL,
-  `language` char(7) NOT NULL DEFAULT '*' COMMENT 'The language code for the contact.',
-  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `created_by` int(10) unsigned NOT NULL DEFAULT '0',
-  `created_by_alias` varchar(255) NOT NULL,
-  `modified` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `modified_by` int(10) unsigned NOT NULL DEFAULT '0',
-  `metakey` text NOT NULL,
-  `metadesc` text NOT NULL,
-  `metadata` text NOT NULL,
-  `featured` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  `xreference` varchar(50) NOT NULL,
-  `publish_up` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `publish_down` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `skype` varchar(255) NOT NULL DEFAULT '',
-  `yahoo_msg` varchar(255) NOT NULL DEFAULT '',
-  `lat` float(10,6) NOT NULL,
-  `lng` float(10,6) NOT NULL,
-  `birthdate` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `anniversary` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `attribs` varchar(5120) NOT NULL,
-  `version` int(10) unsigned NOT NULL DEFAULT '1',
-  `hits` int(10) unsigned NOT NULL DEFAULT '0',
-  `surname` varchar(255) NOT NULL DEFAULT '',
-  `mstatus` tinyint(3) NOT NULL DEFAULT '0' COMMENT 'Used to track Members Status',
+  `id`               INT(11)             NOT NULL AUTO_INCREMENT,
+  `name`             VARCHAR(255)        NOT NULL DEFAULT '',
+  `lname`            VARCHAR(255)        NOT NULL DEFAULT '',
+  `alias`            VARCHAR(255)        NOT NULL DEFAULT '',
+  `con_position`     VARCHAR(255)        NOT NULL DEFAULT '',
+  `contact_id`       INT(3) DEFAULT '0',
+  `address`          TEXT,
+  `suburb`           VARCHAR(100) DEFAULT NULL,
+  `state`            VARCHAR(100) DEFAULT NULL,
+  `country`          VARCHAR(100) DEFAULT NULL,
+  `postcode`         VARCHAR(255) DEFAULT NULL,
+  `postcodeaddon`    VARCHAR(255) DEFAULT NULL,
+  `telephone`        VARCHAR(255) DEFAULT NULL,
+  `fax`              VARCHAR(255) DEFAULT NULL,
+  `misc`             MEDIUMTEXT,
+  `spouse`           VARCHAR(255)        NOT NULL DEFAULT '',
+  `children`         VARCHAR(255)        NOT NULL DEFAULT '',
+  `image`            VARCHAR(255) DEFAULT NULL,
+  `imagepos`         VARCHAR(20) DEFAULT NULL,
+  `email_to`         VARCHAR(255) DEFAULT NULL,
+  `default_con`      TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
+  `published`        TINYINT(3)          NOT NULL DEFAULT '0',
+  `checked_out`      INT(11) UNSIGNED    NOT NULL DEFAULT '0',
+  `checked_out_time` DATETIME            NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `ordering`         INT(11)             NOT NULL DEFAULT '0',
+  `params`           TEXT                NOT NULL,
+  `user_id`          INT(11)             NOT NULL DEFAULT '0',
+  `catid`            INT(10) UNSIGNED    NOT NULL DEFAULT '0',
+  `kmlid`            INT(10) UNSIGNED    NOT NULL DEFAULT '1',
+  `funitid`          INT(10) UNSIGNED    NOT NULL DEFAULT '0',
+  `access`           TINYINT(3) UNSIGNED NOT NULL DEFAULT '0',
+  `mobile`           VARCHAR(255)        NOT NULL DEFAULT '',
+  `webpage`          VARCHAR(255)        NOT NULL DEFAULT '',
+  `sortname1`        VARCHAR(255)        NOT NULL,
+  `sortname2`        VARCHAR(255)        NOT NULL,
+  `sortname3`        VARCHAR(255)        NOT NULL,
+  `language`         CHAR(7)             NOT NULL DEFAULT '*'
+  COMMENT 'The language code for the contact.',
+  `created`          DATETIME            NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `created_by`       INT(10) UNSIGNED    NOT NULL DEFAULT '0',
+  `created_by_alias` VARCHAR(255)        NOT NULL,
+  `modified`         DATETIME            NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `modified_by`      INT(10) UNSIGNED    NOT NULL DEFAULT '0',
+  `metakey`          TEXT                NOT NULL,
+  `metadesc`         TEXT                NOT NULL,
+  `metadata`         TEXT                NOT NULL,
+  `featured`         TINYINT(3) UNSIGNED NOT NULL DEFAULT '0',
+  `xreference`       VARCHAR(50)         NOT NULL,
+  `publish_up`       DATETIME            NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `publish_down`     DATETIME            NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `skype`            VARCHAR(255)        NOT NULL DEFAULT '',
+  `yahoo_msg`        VARCHAR(255)        NOT NULL DEFAULT '',
+  `lat`              FLOAT(10, 6)        NOT NULL,
+  `lng`              FLOAT(10, 6)        NOT NULL,
+  `birthdate`        DATETIME            NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `anniversary`      DATETIME            NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `attribs`          VARCHAR(5120)       NOT NULL,
+  `version`          INT(10) UNSIGNED    NOT NULL DEFAULT '1',
+  `hits`             INT(10) UNSIGNED    NOT NULL DEFAULT '0',
+  `surname`          VARCHAR(255)        NOT NULL DEFAULT '',
+  `mstatus`          TINYINT(3)          NOT NULL DEFAULT '0'
+  COMMENT 'Used to track Members Status',
   PRIMARY KEY (`id`),
   KEY `idx_catid` (`catid`),
   KEY `idx_access` (`access`),
   KEY `Idx_checkout` (`checked_out`),
   KEY `idx_state` (`published`),
   KEY `idx_createdby` (`created_by`),
-  KEY `idx_featured_catid` (`featured`,`catid`),
+  KEY `idx_featured_catid` (`featured`, `catid`),
   KEY `idx_language` (`language`),
   KEY `idx_xreference` (`xreference`),
   KEY `idx_kmlid` (`kmlid`),
   KEY `idx_funit` (`funitid`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
+)
+  ENGINE =InnoDB
+  DEFAULT CHARSET =utf8
+  AUTO_INCREMENT =4;
 
 --
 -- Dumping data for table `#__churchdirectory_details`
 --
 
 INSERT INTO `#__churchdirectory_details` (`id`, `name`, `lname`, `alias`, `con_position`, `contact_id`, `address`, `suburb`, `state`, `country`, `postcode`, `postcodeaddon`, `telephone`, `fax`, `misc`, `spouse`, `children`, `image`, `imagepos`, `email_to`, `default_con`, `published`, `checked_out`, `checked_out_time`, `ordering`, `params`, `user_id`, `catid`, `kmlid`, `funitid`, `access`, `mobile`, `webpage`, `sortname1`, `sortname2`, `sortname3`, `language`, `created`, `created_by`, `created_by_alias`, `modified`, `modified_by`, `metakey`, `metadesc`, `metadata`, `featured`, `xreference`, `publish_up`, `publish_down`, `skype`, `yahoo_msg`, `lat`, `lng`, `birthdate`, `anniversary`, `attribs`, `version`, `hits`, `surname`) VALUES
-(1, 'Brent Cordis', 'Cordis', 'brent-cordis', '44,35', 0, '2800 Blair Blvd', 'Nashville', 'TN', 'USA', '37212', NULL, '(615) 657-9749', '(615) 657-9749', '', '', 'Child1, Child2', 'images/sampledata/fruitshop/apple.jpg', NULL, 'info@joomlabiblestudy.com', 0, 1, 0, '0000-00-00 00:00:00', 1, '{"visibility":"1","scale":"1.1","open":"0","gxballoonvisibility":"0","show_contact_category":"","show_contact_list":"","presentation_style":"","show_name":"","show_position":"","show_email":"","show_street_address":"","show_suburb":"","show_state":"","show_postcode":"","show_country":"","show_telephone":"","show_mobile":"","show_fax":"","show_webpage":"","show_misc":"","show_image":"","allow_vcard":"","show_articles":"","show_profile":"","show_links":"","linka_name":"","linka":"","linkb_name":"","linkb":"","linkc_name":"","linkc":"","linkd_name":"","linkd":"","linke_name":"","linke":"","contact_layout":"","show_email_form":"","show_email_copy":"","banned_email":"","banned_subject":"","banned_text":"","validate_session":"","custom_reply":"","redirect":""}', 0, 8, 1, 3, 1, '(615) 657-9749', 'www.joomlabiblestudy.com', 'Last', 'First', 'Middle', '*', '2012-12-03 19:10:08', 53, '', '2012-12-06 19:04:09', 53, '', '', '{"robots":"","rights":""}', 0, '', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'skeebrent', 'bcordis', 36.131973, -86.812370, '1981-12-03 00:00:00', '2012-12-18 00:00:00', '{"memberstatus":"0","memberotherinfo":"","familypostion":"0","mailingaddress":"","mailingsuburb":"","mailingstate":"","mailingpostcode":"","mailingcountry":""}', 1, 0, ''),
-(2, 'Amy Cordis', 'Cordis', 'amy-cordis', '41', 0, '2800 Blare Blvd', 'Nashville', 'TN', 'USA', '37212', NULL, '(615) 657-9749', '(615) 657-9749', '', '', 'child1, child2', 'images/joomla_black.gif', NULL, 'info@joomlabiblestudy.com', 0, 1, 0, '0000-00-00 00:00:00', 2, '{"visibility":"1","scale":"1.1","open":"0","gxballoonvisibility":"0","show_contact_category":"","show_contact_list":"","presentation_style":"","show_name":"","show_position":"","show_email":"","show_street_address":"","show_suburb":"","show_state":"","show_postcode":"","show_country":"","show_telephone":"","show_mobile":"","show_fax":"","show_webpage":"","show_misc":"","show_image":"","allow_vcard":"","show_articles":"","show_profile":"","show_links":"","linka_name":"","linka":"","linkb_name":"","linkb":"","linkc_name":"","linkc":"","linkd_name":"","linkd":"","linke_name":"","linke":"","contact_layout":"","show_email_form":"","show_email_copy":"","banned_email":"","banned_subject":"","banned_text":"","validate_session":"","custom_reply":"","redirect":""}', 0, 8, 1, 3, 1, '(615) 657-9749', 'www.joomlabiblestudy.com', '', '', '', '*', '2012-12-05 22:22:32', 53, '', '2012-12-06 19:08:24', 53, '', '', '{"robots":"","rights":""}', 0, '', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'test2', 'test1', 36.131973, -86.812370, '1976-12-13 00:00:00', '2007-12-25 00:00:00', '{"memberstatus":"0","memberotherinfo":"","familypostion":"1","mailingaddress":"","mailingsuburb":"","mailingstate":"","mailingpostcode":"","mailingcountry":""}', 1, 0, ''),
+(1, 'Brent Cordis', 'Cordis', 'brent-cordis', '44,35', 0, '2800 Blair Blvd', 'Nashville', 'TN', 'USA', '37212', NULL, '(615) 657-9749', '(615) 657-9749', '', '', 'Child1, Child2', 'images/sampledata/fruitshop/apple.jpg', NULL, 'info@joomlabiblestudy.com', 0, 1, 0, '0000-00-00 00:00:00', 1, '{"visibility":"1","scale":"1.1","open":"0","gxballoonvisibility":"0","show_contact_category":"","show_contact_list":"","presentation_style":"","show_name":"","show_position":"","show_email":"","show_street_address":"","show_suburb":"","show_state":"","show_postcode":"","show_country":"","show_telephone":"","show_mobile":"","show_fax":"","show_webpage":"","show_misc":"","show_image":"","allow_vcard":"","show_articles":"","show_profile":"","show_links":"","linka_name":"","linka":"","linkb_name":"","linkb":"","linkc_name":"","linkc":"","linkd_name":"","linkd":"","linke_name":"","linke":"","contact_layout":"","show_email_form":"","show_email_copy":"","banned_email":"","banned_subject":"","banned_text":"","validate_session":"","custom_reply":"","redirect":""}', 0, 8, 1, 3, 1, '(615) 657-9749', 'www.joomlabiblestudy.com', 'Last', 'First', 'Middle', '*', '2012-12-03 19:10:08', 53, '', '2012-12-06 19:04:09', 53, '', '', '{"robots":"","rights":""}', 0, '', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'skeebrent', 'bcordis', 36.131973, - 86.812370, '1981-12-03 00:00:00', '2012-12-18 00:00:00', '{"memberstatus":"0","memberotherinfo":"","familypostion":"0","mailingaddress":"","mailingsuburb":"","mailingstate":"","mailingpostcode":"","mailingcountry":""}', 1, 0, ''),
+(2, 'Amy Cordis', 'Cordis', 'amy-cordis', '41', 0, '2800 Blare Blvd', 'Nashville', 'TN', 'USA', '37212', NULL, '(615) 657-9749', '(615) 657-9749', '', '', 'child1, child2', 'images/joomla_black.gif', NULL, 'info@joomlabiblestudy.com', 0, 1, 0, '0000-00-00 00:00:00', 2, '{"visibility":"1","scale":"1.1","open":"0","gxballoonvisibility":"0","show_contact_category":"","show_contact_list":"","presentation_style":"","show_name":"","show_position":"","show_email":"","show_street_address":"","show_suburb":"","show_state":"","show_postcode":"","show_country":"","show_telephone":"","show_mobile":"","show_fax":"","show_webpage":"","show_misc":"","show_image":"","allow_vcard":"","show_articles":"","show_profile":"","show_links":"","linka_name":"","linka":"","linkb_name":"","linkb":"","linkc_name":"","linkc":"","linkd_name":"","linkd":"","linke_name":"","linke":"","contact_layout":"","show_email_form":"","show_email_copy":"","banned_email":"","banned_subject":"","banned_text":"","validate_session":"","custom_reply":"","redirect":""}', 0, 8, 1, 3, 1, '(615) 657-9749', 'www.joomlabiblestudy.com', '', '', '', '*', '2012-12-05 22:22:32', 53, '', '2012-12-06 19:08:24', 53, '', '', '{"robots":"","rights":""}', 0, '', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'test2', 'test1', 36.131973, - 86.812370, '1976-12-13 00:00:00', '2007-12-25 00:00:00', '{"memberstatus":"0","memberotherinfo":"","familypostion":"1","mailingaddress":"","mailingsuburb":"","mailingstate":"","mailingpostcode":"","mailingcountry":""}', 1, 0, ''),
 (3, 'James Smith', 'Smith', 'james-smith', '32', 0, '999 test St', 'Test', 'TN', 'USA', '99999', NULL, '(XXX) XXX-XXXX', '(XXX) XXX-XXXX', '<p>Demo contact</p>', '', '', 'images/sampledata/fruitshop/apple.jpg', NULL, 'info@joomlabiblestudy.com', 0, 1, 0, '0000-00-00 00:00:00', 3, '{"visibility":"1","scale":"1.1","open":"0","gxballoonvisibility":"0","show_contact_category":"","show_contact_list":"","presentation_style":"","show_name":"","show_position":"","show_email":"","show_street_address":"","show_suburb":"","show_state":"","show_postcode":"","show_country":"","show_telephone":"","show_mobile":"","show_fax":"","show_webpage":"","show_misc":"","show_image":"","allow_vcard":"","show_articles":"","show_profile":"","show_links":"","linka_name":"","linka":"","linkb_name":"","linkb":"","linkc_name":"","linkc":"","linkd_name":"","linkd":"","linke_name":"","linke":"","contact_layout":"","show_email_form":"","show_email_copy":"","banned_email":"","banned_subject":"","banned_text":"","validate_session":"","custom_reply":"","redirect":""}', 0, 8, 1, 0, 1, '(XXX) XXX-XXXX', 'www.joomlabiblestudy.com', '', '', '', '*', '2012-12-05 22:23:11', 53, '', '2012-12-06 19:10:22', 53, '', '', '{"robots":"","rights":""}', 0, '', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', '', 0.000000, 0.000000, '1991-07-22 00:00:00', '0000-00-00 00:00:00', '{"memberstatus":"0","memberotherinfo":"","familypostion":"-1","mailingaddress":"","mailingsuburb":"","mailingstate":"","mailingpostcode":"","mailingcountry":""}', 1, 0, '');
 
 -- --------------------------------------------------------
@@ -94,33 +99,39 @@ INSERT INTO `#__churchdirectory_details` (`id`, `name`, `lname`, `alias`, `con_p
 --
 
 CREATE TABLE IF NOT EXISTS `#__churchdirectory_dirheader` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL DEFAULT '',
-  `alias` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT '',
-  `description` mediumtext NOT NULL,
-  `image` varchar(255) DEFAULT NULL,
-  `published` tinyint(1) unsigned NOT NULL DEFAULT '0',
-  `checked_out` int(11) unsigned NOT NULL DEFAULT '0',
-  `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `modified` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `modified_by` int(10) unsigned NOT NULL DEFAULT '0',
-  `metakey` text NOT NULL,
-  `metadesc` text NOT NULL,
-  `metadata` text NOT NULL,
-  `ordering` int(11) NOT NULL DEFAULT '0',
-  `language` char(7) NOT NULL DEFAULT 'None',
-  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `created_by` int(10) unsigned NOT NULL DEFAULT '0',
-  `params` text NOT NULL,
-  `user_id` int(11) NOT NULL DEFAULT '0',
-  `catid` int(11) unsigned NOT NULL DEFAULT '1',
-  `access` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  `asset_id` int(10) DEFAULT NULL,
-  `publish_up` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `publish_down` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `section`  tinyint(3) NOT NULL DEFAULT '0' COMMENT 'Used to track position on page'
+  `id`               INT(11)             NOT NULL AUTO_INCREMENT,
+  `name`             VARCHAR(255)        NOT NULL DEFAULT '',
+  `alias`            VARCHAR(255)
+                     CHARACTER SET utf8
+                     COLLATE utf8_bin    NOT NULL DEFAULT '',
+  `description`      MEDIUMTEXT          NOT NULL,
+  `image`            VARCHAR(255) DEFAULT NULL,
+  `published`        TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
+  `checked_out`      INT(11) UNSIGNED    NOT NULL DEFAULT '0',
+  `checked_out_time` DATETIME            NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `modified`         DATETIME            NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `modified_by`      INT(10) UNSIGNED    NOT NULL DEFAULT '0',
+  `metakey`          TEXT                NOT NULL,
+  `metadesc`         TEXT                NOT NULL,
+  `metadata`         TEXT                NOT NULL,
+  `ordering`         INT(11)             NOT NULL DEFAULT '0',
+  `language`         CHAR(7)             NOT NULL DEFAULT 'None',
+  `created`          DATETIME            NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `created_by`       INT(10) UNSIGNED    NOT NULL DEFAULT '0',
+  `params`           TEXT                NOT NULL,
+  `user_id`          INT(11)             NOT NULL DEFAULT '0',
+  `catid`            INT(11) UNSIGNED    NOT NULL DEFAULT '1',
+  `access`           TINYINT(3) UNSIGNED NOT NULL DEFAULT '0',
+  `asset_id`         INT(10) DEFAULT NULL,
+  `publish_up`       DATETIME            NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `publish_down`     DATETIME            NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `section`          TINYINT(3)          NOT NULL DEFAULT '0'
+  COMMENT 'Used to track position on page'
     PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+)
+  ENGINE =InnoDB
+  DEFAULT CHARSET =utf8
+  AUTO_INCREMENT =3;
 
 --
 -- Dumping data for table `#__churchdirectory_dirheader`
@@ -137,31 +148,36 @@ INSERT INTO `#__churchdirectory_dirheader` (`id`, `name`, `alias`, `description`
 --
 
 CREATE TABLE IF NOT EXISTS `#__churchdirectory_familyunit` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL DEFAULT '',
-  `alias` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT '',
-  `description` mediumtext NOT NULL,
-  `image` varchar(255) DEFAULT NULL,
-  `published` tinyint(3) NOT NULL DEFAULT '0',
-  `checked_out` int(11) unsigned NOT NULL DEFAULT '0',
-  `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `modified` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `modified_by` int(10) unsigned NOT NULL DEFAULT '0',
-  `metakey` text NOT NULL,
-  `metadesc` text NOT NULL,
-  `metadata` text NOT NULL,
-  `ordering` int(11) NOT NULL DEFAULT '0',
-  `language` char(7) NOT NULL DEFAULT 'None',
-  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `created_by` int(10) unsigned NOT NULL DEFAULT '0',
-  `params` text NOT NULL,
-  `user_id` int(11) NOT NULL DEFAULT '0',
-  `access` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  `asset_id` int(10) DEFAULT NULL,
-  `publish_up` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `publish_down` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `id`               INT(11)             NOT NULL AUTO_INCREMENT,
+  `name`             VARCHAR(255)        NOT NULL DEFAULT '',
+  `alias`            VARCHAR(255)
+                     CHARACTER SET utf8
+                     COLLATE utf8_bin    NOT NULL DEFAULT '',
+  `description`      MEDIUMTEXT          NOT NULL,
+  `image`            VARCHAR(255) DEFAULT NULL,
+  `published`        TINYINT(3)          NOT NULL DEFAULT '0',
+  `checked_out`      INT(11) UNSIGNED    NOT NULL DEFAULT '0',
+  `checked_out_time` DATETIME            NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `modified`         DATETIME            NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `modified_by`      INT(10) UNSIGNED    NOT NULL DEFAULT '0',
+  `metakey`          TEXT                NOT NULL,
+  `metadesc`         TEXT                NOT NULL,
+  `metadata`         TEXT                NOT NULL,
+  `ordering`         INT(11)             NOT NULL DEFAULT '0',
+  `language`         CHAR(7)             NOT NULL DEFAULT 'None',
+  `created`          DATETIME            NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `created_by`       INT(10) UNSIGNED    NOT NULL DEFAULT '0',
+  `params`           TEXT                NOT NULL,
+  `user_id`          INT(11)             NOT NULL DEFAULT '0',
+  `access`           TINYINT(3) UNSIGNED NOT NULL DEFAULT '0',
+  `asset_id`         INT(10) DEFAULT NULL,
+  `publish_up`       DATETIME            NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `publish_down`     DATETIME            NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+)
+  ENGINE =InnoDB
+  DEFAULT CHARSET =utf8
+  AUTO_INCREMENT =2;
 
 --
 -- Dumping data for table `#__churchdirectory_familyunit`
@@ -177,10 +193,12 @@ INSERT INTO `#__churchdirectory_familyunit` (`id`, `name`, `alias`, `description
 --
 
 CREATE TABLE IF NOT EXISTS `#__churchdirectory_geoupdate` (
-  `member_id` int(11) NOT NULL,
-  `status` varchar(255) NOT NULL,
+  `member_id` INT(11)      NOT NULL,
+  `status`    VARCHAR(255) NOT NULL,
   PRIMARY KEY (`member_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+)
+  ENGINE =InnoDB
+  DEFAULT CHARSET =utf8;
 
 -- --------------------------------------------------------
 
@@ -189,43 +207,48 @@ CREATE TABLE IF NOT EXISTS `#__churchdirectory_geoupdate` (
 --
 
 CREATE TABLE IF NOT EXISTS `#__churchdirectory_kml` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL DEFAULT '',
-  `alias` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT '',
-  `description` mediumtext,
-  `published` tinyint(3) NOT NULL DEFAULT '0',
-  `checked_out` int(11) unsigned NOT NULL DEFAULT '0',
-  `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `modified` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `modified_by` int(10) unsigned NOT NULL DEFAULT '0',
-  `metakey` text NOT NULL,
-  `metadesc` text NOT NULL,
-  `metadata` text NOT NULL,
-  `ordering` int(11) NOT NULL DEFAULT '0',
-  `language` char(7) NOT NULL DEFAULT 'None',
-  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `created_by` int(10) unsigned NOT NULL DEFAULT '0',
-  `params` text NOT NULL,
-  `linestyle` varchar(8) NOT NULL DEFAULT '00000000',
-  `polystyle` varchar(8) NOT NULL DEFAULT '00000000',
-  `user_id` int(11) NOT NULL DEFAULT '0',
-  `access` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  `asset_id` int(10) DEFAULT NULL,
-  `lat` float(10,6) NOT NULL DEFAULT '36.131973',
-  `lng` float(10,6) NOT NULL DEFAULT '-86.812370',
-  `icon` varchar(255) DEFAULT NULL,
-  `style` mediumtext NOT NULL,
-  `publish_up` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `publish_down` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `id`               INT(11)             NOT NULL AUTO_INCREMENT,
+  `name`             VARCHAR(255)        NOT NULL DEFAULT '',
+  `alias`            VARCHAR(255)
+                     CHARACTER SET utf8
+                     COLLATE utf8_bin    NOT NULL DEFAULT '',
+  `description`      MEDIUMTEXT,
+  `published`        TINYINT(3)          NOT NULL DEFAULT '0',
+  `checked_out`      INT(11) UNSIGNED    NOT NULL DEFAULT '0',
+  `checked_out_time` DATETIME            NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `modified`         DATETIME            NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `modified_by`      INT(10) UNSIGNED    NOT NULL DEFAULT '0',
+  `metakey`          TEXT                NOT NULL,
+  `metadesc`         TEXT                NOT NULL,
+  `metadata`         TEXT                NOT NULL,
+  `ordering`         INT(11)             NOT NULL DEFAULT '0',
+  `language`         CHAR(7)             NOT NULL DEFAULT 'None',
+  `created`          DATETIME            NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `created_by`       INT(10) UNSIGNED    NOT NULL DEFAULT '0',
+  `params`           TEXT                NOT NULL,
+  `linestyle`        VARCHAR(8)          NOT NULL DEFAULT '00000000',
+  `polystyle`        VARCHAR(8)          NOT NULL DEFAULT '00000000',
+  `user_id`          INT(11)             NOT NULL DEFAULT '0',
+  `access`           TINYINT(3) UNSIGNED NOT NULL DEFAULT '0',
+  `asset_id`         INT(10) DEFAULT NULL,
+  `lat`              FLOAT(10, 6)        NOT NULL DEFAULT '36.131973',
+  `lng`              FLOAT(10, 6)        NOT NULL DEFAULT '-86.812370',
+  `icon`             VARCHAR(255) DEFAULT NULL,
+  `style`            MEDIUMTEXT          NOT NULL,
+  `publish_up`       DATETIME            NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `publish_down`     DATETIME            NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+)
+  ENGINE =InnoDB
+  DEFAULT CHARSET =utf8
+  AUTO_INCREMENT =2;
 
 --
 -- Dumping data for table `#__churchdirectory_kml`
 --
 
 INSERT INTO `#__churchdirectory_kml` (`id`, `name`, `alias`, `description`, `published`, `checked_out`, `checked_out_time`, `modified`, `modified_by`, `metakey`, `metadesc`, `metadata`, `ordering`, `language`, `created`, `created_by`, `params`, `linestyle`, `polystyle`, `user_id`, `access`, `asset_id`, `lat`, `lng`, `icon`, `style`, `publish_up`, `publish_down`) VALUES
-(1, 'Nashville First SDA Church Members Directory', 'nashville-first-sda-church-members-directory', '<div>\r\n<p><strong>Confidentiality Notice</strong>: This KML file, including any attachments, is for the sole use of the <strong>Nasvhille First SDA Church Members</strong> and may contain confidential and/or privileged information. If you are not the intended recipient(s), you are hereby notified that any dissemination, unauthorized review, use, disclosure or distribution of this KML file and any materials contained in any attachments is prohibited. If you receive this KML file in error, or are not the intended recipient(s), please immediately notify the sender by email and destroy all copies of the original message, including attachments.Privicy Statment</p>\r\n<div style="text-align: center;">\r\n<p>615-297-1343 | 2800 Blair Blvd | Nashville, TN 37212 <br />webmaster@nfsda.org</p>\r\n</div>\r\n</div>', 1, 0, '0000-00-00 00:00:00', '2012-03-18 04:35:11', 63, '', '', '', 0, '*', '2011-12-14 00:00:00', 0, '{"altitude":"0","range":"110027.8255488604","rmaxlines":"","tilt":"0","heading":"-1.119363650863577e-006","lscolormode":"normal","lsscale":".6","icscale":"1.2","open":"1","mcropen":"0","msropen":"0","lscolor":"#ffffff","gxaltitudeMode":"relativeToSeaFloor"}', '00000000', '00000000', 0, 4, 1120, 36.131973, -86.812370, 'b', '', '2011-12-14 00:00:00', '0000-00-00 00:00:00');
+(1, 'Nashville First SDA Church Members Directory', 'nashville-first-sda-church-members-directory', '<div>\r\n<p><strong>Confidentiality Notice</strong>: This KML file, including any attachments, is for the sole use of the <strong>Nasvhille First SDA Church Members</strong> and may contain confidential and/or privileged information. If you are not the intended recipient(s), you are hereby notified that any dissemination, unauthorized review, use, disclosure or distribution of this KML file and any materials contained in any attachments is prohibited. If you receive this KML file in error, or are not the intended recipient(s), please immediately notify the sender by email and destroy all copies of the original message, including attachments.Privicy Statment</p>\r\n<div style="text-align: center;">\r\n<p>615-297-1343 | 2800 Blair Blvd | Nashville, TN 37212 <br />webmaster@nfsda.org</p>\r\n</div>\r\n</div>', 1, 0, '0000-00-00 00:00:00', '2012-03-18 04:35:11', 63, '', '', '', 0, '*', '2011-12-14 00:00:00', 0, '{"altitude":"0","range":"110027.8255488604","rmaxlines":"","tilt":"0","heading":"-1.119363650863577e-006","lscolormode":"normal","lsscale":".6","icscale":"1.2","open":"1","mcropen":"0","msropen":"0","lscolor":"#ffffff","gxaltitudeMode":"relativeToSeaFloor"}', '00000000', '00000000', 0, 4, 1120, 36.131973, - 86.812370, 'b', '', '2011-12-14 00:00:00', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -234,29 +257,34 @@ INSERT INTO `#__churchdirectory_kml` (`id`, `name`, `alias`, `description`, `pub
 --
 
 CREATE TABLE IF NOT EXISTS `#__churchdirectory_position` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) NOT NULL DEFAULT '',
-  `alias` varchar(255) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL DEFAULT '',
-  `published` tinyint(3) NOT NULL DEFAULT '0',
-  `checked_out` int(11) unsigned NOT NULL DEFAULT '0',
-  `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `modified` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `modified_by` int(10) unsigned NOT NULL DEFAULT '0',
-  `metakey` text NOT NULL,
-  `metadesc` text NOT NULL,
-  `metadata` text NOT NULL,
-  `ordering` int(11) NOT NULL DEFAULT '0',
-  `language` char(7) NOT NULL DEFAULT 'None',
-  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `created_by` int(10) unsigned NOT NULL DEFAULT '0',
-  `params` text NOT NULL,
-  `user_id` int(11) NOT NULL DEFAULT '0',
-  `access` tinyint(3) unsigned NOT NULL DEFAULT '0',
-  `asset_id` int(10) DEFAULT NULL,
-  `publish_up` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `publish_down` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `id`               INT(11)             NOT NULL AUTO_INCREMENT,
+  `name`             VARCHAR(255)        NOT NULL DEFAULT '',
+  `alias`            VARCHAR(255)
+                     CHARACTER SET utf8
+                     COLLATE utf8_bin    NOT NULL DEFAULT '',
+  `published`        TINYINT(3)          NOT NULL DEFAULT '0',
+  `checked_out`      INT(11) UNSIGNED    NOT NULL DEFAULT '0',
+  `checked_out_time` DATETIME            NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `modified`         DATETIME            NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `modified_by`      INT(10) UNSIGNED    NOT NULL DEFAULT '0',
+  `metakey`          TEXT                NOT NULL,
+  `metadesc`         TEXT                NOT NULL,
+  `metadata`         TEXT                NOT NULL,
+  `ordering`         INT(11)             NOT NULL DEFAULT '0',
+  `language`         CHAR(7)             NOT NULL DEFAULT 'None',
+  `created`          DATETIME            NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `created_by`       INT(10) UNSIGNED    NOT NULL DEFAULT '0',
+  `params`           TEXT                NOT NULL,
+  `user_id`          INT(11)             NOT NULL DEFAULT '0',
+  `access`           TINYINT(3) UNSIGNED NOT NULL DEFAULT '0',
+  `asset_id`         INT(10) DEFAULT NULL,
+  `publish_up`       DATETIME            NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `publish_down`     DATETIME            NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=31 ;
+)
+  ENGINE =InnoDB
+  DEFAULT CHARSET =utf8
+  AUTO_INCREMENT =31;
 
 --
 -- Dumping data for table `#__churchdirectory_position`
@@ -301,10 +329,13 @@ INSERT INTO `#__churchdirectory_position` (`id`, `name`, `alias`, `published`, `
 --
 
 CREATE TABLE IF NOT EXISTS `#__churchdirectory_update` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `version` varchar(255) DEFAULT NULL,
+  `id`      INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `version` VARCHAR(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
+)
+  ENGINE =InnoDB
+  DEFAULT CHARSET =utf8
+  AUTO_INCREMENT =6;
 
 --
 -- Dumping data for table `#__churchdirectory_update`

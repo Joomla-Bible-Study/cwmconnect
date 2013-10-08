@@ -6,7 +6,7 @@
     margin: 10px 0;
 }
 
-address {
+.address {
     font-style: normal;
     margin: 10px 0;
 }
@@ -228,9 +228,7 @@ p {
     width: 25%;
     padding: 0 5px 0;
     text-align: center;
-    border-right-style: solid;
-    border-right-width: 2px;
-    border-right-color: black;
+    border-right: 2px solid #000;
 }
 
 .directory-submemberinfo {
@@ -244,9 +242,7 @@ p {
 .vertical-line {
     /* display: inline; */
     float: left;
-    border-width: 1px;
-    border-style: solid;
-    border-color: gainsboro;
+    border: 1px solid #dcdcdc;
     padding-bottom: 2000px;
     margin-bottom: -2000px;
 }
@@ -278,9 +274,7 @@ div.vert-line>div {
 
 .headerpage {
     padding: 5px;
-    border-color: black;
-    border-style: solid;
-    border-width: 1px;
+    border: 1px solid #000;
 }
 
 .paddingitem {
@@ -291,23 +285,21 @@ div.vert-line>div {
     margin-left: 0;
 }
 
-@media (min-width: 1200px) {
-    .row-fluid [class*="span"] {
-        margin-left: 0;
-    }
-}
-
 .churchdirectory-container {
     overflow: hidden;
 }
 
 .churchdirectory-container hr {
     margin: 0;
-    border-width: 1px;
-    border-style: solid;
-    border-color: #000;
+    border: 1px solid #000;
 }
 
 .cd_margin_top_20 {
     margin-top: 20px;
+}
+
+@media (min-width: 1200px) {
+    .row-fluid [class*="span"] {
+        margin-left: 0;
+    }
 }
