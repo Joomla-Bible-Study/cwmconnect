@@ -126,7 +126,7 @@ CREATE TABLE IF NOT EXISTS `#__churchdirectory_dirheader` (
   `publish_up`       DATETIME            NOT NULL DEFAULT '0000-00-00 00:00:00',
   `publish_down`     DATETIME            NOT NULL DEFAULT '0000-00-00 00:00:00',
   `section`          TINYINT(3)          NOT NULL DEFAULT '0'
-  COMMENT 'Used to track position on page'
+  COMMENT 'Used to track position on page',
     PRIMARY KEY (`id`)
 )
   ENGINE =InnoDB
