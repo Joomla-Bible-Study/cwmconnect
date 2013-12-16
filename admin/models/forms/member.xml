@@ -192,8 +192,8 @@
 
         <field name="checked_out_time" type="hidden" filter="unset"/>
 
-        <field name="ordering" type="ordering" class="inputbox"
-               label="JFIELD_ORDERING_LABEL" description="JFIELD_ORDERING_DESC"/>
+        <field name="ordering" type="order" class="inputbox"
+               label="JFIELD_ORDERING_LABEL" description="JFIELD_ORDERING_DESC" content_type="com_churchdirectory.member"/>
 
         <field name="publish_up" type="calendar"
                label="COM_CHURCHDIRECTORY_FIELD_PUBLISH_UP_LABEL"
