@@ -256,7 +256,8 @@ defined('_JEXEC') or die;
 	</dt>
 	<dd>
             <span class="churchdirectory-webpage">
-                <a href="<?php echo $this->member->webpage; ?>" target="_blank">
+                <? if (substr_count($this->member->webpage, 'http://', 0)){$a = 'a href="';}else{$a = 'a href="http://';}?>
+                <<?php echo $a. $this->member->webpage; ?>" target="_blank">
 	                <?php echo $this->member->webpage; ?></a>
             </span>
 	</dd>
