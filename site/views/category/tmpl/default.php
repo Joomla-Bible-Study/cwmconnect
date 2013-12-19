@@ -47,7 +47,7 @@ else
 	<?php } ?>
 	<div class="pull-right">
 		<a href=<?php echo $href; ?>>
-			<?php echo JHtml::image('/media/com_churchdirectory/images/printButton.png', 'Print', ''); ?>
+			<?php echo JHtml::image('media/com_churchdirectory/images/printButton.png', 'Print', ''); ?>
 		</a>
 	</div>
 	<?php if ($this->params->def('show_description', 1) || $this->params->def('show_description_image', 1))

@@ -473,7 +473,7 @@ class ChurchDirectoryModelMember extends JModelAdmin
 			if (empty($table->ordering))
 			{
 				$db = JFactory::getDbo();
-				$db->setQuery('SELECT MAX(ordering) FROM #__churchdirectory_details');
+				$db->setQuery('SELECT MAX(ordering) FROM `#__churchdirectory_details`');
 				$max = $db->loadResult();
 
 				$table->ordering = $max + 1;

@@ -1,9 +1,9 @@
 <?php
 /**
- * @package    ChurchDirectory.Admin
+ * @package        ChurchDirectory.Admin
  * @copyright  (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
- * @see        Akeebe Script
+ * @license        GNU General Public License version 2 or later; see LICENSE.txt
+ * @see            Akeebe Script
  */
 
 defined('_JEXEC') or die;
@@ -27,27 +27,25 @@ class Com_ChurchdirectoryInstallerScript
 	 * The list of extra modules and plugins to install
 	 *
 	 * @author Nicholas K. Dionysopoulos
-	 * @var   array $_installation_queue  Array of Items to install
+	 * @var   array $_installation_queue Array of Items to install
 	 */
 	private $_installation_queue = array(
 		// -- modules => { (folder) => { (module) => { (position), (published) } }* }*
 		'modules' => array(
 			'admin' => array(),
-			'site'  => array('birthdayanniversary' => 0,)
+			'site'  => array('birthdayanniversary' => 0,),
 		),
 		// -- plugins => { (folder) => { (element) => (published) }* }*
 		'plugins' => array(
 			'finder' => array('churchdirectory' => 1,),
 			'search' => array('churchdirectory' => 0,),
 		),
-		// -- template => { (folder) => { (element) => (published) }* }*
-		// -- Libraries => { (folder) => { (element) => (
 	);
 
 	/**
 	 * Variables to set default params
 	 *
-	 * @var   array $_param_array  Array of default settings
+	 * @var   array $_param_array Array of default settings
 	 */
 	private $_param_array = array(
 		'protectedaccess'               => "8",
@@ -162,27 +160,62 @@ class Com_ChurchdirectoryInstallerScript
 	/**
 	 * Joomla! pre-flight event
 	 *
-	 * @param   string     $type    is the type of change (install, update or discover_install, not uninstall).
-	 * @param   JInstaller $parent  is the class calling this method.
+	 * @param   string     $type   is the type of change (install, update or discover_install, not uninstall).
+	 * @param   JInstaller $parent is the class calling this method.
 	 *
 	 * @return boolean
 	 */
-	public function preflight ($type, $parent)
+	public function preflight($type, $parent)
 	{
-		// Only allow to install on Joomla! 2.5.14 or later
-		return version_compare(JVERSION, '2.5.14', 'ge');
+		// Only allow to install on Joomla! 2.5.0 or later with PHP 5.3.0 or later
+		if (defined('PHP_VERSION'))
+		{
+			$version = PHP_VERSION;
+		}
+		elseif (function_exists('phpversion'))
+		{
+			$version = phpversion();
+		}
+		else
+		{
+			$version = '5.0.0'; // all bets are off!
+		}
+		if (!version_compare(JVERSION, '2.5.16', 'ge'))
+		{
+			$msg = "<p>You need Joomla! 2.5.16 or later to install this component</p>";
+			JError::raiseWarning(100, $msg);
+
+			return false;
+		}
+		if (!version_compare($version, '5.3.1', 'ge'))
+		{
+			$msg = "<p>You need PHP 5.3.1 or later to install this component</p>";
+			if (version_compare(JVERSION, '3.0', 'gt'))
+			{
+				JLog::add($msg, JLog::WARNING, 'jerror');
+			}
+			else
+			{
+				JError::raiseWarning(100, $msg);
+			}
+
+			return false;
+		}
+
+		return true;
 	}
 
 	/**
 	 * Runs after install, update or discover_update
 	 *
-	 * @param   string     $type    is the type of change (install, update or discover_install, not uninstall).
-	 * @param   JInstaller $parent  is the class calling this method.
+	 * @param   string     $type   is the type of change (install, update or discover_install, not uninstall).
+	 * @param   JInstaller $parent is the class calling this method.
 	 *
-	 * @return void
+	 * @return boolean
 	 */
-	public function postflight ($type, $parent)
+	public function postflight($type, $parent)
 	{
+
 		// Install subextensions
 		$status = $this->_installSubextensions($parent);
 
@@ -205,16 +238,18 @@ class Com_ChurchdirectoryInstallerScript
 		{
 			FOFPlatform::getInstance()->clearCache();
 		}
+
+		return true;
 	}
 
 	/**
 	 * Install is run on every new install.
 	 *
-	 * @param   JInstaller $parent  is the class calling this method.
+	 * @param   JInstaller $parent is the class calling this method.
 	 *
 	 * @return void
 	 */
-	public function install ($parent)
+	public function install($parent)
 	{
 		// Set params
 		$this->setParams();
@@ -226,11 +261,11 @@ class Com_ChurchdirectoryInstallerScript
 	/**
 	 * Uninstall runs before any other action is taken (file removal or database processing)
 	 *
-	 * @param   JInstaller $parent  is the class calling this method.
+	 * @param   JInstaller $parent is the class calling this method.
 	 *
 	 * @return void
 	 */
-	public function uninstall ($parent)
+	public function uninstall($parent)
 	{
 		// Uninstall subextensions
 		$status = $this->_uninstallSubextensions($parent);
@@ -242,18 +277,19 @@ class Com_ChurchdirectoryInstallerScript
 	/**
 	 * Renders the post-installation message
 	 *
-	 * @param   object     $status  ?
-	 * @param   JInstaller $parent  is the class calling this method.
+	 * @param   object     $status ?
+	 * @param   JInstaller $parent is the class calling this method.
 	 *
 	 * @since 1.7.4
 	 * @return void
 	 *
 	 * @todo  need to add verion check system.
 	 */
-	private function _renderPostInstallation ($status, $parent)
+	private function _renderPostInstallation($status, $parent)
 	{
 		$rows = 1; ?>
-		<img src="../media/com_churchdirectory/images/icons/icon-48-churchdirectory.png" width="48" height="48" alt="ChurchDirectory"/>
+		<img src="../media/com_churchdirectory/images/icons/icon-48-churchdirectory.png" width="48" height="48"
+		     alt="ChurchDirectory"/>
 
 		<h2>Welcome to Church Directory System</h2>
 
@@ -322,12 +358,12 @@ class Com_ChurchdirectoryInstallerScript
 	/**
 	 * Render Post Uninstallation
 	 *
-	 * @param   object     $status  ?
-	 * @param   JInstaller $parent  is the class calling this method.
+	 * @param   object     $status ?
+	 * @param   JInstaller $parent is the class calling this method.
 	 *
 	 * @return void
 	 */
-	private function _renderPostUninstallation ($status, $parent)
+	private function _renderPostUninstallation($status, $parent)
 	{
 		?>
 		<?php $rows = 0; ?>
@@ -360,7 +396,7 @@ class Com_ChurchdirectoryInstallerScript
 						<td class="key"><?php echo $module['name']; ?></td>
 						<td class="key"><?php echo ucfirst($module['client']); ?></td>
 						<td><strong
-									style="color: <?php echo ($module['result']) ? "green" : "red" ?>"><?php echo ($module['result']) ? JText::_('COM_CHURCHDIRECTORY_REMOVED') : JText::_('COM_CHURCHDIRECTORY_NOT_REMOVED'); ?></strong>
+								style="color: <?php echo ($module['result']) ? "green" : "red" ?>"><?php echo ($module['result']) ? JText::_('COM_CHURCHDIRECTORY_REMOVED') : JText::_('COM_CHURCHDIRECTORY_NOT_REMOVED'); ?></strong>
 						</td>
 					</tr>
 				<?php endforeach; ?>
@@ -390,11 +426,11 @@ class Com_ChurchdirectoryInstallerScript
 	/**
 	 * Installs subextensions (modules, plugins) bundled with the main extension
 	 *
-	 * @param   JInstaller $parent  is the class calling this method.
+	 * @param   JInstaller $parent is the class calling this method.
 	 *
 	 * @return JObject The subextension installation status
 	 */
-	private function _installSubextensions ($parent)
+	private function _installSubextensions($parent)
 	{
 		$src = $parent->getParent()->getPath('source');
 
@@ -439,8 +475,8 @@ class Com_ChurchdirectoryInstallerScript
 
 						// Was the module already installed?
 						$sql = $db->getQuery(true)->select('COUNT(*)')
-								->from('#__modules')
-								->where($db->qn('module') . ' = ' . $db->q('mod_' . $module));
+							->from('#__modules')
+							->where($db->qn('module') . ' = ' . $db->q('mod_' . $module));
 						$db->setQuery($sql);
 						$count             = $db->loadResult();
 						$installer         = new JInstaller;
@@ -462,9 +498,9 @@ class Com_ChurchdirectoryInstallerScript
 								$modulePosition = 'icon';
 							}
 							$sql = $db->getQuery(true)
-									->update($db->qn('#__modules'))
-									->set($db->qn('position') . ' = ' . $db->q($modulePosition))
-									->where($db->qn('module') . ' = ' . $db->q('mod_' . $module));
+								->update($db->qn('#__modules'))
+								->set($db->qn('position') . ' = ' . $db->q($modulePosition))
+								->where($db->qn('module') . ' = ' . $db->q('mod_' . $module));
 
 							if ($modulePublished)
 							{
@@ -478,16 +514,16 @@ class Com_ChurchdirectoryInstallerScript
 							{
 								$query = $db->getQuery(true);
 								$query->select('MAX(' . $db->qn('ordering') . ')')
-										->from($db->qn('#__modules'))
-										->where($db->qn('position') . '=' . $db->q($modulePosition));
+									->from($db->qn('#__modules'))
+									->where($db->qn('position') . '=' . $db->q($modulePosition));
 								$db->setQuery($query);
 								$position = $db->loadResult();
 								$position++;
 
 								$query = $db->getQuery(true);
 								$query->update($db->qn('#__modules'))
-										->set($db->qn('ordering') . ' = ' . $db->q($position))
-										->where($db->qn('module') . ' = ' . $db->q('mod_' . $module));
+									->set($db->qn('ordering') . ' = ' . $db->q($position))
+									->where($db->qn('module') . ' = ' . $db->q('mod_' . $module));
 								$db->setQuery($query);
 								$db->execute();
 							}
@@ -495,15 +531,15 @@ class Com_ChurchdirectoryInstallerScript
 							// C. Link to all pages
 							$query = $db->getQuery(true);
 							$query->select('id')
-									->from($db->qn('#__modules'))
-									->where($db->qn('module') . ' = ' . $db->q('mod_' . $module));
+								->from($db->qn('#__modules'))
+								->where($db->qn('module') . ' = ' . $db->q('mod_' . $module));
 							$db->setQuery($query);
 							$moduleid = $db->loadResult();
 
 							$query = $db->getQuery(true);
 							$query->select('*')
-									->from($db->qn('#__modules_menu'))
-									->where($db->qn('moduleid') . ' = ' . $db->q($moduleid));
+								->from($db->qn('#__modules_menu'))
+								->where($db->qn('moduleid') . ' = ' . $db->q($moduleid));
 							$db->setQuery($query);
 							$assignments = $db->loadObjectList();
 							$isAssigned  = !empty($assignments);
@@ -552,10 +588,10 @@ class Com_ChurchdirectoryInstallerScript
 
 						// Was the plugin already installed?
 						$query = $db->getQuery(true)
-								->select('COUNT(*)')
-								->from($db->qn('#__extensions'))
-								->where($db->qn('element') . ' = ' . $db->q($plugin))
-								->where($db->qn('folder') . ' = ' . $db->q($folder));
+							->select('COUNT(*)')
+							->from($db->qn('#__extensions'))
+							->where($db->qn('element') . ' = ' . $db->q($plugin))
+							->where($db->qn('folder') . ' = ' . $db->q($folder));
 						$db->setQuery($query);
 						$count = $db->loadResult();
 
@@ -571,10 +607,10 @@ class Com_ChurchdirectoryInstallerScript
 						if ($published && !$count)
 						{
 							$query = $db->getQuery(true)
-									->update($db->qn('#__extensions'))
-									->set($db->qn('enabled') . ' = ' . $db->q('1'))
-									->where($db->qn('element') . ' = ' . $db->q($plugin))
-									->where($db->qn('folder') . ' = ' . $db->q($folder));
+								->update($db->qn('#__extensions'))
+								->set($db->qn('enabled') . ' = ' . $db->q('1'))
+								->where($db->qn('element') . ' = ' . $db->q($plugin))
+								->where($db->qn('folder') . ' = ' . $db->q($folder));
 							$db->setQuery($query);
 							$db->execute();
 						}
@@ -589,11 +625,11 @@ class Com_ChurchdirectoryInstallerScript
 	/**
 	 * Uninstalls subextensions (modules, plugins) bundled with the main extension
 	 *
-	 * @param   JInstaller $parent  is the class calling this method.
+	 * @param   JInstaller $parent is the class calling this method.
 	 *
 	 * @return JObject The subextension uninstallation status
 	 */
-	private function _uninstallSubextensions ($parent)
+	private function _uninstallSubextensions($parent)
 	{
 		jimport('joomla.installer.installer');
 
@@ -616,10 +652,10 @@ class Com_ChurchdirectoryInstallerScript
 					{
 						// Find the module ID
 						$sql = $db->getQuery(true)
-								->select($db->qn('extension_id'))
-								->from($db->qn('#__extensions'))
-								->where($db->qn('element') . ' = ' . $db->q('mod_' . $module))
-								->where($db->qn('type') . ' = ' . $db->q('module'));
+							->select($db->qn('extension_id'))
+							->from($db->qn('#__extensions'))
+							->where($db->qn('element') . ' = ' . $db->q('mod_' . $module))
+							->where($db->qn('type') . ' = ' . $db->q('module'));
 						$db->setQuery($sql);
 						$id = $db->loadResult();
 
@@ -649,11 +685,11 @@ class Com_ChurchdirectoryInstallerScript
 					foreach ($plugins as $plugin => $published)
 					{
 						$sql = $db->getQuery(true)
-								->select($db->qn('extension_id'))
-								->from($db->qn('#__extensions'))
-								->where($db->qn('type') . ' = ' . $db->q('plugin'))
-								->where($db->qn('element') . ' = ' . $db->q($plugin))
-								->where($db->qn('folder') . ' = ' . $db->q($folder));
+							->select($db->qn('extension_id'))
+							->from($db->qn('#__extensions'))
+							->where($db->qn('type') . ' = ' . $db->q('plugin'))
+							->where($db->qn('element') . ' = ' . $db->q($plugin))
+							->where($db->qn('folder') . ' = ' . $db->q($folder));
 						$db->setQuery($sql);
 
 						$id = $db->loadResult();
@@ -676,120 +712,14 @@ class Com_ChurchdirectoryInstallerScript
 		return $status;
 	}
 
-	private function _installFOF ($parent)
-	{
-		$src = $parent->getParent()->getPath('source');
-
-		// Install the FOF framework
-		JLoader::import('joomla.filesystem.folder');
-		JLoader::import('joomla.filesystem.file');
-		JLoader::import('joomla.utilities.date');
-
-		$source = $src . '/libraries/fof';
-
-		if (!defined('JPATH_LIBRARIES'))
-		{
-			$target = JPATH_ROOT . '/libraries/fof';
-		}
-		else
-		{
-			$target = JPATH_LIBRARIES . '/fof';
-		}
-
-		$haveToInstallFOF = false;
-
-		if (!JFolder::exists($target))
-		{
-			$haveToInstallFOF = true;
-		}
-		else
-		{
-			$fofVersion = array();
-
-			if (JFile::exists($target . '/version.txt'))
-			{
-				$rawData                 = JFile::read($target . '/version.txt');
-				$info                    = explode("\n", $rawData);
-				$fofVersion['installed'] = array(
-					'version' => trim($info[0]),
-					'date'    => new JDate(trim($info[1]))
-				);
-			}
-			else
-			{
-				$fofVersion['installed'] = array(
-					'version' => '0.0',
-					'date'    => new JDate('2011-01-01')
-				);
-			}
-
-			$rawData               = JFile::read($source . '/version.txt');
-			$info                  = explode("\n", $rawData);
-			$fofVersion['package'] = array(
-				'version' => trim($info[0]),
-				'date'    => new JDate(trim($info[1]))
-			);
-
-			$haveToInstallFOF = $fofVersion['package']['date']->toUNIX() > $fofVersion['installed']['date']->toUNIX();
-		}
-
-		$installedFOF = false;
-
-		if ($haveToInstallFOF)
-		{
-			$versionSource = 'package';
-			$installer     = new JInstaller;
-			$installedFOF  = $installer->install($source);
-		}
-		else
-		{
-			$versionSource = 'installed';
-		}
-
-		if (!isset($fofVersion))
-		{
-			$fofVersion = array();
-
-			if (JFile::exists($target . '/version.txt'))
-			{
-				$rawData                 = JFile::read($target . '/version.txt');
-				$info                    = explode("\n", $rawData);
-				$fofVersion['installed'] = array(
-					'version' => trim($info[0]),
-					'date'    => new JDate(trim($info[1]))
-				);
-			}
-			else
-			{
-				$fofVersion['installed'] = array(
-					'version' => '0.0',
-					'date'    => new JDate('2011-01-01')
-				);
-			}
-
-			$rawData               = JFile::read($source . '/version.txt');
-			$info                  = explode("\n", $rawData);
-			$fofVersion['package'] = array(
-				'version' => trim($info[0]),
-				'date'    => new JDate(trim($info[1]))
-			);
-			$versionSource         = 'installed';
-		}
-
-		if (!($fofVersion[$versionSource]['date'] instanceof JDate))
-		{
-			$fofVersion[$versionSource]['date'] = new JDate();
-		}
-
-		return array(
-			'required'  => $haveToInstallFOF,
-			'installed' => $installedFOF,
-			'version'   => $fofVersion[$versionSource]['version'],
-			'date'      => $fofVersion[$versionSource]['date']->format('Y-m-d'),
-		);
-	}
-
-	private function _installTCPDF ($parent)
+	/**
+	 * Install TCPDF
+	 *
+	 * @param $parent
+	 *
+	 * @return array
+	 */
+	private function _installTCPDF($parent)
 	{
 		$src = $parent->getParent()->getPath('source');
 
@@ -807,24 +737,88 @@ class Com_ChurchdirectoryInstallerScript
 			$target = JPATH_LIBRARIES . '/tcpdf';
 		}
 
-		$installer      = new JInstaller;
-		$installedTCPDF = $installer->install($source);
+		$haveToInstallTCPDF = false;
+		if (!JFolder::exists($target))
+		{
+			$haveToInstallTCPDF = true;
+		}
+		else
+		{
+			$TCPDFVersion = array();
 
-		$extension = JTable::getInstance('extension');
-		$tcpdf     = $extension->find(array('element' => 'tcpdf'));
+			if (JFile::exists($target . '/README.TXT'))
+			{
+				$rawData                   = file_get_contents($target . '/README.TXT');
+				$info                      = explode("\n", $rawData);
+				$TCPDFVersion['installed'] = array(
+					'version' => trim($info[0]),
+					'date'    => new JDate(trim($info[1]))
+				);
+			}
+			else
+			{
+				$TCPDFVersion['installed'] = array(
+					'version' => '0.0',
+					'date'    => new JDate('2011-01-01')
+				);
+			}
+		}
 
-		$params = json_decode($tcpdf->manifest_cache, true);
+		$installedTCPDF = false;
 
-		$tcpdfVersion = array(
-			'version' => $params['version'],
-			'date'    => new JDate($params['creationdate'])
-		);
+		if ($haveToInstallTCPDF)
+		{
+			$versionSource  = 'package';
+			$installer      = new JInstaller;
+			$installedTCPDF = $installer->install($source);
+		}
+		else
+		{
+			$versionSource = 'installed';
+		}
+
+		if (!isset($fofVersion))
+		{
+			$TCPDFVersion = array();
+
+			if (JFile::exists($target . '/README.TXT'))
+			{
+				$rawData                   = file_get_contents($target . '/README.TXT');
+				$info                      = explode("\n", $rawData);
+				$TCPDFVersion['installed'] = array(
+					'version' => trim($info[0]),
+					'date'    => new JDate(trim($info[1]))
+				);
+			}
+			else
+			{
+				$TCPDFVersion['installed'] = array(
+					'version' => '0.0',
+					'date'    => new JDate('2011-01-01')
+				);
+			}
+
+			$rawData = file_get_contents($source . '/README.TXT');
+			$info    = explode("\n", $rawData);
+
+			$TCPDFVersion['package'] = array(
+				'version' => trim($info[0]),
+				'date'    => new JDate(trim($info[1]))
+			);
+
+			$versionSource = 'installed';
+		}
+
+		if (!($TCPDFVersion[$versionSource]['date'] instanceof JDate))
+		{
+			$$TCPDFVersion[$versionSource]['date'] = new JDate();
+		}
 
 		return array(
-			'required'  => true,
+			'required'  => $haveToInstallTCPDF,
 			'installed' => $installedTCPDF,
-			'version'   => $tcpdfVersion['version'],
-			'date'      => $tcpdfVersion['date']->toFormat('%Y-%m-%d'),
+			'version'   => $TCPDFVersion[$versionSource],
+			'date'      => $TCPDFVersion[$versionSource]['date']->toFormat('Y-m-d'),
 		);
 	}
 
@@ -834,7 +828,7 @@ class Com_ChurchdirectoryInstallerScript
 	 * @since 7.1.0
 	 * @return void
 	 */
-	public function deleteUnexistingFiles ()
+	public function deleteUnexistingFiles()
 	{
 		$files = array('/media/com_churchdirectory/startfile.php',);
 
@@ -862,7 +856,7 @@ class Com_ChurchdirectoryInstallerScript
 	 *
 	 * @return void
 	 */
-	private function setParams ()
+	private function setParams()
 	{
 		if (count($this->_param_array) > 0)
 		{
@@ -870,8 +864,8 @@ class Com_ChurchdirectoryInstallerScript
 			$db    = JFactory::getDbo();
 			$query = $db->getQuery(true);
 			$query->select('params')
-					->from('#__extensions')
-					->where('name = ' . $db->quote($this->churchdirectory_extension));
+				->from('#__extensions')
+				->where('name = ' . $db->quote($this->churchdirectory_extension));
 			$db->setQuery($query);
 			$params = json_decode($db->loadResult(), true);
 
@@ -884,8 +878,8 @@ class Com_ChurchdirectoryInstallerScript
 			$paramsString = json_encode($params);
 			$query        = $db->getQuery(true);
 			$query->update('#__extensions')
-					->set('params = ' . $db->quote($paramsString))
-					->where('name = ' . $db->quote($this->churchdirectory_extension));
+				->set('params = ' . $db->quote($paramsString))
+				->where('name = ' . $db->quote($this->churchdirectory_extension));
 			$db->setQuery($query);
 			$db->query();
 		}
@@ -896,7 +890,7 @@ class Com_ChurchdirectoryInstallerScript
 	 *
 	 * @return void
 	 */
-	private function setDefaultDB ()
+	private function setDefaultDB()
 	{
 
 		// Create categories for our component

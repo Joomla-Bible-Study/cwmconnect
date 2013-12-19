@@ -10,11 +10,11 @@
   <description><![CDATA[TCPDF library for Joomla!. <br/>
   Please note that FabbricaBinaria has only created an installation package, all credit belongs to Nicola Asuni (www.teknick.com)<br> This is a lite version, only most used fonts are included.]]>
   </description>
-  
+
   <updateservers>
     <server type="extension" priority="1" name="TCPDF library Updates"><![CDATA[http://www.fabbricabinaria.it/index.php?option=com_ars&view=update&task=stream&format=xml&id=5&dummy=extension.xml]]></server>
   </updateservers>
-  
+
   <files folder="tcpdf">
     <folder>cache</folder>
     <folder>config</folder>
