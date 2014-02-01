@@ -65,7 +65,7 @@ class ChurchDirectoryViewMember extends JViewLegacy
 	protected $members;
 
 	/**
-	 * Dispaly function
+	 * Display function
 	 *
 	 * @param string $tpl
 	 *

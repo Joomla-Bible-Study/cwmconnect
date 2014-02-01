@@ -35,7 +35,7 @@ class ChurchDirectoryController extends JControllerLegacy
 		}
 
 		// Set the default view name and format from the Request.
-		$vName = $this->input->get('view', 'categories');
+		$vName = $this->input->get('view', 'home');
 
 		if ($vName == 'directory')
 		{
