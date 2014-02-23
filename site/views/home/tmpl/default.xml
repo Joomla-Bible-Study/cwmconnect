@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+    <layout title="COM_CHURCHDIRECTORY_HOME_VIEW_DEFAULT_TITLE" option="COM_CHURCHDIRECTORY_HOME_VIEW_DEFAULT_OPTION">
+        <message>
+			<![CDATA[COM_CHURCHDIRECTORY_MEMBER_VIEW_DEFAULT_DESC]]>
+        </message>
+    </layout>
+    <fields name="params">
+        <fieldset name="basic"
+                  label="COM_CHURCHDIRECTORY_BASIC_OPTIONS_FIELDSET_LABEL"
+		        >
+	    <field name="home_intro"
+	           type="editor"
+	           label="Intro"
+	           description="Intro text shown for all people"/>
+		<field name="form"
+		       type="url"
+		       label="Form URL"
+		       description="Request to Register as Member of the church form"/>
+        </fieldset>
+    </fields>
+</metadata>

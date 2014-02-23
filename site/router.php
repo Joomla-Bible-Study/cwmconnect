@@ -15,7 +15,7 @@ jimport('joomla.application.categories');
  *
  * @return  array    The URL arguments to use to assemble the subsequent URL.
  */
-function churchdirectoryBuildRoute(&$query)
+function ChurchdirectoryBuildRoute(&$query)
 {
 	$segments = array();
 
@@ -24,7 +24,6 @@ function churchdirectoryBuildRoute(&$query)
 	$menu     = $app->getMenu();
 	$params   = JComponentHelper::getParams('com_churchdirectory');
 	$advanced = $params->get('sef_advanced_link', 0);
-	$catid    = null;
 
 	if (empty($query['Itemid']))
 	{
@@ -35,14 +34,12 @@ function churchdirectoryBuildRoute(&$query)
 		$menuItem = $menu->getItem($query['Itemid']);
 	}
 	$mView  = (empty($menuItem->query['view'])) ? null : $menuItem->query['view'];
-	$mCatid = (empty($menuItem->query['catid'])) ? null : $menuItem->query['catid'];
 	$mId    = (empty($menuItem->query['id'])) ? null : $menuItem->query['id'];
 
 	if (isset($query['view']))
 	{
 		$view = $query['view'];
-
-		if (empty($query['Itemid']))
+		if (empty($query['Itemid']) || empty($menuItem) || $menuItem->component != 'com_churchdirectory')
 		{
 			$segments[] = $query['view'];
 		}
@@ -50,12 +47,11 @@ function churchdirectoryBuildRoute(&$query)
 	}
 
 	// Are we dealing with a member that is attached to a menu item?
-	if (isset($view) && ($mView == $view) and (isset($query['id'])) and ($mId == intval($query['id'])))
+	if (isset($view) && ($mView == $view) and (isset($query['id'])) and ($mId == (int) $query['id']))
 	{
 		unset($query['view']);
 		unset($query['catid']);
 		unset($query['id']);
-
 		return $segments;
 	}
 
@@ -74,12 +70,10 @@ function churchdirectoryBuildRoute(&$query)
 			$menuCatid  = $mId;
 			$categories = JCategories::getInstance('ChurchDirectory');
 			$category   = $categories->get($catid);
-
 			if ($category)
 			{
 				$path  = array_reverse($category->getPath());
 				$array = array();
-
 				foreach ($path as $id)
 				{
 					if ((int) $id == (int) $menuCatid)
@@ -165,17 +159,16 @@ function churchdirectoryParseRoute($segments)
 
 	// From the categories view, we can only jump to a category.
 	$id              = (isset($item->query['id']) && $item->query['id'] > 1) ? $item->query['id'] : 'root';
+
 	$contactCategory = JCategories::getInstance('ChurchDirectory')->get($id);
 
 	$categories    = ($contactCategory) ? $contactCategory->getChildren() : array();
 	$vars['catid'] = $id;
 	$vars['id']    = $id;
 	$found         = 0;
-
 	foreach ($segments as $segment)
 	{
 		$segment = $advanced ? str_replace(':', '-', $segment) : $segment;
-
 		foreach ($categories as $category)
 		{
 			if ($category->slug == $segment || $category->alias == $segment)
@@ -210,6 +203,5 @@ function churchdirectoryParseRoute($segments)
 		}
 		$found = 0;
 	}
-
 	return $vars;
 }

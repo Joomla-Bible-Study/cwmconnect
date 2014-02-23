@@ -16,21 +16,15 @@ defined('_JEXEC') or die;
 class ChurchDirectoryViewHome extends JViewLegacy
 {
 
-	/**
-	 * Protected
-	 *
-	 * @var array
-	 */
 	protected $state;
 
-	/**
-	 * Protected
-	 *
-	 * @var JObject
-	 */
 	protected $item;
 
 	protected $params;
+
+	protected $user;
+
+	protected $return;
 
 	/**
 	 * Display function
@@ -41,15 +35,15 @@ class ChurchDirectoryViewHome extends JViewLegacy
 	 */
 	public function display($tpl = null)
 	{
-		$app   = JFactory::getApplication();
-		$user  = JFactory::getUser();
-		$state = $this->get('State');
-		$item  = $this->get('Item');
+		$app          = JFactory::getApplication();
+		$user         = JFactory::getUser();
+		$state        = $this->get('State');
+		$item         = $this->get('Item');
+		$this->return = $this->get('ReturnPage');
 
 		// Get the parameters
 		$params = JComponentHelper::getParams('com_churchdirectory');
-
-		$params->merge($state);
+		$params->merge($state->params);
 
 		// Check for errors.
 		if (count($errors = $this->get('Errors')))
@@ -62,9 +56,7 @@ class ChurchDirectoryViewHome extends JViewLegacy
 		$this->params = & $params;
 		$this->user   = & $user;
 		$this->item   = & $item;
-
 		$this->prepareDocument();
-
 		parent::display($tpl);
 
 	}

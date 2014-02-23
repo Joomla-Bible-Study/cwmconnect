@@ -1,5 +1,3 @@
--- --------------------------------------------------------
-
 --
 -- Table structure for table `#__churchdirectory_details`
 --
@@ -87,10 +85,35 @@ CREATE TABLE IF NOT EXISTS `#__churchdirectory_details` (
 -- Dumping data for table `#__churchdirectory_details`
 --
 
-INSERT INTO `#__churchdirectory_details` (`id`, `name`, `lname`, `alias`, `con_position`, `contact_id`, `address`, `suburb`, `state`, `country`, `postcode`, `postcodeaddon`, `telephone`, `fax`, `misc`, `spouse`, `children`, `image`, `imagepos`, `email_to`, `default_con`, `published`, `checked_out`, `checked_out_time`, `ordering`, `params`, `user_id`, `catid`, `kmlid`, `funitid`, `access`, `mobile`, `webpage`, `sortname1`, `sortname2`, `sortname3`, `language`, `created`, `created_by`, `created_by_alias`, `modified`, `modified_by`, `metakey`, `metadesc`, `metadata`, `featured`, `xreference`, `publish_up`, `publish_down`, `skype`, `yahoo_msg`, `lat`, `lng`, `birthdate`, `anniversary`, `attribs`, `version`, `hits`, `surname`) VALUES
-(1, 'Brent Cordis', 'Cordis', 'brent-cordis', '44,35', 0, '2800 Blair Blvd', 'Nashville', 'TN', 'USA', '37212', NULL, '(615) 657-9749', '(615) 657-9749', '', '', 'Child1, Child2', 'images/sampledata/fruitshop/apple.jpg', NULL, 'info@joomlabiblestudy.com', 0, 1, 0, '0000-00-00 00:00:00', 1, '{"visibility":"1","scale":"1.1","open":"0","gxballoonvisibility":"0","show_contact_category":"","show_contact_list":"","presentation_style":"","show_name":"","show_position":"","show_email":"","show_street_address":"","show_suburb":"","show_state":"","show_postcode":"","show_country":"","show_telephone":"","show_mobile":"","show_fax":"","show_webpage":"","show_misc":"","show_image":"","allow_vcard":"","show_articles":"","show_profile":"","show_links":"","linka_name":"","linka":"","linkb_name":"","linkb":"","linkc_name":"","linkc":"","linkd_name":"","linkd":"","linke_name":"","linke":"","contact_layout":"","show_email_form":"","show_email_copy":"","banned_email":"","banned_subject":"","banned_text":"","validate_session":"","custom_reply":"","redirect":""}', 0, 8, 1, 3, 1, '(615) 657-9749', 'www.joomlabiblestudy.com', 'Last', 'First', 'Middle', '*', '2012-12-03 19:10:08', 53, '', '2012-12-06 19:04:09', 53, '', '', '{"robots":"","rights":""}', 0, '', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'skeebrent', 'bcordis', 36.131973, - 86.812370, '1981-12-03 00:00:00', '2012-12-18 00:00:00', '{"memberstatus":"0","memberotherinfo":"","familypostion":"0","mailingaddress":"","mailingsuburb":"","mailingstate":"","mailingpostcode":"","mailingcountry":""}', 1, 0, ''),
-(2, 'Amy Cordis', 'Cordis', 'amy-cordis', '41', 0, '2800 Blare Blvd', 'Nashville', 'TN', 'USA', '37212', NULL, '(615) 657-9749', '(615) 657-9749', '', '', 'child1, child2', 'images/joomla_black.gif', NULL, 'info@joomlabiblestudy.com', 0, 1, 0, '0000-00-00 00:00:00', 2, '{"visibility":"1","scale":"1.1","open":"0","gxballoonvisibility":"0","show_contact_category":"","show_contact_list":"","presentation_style":"","show_name":"","show_position":"","show_email":"","show_street_address":"","show_suburb":"","show_state":"","show_postcode":"","show_country":"","show_telephone":"","show_mobile":"","show_fax":"","show_webpage":"","show_misc":"","show_image":"","allow_vcard":"","show_articles":"","show_profile":"","show_links":"","linka_name":"","linka":"","linkb_name":"","linkb":"","linkc_name":"","linkc":"","linkd_name":"","linkd":"","linke_name":"","linke":"","contact_layout":"","show_email_form":"","show_email_copy":"","banned_email":"","banned_subject":"","banned_text":"","validate_session":"","custom_reply":"","redirect":""}', 0, 8, 1, 3, 1, '(615) 657-9749', 'www.joomlabiblestudy.com', '', '', '', '*', '2012-12-05 22:22:32', 53, '', '2012-12-06 19:08:24', 53, '', '', '{"robots":"","rights":""}', 0, '', '0000-00-00 00:00:00', '0000-00-00 00:00:00', 'test2', 'test1', 36.131973, - 86.812370, '1976-12-13 00:00:00', '2007-12-25 00:00:00', '{"memberstatus":"0","memberotherinfo":"","familypostion":"1","mailingaddress":"","mailingsuburb":"","mailingstate":"","mailingpostcode":"","mailingcountry":""}', 1, 0, ''),
-(3, 'James Smith', 'Smith', 'james-smith', '32', 0, '999 test St', 'Test', 'TN', 'USA', '99999', NULL, '(XXX) XXX-XXXX', '(XXX) XXX-XXXX', '<p>Demo contact</p>', '', '', 'images/sampledata/fruitshop/apple.jpg', NULL, 'info@joomlabiblestudy.com', 0, 1, 0, '0000-00-00 00:00:00', 3, '{"visibility":"1","scale":"1.1","open":"0","gxballoonvisibility":"0","show_contact_category":"","show_contact_list":"","presentation_style":"","show_name":"","show_position":"","show_email":"","show_street_address":"","show_suburb":"","show_state":"","show_postcode":"","show_country":"","show_telephone":"","show_mobile":"","show_fax":"","show_webpage":"","show_misc":"","show_image":"","allow_vcard":"","show_articles":"","show_profile":"","show_links":"","linka_name":"","linka":"","linkb_name":"","linkb":"","linkc_name":"","linkc":"","linkd_name":"","linkd":"","linke_name":"","linke":"","contact_layout":"","show_email_form":"","show_email_copy":"","banned_email":"","banned_subject":"","banned_text":"","validate_session":"","custom_reply":"","redirect":""}', 0, 8, 1, 0, 1, '(XXX) XXX-XXXX', 'www.joomlabiblestudy.com', '', '', '', '*', '2012-12-05 22:23:11', 53, '', '2012-12-06 19:10:22', 53, '', '', '{"robots":"","rights":""}', 0, '', '0000-00-00 00:00:00', '0000-00-00 00:00:00', '', '', 0.000000, 0.000000, '1991-07-22 00:00:00', '0000-00-00 00:00:00', '{"memberstatus":"0","memberotherinfo":"","familypostion":"-1","mailingaddress":"","mailingsuburb":"","mailingstate":"","mailingpostcode":"","mailingcountry":""}', 1, 0, '');
+INSERT INTO `#__churchdirectory_details` (`id`, `name`, `lname`, `alias`, `con_position`, `contact_id`, `address`, `suburb`, `state`, `country`, `postcode`, `postcodeaddon`, `telephone`, `fax`, `misc`, `spouse`, `children`, `image`, `imagepos`, `email_to`, `default_con`, `published`, `checked_out`, `checked_out_time`, `ordering`, `params`, `user_id`, `catid`, `kmlid`, `funitid`, `access`, `mobile`, `webpage`, `sortname1`, `sortname2`, `sortname3`, `language`, `created`, `created_by`, `created_by_alias`, `modified`, `modified_by`, `metakey`, `metadesc`, `metadata`, `featured`, `xreference`, `publish_up`, `publish_down`, `skype`, `yahoo_msg`, `lat`, `lng`, `birthdate`, `anniversary`, `attribs`, `version`, `hits`, `surname`)
+VALUES
+  (1, 'Brent Cordis', 'Cordis', 'brent-cordis', '44,35', 0, '2800 Blair Blvd', 'Nashville', 'TN', 'USA', '37212', NULL,
+   '(615) 657-9749', '(615) 657-9749', '', '', 'Child1, Child2', 'images/sampledata/fruitshop/apple.jpg', NULL,
+   'info@joomlabiblestudy.com', 0, 1, 0, '0000-00-00 00:00:00', 1,
+   '{"visibility":"1","scale":"1.1","open":"0","gxballoonvisibility":"0","show_contact_category":"","show_contact_list":"","presentation_style":"","show_name":"","show_position":"","show_email":"","show_street_address":"","show_suburb":"","show_state":"","show_postcode":"","show_country":"","show_telephone":"","show_mobile":"","show_fax":"","show_webpage":"","show_misc":"","show_image":"","allow_vcard":"","show_articles":"","show_profile":"","show_links":"","linka_name":"","linka":"","linkb_name":"","linkb":"","linkc_name":"","linkc":"","linkd_name":"","linkd":"","linke_name":"","linke":"","contact_layout":"","show_email_form":"","show_email_copy":"","banned_email":"","banned_subject":"","banned_text":"","validate_session":"","custom_reply":"","redirect":""}',
+   0, 8, 1, 3, 1, '(615) 657-9749', 'www.joomlabiblestudy.com', 'Last', 'First', 'Middle', '*', '2012-12-03 19:10:08',
+   53, '', '2012-12-06 19:04:09', 53, '', '', '{"robots":"","rights":""}', 0, '', '0000-00-00 00:00:00',
+   '0000-00-00 00:00:00', 'skeebrent', 'bcordis', 36.131973, - 86.812370, '1981-12-03 00:00:00', '2012-12-18 00:00:00',
+   '{"memberstatus":"0","memberotherinfo":"","familypostion":"0","mailingaddress":"","mailingsuburb":"","mailingstate":"","mailingpostcode":"","mailingcountry":""}',
+   1, 0, ''),
+  (2, 'Amy Cordis', 'Cordis', 'amy-cordis', '41', 0, '2800 Blare Blvd', 'Nashville', 'TN', 'USA', '37212', NULL,
+   '(615) 657-9749', '(615) 657-9749', '', '', 'child1, child2', 'images/joomla_black.gif', NULL,
+   'info@joomlabiblestudy.com', 0, 1, 0, '0000-00-00 00:00:00', 2,
+   '{"visibility":"1","scale":"1.1","open":"0","gxballoonvisibility":"0","show_contact_category":"","show_contact_list":"","presentation_style":"","show_name":"","show_position":"","show_email":"","show_street_address":"","show_suburb":"","show_state":"","show_postcode":"","show_country":"","show_telephone":"","show_mobile":"","show_fax":"","show_webpage":"","show_misc":"","show_image":"","allow_vcard":"","show_articles":"","show_profile":"","show_links":"","linka_name":"","linka":"","linkb_name":"","linkb":"","linkc_name":"","linkc":"","linkd_name":"","linkd":"","linke_name":"","linke":"","contact_layout":"","show_email_form":"","show_email_copy":"","banned_email":"","banned_subject":"","banned_text":"","validate_session":"","custom_reply":"","redirect":""}',
+   0, 8, 1, 3, 1, '(615) 657-9749', 'www.joomlabiblestudy.com', '', '', '', '*', '2012-12-05 22:22:32', 53, '',
+   '2012-12-06 19:08:24', 53, '', '', '{"robots":"","rights":""}', 0, '', '0000-00-00 00:00:00', '0000-00-00 00:00:00',
+   'test2', 'test1', 36.131973, - 86.812370, '1976-12-13 00:00:00', '2007-12-25 00:00:00',
+   '{"memberstatus":"0","memberotherinfo":"","familypostion":"1","mailingaddress":"","mailingsuburb":"","mailingstate":"","mailingpostcode":"","mailingcountry":""}',
+   1, 0, ''),
+  (3, 'James Smith', 'Smith', 'james-smith', '32', 0, '999 test St', 'Test', 'TN', 'USA', '99999', NULL,
+   '(XXX) XXX-XXXX', '(XXX) XXX-XXXX', '<p>Demo contact</p>', '', '', 'images/sampledata/fruitshop/apple.jpg', NULL,
+   'info@joomlabiblestudy.com', 0, 1, 0, '0000-00-00 00:00:00', 3,
+   '{"visibility":"1","scale":"1.1","open":"0","gxballoonvisibility":"0","show_contact_category":"","show_contact_list":"","presentation_style":"","show_name":"","show_position":"","show_email":"","show_street_address":"","show_suburb":"","show_state":"","show_postcode":"","show_country":"","show_telephone":"","show_mobile":"","show_fax":"","show_webpage":"","show_misc":"","show_image":"","allow_vcard":"","show_articles":"","show_profile":"","show_links":"","linka_name":"","linka":"","linkb_name":"","linkb":"","linkc_name":"","linkc":"","linkd_name":"","linkd":"","linke_name":"","linke":"","contact_layout":"","show_email_form":"","show_email_copy":"","banned_email":"","banned_subject":"","banned_text":"","validate_session":"","custom_reply":"","redirect":""}',
+   0, 8, 1, 0, 1, '(XXX) XXX-XXXX', 'www.joomlabiblestudy.com', '', '', '', '*', '2012-12-05 22:23:11', 53, '',
+   '2012-12-06 19:10:22', 53, '', '', '{"robots":"","rights":""}', 0, '', '0000-00-00 00:00:00', '0000-00-00 00:00:00',
+   '', '', 0.000000, 0.000000, '1991-07-22 00:00:00', '0000-00-00 00:00:00',
+   '{"memberstatus":"0","memberotherinfo":"","familypostion":"-1","mailingaddress":"","mailingsuburb":"","mailingstate":"","mailingpostcode":"","mailingcountry":""}',
+   1, 0, '');
 
 -- --------------------------------------------------------
 
@@ -127,7 +150,7 @@ CREATE TABLE IF NOT EXISTS `#__churchdirectory_dirheader` (
   `publish_down`     DATETIME            NOT NULL DEFAULT '0000-00-00 00:00:00',
   `section`          TINYINT(3)          NOT NULL DEFAULT '0'
   COMMENT 'Used to track position on page',
-    PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`)
 )
   ENGINE =InnoDB
   DEFAULT CHARSET =utf8
@@ -137,9 +160,14 @@ CREATE TABLE IF NOT EXISTS `#__churchdirectory_dirheader` (
 -- Dumping data for table `#__churchdirectory_dirheader`
 --
 
-INSERT INTO `#__churchdirectory_dirheader` (`id`, `name`, `alias`, `description`, `image`, `published`, `checked_out`, `checked_out_time`, `modified`, `modified_by`, `metakey`, `metadesc`, `metadata`, `ordering`, `language`, `created`, `created_by`, `params`, `user_id`, `catid`, `access`, `asset_id`, `publish_up`, `publish_down`) VALUES
-(1, 'Pastor', 'pastor', '<p>Pastor Info coming Soon</p>', 'images/powered_by.png', 1, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 0, '', '', '', 2, '*', '2012-12-05 21:59:23', 53, '', 0, 1, 1, 69, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(2, 'Our Church Directory', 'our-church-directory', '<p>Church Directory info</p>', 'images/sampledata/parks/banner_cradle.jpg', 1, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 0, '', '', '', 1, '*', '2012-12-05 22:00:22', 53, '', 0, 1, 1, 70, '0000-00-00 00:00:00', '0000-00-00 00:00:00');
+INSERT INTO `#__churchdirectory_dirheader` (`id`, `name`, `alias`, `description`, `image`, `published`, `checked_out`, `checked_out_time`, `modified`, `modified_by`, `metakey`, `metadesc`, `metadata`, `ordering`, `language`, `created`, `created_by`, `params`, `user_id`, `catid`, `access`, `asset_id`, `publish_up`, `publish_down`)
+VALUES
+  (1, 'Pastor', 'pastor', '<p>Pastor Info coming Soon</p>', 'images/powered_by.png', 1, 0, '0000-00-00 00:00:00',
+   '0000-00-00 00:00:00', 0, '', '', '', 2, '*', '2012-12-05 21:59:23', 53, '', 0, 1, 1, 69, '0000-00-00 00:00:00',
+   '0000-00-00 00:00:00'),
+  (2, 'Our Church Directory', 'our-church-directory', '<p>Church Directory info</p>',
+   'images/sampledata/parks/banner_cradle.jpg', 1, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 0, '', '', '', 1,
+   '*', '2012-12-05 22:00:22', 53, '', 0, 1, 1, 70, '0000-00-00 00:00:00', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -183,8 +211,10 @@ CREATE TABLE IF NOT EXISTS `#__churchdirectory_familyunit` (
 -- Dumping data for table `#__churchdirectory_familyunit`
 --
 
-INSERT INTO `#__churchdirectory_familyunit` (`id`, `name`, `alias`, `description`, `image`, `published`, `checked_out`, `checked_out_time`, `modified`, `modified_by`, `metakey`, `metadesc`, `metadata`, `ordering`, `language`, `created`, `created_by`, `params`, `user_id`, `access`, `asset_id`, `publish_up`, `publish_down`) VALUES
-(1, 'Brent & Amy Cordis', 'brent-amy-cordis', '', '', 1, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 0, '', '', '', 1, '*', '2012-12-05 22:01:13', 53, '', 0, 1, 71, '0000-00-00 00:00:00', '0000-00-00 00:00:00');
+INSERT INTO `#__churchdirectory_familyunit` (`id`, `name`, `alias`, `description`, `image`, `published`, `checked_out`, `checked_out_time`, `modified`, `modified_by`, `metakey`, `metadesc`, `metadata`, `ordering`, `language`, `created`, `created_by`, `params`, `user_id`, `access`, `asset_id`, `publish_up`, `publish_down`)
+VALUES
+  (1, 'Brent & Amy Cordis', 'brent-amy-cordis', '', '', 1, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 0, '', '',
+   '', 1, '*', '2012-12-05 22:01:13', 53, '', 0, 1, 71, '0000-00-00 00:00:00', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -247,8 +277,13 @@ CREATE TABLE IF NOT EXISTS `#__churchdirectory_kml` (
 -- Dumping data for table `#__churchdirectory_kml`
 --
 
-INSERT INTO `#__churchdirectory_kml` (`id`, `name`, `alias`, `description`, `published`, `checked_out`, `checked_out_time`, `modified`, `modified_by`, `metakey`, `metadesc`, `metadata`, `ordering`, `language`, `created`, `created_by`, `params`, `linestyle`, `polystyle`, `user_id`, `access`, `asset_id`, `lat`, `lng`, `icon`, `style`, `publish_up`, `publish_down`) VALUES
-(1, 'Nashville First SDA Church Members Directory', 'nashville-first-sda-church-members-directory', '<div>\r\n<p><strong>Confidentiality Notice</strong>: This KML file, including any attachments, is for the sole use of the <strong>Nasvhille First SDA Church Members</strong> and may contain confidential and/or privileged information. If you are not the intended recipient(s), you are hereby notified that any dissemination, unauthorized review, use, disclosure or distribution of this KML file and any materials contained in any attachments is prohibited. If you receive this KML file in error, or are not the intended recipient(s), please immediately notify the sender by email and destroy all copies of the original message, including attachments.Privicy Statment</p>\r\n<div style="text-align: center;">\r\n<p>615-297-1343 | 2800 Blair Blvd | Nashville, TN 37212 <br />webmaster@nfsda.org</p>\r\n</div>\r\n</div>', 1, 0, '0000-00-00 00:00:00', '2012-03-18 04:35:11', 63, '', '', '', 0, '*', '2011-12-14 00:00:00', 0, '{"altitude":"0","range":"110027.8255488604","rmaxlines":"","tilt":"0","heading":"-1.119363650863577e-006","lscolormode":"normal","lsscale":".6","icscale":"1.2","open":"1","mcropen":"0","msropen":"0","lscolor":"#ffffff","gxaltitudeMode":"relativeToSeaFloor"}', '00000000', '00000000', 0, 4, 1120, 36.131973, - 86.812370, 'b', '', '2011-12-14 00:00:00', '0000-00-00 00:00:00');
+INSERT INTO `#__churchdirectory_kml` (`id`, `name`, `alias`, `description`, `published`, `checked_out`, `checked_out_time`, `modified`, `modified_by`, `metakey`, `metadesc`, `metadata`, `ordering`, `language`, `created`, `created_by`, `params`, `linestyle`, `polystyle`, `user_id`, `access`, `asset_id`, `lat`, `lng`, `icon`, `style`, `publish_up`, `publish_down`)
+VALUES
+  (1, 'Nashville First SDA Church Members Directory', 'nashville-first-sda-church-members-directory',
+   '<div>\r\n<p><strong>Confidentiality Notice</strong>: This KML file, including any attachments, is for the sole use of the <strong>Nasvhille First SDA Church Members</strong> and may contain confidential and/or privileged information. If you are not the intended recipient(s), you are hereby notified that any dissemination, unauthorized review, use, disclosure or distribution of this KML file and any materials contained in any attachments is prohibited. If you receive this KML file in error, or are not the intended recipient(s), please immediately notify the sender by email and destroy all copies of the original message, including attachments.Privicy Statment</p>\r\n<div style="text-align: center;">\r\n<p>615-297-1343 | 2800 Blair Blvd | Nashville, TN 37212 <br />webmaster@nfsda.org</p>\r\n</div>\r\n</div>',
+   1, 0, '0000-00-00 00:00:00', '2012-03-18 04:35:11', 63, '', '', '', 0, '*', '2011-12-14 00:00:00', 0,
+   '{"altitude":"0","range":"110027.8255488604","rmaxlines":"","tilt":"0","heading":"-1.119363650863577e-006","lscolormode":"normal","lsscale":".6","icscale":"1.2","open":"1","mcropen":"0","msropen":"0","lscolor":"#ffffff","gxaltitudeMode":"relativeToSeaFloor"}',
+   '00000000', '00000000', 0, 4, 1120, 36.131973, - 86.812370, 'b', '', '2011-12-14 00:00:00', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -290,8 +325,10 @@ CREATE TABLE IF NOT EXISTS `#__churchdirectory_position` (
 -- Dumping data for table `#__churchdirectory_position`
 --
 
-INSERT INTO `#__churchdirectory_position` (`id`, `name`, `alias`, `published`, `checked_out`, `checked_out_time`, `modified`, `modified_by`, `metakey`, `metadesc`, `metadata`, `ordering`, `language`, `created`, `created_by`, `params`, `user_id`, `access`, `asset_id`, `publish_up`, `publish_down`) VALUES
-(1, 'Pastor', 'pastor', 1, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 0, '', '', '', 1, '*', '2012-12-03 21:09:21', 53, '', 0, 1, 37, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+INSERT INTO `#__churchdirectory_position` (`id`, `name`, `alias`, `published`, `checked_out`, `checked_out_time`, `modified`, `modified_by`, `metakey`, `metadesc`, `metadata`, `ordering`, `language`, `created`, `created_by`, `params`, `user_id`, `access`, `asset_id`, `publish_up`, `publish_down`)
+VALUES
+  (1, 'Pastor', 'pastor', 1, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 0, '', '', '', 1, '*',
+   '2012-12-03 21:09:21', 53, '', 0, 1, 37, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
 (2, 'Elder', 'elder', 1, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 0, '', '', '', 2, '*', '2012-12-03 21:09:36', 53, '', 0, 1, 38, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
 (3, 'Deacon', 'deacon', 1, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 0, '', '', '', 3, '*', '2012-12-03 21:09:58', 53, '', 0, 1, 39, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
 (4, 'Deaconess', 'deaconess', 1, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 0, '', '', '', 4, '*', '2012-12-03 21:10:12', 53, '', 0, 1, 40, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
@@ -312,15 +349,27 @@ INSERT INTO `#__churchdirectory_position` (`id`, `name`, `alias`, `published`, `
 (19, 'Bulletin', 'bulletin', 1, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 0, '', '', '', 19, '*', '2012-12-03 21:19:06', 53, '', 0, 1, 55, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
 (20, 'Website', 'website', 1, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 0, '', '', '', 20, '*', '2012-12-03 21:19:15', 53, '', 0, 1, 56, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
 (21, 'Prayer Coordinator', 'prayer-coordinator', 1, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 0, '', '', '', 21, '*', '2012-12-03 21:19:27', 53, '', 0, 1, 57, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(22, 'Investment Secretary', 'investment-secretary', 1, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 0, '', '', '', 22, '*', '2012-12-03 21:19:47', 53, '', 0, 1, 58, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(23, 'Children''s Ministries Leader', 'children-s-ministries-leader', 1, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 0, '', '', '', 23, '*', '2012-12-03 21:20:25', 53, '', 0, 1, 59, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(24, 'Children''s Ministries', 'children-s-ministries', 1, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 0, '', '', '', 24, '*', '2012-12-03 21:20:31', 53, '', 0, 1, 60, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(25, 'Sabbath Shool Department Head Superintentdant', 'sabbath-shool-department-head-superintentdant', -2, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 0, '', '', '', 25, '*', '2012-12-03 21:21:03', 53, '', 0, 1, 61, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(26, 'Sabbath Shool Department', 'sabbath-shool-department', 1, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 0, '', '', '', 26, '*', '2012-12-03 21:21:14', 53, '', 0, 1, 62, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(27, 'Personal Ministries Department', 'personal-ministries-department', 1, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 0, '', '', '', 27, '*', '2012-12-03 21:21:32', 53, '', 0, 1, 63, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(28, 'Music Department', 'music-department', 1, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 0, '', '', '', 28, '*', '2012-12-03 21:21:51', 53, '', 0, 1, 64, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(29, 'Religios Liberty', 'religios-liberty', 1, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 0, '', '', '', 29, '*', '2012-12-03 21:23:28', 53, '', 0, 1, 65, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
-(30, 'Vacation Bible School', 'vacation-bible-school', 1, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 0, '', '', '', 30, '*', '2012-12-03 21:23:39', 53, '', 0, 1, 66, '0000-00-00 00:00:00', '0000-00-00 00:00:00');
+  (22, 'Investment Secretary', 'investment-secretary', 1, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 0, '', '',
+   '', 22, '*', '2012-12-03 21:19:47', 53, '', 0, 1, 58, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+  (23, 'Children''s Ministries Leader', 'children-s-ministries-leader', 1, 0, '0000-00-00 00:00:00',
+   '0000-00-00 00:00:00', 0, '', '', '', 23, '*', '2012-12-03 21:20:25', 53, '', 0, 1, 59, '0000-00-00 00:00:00',
+   '0000-00-00 00:00:00'),
+  (24, 'Children''s Ministries', 'children-s-ministries', 1, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 0, '', '',
+   '', 24, '*', '2012-12-03 21:20:31', 53, '', 0, 1, 60, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+  (25, 'Sabbath Shool Department Head Superintentdant', 'sabbath-shool-department-head-superintentdant', -2, 0,
+   '0000-00-00 00:00:00', '0000-00-00 00:00:00', 0, '', '', '', 25, '*', '2012-12-03 21:21:03', 53, '', 0, 1, 61,
+   '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+  (26, 'Sabbath Shool Department', 'sabbath-shool-department', 1, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 0,
+   '', '', '', 26, '*', '2012-12-03 21:21:14', 53, '', 0, 1, 62, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+  (27, 'Personal Ministries Department', 'personal-ministries-department', 1, 0, '0000-00-00 00:00:00',
+   '0000-00-00 00:00:00', 0, '', '', '', 27, '*', '2012-12-03 21:21:32', 53, '', 0, 1, 63, '0000-00-00 00:00:00',
+   '0000-00-00 00:00:00'),
+  (28, 'Music Department', 'music-department', 1, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 0, '', '', '', 28,
+   '*', '2012-12-03 21:21:51', 53, '', 0, 1, 64, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+  (29, 'Religios Liberty', 'religios-liberty', 1, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 0, '', '', '', 29,
+   '*', '2012-12-03 21:23:28', 53, '', 0, 1, 65, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
+  (30, 'Vacation Bible School', 'vacation-bible-school', 1, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 0, '', '',
+   '', 30, '*', '2012-12-03 21:23:39', 53, '', 0, 1, 66, '0000-00-00 00:00:00', '0000-00-00 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -342,8 +391,10 @@ CREATE TABLE IF NOT EXISTS `#__churchdirectory_update` (
 --
 
 INSERT INTO `#__churchdirectory_update` (`id`, `version`) VALUES
-(1, '1.7.1'),
-(2, '1.7.2'),
-(3, '1.7.3'),
-(4, '1.7.4'),
-(5, '1.7.5');
+  (1, '1.7.1'),
+  (2, '1.7.2'),
+  (3, '1.7.3'),
+  (4, '1.7.4'),
+  (5, '1.7.5'),
+  (6, '1.7.6'),
+  (7, '1.7.7');

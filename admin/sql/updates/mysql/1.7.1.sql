@@ -1,8 +1,6 @@
 --
 -- Version 1.7.1 update
 --
-INSERT INTO `#__churchdirectory_update` (id, version) VALUES (1, '1.7.1')
-ON DUPLICATE KEY UPDATE version= '1.7.1';
 
 --
 -- Fix for Published Problmes to allow for trash
@@ -20,11 +18,11 @@ AFTER `description`;
 ALTER TABLE `#__churchdirectory_details` ADD INDEX `idx_funit` (`funitid`);
 
 UPDATE `#__menu`
-SET `title` =  'COM_CHURCHDIRECTORY_MEMBERS',
-  `alias` =  'com-churchdirectory-members',
-  `path` =  'com-churchdirectory/com-churchdirectory-members',
-  `link` =  'index.php?option=com_churchdirectory&view=members',
-  `img` =  '../media/com_churchdirectory/images/menu/icon-16-members.png'
+SET `title` = 'COM_CHURCHDIRECTORY_MEMBERS',
+  `alias`   = 'com-churchdirectory-members',
+  `path`    = 'com-churchdirectory/com-churchdirectory-members',
+  `link`    = 'index.php?option=com_churchdirectory&view=members',
+  `img`     = '../media/com_churchdirectory/images/menu/icon-16-members.png'
 WHERE `#__menu`.`title` = 'COM_CHURCHDIRECTORY_MEMBERS';
 
 CREATE TABLE IF NOT EXISTS `#__churchdirectory_dirheader` (

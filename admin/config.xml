@@ -1149,25 +1149,19 @@
 	<fieldset name="Home"
 	          label="COM_CHURCHDIRECTORY_FIELD_CONFIG_HOME_DISPLAY"
 	          description="COM_CHURCHDIRECTORY_FIELD_CONFIG_HOME_DESC">
-		<field name="hometitle"
-		       type="text"
-		       rows="1"
-		       label="Title"
-		       description=""/>
-	    <field name="homeintro"
-	           type="textbox"
+	    <field name="home_intro"
+	           type="editor"
 	           label="Intro"
-	           description=""/>
+	           description="Intro text shown for all people"/>
 		<field name="form"
                type="url"
                label="Form URL"
-               description=""/>
+               description="Request to Register as Member of the church form"/>
     </fieldset>
     <fieldset name="permissions"
               label="JCONFIG_PERMISSIONS_LABEL"
               description="JCONFIG_PERMISSIONS_DESC"
 		    >
-
         <field name="rules"
                type="rules"
                label="JCONFIG_PERMISSIONS_LABEL"

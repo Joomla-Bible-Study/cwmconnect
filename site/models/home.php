@@ -1,8 +1,8 @@
 <?php
 /**
- * @package    ChurchDirectory.Site
+ * @package        ChurchDirectory.Site
  * @copyright  (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * @license        GNU General Public License version 2 or later; see LICENSE.txt
  * */
 
 defined('_JEXEC') or die;
@@ -52,10 +52,12 @@ class ChurchDirectoryModelHome extends JModelForm
 	 */
 	protected function populateState()
 	{
-		$app = JFactory::getApplication('site');
+		$app   = JFactory::getApplication('site');
+
+		$this->setState('return_page', 'index.php?option=com_churchdirectory');
 
 		// Load the parameters.
-		$params = $app->getParams();
+		$params     = $app->getParams();
 		$this->setState('params', $params);
 	}
 
@@ -64,8 +66,8 @@ class ChurchDirectoryModelHome extends JModelForm
 	 *
 	 * The base form is loaded from XML and then an event is fired
 	 *
-	 * @param    array    $data      An optional array of data for the form to interrogate.
-	 * @param    boolean  $loadData  True if the form is to load its own data (default case), false if not.
+	 * @param    array   $data     An optional array of data for the form to interrogate.
+	 * @param    boolean $loadData True if the form is to load its own data (default case), false if not.
 	 *
 	 * @return    JForm    A JForm object on success, false on failure
 	 * @since    1.6
@@ -73,14 +75,14 @@ class ChurchDirectoryModelHome extends JModelForm
 	public function getForm($data = array(), $loadData = true)
 	{
 		// Get the form.
-		$form = $this->loadForm('com_churchdirectory.member', 'member', array('control' => 'jform', 'load_data' => true));
+		$form = $this->loadForm('com_churchdirectory.home', 'home', array('control' => 'jform', 'load_data' => true));
 
 		if (empty($form))
 		{
 			return false;
 		}
 
-		$id     = (int) $this->getState('member.id');
+		$id     = (int) $this->getState('home.id');
 		$params = $this->getState('params');
 		$member = $this->_item[$id];
 		$params->merge($member->params);
@@ -113,13 +115,25 @@ class ChurchDirectoryModelHome extends JModelForm
 	/**
 	 * Gets a list of members
 	 *
-	 * @param   int  $pk  Id of member
+	 * @param   int $pk Id of member
 	 *
 	 * @return mixed Object or null
 	 */
 	public function &getItem($pk = null)
 	{
 		return $pk;
+	}
+
+	/**
+	 * Get the return URL.
+	 *
+	 * @return    string    The return URL.
+	 *
+	 * @since    1.6
+	 */
+	public function getReturnPage()
+	{
+		return base64_encode($this->getState('return_page'));
 	}
 
 }
