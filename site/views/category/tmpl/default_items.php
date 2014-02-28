@@ -45,7 +45,7 @@ defined('_JEXEC') or die;
             <br/>
 			<strong class="list-title">
 				<a href="<?php echo JRoute::_(ChurchDirectoryHelperRoute::getMemberRoute($item->slug, $item->catid)); ?>">
-					<?php echo $item->name; ?></a>
+					<?php echo $item->name.' '.$item->lname; ?></a>
 				<?php if ($this->items[$i]->published == 0): ?>
 					<span class="label label-warning"><?php echo JText::_('JUNPUBLISHED'); ?></span>
 				<?php endif; ?>

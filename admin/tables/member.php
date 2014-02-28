@@ -192,7 +192,8 @@ class ChurchDirectoryTableMember extends JTable
 			return false;
 		}
 		/** check for existing name */
-		$query = 'SELECT id FROM #__churchdirectory_details WHERE name = ' . $this->_db->Quote($this->name) . ' AND catid = ' . (int) $this->catid;
+/* TF removed - if same first name exists it errors - this should not be.
+		 * $query = 'SELECT id FROM #__churchdirectory_details WHERE name = ' . $this->_db->Quote($this->name) . ' AND catid = ' . (int) $this->catid;
 		$this->_db->setQuery($query);
 
 		$xid = intval($this->_db->loadResult());
@@ -203,7 +204,7 @@ class ChurchDirectoryTableMember extends JTable
 
 			return false;
 		}
-
+*/
 		if (empty($this->alias))
 		{
 			$this->alias = $this->name;
