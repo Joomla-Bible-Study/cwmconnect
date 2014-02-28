@@ -134,7 +134,17 @@
                 <option value="0">JHIDE</option>
                 <option value="1">JSHOW</option>
             </field>
-
+            <field name="show_image_headings"
+                   type="radio"
+                   class="btn-group"
+                   default="1"
+                   label="COM_CHURCHDIRECTORY_FIELD_PARAMS_IMAGE_LABEL"
+                   description="COM_CHURCHDIRECTORY_FIELD_PARAMS_IMAGE_DESC"
+                    >
+                <option value="">JGLOBAL_USE_GLOBAL</option>
+                <option value="0">JHIDE</option>
+                <option value="1">JSHOW</option>
+            </field>
             <field name="show_position_headings" type="list"
 			label="COM_CHURCHDIRECTORY_FIELD_CONFIG_POSITION_LABEL"
 			description="COM_CHURCHDIRECTORY_FIELD_CONFIG_POSITION_DESC"

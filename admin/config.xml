@@ -57,6 +57,7 @@
             <option value="0">JHIDE</option>
             <option value="1">JSHOW</option>
         </field>
+
         <field name="show_name"
                type="radio"
                class="btn-group"
@@ -536,7 +537,16 @@
             <option value="0">JHIDE</option>
             <option value="1">JSHOW</option>
         </field>
-
+        <field name="show_image_headings"
+               type="radio"
+               class="btn-group"
+               default="1"
+               label="COM_CHURCHDIRECTORY_FIELD_PARAMS_IMAGE_HEADINGS_LABEL"
+               description="COM_CHURCHDIRECTORY_FIELD_PARAMS_IMAGE_HEADINGS_DESC"
+                >
+            <option value="0">JHIDE</option>
+            <option value="1">JSHOW</option>
+        </field>
         <field name="show_position_headings"
                type="radio"
                class="btn-group"
