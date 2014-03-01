@@ -533,10 +533,19 @@
                description="JGLOBAL_SHOW_HEADINGS_DESC"
                label="JGLOBAL_SHOW_HEADINGS_LABEL"
 		        >
-
             <option value="0">JHIDE</option>
             <option value="1">JSHOW</option>
         </field>
+            <field name="filter_field" type="radio"
+                   class="btn-group"
+                   default="1"
+                   description="COM_CHURCHDIRECTORY_SHOW_FILTER_DESC"
+                   label="COM_CHURCHDIRECTORY_SHOW_FILTER_LABEL"
+                    >
+                <option value="0">JHIDE</option>
+                <option value="1">JSHOW</option>
+            </field>
+
         <field name="show_image_headings"
                type="radio"
                class="btn-group"
@@ -558,7 +567,17 @@
             <option value="0">JHIDE</option>
             <option value="1">JSHOW</option>
         </field>
+        <field name="show_lname"
+               type="radio"
+               class="btn-group"
+               default="1"
+               label="COM_CHURCHDIRECTORY_LNAME"
+               description="COM_CHURCHDIRECTORY_LNAME_DESC"
+                >
 
+            <option value="0">JHIDE</option>
+            <option value="1">JSHOW</option>
+        </field>
         <field name="show_page_birthann"
                type="radio"
                class="btn-group"

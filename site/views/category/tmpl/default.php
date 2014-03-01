@@ -85,12 +85,12 @@ else
 			{
 				?>
 				<fieldset class="filters btn-toolbar">
-					<?php if ($this->params->get('filter_field') != 'hide')
+					<?php if ($this->params->get('filter_field') == 1)
 					{
 						?>
 						<div class="btn-group">
 							<label class="filter-search-lbl element-invisible" for="filter-search"><span
-									class="label label-warning"><?php echo JText::_('JUNPUBLISHED'); ?></span><?php echo JText::_('COM_CHURCHDIRECTORY_FILTER_LABEL') . '&#160;'; ?>
+									class="label label-warning"><?php //echo JText::_('JUNPUBLISHED'); ?></span><?php echo JText::_('COM_CHURCHDIRECTORY_FILTER_LABEL') . '&#160;'; ?>
 							</label>
 							<input type="text" name="filter-search" id="filter-search"
 							       value="<?php echo $this->escape($this->state->get('list.filter')); ?>"

@@ -134,6 +134,14 @@
                 <option value="0">JHIDE</option>
                 <option value="1">JSHOW</option>
             </field>
+            <field name="filter_field" type="list"
+                   description="COM_CHURCHDIRECTORY_SHOW_FILTER_DESC"
+                   label="COM_CHURCHDIRECTORY_SHOW_FILTER_LABEL"
+                    >
+                <option value="">JGLOBAL_USE_GLOBAL</option>
+                <option value="0">JHIDE</option>
+                <option value="1">JSHOW</option>
+            </field>
             <field name="show_image_headings"
                    type="radio"
                    class="btn-group"
@@ -162,7 +170,14 @@
                 <option value="0">JHIDE</option>
                 <option value="1">JSHOW</option>
             </field>
-
+            <field name="show_lname" type="list"
+                   description="COM_CHURCHDIRECTORY_LNAME_DESC"
+                   label="COM_CHURCHDIRECTORY_LNAME_LABEL"
+                    >
+                <option value="">JGLOBAL_USE_GLOBAL</option>
+                <option value="0">JHIDE</option>
+                <option value="1">JSHOW</option>
+            </field>
             <field name="show_telephone_headings"
 			type="list"
 			label="COM_CHURCHDIRECTORY_FIELD_CONFIG_PHONE_LABEL"
