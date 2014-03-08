@@ -363,6 +363,7 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 		$kml[]     = '</kml>';
 		$kmlOutput = join("\n", $kml);
 		echo $kmlOutput;
+		return true;
 	}
 
 	/**

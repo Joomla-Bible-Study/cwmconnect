@@ -185,9 +185,9 @@ class ChurchDirectoryControllerMember extends JControllerForm
 			$churchdirectory_user      = JUser::getInstance($churchdirectory->user_id);
 			$churchdirectory->email_to = $churchdirectory_user->get('email');
 		}
-		$mailfrom = $app->getCfg('mailfrom');
-		$fromname = $app->getCfg('fromname');
-		$sitename = $app->getCfg('sitename');
+		$mailfrom = $app->get('mailfrom');
+		$fromname = $app->get('fromname');
+		$sitename = $app->get('sitename');
 
 		$name    = $data['churchdirectory_name'];
 		$email   = $data['churchdirectory_email'];

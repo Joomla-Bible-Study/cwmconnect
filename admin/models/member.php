@@ -310,6 +310,7 @@ class ChurchDirectoryModelMember extends JModelAdmin
 
 			return $user->authorise('core.delete', 'com_churchdirectory.member.' . (int) $record->catid);
 		}
+		return true;
 	}
 
 	/**

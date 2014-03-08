@@ -641,16 +641,16 @@ var jscolor = {
 					e.stopPropagation(); // prevent move "view" on broswer
 					e.preventDefault(); // prevent Default - Android Fix (else android generated only 1-2 touchmove events)
 				};
-				p.box.removeEventListener('touchmove', handle_touchmove, false)
-				p.box.addEventListener('touchmove', handle_touchmove, false)
+				p.box.removeEventListener('touchmove', handle_touchmove, false);
+				p.box.addEventListener('touchmove', handle_touchmove, false);
 			}
 			p.padM.onmouseup =
 			p.padM.onmouseout = function() { if(holdPad) { holdPad=false; jscolor.fireEvent(valueElement,'change'); } };
 			p.padM.onmousedown = function(e) {
 				// if the slider is at the bottom, move it up
 				switch(modeID) {
-					case 0: if (THIS.hsv[2] === 0) { THIS.fromHSV(null, null, 1.0); }; break;
-					case 1: if (THIS.hsv[1] === 0) { THIS.fromHSV(null, 1.0, null); }; break;
+					case 0: if (THIS.hsv[2] === 0) { THIS.fromHSV(null, null, 1.0); } break;
+					case 1: if (THIS.hsv[1] === 0) { THIS.fromHSV(null, 1.0, null); } break;
 				}
 				holdSld=false;
 				holdPad=true;

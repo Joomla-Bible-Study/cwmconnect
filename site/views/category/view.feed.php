@@ -25,6 +25,7 @@ class ChurchDirectoryViewCategory extends JViewLegacy
 	 */
 	public function display($tpl = null)
 	{
+		/** @var JApplicationSite $app */
 		$app = JFactory::getApplication();
 
 		// Check for errors.
@@ -37,11 +38,11 @@ class ChurchDirectoryViewCategory extends JViewLegacy
 
 		$doc       = JFactory::getDocument();
 		$params    = $app->getParams();
-		$feedEmail = $app->getCfg('feed_email', 'author');
-		$siteEmail = $app->getCfg('mailfrom');
-		$fromName  = $app->getCfg('fromname');
+		$feedEmail = $app->get('feed_email', 'author');
+		$siteEmail = $app->get('mailfrom');
+		$fromName  = $app->get('fromname');
 
-		$app->input->set('limit', $app->getCfg('feed_limit'));
+		$app->input->set('limit', $app->get('feed_limit'));
 
 		// Get some data from the models
 		$category = $this->get('Category');

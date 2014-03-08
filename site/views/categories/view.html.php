@@ -105,7 +105,7 @@ class ChurchDirectoryViewCategories extends JViewLegacy
 
 		$this->_prepareDocument();
 
-		parent::display($tpl);
+		return parent::display($tpl);
 	}
 
 	/**

@@ -20,18 +20,22 @@ class ChurchDirectoryViewHome extends JViewLegacy
 
 	protected $item;
 
+	/** @var  JRegistry */
 	protected $params;
 
 	protected $user;
 
 	protected $return;
 
+	/** @var  JDocument */
+	protected $document;
+
 	/**
 	 * Display function
 	 *
 	 * @param string $tpl
 	 *
-	 * @return boolean
+	 * @return mixed
 	 */
 	public function display($tpl = null)
 	{
@@ -57,7 +61,7 @@ class ChurchDirectoryViewHome extends JViewLegacy
 		$this->user   = & $user;
 		$this->item   = & $item;
 		$this->prepareDocument();
-		parent::display($tpl);
+		return parent::display($tpl);
 
 	}
 
@@ -88,15 +92,15 @@ class ChurchDirectoryViewHome extends JViewLegacy
 
 		if (empty($title))
 		{
-			$title = $app->getCfg('sitename');
+			$title = $app->get('sitename');
 		}
-		elseif ($app->getCfg('sitename_pagetitles', 0) == 1)
+		elseif ($app->get('sitename_pagetitles', 0) == 1)
 		{
-			$title = JText::sprintf('JPAGETITLE', $app->getCfg('sitename'), $title);
+			$title = JText::sprintf('JPAGETITLE', $app->get('sitename'), $title);
 		}
-		elseif ($app->getCfg('sitename_pagetitles', 0) == 2)
+		elseif ($app->get('sitename_pagetitles', 0) == 2)
 		{
-			$title = JText::sprintf('JPAGETITLE', $title, $app->getCfg('sitename'));
+			$title = JText::sprintf('JPAGETITLE', $title, $app->get('sitename'));
 		}
 		$this->document->setTitle($title);
 
