@@ -9,7 +9,6 @@ defined('_JEXEC') or die;
 JHtml::_('bootstrap.framework');
 $login = $this->user->get('guest') ? true : false;
 $check = in_array($this->params->get('accesslevel'), $this->user->get('_authLevels'));
-var_dump($this->params);
 ?>
 <div>
 	<h1 class="center"><?php if ($this->params->get('show_page_heading', 0))
@@ -42,4 +41,5 @@ var_dump($this->params);
 			</div>
 		<?php } ?>
 	</div>
+	<?php echo $this->search; ?>
 </div>

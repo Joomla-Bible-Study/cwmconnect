@@ -28,7 +28,7 @@ class ChurchDirectoryViewHome extends JViewLegacy
 	protected $return;
 
 	/** @var  JDocument */
-	protected $document;
+	public  $document;
 
 	/**
 	 * Display function
@@ -56,6 +56,18 @@ class ChurchDirectoryViewHome extends JViewLegacy
 
 			return false;
 		}
+		$document   = JFactory::getDocument();
+		$renderer   = $document->loadRenderer('module');
+		$modparams   = array('style'=>'xhtml');
+		$contents   = '';
+		$mod = JModuleHelper::getModule('mod_finder');
+			$registry   = new JRegistry();
+			$registry->loadString($mod->params);
+			$registry->set('searchfilter','paramvalue');
+			$registry->set('show_advanced', '0');
+			$mod->params = (string)$registry;
+			$contents .= $renderer->render($mod, $modparams);
+		$this->search = $contents;
 
 		$this->params = & $params;
 		$this->user   = & $user;

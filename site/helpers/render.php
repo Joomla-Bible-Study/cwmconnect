@@ -265,25 +265,7 @@ class RenderHelper
 	 */
 	public function rowWidth($rows_per_page)
 	{
-		$results = 12;
-
-		if ($rows_per_page == 2)
-		{
-			/* span6 */
-			$results = 6;
-		}
-		elseif ($rows_per_page == 3)
-		{
-			/* span4 */
-			$results = 4;
-		}
-		elseif ($rows_per_page == 4)
-		{
-			/* span2 */
-			$results = 2;
-		}
-
-		return $results;
+		return 12/$rows_per_page;
 	}
 
 	/**

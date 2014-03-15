@@ -333,7 +333,7 @@ class ChurchDirectoryModelMember extends JModelForm
 
 				if (empty($result))
 				{
-					throw new Exception(JText::_('COM_CHURCHDIRECTORY_ERROR_MEMBER_NOT_FOUND'), 404);
+					return false;
 				}
 
 				// If we are showing a member list, then the member parameters take priority

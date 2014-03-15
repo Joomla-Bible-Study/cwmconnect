@@ -34,7 +34,7 @@ foreach ($this->items as $item)
 		if (($item->funitid != '0' && $item->attribs->get('familypostion', '0') === '0') || ($item->funitid == '0' && $item->attribs->get('familypostion', '-1') === '-1' || $item->attribs->get('familypostion', '0') === '0'))
 		{
 
-			echo '<table class="table churchdirectory-table"><tbody><tr><td class="span6">';
+			echo '<table class="table churchdirectory-table"><tbody><tr><td class="span' . $this->span . '">';
 		}
 	}
 	$this->subcount--;
@@ -357,7 +357,7 @@ foreach ($this->items as $item)
 		if ($this->printed_items == $this->items_per_row && $this->printed_rows != $this->rows_per_page - 1)
 		{
 			echo '<!-- new column -->';
-			echo '</td><td class="span6">';
+			echo '</td><td class="span' . $this->span . '">';
 			$this->printed_rows++;
 			$this->printed_items = 0;
 		}

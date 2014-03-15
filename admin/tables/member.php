@@ -1,8 +1,8 @@
 <?php
 /**
- * @package    ChurchDirectory.Admin
+ * @package        ChurchDirectory.Admin
  * @copyright  (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * @license        GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 defined('_JEXEC') or die;
@@ -10,31 +10,82 @@ defined('_JEXEC') or die;
 /**
  * Member Table Class
  *
- * @property mixed      default_con
- * @property mixed      publish_up
- * @property mixed      publish_down
- * @property mixed      created_by
- * @property mixed      modified_by
- * @property mixed      modified
- * @property mixed      created
- * @property string     xreference
- * @property \JRegistry params
- * @property mixed      alias
- * @property mixed      attribs
  * @package  ChurchDirectory.Admin
  * @since    1.7.0
  */
 class ChurchDirectoryTableMember extends JTable
 {
 
+	public $id;
+	public $name;
+	public $lname;
+	public $alias;
+	public $con_position;
+	public $contact_id;
+	public $address;
+	public $suburb;
+	public $state;
+	public $country;
+	public $postcode;
+	public $postcodeaddon;
+	public $telephone;
+	public $fax;
+	public $misc;
+	public $spouse;
+	public $children;
+	public $image;
+	public $imagepos;
+	public $email_to;
+	public $default_con;
+	public $published;
+	public $checked_out;
+	public $checked_out_time;
+	public $ordering;
+	public $params;
+	public $user_id;
+	public $catid;
+	public $kmlid;
+	public $funitid;
+	public $access;
+	public $mobile;
+	public $webpage;
+	public $sortname1;
+	public $sortname2;
+	public $sortname3;
+	public $language;
+	public $created;
+	public $created_by;
+	public $created_by_alias;
+	public $modified;
+	public $modified_by;
+	public $metakey;
+	public $metadesc;
+	public $metadata;
+	public $featured;
+	public $xreference;
+	public $publish_up;
+	public $publish_down;
+	public $skype;
+	public $yahoo_msg;
+	public $lat;
+	public $lng;
+	public $birthdate;
+	public $anniversary;
+	public $attribs;
+	public $version;
+	public $hits;
+	public $surname;
+	public $mstatus;
+
+
 	/**
 	 * Constructor
 	 *
-	 * @param   JDatabaseDriver &$db  Database connector object
+	 * @param   JDatabaseDriver  &$db  Database connector object
 	 *
 	 * @since 1.0
 	 */
-	public function __construct(& $db)
+	public function __construct (& $db)
 	{
 		parent::__construct('#__churchdirectory_details', 'id', $db);
 	}
@@ -42,14 +93,14 @@ class ChurchDirectoryTableMember extends JTable
 	/**
 	 * Override bind function
 	 *
-	 * @param   mixed $array   An associative array or object to bind to the JTable instance.
-	 * @param   mixed $ignore  An optional array or space separated list of properties to ignore while binding.
+	 * @param   mixed  $array   An associative array or object to bind to the JTable instance.
+	 * @param   mixed  $ignore  An optional array or space separated list of properties to ignore while binding.
 	 *
 	 * @return  boolean  True on success.
 	 * @link     http://docs.joomla.org/JTable/bind
 	 * @since    1.7.0
 	 */
-	public function bind($array, $ignore = '')
+	public function bind ($array, $ignore = '')
 	{
 		if (isset($array['params']) && is_array($array['params']))
 		{
@@ -82,12 +133,12 @@ class ChurchDirectoryTableMember extends JTable
 	/**
 	 * Stores a Member
 	 *
-	 * @param   boolean $updateNulls  True to update fields even if they are null.
+	 * @param   boolean  $updateNulls  True to update fields even if they are null.
 	 *
 	 * @return    boolean    True on success, false on failure.
 	 * @since    1.7.0
 	 */
-	public function store($updateNulls = false)
+	public function store ($updateNulls = false)
 	{
 		// Transform the params field
 		if (is_array($this->params))
@@ -173,7 +224,7 @@ class ChurchDirectoryTableMember extends JTable
 	 * @see   JTable::check
 	 * @since 1.7.0
 	 */
-	public function check()
+	public function check ()
 	{
 		$this->default_con = intval($this->default_con);
 
@@ -192,19 +243,19 @@ class ChurchDirectoryTableMember extends JTable
 			return false;
 		}
 		/** check for existing name */
-/* TF removed - if same first name exists it errors - this should not be.
-		 * $query = 'SELECT id FROM #__churchdirectory_details WHERE name = ' . $this->_db->Quote($this->name) . ' AND catid = ' . (int) $this->catid;
-		$this->_db->setQuery($query);
+		/* TF removed - if same first name exists it errors - this should not be.
+				 * $query = 'SELECT id FROM #__churchdirectory_details WHERE name = ' . $this->_db->Quote($this->name) . ' AND catid = ' . (int) $this->catid;
+				$this->_db->setQuery($query);
 
-		$xid = intval($this->_db->loadResult());
+				$xid = intval($this->_db->loadResult());
 
-		if ($xid && $xid != intval($this->id))
-		{
-			$this->setError(JText::_('COM_CHURCHDIRECTORY_WARNING_SAME_NAME'));
+				if ($xid && $xid != intval($this->id))
+				{
+					$this->setError(JText::_('COM_CHURCHDIRECTORY_WARNING_SAME_NAME'));
 
-			return false;
-		}
-*/
+					return false;
+				}
+		*/
 		if (empty($this->alias))
 		{
 			$this->alias = $this->name;
@@ -264,13 +315,13 @@ class ChurchDirectoryTableMember extends JTable
 	/**
 	 * Pre load items
 	 *
-	 * @param   mixed   $pk          An optional primary key value to load the row by, or an array of fields to match.  If not
-	 *                               set the instance property value is used.
-	 * @param   boolean $reset       True to reset the default values before loading the new row.
+	 * @param   mixed    $pk     An optional primary key value to load the row by, or an array of fields to match.  If not
+	 *                           set the instance property value is used.
+	 * @param   boolean  $reset  True to reset the default values before loading the new row.
 	 *
 	 * @return  boolean  True if successful. False if row not found.
 	 */
-	public function load($pk = null, $reset = true)
+	public function load ($pk = null, $reset = true)
 	{
 		if (parent::load($pk, $reset))
 		{
@@ -295,7 +346,7 @@ class ChurchDirectoryTableMember extends JTable
 	 * @return      string
 	 * @since       1.6
 	 */
-	protected function _getAssetName()
+	protected function _getAssetName ()
 	{
 		$k = $this->_tbl_key;
 
@@ -308,7 +359,7 @@ class ChurchDirectoryTableMember extends JTable
 	 * @return      string
 	 * @since       1.6
 	 */
-	protected function _getAssetTitle()
+	protected function _getAssetTitle ()
 	{
 		$title = $this->name;
 
@@ -318,13 +369,13 @@ class ChurchDirectoryTableMember extends JTable
 	/**
 	 * Get the parent asset id for the record
 	 *
-	 * @param array $table
-	 * @param int   $id
+	 * @param   array  $table
+	 * @param   int    $id
 	 *
 	 * @return      int
 	 * @since       1.6
 	 */
-	protected function _getAssetParentId($table = null, $id = null)
+	protected function _getAssetParentId ($table = null, $id = null)
 	{
 		$asset = JTable::getInstance('Asset');
 		$asset->loadByName('com_churchdirectory');

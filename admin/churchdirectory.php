@@ -19,15 +19,6 @@ if (!JFactory::getUser()->authorise('core.manage', 'com_churchdirectory'))
 	return false;
 }
 
-require_once JPATH_COMPONENT_ADMINISTRATOR . '/liveupdate/liveupdate.php';
-
-if (JFactory::getApplication()->input->get('view', '') == 'liveupdate')
-{
-	LiveUpdate::handleRequest();
-
-	return;
-}
-
 // Require helper file
 // Register all files in the /the/path/ folder as classes with a name like:
 JLoader::register('ChurchDirectoryHelper', dirname(__FILE__) . '/helpers/churchdirectory.php');

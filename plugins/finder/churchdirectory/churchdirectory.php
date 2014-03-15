@@ -116,8 +116,8 @@ class PlgFinderChurchDirectory extends FinderIndexerAdapter
 	 *
 	 * This event will fire when ChurchDirectory are deleted and when an indexed item is deleted.
 	 *
-	 * @param   string $context  The context of the action being performed.
-	 * @param   JTable $table    A JTable object containing the record to be deleted
+	 * @param   string  $context  The context of the action being performed.
+	 * @param   JTable  $table    A JTable object containing the record to be deleted
 	 *
 	 * @return  boolean  True on success.
 	 *
@@ -439,7 +439,6 @@ class PlgFinderChurchDirectory extends FinderIndexerAdapter
 				->select('a.created_by_alias, a.modified, a.modified_by')
 				->select('a.metakey, a.metadesc, a.metadata, a.language')
 				->select('a.sortname1, a.sortname2, a.sortname3')
-				->select('a.children')
 				->select('a.publish_up AS publish_start_date, a.publish_down AS publish_end_date')
 				->select('a.suburb AS city, a.state AS region, a.country, a.postcode AS zip')
 				->select('a.telephone, a.fax, a.misc AS summary, a.email_to AS email, a.mobile')

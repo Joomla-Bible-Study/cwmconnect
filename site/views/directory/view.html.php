@@ -67,24 +67,7 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 		// Get some data from the models
 		$state          = $this->get('State');
 		$items          = $this->get('Items');
-		$this->count    = count($items);
-		$this->subcount = count($items);
 		$category       = $this->get('Category');
-		$children       = $this->get('Children');
-		$pagination     = $this->get('Pagination');
-		$this->loadHelper('render');
-		$renderHelper = new RenderHelper;
-		$this->span   = $renderHelper->rowWidth($params->get('rows_per_page'));
-		JLoader::register('DirectoryHeaderHelper', JPATH_SITE . '/components/com_churchdirectory/helpers/directoryheader.php');
-		$this->header = new DirectoryHeaderHelper;
-		$this->header->setPages($params);
-
-		if ($items == false)
-		{
-			$app->enqueueMessage(JText::_('COM_CHURCHDIRECTOY_ERROR_DIRECTORY_NOT_FOUND'), 'error');
-
-			return false;
-		}
 
 		// Check whether category access level allows access.
 		$user   = JFactory::getUser();
@@ -97,9 +80,23 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 			return false;
 		}
 
-		// Check whether category access level allows access.
-		$user   = JFactory::getUser();
-		$groups = $user->getAuthorisedViewLevels();
+		if ($items == false)
+		{
+			$app->enqueueMessage(JText::_('COM_CHURCHDIRECTOY_ERROR_DIRECTORY_NOT_FOUND'), 'error');
+
+			return false;
+		}
+
+		$this->count    = count($items);
+		$this->subcount = count($items);
+		$children       = $this->get('Children');
+		$pagination     = $this->get('Pagination');
+		$this->loadHelper('render');
+		$renderHelper = new RenderHelper;
+		$this->span   = $renderHelper->rowWidth($params->get('rows_per_page'));
+		JLoader::register('DirectoryHeaderHelper', JPATH_SITE . '/components/com_churchdirectory/helpers/directoryheader.php');
+		$this->header = new DirectoryHeaderHelper;
+		$this->header->setPages($params);
 
 		// Prepare the data.
 		// Compute the contact slug.

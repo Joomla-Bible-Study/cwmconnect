@@ -34,7 +34,6 @@ JHtml::_('behavior.multiselect');
     </div>
     <div class="pull-right span4">
         <div id="cpanel">
-			<?php //echo LiveUpdate::getIcon(); ?>
             <div class="icon">
                 <a href="index.php?option=com_churchdirectory&view=geoupdate&tmpl=component" class="modal" rel="{handler: 'iframe', size: {x: 600, y: 250}}">
                     <div>
