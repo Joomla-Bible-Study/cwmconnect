@@ -1,8 +1,8 @@
 <?php
 /**
- * @package        ChurchDirectory.Site
- * @copyright  (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
- * @license        GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    ChurchDirectory.Site
+ * @copyright  2007 - 2011 Joomla Bible Study Team All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 defined('_JEXEC') or die;
@@ -10,8 +10,8 @@ defined('_JEXEC') or die;
 /**
  * HTML Home View class for the ChurchDirectory component
  *
- * @package       ChurchDirectory.Site
- * @since         1.7.0
+ * @package  ChurchDirectory.Site
+ * @since    1.7.0
  */
 class ChurchDirectoryViewHome extends JViewLegacy
 {
@@ -58,14 +58,14 @@ class ChurchDirectoryViewHome extends JViewLegacy
 		}
 		$document   = JFactory::getDocument();
 		$renderer   = $document->loadRenderer('module');
-		$modparams   = array('style'=>'xhtml');
+		$modparams  = array('style' => 'xhtml');
 		$contents   = '';
 		$mod = JModuleHelper::getModule('mod_finder');
-			$registry   = new JRegistry();
+			$registry   = new JRegistry;
 			$registry->loadString($mod->params);
-			$registry->set('searchfilter','paramvalue');
+			$registry->set('searchfilter', 'paramvalue');
 			$registry->set('show_advanced', '0');
-			$mod->params = (string)$registry;
+			$mod->params = (string) $registry;
 			$contents .= $renderer->render($mod, $modparams);
 		$this->search = $contents;
 
@@ -73,8 +73,7 @@ class ChurchDirectoryViewHome extends JViewLegacy
 		$this->user   = & $user;
 		$this->item   = & $item;
 		$this->prepareDocument();
-		parent::display($tpl);
-
+		return parent::display($tpl);
 	}
 
 	/**
