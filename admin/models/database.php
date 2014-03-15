@@ -10,7 +10,7 @@
 defined('_JEXEC') or die;
 
 // Import library dependencies
-JLoader::register('InstallerModel', JPATH_ADMINISTRATOR . DIRECTORY_SEPARATOR . 'components' . DIRECTORY_SEPARATOR . 'com_installer' . DIRECTORY_SEPARATOR . 'models' . DIRECTORY_SEPARATOR . 'extension.php');
+JLoader::register('InstallerModel', JPATH_ADMINISTRATOR . '/components/com_installer/models/extension.php');
 JLoader::register('Com_ChurchDirectoryInstallerScript', JPATH_COMPONENT_ADMINISTRATOR . 'file.script.php');
 
 /**
@@ -19,7 +19,7 @@ JLoader::register('Com_ChurchDirectoryInstallerScript', JPATH_COMPONENT_ADMINIST
  * @package  ChurchDirectory.Admin
  * @since    1.7.2
  */
-class ChurchdirectoryModelDatabase extends InstallerModel
+class ChurchDirectoryModelDatabase extends InstallerModel
 {
 
 	/**
@@ -103,10 +103,6 @@ class ChurchdirectoryModelDatabase extends InstallerModel
 			->where('extension_id = "' . $extensionresult . '"');
 		$db->setQuery($query);
 		$result = $db->loadResult();
-		if ($db->getErrorNum())
-		{
-			throw new Exception('Database error - getSchemaVersion');
-		}
 
 		return $result;
 	}
@@ -140,7 +136,7 @@ class ChurchdirectoryModelDatabase extends InstallerModel
 			$query->delete($db->qn('#__schemas'));
 			$query->where($db->qn('extension_id') . ' = "' . $extensionresult . '"');
 			$db->setQuery($query);
-			$db->query();
+			$db->execute();
 
 			// Add new row
 			$query = $db->getQuery(true);
@@ -149,7 +145,7 @@ class ChurchdirectoryModelDatabase extends InstallerModel
 			$query->set($db->qn('version_id') . '= ' . $db->q($schema));
 			$db->setQuery($query);
 
-			if ($db->query())
+			if ($db->execute())
 			{
 				$result = $schema;
 			}
@@ -264,11 +260,6 @@ class ChurchdirectoryModelDatabase extends InstallerModel
 		$db->setQuery($query);
 		$result = $db->loadResult();
 
-		if ($db->getErrorNum())
-		{
-			throw new Exception('Database error - getExtentionId');
-		}
-
 		return $result;
 	}
 
@@ -282,6 +273,7 @@ class ChurchdirectoryModelDatabase extends InstallerModel
 	public function getCompVersion()
 	{
 		$file     = JPATH_COMPONENT_ADMINISTRATOR . '/churchdirectory.xml';
+		/** @var object $xml */
 		$xml      = simplexml_load_file($file, 'JXMLElement');
 		$jversion = (string) $xml->version;
 

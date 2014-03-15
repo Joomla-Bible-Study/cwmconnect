@@ -33,7 +33,7 @@ class ChurchDirectoryViewHome extends JViewLegacy
 	/**
 	 * Display function
 	 *
-	 * @param string $tpl
+	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
 	 *
 	 * @return mixed
 	 */
@@ -61,7 +61,7 @@ class ChurchDirectoryViewHome extends JViewLegacy
 		$this->user   = & $user;
 		$this->item   = & $item;
 		$this->prepareDocument();
-		return parent::display($tpl);
+		parent::display($tpl);
 
 	}
 

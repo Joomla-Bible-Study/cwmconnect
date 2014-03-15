@@ -158,16 +158,13 @@ class ChurchDirectoryModelGeoUpdate extends JModelLegacy
 		$query->select('id, name, address, suburb, state, postcode, lat, lng , country');
 		$query->from($db->qn('#__churchdirectory_details'));
 		if ($id)
+		{
 			$query->where('id = ' . $db->q($id));
+		}
 		$db->setQuery($query);
 		$members = $db->loadObjectList();
 
-		if (empty($members))
-		{
-			$members = array();
-		}
-
-		$this->_membersStack = array_merge($this->_membersStack, $members);
+		$this->_membersStack = array_merge($this->_membersStack, (array) $members);
 
 		$this->totalMembers += count($members);
 	}
@@ -234,11 +231,9 @@ class ChurchDirectoryModelGeoUpdate extends JModelLegacy
 	/**
 	 * Start Looking though the members
 	 *
-	 * @param   string|null  $id  Run the ID if needed.
-	 *
 	 * @return bool
 	 */
-	public function startScanning($id = null)
+	public function startScanning()
 	{
 		$this->resetStack();
 		$this->resetTimer();
@@ -312,6 +307,7 @@ class ChurchDirectoryModelGeoUpdate extends JModelLegacy
 				$address     = str_replace(' ', '+', $row['address']);
 				$request_url = $base_url . $address . ",+" . str_replace(' ', '+', $row['suburb']) .
 					",+" . $row['state'] . '&sensor=true';
+				/** @var object $xml */
 				$xml = simplexml_load_file($request_url) or die("url not loading");
 
 				$status = $xml->status;
