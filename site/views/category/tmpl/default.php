@@ -14,7 +14,8 @@ JHtml::_('behavior.framework');
 $listOrder = $this->escape($this->state->get('list.ordering'));
 $listDirn = $this->escape($this->state->get('list.direction'));
 
-$isModal = JFactory::getApplication()->input->get('print') == 1; // 'print=1' will only be present in the url of the modal window, not in the presentation of the page
+// 'print=1' will only be present in the url of the modal window, not in the presentation of the page
+$isModal = JFactory::getApplication()->input->get('print') == 1;
 
 if ($isModal)
 {
@@ -90,7 +91,7 @@ else
 						?>
 						<div class="btn-group">
 							<label class="filter-search-lbl element-invisible" for="filter-search"><span
-									class="label label-warning"><?php //echo JText::_('JUNPUBLISHED'); ?></span><?php echo JText::_('COM_CHURCHDIRECTORY_FILTER_LABEL') . '&#160;'; ?>
+									class="label label-warning"><?php echo JText::_('JUNPUBLISHED'); ?></span><?php echo JText::_('COM_CHURCHDIRECTORY_FILTER_LABEL') . '&#160;'; ?>
 							</label>
 							<input type="text" name="filter-search" id="filter-search"
 							       value="<?php echo $this->escape($this->state->get('list.filter')); ?>"

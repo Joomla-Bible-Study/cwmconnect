@@ -75,7 +75,7 @@ $children = $renderHelper->getChildren((int) $this->member->fu_id)?>
 <?php if ($this->params->get('show_contact_category') == 'show_with_link')
 {
 	?>
-	<?php $contactLink = ContactHelperRoute::getCategoryRoute($this->member->catid); ?>
+	<?php $contactLink = ChurchDirectoryHelperRoute::getCategoryRoute($this->member->catid); ?>
 	<h3>
 			<span class="contact-category"><a href="<?php echo $contactLink; ?>">
 					<?php echo $this->escape($this->member->category_title); ?></a>
