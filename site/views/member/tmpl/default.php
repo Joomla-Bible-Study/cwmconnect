@@ -61,8 +61,7 @@ $children = $renderHelper->getChildren((int) $this->member->fu_id)?>
 		if ($children)
 		{
 			echo $children . '<br />';
-		}
-		echo $this->member->children; ?>
+		}?>
 	</p>
 <?php } ?>
 <?php if ($this->params->get('show_contact_category') == 'show_no_link')
