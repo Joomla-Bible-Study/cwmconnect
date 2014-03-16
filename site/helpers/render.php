@@ -209,9 +209,12 @@ class RenderHelper
 	 */
 	public function getSpouse($fu_id, $family_position)
 	{
-		if($family_position == 1){
+		if ($family_position == 1)
+		{
 			$fm = 0;
-		}else{
+		}
+		else
+		{
 			$fm = 1;
 		}
 		$members = self::getFamilyMembers($fu_id, $fm);
@@ -265,7 +268,7 @@ class RenderHelper
 	 */
 	public function rowWidth($rows_per_page)
 	{
-		return 12/$rows_per_page;
+		return 12 / $rows_per_page;
 	}
 
 	/**
@@ -310,7 +313,7 @@ class RenderHelper
 	/**
 	 * Compute last name, first name and middle name
 	 *
-	 * @param    string  $name Name of member
+	 * @param   string  $name  Name of member
 	 *
 	 * @return stdClass
 	 */
