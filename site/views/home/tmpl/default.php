@@ -17,13 +17,23 @@ $check = in_array($this->params->get('accesslevel'), $this->user->get('_authLeve
 		}?>
 	</h1>
 
-	<p class="center"><?php echo $this->params->get('intro', JText::sprintf('COM_CHURCHDIRECTORY_HOME_INTRO', $this->params->get('form'))); ?></p>
+	<div class="span6 pull-left">
+		<a href="index.php?option=com_users&return=<?php echo $this->return ?>">
+			<button class="btn btn-primary">
+				<?php echo $login ? JText::_('JLOGIN') : JText::_('JLOGOUT') ?>
+			</button>
+		</a>
+	</div>
+	<div class="pull-right"><?php echo $this->search; ?></div>
+	<div class="clearfix"></div>
+	<p class="center"><?php echo $this->params->get('home_intro', 'No Intro Text'); ?></p>
 
 	<div class="login">
 		<?php if ($login)
 		{
-			?>
-			<a href="index.php?option=com_users&return=<?php echo $this->return ?>"><?php echo $login ? JText::_('JLOGIN') : JText::_('JLOGOUT') ?></a>
+			echo JText::_('COM_CHURCHDIRECTORY_HOME_INTRO');
+			echo ' <a href="' . $this->params->get('form') . '">' . JText::_('COM_CHURCHDIRECTORY_AUTH_FORM') . '</a>'; ?>
+			<br /><br />
 		<?php
 		}
 		elseif (!$check)
@@ -36,10 +46,11 @@ $check = in_array($this->params->get('accesslevel'), $this->user->get('_authLeve
 		{
 			?>
 			<div class="row-fluid">
-				<div class="span6 center">Left</div>
-				<div class="span6 center">Right</div>
+				<div class="span12">
+					<div class="span5 pull-left">Left</div>
+					<div class="span5 pull-left">Right</div>
+				</div>
 			</div>
 		<?php } ?>
 	</div>
-	<?php echo $this->search; ?>
 </div>

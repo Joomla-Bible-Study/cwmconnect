@@ -16,7 +16,7 @@ jimport('joomla.event.dispatcher');
  * @package  ChurchDirectory.Site
  * @since    2.5
  */
-class ChurchDirectoryModelHome extends JModelForm
+class ChurchDirectoryModelHome extends JModelItem
 {
 
 	/**
@@ -54,74 +54,13 @@ class ChurchDirectoryModelHome extends JModelForm
 	{
 		$app   = JFactory::getApplication('site');
 
-		$this->setState('return_page', 'index.php?option=com_churchdirectory');
+
+		$return = $app->input->get('return', $this->setReturnPage(), 'base64');
+		$this->setState('return_page', base64_decode($return));
 
 		// Load the parameters.
 		$params     = $app->getParams();
 		$this->setState('params', $params);
-	}
-
-	/**
-	 * Method to get the member form.
-	 *
-	 * The base form is loaded from XML and then an event is fired
-	 *
-	 * @param    array   $data     An optional array of data for the form to interrogate.
-	 * @param    boolean $loadData True if the form is to load its own data (default case), false if not.
-	 *
-	 * @return    JForm    A JForm object on success, false on failure
-	 * @since    1.6
-	 */
-	public function getForm($data = array(), $loadData = true)
-	{
-		// Get the form.
-		$form = $this->loadForm('com_churchdirectory.home', 'home', array('control' => 'jform', 'load_data' => true));
-
-		if (empty($form))
-		{
-			return false;
-		}
-
-		$id     = (int) $this->getState('home.id');
-		$params = $this->getState('params');
-		$member = $this->_item[$id];
-		$params->merge($member->params);
-
-		if (!$params->get('show_email_copy', 0))
-		{
-			$form->removeField('member_email_copy');
-		}
-
-		return $form;
-	}
-
-	/**
-	 * Load form date
-	 *
-	 * @return array
-	 */
-	protected function loadFormData()
-	{
-		$data = (array) JFactory::getApplication()->getUserState('com_churchdirectory.home.data', array());
-
-		if (version_compare(JVERSION, '3.0', 'ge'))
-		{
-			$this->preprocessData('com_churchdirectory.home', $data);
-		}
-
-		return $data;
-	}
-
-	/**
-	 * Gets a list of members
-	 *
-	 * @param   int $pk Id of member
-	 *
-	 * @return mixed Object or null
-	 */
-	public function &getItem($pk = null)
-	{
-		return $pk;
 	}
 
 	/**
@@ -134,6 +73,21 @@ class ChurchDirectoryModelHome extends JModelForm
 	public function getReturnPage()
 	{
 		return base64_encode($this->getState('return_page'));
+	}
+
+	/**
+	 * Set Return Page if non passed
+	 *
+	 * @return string URL of current page.
+	 */
+	public function setReturnPage()
+	{
+		$Itemid = JFactory::getApplication()->input->getInt('Itemid');
+		if ($Itemid)
+		{
+			$Itemid = '&Itemid=' . $Itemid;
+		}
+		return base64_encode('index.php?option=' . $this->option . '&view=' . $this->view_item . $Itemid);
 	}
 
 }

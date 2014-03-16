@@ -234,23 +234,24 @@ class RenderHelper
 	 */
 	public function getMemberStatus($member)
 	{
+		$Itemid = JFactory::getApplication()->input->getInt('Itemid');
 		$mstatus = null;
 
 		if ($member->mstatus == '0') // Active Member
 		{
-			$mstatus = '<a href="index.php?option=com_churchdirectory&view=member&id= ' . $member->id . '"><span><b>' . $member->name . '</b></span></a>';
+			$mstatus = '<a href="index.php?option=com_churchdirectory&view=member&id=' . $member->id . '&Itemid=' . $Itemid . '"><span><b>' . $member->name . '</b></span></a>';
 		}
 		elseif ($member->mstatus == '1') // Inactive Member
 		{
-			$mstatus = '<a href="index.php?option=com_churchdirectory&view=member&id= ' . $member->id . '"><span><b>' . $member->name . '</b></span></a>';
+			$mstatus = '<a href="index.php?option=com_churchdirectory&view=member&id=' . $member->id . '&Itemid=' . $Itemid . '"><span><b>' . $member->name . '</b></span></a>';
 		}
 		elseif ($member->mstatus == '2') // Active Attendee
 		{
-			$mstatus = '<a href="index.php?option=com_churchdirectory&view=member&id= ' . $member->id . '"><span>( ' . $member->name . ' )</span></a>';
+			$mstatus = '<a href="index.php?option=com_churchdirectory&view=member&id=' . $member->id . '&Itemid=' . $Itemid . '"><span>( ' . $member->name . ' )</span></a>';
 		}
 		elseif ($member->mstatus == '3') // None Member
 		{
-			$mstatus = '<a href="index.php?option=com_churchdirectory&view=member&id= ' . $member->id . '"><span style="color: gray;">( ' . $member->name . ' )</span></a>';
+			$mstatus = '<a href="index.php?option=com_churchdirectory&view=member&id=' . $member->id . '&Itemid=' . $Itemid . '"><span style="color: gray;">( ' . $member->name . ' )</span></a>';
 		}
 
 		return $mstatus;
