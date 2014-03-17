@@ -1,7 +1,7 @@
 <?php
 /**
  * @package    ChurchDirectory.Admin
- * @copyright  (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
+ * @copyright  2007 - 2014 (C) Joomla Bible Study Team All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -156,7 +156,7 @@ class ChurchDirectoryModelGeoUpdate extends JModelLegacy
 		$db    = JFactory::getDBO();
 		$query = $db->getQuery(true);
 		$query->select('id, name, address, suburb, state, postcode, lat, lng , country');
-		$query->from($db->qn('#__churchdirectory_details'));
+		$query->from('#__churchdirectory_details');
 		if ($id)
 		{
 			$query->where('id = ' . $db->q($id));
@@ -206,6 +206,11 @@ class ChurchDirectoryModelGeoUpdate extends JModelLegacy
 	 */
 	private function RealRun($id = null)
 	{
+		if ($id)
+		{
+			$this->resetStack();
+			$this->getMembers($id);
+		}
 		if (!empty($this->_membersStack))
 		{
 			while (!empty($this->_membersStack) && $this->haveEnoughTime())
@@ -281,7 +286,9 @@ class ChurchDirectoryModelGeoUpdate extends JModelLegacy
 				$this->_memberID = $id;
 
 				$query = $db->getQuery(true);
-				$query->select('*')->from('#__churchdirectory_details')->where('id =' . $db->q($id));
+				$query->select('*')
+					->from('#__churchdirectory_details')
+					->where('id =' . $db->q($id));
 				$db->setQuery($query);
 				$row = $db->loadObject();
 
@@ -312,7 +319,7 @@ class ChurchDirectoryModelGeoUpdate extends JModelLegacy
 
 				$status = $xml->status;
 
-				if ($status == "OK" && $xml->result->type['0'] == 'street_address')
+				if ($status == "OK")
 				{
 					// Successful geocode
 					$geocode_pending = false;
@@ -358,7 +365,7 @@ class ChurchDirectoryModelGeoUpdate extends JModelLegacy
 
 					// Create a new query object.
 					$query = $db->getQuery(true);
-					$query->select($db->q('*'))
+					$query->select('*')
 						->from($db->qn('#__churchdirectory_geoupdate'))
 						->where('`member_id` = ' . $db->q($row['id']));
 					$db->setQuery($query);
@@ -370,8 +377,8 @@ class ChurchDirectoryModelGeoUpdate extends JModelLegacy
 					{
 						$query = $db->getQuery(true);
 						$query->update("#__churchdirectory_geoupdate")
-							->set('member_id = ' . $db->q($row['id']))
-							->set('`status` = ' . $db->q($info));
+							->set('status = ' . $db->q($info))
+							->where('member_id = ' . $db->q($row['id']));
 						$db->setQuery($query);
 						$db->execute();
 					}

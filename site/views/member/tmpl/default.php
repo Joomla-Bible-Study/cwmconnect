@@ -50,10 +50,10 @@ if ($spouse && $this->member->attribs->get('familypostion') != '2')
 		<?php echo '<span class="jicons-text">' . JText::_('COM_CHURCHDIRECTORY_SPOUSE') . ': </span>' . $spouse; ?>
 	</p>
 <?php
-}
-$children = $renderHelper->getChildren((int) $this->member->fu_id)?>
-<?php if ($children || $this->member->children && $this->params->get('dr_show_children'))
+}?>
+<?php if ($this->params->get('dr_show_children') && $this->member->attribs->get('familypostion') != '2')
 {
+	$children = $renderHelper->getChildren((int) $this->member->fu_id);
 	?>
 	<p>
 		<?php echo '<span class="jicons-text">' . JText::_('COM_CHURCHDIRECTORY_CHILDREN') . ': </span>';

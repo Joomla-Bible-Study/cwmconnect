@@ -1,7 +1,7 @@
 <?php
 /**
  * @package    ChurchDirectory.Admin
- * @copyright  (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
+ * @copyright  2007 - 2014 (C) Joomla Bible Study Team All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -15,18 +15,28 @@ defined('_JEXEC') or die;
  */
 class ChurchDirectoryViewGeoUpdate extends JViewLegacy
 {
-	protected $more;
 
-	protected $percentage;
 
-	/** @var array The members to process */
+	/** @var array The pre versions to process */
 	private $_membersStack = array();
 
-	/** @var int Total numbers of members in this site */
+	/** @var int Total numbers of Versions */
 	public $totalMembers = 0;
 
-	/** @var int Numbers of members already processed */
+	/** @var int Numbers of Versions already processed */
 	public $doneMembers = 0;
+
+	/** @var string Running Now */
+	public $running = null;
+
+	/** @var array Call stack for the Visioning System. */
+	public $callstack = array();
+
+	/** @var string More */
+	protected $more;
+
+	/** @var  string Percentage */
+	protected $percentage;
 
 	/**
 	 * Display the view
@@ -39,19 +49,17 @@ class ChurchDirectoryViewGeoUpdate extends JViewLegacy
 	{
 		// Set the toolbar title
 		JToolBarHelper::title(JText::_('COM_CHURCHDIRECTORY_TITLE_GEOUPDATE'), 'churchdirectory');
-
-		$model = $this->getModel();
-		$model->startScanning();
-		$state = $model->getState('scanstate', false);
-
-		$total = $this->totalMembers;
-		$done  = $this->doneMembers;
+		$app   = JFactory::getApplication();
+		$state = $app->input->getBool('scanstate', false);
+		$this->loadStack();
 
 		if ($state)
 		{
-			if ($total > 0)
+			if ($this->totalMembers > 0)
 			{
-				$percent = min(max(round(100 * $done / $total), 1), 100);
+				$count = ($this->doneMembers / $this->totalMembers) * 100;
+				$percent = (int) number_format($count, 0);
+				$percent++;
 			}
 
 			$more = true;

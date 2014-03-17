@@ -8,10 +8,10 @@
     <!-- Generic Metadata -->
     <name>COM_CHURCHDIRECTORY</name>
     <author>Joomla Bible Study Team</author>
-    <copyright>(C) 2007 - 2012 Joomla Bible Study Team All rights reserved</copyright>
+    <copyright>2007 - 2014 (C) Joomla Bible Study Team All rights reserved</copyright>
     <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
-    <version>1.7.7</version>
-    <creationDate>Oct 7, 2013</creationDate>
+    <version>1.7.8</version>
+    <creationDate>March 16, 2014</creationDate>
     <authorEmail>info@joomlabiblestudy.org</authorEmail>
     <authorUrl>http://www.joomlabiblestudy.org</authorUrl>
     <description>COM_CHURCHDIRECTORY_XML_DESCRIPTION</description>
@@ -70,8 +70,6 @@
         <files folder="admin">
             <filename>access.xml</filename>
             <filename>churchdirectory.php</filename>
-            <!-- Holder for churchdirectory.scropt.php -->
-            <!-- Holder for churchdirectory.xml -->
             <filename>config.xml</filename>
             <filename>controller.php</filename>
             <filename>index.html</filename>
@@ -79,7 +77,6 @@
             <folder>help</folder>
             <folder>helpers</folder>
             <folder>language</folder>
-            <folder>liveupdate</folder>
             <folder>models</folder>
             <folder>sql</folder>
             <folder>tables</folder>
@@ -88,13 +85,9 @@
     </administration>
 
     <!-- Extension Update Specification -->
-    <!-- @todo BCC need to corecot Church Directory Compnonet update address -->
-    <!-- <update> -->
-    <!-- <server type="extension" priority="1" name="Primary Update Server">http://update.example.com/update/alpha.xml</server> --> <!-- useful for single extensions -->
-    <!-- <server type="extension" priority="2" name="Secondary Update Server">http://update2.example.com/update/alpha.xml</server> --> <!--  as above, backup server -->
-    <!-- <server type="collection" priority="3" name="Update Collection">http://update.example.com/update/list.xml</server> --> <!-- useful for collections of extensions -->
-    <!-- <server type="xmlrpc" priority="4" name="Joomla! Extensions Directory">http://update.extensions.joomla.org</server> --><!-- useful for large collections -->
-    <!-- </update> -->
+     <update>
+     <server type="extension" priority="1" name="Primary Update Server"><![CDATA[http://http://www.joomlabiblestudy.org/index.php?option=com_ars&view=update&task=stream&format=xml&id=10&dummy=extension.xml]]></server>
+     </update>
 
 
     <!-- Tables -->

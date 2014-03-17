@@ -1,7 +1,7 @@
 <?php
 /**
  * @package    ChurchDirectory.Site
- * @copyright  (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
+ * @copyright  2007 - 2014 (C) Joomla Bible Study Team All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -67,7 +67,7 @@ class ChurchDirectoryViewMember extends JViewLegacy
 	/**
 	 * Display function
 	 *
-	 * @param string $tpl
+	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
 	 *
 	 * @return boolean
 	 */

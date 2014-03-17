@@ -1,7 +1,7 @@
 <?php
 /**
  * @package        ChurchDirectory.Admin
- * @copyright  (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
+ * @copyright  2007 - 2014 (C) Joomla Bible Study Team All rights reserved.
  * @license        GNU General Public License version 2 or later; see LICENSE.txt
  * @see            Akeebe Script
  */
@@ -45,7 +45,7 @@ class Com_ChurchdirectoryInstallerScript
 	/**
 	 * Variables to set default params
 	 *
-	 * @var   array $_param_array Array of default settings
+	 * @var   array  $_param_array  Array of default settings
 	 */
 	private $_param_array = array(
 		'protectedaccess'               => "8",
@@ -160,8 +160,8 @@ class Com_ChurchdirectoryInstallerScript
 	/**
 	 * Joomla! pre-flight event
 	 *
-	 * @param   string     $type   is the type of change (install, update or discover_install, not uninstall).
-	 * @param   JInstaller $parent is the class calling this method.
+	 * @param   string      $type    is the type of change (install, update or discover_install, not uninstall).
+	 * @param   JInstaller  $parent  is the class calling this method.
 	 *
 	 * @return boolean
 	 */
@@ -208,8 +208,8 @@ class Com_ChurchdirectoryInstallerScript
 	/**
 	 * Runs after install, update or discover_update
 	 *
-	 * @param   string     $type   is the type of change (install, update or discover_install, not uninstall).
-	 * @param   JInstaller $parent is the class calling this method.
+	 * @param   string      $type    is the type of change (install, update or discover_install, not uninstall).
+	 * @param   JInstaller  $parent  is the class calling this method.
 	 *
 	 * @return boolean
 	 */
@@ -245,7 +245,7 @@ class Com_ChurchdirectoryInstallerScript
 	/**
 	 * Install is run on every new install.
 	 *
-	 * @param   JInstaller $parent is the class calling this method.
+	 * @param   JInstaller  $parent  is the class calling this method.
 	 *
 	 * @return void
 	 */
@@ -261,7 +261,7 @@ class Com_ChurchdirectoryInstallerScript
 	/**
 	 * Uninstall runs before any other action is taken (file removal or database processing)
 	 *
-	 * @param   JInstaller $parent is the class calling this method.
+	 * @param   JInstaller  $parent  is the class calling this method.
 	 *
 	 * @return void
 	 */
@@ -277,8 +277,8 @@ class Com_ChurchdirectoryInstallerScript
 	/**
 	 * Renders the post-installation message
 	 *
-	 * @param   object     $status ?
-	 * @param   JInstaller $parent is the class calling this method.
+	 * @param   object      $status  ?
+	 * @param   JInstaller  $parent  is the class calling this method.
 	 *
 	 * @since 1.7.4
 	 * @return void
@@ -358,8 +358,8 @@ class Com_ChurchdirectoryInstallerScript
 	/**
 	 * Render Post Uninstallation
 	 *
-	 * @param   object     $status ?
-	 * @param   JInstaller $parent is the class calling this method.
+	 * @param   object      $status  ?
+	 * @param   JInstaller  $parent  is the class calling this method.
 	 *
 	 * @return void
 	 */
@@ -426,7 +426,7 @@ class Com_ChurchdirectoryInstallerScript
 	/**
 	 * Installs subextensions (modules, plugins) bundled with the main extension
 	 *
-	 * @param   JInstaller $parent is the class calling this method.
+	 * @param   JInstaller  $parent  is the class calling this method.
 	 *
 	 * @return JObject The subextension installation status
 	 */
@@ -625,7 +625,7 @@ class Com_ChurchdirectoryInstallerScript
 	/**
 	 * Uninstalls subextensions (modules, plugins) bundled with the main extension
 	 *
-	 * @param   JInstaller $parent is the class calling this method.
+	 * @param   JInstaller  $parent  is the class calling this method.
 	 *
 	 * @return JObject The subextension uninstallation status
 	 */
@@ -715,7 +715,7 @@ class Com_ChurchdirectoryInstallerScript
 	/**
 	 * Install TCPDF
 	 *
-	 * @param $parent
+	 * @param   string  $parent  How this was tarted
 	 *
 	 * @return array
 	 */

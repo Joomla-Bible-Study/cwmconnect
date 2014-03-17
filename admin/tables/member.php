@@ -1,7 +1,7 @@
 <?php
 /**
  * @package        ChurchDirectory.Admin
- * @copyright  (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
+ * @copyright  2007 - 2014 (C) Joomla Bible Study Team All rights reserved.
  * @license        GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -369,13 +369,13 @@ class ChurchDirectoryTableMember extends JTable
 	/**
 	 * Get the parent asset id for the record
 	 *
-	 * @param   array  $table
-	 * @param   int    $id
+	 * @param   JTable  $table
+	 * @param   int     $id
 	 *
 	 * @return      int
 	 * @since       1.6
 	 */
-	protected function _getAssetParentId ($table = null, $id = null)
+	protected function _getAssetParentId (JTable $table = null, $id = null)
 	{
 		$asset = JTable::getInstance('Asset');
 		$asset->loadByName('com_churchdirectory');

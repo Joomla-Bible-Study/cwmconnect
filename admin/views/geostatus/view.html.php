@@ -1,7 +1,7 @@
 <?php
 /**
  * @package    ChurchDirectory.Admin
- * @copyright  (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
+ * @copyright  2007 - 2014 (C) Joomla Bible Study Team All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -45,7 +45,7 @@ class ChurchDirectoryViewGeoStatus extends JViewLegacy
 	{
 		// Assign data to the view
 
-		$this->items      = array_merge($this->get('Items'), $this->get('GeoErrors'));
+		$this->items      = $this->get('Items');
 		$this->pagination = $this->get('Pagination');
 		$this->state      = $this->get('State');
 
@@ -91,7 +91,7 @@ class ChurchDirectoryViewGeoStatus extends JViewLegacy
 		// Set the toolbar title
 		JToolBarHelper::title(JText::_('COM_CHURCHDIRECTORY_TITLE_GEOUPDATE_STATUS'), 'churchdirectory');
 
-		$bar->appendButton('Popup', 'refresh', 'COM_CHURCHDIRECTORY_GEOUPDATE', 'index.php?option=com_churchdirectory&task=geoupdate.browse&tmpl=component', 550, 350);
+		$bar->appendButton('Popup', 'refresh', 'COM_CHURCHDIRECTORY_GEOUPDATE', 'index.php?option=com_churchdirectory&view=geoupdate&tmpl=component', 550, 350);
 
 		if ($canDo->get('core.admin'))
 		{

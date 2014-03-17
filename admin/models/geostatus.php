@@ -1,7 +1,7 @@
 <?php
 /**
  * @package    ChurchDirectory.Admin
- * @copyright  (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
+ * @copyright  2007 - 2014 (C) Joomla Bible Study Team All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -142,6 +142,8 @@ class ChurchDirectoryModelGeoStatus extends JModelList
 			)
 		);
 		$query->from('#__churchdirectory_details AS a');
+		$query->select('u.*');
+		$query->leftJoin('#__churchdirectory_geoupdate AS u ON a.id = u.member_id ');
 
 		$query->where('lat = ' . 0.000000);
 		$query->where('lng = ' . 0.000000);
@@ -243,44 +245,5 @@ class ChurchDirectoryModelGeoStatus extends JModelList
 		$query->order($db->escape($orderCol . ' ' . $orderDirn));
 
 		return $query;
-	}
-
-	/**
-	 * Get Geo Errors
-	 *
-	 * @return mixed
-	 */
-	public function getGeoErrors()
-	{
-
-		$db    = $this->getDbo();
-		$query = $db->getQuery(true);
-		$query->select('u.*, a.*')->from('#__churchdirectory_details AS a');
-		$query->leftJoin('#__churchdirectory_geoupdate AS u ON a.id = u.member_id ');
-		$query->where('a.id = u.member_id');
-
-		// Join over the users for the linked user.
-		$query->select('ul.name AS linked_user');
-		$query->join('LEFT', '#__users AS ul ON ul.id=a.user_id');
-
-		// Join over the language
-		$query->select('l.title AS language_title');
-		$query->join('LEFT', $db->quoteName('#__languages') . ' AS l ON l.lang_code = a.language');
-
-		// Join over the users for the checked out user.
-		$query->select('uc.name AS editor');
-		$query->join('LEFT', '#__users AS uc ON uc.id=a.checked_out');
-
-		// Join over the asset groups.
-		$query->select('ag.title AS access_level');
-		$query->join('LEFT', '#__viewlevels AS ag ON ag.id = a.access');
-
-		// Join over the categories.
-		$query->select('c.title AS category_title');
-		$query->join('LEFT', '#__categories AS c ON c.id = a.catid');
-
-		$db->setQuery($query);
-
-		return $db->loadObjectList();
 	}
 }

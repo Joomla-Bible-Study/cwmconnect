@@ -1,7 +1,7 @@
 <?php
 /**
  * @package    ChurchDirectory.Admin
- * @copyright  (C) 2007 - 2011 Joomla Bible Study Team All rights reserved.
+ * @copyright  2007 - 2014 (C) Joomla Bible Study Team All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -46,6 +46,13 @@ class ChurchDirectoryViewDatabase extends JViewLegacy
 	{
 		$language = JFactory::getLanguage();
 		$language->load('com_installer');
+
+		ChurchDirectoryHelper::addSubmenu('database');
+
+		if (version_compare(JVERSION, '3.0', 'ge'))
+		{
+			$this->sidebar = JHtmlSidebar::render();
+		}
 
 		// Get data from the model for database
 		$this->changeSet     = $this->get('Items');
@@ -104,14 +111,14 @@ class ChurchDirectoryViewDatabase extends JViewLegacy
 	 */
 	protected function addToolbar()
 	{
-		JFactory::getApplication()->input->set('hidemainmenu', 1);
 		$canDo = ChurchDirectoryHelper::getActions();
 
 		JToolBarHelper::title(JText::_('COM_CHURCHDIRECTORY_DATABASE'), 'churchdirectory');
-
-		JToolBarHelper::custom('database.cancel', 'back', 'back', 'JTOOLBAR_BACK', false, false);
 		JToolBarHelper::divider();
-		JToolBarHelper::custom('database.fix', 'refresh', 'refresh', 'COM_CHURCHDIRECTORY_DATABASE_FIX', false, false);
+		if ($canDo)
+		{
+			JToolBarHelper::custom('database.fix', 'refresh', 'refresh', 'COM_CHURCHDIRECTORY_DATABASE_FIX', false, false);
+		}
 	}
 
 	/**
