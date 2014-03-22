@@ -1,3 +1,3 @@
  We are Working on a new release that will support j2.5 and j3.5...
  
- Ware hared at work right now getting Joomla Bible Study out and will get back to this ASAP.
+I'm working on documentation on how this works.  We are upgrading to a new version veray soon and will include a some new stuff.  I'll try and update this soon.
