@@ -33,12 +33,12 @@ if (!version_compare($version, '5.3.0', '>='))
 require_once JPATH_COMPONENT . '/helpers/route.php';
 
 JLoader::register('RenderHelper', JPATH_SITE . '/components/com_churchdirectory/helpers/render.php');
+JHtml::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_churchdirectory/helpers/html');
+JHtml::_('bootstrap.framework');
+JHtml::_('bootstrap.loadcss');
 
 if (!version_compare(JVERSION, '3.0', 'ge'))
 {
-	JHtml::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_churchdirectory/helpers/html');
-	JHtml::_('bootstrap.framework');
-	JHtml::_('bootstrap.loadcss');
 	JHtml::stylesheet('media/com_churchdirectory/css/bootstrap-j2.5.css');
 }
 

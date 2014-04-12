@@ -1,305 +1,312 @@
 .directory {
-    overflow: hidden;
-}
+	overflow: hidden;
+	}
 
 #churchdirectory {
-    margin: 10px 0;
-}
+	margin: 10px 0;
+	}
 
 .address {
-    font-style: normal;
-    margin: 10px 0;
-}
+	font-style: normal;
+	margin: 10px 0;
+	}
 
 #contact-name {
-    font-size: 100%;
-    font-weight: bold;
-    padding-bottom: 5px;
-    margin-bottom: 5px;
-}
+	font-size: 100%;
+	font-weight: bold;
+	padding-bottom: 5px;
+	margin-bottom: 5px;
+	}
 
 #contact-position {
-    font-size: 95%;
-    font-style: italic;
-}
+	font-size: 95%;
+	font-style: italic;
+	}
 
 #contact-image {
 
-}
+	}
 
 .aright {
-    float: right;
-    margin-right: 25%;
-}
+	float: right;
+	margin-right: 25%;
+	}
 
 .aleft {
-    float: left;
-    padding: 5px 25px 25px 0;
-}
+	float: left;
+	padding: 5px 25px 25px 0;
+	}
 
 #churchdirectory #contact-address p {
-    margin-left: 5px;
-}
+	margin-left: 5px;
+	}
 
 #churchdirectory p {
-    line-height: 1em;
-    margin: 3px 0 3px 0;
-    padding: 0;
-}
+	line-height: 1em;
+	margin: 3px 0 3px 0;
+	padding: 0;
+	}
 
 #emailForm {
-    margin-top: 15px;
-}
+	margin-top: 15px;
+	}
 
 .contact-other {
-    margin-bottom: 3px;
-}
+	margin-bottom: 3px;
+	}
 
 #churchdirectory label {
-    display: block;
-}
+	display: block;
+	}
 
 #churchdirectory label.chkbox {
-    display: inline;
-}
+	display: inline;
+	}
 
 #churchdirectory input.chkbox {
-    display: inline;
-    margin-bottom: 0;
-}
+	display: inline;
+	margin-bottom: 0;
+	}
 
 #churchdirectory label.required {
-    color: #ff0000;
-}
+	color: #ff0000;
+	}
 
 #churchdirectory select {
-    display: block;
-}
+	display: block;
+	}
 
 span.marker {
-    margin: 0 10px 0 0;
-}
+	margin: 0 10px 0 0;
+	}
 
 div.marker {
-    float: left;
-    padding-top: 1px;
-}
+	float: left;
+	padding-top: 1px;
+	}
 
 .wtext {
-    width: 85px;
-}
+	width: 85px;
+	}
 
 .wicon {
-    width: 25px;
-}
+	width: 25px;
+	}
 
 #churchdirectory input, #churchdirectory textarea, #churchdirectory select, #churchdirectory .fld-wrap {
-    margin-bottom: 6px;
-}
+	margin-bottom: 6px;
+	}
 
 #churchdirectory input.radio {
-    display: inline;
-    margin-bottom: 0;
-}
+	display: inline;
+	margin-bottom: 0;
+	}
 
 #churchdirectory .contact-button {
-    display: block;
-    margin-top: 10px;
-}
+	display: block;
+	margin-top: 10px;
+	}
 
 label.textarea {
-    margin: 7px 0;
-    display: block;
-}
+	margin: 7px 0;
+	display: block;
+	}
 
 #churchdirectory-error {
-    border: 1px solid #ff0000;
-    margin-top: 12px;
-    width: 300px;
-    padding: 3px;
-    text-align: center;
-    font-weight: bold;
-}
+	border: 1px solid #ff0000;
+	margin-top: 12px;
+	width: 300px;
+	padding: 3px;
+	text-align: center;
+	font-weight: bold;
+	}
 
 #captcha-img {
-    margin-top: 6px;
-}
+	margin-top: 6px;
+	}
 
 div.separator {
-    margin-bottom: 6px;
-}
+	margin-bottom: 6px;
+	}
 
-#churchdirectory-confirm  .linkback {
-    display: block;
-    margin-top: 15px;
-}
+#churchdirectory-confirm .linkback {
+	display: block;
+	margin-top: 15px;
+	}
 
 .directory-title {
-    font-size: 10pt;
-    font-weight: bold;
-}
+	font-size: 10pt;
+	font-weight: bold;
+	}
 
 .directory-img {
-    width: 100px;
-    margin-right: 6px;
-    margin-left: 6px;
-    margin-bottom: 20px;
-    float: left;
-}
+	width: 100px;
+	margin-right: 6px;
+	margin-left: 6px;
+	margin-bottom: 20px;
+	float: left;
+	}
 
 #directory-items {
-    float: left;
-    width: 46%;
-}
+	float: left;
+	width: 46%;
+	}
 
 p {
-    font-weight: normal;
-}
+	font-weight: normal;
+	}
 
 .jicons-text {
-    font-weight: bold;
-}
+	font-weight: bold;
+	}
 
 .churchdirectory-suburb {
-    display: inline;
-}
+	display: inline;
+	}
 
 .churchdirectory-state {
-    display: inline;
-}
+	display: inline;
+	}
 
 .churchdirectory-postcode {
-    display: inline;
-}
+	display: inline;
+	}
 
 .churchdirectory-churchdirectoryinfo {
 
-}
+	}
 
 .churchdirectory-contact {
-    display: block;
-    float: left;
-    width: 62%;
-}
+	display: block;
+	float: left;
+	width: 62%;
+	}
 
 .innera {
-    background: none repeat scroll 0 0 #F3F3F3;
-    border: 1px solid #FFFFFF;
-    border-radius: 11px 11px 11px 11px;
-    box-shadow: 0 0 5px #BED1D6;
-    position: relative;
-    margin-top: 5px;
-    padding: 0 20px 0;
-}
+	background: none repeat scroll 0 0 #f3f3f3;
+	border: 1px solid #ffffff;
+	border-radius: 11px 11px 11px 11px;
+	box-shadow: 0 0 5px #bed1d6;
+	position: relative;
+	margin-top: 5px;
+	padding: 0 20px 0;
+	}
 
 /*Directory Layout*/
 .churchdirectory-table {
-    overflow: auto;
-    max-height: 830px;
-    font-size: 90%;
-}
+	overflow: auto;
+	max-height: 830px;
+	font-size: 90%;
+	}
 
 .familymembers-list {
-    background: none repeat scroll 0 0 #F3F3F3;
-    border: 1px solid #FFFFFF;
-    border-radius: 11px 11px 11px 11px;
-    box-shadow: 0 0 5px #BED1D6;
-    position: relative;
-    margin-top: 5px;
-    padding: 5px;
-}
+	background: none repeat scroll 0 0 #f3f3f3;
+	border: 1px solid #ffffff;
+	border-radius: 11px 11px 11px 11px;
+	box-shadow: 0 0 5px #bed1d6;
+	position: relative;
+	margin-top: 5px;
+	padding: 5px;
+	}
 
 .title {
-    font-weight: bold;
-}
+	font-weight: bold;
+	}
 
 .directory-subtitle {
-    float: left;
-    width: 40%;
-    padding: 0 5px 0;
-    text-align: left;
-}
+	float: left;
+	width: 40%;
+	padding: 0 5px 0;
+	text-align: left;
+	}
 
 .directory-telephone {
-}
+	}
 
 .directory-name {
-    float: left;
-    width: 25%;
-    padding: 0 5px 0;
-    text-align: center;
-    border-right: 2px solid #000;
-}
+	float: left;
+	width: 25%;
+	padding: 0 5px 0;
+	text-align: center;
+	border-right: 2px solid #000;
+	}
 
 .directory-submemberinfo {
-    margin-left: 25px;
-}
+	margin-left: 25px;
+	}
 
 .directory-familymembers-list {
-    padding: 5px 0 5px;
-}
+	padding: 5px 0 5px;
+	}
 
 .vertical-line {
-    /* display: inline; */
-    float: left;
-    border: 1px solid #dcdcdc;
-    padding-bottom: 2000px;
-    margin-bottom: -2000px;
-}
+	/* display: inline; */
+	float: left;
+	border: 1px solid #dcdcdc;
+	padding-bottom: 2000px;
+	margin-bottom: -2000px;
+	}
 
 div.vert-line {
-    overflow: hidden
-}
+	overflow: hidden
+	}
 
-div.vert-line>div+div {
-    border-left: black;
-}
+div.vert-line > div + div {
+	border-left: black;
+	}
 
-div.vert-line>div {
-    float: left;
-    padding-bottom: 2000px;
-    margin-bottom: -2000px;
-}
+div.vert-line > div {
+	float: left;
+	padding-bottom: 2000px;
+	margin-bottom: -2000px;
+	}
 
 #position-header {
-    font-weight: bold;
-    float: left;
-    width: 20%;
-}
+	font-weight: bold;
+	float: left;
+	width: 20%;
+	}
 
 #position-name {
-    float: right;
-    width: 70%;
-}
+	float: right;
+	width: 70%;
+	}
 
 .headerpage {
-    padding: 5px;
-    border: 1px solid #000;
-}
+	padding: 5px;
+	border: 1px solid #000;
+	}
 
 .paddingitem {
-    padding: 5px;
-}
+	padding: 5px;
+	}
 
 .row-fluid [class*="span"] {
-    margin-left: 0;
-}
+	margin-left: 0 !important;
+	}
 
 .churchdirectory-container {
-    overflow: hidden;
-}
+	overflow: hidden;
+	}
 
 .churchdirectory-container hr {
-    margin: 0;
-    border: 1px solid #000;
-}
+	margin: 0;
+	border: 1px solid #000;
+	}
 
 .cd_margin_top_20 {
-    margin-top: 20px;
-}
+	margin-top: 20px;
+	}
 
-@media (min-width: 1200px) {
-    .row-fluid [class*="span"] {
-        margin-left: 0;
-    }
-}
+.directory .span4 {
+	float: left !important;
+	width: 250px !important;
+	}
+
+.directory .span4 .directory-img {
+	width: 30%;
+	height: 30%;
+	}
+
+@media print {
+	}

@@ -5,19 +5,19 @@
    	behave like an install but upgrades will be treated appropriately even
    	if the interface doesn't support it properly -->
 
-    <!-- Generic Metadata -->
-    <name>COM_CHURCHDIRECTORY</name>
+	<!-- Generic Metadata -->
+	<name>COM_CHURCHDIRECTORY</name>
     <author>Joomla Bible Study Team</author>
     <copyright>2007 - 2014 (C) Joomla Bible Study Team All rights reserved</copyright>
     <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
-    <version>1.7.8</version>
-    <creationDate>March 16, 2014</creationDate>
+    <version>1.7.9</version>
+    <creationDate>Apr 13, 2014</creationDate>
     <authorEmail>info@joomlabiblestudy.org</authorEmail>
     <authorUrl>http://www.joomlabiblestudy.org</authorUrl>
     <description>COM_CHURCHDIRECTORY_XML_DESCRIPTION</description>
 
-    <!-- Installer Hooks -->
-    <scriptfile>churchdirectory.script.php</scriptfile>
+	<!-- Installer Hooks -->
+	<scriptfile>churchdirectory.script.php</scriptfile>
 
     <install>
         <sql>
@@ -25,12 +25,12 @@
         </sql>
     </install>
     <uninstall> <!-- Runs on uninstall -->
-        <sql>
+	    <sql>
             <file driver="mysql" charset="utf8" folder="sql">sql/uninstall.mysql.utf8.sql</file>
         </sql>
     </uninstall>
     <update> <!-- Runs on update; New in 1.6 -->
-        <schemas>
+	    <schemas>
             <schemapath type="mysql">sql/updates/mysql</schemapath>
         </schemas>
     </update>
@@ -84,15 +84,16 @@
         </files>
     </administration>
 
-    <!-- Extension Update Specification -->
-     <update>
-     <server type="extension" priority="1" name="Primary Update Server"><![CDATA[http://http://www.joomlabiblestudy.org/index.php?option=com_ars&view=update&task=stream&format=xml&id=10&dummy=extension.xml]]></server>
-     </update>
+	<!-- Extension Update Specification -->
+
+	<updateservers>
+        <server type="collection" priority="1" name="pkg_churchdirectory_package"><![CDATA[http://http://www.joomlabiblestudy.org/index.php?option=com_ars&view=update&task=stream&format=xml&id=10&dummy=extension.xml]]></server>
+    </updateservers>
 
 
-    <!-- Tables -->
-    <!-- These are used for backups to determine which tables to backup; ones marked optional are only backed up if they exist -->
-    <tables>
+	<!-- Tables -->
+	<!-- These are used for backups to determine which tables to backup; ones marked optional are only backed up if they exist -->
+	<tables>
         <table>#__churchdirectory_details</table>
         <table>#__churchdirectory_dirheader</table>
         <table>#__churchdirectory_familyunit</table>
@@ -101,8 +102,8 @@
         <table type="optional">#__churchdirectory_update</table>
     </tables>
 
-    <!--  Dependencies -->
-    <dependencies>
-        <dependency type="platform" name="joomla" operator="=" version="2.5" />
+	<!--  Dependencies -->
+	<dependencies>
+        <dependency type="platform" name="joomla" operator="=" version="2.5"/>
     </dependencies>
 </extension>

@@ -29,12 +29,12 @@ foreach ($this->items as $item)
 						FUnit ID: ' . $item->funitid . ' ' . gettype($item->funitid) . '
 						Item Count: ' . $this->printed_items . ' ' . gettype($this->printed_items) . '
 						Row Count: ' . $this->printed_rows . ' ' . gettype($this->printed_rows) . '
-		FamilyPosiion: ' . $item->attribs->get('familypostion') . ' ' . gettype($item->attribs->get('familypostion')), '', '', 'debug');
+						FamilyPosiion: ' . $item->attribs->get('familypostion') . ' ' . gettype($item->attribs->get('familypostion')), '', '', 'debug');
 		}
 		if (($item->funitid != '0' && $item->attribs->get('familypostion', '0') === '0') || ($item->funitid == '0' && $item->attribs->get('familypostion', '-1') === '-1' || $item->attribs->get('familypostion', '0') === '0'))
 		{
 
-			echo '<table class="table churchdirectory-table"><tbody><tr><td class="span' . $this->span . '">';
+			echo '<div class="row-fled"><div class="span' . $this->span . '">';
 		}
 	}
 	$this->subcount--;
@@ -42,16 +42,16 @@ foreach ($this->items as $item)
 	if ($this->letter != ucfirst($this->items[0]->lname[0]))
 	{
 		$this->letter = ucfirst($this->items[0]->lname[0]);
-		echo '<a name="' . $this->letter . '"></a><h2>' . $this->letter . '</h2><hr />';
+		echo '<a style="page-break-before:auto" name="' . $this->letter . '"></a><h4>' . $this->letter . '</h4><hr />';
 	}
 	if ($item->funitid != '0' && $item->attribs->get('familypostion') === '0') :
 		?>
-		<div id="directory-items<?php echo $item->id + 1; ?>" class="paddingitem">
+		<div id="directory-items<?php echo $item->id + 1; ?>"  style="page-break-before:auto" class="paddingitem">
 			<?php
 			if ($item->funit_image && $this->params->get('dr_show_image')) :
 				echo '<img src="' . $this->baseurl . DIRECTORY_SEPARATOR . $item->funit_image . '" align="center" hspace="6" alt="' . $item->funit_name . '" class="directory-img pull-right" />';
 			elseif ($this->params->get('image') != null && $this->params->get('dr_show_image')):
-				echo '<img src="' . $this->baseurl . DIRECTORY_SEPARATOR . $this->params - get('image') . '" align="center" hspace="6" alt="' . JText::_('COM_CHURCHDIRECTORY_NO_PHOTO_AVALIBLE') . '" class="directory-img pull-right" />';
+				echo '<img src="' . $this->baseurl . DIRECTORY_SEPARATOR . $this->params->get('image') . '" align="center" hspace="6" alt="' . JText::_('COM_CHURCHDIRECTORY_NO_PHOTO_AVALIBLE') . '" class="directory-img pull-right" />';
 			elseif ($this->params->get('dr_show_image')):
 				echo '<img src="' . $this->baseurl . '/media/com_churchdirectory/images/200-photo_not_available.jpg" align="center" hspace="6" alt="' . JText::_('COM_CHURCHDIRECTORY_NO_PHOTO_AVALIBLE') . '" class="directory-img pull-right" />';
 			endif;
@@ -59,10 +59,12 @@ foreach ($this->items as $item)
 			<?php
 			$families = $this->renderHelper->getFamilyMembers($item->funit_id); ?>
 			<span id="contact-name"><?php echo $item->funit_name; ?></span><br/>
-			<?php if ($this->params->get('dr_show_children')) :
+			<?php $children = $this->renderHelper->getChildren($families, true);
+			if ($this->params->get('dr_show_children') && $children || $item->children) :
 				?>
 				<p>
-					<?php echo '<span class="jicons-text">' . JText::_('COM_CHURCHDIRECTORY_CHILDREN') . ': </span>' . $this->renderHelper->getChildren($families);
+					<?php echo '<span class="jicons-text">' . JText::_('COM_CHURCHDIRECTORY_CHILDREN') . ': </span>';
+					echo $children;
 					if ($item->children)
 					{
 						echo '<br />' . $item->children;
@@ -198,12 +200,12 @@ foreach ($this->items as $item)
 	elseif ($item->funitid === '0'):
 		?>
 		<div id="directory-items<?php echo $item->id + 1; ?>"
-		     class="paddingitem">
+		     class="paddingitem" style="page-break-before:auto" >
 			<?php
 			if ($item->image && $this->params->get('dr_show_image')) :
 				echo '<img src="' . $this->baseurl . DIRECTORY_SEPARATOR . $item->image . '" align="center" hspace="6" alt="' . $item->name . '" class="directory-img pull-right" />';
 			elseif ($this->params->get('image') != null && $this->params->get('dr_show_image')):
-				echo '<img src="' . $this->baseurl . DIRECTORY_SEPARATOR . $this->params - get('image') . '" align="center" hspace="6" alt="' . JText::_('COM_CHURCHDIRECTORY_NO_PHOTO_AVALIBLE') . '" class="directory-img pull-right" />';
+				echo '<img src="' . $this->baseurl . DIRECTORY_SEPARATOR . $this->params->get('image') . '" align="center" hspace="6" alt="' . JText::_('COM_CHURCHDIRECTORY_NO_PHOTO_AVALIBLE') . '" class="directory-img pull-right" />';
 			elseif ($this->params->get('dr_show_image')):
 				echo '<img src="' . $this->baseurl . '/media/com_churchdirectory/images/200-photo_not_available.jpg" align="center" hspace="6" alt="' . JText::_('COM_CHURCHDIRECTORY_NO_PHOTO_AVALIBLE') . '" class="directory-img pull-right" />';
 			endif;
@@ -357,13 +359,13 @@ foreach ($this->items as $item)
 		if ($this->printed_items == $this->items_per_row && $this->printed_rows != $this->rows_per_page - 1)
 		{
 			echo '<!-- new column -->';
-			echo '</td><td class="span' . $this->span . '">';
+			echo '</div><div class="span' . $this->span . ' page-break-after:auto">';
 			$this->printed_rows++;
 			$this->printed_items = 0;
 		}
 		elseif ($this->printed_items == $this->items_per_row)
 		{
-			echo '</td></tr></tbody></table><div style="page-break-after:always"></div>';
+			echo '</div></div><div style="clear: both; page-break-after:auto"></div><hr />';
 			echo '<!-- End column -->';
 			$this->printed_rows  = 0;
 			$this->printed_items = 0;

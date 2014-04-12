@@ -8,150 +8,157 @@
 */
 
 form .tab-content .controls label, form .controls #batch-move-copy label {
-    float: left;
-    clear: none;
-    padding-left: 10px;
-    padding-right: 10px;
-    border: none;
-}
+	float: left;
+	clear: none;
+	padding-left: 10px;
+	padding-right: 10px;
+	border: none;
+	}
 
 .control-group label {
-    display: block;
-    margin-bottom: 5px;
-}
+	display: block;
+	margin-bottom: 5px;
+	}
 
 form .controls fieldset {
-    border: none;
-}
+	border: none;
+	}
 
 .element-invisible {
-    position: absolute;
-    padding: 0;
-    margin: 0;
-    border: 0;
-    height: 1px;
-    width: 1px;
-    overflow: hidden;
-}
+	position: absolute;
+	padding: 0;
+	margin: 0;
+	border: 0;
+	height: 1px;
+	width: 1px;
+	overflow: hidden;
+	}
 
 label {
-    display: block;
-    margin-bottom: 5px;
-}
+	display: block;
+	margin-bottom: 5px;
+	}
 
 label, input, button, select, textarea {
-    font-size: 13px;
-    font-weight: normal;
-    line-height: 18px;
-}
+	font-size: 13px;
+	font-weight: normal;
+	line-height: 18px;
+	}
 
 [class^="icon-16"], [class*=" icon-16"] {
-    width: auto;
-    height: 100%;
-}
+	width: auto;
+	height: 100%;
+	}
 
 [class^="icon-32"], [class*=" icon-32"] {
-    width: 32px;
-    height: 32px;
-    background-position: 0 0;
-    display: block;
-}
+	width: 32px;
+	height: 32px;
+	background-position: 0 0;
+	display: block;
+	}
 
 [class^="icon-48"], [class*=" icon-48"] {
-    width: 48px;
-    height: 48px;
-    background-position: 0 0;
-    display: block;
-}
+	width: 48px;
+	height: 48px;
+	background-position: 0 0;
+	display: block;
+	}
 
 [class*="input-"], .inputbox {
-    font-size: 13px;
-    font-weight: normal;
-    line-height: 18px;
-}
+	font-size: 13px;
+	font-weight: normal;
+	line-height: 18px;
+	}
 
 #j-main-container .pagination {
-    margin: 0;
-    float: right;
-}
+	margin: 0;
+	float: right;
+	}
 
 #j-main-container .container {
-    width: auto;
-}
+	width: auto;
+	}
 
 div.pagetitle {
-    width: auto;
-}
+	width: auto;
+	}
 
 .radio input[type="radio"], .checkbox input[type="checkbox"] {
-    float: left;
-    margin-left: 0;
-}
+	float: left;
+	margin-left: 0;
+	}
 
 .form-search label, .form-inline label, .form-search .btn-group, .form-inline .btn-group {
-    display: inline-block;
-}
+	display: inline-block;
+	}
 
 .form-vertical .control-label {
-    float: none;
-    width: auto;
-    padding-right: 0;
-    padding-top: 0;
-    text-align: left;
-}
+	float: none;
+	width: auto;
+	padding-right: 0;
+	padding-top: 0;
+	text-align: left;
+	}
 
 .form-vertical .controls {
-    margin-left: 0;
-}
+	margin-left: 0;
+	}
 
 .form-horizontal .control-label {
-    width: auto;
-    padding-right: 5px;
-    text-align: left;
-}
+	width: auto;
+	padding-right: 5px;
+	text-align: left;
+	}
 
 form .btn-group label {
-    font-size: 12px;
-}
+	font-size: 12px;
+	}
 
 input, select {
-    font-size: 0.909em;
-    background: none;
-}
+	font-size: 0.909em;
+	background: none;
+	}
 
 .table td.center {
-    text-align: center;
-}
+	text-align: center;
+	}
 
 .form-inline #jform_id {
-    float: none;
-    display: inline-block;
-}
+	float: none;
+	display: inline-block;
+	}
 
 /*
   For Church Team output (Category)
 */
 .pagination a, .pagination span {
-    border: 0;
-}
+	border: 0;
+	}
 
 .churchdirectory-category .pagination ul li {
-    float: left;
-}
+	float: left;
+	}
 
 /*
   Church Directory only
 */
 .churchdirectory_paddingtop20 {
-    margin-top: 20px;
-}
+	margin-top: 20px;
+	}
 
 #main .contact ul.nav {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-}
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
+	}
 
 .pagination div.limit {
-    display: none;
-}
+	display: none;
+	}
+
+.center, .table td.center, .table th.center {
+	text-align: center;
+	}
+[class*="span"] {
+	 margin-left: 0;
+	}

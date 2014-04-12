@@ -1,12 +1,11 @@
 <?php
 /**
- * @package        ChurchDirectory.Site
+ * @package    ChurchDirectory.Site
  * @copyright  2007 - 2014 (C) Joomla Bible Study Team All rights reserved.
- * @license        GNU General Public License version 2 or later; see LICENSE.txt
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die;
 
-JHtml::_('bootstrap.framework');
 $login = $this->user->get('guest') ? true : false;
 $check = in_array($this->params->get('accesslevel'), $this->user->get('_authLevels'));
 ?>
@@ -17,7 +16,7 @@ $check = in_array($this->params->get('accesslevel'), $this->user->get('_authLeve
 		}?>
 	</h1>
 
-	<div class="span6 pull-left">
+	<div class="span2 pull-left">
 		<a href="index.php?option=com_users&return=<?php echo $this->return ?>">
 			<button class="btn btn-primary">
 				<?php echo $login ? JText::_('JLOGIN') : JText::_('JLOGOUT') ?>
@@ -33,7 +32,7 @@ $check = in_array($this->params->get('accesslevel'), $this->user->get('_authLeve
 		{
 			echo JText::_('COM_CHURCHDIRECTORY_HOME_INTRO');
 			echo ' <a href="' . $this->params->get('form') . '">' . JText::_('COM_CHURCHDIRECTORY_AUTH_FORM') . '</a>'; ?>
-			<br /><br />
+			<br/><br/>
 		<?php
 		}
 		elseif (!$check)
@@ -47,8 +46,34 @@ $check = in_array($this->params->get('accesslevel'), $this->user->get('_authLeve
 			?>
 			<div class="row-fluid">
 				<div class="span12">
-					<div class="span5 pull-left">Left</div>
-					<div class="span5 pull-left">Right</div>
+					<?php
+					$count = count($this->items);
+					$split = $count / 2;
+					foreach ($this->items as $i => $item)
+					{
+						if ($i < $split)
+						{
+							?>
+							<div class="span6 pull-left">
+								<div class="center">
+									<?php echo $item->name ?>
+								</div>
+
+							</div>
+						<?php
+						}
+						else
+						{
+							?>
+							<div class="span6 pull-left">
+								<div class="center">
+									<?php echo $item->name ?>
+								</div>
+
+							</div>
+						<?php
+						}
+					} ?>
 				</div>
 			</div>
 		<?php } ?>

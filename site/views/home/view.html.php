@@ -18,7 +18,7 @@ class ChurchDirectoryViewHome extends JViewLegacy
 
 	protected $state;
 
-	protected $item;
+	protected $items;
 
 	/** @var  JRegistry */
 	protected $params;
@@ -44,7 +44,7 @@ class ChurchDirectoryViewHome extends JViewLegacy
 		$app          = JFactory::getApplication();
 		$user         = JFactory::getUser();
 		$state        = $this->get('State');
-		$item         = $this->get('Item');
+		$items        = $this->get('Items');
 		$this->return = $this->get('ReturnPage');
 
 		// Get the parameters
@@ -78,7 +78,7 @@ class ChurchDirectoryViewHome extends JViewLegacy
 
 		$this->params = & $params;
 		$this->user   = & $user;
-		$this->item   = & $item;
+		$this->items  = & $items;
 		$this->prepareDocument();
 		return parent::display($tpl);
 	}

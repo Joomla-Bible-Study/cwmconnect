@@ -6,7 +6,6 @@
  */
 
 defined('_JEXEC') or die;
-
 $this->printed_items = (int) 0;
 $this->printed_rows = (int) 0;
 $this->letter = null;
@@ -17,9 +16,9 @@ JHtml::addIncludePath(JPATH_COMPONENT . '/helpers');
 
 ?>
 
-<div class="directory<?php echo $this->pageclass_sfx; ?> row-fluid">
+<div class="directory<?php echo $this->pageclass_sfx; ?> container" style="width: 8.5in">
 	<?php echo $this->pageclass_sfx;
-
+	echo '<a name="top"></a>';
 	if ($this->params->get('dr_show_page_title', 1))
 	{
 		?>
@@ -43,8 +42,9 @@ JHtml::addIncludePath(JPATH_COMPONENT . '/helpers');
 		}
 	}
 	echo $this->header->header;
-	echo '<div class="clearfix"></div><hr />';
-
+	echo '<div class="clearfix"></div>';
+	echo '<div class="center">' . $this->abclinks() . '</div>';
+	echo '<hr />';
 	foreach ($this->items as $s1 => $sort1)
 	{
 		if (0)
@@ -66,6 +66,6 @@ JHtml::addIncludePath(JPATH_COMPONENT . '/helpers');
 		}
 	}
 	// Last call to close out table.
-	echo '</td></tr></tbody></table>';
+	echo '<a name="bottom"></a></div></div>';
 	echo $this->header->footer;?>
 </div>

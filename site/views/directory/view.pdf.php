@@ -10,11 +10,12 @@
 defined('_JEXEC') or die;
 
 require_once JPATH_COMPONENT . '/models/category.php';
+jimport('tcpdf.tcpdf');
 
 /**
  * HTML Member View class for the ChurchDirectory component
  *
- * @property JFactory::getDocument document
+ * @property mixed document
  * @package  ChurchDirectory.Site
  * @since    1.7.0
  */
@@ -35,9 +36,6 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 
 	/**  Protected  @var array */
 	protected $pagination = null;
-
-	/** @var JDocument  */
-	public $document;
 
 	protected $span;
 
@@ -215,6 +213,8 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 		// Escape strings for HTML output
 		$this->pageclass_sfx = htmlspecialchars($params->get('pageclass_sfx'));
 		$this->prepareDocument();
+		JHTML::stylesheet('general.css', 'media/com_churchdirectory/css/');
+		JHTML::stylesheet('churchdirectory.css', 'media/com_churchdirectory/css/');
 
 		return parent::display($tpl);
 	}
@@ -280,40 +280,6 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 		{
 			$this->document->setMetadata('robots', $this->params->get('robots'));
 		}
-	}
-
-	public function abclinks()
-	{
-		$links = '<a href="#top"> Top </a>';
-		$links .= '<a href="#A"> A </a>';
-		$links .= '<a href="#B"> B </a>';
-		$links .= '<a href="#C"> C </a>';
-		$links .= '<a href="#D"> D </a>';
-		$links .= '<a href="#E"> E </a>';
-		$links .= '<a href="#F"> F </a>';
-		$links .= '<a href="#G"> G </a>';
-		$links .= '<a href="#H"> H </a>';
-		$links .= '<a href="#I"> I </a>';
-		$links .= '<a href="#J"> J </a>';
-		$links .= '<a href="#K"> K </a>';
-		$links .= '<a href="#L"> L </a>';
-		$links .= '<a href="#M"> M </a>';
-		$links .= '<a href="#N"> N </a>';
-		$links .= '<a href="#O"> O </a>';
-		$links .= '<a href="#P"> P </a>';
-		$links .= '<a href="#Q"> Q </a>';
-		$links .= '<a href="#R"> R </a>';
-		$links .= '<a href="#S"> S </a>';
-		$links .= '<a href="#T"> T </a>';
-		$links .= '<a href="#U"> U </a>';
-		$links .= '<a href="#V"> V </a>';
-		$links .= '<a href="#W"> W </a>';
-		$links .= '<a href="#X"> X </a>';
-		$links .= '<a href="#Y"> Y </a>';
-		$links .= '<a href="#Z"> Z </a>';
-		$links .= '<a href="#bottom"> Bottom </a>';
-
-		return $links;
 	}
 
 }

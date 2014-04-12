@@ -169,7 +169,7 @@ class RenderHelper
 	 *
 	 * @return string HTML string
 	 */
-	public function getChildren($families)
+	public function getChildren($families, $from = false)
 	{
 		if (is_int($families))
 		{
@@ -183,15 +183,15 @@ class RenderHelper
 		{
 			if (($n2 == $i2 && $n2 < 2) || ($n2 == 2 && $n2 == $i2))
 			{
-				$name .= self::getMemberStatus($member) . ' ';
+				$name .= self::getMemberStatus($member, $from) . ' ';
 			}
 			elseif ($n2 > 2 && $i2 > 1)
 			{
-				$name .= self::getMemberStatus($member) . ', ';
+				$name .= self::getMemberStatus($member, $from) . ', ';
 			}
 			elseif ($i2 == 1 && $n2 >= 2)
 			{
-				$name .= '&amp; ' . self::getMemberStatus($member);
+				$name .= '&amp; ' . self::getMemberStatus($member, $from);
 			}
 			$i2--;
 		}
@@ -207,7 +207,7 @@ class RenderHelper
 	 *
 	 * @return string
 	 */
-	public function getSpouse($fu_id, $family_position)
+	public function getSpouse($fu_id, $family_position, $from = false)
 	{
 		if ($family_position == 1)
 		{
@@ -222,7 +222,7 @@ class RenderHelper
 
 		foreach ($members as $member)
 		{
-			$spouse = self::getMemberStatus($member);
+			$spouse = self::getMemberStatus($member, $from);
 		}
 
 		return $spouse;
@@ -235,25 +235,53 @@ class RenderHelper
 	 *
 	 * @return string HTML string returned
 	 */
-	public function getMemberStatus($member)
+	public function getMemberStatus($member, $from = false)
 	{
 		$mstatus = null;
 
 		if ($member->mstatus == '0') // Active Member
 		{
-			$mstatus = '<a href="index.php?option=com_churchdirectory&view=member&id=' . $member->id . '"><span><b>' . $member->name . '</b></span></a>';
+			if ($from)
+			{
+				$mstatus = $member->name;
+			}
+			else
+			{
+				$mstatus = '<a href="index.php?option=com_churchdirectory&view=member&id=' . (int) $member->id . '">' . $member->name . '</a>';
+			}
 		}
 		elseif ($member->mstatus == '1') // Inactive Member
 		{
-			$mstatus = '<a href="index.php?option=com_churchdirectory&view=member&id=' . $member->id . '"><span><b>' . $member->name . '</b></span></a>';
+			if ($from)
+			{
+				$mstatus = $member->name;
+			}
+			else
+			{
+				$mstatus = '<a href="index.php?option=com_churchdirectory&view=member&id=' . (int) $member->id . '">' . $member->name . '</a>';
+			}
 		}
 		elseif ($member->mstatus == '2') // Active Attendee
 		{
-			$mstatus = '<a href="index.php?option=com_churchdirectory&view=member&id=' . $member->id . '"><span>( ' . $member->name . ' )</span></a>';
+			if ($from)
+			{
+				$mstatus = $member->name;
+			}
+			else
+			{
+				$mstatus = '<a href="index.php?option=com_churchdirectory&view=member&id=' . (int) $member->id . '">( ' . $member->name . ' )</a>';
+			}
 		}
 		elseif ($member->mstatus == '3') // None Member
 		{
-			$mstatus = '<a href="index.php?option=com_churchdirectory&view=member&id=' . $member->id . '"><span style="color: gray;">( ' . $member->name . ' )</span></a>';
+			if ($from)
+			{
+				$mstatus = $member->name;
+			}
+			else
+			{
+				$mstatus = '<span style="color: gray;"><a href="index.php?option=com_churchdirectory&view=member&id=' . (int) $member->id . '">( ' . $member->name . ' )</a></span>';
+			}
 		}
 
 		return $mstatus;
