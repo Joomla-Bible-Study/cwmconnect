@@ -30,7 +30,7 @@ class ChurchDirectoryViewHome extends JViewLegacy
 	protected $search;
 
 	/** @var  JDocument */
-	public  $document;
+	public $document;
 
 	/**
 	 * Display function
@@ -60,26 +60,28 @@ class ChurchDirectoryViewHome extends JViewLegacy
 		}
 		$document   = JFactory::getDocument();
 		$renderer   = $document->loadRenderer('module');
-		$mod_params  = array('style' => 'xhtml');
+		$mod_params = array('style' => 'xhtml');
 		$contents   = '';
-		$mod = JModuleHelper::getModule('mod_finder');
-			$registry   = new JRegistry;
-			$registry->loadString($mod->params);
-			$registry->set('searchfilter', 'paramvalue');
-			$registry->set('show_advanced', '0');
-			$registry->set('opensearch', '1');
-			$registry->set('set_itemid',  $app->input->getInt('Itemid'));
-			$registry->set('size-lbl', '12');
-			$registry->set('show_button', '1');
-			$registry->set('button_pos', 'right');
-			$mod->params = (string) $registry;
-			$contents .= $renderer->render($mod, $mod_params);
-		$this->search = $contents;
+		$mod        = JModuleHelper::getModule('mod_finder');
+		$registry   = new JRegistry;
+		$registry->loadString($mod->params);
+		$registry->set('searchfilter', 'paramvalue');
+		$registry->set('show_advanced', '0');
+		$registry->set('opensearch', '1');
+		$registry->set('set_itemid', $app->input->getInt('Itemid'));
+		$registry->set('size-lbl', '12');
+		$registry->set('show_button', '1');
+		$registry->set('button_pos', 'right');
+		$mod->params = (string) $registry;
+		$contents .= $renderer->render($mod, $mod_params);
+		$this->search       = $contents;
 
-		$this->params = & $params;
-		$this->user   = & $user;
-		$this->items  = & $items;
+		$this->renderHelper = new RenderHelper;
+		$this->params       = & $params;
+		$this->user         = & $user;
+		$this->items        = & $items;
 		$this->prepareDocument();
+
 		return parent::display($tpl);
 	}
 

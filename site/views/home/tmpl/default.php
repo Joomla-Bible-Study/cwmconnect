@@ -8,6 +8,7 @@ defined('_JEXEC') or die;
 
 $login = $this->user->get('guest') ? true : false;
 $check = in_array($this->params->get('accesslevel'), $this->user->get('_authLevels'));
+$count = count($this->items);
 ?>
 <div>
 	<h1 class="center"><?php if ($this->params->get('show_page_heading', 0))
@@ -41,13 +42,12 @@ $check = in_array($this->params->get('accesslevel'), $this->user->get('_authLeve
 			<span>Please register as a church member. This directory is for church members only</span>
 		<?php
 		}
-		elseif ($check)
+		elseif ($check && $count <= 1)
 		{
 			?>
 			<div class="row-fluid">
 				<div class="span12">
 					<?php
-					$count = count($this->items);
 					$split = $count / 2;
 					foreach ($this->items as $i => $item)
 					{
@@ -56,7 +56,13 @@ $check = in_array($this->params->get('accesslevel'), $this->user->get('_authLeve
 							?>
 							<div class="span6 pull-left">
 								<div class="center">
-									<?php echo $item->name ?>
+									<a href="<?php echo JUri::root(); ?>/index.php?option=com_churchdirectory&view=member&id=<?php echo $item->id; ?>">
+										<img src="<?php echo $item->image; ?>" alt="<?php echo $item->name; ?>"
+										     style="max-width:240px; border: none;"><br/>
+										<span class="large buld"><?php echo $item->name ?></span><br/>
+										<span
+											class="small"><?php echo $this->renderHelper->getPosition($item->con_position); ?></span>
+									</a>
 								</div>
 
 							</div>
@@ -67,7 +73,13 @@ $check = in_array($this->params->get('accesslevel'), $this->user->get('_authLeve
 							?>
 							<div class="span6 pull-left">
 								<div class="center">
-									<?php echo $item->name ?>
+									<a href="<?php echo JUri::root(); ?>/index.php?option=com_churchdirectory&view=member&id=<?php echo $item->id; ?>">
+										<img src="<?php echo $item->image; ?>" alt="<?php echo $item->name; ?>"
+										     style="max-width:240px; border: none;"><br/>
+										<span class="large buld"><?php echo $item->name ?></span><br/>
+										<span
+											class="small"><?php echo $this->renderHelper->getPosition($item->con_position); ?></span>
+									</a>
 								</div>
 
 							</div>

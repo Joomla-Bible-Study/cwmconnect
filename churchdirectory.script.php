@@ -1,9 +1,9 @@
 <?php
 /**
- * @package        ChurchDirectory.Admin
+ * @package    ChurchDirectory.Admin
  * @copyright  2007 - 2014 (C) Joomla Bible Study Team All rights reserved.
- * @license        GNU General Public License version 2 or later; see LICENSE.txt
- * @see            Akeebe Script
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * @see        Akeebe Script
  */
 
 defined('_JEXEC') or die;
@@ -178,7 +178,7 @@ class Com_ChurchdirectoryInstallerScript
 		}
 		else
 		{
-			$version = '5.0.0'; // all bets are off!
+			$version = '5.0.0'; // All bets are off!
 		}
 		if (!version_compare(JVERSION, '2.5.16', 'ge'))
 		{
@@ -635,7 +635,7 @@ class Com_ChurchdirectoryInstallerScript
 
 		$db = JFactory::getDBO();
 
-		$status          = new JObject;
+		$status          = new stdClass;
 		$status->modules = array();
 		$status->plugins = array();
 
@@ -777,48 +777,10 @@ class Com_ChurchdirectoryInstallerScript
 			$versionSource = 'installed';
 		}
 
-		if (!isset($fofVersion))
-		{
-			$TCPDFVersion = array();
-
-			if (JFile::exists($target . '/README.TXT'))
-			{
-				$rawData                   = file_get_contents($target . '/README.TXT');
-				$info                      = explode("\n", $rawData);
-				$TCPDFVersion['installed'] = array(
-					'version' => trim($info[0]),
-					'date'    => new JDate(trim($info[1]))
-				);
-			}
-			else
-			{
-				$TCPDFVersion['installed'] = array(
-					'version' => '0.0',
-					'date'    => new JDate('2011-01-01')
-				);
-			}
-
-			$rawData = file_get_contents($source . '/README.TXT');
-			$info    = explode("\n", $rawData);
-
-			$TCPDFVersion['package'] = array(
-				'version' => trim($info[0]),
-				'date'    => new JDate(trim($info[1]))
-			);
-
-			$versionSource = 'installed';
-		}
-
-		if (!($TCPDFVersion[$versionSource]['date'] instanceof JDate))
-		{
-			$$TCPDFVersion[$versionSource]['date'] = new JDate();
-		}
-
 		return array(
 			'required'  => $haveToInstallTCPDF,
 			'installed' => $installedTCPDF,
 			'version'   => $TCPDFVersion[$versionSource],
-			'date'      => $TCPDFVersion[$versionSource]['date']->toFormat('Y-m-d'),
 		);
 	}
 
