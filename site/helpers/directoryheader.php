@@ -29,7 +29,7 @@ class DirectoryHeaderHelper
 	/**
 	 * set Header or Footer html
 	 *
-	 * @param   JRegistry $params   HTML Params
+	 * @param   JRegistry  $params  HTML Params
 	 *
 	 * @return string
 	 */

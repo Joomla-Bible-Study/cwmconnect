@@ -40,6 +40,7 @@ class ChurchDirectoryController extends JControllerLegacy
 		if ($vName == 'directory')
 		{
 			$this->input->set('tmpl', 'component');
+			$cachable = false;
 		}
 		$this->input->set('view', $vName);
 

@@ -47,23 +47,8 @@ JHtml::addIncludePath(JPATH_COMPONENT . '/helpers');
 	echo '<hr />';
 	foreach ($this->items as $s1 => $sort1)
 	{
-		if (0)
-		{
-			// First Sort Section
-			foreach ($sort1 as $s2 => $sort2)
-			{
-				?>
-				<?php $this->items = $sort2;
-				echo $this->loadTemplate('items');
-				?>
-			<?php
-			}
-		}
-		else
-		{
-			$this->items = $sort1;
-			echo $this->loadTemplate('items');
-		}
+		$this->items = $sort1;
+		echo $this->loadTemplate('items');
 	}
 	// Last call to close out table.
 	echo '<a name="bottom"></a></div></div>';
