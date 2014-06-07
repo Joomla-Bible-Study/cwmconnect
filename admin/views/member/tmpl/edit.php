@@ -19,12 +19,6 @@ $input = $app->input;
 $assoc = isset($app->item_associations) ? $app->item_associations : 0;
 ?>
 <script type="text/javascript">
-	Joomla.submitbutton = function (task) {
-		if (task == 'member.cancel' || document.formvalidator.isValid(document.id('member-form'))) {
-			<?php echo $this->form->getField('misc')->save(); ?>
-			Joomla.submitform(task, document.getElementById('member-form'));
-		}
-	};
 	jQuery(document).ready(function ($) {
 		$('#jform_funitid').change(function () {
 			var funitid = $('#jform_funitid').val();
@@ -36,7 +30,7 @@ $assoc = isset($app->item_associations) ? $app->item_associations : 0;
 				$('#jform_attribs_familypostion_chzn').css('display', '');
 			}
 		})
-				.change();
+			.change();
 	});
 </script>
 <form action="<?php echo JRoute::_('index.php?option=com_churchdirectory&layout=edit&id=' . (int) $this->item->id); ?>"
@@ -50,13 +44,13 @@ $assoc = isset($app->item_associations) ? $app->item_associations : 0;
 			<?php echo empty($this->item->id) ? JText::_('COM_CHURCHDIRECTORY_NEW_MEMBER') : JText::sprintf('COM_CHURCHDIRECTORY_EDIT_MEMBER', $this->item->id); ?>
 		</a>
 	</li>
-	<li><a href="#publishing" data-toggle="tab"><?php echo JText::_('JGLOBAL_FIELDSET_PUBLISHING');?></a></li>
-	<li><a href="#basic" data-toggle="tab"><?php echo JText::_('COM_CHURCHDIRECTORY_MEMBER_DETAILS');?></a></li>
+	<li><a href="#publishing" data-toggle="tab"><?php echo JText::_('JGLOBAL_FIELDSET_PUBLISHING'); ?></a></li>
+	<li><a href="#basic" data-toggle="tab"><?php echo JText::_('COM_CHURCHDIRECTORY_MEMBER_DETAILS'); ?></a></li>
 	<?php
 	$fieldSets = $this->form->getFieldsets('params');
 	foreach ($fieldSets as $name => $fieldSet) :
 		?>
-		<li><a href="#params-<?php echo $name; ?>" data-toggle="tab"><?php echo JText::_($fieldSet->label);?></a>
+		<li><a href="#params-<?php echo $name; ?>" data-toggle="tab"><?php echo JText::_($fieldSet->label); ?></a>
 		</li>
 	<?php endforeach; ?>
 	<?php
@@ -64,7 +58,7 @@ $assoc = isset($app->item_associations) ? $app->item_associations : 0;
 	foreach ($fieldSets as $name => $fieldSet) :
 		?>
 		<li><a href="#metadata-<?php echo $name; ?>"
-		       data-toggle="tab"><?php echo JText::_($fieldSet->label);?></a></li>
+		       data-toggle="tab"><?php echo JText::_($fieldSet->label); ?></a></li>
 	<?php endforeach; ?>
 
 </ul>
@@ -272,6 +266,7 @@ $assoc = isset($app->item_associations) ? $app->item_associations : 0;
 
 </div>
 <input type="hidden" name="task" value=""/>
+<input type="hidden" name="view" value="member"/>
 <?php echo JHtml::_('form.token'); ?>
 </div>
 <!-- End Member -->
@@ -281,7 +276,7 @@ $assoc = isset($app->item_associations) ? $app->item_associations : 0;
 		<div class="accordion-group">
 			<div class="accordion-heading">
 				<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion6" href="#detailsr">
-					<?php echo JText::_('JDETAILS');?>
+					<?php echo JText::_('JDETAILS'); ?>
 				</a>
 			</div>
 			<div id="detailsr" class="accordion-body collapse in">
