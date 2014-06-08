@@ -1,5 +1,4 @@
-<?php 
- defined('_JEXEC') or die(); 
+<?php
 //============================================================+
 // File name   : qrcode.php
 // Version     : 1.0.010

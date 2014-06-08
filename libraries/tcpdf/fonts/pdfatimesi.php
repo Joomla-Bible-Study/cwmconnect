@@ -1,5 +1,4 @@
-<?php 
- defined('_JEXEC') or die(); 
+<?php
 // TCPDF FONT FILE DESCRIPTION
 $type='Type1';
 $name='PDFATimesItalic';
