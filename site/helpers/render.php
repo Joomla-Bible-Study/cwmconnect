@@ -28,6 +28,8 @@ class RenderHelper
 
 	protected $bday;
 
+	protected $f_id;
+
 	/**
 	 * Get Position
 	 *
@@ -451,7 +453,7 @@ class RenderHelper
 		$query->where('MONTH(a.birthdate) = ' . $date);
 
 		$query->where('a.birthdate != "0000-00-00"')
-			->order('a.birthdate DESC');
+			->order('DAY(a.birthdate) ASC');
 		$db->setQuery($query);
 		$records = $db->loadObjectList();
 
@@ -519,19 +521,37 @@ class RenderHelper
 		$subquery .= ' AND parent.published != 1 GROUP BY cat.id ';
 		$query->join('LEFT OUTER', '(' . $subquery . ') AS badcats ON badcats.id = c.id');
 
+		// Join over Familey info
+		$query->select('f.name as f_name, f.id as f_id');
+		$query->join('LEFT OUTER', '#__churchdirectory_familyunit as f ON f.id = a.funitid');
+
 		// Filter of birthdates to show
 		$date = $params->get('month', date('m'));
 		$query->where('MONTH(a.anniversary) = ' . $date);
 
 		$query->where('a.anniversary != "0000-00-00"')
-			->order('a.anniversary DESC');
+			->order('DAY(a.anniversary) ASC');
 		$db->setQuery($query);
 		$records = $db->loadObjectList();
 
-		foreach ($records as $record)
+		foreach ($records as $i => $record)
 		{
 			list($this->byear, $this->bmonth, $this->bday) = explode('-', $record->anniversary);
-			$results[] = array('name' => $record->name, 'id' => $record->id, 'day' => $this->bday, 'access' => $record->access);
+			if ($record->f_name && $record->f_id != $this->f_id)
+			{
+				$this->f_id = $record->f_id;
+				$results[] = array('name' => $record->f_name, 'id' => $record->f_id, 'day' => $this->bday, 'access' => $record->access);
+			}
+			elseif (!$record->f_name)
+			{
+				$results[] = array('name' => $record->name, 'id' => $record->id, 'day' => $this->bday, 'access' => $record->access);
+			}
+			else
+			{
+				$this->f_id = null;
+				unset($records[$i]);
+			}
+
 		}
 
 		return $results;

@@ -163,7 +163,6 @@ class ChurchDirectoryViewMember extends JViewLegacy
 		$isNew    = ($this->item->id < 1);
 		$document = JFactory::getDocument();
 		$document->setTitle($isNew ? JText::_('COM_CHURCHDIRECTORY_CHURCHDIRECTORY_MEMBER_CREATING') : JText::_('COM_CHURCHDIRECTORY_CHURCHDIRECTORY_MEMBER_EDITING'));
-		$document->addScript(JURI::root() . "media/com_churchdirectory/js/churchdirectory.js");
 	}
 
 }
