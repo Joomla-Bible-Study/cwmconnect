@@ -1181,7 +1181,8 @@
 	    <field name="home_intro"
 	           type="editor"
 	           label="Intro"
-	           description="Intro text shown for all people"/>
+	           description="Intro text shown for all people"
+	           filter="safehtml"/>
 		<field name="form"
                type="url"
                label="Form URL"
