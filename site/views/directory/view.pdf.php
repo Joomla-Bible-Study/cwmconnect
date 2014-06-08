@@ -56,7 +56,7 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 	/**
 	 * Display the view
 	 *
-	 * @param   string $tpl  The name of the template file to parse; automatically searches through the template paths.
+	 * @param   string $tpl The name of the template file to parse; automatically searches through the template paths.
 	 *
 	 * @return  mixed  A string if successful, otherwise a Error object.
 	 */
@@ -66,9 +66,9 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 		$params = JComponentHelper::getParams('com_churchdirectory');
 
 		// Get some data from the models
-		$state          = $this->get('State');
-		$items          = $this->get('Items');
-		$category       = $this->get('Category');
+		$state    = $this->get('State');
+		$items    = $this->get('Items');
+		$category = $this->get('Category');
 
 		// Check whether category access level allows access.
 		$user   = JFactory::getUser();
@@ -212,21 +212,9 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 
 		// Escape strings for HTML output
 		$this->pageclass_sfx = htmlspecialchars($params->get('pageclass_sfx'));
-		$this->prepareDocument();
 		JHTML::stylesheet('general.css', 'media/com_churchdirectory/css/');
 		JHTML::stylesheet('churchdirectory.css', 'media/com_churchdirectory/css/');
 
-		return parent::display($tpl);
-	}
-
-	/**
-	 * Prepares the document
-	 *
-	 * @return void
-	 */
-	protected function prepareDocument()
-	{
-		$app   = JFactory::getApplication();
 		$menus = $app->getMenu();
 		$title = null;
 
@@ -234,52 +222,92 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 		// we need to get it from the menu item itself
 		$menu = $menus->getActive();
 
-		if ($menu)
-		{
-			$this->params->def('page_heading', $this->params->get('page_title', $menu->title));
-		}
-		else
-		{
-			$this->params->def('page_heading', JText::_('COM_CHURCHDIRECTORY_DEFAULT_PAGE_TITLE'));
-		}
-		$title = $this->params->get('page_title', '');
+		// Clean the output buffer
+		@ob_end_clean();
 
-		if (empty($title))
-		{
-			$title = $app->getCfg('sitename');
-		}
-		elseif ($app->getCfg('sitename_pagetitles', 0) == 1)
-		{
-			$title = JText::sprintf('JPAGETITLE', $app->getCfg('sitename'), $title);
-		}
-		elseif ($app->getCfg('sitename_pagetitles', 0) == 2)
-		{
-			$title = JText::sprintf('JPAGETITLE', $title, $app->getCfg('sitename'));
-		}
-		$this->document->setTitle($title);
+		// Create new PDF document
+		$pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 
-		if ($this->category->metadesc)
-		{
-			$this->document->setDescription($this->category->metadesc);
-		}
-		elseif (!$this->category->metadesc && $this->params->get('menu-meta_description'))
-		{
-			$this->document->setDescription($this->params->get('menu-meta_description'));
-		}
 
-		if ($this->category->metakey)
-		{
-			$this->document->setMetadata('keywords', $this->category->metakey);
-		}
-		elseif (!$this->category->metakey && $this->params->get('menu-meta_keywords'))
-		{
-			$this->document->setMetadata('keywords', $this->params->get('menu-meta_keywords'));
-		}
+		// Set document information
+		$pdf->SetCreator('Nashville First SDA Church');
+		$pdf->SetAuthor('NFSDA Church');
+		$pdf->SetTitle($this->params->get('page_title', ''));
+		$pdf->SetSubject('Church Directory');
+		$pdf->SetKeywords('Direcotry, PDF, Members');
 
-		if ($this->params->get('robots'))
-		{
-			$this->document->setMetadata('robots', $this->params->get('robots'));
-		}
+		// Remove default header/footer
+		$pdf->setPrintHeader(false);
+		$pdf->setPrintFooter(false);
+
+		// Set default monospaced font
+		$pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+
+		// Set margins
+		$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+
+		// Set auto page breaks
+		$pdf->SetAutoPageBreak(true, PDF_MARGIN_BOTTOM);
+
+		// Set image scale factor
+		$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+
+		// ---------------------------------------------------------
+
+		// Set font
+		$pdf->SetFont('times', 'BI', 20);
+
+		// Add a page
+		$pdf->AddPage();
+
+		// Set some text to print
+		$html = $this->loadTemplate($tpl);
+
+		// Print a block of text using Write()
+		$pdf->writeHTML($html, false, false, true, false, '');
+
+		// ---------------------------------------------------------
+		$pdf->lastPage();
+
+		$jweb  = new JApplicationWeb;
+		$jweb->clearHeaders();
+
+		// Close and output PDF document
+		$pdf->Output('example_002.pdf', 'I');
+	}
+
+	public function abclinks()
+	{
+		$links = '<a href="#top"> Top </a>';
+		$links .= '<a href="#A"> A </a>';
+		$links .= '<a href="#B"> B </a>';
+		$links .= '<a href="#C"> C </a>';
+		$links .= '<a href="#D"> D </a>';
+		$links .= '<a href="#E"> E </a>';
+		$links .= '<a href="#F"> F </a>';
+		$links .= '<a href="#G"> G </a>';
+		$links .= '<a href="#H"> H </a>';
+		$links .= '<a href="#I"> I </a>';
+		$links .= '<a href="#J"> J </a>';
+		$links .= '<a href="#K"> K </a>';
+		$links .= '<a href="#L"> L </a>';
+		$links .= '<a href="#M"> M </a>';
+		$links .= '<a href="#N"> N </a>';
+		$links .= '<a href="#O"> O </a>';
+		$links .= '<a href="#P"> P </a>';
+		$links .= '<a href="#Q"> Q </a>';
+		$links .= '<a href="#R"> R </a>';
+		$links .= '<a href="#S"> S </a>';
+		$links .= '<a href="#T"> T </a>';
+		$links .= '<a href="#U"> U </a>';
+		$links .= '<a href="#V"> V </a>';
+		$links .= '<a href="#W"> W </a>';
+		$links .= '<a href="#X"> X </a>';
+		$links .= '<a href="#Y"> Y </a>';
+		$links .= '<a href="#Z"> Z </a>';
+		$links .= '<a href="#bottom"> Bottom </a>';
+
+		return $links;
 	}
 
 }
