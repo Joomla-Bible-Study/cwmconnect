@@ -32,17 +32,21 @@ $count = count($this->items);
 		<?php if ($login)
 		{
 			echo JText::_('COM_CHURCHDIRECTORY_HOME_INTRO');
-			echo ' <a href="' . $this->params->get('form') . '">' . JText::_('COM_CHURCHDIRECTORY_AUTH_FORM') . '</a>'; ?>
+			if ($this->params->get('form'))
+			{
+				echo ' <a href="' . $this->params->get('form') . '">' . JText::_('COM_CHURCHDIRECTORY_AUTH_FORM') . '</a>';
+			}
+			?>
 			<br/><br/>
 		<?php
 		}
-		elseif (!$check)
+		if (!$check)
 		{
 			?>
 			<span>Please register as a church member. This directory is for church members only</span>
 		<?php
 		}
-		elseif ($check && $count <= 1)
+		elseif ($check)
 		{
 			?>
 			<div class="row-fluid">
@@ -57,8 +61,12 @@ $count = count($this->items);
 							<div class="span6 pull-left">
 								<div class="center">
 									<a href="<?php echo JUri::root(); ?>/index.php?option=com_churchdirectory&view=member&id=<?php echo $item->id; ?>">
-										<img src="<?php echo $item->image; ?>" alt="<?php echo $item->name; ?>"
-										     style="max-width:240px; border: none;"><br/>
+										<?php if ($item->image && $item->image != '/')
+										{ ?>
+											<img src="<?php echo $item->image; ?>"
+											     alt="<?php echo $item->name; ?>"
+											     style="max-width:240px; border: none;"><br/>
+										<?php } ?>
 										<span class="large buld"><?php echo $item->name ?></span><br/>
 										<span
 											class="small"><?php echo $this->renderHelper->getPosition($item->con_position); ?></span>
@@ -74,8 +82,12 @@ $count = count($this->items);
 							<div class="span6 pull-left">
 								<div class="center">
 									<a href="<?php echo JUri::root(); ?>/index.php?option=com_churchdirectory&view=member&id=<?php echo $item->id; ?>">
-										<img src="<?php echo $item->image; ?>" alt="<?php echo $item->name; ?>"
-										     style="max-width:240px; border: none;"><br/>
+										<?php if ($item->image && $item->image != '/')
+										{ ?>
+											<img src="<?php echo $item->image; ?>"
+											     alt="<?php echo $item->name; ?>"
+											     style="max-width:240px; border: none;"><br/>
+										<?php } ?>
 										<span class="large buld"><?php echo $item->name ?></span><br/>
 										<span
 											class="small"><?php echo $this->renderHelper->getPosition($item->con_position); ?></span>
