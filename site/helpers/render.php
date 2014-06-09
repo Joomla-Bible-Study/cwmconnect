@@ -168,6 +168,7 @@ class RenderHelper
 	 * Get Children from families
 	 *
 	 * @param   int|array  $families  Int if family id and Array of family members
+	 * @param   bool       $from      If from Admin or Site(True)
 	 *
 	 * @return string HTML string
 	 */
@@ -204,8 +205,9 @@ class RenderHelper
 	/**
 	 * Get Spouse of Member
 	 *
-	 * @param   int  $fu_id            ID of family unit
-	 * @param   int  $family_position  ID of members family position.
+	 * @param   int   $fu_id            ID of family unit
+	 * @param   int   $family_position  ID of members family position.
+	 * @param   bool  $from             If from Admin or Site(True)
 	 *
 	 * @return string
 	 */
@@ -234,6 +236,7 @@ class RenderHelper
 	 * Get Member Status
 	 *
 	 * @param   object  $member  Member info
+	 * @param   bool    $from    If from Admin or Site(True)
 	 *
 	 * @return string HTML string returned
 	 */
@@ -409,47 +412,33 @@ class RenderHelper
 		$results = false;
 		$query   = $db->getQuery(true);
 
-		// Select required fields from the categories.
-		// Sqlsrv changes
-		$case_when = ' CASE WHEN ';
-		$case_when .= $query->charLength('a.alias', '!=', '0');
-		$case_when .= ' THEN ';
-		$a_id = $query->castAsChar('a.id');
-		$case_when .= $query->concatenate(array($a_id, 'a.alias'), ':');
-		$case_when .= ' ELSE ';
-		$case_when .= $a_id . ' END as slug';
-
-		$case_when1 = ' CASE WHEN ';
-		$case_when1 .= $query->charLength('c.alias', '!=', '0');
-		$case_when1 .= ' THEN ';
-		$c_id = $query->castAsChar('c.id');
-		$case_when1 .= $query->concatenate(array($c_id, 'c.alias'), ':');
-		$case_when1 .= ' ELSE ';
-		$case_when1 .= $c_id . ' END as catslug';
-		$query->select('a.*' . ',' . $case_when . ',' . $case_when1);
-		$query->from($db->quoteName('#__churchdirectory_details') . ' AS a');
+		$query->select('a.*')
+			->from($db->qn('#__churchdirectory_details') . ' AS a')
+			->where('a.access IN (' . $groups . ')')
+			->join('INNER', '#__categories AS c ON c.id = a.catid')
+			->where('c.access IN (' . $groups . ')');
 		$query->where('a.published = 1');
 
-		// Join on category table.
-		$query->select('c.title AS category_title, c.params AS category_params, c.alias AS category_alias, c.access AS category_access');
-		$query->where('a.access IN (' . $groups . ')');
-		$query->join('INNER', '#__categories AS c ON c.id = a.catid');
-		$query->where('c.access IN (' . $groups . ')');
-
+		// Sqlsrv change... aliased c.published to cat_published
 		// Join to check for category published state in parent categories up the tree
-		// TODO need to redo the Query;
-		$query->select('c.published, CASE WHEN badcats.id is null THEN c.published ELSE 0 END AS parents_published');
+		$query->select('c.published as cat_published, CASE WHEN badcats.id is null THEN c.published ELSE 0 END AS parents_published');
 		$subquery = 'SELECT cat.id as id FROM #__categories AS cat JOIN #__categories AS parent ';
 		$subquery .= 'ON cat.lft BETWEEN parent.lft AND parent.rgt ';
 		$subquery .= 'WHERE parent.extension = ' . $db->quote('com_churchdirectory');
 
 		// Find any up-path categories that are not published
-		// If all categories are published, badcats.id will be null, and we just use the churchdirectory state
+		// If all categories are published, badcats.id will be null, and we just use the contact state
 		$subquery .= ' AND parent.published != 1 GROUP BY cat.id ';
+
+		// Select state to unpublished if up-path category is unpublished
 		$query->join('LEFT OUTER', '(' . $subquery . ') AS badcats ON badcats.id = c.id');
 
 		// Filter of birthdates to show
 		$date = $params->get('month', date('m'));
+		if ($date == '0')
+		{
+			$date = date('m');
+		}
 		$query->where('MONTH(a.birthdate) = ' . $date);
 
 		$query->where('a.birthdate != "0000-00-00"')
@@ -482,43 +471,25 @@ class RenderHelper
 		$results = false;
 		$query   = $db->getQuery(true);
 
-		// Select required fields from the categories.
-		// Sqlsrv changes
-		$case_when = ' CASE WHEN ';
-		$case_when .= $query->charLength('a.alias', '!=', '0');
-		$case_when .= ' THEN ';
-		$a_id = $query->castAsChar('a.id');
-		$case_when .= $query->concatenate(array($a_id, 'a.alias'), ':');
-		$case_when .= ' ELSE ';
-		$case_when .= $a_id . ' END as slug';
-
-		$case_when1 = ' CASE WHEN ';
-		$case_when1 .= $query->charLength('c.alias', '!=', '0');
-		$case_when1 .= ' THEN ';
-		$c_id = $query->castAsChar('c.id');
-		$case_when1 .= $query->concatenate(array($c_id, 'c.alias'), ':');
-		$case_when1 .= ' ELSE ';
-		$case_when1 .= $c_id . ' END as catslug';
-		$query->select('a.*' . ',' . $case_when . ',' . $case_when1);
-		$query->from($db->quoteName('#__churchdirectory_details') . ' AS a');
+		$query->select('a.*')
+			->from($db->quoteName('#__churchdirectory_details') . ' AS a')
+			->where('a.access IN (' . $groups . ')')
+			->join('INNER', '#__categories AS c ON c.id = a.catid')
+			->where('c.access IN (' . $groups . ')');
 		$query->where('a.published = 1');
 
-		// Join on category table.
-		$query->select('c.title AS category_title, c.params AS category_params, c.alias AS category_alias, c.access AS category_access');
-		$query->where('a.access IN (' . $groups . ')');
-		$query->join('INNER', '#__categories AS c ON c.id = a.catid');
-		$query->where('c.access IN (' . $groups . ')');
-
+		// Sqlsrv change... aliased c.published to cat_published
 		// Join to check for category published state in parent categories up the tree
-		// TODO need to redo the Query;
-		$query->select('c.published, CASE WHEN badcats.id is null THEN c.published ELSE 0 END AS parents_published');
+		$query->select('c.published as cat_published, CASE WHEN badcats.id is null THEN c.published ELSE 0 END AS parents_published');
 		$subquery = 'SELECT cat.id as id FROM #__categories AS cat JOIN #__categories AS parent ';
 		$subquery .= 'ON cat.lft BETWEEN parent.lft AND parent.rgt ';
 		$subquery .= 'WHERE parent.extension = ' . $db->quote('com_churchdirectory');
 
 		// Find any up-path categories that are not published
-		// If all categories are published, badcats.id will be null, and we just use the churchdirectory state
+		// If all categories are published, badcats.id will be null, and we just use the contact state
 		$subquery .= ' AND parent.published != 1 GROUP BY cat.id ';
+
+		// Select state to unpublished if up-path category is unpublished
 		$query->join('LEFT OUTER', '(' . $subquery . ') AS badcats ON badcats.id = c.id');
 
 		// Join over Familey info
@@ -527,6 +498,10 @@ class RenderHelper
 
 		// Filter of birthdates to show
 		$date = $params->get('month', date('m'));
+		if ($date == '0')
+		{
+			$date = date('m');
+		}
 		$query->where('MONTH(a.anniversary) = ' . $date);
 
 		$query->where('a.anniversary != "0000-00-00"')
