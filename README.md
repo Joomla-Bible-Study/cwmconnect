@@ -15,4 +15,4 @@ We are excited to announce the first release of Church Directory.
 ##Documintation
 I'm working on documentation on how this works and hope to have it done soon.
 
-###<a href="www.joomlabiblestudy.org">Sponsored by Joomla Bible Study</a>
+###<a href="http://www.joomlabiblestudy.org">Sponsored by Joomla Bible Study</a>
