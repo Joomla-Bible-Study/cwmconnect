@@ -17,22 +17,29 @@ $app = JFactory::getApplication();
 $input = $app->input;
 
 $assoc = isset($app->item_associations) ? $app->item_associations : 0;
-?>
-<script type="text/javascript">
+
+JFactory::getDocument()->addScriptDeclaration('
+	Joomla.submitbutton = function (task) {
+		if (task == "member.cancel" || document.formvalidator.isValid(document.getElementById("member-form"))) {
+			' . $this->form->getField("misc")->save() . '
+			Joomla.submitform(task, document.getElementById("member-form"));
+		}
+	};
 	jQuery(document).ready(function ($) {
-		$('#jform_funitid').change(function () {
-			var funitid = $('#jform_funitid').val();
-			if (funitid == '-1') {
-				$('#jform_attribs_familypostion-lbl').css('display', 'none');
-				$('#jform_attribs_familypostion_chzn').css('display', 'none');
+		$("#jform_funitid").change(function () {
+			var funitid = $("#jform_funitid").val();
+			if (funitid == "-1") {
+				$("#jform_attribs_familypostion-lbl").css("display", "none");
+				$("#jform_attribs_familypostion_chzn").css("display", "none");
 			} else {
-				$('#jform_attribs_familypostion-lbl').css('display', 'inline');
-				$('#jform_attribs_familypostion_chzn').css('display', '');
+				$("#jform_attribs_familypostion-lbl").css("display", "inline");
+				$("#jform_attribs_familypostion_chzn").css("display", "");
 			}
 		})
 			.change();
 	});
-</script>
+');
+?>
 <form action="<?php echo JRoute::_('index.php?option=com_churchdirectory&layout=edit&id=' . (int) $this->item->id); ?>"
       method="post" name="adminForm" id="member-form" class="form-validate form-horizontal">
 <div class="row-fluid">
