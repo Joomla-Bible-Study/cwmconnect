@@ -229,7 +229,7 @@ class ChurchDirectoryModelGeoUpdate extends JModelLegacy
 			return false;
 		}
 
-		// If we have more folders or files, continue in the next step
+		// If we have more Members, continue in the next step
 		return true;
 	}
 

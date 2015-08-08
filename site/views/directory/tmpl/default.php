@@ -19,6 +19,9 @@ JHtml::addIncludePath(JPATH_COMPONENT . '/helpers');
 <div class="directory<?php echo $this->pageclass_sfx; ?> container" style="width: 8.5in">
 	<?php echo $this->pageclass_sfx;
 	echo '<a name="top"></a>';
+    if ($this->params->get('dr_allow_kml')) {
+        echo '<div class="pull-right"><a href="' . JRoute::_("index.php?option=com_churchdirectory&view=directory&format=kml") . '" class="btn">KML</a> </div>';
+    }
 	if ($this->params->get('dr_show_page_title', 1))
 	{
 		?>
@@ -27,8 +30,6 @@ JHtml::addIncludePath(JPATH_COMPONENT . '/helpers');
 		</h1>
 	<?php
 	}
-	?>
-	<?php
 	if ($this->params->get('dr_show_description'))
 	{
 		// If there is a description in the menu parameters use that;
