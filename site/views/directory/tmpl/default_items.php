@@ -6,9 +6,9 @@
  * */
 defined('_JEXEC') or die;
 
-jimport('joomla.html.html.bootstrap');
+JHtml::_('bootstrap.framework');
 
-$heading = null;
+$heading            = null;
 $this->renderHelper = new RenderHelper;
 
 ?>
@@ -23,17 +23,16 @@ foreach ($this->items as $item)
 	if ($this->printed_items == 0 && $this->printed_rows == 0)
 	{
 		echo '<!-- new start ' . $item->name . '-->';
-		if ($this->params->get('dr_show_debug'))
-		{
-			echo JHtml::tooltip('ID: ' . $item->id . ' ' . gettype($item->id) . '
-						FUnit ID: ' . $item->funitid . ' ' . gettype($item->funitid) . '
-						Item Count: ' . $this->printed_items . ' ' . gettype($this->printed_items) . '
-						Row Count: ' . $this->printed_rows . ' ' . gettype($this->printed_rows) . '
-						FamilyPosiion: ' . $item->attribs->get('familypostion') . ' ' . gettype($item->attribs->get('familypostion')), '', '', 'debug');
-		}
 		if (($item->funitid != '0' && $item->attribs->get('familypostion', '0') === '0') || ($item->funitid == '0' && $item->attribs->get('familypostion', '-1') === '-1' || $item->attribs->get('familypostion', '0') === '0'))
 		{
-
+			if ($this->params->get('dr_show_debug'))
+			{
+				echo '<a rel="popover" data-placement="bottom" data-trigger="hover" data-content="ID: ' . $item->id . ' ' . gettype($item->id) . ' <br />
+						FUnit ID: ' . $item->funitid . ' ' . gettype($item->funitid) . ' <br />
+						Item Count: ' . $this->printed_items . ' ' . gettype($this->printed_items) . ' <br />
+						Row Count: ' . $this->printed_rows . ' ' . gettype($this->printed_rows) . ' <br />
+						FamilyPosiion: ' . $item->attribs->get('familypostion') . ' ' . gettype($item->attribs->get('familypostion')) . '" data-original-title="Tips" href="/my_link_goes_here">debug</a>';
+			}
 			echo '<div class="row-fled"><div class="span' . $this->span . '">';
 		}
 	}
@@ -46,7 +45,7 @@ foreach ($this->items as $item)
 	}
 	if ($item->funitid != '0' && $item->attribs->get('familypostion') === '0') :
 		?>
-		<div id="directory-items<?php echo $item->id + 1; ?>"  style="page-break-before:auto" class="paddingitem">
+		<div id="directory-items<?php echo $item->id + 1; ?>" style="page-break-before:auto" class="paddingitem">
 			<?php
 			if ($item->funit_image && $this->params->get('dr_show_image')) :
 				echo '<img src="' . $this->baseurl . DIRECTORY_SEPARATOR . $item->funit_image . '" align="center" hspace="6" alt="' . $item->funit_name . '" class="directory-img pull-right" />';
@@ -74,10 +73,11 @@ foreach ($this->items as $item)
 			<div class="churchdirectory-contact">
 				<?php if ($this->params->get('dr_show_debug'))
 				{
-					echo JHtml::tooltip('ID:' . $item->id . '
-						FUnit ID:' . $item->funitid . '
-						Item Count:' . $this->printed_items . '
-						Row Count:' . $this->printed_rows, 'debug');
+					echo '<a rel="popover" data-placement="bottom" data-trigger="hover" data-content="ID: ' . $item->id . ' ' . gettype($item->id) . ' <br />
+						FUnit ID: ' . $item->funitid . ' ' . gettype($item->funitid) . ' <br />
+						Item Count: ' . $this->printed_items . ' ' . gettype($this->printed_items) . ' <br />
+						Row Count: ' . $this->printed_rows . ' ' . gettype($this->printed_rows) . ' <br />
+						FamilyPosiion: ' . $item->attribs->get('familypostion') . ' ' . gettype($item->attribs->get('familypostion')) . '" data-original-title="Tips" href="/my_link_goes_here">debug</a>';
 				} ?>
 				<?php if (($this->params->get('address_check') > 0) && ($item->address || $item->suburb || $item->state || $item->country || $item->postcode)) : ?>
 				<div class="churchdirectory-address">
@@ -200,7 +200,7 @@ foreach ($this->items as $item)
 	elseif ($item->funitid === '0'):
 		?>
 		<div id="directory-items<?php echo $item->id + 1; ?>"
-		     class="paddingitem" style="page-break-before:auto" >
+		     class="paddingitem" style="page-break-before:auto">
 			<?php
 			if ($item->image && $this->params->get('dr_show_image')) :
 				echo '<img src="' . $this->baseurl . DIRECTORY_SEPARATOR . $item->image . '" align="center" hspace="6" alt="' . $item->name . '" class="directory-img pull-right" />';
@@ -359,7 +359,7 @@ foreach ($this->items as $item)
 		if ($this->printed_items == $this->items_per_row && $this->printed_rows != $this->rows_per_page - 1)
 		{
 			echo '<!-- new column -->';
-			echo '</div><div class="span' . $this->span . ' page-break-after:auto">';
+			echo '</div><div class="span' . $this->span . '" style="page-break-after:auto">';
 			$this->printed_rows++;
 			$this->printed_items = 0;
 		}
@@ -372,4 +372,3 @@ foreach ($this->items as $item)
 		}
 	}
 }
-?>

@@ -205,7 +205,7 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 		}
 		else
 		{
-			$kml[] = JURI::base() . '/' . $items[0]->category_params->get('image');
+			$kml[] = JURI::base() . $items[0]->category_params->get('image');
 		}
 		$kml[] = '</href>';
 		$kml[] = '</Icon>';
@@ -247,7 +247,7 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 		}
 		else
 		{
-			$kml[] = JURI::base() . '/' . $items[0]->category_params->get('image');
+			$kml[] = JURI::base() . $items[0]->category_params->get('image');
 		}
 		$kml[] = '</href>';
 		$kml[] = '</Icon>';
@@ -357,7 +357,7 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 					}
 					else
 					{
-						$kml[] = '<img src="' . JURI::base() . '/' . $row->image . '" alt="Photo" width="100" hight="100" /><br />';
+						$kml[] = '<img src="' . JURI::base() . $row->image . '" alt="Photo" width="100" hight="100" /><br />';
 					}
 					if (!empty($row->id))
 					{

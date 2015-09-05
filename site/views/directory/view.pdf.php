@@ -212,11 +212,11 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 
 		// Escape strings for HTML output
 		$this->pageclass_sfx = htmlspecialchars($params->get('pageclass_sfx'));
-		JHTML::stylesheet('general.css', 'media/com_churchdirectory/css/');
-		JHTML::stylesheet('churchdirectory.css', 'media/com_churchdirectory/css/');
+		//JHTML::stylesheet('general.css', 'media/com_churchdirectory/css/');
+		//JHTML::stylesheet('churchdirectory.css', 'media/com_churchdirectory/css/');
 
 		$menus = $app->getMenu();
-		$title = null;
+		$title = 'directory_prent_out';
 
 		// Because the application sets a default page title,
 		// we need to get it from the menu item itself
@@ -234,7 +234,7 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 		$pdf->SetAuthor('NFSDA Church');
 		$pdf->SetTitle($this->params->get('page_title', ''));
 		$pdf->SetSubject('Church Directory');
-		$pdf->SetKeywords('Direcotry, PDF, Members');
+		$pdf->SetKeywords('Directory, PDF, Members');
 
 		// Remove default header/footer
 		$pdf->setPrintHeader(false);
@@ -244,18 +244,18 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 		$pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
 
 		// Set margins
-		$pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+		$pdf->SetMargins(10, PDF_MARGIN_TOP, 10);
 
 		// Set auto page breaks
 		$pdf->SetAutoPageBreak(true, PDF_MARGIN_BOTTOM);
 
-		// Set image scale factor
-		$pdf->setImageScale(PDF_IMAGE_SCALE_RATIO);
+		// set image scale factor
+		$pdf->setImageScale(2.5);
 
 		// ---------------------------------------------------------
 
 		// Set font
-		$pdf->SetFont('times', 'BI', 20);
+		$pdf->SetFont('times', '', 9);
 
 		// Add a page
 		$pdf->AddPage();
@@ -264,7 +264,7 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 		$html = $this->loadTemplate($tpl);
 
 		// Print a block of text using Write()
-		$pdf->writeHTML($html, false, false, true, false, '');
+		$pdf->writeHTML($html, true, false, false, false, '');
 
 		// ---------------------------------------------------------
 		$pdf->lastPage();
@@ -273,7 +273,7 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 		$jweb->clearHeaders();
 
 		// Close and output PDF document
-		$pdf->Output('example_002.pdf', 'I');
+		$pdf->Output($title . '.pdf', 'I');
 	}
 
 	public function abclinks()

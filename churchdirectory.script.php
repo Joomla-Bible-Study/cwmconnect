@@ -167,7 +167,7 @@ class Com_ChurchdirectoryInstallerScript
 	 */
 	public function preflight($type, $parent)
 	{
-		// Only allow to install on Joomla! 2.5.0 or later with PHP 5.3.0 or later
+		// Only allow to install on Joomla! 3.4.4 or later with PHP 5.3.0 or later
 		if (defined('PHP_VERSION'))
 		{
 			$version = PHP_VERSION;
@@ -180,24 +180,17 @@ class Com_ChurchdirectoryInstallerScript
 		{
 			$version = '5.0.0'; // All bets are off!
 		}
-		if (!version_compare(JVERSION, '2.5.16', 'ge'))
+		if (!version_compare(JVERSION, '3.4.4', 'ge'))
 		{
 			$msg = "<p>You need Joomla! 2.5.16 or later to install this component</p>";
 			JError::raiseWarning(100, $msg);
 
 			return false;
 		}
-		if (!version_compare($version, '5.3.1', 'ge'))
+		if (!version_compare($version, '5.3.10', 'ge'))
 		{
-			$msg = "<p>You need PHP 5.3.1 or later to install this component</p>";
-			if (version_compare(JVERSION, '3.0', 'gt'))
-			{
-				JLog::add($msg, JLog::WARNING, 'jerror');
-			}
-			else
-			{
-				JError::raiseWarning(100, $msg);
-			}
+			$msg = "<p>You need PHP 5.3.10 or later to install this component</p>";
+			JLog::add($msg, JLog::WARNING, 'jerror');
 
 			return false;
 		}

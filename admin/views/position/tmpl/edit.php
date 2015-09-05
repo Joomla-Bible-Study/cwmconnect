@@ -56,7 +56,7 @@ JHtml::_('behavior.keepalive'); /* Predefine for Access */
 			<?php echo JHtml::_('form.token'); ?>
         </div>
         <div class="span2 form-vertical">
-            <h4><?php echo JText::_('COM_CHURCHDIRECTORY_FAMILY_MEMBERS'); ?></h4>
+            <h4><?php echo JText::_('COM_CHURCHDIRECTORY_POSITIONS_DETAILS'); ?></h4>
             <hr/>
             <div class="control-group">
                 <div class="control-group">
