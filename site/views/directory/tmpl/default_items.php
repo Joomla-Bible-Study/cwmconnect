@@ -16,14 +16,17 @@ $this->renderHelper = new RenderHelper;
 {
 	?>
 	<p><?php echo JText::_('COM_CHURCHDIRECTORY_NO_MEMBERS'); ?></p>
-<?php } ?>
+	<?php
+} ?>
 <?php
 foreach ($this->items as $item)
 {
 	if ($this->printed_items == 0 && $this->printed_rows == 0)
 	{
 		echo '<!-- new start ' . $item->name . '-->';
-		if (($item->funitid != '0' && $item->attribs->get('familypostion', '0') === '0') || ($item->funitid == '0' && $item->attribs->get('familypostion', '-1') === '-1' || $item->attribs->get('familypostion', '0') === '0'))
+		if (($item->funitid != '0' && $item->attribs->get('familypostion', '0') === '0')
+			|| ($item->funitid == '0' && $item->attribs->get('familypostion', '-1') === '-1' || $item->attribs->get('familypostion', '0') === '0')
+		)
 		{
 			if ($this->params->get('dr_show_debug'))
 			{
@@ -31,7 +34,8 @@ foreach ($this->items as $item)
 						FUnit ID: ' . $item->funitid . ' ' . gettype($item->funitid) . ' <br />
 						Item Count: ' . $this->printed_items . ' ' . gettype($this->printed_items) . ' <br />
 						Row Count: ' . $this->printed_rows . ' ' . gettype($this->printed_rows) . ' <br />
-						FamilyPosiion: ' . $item->attribs->get('familypostion') . ' ' . gettype($item->attribs->get('familypostion')) . '" data-original-title="Tips" href="/my_link_goes_here">debug</a>';
+						FamilyPosiion: ' . $item->attribs->get('familypostion') . ' ' . gettype($item->attribs->get('familypostion')) .
+					'" data-original-title="Tips" href="/my_link_goes_here">debug</a>';
 			}
 			echo '<div class="row-fled"><div class="span' . $this->span . '">';
 		}
@@ -45,14 +49,17 @@ foreach ($this->items as $item)
 	}
 	if ($item->funitid != '0' && $item->attribs->get('familypostion') === '0') :
 		?>
-		<div id="directory-items<?php echo $item->id + 1; ?>" style="page-break-before:auto" class="paddingitem">
+		<div id="directory-items<?php echo $item->id + 1; ?>" style="page-break-before:auto; width:100px;" class="paddingitem">
 			<?php
 			if ($item->funit_image && $this->params->get('dr_show_image')) :
-				echo '<img src="' . $this->baseurl . DIRECTORY_SEPARATOR . $item->funit_image . '" align="center" hspace="6" alt="' . $item->funit_name . '" class="directory-img pull-right" />';
+				echo '<img src="' . $this->baseurl . DIRECTORY_SEPARATOR . $item->funit_image . '" align="center" hspace="6" alt="' .
+					$item->funit_name . '" class="directory-img pull-right" />';
 			elseif ($this->params->get('image') != null && $this->params->get('dr_show_image')):
-				echo '<img src="' . $this->baseurl . DIRECTORY_SEPARATOR . $this->params->get('image') . '" align="center" hspace="6" alt="' . JText::_('COM_CHURCHDIRECTORY_NO_PHOTO_AVALIBLE') . '" class="directory-img pull-right" />';
+				echo '<img src="' . $this->baseurl . DIRECTORY_SEPARATOR . $this->params->get('image') . '" align="center" hspace="6" alt="' .
+					JText::_('COM_CHURCHDIRECTORY_NO_PHOTO_AVALIBLE') . '" class="directory-img pull-right" />';
 			elseif ($this->params->get('dr_show_image')):
-				echo '<img src="' . $this->baseurl . '/media/com_churchdirectory/images/200-photo_not_available.jpg" align="center" hspace="6" alt="' . JText::_('COM_CHURCHDIRECTORY_NO_PHOTO_AVALIBLE') . '" class="directory-img pull-right" />';
+				echo '<img src="' . $this->baseurl . '/media/com_churchdirectory/images/200-photo_not_available.jpg" align="center" hspace="6" alt="' .
+					JText::_('COM_CHURCHDIRECTORY_NO_PHOTO_AVALIBLE') . '" class="directory-img pull-right" />';
 			endif;
 			?>
 			<?php
@@ -77,9 +84,11 @@ foreach ($this->items as $item)
 						FUnit ID: ' . $item->funitid . ' ' . gettype($item->funitid) . ' <br />
 						Item Count: ' . $this->printed_items . ' ' . gettype($this->printed_items) . ' <br />
 						Row Count: ' . $this->printed_rows . ' ' . gettype($this->printed_rows) . ' <br />
-						FamilyPosiion: ' . $item->attribs->get('familypostion') . ' ' . gettype($item->attribs->get('familypostion')) . '" data-original-title="Tips" href="/my_link_goes_here">debug</a>';
+						FamilyPosiion: ' . $item->attribs->get('familypostion') . ' ' . gettype($item->attribs->get('familypostion')) .
+						'" data-original-title="Tips" href="/my_link_goes_here">debug</a>';
 				} ?>
-				<?php if (($this->params->get('address_check') > 0) && ($item->address || $item->suburb || $item->state || $item->country || $item->postcode)) : ?>
+				<?php if (($this->params->get('address_check') > 0)
+				&& ($item->address || $item->suburb || $item->state || $item->country || $item->postcode)) : ?>
 				<div class="churchdirectory-address">
 					<?php if ($this->params->get('address_check') > 0) : ?>
 					<span class="<?php echo $this->params->get('marker_class'); ?>">
@@ -114,13 +123,15 @@ foreach ($this->items as $item)
 						<?php endif; ?>
 						<?php endif; ?>
 
-						<?php if ($this->params->get('address_check') > 0 && ($item->address || $item->suburb || $item->state || $item->country || $item->postcode)) : ?>
+						<?php if ($this->params->get('address_check') > 0
+						&& ($item->address || $item->suburb || $item->state || $item->country || $item->postcode)) : ?>
 					</address>
 				</div>
 			<?php endif; ?>
 			</div>
 			<div class="clearfix"></div>
-			<?php if (($this->params->get('other_check') > 0) && ($item->email_to || $item->telephone || $item->fax || $item->mobile || $item->webpage || $item->spouse || $item->children)) : ?>
+			<?php if (($this->params->get('other_check') > 0)
+			&& ($item->email_to || $item->telephone || $item->fax || $item->mobile || $item->webpage || $item->spouse || $item->children)) : ?>
 			<div class="churchdirectory-churchdirectoryinfo inner">
 				<?php endif; ?>
 				<?php
@@ -180,7 +191,8 @@ foreach ($this->items as $item)
 					</p>
 				<?php endif; ?>
 				<?php } ?>
-				<?php if ($this->params->get('other_check') > 0 && ($item->email_to || $item->telephone || $item->fax || $item->mobile || $item->webpage || $item->spouse || $item->children)) : ?>
+				<?php if ($this->params->get('other_check') > 0
+				&& ($item->email_to || $item->telephone || $item->fax || $item->mobile || $item->webpage || $item->spouse || $item->children)) : ?>
 			</div>
 		<?php endif; ?>
 			<div class="clearfix"></div>
@@ -194,20 +206,24 @@ foreach ($this->items as $item)
 						<?php echo $item->misc; ?>
 					</div>
 				</div>
-			<?php endif; ?>
+				<?php
+			endif; ?>
 		</div>
-	<?php
+		<?php
 	elseif ($item->funitid === '0'):
 		?>
 		<div id="directory-items<?php echo $item->id + 1; ?>"
 		     class="paddingitem" style="page-break-before:auto">
 			<?php
 			if ($item->image && $this->params->get('dr_show_image')) :
-				echo '<img src="' . $this->baseurl . DIRECTORY_SEPARATOR . $item->image . '" align="center" hspace="6" alt="' . $item->name . '" class="directory-img pull-right" />';
+				echo '<img src="' . $this->baseurl . DIRECTORY_SEPARATOR . $item->image . '" align="center" hspace="6" alt="' .
+						$item->name . '" class="directory-img pull-right" />';
 			elseif ($this->params->get('image') != null && $this->params->get('dr_show_image')):
-				echo '<img src="' . $this->baseurl . DIRECTORY_SEPARATOR . $this->params->get('image') . '" align="center" hspace="6" alt="' . JText::_('COM_CHURCHDIRECTORY_NO_PHOTO_AVALIBLE') . '" class="directory-img pull-right" />';
+				echo '<img src="' . $this->baseurl . DIRECTORY_SEPARATOR . $this->params->get('image') . '" align="center" hspace="6" alt="' .
+						JText::_('COM_CHURCHDIRECTORY_NO_PHOTO_AVALIBLE') . '" class="directory-img pull-right" />';
 			elseif ($this->params->get('dr_show_image')):
-				echo '<img src="' . $this->baseurl . '/media/com_churchdirectory/images/200-photo_not_available.jpg" align="center" hspace="6" alt="' . JText::_('COM_CHURCHDIRECTORY_NO_PHOTO_AVALIBLE') . '" class="directory-img pull-right" />';
+				echo '<img src="' . $this->baseurl . '/media/com_churchdirectory/images/200-photo_not_available.jpg" align="center" hspace="6" alt="' .
+						JText::_('COM_CHURCHDIRECTORY_NO_PHOTO_AVALIBLE') . '" class="directory-img pull-right" />';
 			endif;
 			?>
 			<div class="churchdirectory-contact">
@@ -238,7 +254,8 @@ foreach ($this->items as $item)
 					</dl>
 				<?php endif; ?>
 				<div class="clearfix"></div>
-				<?php if (($this->params->get('address_check') > 0) && ($item->address || $item->suburb || $item->state || $item->country || $item->postcode)) : ?>
+				<?php if (($this->params->get('address_check') > 0)
+				&& ($item->address || $item->suburb || $item->state || $item->country || $item->postcode)) : ?>
 				<div class="churchdirectory-address">
 					<?php if ($this->params->get('address_check') > 0) : ?>
 					<span class="<?php echo $this->params->get('marker_class'); ?>">
@@ -273,13 +290,15 @@ foreach ($this->items as $item)
 						<?php endif; ?>
 						<?php endif; ?>
 
-						<?php if ($this->params->get('address_check') > 0 && ($item->address || $item->suburb || $item->state || $item->country || $item->postcode)) : ?>
+						<?php if ($this->params->get('address_check') > 0
+						&& ($item->address || $item->suburb || $item->state || $item->country || $item->postcode)) : ?>
 					</address>
 				</div>
 			<?php endif; ?>
 			</div>
 			<div class="clearfix"></div>
-			<?php if (($this->params->get('other_check') > 0) && ($item->email_to || $item->telephone || $item->fax || $item->mobile || $item->webpage || $item->spouse || $item->children)) : ?>
+			<?php if (($this->params->get('other_check') > 0)
+			&& ($item->email_to || $item->telephone || $item->fax || $item->mobile || $item->webpage || $item->spouse || $item->children)) : ?>
 			<div class="churchdirectory-churchdirectoryinfo inner">
 				<?php endif; ?>
 				<?php if ($item->email_to && $this->params->get('dr_show_email')) : ?>
@@ -333,7 +352,8 @@ foreach ($this->items as $item)
                         </span>
 					</p>
 				<?php endif; ?>
-				<?php if ($this->params->get('other_check') > 0 && ($item->email_to || $item->telephone || $item->fax || $item->mobile || $item->webpage || $item->spouse || $item->children)) : ?>
+				<?php if ($this->params->get('other_check') > 0 && ($item->email_to
+					|| $item->telephone || $item->fax || $item->mobile || $item->webpage || $item->spouse || $item->children)) : ?>
 			</div>
 		<?php endif; ?>
 			<div class="clearfix"></div>
@@ -349,10 +369,12 @@ foreach ($this->items as $item)
 				</div>
 			<?php endif; ?>
 		</div>
-	<?php
+		<?php
 	endif;
 
-	if (($item->funitid != '0' && $item->attribs->get('familypostion', '0') === '0') || ($item->funitid == '0' && $item->attribs->get('familypostion', '-1') === '-1' || $item->attribs->get('familypostion', '0') === '0'))
+	if (($item->funitid != '0' && $item->attribs->get('familypostion', '0') === '0')
+		|| ($item->funitid == '0' && $item->attribs->get('familypostion', '-1') === '-1' || $item->attribs->get('familypostion', '0') === '0')
+	)
 	{
 		$this->printed_items++;
 

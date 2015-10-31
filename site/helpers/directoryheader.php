@@ -8,6 +8,7 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\Registry\Registry;
 /**
  * Directory Header Helper
  *
@@ -29,7 +30,7 @@ class DirectoryHeaderHelper
 	/**
 	 * set Header or Footer html
 	 *
-	 * @param   JRegistry  $params  HTML Params
+	 * @param   Registry  $params  HTML Params
 	 *
 	 * @return string
 	 */

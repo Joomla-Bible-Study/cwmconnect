@@ -105,7 +105,7 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 		{
 			$item       = & $items[$i];
 			$item->slug = $item->alias ? ($item->id . ':' . $item->alias) : $item->id;
-			$temp       = new JRegistry;
+			$temp       = new Joomla\Registry\Registry;
 			$temp->loadString($item->params);
 			$item->params = clone($params);
 			$item->params->merge($temp);
@@ -123,7 +123,9 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 					$item->email_to = '';
 				}
 			}
-			if ($item->params->get('dr_show_street_address') || $item->params->get('dr_show_suburb') || $item->params->get('dr_show_state') || $item->params->get('dr_show_postcode') || $item->params->get('dr_show_country'))
+			if ($item->params->get('dr_show_street_address') || $item->params->get('dr_show_suburb')
+				|| $item->params->get('dr_show_state') || $item->params->get('dr_show_postcode') || $item->params->get('dr_show_country')
+			)
 			{
 				$params->set('address_check', 1);
 			}
@@ -131,7 +133,11 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 			{
 				$params->set('address_check', 0);
 			}
-			if ($item->params->get('dr_show_email') || $item->params->get('dr_show_telephone') || $item->params->get('dr_show_fax') || $item->params->get('dr_show_mobile') || $item->params->get('dr_show_webpage') || $item->params->get('dr_show_spouse') || $item->params->get('dr_show_children'))
+			if ($item->params->get('dr_show_email') || $item->params->get('dr_show_telephone')
+				|| $item->params->get('dr_show_fax') || $item->params->get('dr_show_mobile')
+				|| $item->params->get('dr_show_webpage') || $item->params->get('dr_show_spouse')
+				|| $item->params->get('dr_show_children')
+			)
 			{
 				$params->set('other_check', 1);
 			}
@@ -166,12 +172,20 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 
 				default :
 					// Icons
-					$image1 = JHtml::_('image', 'contacts/' . $params->get('icon_address', 'con_address.png'), JText::_('COM_CHURCHDIRECTORY_ADDRESS') . ": ", null, true);
+					$image1 = JHtml::_('image', 'contacts/' . $params->get('icon_address', 'con_address.png'), JText::_('COM_CHURCHDIRECTORY_ADDRESS') .
+							": ", null, true
+					);
 					$image2 = JHtml::_('image', 'contacts/' . $params->get('icon_email', 'emailButton.png'), JText::_('JGLOBAL_EMAIL') . ": ", null, true);
-					$image3 = JHtml::_('image', 'contacts/' . $params->get('icon_telephone', 'con_tel.png'), JText::_('COM_CHURCHDIRECTORY_TELEPHONE') . ": ", null, true);
+					$image3 = JHtml::_('image', 'contacts/' . $params->get('icon_telephone', 'con_tel.png'), JText::_('COM_CHURCHDIRECTORY_TELEPHONE') .
+							": ", null, true
+					);
 					$image4 = JHtml::_('image', 'contacts/' . $params->get('icon_fax', 'con_fax.png'), JText::_('COM_CHURCHDIRECTORY_FAX') . ": ", null, true);
-					$image5 = JHtml::_('image', 'contacts/' . $params->get('icon_misc', 'con_info.png'), JText::_('COM_CHURCHDIRECTORY_OTHER_INFORMATION') . ": ", null, true);
-					$image6 = JHtml::_('image', 'contacts/' . $params->get('icon_mobile', 'con_mobile.png'), JText::_('COM_CHURCHDIRECTORY_MOBILE') . ": ", null, true);
+					$image5 = JHtml::_('image', 'contacts/' . $params->get('icon_misc', 'con_info.png'), JText::_('COM_CHURCHDIRECTORY_OTHER_INFORMATION') .
+							": ", null, true
+					);
+					$image6 = JHtml::_('image', 'contacts/' . $params->get('icon_mobile', 'con_mobile.png'), JText::_('COM_CHURCHDIRECTORY_MOBILE') .
+							": ", null, true
+					);
 
 					$params->set('marker_address', $image1);
 					$params->set('marker_email', $image2);
@@ -183,6 +197,8 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 					break;
 			}
 		}
+
+		$params->set('prepare_content', '0');
 
 		// Setup the category parameters.
 		$cparams          = $category->getParams();
@@ -212,8 +228,6 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 
 		// Escape strings for HTML output
 		$this->pageclass_sfx = htmlspecialchars($params->get('pageclass_sfx'));
-		//JHTML::stylesheet('general.css', 'media/com_churchdirectory/css/');
-		//JHTML::stylesheet('churchdirectory.css', 'media/com_churchdirectory/css/');
 
 		$menus = $app->getMenu();
 		$title = 'directory_prent_out';
@@ -228,7 +242,6 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 		// Create new PDF document
 		$pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 
-
 		// Set document information
 		$pdf->SetCreator('Nashville First SDA Church');
 		$pdf->SetAuthor('NFSDA Church');
@@ -237,14 +250,14 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 		$pdf->SetKeywords('Directory, PDF, Members');
 
 		// Remove default header/footer
-		$pdf->setPrintHeader(false);
-		$pdf->setPrintFooter(false);
+		$pdf->setPrintHeader(true);
+		$pdf->setPrintFooter(true);
 
 		// Set default monospaced font
 		$pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
 
 		// Set margins
-		$pdf->SetMargins(10, PDF_MARGIN_TOP, 10);
+		$pdf->SetMargins(10, 10, 10);
 
 		// Set auto page breaks
 		$pdf->SetAutoPageBreak(true, PDF_MARGIN_BOTTOM);
@@ -274,8 +287,15 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 
 		// Close and output PDF document
 		$pdf->Output($title . '.pdf', 'I');
+
+		return null;
 	}
 
+	/**
+	 * ABC Links for bottom of page
+	 *
+	 * @return string
+	 */
 	public function abclinks()
 	{
 		$links = '<a href="#top"> Top </a>';

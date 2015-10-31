@@ -48,10 +48,13 @@ class ChurchDirectoryModelHome extends JModelList
 	 *
 	 * Note. Calling getState in this method will result in recursion.
 	 *
+	 * @param   string $ordering  An optional ordering field.
+	 * @param   string $direction An optional direction (asc|desc).
+	 *
 	 * @since    1.6
 	 * @return  void
 	 */
-	protected function populateState()
+	protected function populateState($ordering = null, $direction = null)
 	{
 		$app = JFactory::getApplication('site');
 

@@ -7,6 +7,7 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\Registry\Registry;
 /**
  * Class for Rendering out Page Elements
  *
@@ -145,13 +146,13 @@ class RenderHelper
 
 			if (!isset($this->_params))
 			{
-				$params = new JRegistry;
+				$params = new Registry;
 				$params->loadString($item->params);
 				$item->params = $params;
 			}
 			if (!isset($this->_attribs))
 			{
-				$params = new JRegistry;
+				$params = new Registry;
 				$params->loadString($item->attribs);
 				$item->attribs = $params;
 			}
@@ -285,7 +286,8 @@ class RenderHelper
 			}
 			else
 			{
-				$mstatus = '<span style="color: gray;"><a href="index.php?option=com_churchdirectory&view=member&id=' . (int) $member->id . '">( ' . $member->name . ' )</a></span>';
+				$mstatus = '<span style="color: gray;"><a href="index.php?option=com_churchdirectory&view=member&id=' .
+						(int) $member->id . '">( ' . $member->name . ' )</a></span>';
 			}
 		}
 
@@ -422,7 +424,7 @@ class RenderHelper
 		// Sqlsrv change... aliased c.published to cat_published
 		// Join to check for category published state in parent categories up the tree
 		$query->select('c.published as cat_published, CASE WHEN badcats.id is null THEN c.published ELSE 0 END AS parents_published');
-		$subquery = 'SELECT cat.id as id FROM #__categories AS cat JOIN #__categories AS parent ';
+		$subquery = 'SELECT `cat.id` as id FROM `#__categories` AS cat JOIN `#__categories` AS parent ';
 		$subquery .= 'ON cat.lft BETWEEN parent.lft AND parent.rgt ';
 		$subquery .= 'WHERE parent.extension = ' . $db->quote('com_churchdirectory');
 
@@ -481,7 +483,7 @@ class RenderHelper
 		// Sqlsrv change... aliased c.published to cat_published
 		// Join to check for category published state in parent categories up the tree
 		$query->select('c.published as cat_published, CASE WHEN badcats.id is null THEN c.published ELSE 0 END AS parents_published');
-		$subquery = 'SELECT cat.id as id FROM #__categories AS cat JOIN #__categories AS parent ';
+		$subquery = 'SELECT `cat.id` as id FROM `#__categories` AS cat JOIN `#__categories` AS parent ';
 		$subquery .= 'ON cat.lft BETWEEN parent.lft AND parent.rgt ';
 		$subquery .= 'WHERE parent.extension = ' . $db->quote('com_churchdirectory');
 

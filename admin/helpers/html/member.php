@@ -18,9 +18,9 @@ JLoader::register('ChurchDirectoryHelper', JPATH_ADMINISTRATOR . '/components/co
 abstract class JHtmlMember
 {
 	/**
-	 * ?
+	 * Association of members
 	 *
-	 * @param   int $memberid  The Member item id
+	 * @param   int  $memberid  The Member item id
 	 *
 	 * @return mixed
 	 */
@@ -63,8 +63,10 @@ abstract class JHtmlMember
 		{
 			if ($associated != $memberid)
 			{
-				$text[] = JText::sprintf('COM_CHURCHDIRECTORY_TIP_ASSOCIATED_LANGUAGE', JHtml::_('image', 'mod_languages/'
-					. $items[$associated]->image . '.gif', $items[$associated]->language_title, array('title' => $items[$associated]->language_title), true), $items[$associated]->name, $items[$associated]->category_title);
+				$text[] = JText::sprintf('COM_CHURCHDIRECTORY_TIP_ASSOCIATED_LANGUAGE', JHtml::_('image', 'mod_languages/' . $items[$associated]->image . '.gif',
+						$items[$associated]->language_title, array('title' => $items[$associated]->language_title), true
+				), $items[$associated]->name, $items[$associated]->category_title
+				);
 			}
 		}
 

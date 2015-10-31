@@ -7,7 +7,6 @@
 
 defined('_JEXEC') or die;
 
-jimport('joomla.application.component.controlleradmin');
 /**
  * FamilyUnits list controller class.
  *
@@ -28,56 +27,6 @@ class ChurchDirectoryControllerFamilyUnits extends JControllerAdmin
 	}
 
 	/**
-	 * Method to toggle the featured setting of a list of Memberss.
-	 *
-	 * @return    void
-	 *
-	 * @since    1.7.0
-	 */
-	function featured()
-	{
-		// Check for request forgeries
-		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
-
-		// Initialise variables.
-		$user  = JFactory::getUser();
-		$app   = JFactory::getApplication();
-		$ids   = $app->input->get('id', array(), '', 'array');
-		$task  = $this->getTask();
-		$value = JArrayHelper::getValue($values, $task, 0, 'int');
-		// Get the model.
-		$model = $this->getModel();
-
-		// Access checks.
-		foreach ($ids as $i => $id)
-		{
-			$item = $model->getItem($id);
-
-			if (!$user->authorise('core.edit.state'))
-			{
-				// Prune items that you can't change.
-				unset($ids[$i]);
-				$app->enqueueMessage(JText::_('JLIB_APPLICATION_ERROR_EDITSTATE_NOT_PERMITTED'), 'notice');
-			}
-		}
-
-		if (empty($ids))
-		{
-			$app->enqueueMessage(JText::_('COM_CHURCHDIRECTORY_NO_ITEM_SELECTED'), 'warning');
-		}
-		else
-		{
-			// Publish the items.
-			if (!$model->featured($ids, $value))
-			{
-				$app->enqueueMessage($model->getError(), 'warning');
-			}
-		}
-
-		$this->setRedirect('index.php?option=com_churchdirectory&view=familyunits');
-	}
-
-	/**
 	 * Proxy for getModel.
 	 *
 	 * @param   string  $name    The name of the model.
@@ -93,6 +42,21 @@ class ChurchDirectoryControllerFamilyUnits extends JControllerAdmin
 		$model = parent::getModel($name, $prefix, $config);
 
 		return $model;
+	}
+
+	/**
+	 * Function that allows child controller access to model data
+	 * after the item has been deleted.
+	 *
+	 * @param   JModelLegacy $model The data model object.
+	 * @param   integer      $ids   The array of ids for items being deleted.
+	 *
+	 * @return  void
+	 *
+	 * @since   12.2
+	 */
+	protected function postDeleteHook(JModelLegacy $model, $ids = null)
+	{
 	}
 
 }

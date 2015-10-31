@@ -22,7 +22,7 @@ class JHtmlGeoUpdate extends JHtmlDropdown
 	 *
 	 * @param   integer  $id          Record ID
 	 * @param   string   $prefix      Task prefix
-	 * @param   string   $customLink  The custom link if dont use default Joomla action format
+	 * @param   string   $customLink  The custom link if don't use default Joomla action format
 	 *
 	 * @return  void
 	 *
@@ -41,7 +41,7 @@ class JHtmlGeoUpdate extends JHtmlDropdown
 		}
 
 		$link .= '&view=geoupdate&id=' . $id . '&tmpl=component';
-		$link = JRoute::_($link);
+		$link = JRoute::_($prefix . $link);
 
 		self::addCustomItem(JText::_('COM_CHURCHDIRECTORY_GEOUPDATE'), $link, 'class="modal" rel="{handler: \'iframe\', size: {x: 600, y: 250}}"');
 

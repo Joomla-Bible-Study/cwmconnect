@@ -83,6 +83,11 @@ class ChurchDirectoryHelper
 			$vName == 'geostatus'
 		);
 		self::rendermenu(
+			JText::_('COM_CHURCHDIRECTORY_SUBMENU_REPORTS'),
+			'index.php?option=com_churchdirectory&view=reports',
+			$vName == 'reports'
+		);
+		self::rendermenu(
 			JText::_('COM_CHURCHDIRECTORY_SUBMENU_DATABASE'),
 			'index.php?option=com_churchdirectory&view=database',
 			$vName == 'database'
