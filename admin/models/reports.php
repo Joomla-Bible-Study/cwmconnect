@@ -8,6 +8,7 @@
 defined('_JEXEC') or die;
 
 jimport('joomla.application.component.model');
+use Joomla\Registry\Registry;
 
 /**
  * Methods to display a control panel.
@@ -19,7 +20,12 @@ class ChurchDirectoryModelReports extends JModelLegacy
 {
 
 	/**
-	 * constructor (registers additional tasks to methods)
+	 * Constructor
+	 *
+	 * @param   array  $config  An array of configuration options (name, state, dbo, table_path, ignore_request).
+	 *
+	 * @since   12.2
+	 * @throws  Exception
 	 */
 	public function __construct($config = array())
 	{
@@ -64,7 +70,7 @@ class ChurchDirectoryModelReports extends JModelLegacy
 
 		if ($format == 'feed')
 		{
-			$limit = $app->getCfg('feed_limit');
+			$limit = $app->get('feed_limit');
 		}
 		else
 		{
@@ -76,7 +82,7 @@ class ChurchDirectoryModelReports extends JModelLegacy
 		$this->setState('list.start', $limitstart);
 
 		// Get list ordering default from the parameters
-		$menuParams = new JRegistry;
+		$menuParams = new Registry;
 
 		if ($menu = $app->getMenu()->getActive())
 		{
@@ -218,7 +224,7 @@ class ChurchDirectoryModelReports extends JModelLegacy
 		}
 		elseif (is_array($published))
 		{
-			JArrayHelper::toInteger($published);
+			Joomla\Utilities\ArrayHelper::toInteger($published);
 			$published = implode(',', $published);
 
 			// Use article state if badcats.id is null, otherwise, force 0 for unpublished
