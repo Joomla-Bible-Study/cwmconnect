@@ -97,7 +97,8 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 		$pagination = $this->get('Pagination');
 		$doc        = JFactory::getDocument();
 		$doc->setMetaData('Content-Type', 'application/vnd.google-earth.kml+xml', true);
-		JResponse::setHeader('Content-disposition', 'attachment; filename="' . $items[0]->kml_alias . '.kml"', true);
+		$jweb = new JApplicationWeb;
+		$jweb->setHeader('Content-disposition', 'attachment; filename="' . $items[0]->kml_alias . '.kml"', true);
 
 		// Check whether category access level allows access.
 		$user   = JFactory::getUser();

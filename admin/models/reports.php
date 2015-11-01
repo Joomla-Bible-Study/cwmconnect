@@ -280,16 +280,7 @@ class ChurchDirectoryModelReports extends JModelLegacy
 		}
 
 		// Set sortname ordering if selected
-		if ($this->getState('list.ordering') == 'sortname')
-		{
-			$query->order($db->escape('a.sortname1') . ' ' . $db->escape($this->getState('list.direction', 'ASC')));
-			$query->order($db->escape('a.sortname2') . ' ' . $db->escape($this->getState('list.direction', 'ASC')));
-			$query->order($db->escape('a.sortname3') . ' ' . $db->escape($this->getState('list.direction', 'ASC')));
-		}
-		else
-		{
-			$query->order($db->escape($this->getState('list.ordering', 'a.ordering')) . ' ' . $db->escape($this->getState('list.direction', 'ASC')));
-		}
+		$query->order($db->escape('a.id') . ' ' . $db->escape('ASC'));
 
 		return $query;
 	}
@@ -303,13 +294,131 @@ class ChurchDirectoryModelReports extends JModelLegacy
 	{
 		$this->populateState();
 		$db    = $this->getDbo();
-		$cols  = array_keys($db->getTableColumns('#__churchdirectory_details'));
 		$items = $db->setQuery($this->getListQuery())->loadObjectList();
 		$csv   = fopen('php://output', 'w');
+		$cols = array();
+		foreach ($items as $cal => $line)
+		{
+			if ($cal == 0)
+			{
+				foreach ($line as $c => $item)
+				{
+					if ($c == 'params')
+					{
+						$reg = new Joomla\Registry\Registry;
+						$reg->loadString($item);
+						$params = $reg->toArray();
+						foreach ($params as $p => $itemp)
+						{
+							$cols[] = $p;
+						}
+					}
+					elseif ($c == 'attribs')
+					{
+						$reg = new Joomla\Registry\Registry;
+						$reg->loadString($item);
+						$params = $reg->toArray();
+						foreach ($params as $p => $itemp)
+						{
+							$cols[] = $p;
+						}
+					}
+					elseif ($c == 'kml_params')
+					{
+						$reg = new Joomla\Registry\Registry;
+						$reg->loadString($item);
+						$params = $reg->toArray();
+						foreach ($params as $p => $itemp)
+						{
+							$cols[] = $p;
+						}
+					}
+					elseif ($c == 'category_params')
+					{
+						$reg = new Joomla\Registry\Registry;
+						$reg->loadString($item);
+						$params = $reg->toArray();
+						foreach ($params as $p => $itemp)
+						{
+							$cols[] = $p;
+						}
+					}
+					else
+					{
+						$cols[] = $c;
+					}
+				}
+			}
+		}
 		fputcsv($csv, $cols);
+
+		$lines = array();
 		foreach ($items as $line)
 		{
-			fputcsv($csv, (array) $line);
+			foreach ($line as $c => $item)
+			{
+				if ($c == 'params')
+				{
+					$reg = new Joomla\Registry\Registry;
+					$reg->loadString($item);
+					$params = $reg->toArray();
+					foreach ($params as $p => $itemp)
+					{
+						$lines[] = $itemp;
+					}
+				}
+				elseif ($c == 'attribs')
+				{
+					$reg = new Joomla\Registry\Registry;
+					$reg->loadString($item);
+					$params = $reg->toArray();
+					foreach ($params as $p => $itemp)
+					{
+						if ($p == 'sex')
+						{
+							switch ($itemp)
+							{
+								case (0):
+									$lines[] = 'M';
+									break;
+								case (1):
+									$lines[] = 'F';
+									break;
+							}
+						}
+						else
+						{
+							$lines[] = $itemp;
+						}
+					}
+				}
+				elseif ($c == 'kml_params')
+				{
+					$reg = new Joomla\Registry\Registry;
+					$reg->loadString($item);
+					$params = $reg->toArray();
+					foreach ($params as $p => $itemp)
+					{
+						$lines[] = $itemp;
+					}
+				}
+				elseif ($c == 'category_params')
+				{
+					$reg = new Joomla\Registry\Registry;
+					$reg->loadString($item);
+					$params = $reg->toArray();
+					foreach ($params as $p => $itemp)
+					{
+						$lines[] = $itemp;
+					}
+				}
+				else
+				{
+					$lines[] = $item;
+				}
+			}
+			fputcsv($csv, $lines);
+			$lines = array();
 		}
 
 		return fclose($csv);

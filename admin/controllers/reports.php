@@ -33,18 +33,36 @@ class ChurchDirectoryControllerReports extends JControllerAdmin
 	}
 
 	/**
-	 * Report Export to CSV
+	 * Proxy for getModel.
 	 *
-	 * @param   string  $report  String the name of the report.
+	 * @param   string  $name    The name of the model.
+	 * @param   string  $prefix  The prefix for the PHP class name.
+	 * @param   array   $config  Ingnore info
+	 *
+	 * @return    ChurchDirectoryModelReports
+	 *
+	 * @since    1.7.0
+	 */
+	public function getModel($name = 'Reports', $prefix = 'ChurchDirectoryModel', $config = array('ignore_request' => true))
+	{
+		$model = parent::getModel($name, $prefix, $config);
+
+		return $model;
+	}
+
+	/**
+	 * Report Export to CSV
 	 *
 	 * @return void
 	 */
-	public function export($report = 'new')
+	public function export()
 	{
-		// Clean the output buffer
-		@ob_end_clean();
 
 		$jweb = new JApplicationWeb;
+		$report = $jweb->input->get('report');
+
+		// Clean the output buffer
+		@ob_end_clean();
 		$jweb->clearHeaders();
 
 		header("Content-type: text/csv");

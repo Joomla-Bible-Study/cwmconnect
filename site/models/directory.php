@@ -203,7 +203,8 @@ class ChurchDirectoryModelDirectory extends JModelList
 			->from('#__churchdirectory_details AS a');
 
 		// Join on KML table.
-		$query->select('k.name AS kml_name, k.style AS kml_style, k.params AS kml_params, k.alias AS kml_alias, k.access AS kml_access, k.lat AS kml_lat, k.lng AS kml_lng');
+		$query->select('k.name AS kml_name, k.style AS kml_style, k.params AS kml_params, k.alias AS kml_alias,
+		k.access AS kml_access, k.lat AS kml_lat, k.lng AS kml_lng');
 		$query->join('LEFT', '#__churchdirectory_kml AS k on k.id = a.kmlid');
 
 		// Join on Family Unit.
@@ -485,7 +486,7 @@ class ChurchDirectoryModelDirectory extends JModelList
 	 *
 	 * @return    mixed    An array of categories or false if an error occurs.
 	 */
-	function &getLeftSibling()
+	private function &getLeftSibling()
 	{
 		if (!is_object($this->_item))
 		{
@@ -500,7 +501,7 @@ class ChurchDirectoryModelDirectory extends JModelList
 	 *
 	 * @return    mixed    An array of categories or false if an error occurs.
 	 */
-	function &getRightSibling()
+	private function &getRightSibling()
 	{
 		if (!is_object($this->_item))
 		{
@@ -515,7 +516,7 @@ class ChurchDirectoryModelDirectory extends JModelList
 	 *
 	 * @return    mixed    An array of categories or false if an error occurs.
 	 */
-	function &getChildren()
+	private function &getChildren()
 	{
 		if (!is_object($this->_item))
 		{
