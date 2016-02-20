@@ -61,12 +61,14 @@ class ChurchDirectoryControllerReports extends JControllerAdmin
 		$jweb = new JApplicationWeb;
 		$report = $jweb->input->get('report');
 
+		$date = new JDate('now');
+
 		// Clean the output buffer
 		@ob_end_clean();
 		$jweb->clearHeaders();
 
 		header("Content-type: text/csv");
-		header("Content-Disposition: attachment; filename=report." . $report . ".csv");
+		header("Content-Disposition: attachment; filename=report." . $report . '.' . $date->format('Y-m-d-His') . ".csv");
 		header("Pragma: no-cache");
 		header("Expires: 0");
 

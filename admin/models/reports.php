@@ -51,8 +51,8 @@ class ChurchDirectoryModelReports extends JModelLegacy
 	 * Method to auto-populate the model state.
 	 * Note. Calling getState in this method will result in recursion.
 	 *
-	 * @param   string $ordering  ?
-	 * @param   string $direction ?
+	 * @param   string  $ordering   ?
+	 * @param   string  $direction  ?
 	 *
 	 * @return void
 	 *
@@ -181,7 +181,7 @@ class ChurchDirectoryModelReports extends JModelLegacy
 
 		// Join to check for category published state in parent categories up the tree
 		$query->select('c.published, CASE WHEN badcats.id is null THEN c.published ELSE 0 END AS parents_published');
-		$subquery = 'SELECT cat.id AS id FROM #__categories AS cat JOIN #__categories AS parent ';
+		$subquery = "SELECT 'cat.id' AS id FROM `#__categories` AS cat JOIN `#__categories` AS parent ";
 		$subquery .= 'ON cat.lft BETWEEN parent.lft AND parent.rgt ';
 		$subquery .= 'WHERE parent.extension = ' . $db->quote('com_churchdirectory');
 
@@ -352,7 +352,8 @@ class ChurchDirectoryModelReports extends JModelLegacy
 		}
 		fputcsv($csv, $cols);
 
-		$lines = array();
+		$lines = new stdClass;
+		$linet = array();
 		foreach ($items as $line)
 		{
 			foreach ($line as $c => $item)
@@ -364,7 +365,7 @@ class ChurchDirectoryModelReports extends JModelLegacy
 					$params = $reg->toArray();
 					foreach ($params as $p => $itemp)
 					{
-						$lines[] = $itemp;
+						$lines->$c = $itemp;
 					}
 				}
 				elseif ($c == 'attribs')
@@ -379,16 +380,16 @@ class ChurchDirectoryModelReports extends JModelLegacy
 							switch ($itemp)
 							{
 								case (0):
-									$lines[] = 'M';
+									$lines->$p = 'M';
 									break;
 								case (1):
-									$lines[] = 'F';
+									$lines->$p = 'F';
 									break;
 							}
 						}
 						else
 						{
-							$lines[] = $itemp;
+							$lines->$p = $itemp;
 						}
 					}
 				}
@@ -399,7 +400,7 @@ class ChurchDirectoryModelReports extends JModelLegacy
 					$params = $reg->toArray();
 					foreach ($params as $p => $itemp)
 					{
-						$lines[] = $itemp;
+						$lines->$c = $itemp;
 					}
 				}
 				elseif ($c == 'category_params')
@@ -409,16 +410,29 @@ class ChurchDirectoryModelReports extends JModelLegacy
 					$params = $reg->toArray();
 					foreach ($params as $p => $itemp)
 					{
-						$lines[] = $itemp;
+						$lines->$c = $itemp;
 					}
 				}
 				else
 				{
-					$lines[] = $item;
+					$lines->$c = $item;
 				}
 			}
-			fputcsv($csv, $lines);
-			$lines = array();
+			foreach ($line as $s => $item)
+			{
+				if (isset($lines->$s))
+				{
+					$linet[] = $lines->$s;
+				}
+				else
+				{
+					$linet[] = '';
+				}
+			}
+			fputcsv($csv, (array) $lines);
+			$lines = new stdClass;
+			$linet = array();
+
 		}
 
 		return fclose($csv);

@@ -117,7 +117,7 @@ class ChurchDirectoryViewDatabase extends JViewLegacy
 		JToolBarHelper::divider();
 		if ($canDo)
 		{
-			JToolBarHelper::custom('database.fix', 'refresh', 'refresh', 'COM_CHURCHDIRECTORY_DATABASE_FIX', false, false);
+			JToolBarHelper::custom('database.fix', 'refresh', 'refresh', 'COM_CHURCHDIRECTORY_DATABASE_FIX', false);
 		}
 	}
 
