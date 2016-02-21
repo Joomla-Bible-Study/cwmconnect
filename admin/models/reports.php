@@ -171,9 +171,10 @@ class ChurchDirectoryModelReports extends JModelLegacy
 
 		// Join over the users for the author and modified_by names.
 		$query->select("CASE WHEN a.created_by_alias > ' ' THEN a.created_by_alias ELSE ua.name END AS author")
-			->select("ua.email AS author_email")
+			->select("ua.email AS author_email, ua.name AS created_by, ua.name AS modified_by, user.name AS user_id")
 			->join('LEFT', '#__users AS ua ON ua.id = a.created_by')
-			->join('LEFT', '#__users AS uam ON uam.id = a.modified_by');
+			->join('LEFT', '#__users AS uam ON uam.id = a.modified_by')
+			->join('LEFT', '#__users AS user ON user.id = a.user_id');
 
 		// Join over the categories to get parent category titles
 		$query->select('parent.title as parent_title, parent.id as parent_id, parent.path as parent_route, parent.alias as parent_alias')
@@ -284,7 +285,6 @@ class ChurchDirectoryModelReports extends JModelLegacy
 		$items = $db->setQuery($this->getListQuery())->loadObjectList();;
 		$csv   = fopen('php://output', 'w');
 
-		$lines = new stdClass;
 		$count = 0;
 		foreach ($items as $line)
 		{
@@ -294,70 +294,100 @@ class ChurchDirectoryModelReports extends JModelLegacy
 				{
 					$reg = new Joomla\Registry\Registry;
 					$reg->loadString($item);
-					$params = $reg->toArray();
-					foreach ($params as $p => $itemp)
-					{
-						$lines->$c = $itemp;
-					}
+					$params = $reg->toObject();
+					unset($line->params);
+					$line = (object) array_merge((array) $line, (array) $params);
 				}
 				elseif ($c == 'attribs')
 				{
 					$reg = new Joomla\Registry\Registry;
 					$reg->loadString($item);
-					$params = $reg->toArray();
-					foreach ($params as $p => $itemp)
+					$params = $reg->toObject();
+					$params_att = new stdClass;
+					foreach ($params as $p => $item_p)
 					{
+						$p = 'att_' . $p;
 						if ($p == 'sex')
 						{
-							switch ($itemp)
+							switch ($item_p)
 							{
 								case (0):
-									$lines->$p = 'M';
+									$params_att->$p = 'M';
 									break;
 								case (1):
-									$lines->$p = 'F';
+									$params_att->$p = 'F';
 									break;
 							}
 						}
 						else
 						{
-							$lines->$p = $itemp;
+							$params_att->$p = $item_p;
 						}
 					}
+					unset($line->attribs);
+					$line = (object) array_merge((array) $line, (array) $params_att);
+
 				}
 				elseif ($c == 'kml_params')
 				{
 					$reg = new Joomla\Registry\Registry;
 					$reg->loadString($item);
-					$params = $reg->toArray();
-					foreach ($params as $p => $itemp)
-					{
-						$lines->$c = $itemp;
-					}
+					$params = $reg->toObject();
+					unset($line->kml_params);
+					$line = (object) array_merge((array) $line, (array) $params);
 				}
 				elseif ($c == 'category_params')
 				{
 					$reg = new Joomla\Registry\Registry;
 					$reg->loadString($item);
-					$params = $reg->toArray();
-					foreach ($params as $p => $itemp)
-					{
-						$lines->$c = $itemp;
-					}
+					$params = $reg->toObject();
+					unset($line->category_params);
+					$line = (object) array_merge((array) $line, (array) $params);
 				}
-				else
+				elseif ($c == 'metadata')
 				{
-					$lines->$c = $item;
+					$reg = new Joomla\Registry\Registry;
+					$reg->loadString($item);
+					$params = $reg->toObject();
+					unset($line->metadata);
+					$line = (object) array_merge((array) $line, (array) $params);
+				}
+				elseif ($c == 'con_position')
+				{
+					$pos = array();
+					if ($item != 0)
+					{
+						$positions = explode(',', $item);
+						foreach ($positions as $p => $position)
+						{
+							$query = $this->_db->getQuery(true);
+							// Join on Position.
+							$query->select('name');
+							$query->from('#__churchdirectory_position');
+							$query->where('id =' . $position);
+							$this->_db->setQuery($query);
+							$pos[] = $this->_db->loadResult();
+						}
+					}
+					else
+					{
+						$pos[] = null;
+					}
+					unset($line->con_position);
+					$line = (object) array_merge((array) $line, array('con_position' => implode(",", $pos)));
+				}
+				elseif ($c == 'image')
+				{
+					$line->$c = JUri::root() . $item;
 				}
 			}
 			if ($count == 0)
 			{
-				$array = get_object_vars($lines);
+				$array = get_object_vars($line);
 				fputcsv($csv, array_keys($array));
 			}
 			$count = 1;
-			fputcsv($csv, (array) $lines);
-			$lines = new stdClass;
+			fputcsv($csv, (array) $line);
 
 		}
 
