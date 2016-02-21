@@ -204,7 +204,7 @@ class ChurchDirectoryModelMembers extends JModelList
 		}
 		elseif (is_array($categoryId))
 		{
-			Joomla\Utilities\ArrayHelper::toInteger($categoryId);
+			JArrayHelper::toInteger($categoryId);
 			$categoryId = implode(',', $categoryId);
 			$query->where('a.catid IN (' . $categoryId . ')');
 		}

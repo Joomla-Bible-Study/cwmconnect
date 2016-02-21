@@ -179,32 +179,35 @@ class ChurchDirectoryModelReports extends JModelLegacy
 		$query->select('parent.title as parent_title, parent.id as parent_id, parent.path as parent_route, parent.alias as parent_alias')
 			->join('LEFT', '#__categories as parent ON parent.id = c.parent_id');
 
+		// Change for sqlsrv... aliased c.published to cat_published
 		// Join to check for category published state in parent categories up the tree
-		$query->select('c.published, CASE WHEN badcats.id is null THEN c.published ELSE 0 END AS parents_published');
-		$subquery = "SELECT 'cat.id' AS id FROM `#__categories` AS cat JOIN `#__categories` AS parent ";
+		$query->select('c.published as cat_published, CASE WHEN badcats.id is null THEN c.published ELSE 0 END AS parents_published');
+		$subquery = 'SELECT cat.id AS id FROM `#__categories` AS cat JOIN `#__categories` AS parent ';
 		$subquery .= 'ON cat.lft BETWEEN parent.lft AND parent.rgt ';
 		$subquery .= 'WHERE parent.extension = ' . $db->quote('com_churchdirectory');
 
-		if ($this->getState('filter.published') == 2)
-		{
-			// Find any up-path categories that are archived
-			// If any up-path categories are archived, include all children in archived layout
-			$subquery .= ' AND parent.published = 2 GROUP BY cat.id ';
+		// Find any up-path categories that are not published
+		// If all categories are published, badcats.id will be null, and we just use the contact state
+		$subquery .= ' AND parent.published != 1 GROUP BY cat.id ';
 
-			// Set effective state to archived if up-path category is archived
-			$publishedWhere = 'CASE WHEN badcats.id is null THEN a.state ELSE 2 END';
-		}
-		else
-		{
-			// Find any up-path categories that are not published
-			// If all categories are published, badcats.id will be null, and we just use the article state
-			$subquery .= ' AND parent.published != 1 GROUP BY cat.id ';
-
-			// Select state to unpublished if up-path category is unpublished
-			$publishedWhere = 'CASE WHEN badcats.id is null THEN a.state ELSE 0 END';
-		}
-
+		// Select state to unpublished if up-path category is unpublished
+		$publishedWhere = 'CASE WHEN badcats.id is null THEN a.published ELSE 0 END';
 		$query->join('LEFT OUTER', '(' . $subquery . ') AS badcats ON badcats.id = c.id');
+
+		// Filter by state
+		$state = $this->getState('filter.published');
+		if (is_numeric($state))
+		{
+			$query->where('a.published = ' . (int) $state);
+
+			// Filter by start and end dates.
+			$nullDate = $db->quote($db->getNullDate());
+			$date     = JFactory::getDate();
+			$nowDate  = $db->quote($date->toSql());
+			$query->where('(a.publish_up = ' . $nullDate . ' OR a.publish_up <= ' . $nowDate . ')')
+				->where('(a.publish_down = ' . $nullDate . ' OR a.publish_down >= ' . $nowDate . ')')
+				->where($publishedWhere . ' = ' . (int) $state);
+		}
 
 		// Filter by access level.
 		if ($access = $this->getState('filter.access'))
@@ -212,23 +215,6 @@ class ChurchDirectoryModelReports extends JModelLegacy
 			$groups = implode(',', $user->getAuthorisedViewLevels());
 			$query->where('a.access IN (' . $groups . ')')
 				->where('c.access IN (' . $groups . ')');
-		}
-
-		// Filter by published state
-		$published = $this->getState('filter.published');
-
-		if (is_numeric($published))
-		{
-			// Use article state if badcats.id is null, otherwise, force 0 for unpublished
-			$query->where($publishedWhere . ' = ' . (int) $published);
-		}
-		elseif (is_array($published))
-		{
-			Joomla\Utilities\ArrayHelper::toInteger($published);
-			$published = implode(',', $published);
-
-			// Use article state if badcats.id is null, otherwise, force 0 for unpublished
-			$query->where($publishedWhere . ' IN (' . $published . ')');
 		}
 
 		// Define null and now dates
@@ -292,68 +278,14 @@ class ChurchDirectoryModelReports extends JModelLegacy
 	 */
 	public function getCsv()
 	{
+		$this->setState('filter.published', '1');
 		$this->populateState();
 		$db    = $this->getDbo();
-		$items = $db->setQuery($this->getListQuery())->loadObjectList();
+		$items = $db->setQuery($this->getListQuery())->loadObjectList();;
 		$csv   = fopen('php://output', 'w');
-		$cols = array();
-		foreach ($items as $cal => $line)
-		{
-			if ($cal == 0)
-			{
-				foreach ($line as $c => $item)
-				{
-					if ($c == 'params')
-					{
-						$reg = new Joomla\Registry\Registry;
-						$reg->loadString($item);
-						$params = $reg->toArray();
-						foreach ($params as $p => $itemp)
-						{
-							$cols[] = $p;
-						}
-					}
-					elseif ($c == 'attribs')
-					{
-						$reg = new Joomla\Registry\Registry;
-						$reg->loadString($item);
-						$params = $reg->toArray();
-						foreach ($params as $p => $itemp)
-						{
-							$cols[] = $p;
-						}
-					}
-					elseif ($c == 'kml_params')
-					{
-						$reg = new Joomla\Registry\Registry;
-						$reg->loadString($item);
-						$params = $reg->toArray();
-						foreach ($params as $p => $itemp)
-						{
-							$cols[] = $p;
-						}
-					}
-					elseif ($c == 'category_params')
-					{
-						$reg = new Joomla\Registry\Registry;
-						$reg->loadString($item);
-						$params = $reg->toArray();
-						foreach ($params as $p => $itemp)
-						{
-							$cols[] = $p;
-						}
-					}
-					else
-					{
-						$cols[] = $c;
-					}
-				}
-			}
-		}
-		fputcsv($csv, $cols);
 
 		$lines = new stdClass;
-		$linet = array();
+		$count = 0;
 		foreach ($items as $line)
 		{
 			foreach ($line as $c => $item)
@@ -418,20 +350,14 @@ class ChurchDirectoryModelReports extends JModelLegacy
 					$lines->$c = $item;
 				}
 			}
-			foreach ($line as $s => $item)
+			if ($count == 0)
 			{
-				if (isset($lines->$s))
-				{
-					$linet[] = $lines->$s;
-				}
-				else
-				{
-					$linet[] = '';
-				}
+				$array = get_object_vars($lines);
+				fputcsv($csv, array_keys($array));
 			}
+			$count = 1;
 			fputcsv($csv, (array) $lines);
 			$lines = new stdClass;
-			$linet = array();
 
 		}
 
