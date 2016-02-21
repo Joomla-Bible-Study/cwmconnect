@@ -109,10 +109,6 @@ JFactory::getDocument()->addScriptDeclaration('
 			<div class="controls"><?php echo $this->form->getInput('catid'); ?></div>
 		</div>
 		<div class="control-group">
-			<div class="control-label"><?php echo $this->form->getLabel('ordering'); ?></div>
-			<div class="controls"><?php echo $this->form->getInput('ordering'); ?></div>
-		</div>
-		<div class="control-group">
 			<div class="control-label"><?php echo $this->form->getLabel('id'); ?></div>
 			<div class="controls"><?php echo $this->form->getInput('id'); ?></div>
 		</div>
