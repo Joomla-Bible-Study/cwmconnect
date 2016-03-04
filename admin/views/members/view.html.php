@@ -66,11 +66,7 @@ class ChurchDirectoryViewMembers extends JViewLegacy
 
 		// Set the toolbar
 		$this->addToolbar();
-
-		if (version_compare(JVERSION, '3.0', 'ge'))
-		{
-			$this->sidebar = JHtmlSidebar::render();
-		}
+		$this->sidebar = JHtmlSidebar::render();
 
 		// Set the document
 		$this->setDocument();
@@ -139,41 +135,38 @@ class ChurchDirectoryViewMembers extends JViewLegacy
 			JToolBarHelper::preferences('com_churchdirectory');
 		}
 
-		if (version_compare(JVERSION, '3.0.0', 'ge'))
-		{
-			JToolBarHelper::help('churchdirectory_members', true);
-			JHtmlSidebar::setAction('index.php?option=com_churchdirectory&amp;view=members');
+		JToolBarHelper::help('churchdirectory_members', true);
+		JHtmlSidebar::setAction('index.php?option=com_churchdirectory&amp;view=members');
 
-			JHtmlSidebar::addFilter(
-				JText::_('JOPTION_SELECT_PUBLISHED'),
-				'filter_published',
-				JHtml::_('select.options', JHtml::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.published'), true)
-			);
+		JHtmlSidebar::addFilter(
+			JText::_('JOPTION_SELECT_PUBLISHED'),
+			'filter_published',
+			JHtml::_('select.options', JHtml::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.published'), true)
+		);
 
-			JHtmlSidebar::addFilter(
-				JText::_('JOPTION_SELECT_CATEGORY'),
-				'filter_category_id',
-				JHtml::_('select.options', JHtml::_('category.options', 'com_churchdirectory'), 'value', 'text', $this->state->get('filter.category_id'))
-			);
+		JHtmlSidebar::addFilter(
+			JText::_('JOPTION_SELECT_CATEGORY'),
+			'filter_category_id',
+			JHtml::_('select.options', JHtml::_('category.options', 'com_churchdirectory'), 'value', 'text', $this->state->get('filter.category_id'))
+		);
 
-			JHtmlSidebar::addFilter(
-				JText::_('JOPTION_SELECT_ACCESS'),
-				'filter_access',
-				JHtml::_('select.options', JHtml::_('access.assetgroups'), 'value', 'text', $this->state->get('filter.access'))
-			);
+		JHtmlSidebar::addFilter(
+			JText::_('JOPTION_SELECT_ACCESS'),
+			'filter_access',
+			JHtml::_('select.options', JHtml::_('access.assetgroups'), 'value', 'text', $this->state->get('filter.access'))
+		);
 
-			JHtmlSidebar::addFilter(
-				JText::_('JOPTION_SELECT_LANGUAGE'),
-				'filter_language',
-				JHtml::_('select.options', JHtml::_('contentlanguage.existing', true, true), 'value', 'text', $this->state->get('filter.language'))
-			);
+		JHtmlSidebar::addFilter(
+			JText::_('JOPTION_SELECT_LANGUAGE'),
+			'filter_language',
+			JHtml::_('select.options', JHtml::_('contentlanguage.existing', true, true), 'value', 'text', $this->state->get('filter.language'))
+		);
 
-			JHtmlSidebar::addFilter(
-				JText::_('COM_CHURCHODIRECTORY_OPTION_SELECT_MSTATUS'),
-				'filter_mstatus',
-				JHtml::_('select.options', JHtml::_('member.status', true, true), 'value', 'text', $this->state->get('filter.mstatus'))
-			);
-		}
+		JHtmlSidebar::addFilter(
+			JText::_('COM_CHURCHODIRECTORY_OPTION_SELECT_MSTATUS'),
+			'filter_mstatus',
+			JHtml::_('select.options', JHtml::_('member.status', true, true), 'value', 'text', $this->state->get('filter.mstatus'))
+		);
 	}
 
 	/**
