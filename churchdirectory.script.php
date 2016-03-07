@@ -837,7 +837,7 @@ class Com_ChurchdirectoryInstallerScript
 				->set('params = ' . $db->quote($paramsString))
 				->where('name = ' . $db->quote($this->churchdirectory_extension));
 			$db->setQuery($query);
-			$db->query();
+			$db->execute();
 		}
 	}
 

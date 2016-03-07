@@ -48,7 +48,7 @@ class ChurchDirectoryViewFeatured extends JViewLegacy
 	/**
 	 * Display the view
 	 *
-	 * @param string $tpl
+	 * @param   string  $tpl  ?
 	 *
 	 * @return    mixed    False on error, null otherwise.
 	 */
@@ -118,6 +118,8 @@ class ChurchDirectoryViewFeatured extends JViewLegacy
 
 	/**
 	 * Prepares the document
+	 *
+	 * @return void
 	 */
 	protected function _prepareDocument()
 	{

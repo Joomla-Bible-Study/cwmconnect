@@ -122,7 +122,6 @@ class ChurchDirectoryViewMember extends JViewLegacy
 		$options['category_id'] = $item->catid;
 		$options['order by']    = 'a.default_con DESC, a.ordering ASC';
 
-
 		// Handle email cloaking
 		if ($item->email_to && $params->get('show_email'))
 		{
@@ -243,6 +242,8 @@ class ChurchDirectoryViewMember extends JViewLegacy
 
 	/**
 	 * Prepares the document
+	 *
+	 * @return void
 	 */
 	protected function _prepareDocument()
 	{

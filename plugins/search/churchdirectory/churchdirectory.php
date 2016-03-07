@@ -13,7 +13,7 @@ defined('_JEXEC') or die;
  * @package  Search.ChurchDirectory
  * @since    1.7.0
  */
-class plgSearchChurchdirectory extends JPlugin
+class PlgSearchChurchdirectory extends JPlugin
 {
 
 	/**

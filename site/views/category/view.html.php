@@ -56,7 +56,7 @@ class ChurchDirectoryViewCategory extends JViewLegacy
 	/**
 	 * Display Function
 	 *
-	 * @param string $tpl
+	 * @param   string  $tpl  ?
 	 *
 	 * @return boolean
 	 */
@@ -173,6 +173,8 @@ class ChurchDirectoryViewCategory extends JViewLegacy
 
 	/**
 	 * Prepares the document
+	 *
+	 * @return void;
 	 */
 	protected function _prepareDocument()
 	{

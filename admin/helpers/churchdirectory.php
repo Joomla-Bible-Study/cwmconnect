@@ -112,14 +112,7 @@ class ChurchDirectoryHelper
 	 */
 	public static function rendermenu($text, $url, $vName)
 	{
-		if (version_compare(JVERSION, '3.0', 'ge'))
-		{
-			JHtmlSidebar::addEntry($text, $url, $vName);
-		}
-		else
-		{
-			JSubMenuHelper::addEntry($text, $url, $vName);
-		}
+		JHtmlSidebar::addEntry($text, $url, $vName);
 	}
 
 	/**
@@ -153,7 +146,7 @@ class ChurchDirectoryHelper
 			$level     = 'category';
 		}
 
-		$actions = JAccess::getActions('com_churchdirectory', $level);
+		$actions = JAccess::getActionsFromFile('com_churchdirectory', $level);
 
 		foreach ($actions as $action)
 		{
@@ -168,8 +161,8 @@ class ChurchDirectoryHelper
 	 *
 	 * @param   string  $birthdate  Set Up Birth Date Calculation
 	 *
-	 * @return string
-
+	 * @return  string
+	 *
 	 * @since    1.7.3
 	 */
 	public static function getAge($birthdate)
