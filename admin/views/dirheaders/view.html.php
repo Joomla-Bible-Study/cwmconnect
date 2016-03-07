@@ -42,9 +42,9 @@ class ChurchDirectoryViewDirHeaders extends JViewLegacy
 	/**
 	 * Display the view
 	 *
-	 * @since 1.7.0
-	 *
 	 * @param   string  $tpl  ?
+	 *
+	 * @since 1.7.0
 	 *
 	 * @return    mixed
 	 */
