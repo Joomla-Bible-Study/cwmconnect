@@ -1,13 +1,11 @@
 <?php
 /**
  * @package    ChurchDirectory.Admin
- * @copyright  2007 - 2014 (C) Joomla Bible Study Team All rights reserved.
+ * @copyright  2007 - 2016 (C) Joomla Bible Study Team All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 defined('_JEXEC') or die;
-
-jimport('joomla.application.component.model');
 
 /**
  * Methods to display a control panel.
@@ -21,7 +19,7 @@ class ChurchDirectoryModelCpanel extends JModelLegacy
 	/**
 	 * constructor (registers additional tasks to methods)
 	 */
-	function __construct()
+	public function __construct()
 	{
 		parent::__construct();
 	}

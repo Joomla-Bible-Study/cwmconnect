@@ -1,7 +1,7 @@
 <?php
 /**
  * @package    ChurchDirectory.Admin
- * @copyright  2007 - 2014 (C) Joomla Bible Study Team All rights reserved.
+ * @copyright  2007 - 2016 (C) Joomla Bible Study Team All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -35,7 +35,7 @@ class ChurchDirectoryControllerPositions extends JControllerAdmin
 	 *
 	 * @since    1.7.0
 	 */
-	function featured()
+	public function featured()
 	{
 		// Check for request forgeries
 		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
@@ -44,8 +44,9 @@ class ChurchDirectoryControllerPositions extends JControllerAdmin
 		$user  = JFactory::getUser();
 		$app   = JFactory::getApplication();
 		$ids   = $app->input->get('id', array(), '', 'array');
+		$values = array('featured' => 1, 'unfeatured' => 0);
 		$task  = $this->getTask();
-		$value = JArrayHelper::getValue($values, $task, 0, 'int');
+		$value = Joomla\Utilities\ArrayHelper::getValue($values, $task, 0, 'int');
 
 		// Get the model.
 		$model = $this->getModel();

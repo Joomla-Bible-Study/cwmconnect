@@ -4,7 +4,7 @@
  * ChurchDirectory Helper
  *
  * @package    ChurchDirectory.Admin
- * @copyright  2007 - 2014 (C) Joomla Bible Study Team All rights reserved.
+ * @copyright  2007 - 2016 (C) Joomla Bible Study Team All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 // No direct access

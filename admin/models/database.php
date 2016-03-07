@@ -1,7 +1,7 @@
 <?php
 /**
  * @package    ChurchDirectory.Admin
- * @copyright  2007 - 2014 (C) Joomla Bible Study Team All rights reserved
+ * @copyright  2007 - 2016 (C) Joomla Bible Study Team All rights reserved
  * @license    http://www.gnu.org/copyleft/gpl.html GNU/GPL
  * @link       http://www.JoomlaBibleStudy.org
  * @since      1.7.2
@@ -233,7 +233,7 @@ class ChurchDirectoryModelDatabase extends InstallerModel
 
 			if ($contentParams->get('filters'))
 			{
-				$newParams = new JRegistry;
+				$newParams = new Registry;
 				$newParams->set('filters', $contentParams->get('filters'));
 				$table->params = (string) $newParams;
 				$table->store();

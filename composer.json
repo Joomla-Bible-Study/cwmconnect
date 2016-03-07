@@ -1,9 +1,9 @@
 {
-    "name": "joomla-bible-study/joomla-bible-study",
+    "name": "joomla-bible-study/joomla_churchdirectory",
     "type": "project",
-    "description": "Joomla-Bible-Study",
-    "keywords": ["bible", "biblestudy", "joomlabiblestudy"],
-    "homepage": "https://github.com/Joomla-Bible-Study/Joomla-Bible-Study",
+    "description": "Joomla-Church-Directory",
+    "keywords": ["directory", "churchdirectory", "church"],
+    "homepage": "https://github.com/Joomla-Bible-Study/joomla_churchdirectory",
     "license": "GPL-2.0+",
     "config": {
       "platform": {

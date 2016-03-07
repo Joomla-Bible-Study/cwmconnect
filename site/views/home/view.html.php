@@ -1,7 +1,7 @@
 <?php
 /**
  * @package    ChurchDirectory.Site
- * @copyright  2007 - 2014 Joomla Bible Study Team All rights reserved.
+ * @copyright  2007 - 2016 Joomla Bible Study Team All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -21,7 +21,7 @@ class ChurchDirectoryViewHome extends JViewLegacy
 
 	protected $items;
 
-	/** @var  JRegistry */
+	/** @var  Registry */
 	protected $params;
 
 	protected $user;

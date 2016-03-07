@@ -1,11 +1,10 @@
 <?php
-
 /**
  * View for Category
  *
- * @package             ChurchDirectory.Site
- * @copyright           2007 - 2014 (C) Joomla Bible Study Team All rights reserved.
- * @license             GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    ChurchDirectory.Site
+ * @copyright  2007 - 2016 (C) Joomla Bible Study Team All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 // No direct access
 defined('_JEXEC') or die;
@@ -13,8 +12,8 @@ defined('_JEXEC') or die;
 /**
  * HTML View class for the ChurchDirectorys component
  *
- * @package      ChurchDirectory.Site
- * @since        1.7.0
+ * @package  ChurchDirectory.Site
+ * @since    1.7.0
  */
 class ChurchDirectoryViewCategory extends JViewLegacy
 {

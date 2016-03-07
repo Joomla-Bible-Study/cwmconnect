@@ -7,7 +7,7 @@
 
 defined('_JEXEC') or die;
 
-jimport('joomla.application.component.modellist');
+use Joomla\Registry\Registry;
 
 /**
  * Class list for Directory
@@ -140,25 +140,25 @@ class ChurchDirectoryModelDirectory extends JModelList
 
 			if (!isset($this->_kparams))
 			{
-				$kparams = new JRegistry;
+				$kparams = new Registry;
 				$kparams->loadString($item->kml_params);
 				$item->kml_params = $kparams;
 			}
 			if (!isset($this->_cparams))
 			{
-				$cparams = new JRegistry;
+				$cparams = new Registry;
 				$cparams->loadString($item->category_params);
 				$item->category_params = $cparams;
 			}
 			if (!isset($this->_params))
 			{
-				$params = new JRegistry;
+				$params = new Registry;
 				$params->loadString($item->params);
 				$item->params = $params;
 			}
 			if (!isset($this->_attribs))
 			{
-				$params = new JRegistry;
+				$params = new Registry;
 				$params->loadString($item->attribs);
 				$item->attribs = $params;
 			}
@@ -271,7 +271,7 @@ class ChurchDirectoryModelDirectory extends JModelList
 		}
 		elseif (is_array($published))
 		{
-			JArrayHelper::toInteger($published);
+			Joomla\Utilities\ArrayHelper::toInteger($published);
 			$published = implode(',', $published);
 
 			// Use article state if badcats.id is null, otherwise, force 0 for unpublished
@@ -363,7 +363,7 @@ class ChurchDirectoryModelDirectory extends JModelList
 
 		if ($format == 'feed')
 		{
-			$limit = $app->getCfg('feed_limit');
+			$limit = $app->get('feed_limit');
 		}
 		else
 		{
@@ -375,7 +375,7 @@ class ChurchDirectoryModelDirectory extends JModelList
 		$this->setState('list.start', $limitstart);
 
 		// Get list ordering default from the parameters
-		$menuParams = new JRegistry;
+		$menuParams = new Registry;
 
 		if ($menu = $app->getMenu()->getActive())
 		{
@@ -433,7 +433,7 @@ class ChurchDirectoryModelDirectory extends JModelList
 			$app    = JFactory::getApplication();
 			$menu   = $app->getMenu();
 			$active = $menu->getActive();
-			$params = new JRegistry;
+			$params = new Registry;
 
 			if ($active)
 			{

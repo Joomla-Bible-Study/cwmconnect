@@ -1,7 +1,7 @@
 <?php
 /**
  * @package    ChurchDirectory.Site
- * @copyright  2007 - 2014 (C) Joomla Bible Study Team All rights reserved.
+ * @copyright  2007 - 2016 (C) Joomla Bible Study Team All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -13,8 +13,8 @@ require_once JPATH_COMPONENT . '/models/category.php';
  * HTML Member View class for the ChurchDirectory component
  *
  * @property mixed document
- * @package       ChurchDirectory.Site
- * @since         1.7.0
+ * @package  ChurchDirectory.Site
+ * @since    1.7.0
  */
 class ChurchDirectoryViewMember extends JViewLegacy
 {
@@ -128,7 +128,11 @@ class ChurchDirectoryViewMember extends JViewLegacy
 		{
 			$item->email_to = JHtml::_('email.cloak', $item->email_to);
 		}
-		if ($params->get('show_street_address') || $params->get('show_suburb') || $params->get('show_state') || $params->get('show_postcode') || $params->get('show_country'))
+		if ($params->get('show_street_address')
+			|| $params->get('show_suburb')
+			|| $params->get('show_state')
+			|| $params->get('show_postcode')
+			|| $params->get('show_country'))
 		{
 			if (!empty($item->address) || !empty($item->suburb) || !empty($item->state) || !empty($item->country) || !empty($item->postcode))
 			{
@@ -167,12 +171,20 @@ class ChurchDirectoryViewMember extends JViewLegacy
 
 			default :
 				// Icons
-				$image1 = JHtml::_('image', 'contacts/' . $params->get('icon_address', 'con_address.png'), JText::_('COM_CHURCHDIRECTORY_ADDRESS') . ": ", null, true);
+				$image1 = JHtml::_('image', 'contacts/' . $params->get('icon_address', 'con_address.png'), JText::_('COM_CHURCHDIRECTORY_ADDRESS') .
+					": ", null, true
+				);
 				$image2 = JHtml::_('image', 'contacts/' . $params->get('icon_email', 'emailButton.png'), JText::_('JGLOBAL_EMAIL') . ": ", null, true);
-				$image3 = JHtml::_('image', 'contacts/' . $params->get('icon_telephone', 'con_tel.png'), JText::_('COM_CHURCHDIRECTORY_TELEPHONE') . ": ", null, true);
+				$image3 = JHtml::_('image', 'contacts/' . $params->get('icon_telephone', 'con_tel.png'), JText::_('COM_CHURCHDIRECTORY_TELEPHONE') .
+					": ", null, true
+				);
 				$image4 = JHtml::_('image', 'contacts/' . $params->get('icon_fax', 'con_fax.png'), JText::_('COM_CHURCHDIRECTORY_FAX') . ": ", null, true);
-				$image5 = JHtml::_('image', 'contacts/' . $params->get('icon_misc', 'con_info.png'), JText::_('COM_CHURCHDIRECTORY_OTHER_INFORMATION') . ": ", null, true);
-				$image6 = JHtml::_('image', 'contacts/' . $params->get('icon_mobile', 'con_mobile.png'), JText::_('COM_CHURCHDIRECTORY_MOBILE') . ": ", null, true);
+				$image5 = JHtml::_('image', 'contacts/' . $params->get('icon_misc', 'con_info.png'), JText::_('COM_CHURCHDIRECTORY_OTHER_INFORMATION') .
+					": ", null, true
+				);
+				$image6 = JHtml::_('image', 'contacts/' . $params->get('icon_mobile', 'con_mobile.png'), JText::_('COM_CHURCHDIRECTORY_MOBILE') .
+					": ", null, true
+				);
 
 				$params->set('marker_address', $image1);
 				$params->set('marker_email', $image2);
@@ -268,7 +280,9 @@ class ChurchDirectoryViewMember extends JViewLegacy
 			$path     = array(array('title' => $this->member->name, 'link' => ''));
 			$category = JCategories::getInstance('ChurchDirectory')->get($this->member->catid);
 
-			while ($category && ($menu->query['option'] != 'com_churchdirectory' || $menu->query['view'] == 'member' || $id != $category->id) && $category->id > 1)
+			while ($category && ($menu->query['option'] != 'com_churchdirectory'
+					|| $menu->query['view'] == 'member'
+					|| $id != $category->id) && $category->id > 1)
 			{
 				$path[]   = array('title' => $category->title, 'link' => ChurchDirectoryHelperRoute::getCategoryRoute($this->member->catid));
 				$category = $category->getParent();

@@ -1,7 +1,7 @@
 <?php
 /**
  * @package    ChurchDirectory.Admin
- * @copyright  2007 - 2014 (C) Joomla Bible Study Team All rights reserved.
+ * @copyright  2007 - 2016 (C) Joomla Bible Study Team All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -29,7 +29,6 @@ class ChurchDirectoryControllerGeoStatus extends JControllerAdmin
 		parent::__construct($config);
 	}
 
-
 	/**
 	 * Method to update members geoupdate location.
 	 *
@@ -47,7 +46,7 @@ class ChurchDirectoryControllerGeoStatus extends JControllerAdmin
 		$ids    = $this->input->get('cid', array(), 'array');
 		$values = array('featured' => 1, 'unfeatured' => 0);
 		$task   = $this->getTask();
-		$value  = JArrayHelper::getValue($values, $task, 0, 'int');
+		$value  = Joomla\Utilities\ArrayHelper::getValue($values, $task, 0, 'int');
 
 		// Get the model.
 		$model = $this->getModel();
@@ -113,8 +112,8 @@ class ChurchDirectoryControllerGeoStatus extends JControllerAdmin
 		$order = $this->input->post->get('order', array(), 'array');
 
 		// Sanitize the input
-		JArrayHelper::toInteger($pks);
-		JArrayHelper::toInteger($order);
+		Joomla\Utilities\ArrayHelper::toInteger($pks);
+		Joomla\Utilities\ArrayHelper::toInteger($order);
 
 		// Get the model
 		$model = $this->getModel();

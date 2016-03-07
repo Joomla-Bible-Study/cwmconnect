@@ -3,7 +3,7 @@
  * View for VCF
  *
  * @package    ChurchDirectory.Site
- * @copyright  2007 - 2014 (C) Joomla Bible Study Team All rights reserved.
+ * @copyright  2007 - 2016 (C) Joomla Bible Study Team All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 // No direct access
@@ -13,8 +13,8 @@ defined('_JEXEC') or die;
 /**
  * Class for Member VCF
  *
- * @package        ChurchDirectory.Site
- * @since          1.7.0
+ * @package  ChurchDirectory.Site
+ * @since    1.7.0
  */
 class ChurchDirectoryViewMember extends JViewLegacy
 {
@@ -34,9 +34,11 @@ class ChurchDirectoryViewMember extends JViewLegacy
 	protected $item;
 
 	/**
-	 * Display function
+	 * Display
 	 *
-	 * @return boolean
+	 * @return bool
+	 *
+	 * @throws \Exception
 	 */
 	public function display()
 	{
@@ -48,9 +50,7 @@ class ChurchDirectoryViewMember extends JViewLegacy
 		// Check for errors.
 		if (count($errors = $this->get('Errors')))
 		{
-			JError::raiseWarning(500, implode("\n", $errors));
-
-			return false;
+			Throw new Exception(implode("\n", $errors));
 		}
 
 		JFactory::getDocument()->setMetaData('Content-Type', 'text/directory', true);
@@ -92,7 +92,8 @@ class ChurchDirectoryViewMember extends JViewLegacy
 
 		$rev = date('c', strtotime($item->modified));
 
-		JResponse::setHeader('Content-disposition', 'attachment; filename="' . $card_name . '.vcf"', true);
+		$web = new JApplicationWeb;
+		$web->setHeader('Content-disposition', 'attachment; filename="' . $card_name . '.vcf"', true);
 
 		$vcard = array();
 		$vcard[] .= 'BEGIN:VCARD';

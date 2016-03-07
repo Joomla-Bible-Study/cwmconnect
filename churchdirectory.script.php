@@ -1,7 +1,7 @@
 <?php
 /**
  * @package    ChurchDirectory.Admin
- * @copyright  2007 - 2014 (C) Joomla Bible Study Team All rights reserved.
+ * @copyright  2007 - 2016 (C) Joomla Bible Study Team All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * @see        Akeebe Script
  */
@@ -183,9 +183,7 @@ class Com_ChurchdirectoryInstallerScript
 		if (!version_compare(JVERSION, '3.4.4', 'ge'))
 		{
 			$msg = "<p>You need Joomla! 2.5.16 or later to install this component</p>";
-			new Exception($msg, 100);
-
-			return false;
+			throw new Exception($msg, 100);
 		}
 		if (!version_compare($version, '5.3.10', 'ge'))
 		{

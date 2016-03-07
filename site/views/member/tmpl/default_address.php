@@ -2,9 +2,9 @@
 /**
  * Sub view member for address
  *
- * @package             ChurchDirectory.Site
- * @copyright           2007 - 2014 (C) Joomla Bible Study Team All rights reserved.
- * @license             GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    ChurchDirectory.Site
+ * @copyright  2007 - 2016 (C) Joomla Bible Study Team All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die;
 
@@ -13,253 +13,264 @@ defined('_JEXEC') or die;
  */
 ?>
 <dl class="contact-address dl-horizontal">
-<?php if ($this->params->get('dr_show_address_full') === '1') : ?>
-	<?php if ($this->member->attribs->get('mailingaddress') || $this->member->attribs->get('mailingsuburb') || $this->member->attribs->get('mailingstate')) : ?>
-		<?php if ($this->params->get('address_check') > 0) : ?>
+	<?php if ($this->params->get('dr_show_address_full') === '1') : ?>
+		<?php if ($this->member->attribs->get('mailingaddress')
+				|| $this->member->attribs->get('mailingsuburb')
+				|| $this->member->attribs->get('mailingstate')
+		) :
+			?>
+			<?php if ($this->params->get('address_check') > 0) : ?>
 			<dt>
             <span class="<?php echo $this->params->get('marker_class'); ?>">
                     <?php echo $this->params->get('marker_address'); ?>
                 </span>
 			</dt>
 		<?php endif; ?>
-		<?php if ($this->member->address && $this->params->get('show_street_address')) : ?>
+			<?php if ($this->member->address && $this->params->get('show_street_address')) : ?>
 			<dd>
 		<span class="churchdirectory-street">
                         <?php echo nl2br($this->member->attribs->get('mailingaddress')); ?>
                     </span>
 			</dd>
 		<?php endif; ?>
-		<?php if ($this->member->suburb && $this->params->get('show_suburb')) : ?>
+			<?php if ($this->member->suburb && $this->params->get('show_suburb')) : ?>
 			<dd>
 			<span class="churchdirectory-suburb">
                         <?php echo $this->member->attribs->get('mailingsuburb'); ?>
                     </span>
 		<?php endif; ?>
-		<?php if ($this->member->state && $this->params->get('show_state')) : ?>
+			<?php if ($this->member->state && $this->params->get('show_state')) : ?>
 			<dd>
 			<span class="churchdirectory-state">
                         <?php echo $this->member->attribs->get('mailingstate'); ?>
                     </span>
 			</dd>
 		<?php endif; ?>
-		<?php if ($this->member->postcode && $this->params->get('show_postcode')) : ?>
+			<?php if ($this->member->postcode && $this->params->get('show_postcode')) : ?>
 			<dd>
 			<span class="churchdirectory-postcode">
                         <?php echo $this->member->attribs->get('mailingpostcode'); ?>
                     </span>
 			</dd>
 		<?php endif; ?>
-		<?php if ($this->member->country && $this->params->get('show_country')) : ?>
+			<?php if ($this->member->country && $this->params->get('show_country')) : ?>
 			<dd>
 			<span class="churchdirectory-country">
                         <?php echo $this->member->attribs->get('mailingcountry'); ?>
                     </span>
 			</dd>
 		<?php endif; ?>
-	<?php endif; ?>
-	<?php if (($this->params->get('address_check') > 0) && ($this->member->address || $this->member->suburb || $this->member->state || $this->member->country || $this->member->postcode)) : ?>
-		<?php if ($this->params->get('address_check') > 0) : ?>
-			<dt>
-            <span class="<?php echo $this->params->get('marker_class'); ?>">
-                    <?php echo $this->params->get('marker_address'); ?>
-                </span>
-			</dt>
 		<?php endif; ?>
-		<?php if ($this->member->address && $this->params->get('show_street_address')) : ?>
-			<dd>
-            <span class="churchdirectory-street">
-                        <?php echo nl2br($this->member->address); ?>
-                    </span>
-			</dd>
-		<?php endif; ?>
-		<?php if ($this->member->suburb && $this->params->get('show_suburb')) : ?>
-			<dd>
-		<span class="churchdirectory-suburb">
-                        <?php echo $this->member->suburb; ?>
-                    </span>
-			</dd>
-		<?php endif; ?>
-		<?php if ($this->member->state && $this->params->get('show_state')) : ?>
-			<dd>
-            <span class="churchdirectory-state">
-                        <?php echo $this->member->state; ?>
-                    </span>
-			</dd>
-		<?php endif; ?>
-		<?php if ($this->member->postcode && $this->params->get('show_postcode')) : ?>
-			<dd>
-            <span class="churchdirectory-postcode">
-                        <?php echo $this->member->postcode; ?>
-                    </span>
-			</dd>
-		<?php endif; ?>
-		<?php if ($this->member->country && $this->params->get('show_country')) : ?>
-			<dd>
-            <span class="churchdirectory-country">
-                        <?php echo $this->member->country; ?>
-                    </span>
-			</dd>
-		<?php endif; ?>
-	<?php endif; ?>
-<?php elseif ($this->params->get('show_address_full') != '1') : ?>
-	<?php if ($this->member->attribs->get('mailingaddress') || $this->member->attribs->get('mailingsuburb') || $this->member->attribs->get('mailingstate')): ?>
-		<?php if ($this->params->get('address_check') > 0) : ?>
-			<dt>
-            <span class="<?php echo $this->params->get('marker_class'); ?>">
-                    <?php echo $this->params->get('marker_address'); ?>
-                </span>
-			</dt>
-		<?php endif; ?>
-		<?php if ($this->member->address && $this->params->get('show_street_address')) : ?>
-			<dd>
-            <span class="churchdirectory-street">
-                        <?php echo nl2br($this->member->attribs->get('mailingaddress')); ?>
-                    </span>
-			</dd>
-		<?php endif; ?>
-		<?php if ($this->member->suburb && $this->params->get('show_suburb')) : ?>
-			<dd>
-            <span class="churchdirectory-suburb">
-                        <?php echo $this->member->attribs->get('mailingsuburb'); ?>
-                    </span>
-			</dd>
-		<?php endif; ?>
-		<?php if ($this->member->state && $this->params->get('show_state')) : ?>
-			<dd>
-            <span class="churchdirectory-state">
-                        <?php echo $this->member->attribs->get('mailingstate'); ?>
-                    </span>
-			</dd>
-		<?php endif; ?>
-		<?php if ($this->member->postcode && $this->params->get('show_postcode')) : ?>
-			<dd>
-            <span class="churchdirectory-postcode">
-                        <?php echo $this->member->attribs->get('mailingpostcode'); ?>
-                    </span>
-			</dd>
-		<?php endif; ?>
-		<?php if ($this->member->country && $this->params->get('show_country')) : ?>
-			<dd>
-            <span class="churchdirectory-country">
-                        <?php echo $this->member->attribs->get('mailingcountry'); ?>
-                    </span>
-			</dd>
-		<?php endif; ?>
-	<?php else: ?>
 		<?php if (($this->params->get('address_check') > 0) && ($this->member->address || $this->member->suburb || $this->member->state || $this->member->country || $this->member->postcode)) : ?>
 			<?php if ($this->params->get('address_check') > 0) : ?>
 				<dt>
-                <span class="<?php echo $this->params->get('marker_class'); ?>">
+            <span class="<?php echo $this->params->get('marker_class'); ?>">
                     <?php echo $this->params->get('marker_address'); ?>
                 </span>
 				</dt>
 			<?php endif; ?>
-
 			<?php if ($this->member->address && $this->params->get('show_street_address')) : ?>
 				<dd>
-                <span class="churchdirectory-street">
+            <span class="churchdirectory-street">
                         <?php echo nl2br($this->member->address); ?>
                     </span>
 				</dd>
 			<?php endif; ?>
-
 			<?php if ($this->member->suburb && $this->params->get('show_suburb')) : ?>
 				<dd>
-                <span class="churchdirectory-suburb">
+		<span class="churchdirectory-suburb">
                         <?php echo $this->member->suburb; ?>
                     </span>
 				</dd>
 			<?php endif; ?>
-
 			<?php if ($this->member->state && $this->params->get('show_state')) : ?>
 				<dd>
-                <span class="churchdirectory-state">
+            <span class="churchdirectory-state">
                         <?php echo $this->member->state; ?>
                     </span>
 				</dd>
 			<?php endif; ?>
-
 			<?php if ($this->member->postcode && $this->params->get('show_postcode')) : ?>
 				<dd>
-                <span class="churchdirectory-postcode">
+            <span class="churchdirectory-postcode">
                         <?php echo $this->member->postcode; ?>
                     </span>
 				</dd>
 			<?php endif; ?>
-
 			<?php if ($this->member->country && $this->params->get('show_country')) : ?>
 				<dd>
-                <span class="churchdirectory-country">
+            <span class="churchdirectory-country">
                         <?php echo $this->member->country; ?>
                     </span>
 				</dd>
 			<?php endif; ?>
 		<?php endif; ?>
-	<?php endif; ?>
-<?php endif; ?>
+	<?php elseif ($this->params->get('show_address_full') != '1') : ?>
+		<?php if ($this->member->attribs->get('mailingaddress') || $this->member->attribs->get('mailingsuburb') || $this->member->attribs->get('mailingstate')): ?>
+			<?php if ($this->params->get('address_check') > 0) : ?>
+				<dt>
+            <span class="<?php echo $this->params->get('marker_class'); ?>">
+                    <?php echo $this->params->get('marker_address'); ?>
+                </span>
+				</dt>
+			<?php endif; ?>
+			<?php if ($this->member->address && $this->params->get('show_street_address')) : ?>
+				<dd>
+            <span class="churchdirectory-street">
+                        <?php echo nl2br($this->member->attribs->get('mailingaddress')); ?>
+                    </span>
+				</dd>
+			<?php endif; ?>
+			<?php if ($this->member->suburb && $this->params->get('show_suburb')) : ?>
+				<dd>
+            <span class="churchdirectory-suburb">
+                        <?php echo $this->member->attribs->get('mailingsuburb'); ?>
+                    </span>
+				</dd>
+			<?php endif; ?>
+			<?php if ($this->member->state && $this->params->get('show_state')) : ?>
+				<dd>
+            <span class="churchdirectory-state">
+                        <?php echo $this->member->attribs->get('mailingstate'); ?>
+                    </span>
+				</dd>
+			<?php endif; ?>
+			<?php if ($this->member->postcode && $this->params->get('show_postcode')) : ?>
+				<dd>
+            <span class="churchdirectory-postcode">
+                        <?php echo $this->member->attribs->get('mailingpostcode'); ?>
+                    </span>
+				</dd>
+			<?php endif; ?>
+			<?php if ($this->member->country && $this->params->get('show_country')) : ?>
+				<dd>
+            <span class="churchdirectory-country">
+                        <?php echo $this->member->attribs->get('mailingcountry'); ?>
+                    </span>
+				</dd>
+			<?php endif; ?>
+		<?php else: ?>
+			<?php if (($this->params->get('address_check') > 0) && ($this->member->address || $this->member->suburb || $this->member->state || $this->member->country || $this->member->postcode)) : ?>
+				<?php if ($this->params->get('address_check') > 0) : ?>
+					<dt>
+                <span class="<?php echo $this->params->get('marker_class'); ?>">
+                    <?php echo $this->params->get('marker_address'); ?>
+                </span>
+					</dt>
+				<?php endif; ?>
 
-<?php if ($this->params->get('show_email') || $this->params->get('show_telephone') || $this->params->get('show_fax') || $this->params->get('show_mobile') || $this->params->get('show_webpage')) : ?>
-<?php endif; ?>
-<?php if ($this->member->email_to && $this->params->get('show_email')) : ?>
-	<dt>
+				<?php if ($this->member->address && $this->params->get('show_street_address')) : ?>
+					<dd>
+                <span class="churchdirectory-street">
+                        <?php echo nl2br($this->member->address); ?>
+                    </span>
+					</dd>
+				<?php endif; ?>
+
+				<?php if ($this->member->suburb && $this->params->get('show_suburb')) : ?>
+					<dd>
+                <span class="churchdirectory-suburb">
+                        <?php echo $this->member->suburb; ?>
+                    </span>
+					</dd>
+				<?php endif; ?>
+
+				<?php if ($this->member->state && $this->params->get('show_state')) : ?>
+					<dd>
+                <span class="churchdirectory-state">
+                        <?php echo $this->member->state; ?>
+                    </span>
+					</dd>
+				<?php endif; ?>
+
+				<?php if ($this->member->postcode && $this->params->get('show_postcode')) : ?>
+					<dd>
+                <span class="churchdirectory-postcode">
+                        <?php echo $this->member->postcode; ?>
+                    </span>
+					</dd>
+				<?php endif; ?>
+
+				<?php if ($this->member->country && $this->params->get('show_country')) : ?>
+					<dd>
+                <span class="churchdirectory-country">
+                        <?php echo $this->member->country; ?>
+                    </span>
+					</dd>
+				<?php endif; ?>
+			<?php endif; ?>
+		<?php endif; ?>
+	<?php endif; ?>
+
+	<?php if ($this->params->get('show_email') || $this->params->get('show_telephone') || $this->params->get('show_fax') || $this->params->get('show_mobile') || $this->params->get('show_webpage')) : ?>
+	<?php endif; ?>
+	<?php if ($this->member->email_to && $this->params->get('show_email')) : ?>
+		<dt>
             <span class="<?php echo $this->params->get('marker_class'); ?>">
                 <?php echo $this->params->get('marker_email'); ?>
             </span>
-	</dt>
-	<dd>
+		</dt>
+		<dd>
             <span class="churchdirectory-emailto">
                 <?php echo $this->member->email_to; ?>
             </span>
-	</dd>
-<?php endif; ?>
+		</dd>
+	<?php endif; ?>
 
-<?php if ($this->member->telephone && $this->params->get('show_telephone')) : ?>
-	<dt>
+	<?php if ($this->member->telephone && $this->params->get('show_telephone')) : ?>
+		<dt>
             <span class="<?php echo $this->params->get('marker_class'); ?>">
                 <?php echo $this->params->get('marker_telephone'); ?>
             </span>
-	</dt>
-	<dd>
+		</dt>
+		<dd>
             <span class="churchdirectory-telephone">
                 <?php echo nl2br($this->member->telephone); ?>
             </span>
-	</dd>
-<?php endif; ?>
-<?php if ($this->member->fax && $this->params->get('show_fax')) : ?>
-	<dt>
+		</dd>
+	<?php endif; ?>
+	<?php if ($this->member->fax && $this->params->get('show_fax')) : ?>
+		<dt>
             <span class="<?php echo $this->params->get('marker_class'); ?>">
                 <?php echo $this->params->get('marker_fax'); ?>
             </span>
-	</dt>
-	<dd>
+		</dt>
+		<dd>
             <span class="churchdirectory-fax">
                 <?php echo nl2br($this->member->fax); ?>
             </span>
-	</dd>
-<?php endif; ?>
-<?php if ($this->member->mobile && $this->params->get('show_mobile')) : ?>
-	<dt>
+		</dd>
+	<?php endif; ?>
+	<?php if ($this->member->mobile && $this->params->get('show_mobile')) : ?>
+		<dt>
             <span class="<?php echo $this->params->get('marker_class'); ?>">
                 <?php echo $this->params->get('marker_mobile'); ?>
             </span>
-	</dt>
-	<dd>
+		</dt>
+		<dd>
             <span class="churchdirectory-mobile">
                 <?php echo nl2br($this->member->mobile); ?>
             </span>
-	</dd>
-<?php endif; ?>
-<?php if ($this->member->webpage && $this->params->get('show_webpage')) : ?>
-	<dt>
+		</dd>
+	<?php endif; ?>
+	<?php if ($this->member->webpage && $this->params->get('show_webpage')) : ?>
+		<dt>
             <span class="<?php echo $this->params->get('marker_class'); ?>">
             </span>
-	</dt>
-	<dd>
+		</dt>
+		<dd>
             <span class="churchdirectory-webpage">
-                <?php if (substr_count($this->member->webpage, 'http://', 0)){$a = '';}else{$a = 'http://';}?>
-                <a href="<?php echo $a . $this->member->webpage; ?>" target="_blank">
-	                <?php echo $this->member->webpage; ?></a>
+                <?php if (substr_count($this->member->webpage, 'http://', 0))
+                {
+	                $a = '';
+                }
+                else
+                {
+	                $a = 'http://';
+                } ?>
+	            <a href="<?php echo $a . $this->member->webpage; ?>" target="_blank">
+		            <?php echo $this->member->webpage; ?></a>
             </span>
-	</dd>
-<?php endif; ?>
+		</dd>
+	<?php endif; ?>
 </dl>

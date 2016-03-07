@@ -20,6 +20,7 @@
  <exclude-pattern type="relative">libraries/phpmailer/*</exclude-pattern>
  <exclude-pattern type="relative">libraries/phpass/*</exclude-pattern>
  <exclude-pattern type="relative">libraries/vendor/*</exclude-pattern>
+ <exclude-pattern type="relative">libraries/tcpdf/*</exclude-pattern>
 
  <exclude-pattern type="relative">administrator/components/com_joomlaupdate/restore.php</exclude-pattern>
  <exclude-pattern type="relative">configuration.php</exclude-pattern>
@@ -28,10 +29,7 @@
  <exclude-pattern type="relative">plugins/captcha/nocaptcha/recaptchalib.php</exclude-pattern>
 
  <!-- Used for JBSM Exlutions of libraries -->
- <exclude-pattern type="relative">com_biblestudy/test/*</exclude-pattern>
- <exclude-pattern type="relative">com_biblestudy/admin/addons/servers/amazonS3/S3.class.php</exclude-pattern>
  <exclude-pattern type="relative">*/tmpl/*</exclude-pattern>
- <exclude-pattern type="relative">*/plupload/*</exclude-pattern>
  <exclude-pattern type="relative">*/build/*</exclude-pattern>
  <exclude-pattern type="relative">vendor/*</exclude-pattern>
  <exclude-pattern type="relative">bin/*</exclude-pattern>

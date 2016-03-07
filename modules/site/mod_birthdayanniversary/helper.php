@@ -2,7 +2,7 @@
 /**
  * @package     ChurchDirectory.Site
  * @subpackage  mod_birthdayanniversary
- * @copyright   Copyright (C) 2012
+ * @copyright   2007 - 2016 (C) Joomla Bible Study Team All rights reserved
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die;
@@ -24,7 +24,7 @@ class ModBirthdayAnniversaryHelper
 	/**
 	 * Convert a stdClass to an Array.
 	 *
-	 * @param   stdClass $Class  Setup Variable
+	 * @param   stdClass  $Class  Setup Variable
 	 *
 	 * @return array
 	 */

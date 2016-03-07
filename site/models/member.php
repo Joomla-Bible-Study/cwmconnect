@@ -1,13 +1,14 @@
 <?php
 /**
  * @package    ChurchDirectory.Site
- * @copyright  2007 - 2014 (C) Joomla Bible Study Team All rights reserved.
+ * @copyright  2007 - 2016 (C) Joomla Bible Study Team All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * */
 
 defined('_JEXEC') or die;
 
-jimport('joomla.application.component.modelform');
+use Joomla\Registry\Registry;
+
 jimport('joomla.event.dispatcher');
 
 /**
@@ -75,10 +76,11 @@ class ChurchDirectoryModelMember extends JModelForm
 	 *
 	 * The base form is loaded from XML and then an event is fired
 	 *
-	 * @param    array    $data      An optional array of data for the form to interrogate.
-	 * @param    boolean  $loadData  True if the form is to load its own data (default case), false if not.
+	 * @param   array    $data      An optional array of data for the form to interrogate.
+	 * @param   boolean  $loadData  True if the form is to load its own data (default case), false if not.
 	 *
-	 * @return    JForm    A JForm object on success, false on failure
+	 * @return   JForm    A JForm object on success, false on failure
+	 *
 	 * @since    1.6
 	 */
 	public function getForm($data = array(), $loadData = true)
@@ -170,7 +172,6 @@ class ChurchDirectoryModelMember extends JModelForm
 					->select('c.title AS category_title, c.alias AS category_alias, c.access AS category_access')
 					->join('LEFT', '#__categories AS c on c.id = a.catid')
 
-
 					// Join over the categories to get parent category titles
 					->select('parent.title as parent_title, parent.id as parent_id, parent.path as parent_route, parent.alias as parent_alias')
 					->join('LEFT', '#__categories as parent ON parent.id = c.parent_id')
@@ -184,7 +185,6 @@ class ChurchDirectoryModelMember extends JModelForm
 				// Filter by start and end dates.
 				$nullDate = $db->Quote($db->getNullDate());
 				$nowDate  = $db->Quote(JFactory::getDate()->toSql());
-
 
 				// Filter by published state.
 				$published = $this->getState('filter.published');
@@ -213,16 +213,16 @@ class ChurchDirectoryModelMember extends JModelForm
 				}
 
 				// Convert parameter fields to objects.
-				$registry = new JRegistry;
+				$registry = new Registry;
 				$registry->loadString($data->params);
 				$data->params = clone $this->getState('params');
 				$data->params->merge($registry);
 
-				$registry = new JRegistry;
+				$registry = new Registry;
 				$registry->loadString($data->metadata);
 				$data->metadata = $registry;
 
-				$registry = new JRegistry;
+				$registry = new Registry;
 				$registry->loadString($data->attribs);
 				$data->attribs = $registry;
 
@@ -286,6 +286,7 @@ class ChurchDirectoryModelMember extends JModelForm
 		$user = JFactory::getUser();
 		$pk   = (!empty($pk)) ? $pk : (int) $this->getState('member.id');
 		$query = $db->getQuery(true);
+		$result = null;
 
 		if ($pk)
 		{
@@ -340,7 +341,7 @@ class ChurchDirectoryModelMember extends JModelForm
 				// So merge the member parameters with the merged parameters
 				if ($this->getState('params')->get('show_member_list'))
 				{
-					$registry = new JRegistry;
+					$registry = new Registry;
 					$registry->loadString($result->params);
 					$this->getState('params')->merge($registry);
 				}
@@ -391,7 +392,10 @@ class ChurchDirectoryModelMember extends JModelForm
 				// Filter per language if plugin published
 				if (JFactory::getApplication()->getLanguageFilter())
 				{
-					$query->where(('a.created_by = ' . (int) $result->user_id) AND ('a.language=' . $db->quote(JFactory::getLanguage()->getTag()) . ' OR a.language=' . $db->quote('*')));
+					$query->where(
+						('a.created_by = ' . (int) $result->user_id) AND ('a.language=' . $db->quote(JFactory::getLanguage()->getTag()) .
+							' OR a.language=' . $db->quote('*'))
+					);
 				}
 				if (is_numeric($published))
 				{
@@ -410,7 +414,7 @@ class ChurchDirectoryModelMember extends JModelForm
 				$form = new JForm('com_users.profile');
 
 				// Get the dispatcher.
-				$dispatcher = JDispatcher::getInstance();
+				$dispatcher = JEventDispatcher::getInstance();
 
 				// Trigger the form preparation event.
 				$dispatcher->trigger('onContentPrepareForm', array($form, $data));

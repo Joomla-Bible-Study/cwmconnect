@@ -1,13 +1,11 @@
 <?php
 /**
  * @package    ChurchDirectory.Admin
- * @copyright  2007 - 2014 (C) Joomla Bible Study Team All rights reserved.
+ * @copyright  2007 - 2016 (C) Joomla Bible Study Team All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 defined('_JEXEC') or die;
-
-jimport( 'joomla.application.component.modellist' );
 
 /**
  * For Getting GeoUpdate Status from Google
@@ -202,7 +200,7 @@ class ChurchDirectoryModelGeoStatus extends JModelList
 		}
 		elseif (is_array($categoryId))
 		{
-			JArrayHelper::toInteger($categoryId);
+			Joomla\Utilities\ArrayHelper::toInteger($categoryId);
 			$categoryId = implode(',', $categoryId);
 			$query->where('a.catid IN (' . $categoryId . ')');
 		}

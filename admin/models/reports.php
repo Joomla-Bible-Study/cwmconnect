@@ -1,7 +1,7 @@
 <?php
 /**
  * @package    ChurchDirectory.Admin
- * @copyright  2007 - 2014 (C) Joomla Bible Study Team All rights reserved.
+ * @copyright  2007 - 2016 (C) Joomla Bible Study Team All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -125,6 +125,7 @@ class ChurchDirectoryModelReports extends JModelLegacy
 	 * Build an SQL query to load the list data.
 	 *
 	 * @return JDatabaseQuery
+	 *
 	 * @since 1.6
 	 */
 	protected function getListQuery()
@@ -282,7 +283,7 @@ class ChurchDirectoryModelReports extends JModelLegacy
 		$this->setState('filter.published', '1');
 		$this->populateState();
 		$db    = $this->getDbo();
-		$items = $db->setQuery($this->getListQuery())->loadObjectList();;
+		$items = $db->setQuery($this->getListQuery())->loadObjectList();
 		$csv   = fopen('php://output', 'w');
 
 		$count = 0;
@@ -361,6 +362,7 @@ class ChurchDirectoryModelReports extends JModelLegacy
 						foreach ($positions as $p => $position)
 						{
 							$query = $this->_db->getQuery(true);
+
 							// Join on Position.
 							$query->select('name');
 							$query->from('#__churchdirectory_position');

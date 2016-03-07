@@ -1,13 +1,11 @@
 <?php
 /**
  * @package    ChurchDirectory.Admin
- * @copyright  2007 - 2014 (C) Joomla Bible Study Team All rights reserved.
+ * @copyright  2007 - 2016 (C) Joomla Bible Study Team All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 defined('_JEXEC') or die;
-
-jimport( 'joomla.application.component.controlleradmin' );
 
 /**
  * Member list controller class.
@@ -17,7 +15,6 @@ jimport( 'joomla.application.component.controlleradmin' );
  */
 class ChurchDirectoryControllerMembers extends JControllerAdmin
 {
-
 	/**
 	 * Constructor.
 	 *
@@ -51,6 +48,7 @@ class ChurchDirectoryControllerMembers extends JControllerAdmin
 		$value  = Joomla\Utilities\ArrayHelper::getValue($values, $task, 0, 'int');
 
 		// Get the model.
+		/** @type ChurchDirectoryModelMember $model */
 		$model = $this->getModel();
 
 		// Access checks.
@@ -118,6 +116,7 @@ class ChurchDirectoryControllerMembers extends JControllerAdmin
 		Joomla\Utilities\ArrayHelper::toInteger($order);
 
 		// Get the model
+		/** @type ChurchDirectoryModelMember $model */
 		$model = $this->getModel();
 
 		// Save the ordering

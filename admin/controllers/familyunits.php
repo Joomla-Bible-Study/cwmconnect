@@ -1,7 +1,7 @@
 <?php
 /**
  * @package    ChurchDirectory.Admin
- * @copyright  2007 - 2014 (C) Joomla Bible Study Team All rights reserved.
+ * @copyright  2007 - 2016 (C) Joomla Bible Study Team All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -48,8 +48,8 @@ class ChurchDirectoryControllerFamilyUnits extends JControllerAdmin
 	 * Function that allows child controller access to model data
 	 * after the item has been deleted.
 	 *
-	 * @param   JModelLegacy $model The data model object.
-	 * @param   integer      $ids   The array of ids for items being deleted.
+	 * @param   JModelLegacy  $model  The data model object.
+	 * @param   integer       $ids    The array of ids for items being deleted.
 	 *
 	 * @return  void
 	 *

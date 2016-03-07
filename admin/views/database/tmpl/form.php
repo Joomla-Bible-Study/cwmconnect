@@ -3,7 +3,7 @@
  * Form for Database
  *
  * @package    ChurchDirectory.Admin
- * @copyright  2007 - 2014 Joomla Bible Study Team All rights reserved
+ * @copyright  2007 - 2016 Joomla Bible Study Team All rights reserved
  * @license    http://www.gnu.org/copyleft/gpl.html GNU/GPL
  * @link       http://www.JoomlaBibleStudy.org
  * @since      1.7.0

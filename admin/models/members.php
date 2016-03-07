@@ -1,13 +1,11 @@
 <?php
 /**
  * @package    ChurchDirectory.Admin
- * @copyright  2007 - 2014 (C) Joomla Bible Study Team All rights reserved.
+ * @copyright  2007 - 2016 (C) Joomla Bible Study Team All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 defined('_JEXEC') or die;
-
-jimport( 'joomla.application.component.modellist' );
 
 /**
  * Methods supporting a list of Member records.
@@ -110,6 +108,7 @@ class ChurchDirectoryModelMembers extends JModelList
 	 * @param   string  $id  A prefix for the store id.
 	 *
 	 * @return    string        A store id.
+	 *
 	 * @since    1.7.0
 	 */
 	protected function getStoreId($id = '')
@@ -129,6 +128,7 @@ class ChurchDirectoryModelMembers extends JModelList
 	 * Build an SQL query to load the list data.
 	 *
 	 * @return    JDatabaseQuery
+	 *
 	 * @since    1.7.0
 	 */
 	protected function getListQuery()
@@ -204,7 +204,7 @@ class ChurchDirectoryModelMembers extends JModelList
 		}
 		elseif (is_array($categoryId))
 		{
-			JArrayHelper::toInteger($categoryId);
+			Joomla\Utilities\ArrayHelper::toInteger($categoryId);
 			$categoryId = implode(',', $categoryId);
 			$query->where('a.catid IN (' . $categoryId . ')');
 		}
@@ -256,7 +256,6 @@ class ChurchDirectoryModelMembers extends JModelList
 		}
 		$query->order($db->escape($orderCol . ' ' . $orderDirn));
 
-		//echo nl2br(str_replace('#__','jos_',$query));
 		return $query;
 	}
 
