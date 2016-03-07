@@ -44,7 +44,7 @@ class ChurchDirectoryViewDirHeaders extends JViewLegacy
 	 *
 	 * @since 1.7.0
 	 *
-	 * @param string $tpl
+	 * @param   string  $tpl  ?
 	 *
 	 * @return    mixed
 	 */
@@ -90,6 +90,7 @@ class ChurchDirectoryViewDirHeaders extends JViewLegacy
 	{
 		$canDo = ChurchDirectoryHelper::getActions($this->state->get('filter.category_id'));
 		$user  = JFactory::getUser();
+
 		// Get the toolbar object instance
 		$bar = JToolBar::getInstance('toolbar');
 
@@ -149,15 +150,21 @@ class ChurchDirectoryViewDirHeaders extends JViewLegacy
 			JHtmlSidebar::setAction('index.php?option=com_churchdirectory&amp;view=dirheaders');
 
 			JHtmlSidebar::addFilter(
-				JText::_('JOPTION_SELECT_PUBLISHED'), 'filter_published', JHtml::_('select.options', JHtml::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.published'), true)
+				JText::_('JOPTION_SELECT_PUBLISHED'), 'filter_published', JHtml::_('select.options', JHtml::_('jgrid.publishedOptions'),
+				'value', 'text', $this->state->get('filter.published'), true
+			)
 			);
 
 			JHtmlSidebar::addFilter(
-				JText::_('JOPTION_SELECT_ACCESS'), 'filter_access', JHtml::_('select.options', JHtml::_('access.assetgroups'), 'value', 'text', $this->state->get('filter.access'))
+				JText::_('JOPTION_SELECT_ACCESS'), 'filter_access', JHtml::_('select.options', JHtml::_('access.assetgroups'),
+				'value', 'text', $this->state->get('filter.access')
+			)
 			);
 
 			JHtmlSidebar::addFilter(
-				JText::_('JOPTION_SELECT_LANGUAGE'), 'filter_language', JHtml::_('select.options', JHtml::_('contentlanguage.existing', true, true), 'value', 'text', $this->state->get('filter.language'))
+				JText::_('JOPTION_SELECT_LANGUAGE'), 'filter_language', JHtml::_('select.options', JHtml::_('contentlanguage.existing', true, true),
+				'value', 'text', $this->state->get('filter.language')
+			)
 			);
 		}
 	}

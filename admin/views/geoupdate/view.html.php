@@ -16,7 +16,6 @@ defined('_JEXEC') or die;
 class ChurchDirectoryViewGeoUpdate extends JViewLegacy
 {
 
-
 	/** @var array The pre versions to process */
 	private $_membersStack = array();
 

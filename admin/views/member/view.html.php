@@ -48,7 +48,7 @@ class ChurchDirectoryViewMember extends JViewLegacy
 	/**
 	 * Display the view
 	 *
-	 * @param   string $tpl  The name of the template file to parse; automatically searches through the template paths.
+	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
 	 *
 	 * @return  mixed  A string if successful, otherwise a Error object.
 	 */
@@ -107,7 +107,9 @@ class ChurchDirectoryViewMember extends JViewLegacy
 		$isNew      = ($this->item->id == 0);
 		$checkedOut = !($this->item->checked_out == 0 || $this->item->checked_out == $userId);
 		$canDo      = ChurchDirectoryHelper::getActions($this->item->catid, 0);
-		JToolBarHelper::title($isNew ? JText::_('COM_CHURCHDIRECTORY_MANAGER_MEMBER_NEW') : JText::_('COM_CHURCHDIRECTORY_MANAGER_MEMBER_EDIT'), 'churchdirectory');
+		JToolBarHelper::title(
+			$isNew ? JText::_('COM_CHURCHDIRECTORY_MANAGER_MEMBER_NEW')
+				: JText::_('COM_CHURCHDIRECTORY_MANAGER_MEMBER_EDIT'), 'churchdirectory');
 
 		// Build the actions for new and existing records.
 		if ($isNew)
@@ -162,7 +164,10 @@ class ChurchDirectoryViewMember extends JViewLegacy
 	{
 		$isNew    = ($this->item->id < 1);
 		$document = JFactory::getDocument();
-		$document->setTitle($isNew ? JText::_('COM_CHURCHDIRECTORY_CHURCHDIRECTORY_MEMBER_CREATING') : JText::_('COM_CHURCHDIRECTORY_CHURCHDIRECTORY_MEMBER_EDITING'));
+		$document->setTitle(
+			$isNew ? JText::_('COM_CHURCHDIRECTORY_CHURCHDIRECTORY_MEMBER_CREATING')
+				: JText::_('COM_CHURCHDIRECTORY_CHURCHDIRECTORY_MEMBER_EDITING')
+		);
 	}
 
 }

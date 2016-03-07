@@ -169,8 +169,7 @@ class ChurchDirectoryHelper
 	 * @param   string  $birthdate  Set Up Birth Date Calculation
 	 *
 	 * @return string
-	 *
-	 * @internal requires php5.3.x
+
 	 * @since    1.7.3
 	 */
 	public static function getAge($birthdate)

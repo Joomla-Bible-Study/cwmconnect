@@ -34,6 +34,7 @@
  <exclude-pattern type="relative">vendor/*</exclude-pattern>
  <exclude-pattern type="relative">bin/*</exclude-pattern>
  <exclude-pattern type="relative">.joomla-dev/*</exclude-pattern>
+ <exclude-pattern type="relative">churchdirectory.script.php</exclude-pattern>
 
  <!-- Include all sniffs in an external standard directory -->
 

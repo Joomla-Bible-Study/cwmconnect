@@ -90,7 +90,9 @@ class ChurchDirectoryViewPosition extends JViewLegacy
 		$checkedOut = !($this->item->checked_out == 0 || $this->item->checked_out == $userId);
 		$canDo      = ChurchDirectoryHelper::getActions($this->state->get('filter.category_id'));
 
-		JToolBarHelper::title($isNew ? JText::_('COM_CHURCHDIRECTORY_MANAGER_POSITION_NEW') : JText::_('COM_CHURCHDIRECTORY_MANAGER_POSITION_EDIT'), 'churchdirectory');
+		JToolBarHelper::title(
+			$isNew ? JText::_('COM_CHURCHDIRECTORY_MANAGER_POSITION_NEW')
+				: JText::_('COM_CHURCHDIRECTORY_MANAGER_POSITION_EDIT'), 'churchdirectory');
 
 		// Build the actions for new and existing records.
 		if ($isNew)
@@ -146,7 +148,10 @@ class ChurchDirectoryViewPosition extends JViewLegacy
 	{
 		$isNew    = ($this->item->id < 1);
 		$document = JFactory::getDocument();
-		$document->setTitle($isNew ? JText::_('COM_CHURCHDIRECTORY_POSITION_CREATING') : JText::sprintf('COM_CHURCHDIRECTORY_POSITION_EDITING', $this->item->name));
+		$document->setTitle(
+			$isNew ? JText::_('COM_CHURCHDIRECTORY_POSITION_CREATING')
+				: JText::sprintf('COM_CHURCHDIRECTORY_POSITION_EDITING', $this->item->name)
+		);
 	}
 
 }

@@ -83,7 +83,6 @@ class ChurchDirectoryViewGeoStatus extends JViewLegacy
 	protected function addToolbar()
 	{
 		$canDo = ChurchDirectoryHelper::getActions($this->state->get('filter.category_id'));
-		$user  = JFactory::getUser();
 
 		// Get the toolbar object instance
 		$bar = JToolBar::getInstance('toolbar');
@@ -91,7 +90,9 @@ class ChurchDirectoryViewGeoStatus extends JViewLegacy
 		// Set the toolbar title
 		JToolBarHelper::title(JText::_('COM_CHURCHDIRECTORY_TITLE_GEOUPDATE_STATUS'), 'churchdirectory');
 
-		$bar->appendButton('Popup', 'refresh', 'COM_CHURCHDIRECTORY_GEOUPDATE', 'index.php?option=com_churchdirectory&view=geoupdate&tmpl=component', 550, 350);
+		$bar->appendButton('Popup', 'refresh', 'COM_CHURCHDIRECTORY_GEOUPDATE',
+			'index.php?option=com_churchdirectory&view=geoupdate&tmpl=component', 550, 350
+		);
 
 		if ($canDo->get('core.admin'))
 		{

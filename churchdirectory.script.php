@@ -163,6 +163,8 @@ class Com_ChurchdirectoryInstallerScript
 	 * @param   string      $type    is the type of change (install, update or discover_install, not uninstall).
 	 * @param   JInstaller  $parent  is the class calling this method.
 	 *
+	 * @throws \Exception
+	 *
 	 * @return boolean
 	 */
 	public function preflight($type, $parent)
@@ -387,7 +389,8 @@ class Com_ChurchdirectoryInstallerScript
 						<td class="key"><?php echo $module['name']; ?></td>
 						<td class="key"><?php echo ucfirst($module['client']); ?></td>
 						<td><strong
-								style="color: <?php echo ($module['result']) ? "green" : "red" ?>"><?php echo ($module['result']) ? JText::_('COM_CHURCHDIRECTORY_REMOVED') : JText::_('COM_CHURCHDIRECTORY_NOT_REMOVED'); ?></strong>
+								style="color: <?php echo ($module['result']) ? "green" : "red" ?>"><?php echo ($module['result']) ? JText::_('COM_CHURCHDIRECTORY_REMOVED')
+										: JText::_('COM_CHURCHDIRECTORY_NOT_REMOVED'); ?></strong>
 						</td>
 					</tr>
 				<?php endforeach; ?>

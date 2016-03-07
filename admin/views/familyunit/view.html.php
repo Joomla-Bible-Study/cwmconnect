@@ -88,7 +88,9 @@ class ChurchDirectoryViewFamilyUnit extends JViewLegacy
 		$checkedOut = !($this->item->checked_out == 0 || $this->item->checked_out == $userId);
 		$canDo      = ChurchDirectoryHelper::getActions(0);
 
-		JToolBarHelper::title($isNew ? JText::_('COM_CHURCHDIRECTORY_MANAGER_FAMILYUNIT_NEW') : JText::_('COM_CHURCHDIRECTORY_MANAGER_FAMILYUNIT_EDIT'), 'churchdirectory');
+		JToolBarHelper::title(
+			$isNew ? JText::_('COM_CHURCHDIRECTORY_MANAGER_FAMILYUNIT_NEW')
+				: JText::_('COM_CHURCHDIRECTORY_MANAGER_FAMILYUNIT_EDIT'), 'churchdirectory');
 
 		// Build the actions for new and existing records.
 		if ($isNew)
@@ -145,7 +147,10 @@ class ChurchDirectoryViewFamilyUnit extends JViewLegacy
 	{
 		$isNew    = ($this->item->id < 1);
 		$document = JFactory::getDocument();
-		$document->setTitle($isNew ? JText::_('COM_CHURCHDIRECTORY_FAMILYUNIT_CREATING') : JText::sprintf('COM_CHURCHDIRECTORY_FAMILYUNIT_EDITING', $this->item->name));
+		$document->setTitle(
+			$isNew ? JText::_('COM_CHURCHDIRECTORY_FAMILYUNIT_CREATING')
+				: JText::sprintf('COM_CHURCHDIRECTORY_FAMILYUNIT_EDITING', $this->item->name)
+		);
 	}
 
 }
