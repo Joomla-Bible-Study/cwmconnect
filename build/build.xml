@@ -1,93 +1,92 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="ChurchDirectory" basedir="../" default="build">
-    <property name="test" value="/opt/local/apache2/htdocs/j2" override="true" />
-    <property name="testadmincomp"
-              value="/opt/local/apache2/htdocs/j2/administrator/components/com_churchdirectory"
-              override="true" />
+	<property name="test" value="/opt/local/apache2/htdocs/j2" override="true"/>
+	<property name="testadmincomp"
+	          value="/opt/local/apache2/htdocs/j2/administrator/components/com_churchdirectory"
+	          override="true"/>
 
+	<!-- set global properties for this build -->
+	<property name="dist" value="dist"/>
+	<property name="src" value="${project.basedir}" override="true"/>
 
-    <!-- set global properties for this build -->
-    <property name="dist" value="dist"/>
-    <property name="src" value="${project.basedir}" override="true" />
+	<fileset dir="./site" id="component_files">
+		<include name="**"/>
+	</fileset>
+	<fileset dir="${src}" id="allfiles">
+		<include name="admin/**"/>
+		<include name="site/**"/>
+		<include name="media/**"/>
+		<include name="churchdirectory.xml"/>
+		<include name="churchdirectory.scrip.php"/>
+		<include name="changelog.php"/>
+		<include name="copyright.txt"/>
+		<include name="index.html"/>
+		<include name="LICENSE.txt"/>
+	</fileset>
 
+	<!-- Copy Target -->
+	<target name="copy_to_test" description="copy target">
+		<echo>Copying files from dev to test...
+		</echo>
+		<copy file="${src}/admin/churchdirectory.php"
+		      todir="${testadmincomp}"/>
+		<copy file="${src}/admin/index.html" todir="${testadmincomp}"/>
+		<echo msg="Copying site files if needed..."/>
+		<copy todir="${test}/components/com_churchdirectory">
+			<fileset refid="component_files"/>
+		</copy>
+		<copy file="${src}/churchdirectory.xml" todir="${testadmincomp}"/>
+	</target>
 
-    <fileset dir="./site" id="component_files">
-        <include name="**" />
-    </fileset>
-    <fileset dir="${src}" id="allfiles">
-        <include name="admin/**" />
-        <include name="site/**" />
-        <include name="media/**" />
-        <include name="churchdirectory.xml" />
-        <include name="churchdirectory.scrip.php" />
-        <include name="changelog.php" />
-        <include name="copyright.txt" />
-        <include name="index.html" />
-        <include name="LICENSE.txt" />
-    </fileset>
+	<!-- ============================================  -->
+	<!-- (DEFAULT)  Target: info                       -->
+	<!-- ============================================  -->
+	<target name="info">
+		<echo msg="Build for Joomla Bible Study, Please modify location as you need."/>
+	</target>
 
-    <!-- Copy Target -->
-    <target name="copy_to_test" description="copy target">
-        <echo>Copying files from dev to test...
-        </echo>
-        <copy file="${src}/admin/churchdirectory.php"
-              todir="${testadmincomp}" />
-        <copy file="${src}/admin/index.html" todir="${testadmincomp}" />
-        <echo msg="Copying site files if needed..." />
-        <copy todir="${test}/components/com_churchdirectory">
-            <fileset refid="component_files" />
-        </copy>
-        <copy file="${src}/churchdirectory.xml" todir="${testadmincomp}" />
-    </target>
+	<target name="reset">
+		<echo msg="Reset back to Dev State"/>
+		<delete file="${src}/admin/churchdirectory.xml"/>
+		<delete file="${src}/admin/churchdirectory.script.php"/>
+		<symlink target="${src}/churchdirectory.xml" link="admin/churchdirectory.xml"/>
+		<symlink target="${src}/churchdirectory.script.php" link="admin/churchdirectory.script.php"/>
+	</target>
 
-    <!-- ============================================  -->
-    <!-- (DEFAULT)  Target: info                       -->
-    <!-- ============================================  -->
-    <target name="info">
-        <echo msg="Build for Joomla Bible Study, Please modify location as you need."/>
-    </target>
+	<target name="clean">
+		<echo message="Cleaning directories"/>
+		<delete file="build/packages/com_churchdirectory_dev.zip"/>
+		<delete file="build/packages/com_churchdirectory_dev.tar.gz"/>
+	</target>
 
-    <target name="reset">
-        <echo msg="Reset back to Dev State"/>
-        <delete file="${src}/admin/churchdirectory.xml"/>
-        <delete file="${src}/admin/churchdirectory.script.php"/>
-        <symlink target="${src}/churchdirectory.xml" link="admin/churchdirectory.xml"/>
-        <symlink target="${src}/churchdirectory.script.php" link="admin/churchdirectory.script.php"/>
-    </target>
+	<!-- ============================================  -->
+	<!-- (DEFAULT)  Target: build                      -->
+	<!-- ============================================  -->
+	<target name="build">
+		<echo message="Building package"/>
 
-    <target name="clean">
-        <echo message="Cleaning directories"/>
-        <delete file="build/packages/com_churchdirectory.zip"/>
-    </target>
+		<mkdir dir="packages"/>
+		<delete file="${src}/admin/churchdirectory.xml"/>
+		<delete file="${src}/admin/churchdirectory.script.php"/>
 
-    <!-- ============================================  -->
-    <!-- (DEFAULT)  Target: build                      -->
-    <!-- ============================================  -->
-    <target name="build">
-        <echo message="Building package"/>
+		<delete file="${src}/build/packages/com_churchdirectory_dev.zip"/>
+		<delete file="${src}/build/packages/com_churchdirectory_dev.tar.gz"/>
+		<zip destfile="${src}/build/packages/com_churchdirectory_dev.zip">
+			<fileset refid="allfiles"/>
+		</zip>
+		<tar destfile="${src}/build/packages/com_churchdirectory_dev.tar.gz" compression="gzip">
+			<fileset refid="allfiles"/>
+		</tar>
+		<symlink target="${src}/churchdirectory.xml" link="admin/churchdirectory.xml"/>
+		<symlink target="${src}/churchdirectory.script.php" link="admin/churchdirectory.script.php"/>
+	</target>
 
-        <mkdir dir="packages"/>
-        <delete file="${src}/admin/churchdirectory.xml"/>
-        <delete file="${src}/admin/churchdirectory.script.php"/>
+	<!-- ============================================  -->
+	<!-- (DEFAULT)  Target: dist                       -->
+	<!-- ============================================  -->
+	<target name="dist" depends="reset,build">
+		<echo msg="Creating archive..."/>
 
-        <delete file="${src}/build/packages/com_churchdirectory_dev.zip" />
-        <delete file="${src}/build/packages/com_churchdirectory_dev.tar.gz" />
-        <zip destfile="${src}/build/packages/com_churchdirectory_dev.zip">
-            <fileset refid="allfiles" />
-        </zip>
-        <tar destfile="${src}/build/packages/com_churchdirectory_dev.tar.gz" compression="gzip">
-            <fileset refid="allfiles" />
-        </tar>
-        <symlink target="${src}/churchdirectory.xml" link="admin/churchdirectory.xml"/>
-        <symlink target="${src}/churchdirectory.script.php" link="admin/churchdirectory.script.php"/>
-    </target>
-
-    <!-- ============================================  -->
-    <!-- (DEFAULT)  Target: dist                       -->
-    <!-- ============================================  -->
-    <target name="dist" depends="reset,build">
-        <echo msg="Creating archive..."/>
-
-        <echo msg="Files copied and compressed in build directory OK!"/>
-    </target>
+		<echo msg="Files copied and compressed in build directory OK!"/>
+	</target>
 </project>

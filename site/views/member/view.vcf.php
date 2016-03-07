@@ -1,5 +1,4 @@
 <?php
-
 /**
  * View for VCF
  *
@@ -43,6 +42,8 @@ class ChurchDirectoryViewMember extends JViewLegacy
 	{
 		// Get model data.
 		$item = $this->get('Item');
+
+		$middlename = null;
 
 		// Check for errors.
 		if (count($errors = $this->get('Errors')))

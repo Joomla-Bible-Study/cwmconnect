@@ -79,6 +79,8 @@ class ChurchDirectoryViewMember extends JViewLegacy
 		$item       = $this->get('Item');
 		$this->form = $this->get('Form');
 
+		$contacts = 0;
+
 		// Get the parameters
 		$params = JComponentHelper::getParams('com_churchdirectory');
 

@@ -7,6 +7,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\Registry\Registry;
+
 /**
  * HTML Home View class for the ChurchDirectory component
  *
@@ -15,7 +17,6 @@ defined('_JEXEC') or die;
  */
 class ChurchDirectoryViewHome extends JViewLegacy
 {
-
 	protected $state;
 
 	protected $items;
@@ -31,6 +32,8 @@ class ChurchDirectoryViewHome extends JViewLegacy
 
 	/** @var  JDocument */
 	public $document;
+
+	protected $renderHelper;
 
 	/**
 	 * Display function
@@ -63,7 +66,7 @@ class ChurchDirectoryViewHome extends JViewLegacy
 		$mod_params = array('style' => 'xhtml');
 		$contents   = '';
 		$mod        = JModuleHelper::getModule('mod_finder');
-		$registry   = new JRegistry;
+		$registry   = new Registry;
 		$registry->loadString($mod->params);
 		$registry->set('searchfilter', 'paramvalue');
 		$registry->set('show_advanced', '0');

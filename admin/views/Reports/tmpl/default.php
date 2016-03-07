@@ -20,7 +20,7 @@ $user = JFactory::getUser();
 		<?php else : ?>
 		<div id="j-main-container">
 			<?php endif;
-			if (!in_array('8', $user->groups))
+			if (!in_array($this->state->get('reportslevel', '8'), $user->groups))
 				{
 					JFactory::getApplication()->enqueueMessage('Only Super Admin can access reports', 'worning');
 				}

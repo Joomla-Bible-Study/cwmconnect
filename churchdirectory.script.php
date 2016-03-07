@@ -183,7 +183,7 @@ class Com_ChurchdirectoryInstallerScript
 		if (!version_compare(JVERSION, '3.4.4', 'ge'))
 		{
 			$msg = "<p>You need Joomla! 2.5.16 or later to install this component</p>";
-			JError::raiseWarning(100, $msg);
+			new Exception($msg, 100);
 
 			return false;
 		}
