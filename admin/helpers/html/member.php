@@ -1,7 +1,7 @@
 <?php
 /**
  * @package    ChurchDirectory.Admin
- * @copyright  2007 - 2014 (C) Joomla Bible Study Team All rights reserved.
+ * @copyright  2007 - 2016 (C) Joomla Bible Study Team All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -76,15 +76,15 @@ abstract class JHtmlMember
 	/**
 	 * Fetured
 	 *
-	 * @param   int  $value      The featured value
-	 * @param   int  $i          ?
-	 * @param   bool $canChange  Whether the value can be changed or not
+	 * @param   int   $value      The featured value
+	 * @param   int   $i          ?
+	 * @param   bool  $canChange  Whether the value can be changed or not
 	 *
 	 * @return  string    The anchor tag to toggle featured/unfeatured contacts.
 	 *
 	 * @since   1.6
 	 */
-	public static function featured($value = 0, $i, $canChange = true)
+	public static function featured($value = 0, $i = 0, $canChange = true)
 	{
 		// Array of image, task, title, action
 		$states = array(

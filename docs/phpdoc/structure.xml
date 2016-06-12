@@ -5,7 +5,7 @@
       <description><![CDATA[Main Admin start file]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="3" name="package" description="ChurchDirectory.Admin"/>
-      <tag line="3" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="3" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="3" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
     <include line="22" type="Require Once" package="Default">
@@ -26,7 +26,7 @@
       <description><![CDATA[ChurchDirectory Controller]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="3" name="package" description="ChurchDirectory.Admin"/>
-      <tag line="3" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="3" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="3" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
     <include line="37" type="Require Once" package="Default">
@@ -93,7 +93,7 @@
       <description><![CDATA[Cpanel Controller]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="3" name="package" description="ChurchDirectory.Admin"/>
-      <tag line="3" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="3" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="3" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
     <class final="false" abstract="false" namespace="global" line="21" package="ChurchDirectory\Admin">
@@ -135,7 +135,7 @@
       <description><![CDATA[Database Controller]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="3" name="package" description="ChurchDirectory.Admin"/>
-      <tag line="3" name="Copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved"/>
+      <tag line="3" name="Copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved"/>
       <tag line="3" name="license" description="http://www.gnu.org/copyleft/gpl.html GNU/GPL"/>
       <tag line="3" name="link" description="http://www.JoomlaBibleStudy.org" link="http://www.JoomlaBibleStudy.org"/>
       <tag line="3" name="since" description="1.7.0"/>
@@ -175,7 +175,7 @@
       <description><![CDATA[ChurchDirectory Contact manager component for Joomla!]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="3" name="package" description="ChurchDirectory.Admin"/>
-      <tag line="3" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="3" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="3" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
     <class final="false" abstract="false" namespace="global" line="18" package="ChurchDirectory\Admin">
@@ -203,7 +203,7 @@
       <description><![CDATA[Directory Header Controller]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="3" name="package" description="ChurchDirectory.Admin"/>
-      <tag line="3" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="3" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="3" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
     <class final="false" abstract="false" namespace="global" line="20" package="ChurchDirectory\Admin">
@@ -271,7 +271,7 @@
       <description><![CDATA[Controller for Directory Headers List]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="3" name="package" description="ChurchDirectory.Admin"/>
-      <tag line="3" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="3" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="3" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
     <class final="false" abstract="false" namespace="global" line="20" package="ChurchDirectory\Admin">
@@ -360,7 +360,7 @@
       <description><![CDATA[Controller for Family Unit]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="3" name="package" description="ChurchDirectory.Admin"/>
-      <tag line="3" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="3" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="3" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
     <class final="false" abstract="false" namespace="global" line="19" package="ChurchDirectory\Admin">
@@ -428,7 +428,7 @@
       <description><![CDATA[Controller for FamilyUnits]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="3" name="package" description="ChurchDirectory.Admin"/>
-      <tag line="3" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="3" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="3" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
     <class final="false" abstract="false" namespace="global" line="19" package="ChurchDirectory\Admin">
@@ -517,7 +517,7 @@
       <description><![CDATA[Controller for KML]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="3" name="package" description="ChurchDirectory.Admin"/>
-      <tag line="3" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="3" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="3" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
     <class final="false" abstract="false" namespace="global" line="20" package="ChurchDirectory\Admin">
@@ -614,7 +614,7 @@
       <description><![CDATA[Controller for KMLs]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="3" name="package" description="ChurchDirectory.Admin"/>
-      <tag line="3" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="3" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="3" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
     <class final="false" abstract="false" namespace="global" line="20" package="ChurchDirectory\Admin">
@@ -703,7 +703,7 @@
       <description><![CDATA[Controller for Member]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="3" name="package" description="ChurchDirectory.Admin"/>
-      <tag line="3" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="3" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="3" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
     <class final="false" abstract="false" namespace="global" line="19" package="ChurchDirectory\Admin">
@@ -791,7 +791,7 @@
       <description><![CDATA[Controller for Members]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="3" name="package" description="ChurchDirectory.Admin"/>
-      <tag line="3" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="3" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="3" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
     <class final="false" abstract="false" namespace="global" line="20" package="ChurchDirectory\Admin">
@@ -892,7 +892,7 @@
       <description><![CDATA[Controller for Position]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="3" name="package" description="ChurchDirectory.Admin"/>
-      <tag line="3" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="3" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="3" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
     <class final="false" abstract="false" namespace="global" line="19" package="ChurchDirectory\Admin">
@@ -960,7 +960,7 @@
       <description><![CDATA[Controller for Positions]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="3" name="package" description="ChurchDirectory.Admin"/>
-      <tag line="3" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="3" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="3" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
     <class final="false" abstract="false" namespace="global" line="20" package="ChurchDirectory\Admin">
@@ -1049,7 +1049,7 @@
       <description><![CDATA[ChurchDirectory Member manager component for Joomla!]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="3" name="package" description="ChurchDirectory.Admin"/>
-      <tag line="3" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="3" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="3" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
     <class final="false" abstract="false" namespace="global" line="18" package="ChurchDirectory\Admin">
@@ -1194,7 +1194,7 @@
       <description><![CDATA[ChurchDirectory Helper]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="3" name="package" description="ChurchDirectory.Admin"/>
-      <tag line="3" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="3" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="3" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
     <class final="false" abstract="false" namespace="global" line="18" package="ChurchDirectory\Admin">
@@ -1294,7 +1294,7 @@
       <description><![CDATA[Member HTML]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="3" name="package" description="ChurchDirectory.Admin"/>
-      <tag line="3" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="3" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="3" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
     <class final="false" abstract="false" namespace="global" line="17" package="ChurchDirectory\Admin">
@@ -1350,7 +1350,7 @@
       <description><![CDATA[Model for Cpanel]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="3" name="package" description="ChurchDirectory.Admin"/>
-      <tag line="3" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="3" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="3" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
     <class final="false" abstract="false" namespace="global" line="19" package="ChurchDirectory\Admin">
@@ -1380,7 +1380,7 @@
       <description><![CDATA[Database Model]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="3" name="package" description="ChurchDirectory.Admin"/>
-      <tag line="3" name="Copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved"/>
+      <tag line="3" name="Copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved"/>
       <tag line="3" name="license" description="http://www.gnu.org/copyleft/gpl.html GNU/GPL"/>
       <tag line="3" name="link" description="http://www.JoomlaBibleStudy.org" link="http://www.JoomlaBibleStudy.org"/>
       <tag line="3" name="since" description="1.7.2"/>
@@ -1570,7 +1570,7 @@
       <description><![CDATA[Directory Header Model]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="3" name="package" description="ChurchDirectory.Admin"/>
-      <tag line="3" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="3" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="3" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
     <class final="false" abstract="false" namespace="global" line="20" package="ChurchDirectory\Admin">
@@ -1766,7 +1766,7 @@
       <description><![CDATA[Directory Headers list model]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="3" name="package" description="ChurchDirectory.Admin"/>
-      <tag line="3" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="3" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="3" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
     <class final="false" abstract="false" namespace="global" line="19" package="ChurchDirectory\Admin">
@@ -1865,7 +1865,7 @@ ordering requirements.</p>]]></long-description>
       <description><![CDATA[FamilyUnit model]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="3" name="package" description="ChurchDirectory.Admin"/>
-      <tag line="3" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="3" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="3" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
     <class final="false" abstract="false" namespace="global" line="20" package="ChurchDirectory\Admin">
@@ -2070,7 +2070,7 @@ ordering requirements.</p>]]></long-description>
       <description><![CDATA[FamilyUnit list model]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="3" name="package" description="ChurchDirectory.Admin"/>
-      <tag line="3" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="3" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="3" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
     <class final="false" abstract="false" namespace="global" line="19" package="ChurchDirectory\Admin">
@@ -2211,7 +2211,7 @@ ordering requirements.</p>]]></long-description>
       <description><![CDATA[Field modal member]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="3" name="package" description="ChurchDirectory.Admin"/>
-      <tag line="3" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="3" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="3" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
     <class final="false" abstract="false" namespace="global" line="19" package="ChurchDirectory\Admin">
@@ -2255,7 +2255,7 @@ ordering requirements.</p>]]></long-description>
       <description><![CDATA[Field Ordering]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="3" name="package" description="ChurchDirectory.Admin"/>
-      <tag line="3" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="3" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="3" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
     <class final="false" abstract="false" namespace="global" line="20" package="ChurchDirectory\Admin">
@@ -2299,7 +2299,7 @@ ordering requirements.</p>]]></long-description>
       <description><![CDATA[GeoUpdate System for KML]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="3" name="package" description="ChurchDirectory.Admin"/>
-      <tag line="3" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="3" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="3" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
     <class final="false" abstract="false" namespace="global" line="21" package="ChurchDirectory\Admin">
@@ -2393,7 +2393,7 @@ elapsed]]></description>
       <description><![CDATA[KML model]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="3" name="package" description="ChurchDirectory.Admin"/>
-      <tag line="3" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="3" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="3" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
     <class final="false" abstract="false" namespace="global" line="20" package="ChurchDirectory\Admin">
@@ -2589,7 +2589,7 @@ elapsed]]></description>
       <description><![CDATA[KML list model]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="3" name="package" description="ChurchDirectory.Admin"/>
-      <tag line="3" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="3" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="3" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
     <class final="false" abstract="false" namespace="global" line="19" package="ChurchDirectory\Admin">
@@ -2688,7 +2688,7 @@ ordering requirements.</p>]]></long-description>
       <description><![CDATA[Member model]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="3" name="package" description="ChurchDirectory.Admin"/>
-      <tag line="3" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="3" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="3" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
     <class final="false" abstract="false" namespace="global" line="22" package="ChurchDirectory\Admin">
@@ -3045,7 +3045,7 @@ ordering requirements.</p>]]></long-description>
       <description><![CDATA[Members list model]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="3" name="package" description="ChurchDirectory.Admin"/>
-      <tag line="3" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="3" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="3" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
     <class final="false" abstract="false" namespace="global" line="19" package="ChurchDirectory">
@@ -3144,7 +3144,7 @@ ordering requirements.</p>]]></long-description>
       <description><![CDATA[Position model]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="3" name="package" description="ChurchDirectory.Admin"/>
-      <tag line="3" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="3" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="3" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
     <class final="false" abstract="false" namespace="global" line="20" package="ChurchDirectory\Admin">
@@ -3365,7 +3365,7 @@ ordering requirements.</p>]]></long-description>
       <description><![CDATA[Positions list model]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="3" name="package" description="ChurchDirectory.Admin"/>
-      <tag line="3" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="3" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="3" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
     <class final="false" abstract="false" namespace="global" line="19" package="ChurchDirectory\Admin">
@@ -3464,7 +3464,7 @@ ordering requirements.</p>]]></long-description>
       <description><![CDATA[DirHeader JTable]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="3" name="package" description="ChurchDirectory.Admin"/>
-      <tag line="3" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="3" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="3" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
     <class final="false" abstract="false" namespace="global" line="17" package="ChurchDirectory\Admin">
@@ -3563,7 +3563,7 @@ ordering requirements.</p>]]></long-description>
       <description><![CDATA[FamilyUnit JTable]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="3" name="package" description="ChurchDirectory.Admin"/>
-      <tag line="3" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="3" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="3" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
     <class final="false" abstract="false" namespace="global" line="17" package="ChurchDirectory\Admin">
@@ -3662,7 +3662,7 @@ ordering requirements.</p>]]></long-description>
       <description><![CDATA[KML JTable]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="3" name="package" description="ChurchDirectory.Admin"/>
-      <tag line="3" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="3" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="3" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
     <class final="false" abstract="false" namespace="global" line="17" package="ChurchDirectory\Admin">
@@ -3761,7 +3761,7 @@ ordering requirements.</p>]]></long-description>
       <description><![CDATA[Member JTable]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="3" name="package" description="ChurchDirectory.Admin"/>
-      <tag line="3" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="3" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="3" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
     <class final="false" abstract="false" namespace="global" line="17" package="ChurchDirectory\Admin">
@@ -3940,7 +3940,7 @@ where id is the value of the primary key of the table.</p>]]></long-description>
       <description><![CDATA[Position JTable]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="3" name="package" description="ChurchDirectory.Admin"/>
-      <tag line="3" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="3" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="3" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
     <class final="false" abstract="false" namespace="global" line="17" package="ChurchDirectory\Admin">
@@ -4039,7 +4039,7 @@ where id is the value of the primary key of the table.</p>]]></long-description>
       <description><![CDATA[Default view for cpanel]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="2" name="package" description="ChurchDirectory.Admin"/>
-      <tag line="2" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="2" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="2" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
   </file>
@@ -4048,7 +4048,7 @@ where id is the value of the primary key of the table.</p>]]></long-description>
       <description><![CDATA[Church Direcotry component for Joomla! 1.7]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="3" name="package" description="ChurchDirectory.Admin"/>
-      <tag line="3" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="3" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="3" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
     <include line="13" type="Require Once" package="Default">
@@ -4141,7 +4141,7 @@ where id is the value of the primary key of the table.</p>]]></long-description>
       <description><![CDATA[Form for Database]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="2" name="package" description="ChurchDirectory.Admin"/>
-      <tag line="2" name="Copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved"/>
+      <tag line="2" name="Copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved"/>
       <tag line="2" name="license" description="http://www.gnu.org/copyleft/gpl.html GNU/GPL"/>
       <tag line="2" name="link" description="http://www.JoomlaBibleStudy.org" link="http://www.JoomlaBibleStudy.org"/>
       <tag line="2" name="since" description="1.7.0"/>
@@ -4152,7 +4152,7 @@ where id is the value of the primary key of the table.</p>]]></long-description>
       <description><![CDATA[ChurchDirectory View]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="3" name="package" description="ChurchDirectory.Admin"/>
-      <tag line="3" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="3" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="3" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
     <class final="false" abstract="false" namespace="global" line="18" package="ChurchDirectory\Admin">
@@ -4207,7 +4207,7 @@ where id is the value of the primary key of the table.</p>]]></long-description>
       <description><![CDATA[Edit dirheader]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="2" name="package" description="ChurchDirectory.Admin"/>
-      <tag line="2" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="2" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="2" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
   </file>
@@ -4216,7 +4216,7 @@ where id is the value of the primary key of the table.</p>]]></long-description>
       <description><![CDATA[DirHeader View]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="3" name="package" description="ChurchDirectory.Admin"/>
-      <tag line="3" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="3" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="3" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
     <class final="false" abstract="false" namespace="global" line="20" package="ChurchDirectory\Admin">
@@ -4303,7 +4303,7 @@ where id is the value of the primary key of the table.</p>]]></long-description>
       <description><![CDATA[Default form for DirHeaders]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="2" name="package" description="ChurchDirectory.Admin"/>
-      <tag line="2" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="2" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="2" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
   </file>
@@ -4312,7 +4312,7 @@ where id is the value of the primary key of the table.</p>]]></long-description>
       <description><![CDATA[Modal for DirHeaders]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="2" name="package" description="ChurchDirectory.Admin"/>
-      <tag line="2" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="2" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="2" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
   </file>
@@ -4321,7 +4321,7 @@ where id is the value of the primary key of the table.</p>]]></long-description>
       <description><![CDATA[View DirHeaders]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="2" name="package" description="ChurchDirectory.Admin"/>
-      <tag line="2" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="2" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="2" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
     <class final="false" abstract="false" namespace="global" line="21" package="ChurchDirectory\Admin">
@@ -4415,7 +4415,7 @@ where id is the value of the primary key of the table.</p>]]></long-description>
       <description><![CDATA[Edit for FamilyUnit]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="2" name="package" description="ChurchDirectory.Admin"/>
-      <tag line="2" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="2" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="2" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
   </file>
@@ -4424,7 +4424,7 @@ where id is the value of the primary key of the table.</p>]]></long-description>
       <description><![CDATA[View FamilyUnit]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="3" name="package" description="ChurchDirectory.Admin"/>
-      <tag line="3" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="3" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="3" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
     <class final="false" abstract="false" namespace="global" line="20" package="ChurchDirectory\Admin">
@@ -4512,7 +4512,7 @@ where id is the value of the primary key of the table.</p>]]></long-description>
       <description><![CDATA[Default view for FamilyUnits]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="2" name="package" description="ChurchDirectory.Admin"/>
-      <tag line="2" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="2" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="2" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
   </file>
@@ -4521,7 +4521,7 @@ where id is the value of the primary key of the table.</p>]]></long-description>
       <description><![CDATA[Modal for FamilyUnits]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="2" name="package" description="ChurchDirectory.Admin"/>
-      <tag line="2" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="2" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="2" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
   </file>
@@ -4530,7 +4530,7 @@ where id is the value of the primary key of the table.</p>]]></long-description>
       <description><![CDATA[View FaimlyUnits]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="3" name="package" description="ChurchDirectory.Admin"/>
-      <tag line="3" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="3" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="3" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
     <class final="false" abstract="false" namespace="global" line="22" package="ChurchDirectory\Admin">
@@ -4623,7 +4623,7 @@ where id is the value of the primary key of the table.</p>]]></long-description>
       <description><![CDATA[ChurchDirectory Contact manager component for Joomla! 1.7]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="2" name="package" description="ChurchDirectory.Admin"/>
-      <tag line="2" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="2" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="2" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
   </file>
@@ -4632,7 +4632,7 @@ where id is the value of the primary key of the table.</p>]]></long-description>
       <description><![CDATA[ChurchDirectory Contact manager component for Joomla! 1.7]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="3" name="package" description="ChurchDirectory.Admin"/>
-      <tag line="3" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="3" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="3" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
     <class final="false" abstract="false" namespace="global" line="21" package="ChurchDirectory\Admin">
@@ -4663,7 +4663,7 @@ where id is the value of the primary key of the table.</p>]]></long-description>
       <description><![CDATA[ChurchDirectory Contact manager component for Joomla! 1.7]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="2" name="package" description="ChurchDirectory.Admin"/>
-      <tag line="2" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="2" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="2" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
   </file>
@@ -4672,7 +4672,7 @@ where id is the value of the primary key of the table.</p>]]></long-description>
       <description><![CDATA[View for Info]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="3" name="package" description="ChurchDirectory.Admin"/>
-      <tag line="3" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="3" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="3" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
     <include line="66" type="Require Once" package="Default">
@@ -4757,7 +4757,7 @@ where id is the value of the primary key of the table.</p>]]></long-description>
       <description><![CDATA[Edit for KML]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="2" name="package" description="ChurchDirectory.Admin"/>
-      <tag line="2" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="2" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="2" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
   </file>
@@ -4766,7 +4766,7 @@ where id is the value of the primary key of the table.</p>]]></long-description>
       <description><![CDATA[View KML]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="3" name="package" description="ChurchDirectory.Admin"/>
-      <tag line="3" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="3" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="3" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
     <class final="false" abstract="false" namespace="global" line="20" package="ChurchDirectory\Admin">
@@ -4853,7 +4853,7 @@ where id is the value of the primary key of the table.</p>]]></long-description>
       <description><![CDATA[Default view KMLs]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="3" name="package" description="ChurchDirectory.Admin"/>
-      <tag line="3" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="3" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="3" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
   </file>
@@ -4862,7 +4862,7 @@ where id is the value of the primary key of the table.</p>]]></long-description>
       <description><![CDATA[Modal view KMLs]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="3" name="package" description="ChurchDirectory.Admin"/>
-      <tag line="3" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="3" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="3" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
   </file>
@@ -4871,7 +4871,7 @@ where id is the value of the primary key of the table.</p>]]></long-description>
       <description><![CDATA[View for KMLs]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="3" name="package" description="ChurchDirectory.Admin"/>
-      <tag line="3" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="3" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="3" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
     <include line="81" type="Require Once" package="Default">
@@ -4966,7 +4966,7 @@ where id is the value of the primary key of the table.</p>]]></long-description>
       <description><![CDATA[Edit view member]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="2" name="package" description="ChurchDirectory.Admin"/>
-      <tag line="2" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="2" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="2" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
   </file>
@@ -4975,7 +4975,7 @@ where id is the value of the primary key of the table.</p>]]></long-description>
       <description><![CDATA[Sube view member attribs]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="2" name="package" description="ChurchDirectory.Admin"/>
-      <tag line="2" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="2" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="2" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
   </file>
@@ -4984,7 +4984,7 @@ where id is the value of the primary key of the table.</p>]]></long-description>
       <description><![CDATA[Sube view member metadata]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="3" name="package" description="ChurchDirectory.Admin"/>
-      <tag line="3" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="3" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="3" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
   </file>
@@ -4993,7 +4993,7 @@ where id is the value of the primary key of the table.</p>]]></long-description>
       <description><![CDATA[Sube view member params]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="3" name="package" description="ChurchDirectory.Admin"/>
-      <tag line="3" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="3" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="3" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
   </file>
@@ -5013,7 +5013,7 @@ where id is the value of the primary key of the table.</p>]]></long-description>
       <description><![CDATA[View Member]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="3" name="package" description="ChurchDirectory.Admin"/>
-      <tag line="3" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="3" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="3" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
     <class final="false" abstract="false" namespace="global" line="18" package="ChurchDirectory\Admin">
@@ -5099,7 +5099,7 @@ where id is the value of the primary key of the table.</p>]]></long-description>
       <description><![CDATA[Default view for members]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="2" name="package" description="ChurchDirectory.Admin"/>
-      <tag line="2" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="2" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="2" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
   </file>
@@ -5108,7 +5108,7 @@ where id is the value of the primary key of the table.</p>]]></long-description>
       <description><![CDATA[Modal for members]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="3" name="package" description="ChurchDirectory.Admin"/>
-      <tag line="3" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="3" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="3" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
   </file>
@@ -5117,7 +5117,7 @@ where id is the value of the primary key of the table.</p>]]></long-description>
       <description><![CDATA[View Members]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="3" name="package" description="ChurchDirectory.Admin"/>
-      <tag line="3" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="3" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="3" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
     <class final="false" abstract="false" namespace="global" line="20" package="ChurchDirectory\Admin">
@@ -5221,7 +5221,7 @@ where id is the value of the primary key of the table.</p>]]></long-description>
       <description><![CDATA[Edit for position]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="2" name="package" description="ChurchDirectory.Admin"/>
-      <tag line="2" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="2" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="2" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
   </file>
@@ -5230,7 +5230,7 @@ where id is the value of the primary key of the table.</p>]]></long-description>
       <description><![CDATA[View for position]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="3" name="package" description="ChurchDirectory.Admin"/>
-      <tag line="3" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="3" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="3" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
     <class final="false" abstract="false" namespace="global" line="20" package="ChurchDirectory\Admin">
@@ -5316,7 +5316,7 @@ where id is the value of the primary key of the table.</p>]]></long-description>
       <description><![CDATA[Default view for positions]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="3" name="package" description="ChurchDirectory.Admin"/>
-      <tag line="3" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="3" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="3" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
   </file>
@@ -5325,7 +5325,7 @@ where id is the value of the primary key of the table.</p>]]></long-description>
       <description><![CDATA[Modal view for Positions]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="3" name="package" description="ChurchDirectory.Admin"/>
-      <tag line="3" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="3" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="3" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
   </file>
@@ -5334,7 +5334,7 @@ where id is the value of the primary key of the table.</p>]]></long-description>
       <description><![CDATA[View for Postions]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="3" name="package" description="ChurchDirectory.Admin"/>
-      <tag line="3" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="3" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="3" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
     <class final="false" abstract="false" namespace="global" line="22" package="ChurchDirectory\Admin">
@@ -5426,7 +5426,7 @@ where id is the value of the primary key of the table.</p>]]></long-description>
       <description><![CDATA[Changelog for ChurchDirectory]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="3" name="package" description="ChurchDirectory.Admin"/>
-      <tag line="3" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="3" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="3" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
   </file>
@@ -5435,7 +5435,7 @@ where id is the value of the primary key of the table.</p>]]></long-description>
       <description><![CDATA[Main install Script]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="3" name="package" description="ChurchDirectory.Admin"/>
-      <tag line="3" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="3" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="3" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
     <class final="false" abstract="false" namespace="global" line="18" package="ChurchDirectory\Admin">
@@ -5787,7 +5787,7 @@ If this returns false, Joomla will abort the update and undo everything already 
       <long-description><![CDATA[]]></long-description>
       <tag line="3" name="package" description="ChurchDirectory"/>
       <tag line="3" name="subpackage" description="Model.BirthdayAnniversary"/>
-      <tag line="3" name="Copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved"/>
+      <tag line="3" name="Copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved"/>
       <tag line="3" name="license" description="http://www.gnu.org/copyleft/gpl.html GNU/GPL"/>
       <tag line="3" name="link" description="http://www.JoomlaBibleStudy.org" link="http://www.JoomlaBibleStudy.org"/>
     </docblock>
@@ -5813,7 +5813,7 @@ If this returns false, Joomla will abort the update and undo everything already 
       <long-description><![CDATA[]]></long-description>
       <tag line="3" name="package" description="ChurchDirectory"/>
       <tag line="3" name="subpackage" description="Model.BirthdayAnniversary"/>
-      <tag line="3" name="Copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved"/>
+      <tag line="3" name="Copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved"/>
       <tag line="3" name="license" description="http://www.gnu.org/copyleft/gpl.html GNU/GPL"/>
       <tag line="3" name="link" description="http://www.JoomlaBibleStudy.org" link="http://www.JoomlaBibleStudy.org"/>
     </docblock>
@@ -5823,7 +5823,7 @@ If this returns false, Joomla will abort the update and undo everything already 
       <description><![CDATA[ChurchDirectory Member Finder]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="3" name="package" description="Finder.ChurchDirectory"/>
-      <tag line="3" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="3" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="3" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
     <include line="15" type="Require Once" package="Default">
@@ -6195,7 +6195,7 @@ unpublished, archived, or unarchived from the list view.</p>]]></long-descriptio
       <description><![CDATA[Install ChurchDirectory Finder]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="3" name="package" description="Finder.ChurchDirectory"/>
-      <tag line="3" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="3" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="3" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
     <class final="false" abstract="false" namespace="global" line="18" package="Finder\ChurchDirectory">
@@ -6355,7 +6355,7 @@ unpublished, archived, or unarchived from the list view.</p>]]></long-descriptio
       <description><![CDATA[ChurchDirectory Member Search Plugin]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="3" name="package" description="Search.ChurchDirectory"/>
-      <tag line="3" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="3" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="3" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
     <class final="false" abstract="false" namespace="global" line="18" package="Search\ChurchDirectory">
@@ -6453,7 +6453,7 @@ routine: href, title, section, created, text, browsernav</p>]]></long-descriptio
       <description><![CDATA[Site main component file]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="3" name="package" description="ChurchDirectory.Site"/>
-      <tag line="3" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="3" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="3" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
     <include line="12" type="Require Once" package="Default">
@@ -6465,7 +6465,7 @@ routine: href, title, section, created, text, browsernav</p>]]></long-descriptio
       <description><![CDATA[Main controller site]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="3" name="package" description="ChurchDirectory.Site"/>
-      <tag line="3" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="3" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="3" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
     <class final="false" abstract="false" namespace="global" line="18" package="ChurchDirectory\Site">
@@ -6640,7 +6640,7 @@ routine: href, title, section, created, text, browsernav</p>]]></long-descriptio
       <description><![CDATA[Directory Helper]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="3" name="package" description="ChurchDirectory.Site"/>
-      <tag line="3" name="Copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved"/>
+      <tag line="3" name="Copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved"/>
       <tag line="3" name="license" description="http://www.gnu.org/copyleft/gpl.html GNU/GPL"/>
       <tag line="3" name="link" description="http://www.JoomlaBibleStudy.org" link="http://www.JoomlaBibleStudy.org"/>
     </docblock>
@@ -6680,7 +6680,7 @@ routine: href, title, section, created, text, browsernav</p>]]></long-descriptio
       <description><![CDATA[Family Member Helper]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="3" name="package" description="ChurchDirectory.Site"/>
-      <tag line="3" name="Copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved"/>
+      <tag line="3" name="Copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved"/>
       <tag line="3" name="license" description="http://www.gnu.org/copyleft/gpl.html GNU/GPL"/>
       <tag line="3" name="link" description="http://www.JoomlaBibleStudy.org" link="http://www.JoomlaBibleStudy.org"/>
     </docblock>
@@ -6851,7 +6851,7 @@ routine: href, title, section, created, text, browsernav</p>]]></long-descriptio
       <description><![CDATA[Helper for positions]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="3" name="package" description="ChurchDirectory.Site"/>
-      <tag line="3" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="3" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="3" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
     <function namespace="global" line="17" package="ChurchDirectory\Site">
@@ -6879,7 +6879,7 @@ routine: href, title, section, created, text, browsernav</p>]]></long-descriptio
       <description><![CDATA[Router for ChurchDirectory]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="3" name="package" description="ChurchDirectory.Site"/>
-      <tag line="3" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="3" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="3" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
     <class final="false" abstract="false" namespace="global" line="23" package="ChurchDirectory\Site">
@@ -6973,7 +6973,7 @@ routine: href, title, section, created, text, browsernav</p>]]></long-descriptio
       <description><![CDATA[Model for Categories]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="3" name="package" description="ChurchDirectory.Site"/>
-      <tag line="3" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="3" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="3" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
     <class final="false" abstract="false" namespace="global" line="20" package="ChurchDirectory\Site">
@@ -7089,7 +7089,7 @@ ordering requirements.</p>]]></long-description>
       <description><![CDATA[Model list catagory]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="3" name="package" description="ChurchDirectory.Site"/>
-      <tag line="3" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="3" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="3" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
     <class final="false" abstract="false" namespace="global" line="19" package="ChurchDirectory\Site">
@@ -7551,7 +7551,7 @@ ordering requirements.</p>]]></long-description>
       <description><![CDATA[Model List for Featured]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="3" name="package" description="ChurchDirectory.Site"/>
-      <tag line="3" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="3" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="3" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
     <class final="false" abstract="false" namespace="global" line="19" package="ChurchDirectory\Site">
@@ -7716,7 +7716,7 @@ ordering requirements.</p>]]></long-description>
       <description><![CDATA[Model for Member]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="3" name="package" description="ChurchDirectory.Site"/>
-      <tag line="3" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="3" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="3" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
     <include line="304" type="Require Once" package="Default">
@@ -7865,7 +7865,7 @@ ordering requirements.</p>]]></long-description>
       <description><![CDATA[Rules for Email]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="3" name="package" description="ChurchDirectory.Site"/>
-      <tag line="3" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="3" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="3" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
     <include line="13" type="Require Once" package="Default">
@@ -7939,7 +7939,7 @@ ordering requirements.</p>]]></long-description>
       <description><![CDATA[Rules for email message]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="3" name="package" description="ChurchDirectory.Site"/>
-      <tag line="3" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="3" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="3" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
     <class final="false" abstract="false" namespace="global" line="18" package="ChurchDirectory\Site">
@@ -8010,7 +8010,7 @@ ordering requirements.</p>]]></long-description>
       <description><![CDATA[Rules for email subject]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="3" name="package" description="ChurchDirectory.Site"/>
-      <tag line="3" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="3" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="3" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
     <class final="false" abstract="false" namespace="global" line="18" package="ChurchDirectory\Site">
@@ -8081,7 +8081,7 @@ ordering requirements.</p>]]></long-description>
       <description><![CDATA[Site Router]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="3" name="package" description="ChurchDirectory.Site"/>
-      <tag line="3" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="3" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="3" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
     <function namespace="global" line="20" package="ChurchDirectory\Site">
@@ -8133,7 +8133,7 @@ ordering requirements.</p>]]></long-description>
       <description><![CDATA[Default view for categories]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="2" name="package" description="ChurchDirectory.Site"/>
-      <tag line="2" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="2" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="2" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
   </file>
@@ -8142,7 +8142,7 @@ ordering requirements.</p>]]></long-description>
       <description><![CDATA[Sub view of Categoris for items]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="2" name="package" description="ChurchDirectory.Site"/>
-      <tag line="2" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="2" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="2" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
   </file>
@@ -8151,7 +8151,7 @@ ordering requirements.</p>]]></long-description>
       <description><![CDATA[View for Categories]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="3" name="package" description="ChurchDirectory.Site"/>
-      <tag line="3" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="3" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="3" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
     <class final="false" abstract="false" namespace="global" line="20" package="ChurchDirectory\Site">
@@ -8242,7 +8242,7 @@ ordering requirements.</p>]]></long-description>
       <description><![CDATA[Default view for category]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="2" name="package" description="ChurchDirectory.Site"/>
-      <tag line="2" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="2" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="2" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
   </file>
@@ -8251,7 +8251,7 @@ ordering requirements.</p>]]></long-description>
       <description><![CDATA[Sub view category for children]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="2" name="package" description="ChurchDirectory.Site"/>
-      <tag line="2" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="2" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="2" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
   </file>
@@ -8260,7 +8260,7 @@ ordering requirements.</p>]]></long-description>
       <description><![CDATA[Sub view for catigory on items]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="2" name="package" description="ChurchDirectory.Site"/>
-      <tag line="2" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="2" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="2" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
   </file>
@@ -8269,7 +8269,7 @@ ordering requirements.</p>]]></long-description>
       <description><![CDATA[Feed view for Category]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="3" name="package" description="ChurchDirectory.Site"/>
-      <tag line="3" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="3" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="3" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
     <class final="false" abstract="false" namespace="global" line="20" package="ChurchDirectory\Site">
@@ -8300,7 +8300,7 @@ ordering requirements.</p>]]></long-description>
       <description><![CDATA[View for Category]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="3" name="package" description="ChurchDirectory.Site"/>
-      <tag line="3" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="3" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="3" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
     <class final="false" abstract="false" namespace="global" line="21" package="ChurchDirectory\Site">
@@ -8402,7 +8402,7 @@ ordering requirements.</p>]]></long-description>
       <description><![CDATA[Default view for directory]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="2" name="package" description="ChurchDirectory.Site"/>
-      <tag line="2" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="2" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="2" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
   </file>
@@ -8411,7 +8411,7 @@ ordering requirements.</p>]]></long-description>
       <description><![CDATA[sub view Directory for address]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="2" name="package" description="ChurchDirectory.Site"/>
-      <tag line="2" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="2" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="2" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
   </file>
@@ -8420,7 +8420,7 @@ ordering requirements.</p>]]></long-description>
       <description><![CDATA[Direcotry Default Items]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="2" name="package" description="ChurchDirectory.Site"/>
-      <tag line="2" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="2" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="2" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
   </file>
@@ -8429,7 +8429,7 @@ ordering requirements.</p>]]></long-description>
       <description><![CDATA[Sub view directory for profile]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="2" name="package" description="ChurchDirectory.Site"/>
-      <tag line="2" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="2" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="2" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
   </file>
@@ -8438,7 +8438,7 @@ ordering requirements.</p>]]></long-description>
       <description><![CDATA[Directory view for ChurchDirectory]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="3" name="package" description="ChurchDirectory.Site"/>
-      <tag line="3" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="3" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="3" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
     <class final="false" abstract="false" namespace="global" line="21" package="ChurchDirectory\Site">
@@ -8686,7 +8686,7 @@ ordering requirements.</p>]]></long-description>
       <description><![CDATA[ChurchDirectory Member manager component for Joomla!]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="3" name="package" description="ChurchDirectory.Site"/>
-      <tag line="3" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="3" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="3" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
     <class final="false" abstract="false" namespace="global" line="22" package="ChurchDirectory\Site">
@@ -8832,7 +8832,7 @@ ordering requirements.</p>]]></long-description>
       <description><![CDATA[Default view for featured]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="2" name="package" description="ChurchDirectory.Site"/>
-      <tag line="2" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="2" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="2" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
   </file>
@@ -8841,7 +8841,7 @@ ordering requirements.</p>]]></long-description>
       <description><![CDATA[Sub view featured for items]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="2" name="package" description="ChurchDirectory.Site"/>
-      <tag line="2" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="2" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="2" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
   </file>
@@ -8850,7 +8850,7 @@ ordering requirements.</p>]]></long-description>
       <description><![CDATA[View for Featured]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="3" name="package" description="ChurchDirectory.Site"/>
-      <tag line="3" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="3" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="3" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
     <class final="false" abstract="false" namespace="global" line="21" package="ChurchDirectory\Site">
@@ -8952,7 +8952,7 @@ ordering requirements.</p>]]></long-description>
       <description><![CDATA[Member Default dispaly]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="2" name="package" description="ChurchDirectory.Site"/>
-      <tag line="2" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="2" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="2" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
   </file>
@@ -8961,7 +8961,7 @@ ordering requirements.</p>]]></long-description>
       <description><![CDATA[Sub view member for address]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="2" name="package" description="ChurchDirectory.Site"/>
-      <tag line="2" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="2" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="2" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
   </file>
@@ -8970,7 +8970,7 @@ ordering requirements.</p>]]></long-description>
       <description><![CDATA[Sub view member for articles]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="2" name="package" description="ChurchDirectory.Site"/>
-      <tag line="2" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="2" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="2" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
   </file>
@@ -8979,7 +8979,7 @@ ordering requirements.</p>]]></long-description>
       <description><![CDATA[Sub view member for form]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="2" name="package" description="ChurchDirectory.Site"/>
-      <tag line="2" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="2" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="2" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
   </file>
@@ -8988,7 +8988,7 @@ ordering requirements.</p>]]></long-description>
       <description><![CDATA[Sub view member for links]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="2" name="package" description="ChurchDirectory.Site"/>
-      <tag line="2" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="2" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="2" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
   </file>
@@ -8997,7 +8997,7 @@ ordering requirements.</p>]]></long-description>
       <description><![CDATA[Sub view member for profile]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="2" name="package" description="ChurchDirectory.Site"/>
-      <tag line="2" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="2" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="2" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
   </file>
@@ -9006,7 +9006,7 @@ ordering requirements.</p>]]></long-description>
       <description><![CDATA[View for Member]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="3" name="package" description="ChurchDirectory.Site"/>
-      <tag line="3" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="3" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="3" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
     <include line="13" type="Require Once" package="Default">
@@ -9100,7 +9100,7 @@ ordering requirements.</p>]]></long-description>
       <description><![CDATA[View for VCF]]></description>
       <long-description><![CDATA[]]></long-description>
       <tag line="3" name="package" description="ChurchDirectory.Site"/>
-      <tag line="3" name="copyright" description="2007 - 2014 (C) Joomla Bible Study Team All rights reserved."/>
+      <tag line="3" name="copyright" description="2007 - 2016 (C) Joomla Bible Study Team All rights reserved."/>
       <tag line="3" name="license" description="GNU General Public License version 2 or later; see LICENSE.txt"/>
     </docblock>
     <class final="false" abstract="false" namespace="global" line="18" package="ChurchDirectory\Site">

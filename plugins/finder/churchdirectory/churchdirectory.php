@@ -1,7 +1,7 @@
 <?php
 /**
  * @package    Finder.ChurchDirectory
- * @copyright  2007 - 2014 (C) Joomla Bible Study Team All rights reserved.
+ * @copyright  2007 - 2016 (C) Joomla Bible Study Team All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -78,8 +78,8 @@ class PlgFinderChurchDirectory extends FinderIndexerAdapter
 	/**
 	 * Constructor
 	 *
-	 * @param   object &$subject  The object to observe
-	 * @param   array  $config    An array that holds the plugin configuration
+	 * @param   object  &$subject  The object to observe
+	 * @param   array   $config    An array that holds the plugin configuration
 	 *
 	 * @since   2.5
 	 */
@@ -94,9 +94,9 @@ class PlgFinderChurchDirectory extends FinderIndexerAdapter
 	 * changed. This is fired when the item category is published or unpublished
 	 * from the list view.
 	 *
-	 * @param   string  $extension  The extension whose category has been updated.
-	 * @param   array   $pks        A list of primary key ids of the content that has changed state.
-	 * @param   integer $value      The value of the state that the content has been changed to.
+	 * @param   string   $extension  The extension whose category has been updated.
+	 * @param   array    $pks        A list of primary key ids of the content that has changed state.
+	 * @param   integer  $value      The value of the state that the content has been changed to.
 	 *
 	 * @return  void
 	 *
@@ -146,9 +146,9 @@ class PlgFinderChurchDirectory extends FinderIndexerAdapter
 	/**
 	 * Method to determine if the access level of an item changed.
 	 *
-	 * @param   string  $context  The context of the content passed to the plugin.
-	 * @param   JTable  $row      A JTable object
-	 * @param   boolean $isNew    If the content has just been created
+	 * @param   string   $context  The context of the content passed to the plugin.
+	 * @param   JTable   $row      A JTable object
+	 * @param   boolean  $isNew    If the content has just been created
 	 *
 	 * @return  boolean  True on success.
 	 *
@@ -189,9 +189,9 @@ class PlgFinderChurchDirectory extends FinderIndexerAdapter
 	 * This event is fired before the data is actually saved so we are going
 	 * to queue the item to be indexed later.
 	 *
-	 * @param   string  $context  The context of the content passed to the plugin.
-	 * @param   JTable  $row      A JTable object
-	 * @param   boolean $isNew    If the content is just about to be created
+	 * @param   string   $context  The context of the content passed to the plugin.
+	 * @param   JTable   $row      A JTable object
+	 * @param   boolean  $isNew    If the content is just about to be created
 	 *
 	 * @return  boolean  True on success.
 	 *
@@ -228,9 +228,9 @@ class PlgFinderChurchDirectory extends FinderIndexerAdapter
 	 * from outside the edit screen. This is fired when the item is published,
 	 * unpublished, archived, or unarchived from the list view.
 	 *
-	 * @param   string  $context  The context for the content passed to the plugin.
-	 * @param   array   $pks      A list of primary key ids of the content that has changed state.
-	 * @param   integer $value    The value of the state that the content has been changed to.
+	 * @param   string   $context  The context for the content passed to the plugin.
+	 * @param   array    $pks      A list of primary key ids of the content that has changed state.
+	 * @param   integer  $value    The value of the state that the content has been changed to.
 	 *
 	 * @return  void
 	 *
@@ -254,8 +254,8 @@ class PlgFinderChurchDirectory extends FinderIndexerAdapter
 	/**
 	 * Method to index an item. The item must be a FinderIndexerResult object.
 	 *
-	 * @param   FinderIndexerResult $item    The item to index as an FinderIndexerResult object.
-	 * @param   string              $format  The item format
+	 * @param   FinderIndexerResult  $item    The item to index as an FinderIndexerResult object.
+	 * @param   string               $format  The item format
 	 *
 	 * @return  void
 	 *
@@ -390,16 +390,8 @@ class PlgFinderChurchDirectory extends FinderIndexerAdapter
 		// Get content extras.
 		FinderIndexerHelper::getContentExtras($item);
 
-		if (version_compare(JVERSION, '3.0', 'ge'))
-		{
-			// Index the item.
-			$this->indexer->index($item);
-		}
-		else
-		{
-			// Index the item.
-			FinderIndexer::index($item);
-		}
+		// Index the item.
+		$this->indexer->index($item);
 	}
 
 	/**
@@ -423,7 +415,7 @@ class PlgFinderChurchDirectory extends FinderIndexerAdapter
 	/**
 	 * Method to get the SQL query used to retrieve the list of content items.
 	 *
-	 * @param   mixed $query  A JDatabaseQuery object or null.
+	 * @param   mixed  $query  A JDatabaseQuery object or null.
 	 *
 	 * @return  JDatabaseQuery  A database object.
 	 *

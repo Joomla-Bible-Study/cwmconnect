@@ -1,7 +1,7 @@
 <?php
 /**
  * @package    ChurchDirectory.Site
- * @copyright  Copyright (C) 2005 - 2011 Joomla Bible Study, All rights reserved.
+ * @copyright  Copyright (C) 2005 - 2016 Joomla Bible Study, All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 

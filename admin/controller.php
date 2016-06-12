@@ -1,10 +1,18 @@
 <?php
 /**
  * @package    ChurchDirectory.Admin
- * @copyright  2007 - 2014 (C) Joomla Bible Study Team All rights reserved.
+ * @copyright  2007 - 2016 (C) Joomla Bible Study Team All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('_JEXEC') or die;
+
+// Always load JBSM API if it exists.
+$api = JPATH_ADMINISTRATOR . '/components/com_churchdirectory/api.php';
+
+if (file_exists($api))
+{
+	require_once $api;
+}
 
 /**
  * Component Controller

@@ -1,7 +1,7 @@
 <?php
 /**
  * @package    ChurchDirectory.Site
- * @copyright  2007 - 2014 (C) Joomla Bible Study Team All rights reserved.
+ * @copyright  2007 - 2016 (C) Joomla Bible Study Team All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -25,7 +25,11 @@ else
 // Old PHP version detected. EJECT! EJECT! EJECT!
 if (!version_compare($version, '5.3.0', '>='))
 {
-	JFactory::getApplication()->enqueueMessage('PHP versions 4.x, 5.0, 5.1 and 5.2 are no longer supported by Church Direcotory.<br/><br/>The version of PHP used on your site is obsolete and contains known security vulenrabilities. Moreover, it is missing features required by Church Directory to work properly or at all. Please ask your host to upgrade your server to the latest PHP 5.3 release. Thank you!', 'error');
+	JFactory::getApplication()->enqueueMessage('PHP versions 4.x, 5.0, 5.1 and 5.2 are no longer supported by Church Direcotory.<br/>
+<br/>The version of PHP used on your site is obsolete and contains known security vulenrabilities. Moreover,
+it is missing features required by Church Directory to work properly or at all.
+ Please ask your host to upgrade your server to the latest PHP 5.3 release.
+Thank you!', 'error');
 
 	return false;
 }

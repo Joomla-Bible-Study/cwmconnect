@@ -1,55 +1,57 @@
 <?php
 /**
- * @package  ChurchDirectory.Site
- * @copyright  2007 - 2014 (C) Joomla Bible Study Team All rights reserved.
- * @license  GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    ChurchDirectory.Site
+ * @copyright  2007 - 2016 (C) Joomla Bible Study Team All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 defined('_JEXEC') or die;
 $class = ' class="first"';
 if (count($this->items[$this->parent->id]) > 0 && $this->maxLevelcat != 0) :
-    ?>
-    <ul class="list-striped list-condensed">
-        <?php foreach ($this->items[$this->parent->id] as $id => $item) : ?>
-            <?php
-            if ($this->params->get('show_empty_categories_cat') || $item->numitems || count($item->getChildren())) :
-                if (!isset($this->items[$this->parent->id][$id + 1])) {
-                    $class = ' class="last"';
-                }
-                ?>
-                <li<?php echo $class; ?>>
-                    <?php $class = ''; ?>
-                    <h4 class="item-title">
-	                    <a href="<?php echo JRoute::_(ChurchDirectoryHelperRoute::getCategoryRoute($item->id)); ?>">
-                            <?php echo $this->escape($item->title); ?>
-	                    </a>
+	?>
+	<ul class="list-striped list-condensed">
+		<?php foreach ($this->items[$this->parent->id] as $id => $item) : ?>
+			<?php
+			if ($this->params->get('show_empty_categories_cat') || $item->numitems || count($item->getChildren())) :
+				if (!isset($this->items[$this->parent->id][$id + 1]))
+				{
+					$class = ' class="last"';
+				}
+				?>
+				<li<?php echo $class; ?>>
+					<?php $class = ''; ?>
+					<h4 class="item-title">
+						<a href="<?php echo JRoute::_(ChurchDirectoryHelperRoute::getCategoryRoute($item->id)); ?>">
+							<?php echo $this->escape($item->title); ?>
+						</a>
 
-	                    <?php if ($this->params->get('show_cat_items_cat') == 1) :?>
-	                        <span class="badge badge-info pull-right" title="<?php echo JText::_('COM_CHURCHDIRECTORY_COUNT'); ?>"><?php echo $item->numitems; ?></span>
-	                    <?php endif; ?>
-                    </h4>
+						<?php if ($this->params->get('show_cat_items_cat') == 1) : ?>
+							<span class="badge badge-info pull-right"
+							      title="<?php echo JText::_('COM_CHURCHDIRECTORY_COUNT'); ?>"><?php echo $item->numitems; ?></span>
+						<?php endif; ?>
+					</h4>
 
-                    <?php if ($this->params->get('show_subcat_desc_cat') == 1) : ?>
-                        <?php if ($item->description) : ?>
-                            <div class="category-desc">
-                                <?php echo JHtml::_('content.prepare', $item->description); ?>
-                            </div>
-                        <?php endif; ?>
-                    <?php endif; ?>
+					<?php if ($this->params->get('show_subcat_desc_cat') == 1) : ?>
+						<?php if ($item->description) : ?>
+							<div class="category-desc">
+								<?php echo JHtml::_('content.prepare', $item->description); ?>
+							</div>
+						<?php endif; ?>
+					<?php endif; ?>
 
-                    <?php
-                    if (count($item->getChildren()) > 0) :
-                        $this->items[$item->id] = $item->getChildren();
-                        $this->parent = $item;
-                        $this->maxLevelcat--;
-                        echo $this->loadTemplate('items');
-                        $this->parent = $item->getParent();
-                        $this->maxLevelcat++;
-                    endif;
-                    ?>
+					<?php
+					if (count($item->getChildren()) > 0) :
+						$this->items[$item->id] = $item->getChildren();
+						$this->parent           = $item;
+						$this->maxLevelcat--;
+						echo $this->loadTemplate('items');
+						$this->parent = $item->getParent();
+						$this->maxLevelcat++;
+					endif;
+					?>
 
-                </li>
-            <?php endif; ?>
-        <?php endforeach; ?>
-    </ul>
+				</li>
+			<?php endif; ?>
+		<?php endforeach; ?>
+	</ul>
 <?php endif; ?>

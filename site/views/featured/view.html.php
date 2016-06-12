@@ -1,7 +1,7 @@
 <?php
 /**
  * @package    ChurchDirectory.Site
- * @copyright  2007 - 2014 (C) Joomla Bible Study Team All rights reserved.
+ * @copyright  2007 - 2016 (C) Joomla Bible Study Team All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -48,7 +48,7 @@ class ChurchDirectoryViewFeatured extends JViewLegacy
 	/**
 	 * Display the view
 	 *
-	 * @param string $tpl
+	 * @param   string  $tpl  ?
 	 *
 	 * @return    mixed    False on error, null otherwise.
 	 */
@@ -118,6 +118,8 @@ class ChurchDirectoryViewFeatured extends JViewLegacy
 
 	/**
 	 * Prepares the document
+	 *
+	 * @return void
 	 */
 	protected function _prepareDocument()
 	{

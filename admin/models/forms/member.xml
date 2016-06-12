@@ -658,6 +658,7 @@
                label="COM_CHURCHDIRECTORY_FIELD_SEX_LABEL"
                description="COM_CHURCHDIRECTORY_FIELD_SEX_DESC"
                required="true">
+	        <option value="">COM_CHURCHDIRECTORY_SEX_SELECT_ONE</option>
             <option value="0">COM_CHURCHDIRECTORY_FEMALE</option>
             <option value="1">COM_CHURCHDIRECTORY_MALE</option>
         </field>

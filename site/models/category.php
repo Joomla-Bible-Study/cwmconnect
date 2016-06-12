@@ -1,13 +1,14 @@
 <?php
 /**
  * @package    ChurchDirectory.Site
- * @copyright  2007 - 2014 (C) Joomla Bible Study Team All rights reserved.
+ * @copyright  2007 - 2016 (C) Joomla Bible Study Team All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * */
 
 defined('_JEXEC') or die;
 
-jimport('joomla.application.component.modellist');
+use Joomla\Registry\Registry;
+
 /**
  * Class list category
  *
@@ -80,7 +81,7 @@ class ChurchDirectoryModelCategory extends JModelList
 	/**
 	 * Constructor.
 	 *
-	 * @param   array $config  An optional associative array of configuration settings.
+	 * @param   array  $config  An optional associative array of configuration settings.
 	 */
 	public function __construct($config = array())
 	{
@@ -121,7 +122,7 @@ class ChurchDirectoryModelCategory extends JModelList
 
 			if (!isset($this->_params))
 			{
-				$params = new JRegistry;
+				$params = new Registry;
 				$params->loadString($item->params);
 				$item->params = $params;
 			}
@@ -235,8 +236,8 @@ class ChurchDirectoryModelCategory extends JModelList
 	 *
 	 * Note. Calling getState in this method will result in recursion.
 	 *
-	 * @param   string $ordering   An optional ordering field.
-	 * @param   string $direction  An optional direction (asc|desc).
+	 * @param   string  $ordering   An optional ordering field.
+	 * @param   string  $direction  An optional direction (asc|desc).
 	 *
 	 * @since   1.6
 	 * @return  void
@@ -253,11 +254,11 @@ class ChurchDirectoryModelCategory extends JModelList
 
 		if ($format == 'feed')
 		{
-			$limit = $app->getCfg('feed_limit');
+			$limit = $app->get('feed_limit');
 		}
 		else
 		{
-			$limit = $app->getUserStateFromRequest('global.list.limit', 'limit', $app->getCfg('list_limit'));
+			$limit = $app->getUserStateFromRequest('global.list.limit', 'limit', $app->get('list_limit'));
 		}
 		if (!$app->input->getInt('print'))
 		{
@@ -271,7 +272,7 @@ class ChurchDirectoryModelCategory extends JModelList
 		$this->setState('list.filter', $app->input->getString('filter-search', ''));
 
 		// Get list ordering default from the parameters
-		$menuParams = new JRegistry;
+		$menuParams = new Registry;
 
 		if ($menu = $app->getMenu()->getActive())
 		{
@@ -326,7 +327,7 @@ class ChurchDirectoryModelCategory extends JModelList
 			$app    = JFactory::getApplication();
 			$menu   = $app->getMenu();
 			$active = $menu->getActive();
-			$params = new JRegistry;
+			$params = new Registry;
 
 			if ($active)
 			{

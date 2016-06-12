@@ -1,11 +1,12 @@
 <?php
 /**
- * @package        ChurchDirectory.Admin
- * @copyright  2007 - 2014 (C) Joomla Bible Study Team All rights reserved.
- * @license        GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    ChurchDirectory.Admin
+ * @copyright  2007 - 2016 (C) Joomla Bible Study Team All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 defined('_JEXEC') or die;
+use Joomla\Registry\Registry;
 
 /**
  * Member Table Class
@@ -17,66 +18,124 @@ class ChurchDirectoryTableMember extends JTable
 {
 
 	public $id;
-	public $name;
-	public $lname;
-	public $alias;
-	public $con_position;
-	public $contact_id;
-	public $address;
-	public $suburb;
-	public $state;
-	public $country;
-	public $postcode;
-	public $postcodeaddon;
-	public $telephone;
-	public $fax;
-	public $misc;
-	public $spouse;
-	public $children;
-	public $image;
-	public $imagepos;
-	public $email_to;
-	public $default_con;
-	public $published;
-	public $checked_out;
-	public $checked_out_time;
-	public $ordering;
-	public $params;
-	public $user_id;
-	public $catid;
-	public $kmlid;
-	public $funitid;
-	public $access;
-	public $mobile;
-	public $webpage;
-	public $sortname1;
-	public $sortname2;
-	public $sortname3;
-	public $language;
-	public $created;
-	public $created_by;
-	public $created_by_alias;
-	public $modified;
-	public $modified_by;
-	public $metakey;
-	public $metadesc;
-	public $metadata;
-	public $featured;
-	public $xreference;
-	public $publish_up;
-	public $publish_down;
-	public $skype;
-	public $yahoo_msg;
-	public $lat;
-	public $lng;
-	public $birthdate;
-	public $anniversary;
-	public $attribs;
-	public $version;
-	public $hits;
-	public $surname;
-	public $mstatus;
 
+	public $name;
+
+	public $lname;
+
+	public $alias;
+
+	public $con_position;
+
+	public $contact_id;
+
+	public $address;
+
+	public $suburb;
+
+	public $state;
+
+	public $country;
+
+	public $postcode;
+
+	public $postcodeaddon;
+
+	public $telephone;
+
+	public $fax;
+
+	public $misc;
+
+	public $spouse;
+
+	public $children;
+
+	public $image;
+
+	public $imagepos;
+
+	public $email_to;
+
+	public $default_con;
+
+	public $published;
+
+	public $checked_out;
+
+	public $checked_out_time;
+
+	public $ordering;
+
+	public $params;
+
+	public $user_id;
+
+	public $catid;
+
+	public $kmlid;
+
+	public $funitid;
+
+	public $access;
+
+	public $mobile;
+
+	public $webpage;
+
+	public $sortname1;
+
+	public $sortname2;
+
+	public $sortname3;
+
+	public $language;
+
+	public $created;
+
+	public $created_by;
+
+	public $created_by_alias;
+
+	public $modified;
+
+	public $modified_by;
+
+	public $metakey;
+
+	public $metadesc;
+
+	public $metadata;
+
+	public $featured;
+
+	public $xreference;
+
+	public $publish_up;
+
+	public $publish_down;
+
+	public $skype;
+
+	public $yahoo_msg;
+
+	public $lat;
+
+	public $lng;
+
+	public $birthdate;
+
+	public $anniversary;
+
+	public $attribs;
+
+	public $version;
+
+	public $hits;
+
+	public $surname;
+
+	public $mstatus;
 
 	/**
 	 * Constructor
@@ -97,6 +156,7 @@ class ChurchDirectoryTableMember extends JTable
 	 * @param   mixed  $ignore  An optional array or space separated list of properties to ignore while binding.
 	 *
 	 * @return  boolean  True on success.
+	 *
 	 * @link     http://docs.joomla.org/JTable/bind
 	 * @since    1.7.0
 	 */
@@ -104,21 +164,21 @@ class ChurchDirectoryTableMember extends JTable
 	{
 		if (isset($array['params']) && is_array($array['params']))
 		{
-			$registry = new JRegistry;
+			$registry = new Registry;
 			$registry->loadArray($array['params']);
 			$array['params'] = (string) $registry;
 		}
 
 		if (isset($array['attribs']) && is_array($array['attribs']))
 		{
-			$registry = new JRegistry();
+			$registry = new Registry;
 			$registry->loadArray($array['attribs']);
 			$array['attribs'] = (string) $registry;
 		}
 
 		if (isset($array['metadata']) && is_array($array['metadata']))
 		{
-			$registry = new JRegistry();
+			$registry = new Registry;
 			$registry->loadArray($array['metadata']);
 			$array['metadata'] = (string) $registry;
 		}
@@ -136,6 +196,7 @@ class ChurchDirectoryTableMember extends JTable
 	 * @param   boolean  $updateNulls  True to update fields even if they are null.
 	 *
 	 * @return    boolean    True on success, false on failure.
+	 *
 	 * @since    1.7.0
 	 */
 	public function store ($updateNulls = false)
@@ -143,21 +204,21 @@ class ChurchDirectoryTableMember extends JTable
 		// Transform the params field
 		if (is_array($this->params))
 		{
-			$registry = new JRegistry;
+			$registry = new Registry;
 			$registry->loadArray($this->params);
 			$this->params = (string) $registry;
 		}
 		// Transform the attribs field
 		if (is_array($this->attribs))
 		{
-			$registry = new JRegistry;
+			$registry = new Registry;
 			$registry->loadArray($this->attribs);
 			$this->attribs = (string) $registry;
 		}
 		// Force the Valu of FamilyPostion if Family unit = -1
 		if ($this->funitid == '-1')
 		{
-			$registry = new JRegistry;
+			$registry = new Registry;
 			$registry->loadString($this->attribs);
 			$registry->set('familypostion', '0');
 			$this->attribs = (string) $registry;
@@ -221,6 +282,7 @@ class ChurchDirectoryTableMember extends JTable
 	 * Overloaded check function
 	 *
 	 * @return boolean
+	 *
 	 * @see   JTable::check
 	 * @since 1.7.0
 	 */
@@ -260,7 +322,7 @@ class ChurchDirectoryTableMember extends JTable
 		{
 			$this->alias = $this->name;
 		}
-		$this->alias = JApplication::stringURLSafe($this->alias);
+		$this->alias = JApplicationHelper::stringURLSafe($this->alias);
 
 		if (trim(str_replace('-', '', $this->alias)) == '')
 		{
@@ -287,9 +349,9 @@ class ChurchDirectoryTableMember extends JTable
 		if (!empty($this->metakey))
 		{
 			// Only process if not empty
-			$bad_characters = array("\n", "\r", "\"", "<", ">"); // array of characters to remove
-			$after_clean    = JString::str_ireplace($bad_characters, "", $this->metakey); // remove bad characters
-			$keys           = explode(',', $after_clean); // create array using commas as delimiter
+			$bad_characters = array("\n", "\r", "\"", "<", ">");
+			$after_clean    = \Joomla\String\StringHelper::str_ireplace($bad_characters, "", $this->metakey);
+			$keys           = explode(',', $after_clean);
 			$clean_keys     = array();
 			foreach ($keys as $key)
 			{
@@ -298,15 +360,15 @@ class ChurchDirectoryTableMember extends JTable
 					$clean_keys[] = trim($key);
 				}
 			}
-			$this->metakey = implode(", ", $clean_keys); // Put array back together delimited by ", "
+			$this->metakey = implode(", ", $clean_keys);
 		}
 
 		// Clean up description -- eliminate quotes and <> brackets
 		if (!empty($this->metadesc))
 		{
-			// only process if not empty
+			// Only process if not empty
 			$bad_characters = array("\"", "<", ">");
-			$this->metadesc = JString::str_ireplace($bad_characters, "", $this->metadesc);
+			$this->metadesc = \Joomla\String\StringHelper::str_ireplace($bad_characters, "", $this->metadesc);
 		}
 
 		return true;
@@ -326,7 +388,7 @@ class ChurchDirectoryTableMember extends JTable
 		if (parent::load($pk, $reset))
 		{
 			// Convert the params field to a registry.
-			$params = new JRegistry;
+			$params = new Registry;
 			$params->loadString($this->params);
 			$this->params = $params;
 
@@ -344,6 +406,7 @@ class ChurchDirectoryTableMember extends JTable
 	 * where id is the value of the primary key of the table.
 	 *
 	 * @return      string
+	 *
 	 * @since       1.6
 	 */
 	protected function _getAssetName ()
@@ -357,6 +420,7 @@ class ChurchDirectoryTableMember extends JTable
 	 * Method to return the title to use for the asset table.
 	 *
 	 * @return      string
+	 *
 	 * @since       1.6
 	 */
 	protected function _getAssetTitle ()
@@ -369,10 +433,11 @@ class ChurchDirectoryTableMember extends JTable
 	/**
 	 * Get the parent asset id for the record
 	 *
-	 * @param   JTable  $table
-	 * @param   int     $id
+	 * @param   JTable  $table  ?
+	 * @param   int     $id     ?
 	 *
 	 * @return      int
+	 *
 	 * @since       1.6
 	 */
 	protected function _getAssetParentId (JTable $table = null, $id = null)

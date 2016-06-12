@@ -1,7 +1,7 @@
 <?php
 /**
  * @package    ChurchDirectory.Admin
- * @copyright  2007 - 2014 (C) Joomla Bible Study Team All rights reserved.
+ * @copyright  2007 - 2016 (C) Joomla Bible Study Team All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -107,10 +107,6 @@ JFactory::getDocument()->addScriptDeclaration('
 		<div class="control-group">
 			<div class="control-label"><?php echo $this->form->getLabel('catid'); ?></div>
 			<div class="controls"><?php echo $this->form->getInput('catid'); ?></div>
-		</div>
-		<div class="control-group">
-			<div class="control-label"><?php echo $this->form->getLabel('ordering'); ?></div>
-			<div class="controls"><?php echo $this->form->getInput('ordering'); ?></div>
 		</div>
 		<div class="control-group">
 			<div class="control-label"><?php echo $this->form->getLabel('id'); ?></div>

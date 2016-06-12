@@ -1,12 +1,10 @@
 <?php
 /**
  * @package    ChurchDirectory.Admin
- * @copyright  2007 - 2014 (C) Joomla Bible Study Team All rights reserved.
+ * @copyright  2007 - 2016 (C) Joomla Bible Study Team All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('JPATH_BASE') or die;
-
-// jimport('joomla.form.formfield');
 
 /**
  * Supports a modal member picker.
@@ -83,7 +81,11 @@ class JFormFieldModal_Members extends JFormField
 			$link .= '&amp;forcedLanguage=' . $this->element['language'];
 		}
 
-		$html = "\n" . '<div class="input-append"><input type="text" class="input-medium" id="' . $this->id . '_name" value="' . htmlspecialchars($title, ENT_QUOTES, 'UTF-8') . '" disabled="disabled" /><a class="modal btn" title="' . JText::_('COM_CHURCHDIRECTORY_CHANGE_MEMBER_BUTTON') . '"  href="' . $link . '" rel="{handler: \'iframe\', size: {x: 800, y: 450}}"><i class="icon-address hasTooltip" title="' . JText::_('COM_CHURCHDIRECTORY_CHANGE_MEMBER_BUTTON') . '"></i> ' . JText::_('JSELECT') . '</a></div>' . "\n";
+		$html = "\n" . '<div class="input-append"><input type="text" class="input-medium" id="' . $this->id . '_name" value="' .
+			htmlspecialchars($title, ENT_QUOTES, 'UTF-8') . '" disabled="disabled" /><a class="modal btn" title="' .
+			JText::_('COM_CHURCHDIRECTORY_CHANGE_MEMBER_BUTTON') .
+			'"  href="' . $link . '" rel="{handler: \'iframe\', size: {x: 800, y: 450}}"><i class="icon-address hasTooltip" title="' .
+			JText::_('COM_CHURCHDIRECTORY_CHANGE_MEMBER_BUTTON') . '"></i> ' . JText::_('JSELECT') . '</a></div>' . "\n";
 
 		// The active member id field.
 		if (0 == (int) $this->value)

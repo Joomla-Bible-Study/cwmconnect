@@ -1,7 +1,7 @@
 <?php
 /**
  * @package    ChurchDirectory.Admin
- * @copyright  2007 - 2014 (C) Joomla Bible Study Team All rights reserved.
+ * @copyright  2007 - 2016 (C) Joomla Bible Study Team All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -21,8 +21,9 @@ class ChurchDirectoryControllerDirHeader extends JControllerForm
 	 *
 	 * @param   array  $data  An array of input data.
 	 *
-	 * @return    boolean
-	 * @since    1.7.0
+	 * @return  boolean
+	 *
+	 * @since   1.7.0
 	 */
 	protected function allowAdd($data = array())
 	{

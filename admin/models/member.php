@@ -3,22 +3,19 @@
 /**
  * Member model
  *
- * @package             ChurchDirectory.Admin
- * @copyright           2007 - 2014 (C) Joomla Bible Study Team All rights reserved.
- * @license             GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    ChurchDirectory.Admin
+ * @copyright  2007 - 2016 (C) Joomla Bible Study Team All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 // No direct access
 defined('_JEXEC') or die;
-/**
- * For Joomla 2.5.
- */
-jimport('joomla.application.component.modeladmin');
+use Joomla\Registry\Registry;
 
 /**
  * Item Model for a Member.
  *
- * @package      ChurchDirectory.Admin
- * @since        1.7.0
+ * @package  ChurchDirectory.Admin
+ * @since    1.7.0
  */
 class ChurchDirectoryModelMember extends JModelAdmin
 {
@@ -38,7 +35,7 @@ class ChurchDirectoryModelMember extends JModelAdmin
 	{
 		// Sanitize user ids.
 		$pks = array_unique($pks);
-		JArrayHelper::toInteger($pks);
+		Joomla\Utilities\ArrayHelper::toInteger($pks);
 
 		// Remove any values of zero.
 		if (array_search(0, $pks, true))
@@ -57,7 +54,7 @@ class ChurchDirectoryModelMember extends JModelAdmin
 
 		if (!empty($commands['category_id']))
 		{
-			$cmd = JArrayHelper::getValue($commands, 'move_copy', 'c');
+			$cmd = Joomla\Utilities\ArrayHelper::getValue($commands, 'move_copy', 'c');
 
 			if ($cmd == 'c')
 			{
@@ -293,9 +290,10 @@ class ChurchDirectoryModelMember extends JModelAdmin
 	/**
 	 * Method to test whether a record can be deleted.
 	 *
-	 * @param    object    $record    A record object.
+	 * @param   object  $record  A record object.
 	 *
-	 * @return    boolean    True if allowed to delete the record. Defaults to the permission set in the component.
+	 * @return    boolean  True if allowed to delete the record. Defaults to the permission set in the component.
+	 *
 	 * @since    1.7.0
 	 */
 	protected function canDelete($record)
@@ -316,9 +314,10 @@ class ChurchDirectoryModelMember extends JModelAdmin
 	/**
 	 * Method to test whether a record can have its state edited.
 	 *
-	 * @param    object    $record    A record object.
+	 * @param   object  $record  A record object.
 	 *
 	 * @return    boolean    True if allowed to change the state of the record. Defaults to the permission set in the component.
+	 *
 	 * @since    1.7.0
 	 */
 	protected function canEditState($record)
@@ -340,11 +339,12 @@ class ChurchDirectoryModelMember extends JModelAdmin
 	/**
 	 * Returns a Table object, always creating it
 	 *
-	 * @param    string    $type      The table type to instantiate
-	 * @param    string    $prefix    A prefix for the table class name. Optional.
-	 * @param    array     $config    Configuration array for model. Optional.
+	 * @param   string  $type    The table type to instantiate
+	 * @param   string  $prefix  A prefix for the table class name. Optional.
+	 * @param   array   $config  Configuration array for model. Optional.
 	 *
 	 * @return    JTable    A database object
+	 *
 	 * @since    1.7.0
 	 */
 	public function getTable($type = 'Member', $prefix = 'ChurchDirectoryTable', $config = array())
@@ -355,10 +355,11 @@ class ChurchDirectoryModelMember extends JModelAdmin
 	/**
 	 * Method to get the row form.
 	 *
-	 * @param    array      $data        Data for the form.
-	 * @param    boolean    $loadData    True if the form is to load its own data (default case), false if not.
+	 * @param   array    $data      Data for the form.
+	 * @param   boolean  $loadData  True if the form is to load its own data (default case), false if not.
 	 *
 	 * @return    mixed    A JForm object on success, false on failure
+	 *
 	 * @since    1.7.0
 	 */
 	public function getForm($data = array(), $loadData = true)
@@ -395,9 +396,10 @@ class ChurchDirectoryModelMember extends JModelAdmin
 	/**
 	 * Method to get a single record.
 	 *
-	 * @param    integer    $pk    The id of the primary key.
+	 * @param   integer  $pk  The id of the primary key.
 	 *
 	 * @return    mixed    Object on success, false on failure.
+	 *
 	 * @since    1.7.0
 	 */
 	public function getItem($pk = null)
@@ -405,12 +407,12 @@ class ChurchDirectoryModelMember extends JModelAdmin
 		if ($item = parent::getItem($pk))
 		{
 			// Convert the params field to an array.
-			$registry = new JRegistry;
+			$registry = new Registry;
 			$registry->loadString($item->attribs);
 			$item->attribs = $registry->toArray();
 
 			// Convert the params field to an array.
-			$registry = new JRegistry;
+			$registry = new Registry;
 			$registry->loadString($item->metadata);
 			$item->metadata = $registry->toArray();
 		}
@@ -421,7 +423,8 @@ class ChurchDirectoryModelMember extends JModelAdmin
 	/**
 	 * Method to get the data that should be injected in the form.
 	 *
-	 * @return    mixed    The data for the form.
+	 * @return   mixed    The data for the form.
+	 *
 	 * @since    1.7.0
 	 */
 	protected function loadFormData()
@@ -448,9 +451,10 @@ class ChurchDirectoryModelMember extends JModelAdmin
 	/**
 	 * Prepare and sanitise the table prior to saving.
 	 *
-	 * @param    JTable    $table
+	 * @param   JTable  $table  ?
 	 *
 	 * @return    void
+	 *
 	 * @since    1.7.0
 	 */
 	protected function prepareTable($table)
@@ -459,17 +463,15 @@ class ChurchDirectoryModelMember extends JModelAdmin
 		$user = JFactory::getUser();
 
 		$table->name  = htmlspecialchars_decode($table->name, ENT_QUOTES);
-		$table->alias = JApplication::stringURLSafe($table->alias);
+		$table->alias = JApplicationHelper::stringURLSafe($table->alias);
 
 		if (empty($table->alias))
 		{
-			$table->alias = JApplication::stringURLSafe($table->name);
+			$table->alias = JApplicationHelper::stringURLSafe($table->name);
 		}
 
 		if (empty($table->id))
 		{
-			// Set the values
-			//$table->created	= $date->toMySQL();
 			// Set ordering to the last item if not set
 			if (empty($table->ordering))
 			{
@@ -485,9 +487,10 @@ class ChurchDirectoryModelMember extends JModelAdmin
 	/**
 	 * A protected method to get a set of ordering conditions.
 	 *
-	 * @param    JTable    $table    A record object.
+	 * @param   JTable  $table  A record object.
 	 *
 	 * @return    array    An array of conditions to add to add to ordering queries.
+	 *
 	 * @since    1.7.0
 	 */
 	protected function getReorderConditions($table)
@@ -515,7 +518,7 @@ class ChurchDirectoryModelMember extends JModelAdmin
 	{
 		// Sanitize the ids.
 		$pks = (array) $pks;
-		JArrayHelper::toInteger($pks);
+		Joomla\Utilities\ArrayHelper::toInteger($pks);
 
 		if (empty($pks))
 		{
@@ -550,10 +553,12 @@ class ChurchDirectoryModelMember extends JModelAdmin
 	/**
 	 * Custom clean the cache of com_churchdirectory and churchdirectory modules
 	 *
-	 * @param string $group
-	 * @param int    $client_id
+	 * @param   string  $group      ?
+	 * @param   int     $client_id  ?
 	 *
 	 * @since    1.6
+	 *
+	 * @return void;
 	 */
 	protected function cleanCache($group = null, $client_id = 0)
 	{

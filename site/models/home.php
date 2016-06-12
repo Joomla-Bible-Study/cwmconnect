@@ -1,12 +1,13 @@
 <?php
 /**
- * @package        ChurchDirectory.Site
- * @copyright      2007 - 2014 (C) Joomla Bible Study Team All rights reserved.
- * @license        GNU General Public License version 2 or later; see LICENSE.txt
+ * @package    ChurchDirectory.Site
+ * @copyright  2007 - 2016 (C) Joomla Bible Study Team All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * */
 
 defined('_JEXEC') or die;
 
+use Joomla\Registry\Registry;
 
 jimport('joomla.application.component.modellist');
 jimport('joomla.event.dispatcher');
@@ -48,8 +49,8 @@ class ChurchDirectoryModelHome extends JModelList
 	 *
 	 * Note. Calling getState in this method will result in recursion.
 	 *
-	 * @param   string $ordering  An optional ordering field.
-	 * @param   string $direction An optional direction (asc|desc).
+	 * @param   string  $ordering   An optional ordering field.
+	 * @param   string  $direction  An optional direction (asc|desc).
 	 *
 	 * @since    1.6
 	 * @return  void
@@ -65,7 +66,6 @@ class ChurchDirectoryModelHome extends JModelList
 		$params = $app->getParams();
 		$this->setState('params', $params);
 	}
-
 
 	/**
 	 * Method to get a list of items.
@@ -84,7 +84,7 @@ class ChurchDirectoryModelHome extends JModelList
 
 			if (!isset($this->_params))
 			{
-				$params = new JRegistry;
+				$params = new Registry;
 				$params->loadString($item->params);
 				$item->params = $params;
 			}

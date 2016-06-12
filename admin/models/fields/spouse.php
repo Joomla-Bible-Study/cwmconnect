@@ -1,7 +1,7 @@
 <?php
 /**
  * @package    ChurchDirectory.Admin
- * @copyright  2007 - 2014 (C) Joomla Bible Study Team All rights reserved.
+ * @copyright  2007 - 2016 (C) Joomla Bible Study Team All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 defined('JPATH_BASE') or die;
@@ -69,6 +69,7 @@ class JFormFieldSpouse extends JFormField
 		{
 			$registry = new Registry;
 			$registry->loadString($item->attribs);
+			$family_position = $registry->toObject();
 			// Todo Need to fix this. Bcc;
 			$family_position = $registry->toObject('familypostion');
 			$item            = (object) array_merge((array) $item, (array) $family_position);
@@ -76,7 +77,8 @@ class JFormFieldSpouse extends JFormField
 			if ($item->funitid != '0' && $item->id != $memberId)
 			{
 				$link = 'index.php?option=com_churchdirectory&task=member.edit&id=' . (int) $item->id . '&tmpl=component&layout=modal';
-				$html = '<h4><a class="btn btn-primary" onclick="SqueezeBox.fromElement(this, {handler:\'iframe\', size: {x: 900, y: 550}, url:\'' . $link . '\'})"
+				$html = '<h4>
+						<a class="btn btn-primary" onclick="SqueezeBox.fromElement(this, {handler:\'iframe\', size: {x: 900, y: 550}, url:\'' . $link . '\'})"
 			   title="' . $item->name . '">';
 
 				$html .= $db->escape($item->name);

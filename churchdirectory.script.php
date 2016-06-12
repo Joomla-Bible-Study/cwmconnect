@@ -1,7 +1,7 @@
 <?php
 /**
  * @package    ChurchDirectory.Admin
- * @copyright  2007 - 2014 (C) Joomla Bible Study Team All rights reserved.
+ * @copyright  2007 - 2016 (C) Joomla Bible Study Team All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * @see        Akeebe Script
  */
@@ -163,6 +163,8 @@ class Com_ChurchdirectoryInstallerScript
 	 * @param   string      $type    is the type of change (install, update or discover_install, not uninstall).
 	 * @param   JInstaller  $parent  is the class calling this method.
 	 *
+	 * @throws \Exception
+	 *
 	 * @return boolean
 	 */
 	public function preflight($type, $parent)
@@ -183,9 +185,7 @@ class Com_ChurchdirectoryInstallerScript
 		if (!version_compare(JVERSION, '3.4.4', 'ge'))
 		{
 			$msg = "<p>You need Joomla! 2.5.16 or later to install this component</p>";
-			JError::raiseWarning(100, $msg);
-
-			return false;
+			throw new Exception($msg, 100);
 		}
 		if (!version_compare($version, '5.3.10', 'ge'))
 		{
@@ -389,7 +389,8 @@ class Com_ChurchdirectoryInstallerScript
 						<td class="key"><?php echo $module['name']; ?></td>
 						<td class="key"><?php echo ucfirst($module['client']); ?></td>
 						<td><strong
-								style="color: <?php echo ($module['result']) ? "green" : "red" ?>"><?php echo ($module['result']) ? JText::_('COM_CHURCHDIRECTORY_REMOVED') : JText::_('COM_CHURCHDIRECTORY_NOT_REMOVED'); ?></strong>
+								style="color: <?php echo ($module['result']) ? "green" : "red" ?>"><?php echo ($module['result']) ? JText::_('COM_CHURCHDIRECTORY_REMOVED')
+										: JText::_('COM_CHURCHDIRECTORY_NOT_REMOVED'); ?></strong>
 						</td>
 					</tr>
 				<?php endforeach; ?>
@@ -836,7 +837,7 @@ class Com_ChurchdirectoryInstallerScript
 				->set('params = ' . $db->quote($paramsString))
 				->where('name = ' . $db->quote($this->churchdirectory_extension));
 			$db->setQuery($query);
-			$db->query();
+			$db->execute();
 		}
 	}
 

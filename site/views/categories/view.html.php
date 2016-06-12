@@ -1,7 +1,7 @@
 <?php
 /**
  * @package    ChurchDirectory.Site
- * @copyright  2007 - 2014 (C) Joomla Bible Study Team All rights reserved.
+ * @copyright  2007 - 2016 (C) Joomla Bible Study Team All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -10,8 +10,8 @@ defined('_JEXEC') or die;
 /**
  * ChurchDirectory categories view.
  *
- * @package    ChurchDirectory.Site
- * @since      1.7.0
+ * @package  ChurchDirectory.Site
+ * @since    1.7.0
  */
 class ChurchDirectoryViewCategories extends JViewLegacy
 {
@@ -48,6 +48,7 @@ class ChurchDirectoryViewCategories extends JViewLegacy
 
 	protected $maxLevelcat;
 
+	/** @type  Joomla\Registry\Registry */
 	protected $params;
 
 	protected $parent;
@@ -86,7 +87,7 @@ class ChurchDirectoryViewCategories extends JViewLegacy
 
 		if ($parent == false)
 		{
-			$app->enqueueMessage(404, JText::_('JGLOBAL_CATEGORY_NOT_FOUND'), 'error');
+			$app->enqueueMessage(JText::_('JGLOBAL_CATEGORY_NOT_FOUND'), 'error');
 
 			return false;
 		}

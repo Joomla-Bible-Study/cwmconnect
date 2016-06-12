@@ -1,7 +1,7 @@
 <?php
 /**
  * @package    Search.ChurchDirectory
- * @copyright  2007 - 2014 (C) Joomla Bible Study Team All rights reserved.
+ * @copyright  2007 - 2016 (C) Joomla Bible Study Team All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -13,7 +13,7 @@ defined('_JEXEC') or die;
  * @package  Search.ChurchDirectory
  * @since    1.7.0
  */
-class plgSearchChurchdirectory extends JPlugin
+class PlgSearchChurchdirectory extends JPlugin
 {
 
 	/**

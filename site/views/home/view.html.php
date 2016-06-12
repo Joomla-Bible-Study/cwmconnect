@@ -1,11 +1,13 @@
 <?php
 /**
  * @package    ChurchDirectory.Site
- * @copyright  2007 - 2014 Joomla Bible Study Team All rights reserved.
+ * @copyright  2007 - 2016 Joomla Bible Study Team All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 defined('_JEXEC') or die;
+
+use Joomla\Registry\Registry;
 
 /**
  * HTML Home View class for the ChurchDirectory component
@@ -15,12 +17,11 @@ defined('_JEXEC') or die;
  */
 class ChurchDirectoryViewHome extends JViewLegacy
 {
-
 	protected $state;
 
 	protected $items;
 
-	/** @var  JRegistry */
+	/** @var  Registry */
 	protected $params;
 
 	protected $user;
@@ -31,6 +32,8 @@ class ChurchDirectoryViewHome extends JViewLegacy
 
 	/** @var  JDocument */
 	public $document;
+
+	protected $renderHelper;
 
 	/**
 	 * Display function
@@ -63,7 +66,7 @@ class ChurchDirectoryViewHome extends JViewLegacy
 		$mod_params = array('style' => 'xhtml');
 		$contents   = '';
 		$mod        = JModuleHelper::getModule('mod_finder');
-		$registry   = new JRegistry;
+		$registry   = new Registry;
 		$registry->loadString($mod->params);
 		$registry->set('searchfilter', 'paramvalue');
 		$registry->set('show_advanced', '0');

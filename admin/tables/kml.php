@@ -1,11 +1,12 @@
 <?php
 /**
  * @package    ChurchDirectory.Admin
- * @copyright  2007 - 2014 (C) Joomla Bible Study Team All rights reserved.
+ * @copyright  2007 - 2016 (C) Joomla Bible Study Team All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
 defined('_JEXEC') or die;
+use Joomla\Registry\Registry;
 
 /**
  * KML Table Class
@@ -42,7 +43,7 @@ class ChurchDirectoryTableKML extends JTable
 	{
 		if (isset($array['params']) && is_array($array['params']))
 		{
-			$registry = new JRegistry();
+			$registry = new Registry;
 			$registry->loadArray($array['params']);
 			$array['params'] = (string) $registry;
 		}
@@ -64,7 +65,7 @@ class ChurchDirectoryTableKML extends JTable
 		// Transform the params field
 		if (is_array($this->params))
 		{
-			$registry = new JRegistry;
+			$registry = new Registry;
 			$registry->loadArray($this->params);
 			$this->params = (string) $registry;
 		}
@@ -104,7 +105,7 @@ class ChurchDirectoryTableKML extends JTable
 	 * @see   JTable::check
 	 * @since 1.7.0
 	 */
-	function check()
+	public function check()
 	{
 
 		if (JFilterInput::checkAttribute(array('href', $this->webpage)))
@@ -118,8 +119,7 @@ class ChurchDirectoryTableKML extends JTable
 		if ((strlen($this->webpage) > 0)
 			&& (stripos($this->webpage, 'http://') === false)
 			&& (stripos($this->webpage, 'https://') === false)
-			&& (stripos($this->webpage, 'ftp://') === false)
-		)
+			&& (stripos($this->webpage, 'ftp://') === false))
 		{
 			$this->webpage = 'http://' . $this->webpage;
 		}
@@ -147,7 +147,7 @@ class ChurchDirectoryTableKML extends JTable
 		{
 			$this->alias = $this->name;
 		}
-		$this->alias = JApplication::stringURLSafe($this->alias);
+		$this->alias = JApplicationHelper::stringURLSafe($this->alias);
 		if (trim(str_replace('-', '', $this->alias)) == '')
 		{
 			$this->alias = JFactory::getDate()->format("Y-m-d-H-i-s");

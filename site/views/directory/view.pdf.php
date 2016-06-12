@@ -3,7 +3,7 @@
  * Directory view for ChurchDirectory
  *
  * @package    ChurchDirectory.Site
- * @copyright  2007 - 2014 (C) Joomla Bible Study Team All rights reserved.
+ * @copyright  2007 - 2016 (C) Joomla Bible Study Team All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -56,7 +56,7 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 	/**
 	 * Display the view
 	 *
-	 * @param   string $tpl The name of the template file to parse; automatically searches through the template paths.
+	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
 	 *
 	 * @return  mixed  A string if successful, otherwise a Error object.
 	 */
@@ -124,8 +124,7 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 				}
 			}
 			if ($item->params->get('dr_show_street_address') || $item->params->get('dr_show_suburb')
-				|| $item->params->get('dr_show_state') || $item->params->get('dr_show_postcode') || $item->params->get('dr_show_country')
-			)
+				|| $item->params->get('dr_show_state') || $item->params->get('dr_show_postcode') || $item->params->get('dr_show_country'))
 			{
 				$params->set('address_check', 1);
 			}
@@ -136,8 +135,7 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 			if ($item->params->get('dr_show_email') || $item->params->get('dr_show_telephone')
 				|| $item->params->get('dr_show_fax') || $item->params->get('dr_show_mobile')
 				|| $item->params->get('dr_show_webpage') || $item->params->get('dr_show_spouse')
-				|| $item->params->get('dr_show_children')
-			)
+				|| $item->params->get('dr_show_children'))
 			{
 				$params->set('other_check', 1);
 			}
@@ -262,7 +260,7 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 		// Set auto page breaks
 		$pdf->SetAutoPageBreak(true, PDF_MARGIN_BOTTOM);
 
-		// set image scale factor
+		// Set image scale factor
 		$pdf->setImageScale(2.5);
 
 		// ---------------------------------------------------------

@@ -20,9 +20,9 @@ class ChurchDirectoryControllerMember extends JControllerForm
 	/**
 	 * Get model
 	 *
-	 * @param   string $name    The model name. Optional.
-	 * @param   string $prefix  The class prefix. Optional.
-	 * @param   array  $config  Configuration array for model. Optional.
+	 * @param   string  $name    The model name. Optional.
+	 * @param   string  $prefix  The class prefix. Optional.
+	 * @param   array   $config  Configuration array for model. Optional.
 	 *
 	 * @return  object  The model.
 	 */
@@ -75,14 +75,7 @@ class ChurchDirectoryControllerMember extends JControllerForm
 		// ChurchDirectory plugins
 		JPluginHelper::importPlugin('churchdirectory');
 
-		if (version_compare(JVERSION, '3.0', 'ge'))
-		{
-			$dispatcher = JEventDispatcher::getInstance();
-		}
-		else
-		{
-			$dispatcher = JDispatcher::getInstance();
-		}
+		$dispatcher = JEventDispatcher::getInstance();
 
 		// Validate the posted data.
 		$form = $model->getForm();
@@ -171,8 +164,8 @@ class ChurchDirectoryControllerMember extends JControllerForm
 	/**
 	 * Send email
 	 *
-	 * @param   array  $data             ?
-	 * @param   object $churchdirectory  ?
+	 * @param   array   $data             ?
+	 * @param   object  $churchdirectory  ?
 	 *
 	 * @return array
 	 */
