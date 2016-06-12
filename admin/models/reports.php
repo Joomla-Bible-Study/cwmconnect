@@ -181,9 +181,9 @@ class ChurchDirectoryModelReports extends JModelLegacy
 
 		// Join to check for category published state in parent categories up the tree
 		$query->select('c.published, CASE WHEN badcats.id is null THEN c.published ELSE 0 END AS parents_published');
-		$subquery = 'SELECT cat.id AS id FROM #__categories AS cat JOIN #__categories AS parent ';
+		$subquery = 'SELECT cat.id AS id FROM `#__categories` AS cat JOIN `#__categories` AS parent ';
 		$subquery .= 'ON cat.lft BETWEEN parent.lft AND parent.rgt ';
-		$subquery .= 'WHERE parent.extension = ' . $db->quote('com_churchdirectory');
+		$subquery .= 'WHERE parent.extension = ' . $db->q('com_churchdirectory');
 
 		if ($this->getState('filter.published') == 2)
 		{
@@ -276,7 +276,7 @@ class ChurchDirectoryModelReports extends JModelLegacy
 		// Filter by language
 		if ($this->getState('filter.language'))
 		{
-			$query->where('a.language in (' . $db->Quote(JFactory::getLanguage()->getTag()) . ',' . $db->Quote('*') . ')');
+			$query->where('a.language in (' . $db->q(JFactory::getLanguage()->getTag()) . ',' . $db->q('*') . ')');
 		}
 
 		// Set sortname ordering if selected

@@ -95,7 +95,7 @@ class ChurchDirectoryHelper
 
 		if ($vName == 'categories')
 		{
-			JToolBarHelper::title(
+			JToolbarHelper::title(
 				JText::sprintf('COM_CATEGORIES_CATEGORIES_TITLE', JText::_('com_churchdirectory')),
 				'churchdirectory-categories');
 		}
@@ -153,7 +153,7 @@ class ChurchDirectoryHelper
 			$level     = 'category';
 		}
 
-		$actions = JAccess::getActions('com_churchdirectory', $level);
+		$actions = JAccess::getActionsFromFile('com_churchdirectory', $level);
 
 		foreach ($actions as $action)
 		{
@@ -166,18 +166,18 @@ class ChurchDirectoryHelper
 	/**
 	 * Get Age of Member
 	 *
-	 * @param   string  $birthdate  Set Up Birth Date Calculation
+	 * @param   string  $birthDate  Set Up Birth Date Calculation
 	 *
 	 * @return string
 	 *
 	 * @internal requires php5.3.x
 	 * @since    1.7.3
 	 */
-	public static function getAge($birthdate)
+	public static function getAge($birthDate)
 	{
-		if (!empty($birthdate))
+		if (!empty($birthDate))
 		{
-			$date     = new DateTime($birthdate);
+			$date     = new DateTime($birthDate);
 			$now      = new DateTime;
 			$interval = $now->diff($date);
 

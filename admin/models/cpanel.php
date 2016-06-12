@@ -7,8 +7,6 @@
 
 defined('_JEXEC') or die;
 
-jimport('joomla.application.component.model');
-
 /**
  * Methods to display a control panel.
  *

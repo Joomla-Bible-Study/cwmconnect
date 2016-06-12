@@ -7,8 +7,6 @@
 
 defined('_JEXEC') or die;
 
-jimport('joomla.application.component.controllerform');
-
 /**
  * Class for Position
  *
@@ -30,7 +28,6 @@ class ChurchDirectoryControllerPosition extends JControllerForm
 	protected function allowAdd($data = array())
 	{
 		// Initialise variables.
-		$user  = JFactory::getUser();
 		$allow = null;
 
 		if ($allow === null)

@@ -7,8 +7,6 @@
 
 defined('_JEXEC') or die;
 
-jimport('joomla.application.component.controllerform');
-
 /**
  * class for Member
  *
@@ -31,7 +29,7 @@ class ChurchDirectoryControllerMember extends JControllerForm
 	{
 		// Initialise variables.
 		$user       = JFactory::getUser();
-		$categoryId = JArrayHelper::getValue($data, 'catid', JFactory::getApplication()->input->getInt('filter_category_id', 0), 'int');
+		$categoryId = Joomla\Utilities\ArrayHelper::getValue($data, 'catid', JFactory::getApplication()->input->getInt('filter_category_id', 0), 'int');
 		$allow      = null;
 
 		if ($categoryId)

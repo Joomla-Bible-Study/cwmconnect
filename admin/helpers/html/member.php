@@ -91,7 +91,7 @@ abstract class JHtmlMember
 			0 => array('disabled.png', 'members.featured', 'COM_CHURCHDIRECTORY_UNFEATURED', 'COM_CHURCHDIRECTORY_TOGGLE_TO_FEATURE'),
 			1 => array('featured.png', 'members.unfeatured', 'JFEATURED', 'COM_CHURCHDIRECTORY_TOGGLE_TO_UNFEATURE'),
 		);
-		$state  = JArrayHelper::getValue($states, (int) $value, $states[1]);
+		$state  = Joomla\Utilities\ArrayHelper::getValue($states, (int) $value, $states[1]);
 		$html   = JHtml::_('image', 'admin/' . $state[0], JText::_($state[2]), null, true);
 
 		if ($canChange)

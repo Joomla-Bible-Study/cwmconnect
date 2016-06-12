@@ -9,6 +9,8 @@ defined('JPATH_BASE') or die;
 jimport('joomla.html.html');
 jimport('joomla.form.formfield');
 
+use Joomla\Registry\Registry;
+
 /**
  * Supports th look up of a Spouse
  *
@@ -65,8 +67,9 @@ class JFormFieldSpouse extends JFormField
 
 		foreach ($results AS $item)
 		{
-			$registry = new JRegistry;
+			$registry = new Registry;
 			$registry->loadString($item->attribs);
+			// Todo Need to fix this. Bcc;
 			$family_position = $registry->toObject('familypostion');
 			$item            = (object) array_merge((array) $item, (array) $family_position);
 

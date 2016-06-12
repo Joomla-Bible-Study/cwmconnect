@@ -7,8 +7,6 @@
 
 defined('_JEXEC') or die;
 
-jimport( 'joomla.application.component.controlleradmin' );
-
 /**
  * Member list controller class.
  *
@@ -45,10 +43,10 @@ class ChurchDirectoryControllerMembers extends JControllerAdmin
 		// Initialise variables.
 		$app    = JFactory::getApplication();
 		$user   = JFactory::getUser();
-		$ids    = $app->input->get('cid', array(), '', 'array');
+		$ids    = $app->input->get('cid', array(), 'array');
 		$values = array('featured' => 1, 'unfeatured' => 0);
 		$task   = $this->getTask();
-		$value  = JArrayHelper::getValue($values, $task, 0, 'int');
+		$value  = Joomla\Utilities\ArrayHelper::getValue($values, $task, 0, 'int');
 
 		// Get the model.
 		$model = $this->getModel();
@@ -114,8 +112,8 @@ class ChurchDirectoryControllerMembers extends JControllerAdmin
 		$order = $this->input->post->get('order', array(), 'array');
 
 		// Sanitize the input
-		JArrayHelper::toInteger($pks);
-		JArrayHelper::toInteger($order);
+		Joomla\Utilities\ArrayHelper::toInteger($pks);
+		Joomla\Utilities\ArrayHelper::toInteger($order);
 
 		// Get the model
 		$model = $this->getModel();

@@ -7,8 +7,6 @@
 
 defined('_JEXEC') or die;
 
-jimport('joomla.application.component.controlleradmin');
-
 /**
  * Positions list controller class.
  *
@@ -43,9 +41,9 @@ class ChurchDirectoryControllerPositions extends JControllerAdmin
 		// Initialise variables.
 		$user  = JFactory::getUser();
 		$app   = JFactory::getApplication();
-		$ids   = $app->input->get('id', array(), '', 'array');
+		$ids   = $app->input->get('id', array(), 'array');
 		$task  = $this->getTask();
-		$value = JArrayHelper::getValue($values, $task, 0, 'int');
+		$value = Joomla\Utilities\ArrayHelper::getValue($values, $task, 0, 'int');
 
 		// Get the model.
 		$model = $this->getModel();
@@ -53,7 +51,6 @@ class ChurchDirectoryControllerPositions extends JControllerAdmin
 		// Access checks.
 		foreach ($ids as $i => $id)
 		{
-			$item = $model->getItem($id);
 
 			if (!$user->authorise('core.edit.state'))
 			{

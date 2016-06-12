@@ -4,8 +4,6 @@
  * @copyright  2007 - 2014 (C) Joomla Bible Study Team All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
-
-jimport('joomla.application.component.controlleradmin');
 /**
  * Class for GeoUpdate
  *

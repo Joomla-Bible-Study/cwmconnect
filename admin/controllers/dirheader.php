@@ -7,8 +7,6 @@
 
 defined('_JEXEC') or die;
 
-jimport('joomla.application.component.controllerform');
-
 /**
  * Class for DirHeader
  *
@@ -29,7 +27,6 @@ class ChurchDirectoryControllerDirHeader extends JControllerForm
 	protected function allowAdd($data = array())
 	{
 		// Initialise variables.
-		$user  = JFactory::getUser();
 		$allow = null;
 
 		if ($allow === null)

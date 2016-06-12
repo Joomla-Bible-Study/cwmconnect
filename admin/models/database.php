@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\Registry\Registry;
+
 // Import library dependencies
 JLoader::register('InstallerModel', JPATH_ADMINISTRATOR . '/components/com_installer/models/extension.php');
 JLoader::register('Com_ChurchDirectoryInstallerScript', JPATH_COMPONENT_ADMINISTRATOR . 'file.script.php');
@@ -161,9 +163,10 @@ class ChurchDirectoryModelDatabase extends InstallerModel
 	 */
 	public function getUpdateVersion()
 	{
+		/** @var ChurchDirectoryTableMember $table */
 		$table = JTable::getInstance('Extension');
 		$table->load($this->getExtentionId());
-		$cache = new JRegistry($table->manifest_cache);
+		$cache = new Registry($table->manifest_cache);
 
 		return $cache->get('version');
 	}
@@ -175,9 +178,10 @@ class ChurchDirectoryModelDatabase extends InstallerModel
 	 */
 	public function fixUpdateVersion()
 	{
+		/** @var ChurchDirectoryTableMember $table */
 		$table = JTable::getInstance('Extension');
 		$table->load($this->getExtentionId());
-		$cache         = new JRegistry($table->manifest_cache);
+		$cache         = new Registry($table->manifest_cache);
 		$updateVersion = $cache->get('version');
 
 		if ($updateVersion == $this->getCompVersion())
@@ -207,6 +211,7 @@ class ChurchDirectoryModelDatabase extends InstallerModel
 	 */
 	public function getDefaultTextFilters()
 	{
+		/** @var ChurchDirectoryTableMember $table */
 		$table = JTable::getInstance('Extension');
 		$table->load($table->find(array('name' => 'com_churchdirectory')));
 
@@ -220,6 +225,7 @@ class ChurchDirectoryModelDatabase extends InstallerModel
 	 */
 	public function fixDefaultTextFilters()
 	{
+		/** @var ChurchDirectoryTableMember $table */
 		$table = JTable::getInstance('Extension');
 		$table->load($table->find(array('name' => 'com_churchdirectory')));
 

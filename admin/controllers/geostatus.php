@@ -45,11 +45,9 @@ class ChurchDirectoryControllerGeoStatus extends JControllerAdmin
 		$app    = JFactory::getApplication();
 		$user   = JFactory::getUser();
 		$ids    = $this->input->get('cid', array(), 'array');
-		$values = array('featured' => 1, 'unfeatured' => 0);
-		$task   = $this->getTask();
-		$value  = JArrayHelper::getValue($values, $task, 0, 'int');
 
 		// Get the model.
+		/** @var  ChurchDirectoryModelGeoStatus $model */
 		$model = $this->getModel();
 
 		// Access checks.
@@ -113,10 +111,11 @@ class ChurchDirectoryControllerGeoStatus extends JControllerAdmin
 		$order = $this->input->post->get('order', array(), 'array');
 
 		// Sanitize the input
-		JArrayHelper::toInteger($pks);
-		JArrayHelper::toInteger($order);
+		Joomla\Utilities\ArrayHelper::toInteger($pks);
+		Joomla\Utilities\ArrayHelper::toInteger($order);
 
 		// Get the model
+		/** @var ChurchDirectoryModelGeoStatus $model */
 		$model = $this->getModel();
 
 		// Save the ordering
