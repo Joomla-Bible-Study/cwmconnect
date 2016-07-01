@@ -127,8 +127,7 @@ class ChurchDirectoryModelGeoStatus extends JModelList
 	protected function getListQuery()
 	{
 		// Create a new query object.
-		$db    = $this->getDbo();
-		$query = $db->getQuery(true);
+		$query = $this->_db->getQuery(true);
 		$user  = JFactory::getUser();
 
 		// Select the required fields from the table.
@@ -152,7 +151,7 @@ class ChurchDirectoryModelGeoStatus extends JModelList
 
 		// Join over the language
 		$query->select('l.title AS language_title');
-		$query->join('LEFT', $db->quoteName('#__languages') . ' AS l ON l.lang_code = a.language');
+		$query->join('LEFT', $this->_db->quoteName('#__languages') . ' AS l ON l.lang_code = a.language');
 
 		// Join over the users for the checked out user.
 		$query->select('uc.name AS editor');
@@ -216,12 +215,12 @@ class ChurchDirectoryModelGeoStatus extends JModelList
 			}
 			elseif (stripos($search, 'author:') === 0)
 			{
-				$search = $db->Quote('%' . $db->escape(substr($search, 7), true) . '%');
+				$search = $this->_db->q('%' . $this->_db->escape(substr($search, 7), true) . '%');
 				$query->where('(ua.name LIKE ' . $search . ' OR ua.username LIKE ' . $search . ')');
 			}
 			else
 			{
-				$search = $db->Quote('%' . $db->escape($search, true) . '%');
+				$search = $this->_db->q('%' . $this->_db->escape($search, true) . '%');
 				$query->where('(a.name LIKE ' . $search . ' OR a.alias LIKE ' . $search . ')');
 			}
 		}
@@ -229,7 +228,7 @@ class ChurchDirectoryModelGeoStatus extends JModelList
 		// Filter on the language.
 		if ($language = $this->getState('filter.language'))
 		{
-			$query->where('a.language = ' . $db->quote($language));
+			$query->where('a.language = ' . $this->_db->quote($language));
 		}
 
 		// Add the list ordering clause.
@@ -240,7 +239,7 @@ class ChurchDirectoryModelGeoStatus extends JModelList
 		{
 			$orderCol = 'c.title ' . $orderDirn . ', a.ordering';
 		}
-		$query->order($db->escape($orderCol . ' ' . $orderDirn));
+		$query->order($this->_db->escape($orderCol . ' ' . $orderDirn));
 
 		return $query;
 	}

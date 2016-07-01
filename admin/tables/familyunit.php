@@ -26,6 +26,7 @@ use Joomla\Registry\Registry;
  */
 class ChurchDirectoryTableFamilyUnit extends JTable
 {
+	public $ordering;
 
 	/**
 	 * Constructor

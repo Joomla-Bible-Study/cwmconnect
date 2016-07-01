@@ -46,7 +46,7 @@ class RenderHelper
 		$positions = array();
 		$results   = '';
 		$position  = null;
-		$db        = JFactory::getDBO();
+		$db        = JFactory::getDbo();
 
 		if (strstr($con_position, ','))
 		{
@@ -128,7 +128,7 @@ class RenderHelper
 	public function getFamilyMembers($fu_id, $fm = '2')
 	{
 
-		$db    = JFactory::getDBO();
+		$db    = JFactory::getDbo();
 		$query = $db->getQuery(true);
 
 		$query->select('members.*');

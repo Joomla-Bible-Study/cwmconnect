@@ -6,8 +6,6 @@
  */
 defined('_JEXEC') or die;
 
-jimport('joomla.application.component.controllerform');
-
 /**
  * Controller Home for ChurchDirectory
  *

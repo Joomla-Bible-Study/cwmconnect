@@ -94,8 +94,16 @@ class ChurchDirectoryModelMembers extends JModelList
 		$mstatus = $this->getUserStateFromRequest($this->context . '.filter.mstatus', 'filter_mstatus', '');
 		$this->setState('filter.mstatus', $mstatus);
 
+		// Workaroind for Joomla not passing state right.
+		$order     = $this->getUserStateFromRequest($this->context . '.list.fullordering', 'list_fullordering', '', 'string');
+		$order     = explode(' ', $order);
+		$ordering  = $order[0];
+		$direction = $order[1];
+		$this->setState('list.orderings', $ordering);
+		$this->setState('list.directions', $direction);
+
 		// List state information.
-		parent::populateState('a.name', 'asc');
+		parent::populateState($ordering, $direction);
 	}
 
 	/**
@@ -219,7 +227,7 @@ class ChurchDirectoryModelMembers extends JModelList
 			}
 			elseif (stripos($search, 'author:') === 0)
 			{
-				$search = $db->Quote('%' . $db->escape(substr($search, 7), true) . '%');
+				$search = $db->q('%' . $db->escape(substr($search, 7), true) . '%');
 				$query->where('(uc.name LIKE ' . $search . ' OR uc.username LIKE ' . $search . ')');
 			}
 			elseif (stripos($search, 'zip:') === 0)
@@ -230,7 +238,7 @@ class ChurchDirectoryModelMembers extends JModelList
 			}
 			else
 			{
-				$search = $db->Quote('%' . $db->escape($search, true) . '%');
+				$search = $db->q('%' . $db->escape($search, true) . '%');
 				$query->where('(a.name LIKE ' . $search . ' OR a.alias LIKE ' . $search . ')');
 			}
 		}
@@ -248,8 +256,8 @@ class ChurchDirectoryModelMembers extends JModelList
 		}
 
 		// Add the list ordering clause.
-		$orderCol  = $this->state->get('list.ordering', 'a.name');
-		$orderDirn = $this->state->get('list.direction', 'asc');
+		$orderCol  = $this->state->get('list.orderings', 'a.name');
+		$orderDirn = $this->state->get('list.directions', 'asc');
 		if ($orderCol == 'a.ordering' || $orderCol == 'category_title')
 		{
 			$orderCol = 'c.title ' . $orderDirn . ', a.ordering';

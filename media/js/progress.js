@@ -44,7 +44,6 @@
                         if (labelEl.is(":hidden")) {
                             labelEl.fadeIn();
                         }
-                        ;
                     }
 
                     if (Math.ceil(progress) == 100) {
@@ -60,7 +59,6 @@
                     if (callback) {
                         callback.call(this, i, elem);
                     }
-                    ;
                 }
             });
         });

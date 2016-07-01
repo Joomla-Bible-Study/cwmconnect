@@ -53,6 +53,9 @@ class ChurchDirectoryViewCategory extends JViewLegacy
 	 */
 	protected $pagination;
 
+	/** @type  Joomla\Registry\Registry */
+	protected $params;
+
 	/**
 	 * Display Function
 	 *

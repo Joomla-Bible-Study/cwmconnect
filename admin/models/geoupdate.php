@@ -66,7 +66,7 @@ class ChurchDirectoryModelGeoUpdate extends JModelLegacy
 		$now     = $this->microtime_float();
 		$elapsed = abs($now - $this->_startTime);
 
-		return $elapsed < 3;
+		return $elapsed < 2;
 	}
 
 	/**
@@ -153,16 +153,15 @@ class ChurchDirectoryModelGeoUpdate extends JModelLegacy
 	 */
 	private function getMembers($id = null)
 	{
-		$db    = JFactory::getDBO();
-		$query = $db->getQuery(true);
+		$query = $this->_db->getQuery(true);
 		$query->select('id, name, address, suburb, state, postcode, lat, lng , country');
 		$query->from('#__churchdirectory_details');
 		if ($id)
 		{
-			$query->where('id = ' . $db->q($id));
+			$query->where('id = ' . $this->_db->q($id));
 		}
-		$db->setQuery($query);
-		$members = $db->loadObjectList();
+		$this->_db->setQuery($query);
+		$members = $this->_db->loadObjectList();
 
 		$this->_membersStack = array_merge($this->_membersStack, (array) $members);
 
@@ -276,7 +275,6 @@ class ChurchDirectoryModelGeoUpdate extends JModelLegacy
 	{
 
 		$geocode_pending = false;
-		$db              = $this->getDbo();
 
 		if ($row or $id)
 		{
@@ -285,12 +283,12 @@ class ChurchDirectoryModelGeoUpdate extends JModelLegacy
 				// Set Member ID for Latter Use
 				$this->_memberID = $id;
 
-				$query = $db->getQuery(true);
+				$query = $this->_db->getQuery(true);
 				$query->select('*')
 					->from('#__churchdirectory_details')
-					->where('id =' . $db->q($id));
-				$db->setQuery($query);
-				$row = $db->loadObject();
+					->where('id =' . $this->_db->q($id));
+				$this->_db->setQuery($query);
+				$row = $this->_db->loadObject();
 
 				if (is_object($row))
 				{
@@ -329,27 +327,27 @@ class ChurchDirectoryModelGeoUpdate extends JModelLegacy
 						$ulong = $data->geometry->location->lng;
 
 						// Create a new query object.
-						$query = $db->getQuery(true);
+						$query = $this->_db->getQuery(true);
 						$query->update("#__churchdirectory_details")
-							->set("lat = " . $db->q($ulat) . ", lng = " . $db->q($ulong))
-							->where("id = " . $db->q($row['id']));
-						$db->setQuery($query);
-						$db->execute();
+							->set("lat = " . $this->_db->q($ulat) . ", lng = " . $this->_db->q($ulong))
+							->where("id = " . $this->_db->q($row['id']));
+						$this->_db->setQuery($query);
+						$this->_db->execute();
 
 						// Check to see if record is int GeoErrors
-						$query = $db->getQuery(true);
+						$query = $this->_db->getQuery(true);
 						$query->select('member_id')->from('#__churchdirectory_geoupdate');
 						$query->where('member_id = ' . $this->_memberID);
-						$db->setQuery($query);
+						$this->_db->setQuery($query);
 
 						// If member found remove record
-						if ($db->loadResult())
+						if ($this->_db->loadResult())
 						{
-							$query = $db->getQuery(true);
+							$query = $this->_db->getQuery(true);
 							$query->delete('#__churchdirectory_geoupdate');
 							$query->where('member_id = ' . $this->_memberID);
-							$db->setQuery($query);
-							$db->execute();
+							$this->_db->setQuery($query);
+							$this->_db->execute();
 						}
 					endforeach;
 				}
@@ -364,32 +362,32 @@ class ChurchDirectoryModelGeoUpdate extends JModelLegacy
 					$geocode_pending = false;
 
 					// Create a new query object.
-					$query = $db->getQuery(true);
+					$query = $this->_db->getQuery(true);
 					$query->select('*')
-						->from($db->qn('#__churchdirectory_geoupdate'))
-						->where('`member_id` = ' . $db->q($row['id']));
-					$db->setQuery($query);
+						->from($this->_db->qn('#__churchdirectory_geoupdate'))
+						->where('`member_id` = ' . $this->_db->q($row['id']));
+					$this->_db->setQuery($query);
 					$info = 'Status: ' . $status . '<br /><div style="float:left; padding:5px;">' .
 						'Type:</div><div style="float:left; padding:5px;">' . $xml->result->type['0'] .
 						'<br />' . $xml->result->type['1'] . '</div>';
 
-					if ($db->loadResult())
+					if ($this->_db->loadResult())
 					{
-						$query = $db->getQuery(true);
+						$query = $this->_db->getQuery(true);
 						$query->update("#__churchdirectory_geoupdate")
-							->set('status = ' . $db->q($info))
-							->where('member_id = ' . $db->q($row['id']));
-						$db->setQuery($query);
-						$db->execute();
+							->set('status = ' . $this->_db->q($info))
+							->where('member_id = ' . $this->_db->q($row['id']));
+						$this->_db->setQuery($query);
+						$this->_db->execute();
 					}
 					else
 					{
-						$query = $db->getQuery(true);
+						$query = $this->_db->getQuery(true);
 						$query->insert("#__churchdirectory_geoupdate")
-							->set('member_id = ' . $db->q($row['id']))
-							->set('`status` = ' . $db->q($info));
-						$db->setQuery($query);
-						$db->execute();
+							->set('member_id = ' . $this->_db->q($row['id']))
+							->set('`status` = ' . $this->_db->q($info));
+						$this->_db->setQuery($query);
+						$this->_db->execute();
 					}
 				}
 				usleep($delay);

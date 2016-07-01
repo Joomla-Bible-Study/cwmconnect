@@ -36,7 +36,7 @@ class DirectoryHeaderHelper
 	 */
 	public function setPages($params)
 	{
-		$db    = JFactory::getDBO();
+		$db    = JFactory::getDbo();
 		$query = $db->getQuery(true);
 
 		$query->select('a.*');

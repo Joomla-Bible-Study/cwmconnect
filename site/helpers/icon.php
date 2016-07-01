@@ -28,10 +28,10 @@ class JHtmlIcon
 	public static function email($member, $params, $attribs = array())
 	{
 		require_once JPATH_SITE . '/components/com_mailto/helpers/mailto.php';
-		$uri  = JURI::getInstance();
+		$uri  = JUri::getInstance();
 		$base = $uri->toString(array('scheme', 'host', 'port'));
 		$link = $base . JRoute::_(ContentHelperRoute::getArticleRoute($member->slug, $member->catid), false);
-		$url  = 'index.php?option=com_mailto&tmpl=component&link=' . MailToHelper::addLink($link);
+		$url  = 'index.php?option=com_mailto&tmpl=component&link=' . MailtoHelper::addLink($link);
 
 		$status = 'width=400,height=350,menubar=yes,resizable=yes';
 

@@ -93,7 +93,7 @@ class ChurchDirectoryViewDatabase extends JViewLegacy
 		}
 
 		// Set the toolbar
-		$this->addToolBar();
+		$this->addToolbar();
 
 		// Set the document
 		$this->setDocument();
@@ -113,11 +113,11 @@ class ChurchDirectoryViewDatabase extends JViewLegacy
 	{
 		$canDo = ChurchDirectoryHelper::getActions();
 
-		JToolBarHelper::title(JText::_('COM_CHURCHDIRECTORY_DATABASE'), 'churchdirectory');
-		JToolBarHelper::divider();
+		JToolbarHelper::title(JText::_('COM_CHURCHDIRECTORY_DATABASE'), 'churchdirectory');
+		JToolbarHelper::divider();
 		if ($canDo)
 		{
-			JToolBarHelper::custom('database.fix', 'refresh', 'refresh', 'COM_CHURCHDIRECTORY_DATABASE_FIX', false);
+			JToolbarHelper::custom('database.fix', 'refresh', 'refresh', 'COM_CHURCHDIRECTORY_DATABASE_FIX', false);
 		}
 	}
 

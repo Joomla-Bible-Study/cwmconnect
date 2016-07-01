@@ -60,7 +60,7 @@ class ChurchDirectoryViewKML extends JViewLegacy
 		}
 
 		// Set the toolbar
-		$this->addToolBar();
+		$this->addToolbar();
 
 		// Set the document
 		$this->setDocument();
@@ -82,9 +82,9 @@ class ChurchDirectoryViewKML extends JViewLegacy
 		$userId     = $user->get('id');
 		$isNew      = ($this->item->id == 0);
 		$checkedOut = !($this->item->checked_out == 0 || $this->item->checked_out == $userId);
-		$canDo      = ChurchDirectoryHelper::getActions(0);
+		$canDo      = ChurchDirectoryHelper::getActions('com_churchdirectory', 'kml', $this->item->id);
 
-		JToolBarHelper::title($isNew ? JText::_('COM_CHURCHDIRECTORY_MANAGER_KML_NEW') : JText::_('COM_CHURCHDIRECTORY_MANAGER_KML_EDIT'), 'kml');
+		JToolbarHelper::title($isNew ? JText::_('COM_CHURCHDIRECTORY_MANAGER_KML_NEW') : JText::_('COM_CHURCHDIRECTORY_MANAGER_KML_EDIT'), 'kml');
 
 		// Build the actions for new and existing records.
 		if ($isNew)
@@ -92,11 +92,11 @@ class ChurchDirectoryViewKML extends JViewLegacy
 			// For new records, check the create permission.
 			if ($isNew && (count($user->getAuthorisedCategories('com_churchdirectory', 'core.create')) > 0))
 			{
-				JToolBarHelper::apply('kml.apply');
-				JToolBarHelper::save('kml.save');
+				JToolbarHelper::apply('kml.apply');
+				JToolbarHelper::save('kml.save');
 			}
 
-			JToolBarHelper::cancel('kml.cancel');
+			JToolbarHelper::cancel('kml.cancel');
 		}
 		else
 		{
@@ -106,16 +106,16 @@ class ChurchDirectoryViewKML extends JViewLegacy
 				// Since it's an existing record, check the edit permission, or fall back to edit own if the owner.
 				if ($canDo->get('core.edit') || ($canDo->get('core.edit.own') && $this->item->created_by == $userId))
 				{
-					JToolBarHelper::apply('kml.apply');
-					JToolBarHelper::save('kml.save');
+					JToolbarHelper::apply('kml.apply');
+					JToolbarHelper::save('kml.save');
 				}
 			}
 
-			JToolBarHelper::cancel('kml.cancel', 'JTOOLBAR_CLOSE');
+			JToolbarHelper::cancel('kml.cancel', 'JTOOLBAR_CLOSE');
 		}
 
-		JToolBarHelper::divider();
-		JToolBarHelper::help('churchdirectory_kml', true);
+		JToolbarHelper::divider();
+		JToolbarHelper::help('churchdirectory_kml', true);
 	}
 
 	/**

@@ -173,8 +173,8 @@ class ChurchDirectoryModelFeatured extends JModelList
 			$query->where('a.published = ' . (int) $state);
 
 			// Filter by start and end dates.
-			$nullDate = $db->Quote($db->getNullDate());
-			$nowDate  = $db->Quote(JFactory::getDate()->toSQL());
+			$nullDate = $db->q($db->getNullDate());
+			$nowDate  = $db->q(JFactory::getDate()->toSql());
 			$query->where('(a.publish_up = ' . $nullDate . ' OR a.publish_up <= ' . $nowDate . ')');
 			$query->where('(a.publish_down = ' . $nullDate . ' OR a.publish_down >= ' . $nowDate . ')');
 			$query->where($publishedWhere . ' = ' . (int) $state);
@@ -183,7 +183,7 @@ class ChurchDirectoryModelFeatured extends JModelList
 		// Filter by language
 		if ($this->getState('filter.language'))
 		{
-			$query->where('a.language in (' . $db->Quote(JFactory::getLanguage()->getTag()) . ',' . $db->Quote('*') . ')');
+			$query->where('a.language in (' . $db->q(JFactory::getLanguage()->getTag()) . ',' . $db->q('*') . ')');
 		}
 
 		// Add the list ordering clause.

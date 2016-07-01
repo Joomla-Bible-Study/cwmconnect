@@ -85,17 +85,17 @@ class ChurchDirectoryViewCpanel extends JViewLegacy
 	 */
 	protected function addToolbar()
 	{
-		$canDo = ChurchDirectoryHelper::getActions($this->state->get('filter.category_id'));
-		JToolBarHelper::title(JText::_('COM_CHURCHDIRECTORY_MANAGER_CPANEL'), 'churchdirectory.png');
+		$canDo = ChurchDirectoryHelper::getActions('com_churchdirectory');
+		JToolbarHelper::title(JText::_('COM_CHURCHDIRECTORY_MANAGER_CPANEL'), 'churchdirectory.png');
 
 		if ($canDo->get('core.admin'))
 		{
-			JToolBarHelper::divider();
-			JToolBarHelper::preferences('com_churchdirectory');
-			JToolBarHelper::divider();
+			JToolbarHelper::divider();
+			JToolbarHelper::preferences('com_churchdirectory');
+			JToolbarHelper::divider();
 		}
 
-		JToolBarHelper::help('churchdirectory', true);
+		JToolbarHelper::help('churchdirectory', true);
 	}
 
 	/**

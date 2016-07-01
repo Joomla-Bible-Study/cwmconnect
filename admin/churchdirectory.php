@@ -8,9 +8,6 @@
 
 defined('_JEXEC') or die;
 
-// Set some global property
-addCSS();
-
 // Access check.
 if (!JFactory::getUser()->authorise('core.manage', 'com_churchdirectory'))
 {
@@ -19,17 +16,14 @@ if (!JFactory::getUser()->authorise('core.manage', 'com_churchdirectory'))
 	return false;
 }
 
+// Set some global property
+addCSS();
+
 // Require helper file
 // Register all files in the /the/path/ folder as classes with a name like:
-JLoader::register('ChurchDirectoryHelper', dirname(__FILE__) . '/helpers/churchdirectory.php');
+//JLoader::register('ChurchDirectoryHelper', dirname(__FILE__) . '/helpers/churchdirectory.php');
 
-if (!version_compare(JVERSION, '3.0', 'ge'))
-{
-	$language = JFactory::getLanguage();
-	$language->load('com_churchdirectory-25', JPATH_COMPONENT_ADMINISTRATOR, 'en-GB', true);
-}
-
-$controller = JControllerLegacy::getInstance('Churchdirectory');
+$controller = JControllerLegacy::getInstance('churchdirectory');
 $controller->execute(JFactory::getApplication()->input->get('task'));
 $controller->redirect();
 
@@ -42,14 +36,5 @@ $controller->redirect();
  */
 function addCSS()
 {
-	if (!version_compare(JVERSION, '3.0', 'ge'))
-	{
-		JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
-		JHtml::_('bootstrap.framework');
-		JHTML::stylesheet('media/com_churchdirectory/css/icomoonload.css');
-		JHTML::stylesheet('media/com_churchdirectory/jui/css/icomoon.css');
-		JHtml::_('bootstrap.loadCss');
-		JHtml::stylesheet('media/com_churchdirectory/css/bootstrap-j2.5.css');
-	}
-	JHTML::stylesheet('media/com_churchdirectory/css/general.css');
+	JHtml::stylesheet('media/com_churchdirectory/css/general.css');
 }

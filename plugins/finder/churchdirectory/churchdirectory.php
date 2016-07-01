@@ -7,6 +7,8 @@
 
 defined('JPATH_BASE') or die;
 
+use Joomla\Registry\Registry;
+
 // Load the base adapter.
 require_once JPATH_ADMINISTRATOR . '/components/com_finder/helpers/indexer/adapter.php';
 
@@ -271,12 +273,12 @@ class PlgFinderChurchDirectory extends FinderIndexerAdapter
 		}
 
 		// Initialize the item parameters.
-		$registry = new JRegistry;
+		$registry = new Registry;
 		$registry->loadString($item->params);
 		$item->params = $registry;
 
 		// Build the necessary route and path information.
-		$item->url   = $this->getURL($item->id, $this->extension, $this->layout);
+		$item->url   = $this->getUrl($item->id, $this->extension, $this->layout);
 		$item->route = ChurchDirectoryHelperRoute::getMemberRoute($item->slug, $item->catslug);
 		$item->path  = FinderIndexerHelper::getContentPath($item->route);
 

@@ -7,6 +7,7 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\Registry\Registry;
 /**
  * ChurchDirectory categories view.
  *
@@ -53,6 +54,7 @@ class ChurchDirectoryViewCategories extends JViewLegacy
 
 	protected $parent;
 
+	/** @type  JDocument */
 	public $document;
 
 	/**
@@ -92,15 +94,13 @@ class ChurchDirectoryViewCategories extends JViewLegacy
 			return false;
 		}
 
-		$params = & $state->params;
-
 		$items = array($parent->id => $items);
 
 		// Escape strings for HTML output
-		$this->pageclass_sfx = htmlspecialchars($params->get('pageclass_sfx'));
+		$this->pageclass_sfx = htmlspecialchars($state->params->get('pageclass_sfx'));
 
-		$this->maxLevelcat = $params->get('maxLevelcat', -1);
-		$this->params      = & $params;
+		$this->maxLevelcat = $state->params->get('maxLevelcat', -1);
+		$this->params      = & $state->params;
 		$this->parent      = & $parent;
 		$this->items       = & $items;
 
@@ -155,12 +155,12 @@ class ChurchDirectoryViewCategories extends JViewLegacy
 
 		if ($this->params->get('menu-meta_keywords'))
 		{
-			$this->document->setMetadata('keywords', $this->params->get('menu-meta_keywords'));
+			$this->document->setMetaData('keywords', $this->params->get('menu-meta_keywords'));
 		}
 
 		if ($this->params->get('robots'))
 		{
-			$this->document->setMetadata('robots', $this->params->get('robots'));
+			$this->document->setMetaData('robots', $this->params->get('robots'));
 		}
 	}
 

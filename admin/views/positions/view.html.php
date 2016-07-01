@@ -15,6 +15,9 @@ defined('_JEXEC') or die;
  */
 class ChurchDirectoryViewPositions extends JViewLegacy
 {
+	public $filterForm;
+
+	public $activeFilters;
 
 	/**
 	 * Protect items
@@ -51,6 +54,8 @@ class ChurchDirectoryViewPositions extends JViewLegacy
 		$this->items      = $this->get('Items');
 		$this->pagination = $this->get('Pagination');
 		$this->state      = $this->get('State');
+		$this->filterForm = $this->get('FilterForm');
+		$this->activeFilters = $this->get('ActiveFilters');
 
 		ChurchDirectoryHelper::addSubmenu('positions');
 
@@ -62,13 +67,39 @@ class ChurchDirectoryViewPositions extends JViewLegacy
 			return false;
 		}
 
-		// Set the toolbar
-		$this->addToolbar();
-
-		if (version_compare(JVERSION, '3.0', 'ge'))
+		// Preprocessors the list of items to find ordering divisions.
+		// TODO: Complete the ordering stuff with nested sets
+		foreach ($this->items as &$item)
 		{
+			$item->order_up = true;
+			$item->order_dn = true;
+		}
+
+
+		// We don't need toolbar in the modal window.
+		if ($this->getLayout() !== 'modal')
+		{
+			$this->addToolbar();
 			$this->sidebar = JHtmlSidebar::render();
 		}
+		else
+		{
+			// In article associations modal we need to remove language filter if forcing a language.
+			// We also need to change the category filter to show show categories with All or the forced language.
+			if ($forcedLanguage = JFactory::getApplication()->input->get('forcedLanguage', '', 'CMD'))
+			{
+				// If the language is forced we can't allow to select the language, so transform the language selector filter into an hidden field.
+				$languageXml = new SimpleXMLElement('<field name="language" type="hidden" default="' . $forcedLanguage . '" />');
+				$this->filterForm->setField($languageXml, 'filter', true);
+
+				// Also, unset the active language filter so the search tools is not open by default with this filter.
+				unset($this->activeFilters['language']);
+
+				// One last changes needed is to change the category filter to just show categories with All language or with the forced language.
+				$this->filterForm->setFieldAttribute('category_id', 'language', '*,' . $forcedLanguage, 'filter');
+			}
+		}
+
 
 		// Set the document
 		$this->setDocument();
@@ -87,77 +118,62 @@ class ChurchDirectoryViewPositions extends JViewLegacy
 	protected function addToolbar()
 	{
 		$user  = JFactory::getUser();
-		$canDo = ChurchDirectoryHelper::getActions($this->state->get('filter.category_id'));
+		$canDo = ChurchDirectoryHelper::getActions('com_churchdirectory');
 
 		// Get the toolbar object instance
-		$bar = JToolBar::getInstance('toolbar');
+		$bar = JToolbar::getInstance('toolbar');
 
-		JToolBarHelper::title(JText::_('COM_CHURCHDIRECTORY_MANAGER_POSITIONS'), 'churchdirectory');
+		JToolbarHelper::title(JText::_('COM_CHURCHDIRECTORY_MANAGER_POSITIONS'), 'churchdirectory');
 
 		if ($canDo->get('core.create') || (count($user->getAuthorisedCategories('com_churchdirectory', 'core.create'))) > 0)
 		{
-			JToolBarHelper::addNew('position.add');
+			JToolbarHelper::addNew('position.add');
 		}
 
 		if (($canDo->get('core.edit')) || ($canDo->get('core.edit.own')))
 		{
-			JToolBarHelper::editList('position.edit');
+			JToolbarHelper::editList('position.edit');
 		}
 
 		if ($canDo->get('core.edit.state'))
 		{
-			JToolBarHelper::divider();
-			JToolBarHelper::publish('positions.publish', 'JTOOLBAR_PUBLISH', true);
-			JToolBarHelper::unpublish('positions.unpublish', 'JTOOLBAR_UNPUBLISH', true);
-			JToolBarHelper::divider();
-			JToolBarHelper::checkin('positions.checkin');
+			JToolbarHelper::publish('positions.publish', 'JTOOLBAR_PUBLISH', true);
+			JToolbarHelper::unpublish('positions.unpublish', 'JTOOLBAR_UNPUBLISH', true);
+			JToolbarHelper::archiveList('positions.archive');
+			JToolbarHelper::checkin('positions.checkin');
+		}
+
+		// Add a batch button
+		if ($user->authorise('core.create', 'com_churchdirectory')
+			&& $user->authorise('core.edit', 'com_churchdirectory')
+			&& $user->authorise('core.edit.state', 'com_churchdirectory'))
+		{
+			$title = JText::_('JTOOLBAR_BATCH');
+
+			// Instantiate a new JLayoutFile instance and render the batch button
+			$layout = new JLayoutFile('joomla.toolbar.batch');
+
+			$dhtml = $layout->render(array('title' => $title));
+			JToolbar::getInstance('toolbar')->appendButton('Custom', $dhtml, 'batch');
 		}
 
 		if ($this->state->get('filter.published') == -2 && $canDo->get('core.delete'))
 		{
-			JToolBarHelper::deleteList('', 'positions.delete', 'JTOOLBAR_EMPTY_TRASH');
-			JToolBarHelper::divider();
+			JToolbarHelper::deleteList('', 'positions.delete', 'JTOOLBAR_EMPTY_TRASH');
 		}
 		elseif ($canDo->get('core.edit.state'))
 		{
-			JToolBarHelper::trash('positions.trash');
-			JToolBarHelper::divider();
+			JToolbarHelper::trash('positions.trash');
 		}
 
-		if ($canDo->get('core.admin'))
+		if ($canDo->get('core.admin', 'com_churchdirectory') || $user->authorise('core.options', 'com_churchdirectory'))
 		{
-			JToolBarHelper::preferences('com_churchdirectory');
-			JToolBarHelper::divider();
-		}
-		// Add a batch button
-		if ($user->authorise('core.edit'))
-		{
-			JHtml::_('bootstrap.modal', 'collapseModal');
-			$title = JText::_('JTOOLBAR_BATCH');
-			$dhtml = "<button data-toggle=\"modal\" data-target=\"#collapseModal\" class=\"btn btn-small\">
-						<i class=\"icon-checkbox-partial\" title=\"$title\"></i>
-						$title</button>";
-			$bar->appendButton('Custom', $dhtml, 'batch');
+			JToolbarHelper::preferences('com_churchdirectory');
 		}
 
-		JToolBarHelper::help('churchdirectory_position', true);
+		JToolbarHelper::help('churchdirectory_position', true);
 
-		if (version_compare(JVERSION, '3.0.0', 'ge'))
-		{
-			JHtmlSidebar::setAction('index.php?option=com_churchdirectory&amp;view=positions');
-
-			JHtmlSidebar::addFilter(
-				JText::_('JOPTION_SELECT_PUBLISHED'),
-				'filter_published',
-				JHtml::_('select.options', JHtml::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.published'), true)
-			);
-
-			JHtmlSidebar::addFilter(
-				JText::_('JOPTION_SELECT_LANGUAGE'),
-				'filter_language',
-				JHtml::_('select.options', JHtml::_('contentlanguage.existing', true, true), 'value', 'text', $this->state->get('filter.language'))
-			);
-		}
+		JHtmlSidebar::setAction('index.php?option=com_churchdirectory&amp;view=positions');
 	}
 
 	/**

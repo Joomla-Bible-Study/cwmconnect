@@ -185,7 +185,7 @@ function churchdirectoryParseRoute($segments)
 		{
 			if ($advanced)
 			{
-				$db    = JFactory::getDBO();
+				$db    = JFactory::getDbo();
 				$query = $db->getQuery(true);
 				$query->select($db->quoteName('id'))
 					->from('#__churchdirectory_details')

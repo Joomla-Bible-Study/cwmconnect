@@ -7,7 +7,7 @@
 
 defined('_JEXEC') or die;
 
-jimport('joomla.application.component.modellist');
+use Joomla\Utilities\ArrayHelper;
 
 /**
  * Methods supporting a list of Position records.
@@ -37,7 +37,7 @@ class ChurchDirectoryModelPositions extends JModelList
 				'checked_out', 'a.checked_out',
 				'checked_out_time', 'a.checked_out_time',
 				'user_id', 'a.user_id',
-				'state', 'a.state',
+				'published', 'a.published',
 				'access', 'a.access', 'access_level',
 				'created', 'a.created',
 				'created_by', 'a.created_by',
@@ -45,7 +45,17 @@ class ChurchDirectoryModelPositions extends JModelList
 				'language', 'a.language',
 				'publish_up', 'a.publish_up',
 				'publish_down', 'a.publish_down',
+				'ul.name', 'linked_user',
+				'tag',
+				'level', 'c.level',
 			);
+
+			$assoc = JLanguageAssociations::isEnabled();
+
+			if ($assoc)
+			{
+				$config['filter_fields'][] = 'association';
+			}
 		}
 
 		parent::__construct($config);
@@ -63,10 +73,12 @@ class ChurchDirectoryModelPositions extends JModelList
 	 *
 	 * @since    1.7.0
 	 */
-	protected function populateState($ordering = null, $direction = null)
+	protected function populateState($ordering = '', $direction = '')
 	{
 		// Initialise variables.
 		$app = JFactory::getApplication();
+
+		$forcedLanguage = $app->input->get('forcedLanguage', '', 'cmd');
 
 		// Adjust the context to support modal layouts.
 		if ($layout = $app->input->get('layout'))
@@ -74,17 +86,34 @@ class ChurchDirectoryModelPositions extends JModelList
 			$this->context .= '.' . $layout;
 		}
 
-		$search = $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search');
-		$this->setState('filter.search', $search);
+		// Adjust the context to support forced languages.
+		if ($forcedLanguage)
+		{
+			$this->context .= '.' . $forcedLanguage;
+		}
 
-		$published = $this->getUserStateFromRequest($this->context . '.filter.published', 'filter_published', '');
-		$this->setState('filter.published', $published);
+		$this->setState('filter.search', $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search', '', 'string'));
+		$this->setState('filter.published', $this->getUserStateFromRequest($this->context . '.filter.published', 'filter_published', '', 'string'));
+		$this->setState('filter.language', $this->getUserStateFromRequest($this->context . '.filter.language', 'filter_language', '', 'string'));
+		$this->setState('filter.tag', $this->getUserStateFromRequest($this->context . '.filter.tag', 'filter_tag', '', 'string'));
+		$this->setState('filter.level', $this->getUserStateFromRequest($this->context . '.filter.level', 'filter_level', null, 'int'));
 
-		$language = $this->getUserStateFromRequest($this->context . '.filter.language', 'filter_language', '');
-		$this->setState('filter.language', $language);
+		// Workaroind for Joomla not passing state right.
+		$order = $this->getUserStateFromRequest($this->context . '.list.fullordering', 'list_fullordering', '', 'string');
+		$order = explode(' ', $order);
+		$ordering = $order[0];
+		$direction = $order[1];
+		$this->setState('list.orderings', $ordering);
+		$this->setState('list.directions', $direction);
 
 		// List state information.
-		parent::populateState('a.name', 'asc');
+		parent::populateState();
+
+		// Force a language.
+		if (!empty($forcedLanguage))
+		{
+			$this->setState('filter.language', $forcedLanguage);
+		}
 	}
 
 	/**
@@ -105,7 +134,10 @@ class ChurchDirectoryModelPositions extends JModelList
 		// Compile the store id.
 		$id .= ':' . $this->getState('filter.search');
 		$id .= ':' . $this->getState('filter.published');
+		$id .= ':' . $this->getState('filter.access');
 		$id .= ':' . $this->getState('filter.language');
+		$id .= ':' . $this->getState('filter.tag');
+		$id .= ':' . $this->getState('filter.level');
 
 		return parent::getStoreId($id);
 	}
@@ -135,8 +167,16 @@ class ChurchDirectoryModelPositions extends JModelList
 		$query->from('#__churchdirectory_position AS a');
 
 		// Join over the users for the linked user.
-		$query->select('ul.name AS linked_user');
-		$query->join('LEFT', '#__users AS ul ON ul.id=a.user_id');
+		$query->select(
+			array(
+				$db->quoteName('ul.name', 'linked_user'),
+				$db->quoteName('ul.email')
+			)
+		)
+			->join(
+				'LEFT',
+				$db->quoteName('#__users', 'ul') . ' ON ' . $db->quoteName('ul.id') . ' = ' . $db->quoteName('a.user_id')
+			);
 
 		// Join over the language
 		$query->select('l.title AS language_title');
@@ -186,12 +226,12 @@ class ChurchDirectoryModelPositions extends JModelList
 			}
 			elseif (stripos($search, 'author:') === 0)
 			{
-				$search = $db->Quote('%' . $db->escape(substr($search, 7), true) . '%');
+				$search = $db->q('%' . $db->escape(substr($search, 7), true) . '%');
 				$query->where('(ua.name LIKE ' . $search . ' OR ua.username LIKE ' . $search . ')');
 			}
 			else
 			{
-				$search = $db->Quote('%' . $db->escape($search, true) . '%');
+				$search = $db->q('%' . $db->escape($search, true) . '%');
 				$query->where('(a.name LIKE ' . $search . ' OR a.alias LIKE ' . $search . ')');
 			}
 		}
@@ -202,9 +242,35 @@ class ChurchDirectoryModelPositions extends JModelList
 			$query->where('a.language = ' . $db->quote($language));
 		}
 
-		// Add the list ordering clause.
-		$orderCol  = $this->state->get('list.ordering', 'a.name');
-		$orderDirn = $this->state->get('list.direction', 'acs');
+		// Filter by a single tag.
+		$tagId = $this->getState('filter.tag');
+
+		if (is_numeric($tagId))
+		{
+			$query->where($db->quoteName('tagmap.tag_id') . ' = ' . (int) $tagId)
+				->join(
+					'LEFT',
+					$db->quoteName('#__contentitem_tag_map', 'tagmap')
+					. ' ON ' . $db->quoteName('tagmap.content_item_id') . ' = ' . $db->quoteName('a.id')
+					. ' AND ' . $db->quoteName('tagmap.type_alias') . ' = ' . $db->quote('com_churchdirectory.position')
+				);
+		}
+
+		// Filter on the level.
+		if ($level = $this->getState('filter.level'))
+		{
+			$query->where('c.level <= ' . (int) $level);
+		}
+
+		// Add the list ordering clause. Added s to list to bypass joomla
+		$orderCol  = $this->state->get('list.orderings', 'a.name');
+		$orderDirn = $this->state->get('list.directions', 'acs');
+
+		if ($orderCol == 'a.ordering' || $orderCol == 'category_title')
+		{
+			$orderCol = $db->quoteName('c.title') . ' ' . $orderDirn . ', ' . $db->quoteName('a.ordering');
+		}
+
 		$query->order($db->escape($orderCol . ' ' . $orderDirn));
 
 		return $query;

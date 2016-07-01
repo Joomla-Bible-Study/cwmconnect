@@ -86,8 +86,8 @@ class ChurchDirectoryViewInfo extends JViewLegacy
 	 */
 	protected function addToolbar()
 	{
-		JToolBarHelper::title(JText::_('COM_CHURCHDIRECTORY_MANAGER_INFO'), 'churchdirectory.png');
-		JToolBarHelper::help('churchdirectory', true);
+		JToolbarHelper::title(JText::_('COM_CHURCHDIRECTORY_MANAGER_INFO'), 'churchdirectory.png');
+		JToolbarHelper::help('churchdirectory', true);
 	}
 
 	/**

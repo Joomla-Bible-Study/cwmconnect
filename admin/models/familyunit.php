@@ -152,7 +152,7 @@ class ChurchDirectoryModelFamilyUnit extends JModelAdmin
 	/**
 	 * Prepare and sanitise the table prior to saving.
 	 *
-	 * @param   JTable  $table  ?
+	 * @param   ChurchDirectoryTableFamilyUnit  $table  ?
 	 *
 	 * @return    void
 	 *
@@ -161,8 +161,6 @@ class ChurchDirectoryModelFamilyUnit extends JModelAdmin
 	protected function prepareTable($table)
 	{
 		jimport('joomla.filter.output');
-		$date = JFactory::getDate();
-		$user = JFactory::getUser();
 
 		$table->name  = htmlspecialchars_decode($table->name, ENT_QUOTES);
 		$table->alias = JApplicationHelper::stringURLSafe($table->alias);
@@ -178,9 +176,10 @@ class ChurchDirectoryModelFamilyUnit extends JModelAdmin
 			// Set ordering to the last item if not set
 			if (empty($table->ordering))
 			{
-				$db = JFactory::getDbo();
-				$db->setQuery('SELECT MAX(ordering) FROM `#__churchdirectory_familyunit`');
-				$max = $db->loadResult();
+				$query = $this->_db->getQuery(true);
+				$query->select('MAX(ordering)')->from($this->_db->q('#__churchdirectory_familyunit'));
+				$this->_db->setQuery($query);
+				$max = $this->_db->loadResult();
 
 				$table->ordering = $max + 1;
 			}
@@ -198,17 +197,16 @@ class ChurchDirectoryModelFamilyUnit extends JModelAdmin
 	{
 		if ($this->getItem()->id !== null)
 		{
-			$db    = $this->getDbo();
-			$query = $db->getQuery(true);
+			$query = $this->_db->getQuery(true);
 
 			$query->select('members.id, members.name');
 			$query->from('#__churchdirectory_details AS members');
 			$query->where('members.funitid = ' . (int) $this->getItem()->id);
 			$query->order('members.lname DESC');
 
-			$db->setQuery($query->__toString());
+			$this->_db->setQuery($query->__toString());
 
-			return $db->loadObjectList();
+			return $this->_db->loadObjectList();
 		}
 
 		return false;

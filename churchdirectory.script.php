@@ -709,13 +709,14 @@ class Com_ChurchdirectoryInstallerScript
 	/**
 	 * Install TCPDF
 	 *
-	 * @param   string  $parent  How this was tarted
+	 * @param   JInstaller  $parent  How this was tarted
 	 *
 	 * @return array
 	 */
 	private function _installTCPDF($parent)
 	{
 		$src = $parent->getParent()->getPath('source');
+		$TCPDFVersion = array();
 
 		// Install the TCPDF library
 		jimport('joomla.filesystem.folder');
@@ -738,8 +739,6 @@ class Com_ChurchdirectoryInstallerScript
 		}
 		else
 		{
-			$TCPDFVersion = array();
-
 			if (JFile::exists($target . '/README.TXT'))
 			{
 				$rawData                   = file_get_contents($target . '/README.TXT');

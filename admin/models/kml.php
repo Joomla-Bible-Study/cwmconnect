@@ -54,8 +54,6 @@ class ChurchDirectoryModelkml extends JModelAdmin
 	 */
 	protected function canEditState($record)
 	{
-		$user = JFactory::getUser();
-
 		return parent::canEditState($record);
 	}
 
@@ -151,7 +149,7 @@ class ChurchDirectoryModelkml extends JModelAdmin
 	/**
 	 * Prepare and sanitise the table prior to saving.
 	 *
-	 * @param   JTable  $table  A reference to a JTable object.
+	 * @param   ChurchDirectoryTableKML  $table  A reference to a JTable object.
 	 *
 	 * @return    void
 	 *
@@ -160,8 +158,6 @@ class ChurchDirectoryModelkml extends JModelAdmin
 	protected function prepareTable($table)
 	{
 		jimport('joomla.filter.output');
-		$date = JFactory::getDate();
-		$user = JFactory::getUser();
 
 		$table->name  = htmlspecialchars_decode($table->name, ENT_QUOTES);
 		$table->alias = JApplicationHelper::stringURLSafe($table->alias);
@@ -176,9 +172,10 @@ class ChurchDirectoryModelkml extends JModelAdmin
 			// Set ordering to the last item if not set
 			if (empty($table->ordering))
 			{
-				$db = JFactory::getDbo();
-				$db->setQuery('SELECT MAX(ordering) FROM #__churchdirectory_kml');
-				$max = $db->loadResult();
+				$query = $this->_db->getQuery(true);
+				$query->select('MAX(ordering)')->from('#__churchdirectory_kml');
+				$this->_db->setQuery($query);
+				$max = $this->_db->loadResult();
 
 				$table->ordering = $max + 1;
 			}

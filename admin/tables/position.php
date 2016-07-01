@@ -144,7 +144,10 @@ class ChurchDirectoryTablePosition extends JTable
 			return false;
 		}
 		/** check for existing name */
-		$query = 'SELECT id FROM #__churchdirectory_position WHERE name = ' . $this->_db->Quote($this->name);
+		$query = $this->_db->getQuery(true);
+		$query->select('id')
+			->from('#__churchdirectory_position')
+			->where('name = ' . $this->_db->q($this->name));
 		$this->_db->setQuery($query);
 		$xid = intval($this->_db->loadResult());
 

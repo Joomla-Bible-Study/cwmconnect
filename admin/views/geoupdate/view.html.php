@@ -47,7 +47,7 @@ class ChurchDirectoryViewGeoUpdate extends JViewLegacy
 	public function display($tpl = null)
 	{
 		// Set the toolbar title
-		JToolBarHelper::title(JText::_('COM_CHURCHDIRECTORY_TITLE_GEOUPDATE'), 'churchdirectory');
+		JToolbarHelper::title(JText::_('COM_CHURCHDIRECTORY_TITLE_GEOUPDATE'), 'churchdirectory');
 		$app   = JFactory::getApplication();
 		$state = $app->input->getBool('scanstate', false);
 		$this->loadStack();

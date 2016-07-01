@@ -82,13 +82,13 @@ class ChurchDirectoryViewGeoStatus extends JViewLegacy
 	 */
 	protected function addToolbar()
 	{
-		$canDo = ChurchDirectoryHelper::getActions($this->state->get('filter.category_id'));
+		$canDo = ChurchDirectoryHelper::getActions();
 
 		// Get the toolbar object instance
-		$bar = JToolBar::getInstance('toolbar');
+		$bar = JToolbar::getInstance('toolbar');
 
 		// Set the toolbar title
-		JToolBarHelper::title(JText::_('COM_CHURCHDIRECTORY_TITLE_GEOUPDATE_STATUS'), 'churchdirectory');
+		JToolbarHelper::title(JText::_('COM_CHURCHDIRECTORY_TITLE_GEOUPDATE_STATUS'), 'churchdirectory');
 
 		$bar->appendButton('Popup', 'refresh', 'COM_CHURCHDIRECTORY_GEOUPDATE',
 			'index.php?option=com_churchdirectory&view=geoupdate&tmpl=component', 550, 350
@@ -96,10 +96,10 @@ class ChurchDirectoryViewGeoStatus extends JViewLegacy
 
 		if ($canDo->get('core.admin'))
 		{
-			JToolBarHelper::preferences('com_churchdirectory');
+			JToolbarHelper::preferences('com_churchdirectory');
 		}
 
-		JToolBarHelper::help('churchdirectory_geoupdate', true);
+		JToolbarHelper::help('churchdirectory_geoupdate', true);
 	}
 
 	/**

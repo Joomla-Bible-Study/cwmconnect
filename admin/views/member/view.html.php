@@ -37,6 +37,7 @@ class ChurchDirectoryViewMember extends JViewLegacy
 	 */
 	protected $state;
 
+	/** @type  Object */
 	protected $canDo;
 
 	protected $groups;
@@ -54,11 +55,10 @@ class ChurchDirectoryViewMember extends JViewLegacy
 	 */
 	public function display ($tpl = null)
 	{
-		// Initialiase variables.
+		// Initialise variables.
 		$this->form   = $this->get('Form');
 		$this->item   = $this->get('Item');
 		$this->state  = $this->get('State');
-		$this->canDo  = ChurchDirectoryHelper::getActions($this->state->get('filter.category_id'));
 		$user         = JFactory::getUser();
 		$this->groups = $user->groups;
 
@@ -84,7 +84,7 @@ class ChurchDirectoryViewMember extends JViewLegacy
 			$this->access = false;
 		}
 		// Set the toolbar
-		$this->addToolBar();
+		$this->addToolbar();
 
 		// Set the document
 		$this->setDocument();
@@ -106,8 +106,8 @@ class ChurchDirectoryViewMember extends JViewLegacy
 		$userId     = $user->get('id');
 		$isNew      = ($this->item->id == 0);
 		$checkedOut = !($this->item->checked_out == 0 || $this->item->checked_out == $userId);
-		$canDo      = ChurchDirectoryHelper::getActions($this->item->catid, 0);
-		JToolBarHelper::title(
+		$canDo      = ChurchDirectoryHelper::getActions('com_churchdirectory', 'category', $this->item->catid);
+		JToolbarHelper::title(
 			$isNew ? JText::_('COM_CHURCHDIRECTORY_MANAGER_MEMBER_NEW')
 				: JText::_('COM_CHURCHDIRECTORY_MANAGER_MEMBER_EDIT'), 'churchdirectory');
 
@@ -117,11 +117,11 @@ class ChurchDirectoryViewMember extends JViewLegacy
 			// For new records, check the create permission.
 			if ($isNew && (count($user->getAuthorisedCategories('com_churchdirectory', 'core.create')) > 0))
 			{
-				JToolBarHelper::apply('member.apply');
-				JToolBarHelper::save('member.save');
-				JToolBarHelper::save2new('member.save2new');
+				JToolbarHelper::apply('member.apply');
+				JToolbarHelper::save('member.save');
+				JToolbarHelper::save2new('member.save2new');
 			}
-			JToolBarHelper::cancel('member.cancel');
+			JToolbarHelper::cancel('member.cancel');
 		}
 		else
 		{
@@ -131,13 +131,13 @@ class ChurchDirectoryViewMember extends JViewLegacy
 				// Since it's an existing record, check the edit permission, or fall back to edit own if the owner.
 				if ($canDo->get('core.edit') || ($canDo->get('core.edit.own') && $this->item->created_by == $userId))
 				{
-					JToolBarHelper::apply('member.apply', 'JTOOLBAR_APPLY');
-					JToolBarHelper::save('member.save', 'JTOOLBAR_SAVE');
+					JToolbarHelper::apply('member.apply', 'JTOOLBAR_APPLY');
+					JToolbarHelper::save('member.save', 'JTOOLBAR_SAVE');
 
 					// We can save this record, but check the create permission to see if we can return to make a new one.
 					if ($canDo->get('core.create'))
 					{
-						JToolBarHelper::save2new('member.save2new');
+						JToolbarHelper::save2new('member.save2new');
 					}
 				}
 			}
@@ -145,14 +145,14 @@ class ChurchDirectoryViewMember extends JViewLegacy
 			// If checked out, we can still save
 			if ($canDo->get('core.create'))
 			{
-				JToolBarHelper::save2copy('member.save2copy');
+				JToolbarHelper::save2copy('member.save2copy');
 			}
 
-			JToolBarHelper::cancel('member.cancel', 'JTOOLBAR_CLOSE');
+			JToolbarHelper::cancel('member.cancel', 'JTOOLBAR_CLOSE');
 		}
 
-		JToolBarHelper::divider();
-		JToolBarHelper::help('member_contact', true);
+		JToolbarHelper::divider();
+		JToolbarHelper::help('member_contact', true);
 	}
 
 	/**

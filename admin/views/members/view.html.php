@@ -53,6 +53,8 @@ class ChurchDirectoryViewMembers extends JViewLegacy
 		$this->items      = $this->get('Items');
 		$this->pagination = $this->get('Pagination');
 		$this->state      = $this->get('State');
+		$this->filterForm = $this->get('FilterForm');
+		$this->activeFilters = $this->get('ActiveFilters');
 
 		ChurchDirectoryHelper::addSubmenu('members');
 
@@ -83,40 +85,40 @@ class ChurchDirectoryViewMembers extends JViewLegacy
 	 */
 	protected function addToolbar()
 	{
-		$canDo = ChurchDirectoryHelper::getActions($this->state->get('filter.category_id'));
+		$canDo = ChurchDirectoryHelper::getActions('com_churchdirectory');
 		JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 		$user  = JFactory::getUser();
 
 		// Get the toolbar object instance
-		$bar = JToolBar::getInstance('toolbar');
+		$bar = JToolbar::getInstance('toolbar');
 
-		JToolBarHelper::title(JText::_('COM_CHURCHDIRECTORY_MANAGER_MEMBERS'), 'churchdirectory');
+		JToolbarHelper::title(JText::_('COM_CHURCHDIRECTORY_MANAGER_MEMBERS'), 'churchdirectory');
 
 		if ($canDo->get('core.create') || (count($user->getAuthorisedCategories('com_churchdirectory', 'core.create'))) > 0)
 		{
-			JToolBarHelper::addNew('member.add');
+			JToolbarHelper::addNew('member.add');
 		}
 
 		if (($canDo->get('core.edit')) || ($canDo->get('core.edit.own')))
 		{
-			JToolBarHelper::editList('member.edit');
+			JToolbarHelper::editList('member.edit');
 		}
 
 		if ($canDo->get('core.edit.state'))
 		{
-			JToolBarHelper::publish('members.publish', 'JTOOLBAR_PUBLISH', true);
-			JToolBarHelper::unpublish('members.unpublish', 'JTOOLBAR_UNPUBLISH', true);
-			JToolBarHelper::archiveList('members.archive');
-			JToolBarHelper::checkin('members.checkin');
+			JToolbarHelper::publish('members.publish', 'JTOOLBAR_PUBLISH', true);
+			JToolbarHelper::unpublish('members.unpublish', 'JTOOLBAR_UNPUBLISH', true);
+			JToolbarHelper::archiveList('members.archive');
+			JToolbarHelper::checkin('members.checkin');
 		}
 
 		if ($this->state->get('filter.published') == -2 && $canDo->get('core.delete'))
 		{
-			JToolBarHelper::deleteList('', 'members.delete', 'JTOOLBAR_EMPTY_TRASH');
+			JToolbarHelper::deleteList('', 'members.delete', 'JTOOLBAR_EMPTY_TRASH');
 		}
 		elseif ($canDo->get('core.edit.state'))
 		{
-			JToolBarHelper::trash('members.trash');
+			JToolbarHelper::trash('members.trash');
 		}
 
 		// Add a batch button
@@ -132,41 +134,11 @@ class ChurchDirectoryViewMembers extends JViewLegacy
 
 		if ($canDo->get('core.admin'))
 		{
-			JToolBarHelper::preferences('com_churchdirectory');
+			JToolbarHelper::preferences('com_churchdirectory');
 		}
 
-		JToolBarHelper::help('churchdirectory_members', true);
+		JToolbarHelper::help('churchdirectory_members', true);
 		JHtmlSidebar::setAction('index.php?option=com_churchdirectory&amp;view=members');
-
-		JHtmlSidebar::addFilter(
-			JText::_('JOPTION_SELECT_PUBLISHED'),
-			'filter_published',
-			JHtml::_('select.options', JHtml::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.published'), true)
-		);
-
-		JHtmlSidebar::addFilter(
-			JText::_('JOPTION_SELECT_CATEGORY'),
-			'filter_category_id',
-			JHtml::_('select.options', JHtml::_('category.options', 'com_churchdirectory'), 'value', 'text', $this->state->get('filter.category_id'))
-		);
-
-		JHtmlSidebar::addFilter(
-			JText::_('JOPTION_SELECT_ACCESS'),
-			'filter_access',
-			JHtml::_('select.options', JHtml::_('access.assetgroups'), 'value', 'text', $this->state->get('filter.access'))
-		);
-
-		JHtmlSidebar::addFilter(
-			JText::_('JOPTION_SELECT_LANGUAGE'),
-			'filter_language',
-			JHtml::_('select.options', JHtml::_('contentlanguage.existing', true, true), 'value', 'text', $this->state->get('filter.language'))
-		);
-
-		JHtmlSidebar::addFilter(
-			JText::_('COM_CHURCHODIRECTORY_OPTION_SELECT_MSTATUS'),
-			'filter_mstatus',
-			JHtml::_('select.options', JHtml::_('member.status', true, true), 'value', 'text', $this->state->get('filter.mstatus'))
-		);
 	}
 
 	/**

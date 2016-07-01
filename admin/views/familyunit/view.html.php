@@ -48,7 +48,7 @@ class ChurchDirectoryViewFamilyUnit extends JViewLegacy
 	 */
 	public function display($tpl = null)
 	{
-		// Initialiase variables.
+		// Initialise variables.
 		$this->form  = $this->get('Form');
 		$this->item  = $this->get('Item');
 		$this->state = $this->get('State');
@@ -64,7 +64,7 @@ class ChurchDirectoryViewFamilyUnit extends JViewLegacy
 		}
 
 		// Set the toolbar
-		$this->addToolBar();
+		$this->addToolbar();
 
 		// Set the document
 		$this->setDocument();
@@ -86,9 +86,9 @@ class ChurchDirectoryViewFamilyUnit extends JViewLegacy
 		$userId     = $user->get('id');
 		$isNew      = ($this->item->id == 0);
 		$checkedOut = !($this->item->checked_out == 0 || $this->item->checked_out == $userId);
-		$canDo      = ChurchDirectoryHelper::getActions(0);
+		$canDo      = ChurchDirectoryHelper::getActions('com_churchdirectory', 'familyunit', $this->item->id);
 
-		JToolBarHelper::title(
+		JToolbarHelper::title(
 			$isNew ? JText::_('COM_CHURCHDIRECTORY_MANAGER_FAMILYUNIT_NEW')
 				: JText::_('COM_CHURCHDIRECTORY_MANAGER_FAMILYUNIT_EDIT'), 'churchdirectory');
 
@@ -98,12 +98,12 @@ class ChurchDirectoryViewFamilyUnit extends JViewLegacy
 			// For new records, check the create permission.
 			if ($isNew && (count($user->getAuthorisedCategories('com_churchdirectory', 'core.create')) > 0))
 			{
-				JToolBarHelper::apply('familyunit.apply');
-				JToolBarHelper::save('familyunit.save');
-				JToolBarHelper::save2new('familyunit.save2new');
+				JToolbarHelper::apply('familyunit.apply');
+				JToolbarHelper::save('familyunit.save');
+				JToolbarHelper::save2new('familyunit.save2new');
 			}
 
-			JToolBarHelper::cancel('familyunit.cancel');
+			JToolbarHelper::cancel('familyunit.cancel');
 		}
 		else
 		{
@@ -113,13 +113,13 @@ class ChurchDirectoryViewFamilyUnit extends JViewLegacy
 				// Since it's an existing record, check the edit permission, or fall back to edit own if the owner.
 				if ($canDo->get('core.edit') || ($canDo->get('core.edit.own') && $this->item->created_by == $userId))
 				{
-					JToolBarHelper::apply('familyunit.apply');
-					JToolBarHelper::save('familyunit.save');
+					JToolbarHelper::apply('familyunit.apply');
+					JToolbarHelper::save('familyunit.save');
 
 					// We can save this record, but check the create permission to see if we can return to make a new one.
 					if ($canDo->get('core.create'))
 					{
-						JToolBarHelper::save2new('familyunit.save2new');
+						JToolbarHelper::save2new('familyunit.save2new');
 					}
 				}
 			}
@@ -127,14 +127,14 @@ class ChurchDirectoryViewFamilyUnit extends JViewLegacy
 			// If checked out, we can still save
 			if ($canDo->get('core.create'))
 			{
-				JToolBarHelper::save2copy('familyunit.save2copy');
+				JToolbarHelper::save2copy('familyunit.save2copy');
 			}
 
-			JToolBarHelper::cancel('familyunit.cancel', 'JTOOLBAR_CLOSE');
+			JToolbarHelper::cancel('familyunit.cancel', 'JTOOLBAR_CLOSE');
 		}
 
-		JToolBarHelper::divider();
-		JToolBarHelper::help('churchdirectory_familyunit', true);
+		JToolbarHelper::divider();
+		JToolbarHelper::help('churchdirectory_familyunit', true);
 	}
 
 	/**

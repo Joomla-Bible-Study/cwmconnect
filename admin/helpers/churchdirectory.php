@@ -1,5 +1,4 @@
 <?php
-
 /**
  * ChurchDirectory Helper
  *
@@ -7,6 +6,7 @@
  * @copyright  2007 - 2016 (C) Joomla Bible Study Team All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
+
 // No direct access
 defined('_JEXEC') or die;
 
@@ -37,57 +37,57 @@ class ChurchDirectoryHelper
 	 */
 	public static function addSubmenu($vName)
 	{
-		self::rendermenu(
+		JHtmlSidebar::addEntry(
 			JText::_('COM_CHURCHDIRECTORY_SUBMENU_CPANEL'),
 			'index.php?option=com_churchdirectory&view=cpanel',
 			$vName == 'cpanel'
 		);
-		self::rendermenu(
+		JHtmlSidebar::addEntry(
 			JText::_('COM_CHURCHDIRECTORY_SUBMENU_MEMBERS'),
 			'index.php?option=com_churchdirectory&view=members',
 			$vName == 'members'
 		);
-		self::rendermenu(
+		JHtmlSidebar::addEntry(
 			JText::_('COM_CHURCHDIRECTORY_SUBMENU_CATEGORIES'),
 			'index.php?option=com_categories&extension=com_churchdirectory',
 			$vName == 'categories'
 		);
-		self::rendermenu(
+		JHtmlSidebar::addEntry(
 			JText::_('COM_CHURCHDIRECTORY_SUBMENU_INFO'),
 			'index.php?option=com_churchdirectory&view=info',
 			$vName == 'info'
 		);
-		self::rendermenu(
+		JHtmlSidebar::addEntry(
 			JText::_('COM_CHURCHDIRECTORY_SUBMENU_KML'),
 			'index.php?option=com_churchdirectory&task=kml.edit&id=1',
 			$vName == 'kmls'
 		);
-		self::rendermenu(
+		JHtmlSidebar::addEntry(
 			JText::_('COM_CHURCHDIRECTORY_SUBMENU_FAMILYUNITS'),
 			'index.php?option=com_churchdirectory&view=familyunits',
 			$vName == 'familyunits'
 		);
-		self::rendermenu(
+		JHtmlSidebar::addEntry(
 			JText::_('COM_CHURCHDIRECTORY_SUBMENU_DIRHEADERS'),
 			'index.php?option=com_churchdirectory&view=dirheaders',
 			$vName == 'dirheaders'
 		);
-		self::rendermenu(
+		JHtmlSidebar::addEntry(
 			JText::_('COM_CHURCHDIRECTORY_SUBMENU_POSITIONS'),
 			'index.php?option=com_churchdirectory&view=positions',
 			$vName == 'positions'
 		);
-		self::rendermenu(
+		JHtmlSidebar::addEntry(
 			JText::_('COM_CHURCHDIRECTORY_SUBMENU_GEOSTATUS'),
 			'index.php?option=com_churchdirectory&view=geostatus',
 			$vName == 'geostatus'
 		);
-		self::rendermenu(
+		JHtmlSidebar::addEntry(
 			JText::_('COM_CHURCHDIRECTORY_SUBMENU_REPORTS'),
 			'index.php?option=com_churchdirectory&view=reports',
 			$vName == 'reports'
 		);
-		self::rendermenu(
+		JHtmlSidebar::addEntry(
 			JText::_('COM_CHURCHDIRECTORY_SUBMENU_DATABASE'),
 			'index.php?option=com_churchdirectory&view=database',
 			$vName == 'database'
@@ -102,51 +102,38 @@ class ChurchDirectoryHelper
 	}
 
 	/**
-	 *  Rendering Menu based on Joomla! Version.
-	 *
-	 * @param   string  $text   Title
-	 * @param   string  $url    URL
-	 * @param   string  $vName  The name of the active view.
-	 *
-	 * @return void
-	 */
-	public static function rendermenu($text, $url, $vName)
-	{
-		JHtmlSidebar::addEntry($text, $url, $vName);
-	}
-
-	/**
 	 * Gets a list of the actions that can be performed.
 	 *
-	 * @param   int  $categoryId  The category ID.
-	 * @param   int  $contactId   The member ID.
+	 * @param   string   $component  The component name.
+	 * @param   string   $section    The access section name.
+	 * @param   integer  $id         The item ID.
 	 *
 	 * @return    JObject
 	 *
 	 * @since    1.7.0
 	 */
-	public static function getActions($categoryId = 0, $contactId = 0)
+	public static function getActions($component = '', $section = '', $id = 0)
 	{
 		$user   = JFactory::getUser();
 		$result = new JObject;
 
-		if (empty($contactId) && empty($categoryId))
+		if (empty($component))
 		{
-			$assetName = 'com_churchdirectory';
-			$level     = 'component';
+			$component = self::$extension;
 		}
-		elseif (empty($contactId))
+
+		$path = JPATH_ADMINISTRATOR . '/components/' . $component . '/access.xml';
+
+		if ($section && $id)
 		{
-			$assetName = 'com_churchdirectory.category.' . (int) $categoryId;
-			$level     = 'category';
+			$assetName = $component . '.' . $section . '.' . (int) $id;
 		}
 		else
 		{
-			$assetName = 'com_churchdirectory.members.' . (int) $contactId;
-			$level     = 'category';
+			$assetName = $component;
 		}
 
-		$actions = JAccess::getActionsFromFile('com_churchdirectory', $level);
+		$actions = JAccess::getActionsFromFile($path, "/access/section[@name='component']/");
 
 		foreach ($actions as $action)
 		{
@@ -207,7 +194,7 @@ class ChurchDirectoryHelper
 		);
 		$query->select($select);
 		$db->setQuery($query);
-		$contactitems = $db->loadObjectList('language');
+		$memberitems = $db->loadObjectList('language');
 
 		// Check for a database error.
 		if ($error = $db->getErrorMsg())
@@ -217,12 +204,66 @@ class ChurchDirectoryHelper
 			return false;
 		}
 
-		foreach ($contactitems as $tag => $item)
+		foreach ($memberitems as $tag => $item)
 		{
 			$associations[$tag] = $item;
 		}
 
 		return $associations;
+	}
+
+	/**
+	 * Adds Count Items for Category Manager.
+	 *
+	 * @param   stdClass[] &$items The banner category objects
+	 *
+	 * @return  stdClass[]
+	 *
+	 * @since   3.5
+	 */
+	public static function countItems(&$items)
+	{
+		$db = JFactory::getDbo();
+
+		foreach ($items as $item)
+		{
+			$item->count_trashed     = 0;
+			$item->count_archived    = 0;
+			$item->count_unpublished = 0;
+			$item->count_published   = 0;
+			$query                   = $db->getQuery(true);
+			$query->select('published AS state, count(*) AS count')
+				->from($db->qn('#__churchdirctory_details'))
+				->where('catid = ' . (int) $item->id)
+				->group('published');
+			$db->setQuery($query);
+			$members = $db->loadObjectList();
+
+			foreach ($members as $member)
+			{
+				if ($member->state == 1)
+				{
+					$item->count_published = $member->count;
+				}
+
+				if ($member->state == 0)
+				{
+					$item->count_unpublished = $member->count;
+				}
+
+				if ($member->state == 2)
+				{
+					$item->count_archived = $member->count;
+				}
+
+				if ($member->state == -2)
+				{
+					$item->count_trashed = $member->count;
+				}
+			}
+		}
+
+		return $items;
 	}
 
 }

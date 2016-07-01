@@ -8,6 +8,7 @@
 defined('_JEXEC') or die;
 
 JLoader::register('JHtmlDropdown', JPATH_SITE . '/libraries/cms/html/dropdown.php');
+
 /**
  * class to help with geoupdate
  *

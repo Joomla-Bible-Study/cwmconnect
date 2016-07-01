@@ -6,8 +6,6 @@
  */
 defined('_JEXEC') or die;
 
-jimport('joomla.application.component.controllerform');
-
 /**
  * Controller for ChurchDirectory
  *
@@ -188,7 +186,7 @@ class ChurchDirectoryControllerMember extends JControllerForm
 		$body    = $data['churchdirectory_message'];
 
 		// Prepare email body
-		$prefix = JText::sprintf('COM_CHURCHDIRECTORY_ENQUIRY_TEXT', JURI::base());
+		$prefix = JText::sprintf('COM_CHURCHDIRECTORY_ENQUIRY_TEXT', JUri::base());
 		$body   = $prefix . "\n" . $name . ' <' . $email . '>' . "\r\n\r\n" . stripslashes($body);
 
 		$mail = JFactory::getMailer();

@@ -17,6 +17,22 @@ use Joomla\Registry\Registry;
 class ChurchDirectoryTableDirHeader extends JTable
 {
 
+	public $id;
+
+	public $name;
+
+	public $alias;
+
+	public $params;
+
+	public $created;
+
+	public $webpage;
+
+	public $publish_down;
+
+	public $publish_up;
+
 	/**
 	 * Constructor
 	 *
@@ -133,7 +149,10 @@ class ChurchDirectoryTableDirHeader extends JTable
 			return false;
 		}
 		/** check for existing name */
-		$query = 'SELECT id FROM #__churchdirectory_dirheader WHERE name = ' . $this->_db->Quote($this->name);
+		$query = $this->_db->getQuery(true);
+		$query->select('*')
+			->from($this->_db->q('#__churchdirectory_dirheader'))
+			->where('name = ' . $this->_db->q($this->name));
 		$this->_db->setQuery($query);
 		$xid = intval($this->_db->loadResult());
 

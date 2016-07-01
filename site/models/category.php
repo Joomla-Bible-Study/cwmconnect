@@ -192,8 +192,8 @@ class ChurchDirectoryModelCategory extends JModelList
 		}
 
 		// Filter by start and end dates.
-		$nullDate = $db->Quote($db->getNullDate());
-		$nowDate  = $db->Quote(JFactory::getDate()->toSql());
+		$nullDate = $db->q($db->getNullDate());
+		$nowDate  = $db->q(JFactory::getDate()->toSql());
 
 		if ($this->getState('filter.publish_date'))
 		{
@@ -206,14 +206,14 @@ class ChurchDirectoryModelCategory extends JModelList
 
 		if (!empty($search))
 		{
-			$search = $db->Quote('%' . $db->escape($search, true) . '%');
+			$search = $db->q('%' . $db->escape($search, true) . '%');
 			$query->where('(a.name LIKE ' . $search . ')');
 		}
 
 		// Filter by language
 		if ($this->getState('filter.language'))
 		{
-			$query->where('a.language in (' . $db->Quote(JFactory::getLanguage()->getTag()) . ',' . $db->Quote('*') . ')');
+			$query->where('a.language in (' . $db->q(JFactory::getLanguage()->getTag()) . ',' . $db->q('*') . ')');
 		}
 
 		// Set sortname ordering if selected

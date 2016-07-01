@@ -41,19 +41,14 @@ JHtml::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_churchdirectory/hel
 JHtml::_('bootstrap.framework');
 JHtml::_('bootstrap.loadcss');
 
-if (!version_compare(JVERSION, '3.0', 'ge'))
-{
-	JHtml::stylesheet('media/com_churchdirectory/css/bootstrap-j2.5.css');
-}
-
 // Load FOF
 include_once JPATH_SITE . '/libraries/fof/include.php';
 
 // Load tcpdf
 include_once JPATH_SITE . '/libraries/tcpdf/tcpdf.php';
 
-JHTML::stylesheet('media/com_churchdirectory/css/general.css');
-JHTML::stylesheet('media/com_churchdirectory/css/churchdirectory.css');
+JHtml::stylesheet('media/com_churchdirectory/css/general.css');
+JHtml::stylesheet('media/com_churchdirectory/css/churchdirectory.css');
 
 $controller = JControllerLegacy::getInstance('ChurchDirectory');
 $controller->execute(JFactory::getApplication()->input->get('task'));

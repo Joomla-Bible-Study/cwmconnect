@@ -9,6 +9,7 @@ defined('_JEXEC') or die;
 
 
 jimport('joomla.mail.helper');
+use Joomla\Registry\Registry;
 
 /**
  * Frontpage View class
@@ -41,6 +42,7 @@ class ChurchDirectoryViewFeatured extends JViewLegacy
 
 	protected $children;
 
+	/** @type  \Joomla\Registry\Registry */
 	protected $params;
 
 	protected $parent;
@@ -67,7 +69,7 @@ class ChurchDirectoryViewFeatured extends JViewLegacy
 		// Check for errors.
 		if (count($errors = $this->get('Errors')))
 		{
-			JError::raiseWarning(500, implode("\n", $errors));
+			JFactory::getApplication()->enqueueMessage(implode("\n", $errors), 'error');
 
 			return false;
 		}
@@ -78,7 +80,7 @@ class ChurchDirectoryViewFeatured extends JViewLegacy
 		{
 			$item       = & $items[$i];
 			$item->slug = $item->alias ? ($item->id . ':' . $item->alias) : $item->id;
-			$temp       = new JRegistry;
+			$temp       = new Registry;
 			$temp->loadString($item->params);
 			$item->params = clone($params);
 			$item->params->merge($temp);
@@ -143,15 +145,15 @@ class ChurchDirectoryViewFeatured extends JViewLegacy
 
 		if (empty($title))
 		{
-			$title = $app->getCfg('sitename');
+			$title = $app->get('sitename');
 		}
-		elseif ($app->getCfg('sitename_pagetitles', 0) == 1)
+		elseif ($app->get('sitename_pagetitles', 0) == 1)
 		{
-			$title = JText::sprintf('JPAGETITLE', $app->getCfg('sitename'), $title);
+			$title = JText::sprintf('JPAGETITLE', $app->get('sitename'), $title);
 		}
-		elseif ($app->getCfg('sitename_pagetitles', 0) == 2)
+		elseif ($app->get('sitename_pagetitles', 0) == 2)
 		{
-			$title = JText::sprintf('JPAGETITLE', $title, $app->getCfg('sitename'));
+			$title = JText::sprintf('JPAGETITLE', $title, $app->get('sitename'));
 		}
 		$this->document->setTitle($title);
 

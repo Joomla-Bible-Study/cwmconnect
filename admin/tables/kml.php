@@ -16,6 +16,29 @@ use Joomla\Registry\Registry;
  */
 class ChurchDirectoryTableKML extends JTable
 {
+	public $name;
+
+	public $alias;
+
+	public $params;
+
+	public $id;
+
+	public $created;
+
+	public $webpage;
+
+	public $publish_down;
+
+	public $publish_up;
+
+	public $ordering;
+
+	public $modified;
+
+	public $modified_by;
+
+	public $created_by;
 
 	/**
 	 * Constructor
@@ -132,7 +155,8 @@ class ChurchDirectoryTableKML extends JTable
 			return false;
 		}
 		/** check for existing name */
-		$query = 'SELECT id FROM #__churchdirectory_kml WHERE name = ' . $this->_db->Quote($this->name);
+		$query = $this->_db->getQuery(true);
+		$query->select('id')->from('#__churchdirectory_kml')->where('name = ' . $this->_db->q($this->name));
 		$this->_db->setQuery($query);
 
 		$xid = intval($this->_db->loadResult());

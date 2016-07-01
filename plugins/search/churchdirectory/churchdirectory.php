@@ -113,7 +113,7 @@ class PlgSearchChurchdirectory extends JPlugin
 				$order = 'a.name DESC';
 		}
 
-		$text = $db->Quote('%' . $db->escape($text, true) . '%', false);
+		$text = $db->q('%' . $db->escape($text, true) . '%', false);
 
 		$rows = array();
 
@@ -141,7 +141,7 @@ class PlgSearchChurchdirectory extends JPlugin
 			$query->select('a.name AS title, \'\' AS created, a.misc, '
 				. $case_when . ',' . $case_when1 . ', '
 				. $query->concatenate(array("a.name", "a.misc"), ",") . ' AS text,'
-				. $query->concatenate(array($db->Quote($section), "c.title"), " / ") . ' AS section,'
+				. $query->concatenate(array($db->q($section), "c.title"), " / ") . ' AS section,'
 				. '\'2\' AS browsernav');
 			$query->from('#__churchdirectory_details AS a');
 			$query->innerJoin('#__categories AS c ON c.id = a.catid');
@@ -157,8 +157,8 @@ class PlgSearchChurchdirectory extends JPlugin
 			if ($app->isSite() && $app->getLanguageFilter())
 			{
 				$tag = JFactory::getLanguage()->getTag();
-				$query->where('a.language in (' . $db->Quote($tag) . ',' . $db->Quote('*') . ')');
-				$query->where('c.language in (' . $db->Quote($tag) . ',' . $db->Quote('*') . ')');
+				$query->where('a.language in (' . $db->q($tag) . ',' . $db->q('*') . ')');
+				$query->where('c.language in (' . $db->q($tag) . ',' . $db->q('*') . ')');
 			}
 
 			$db->setQuery($query, 0, $limit);

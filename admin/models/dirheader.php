@@ -7,8 +7,6 @@
 
 defined('_JEXEC') or die;
 
-jimport('joomla.application.component.modeladmin');
-
 /**
  * Item Model for a FamilyUnit.
  *
@@ -151,7 +149,7 @@ class ChurchDirectoryModelDirHeader extends JModelAdmin
 	/**
 	 * Prepare and sanitise the table prior to saving.
 	 *
-	 * @param   JTable  $table  Table to Prepare
+	 * @param   ChurchDirectoryTableDirHeader  $table  Table to Prepare
 	 *
 	 * @return    void
 	 *
@@ -177,7 +175,9 @@ class ChurchDirectoryModelDirHeader extends JModelAdmin
 			if (empty($table->ordering))
 			{
 				$db = JFactory::getDbo();
-				$db->setQuery('SELECT MAX(ordering) FROM #__churchdirectory_dirheader');
+				$query = $db->getQuery(true);
+				$query->select('MAX(ordering)')->from($db->q('#__churchdirectory_dirheader'));
+				$db->setQuery($query);
 				$max = $db->loadResult();
 
 				$table->ordering = $max + 1;

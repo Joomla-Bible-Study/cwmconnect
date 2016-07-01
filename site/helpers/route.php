@@ -7,10 +7,6 @@
 
 defined('_JEXEC') or die;
 
-// Component Helper
-jimport('joomla.application.component.helper');
-jimport('joomla.application.categories');
-
 /**
  * ChurchDirectory Component Route Helper
  *

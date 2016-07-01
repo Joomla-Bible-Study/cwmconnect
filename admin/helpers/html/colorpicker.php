@@ -1,5 +1,5 @@
 <?php
-	/**
+/**
 	 * @package     Joomla.Libraries
 	 * @subpackage  HTML
 	 *
@@ -7,15 +7,15 @@
 	 * @license     GNU General Public License version 2 or later; see LICENSE
 	 */
 
-	defined('JPATH_PLATFORM') or die;
+defined('JPATH_PLATFORM') or die;
 
-	/**
-	 * Utility class for Bootstrap elements.
-	 *
-	 * @package     Joomla.Libraries
-	 * @subpackage  HTML
-	 * @since       3.0
-	 */
+/**
+ * Utility class for Bootstrap elements.
+ *
+ * @package     Joomla.Libraries
+ * @subpackage  HTML
+ * @since       3.0
+ */
 abstract class JHtmlColorPicker
 {
 
@@ -44,7 +44,7 @@ abstract class JHtmlColorPicker
 			return;
 		}
 
-		JHtml::script('media/com_churchdirectory/js/jscolor.js');
+		JHtml::script('media/com_churchdirectory/js/jscolor.min.js');
 		self::$loaded[__METHOD__] = true;
 
 		return;

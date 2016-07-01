@@ -86,49 +86,49 @@ class ChurchDirectoryViewFamilyUnits extends JViewLegacy
 	 */
 	protected function addToolbar()
 	{
-		$canDo = ChurchDirectoryHelper::getActions($this->state->get('filter.category_id'));
+		$canDo = ChurchDirectoryHelper::getActions('com_churchdirectory', 'familyunit');
 		$user  = JFactory::getUser();
-		JToolBarHelper::title(JText::_('COM_CHURCHDIRECTORY_MANAGER_FAMILYUNITS'), 'churchdirectory');
+		JToolbarHelper::title(JText::_('COM_CHURCHDIRECTORY_MANAGER_FAMILYUNITS'), 'churchdirectory');
 
 		if ($canDo->get('core.create') || (count($user->getAuthorisedCategories('com_churchdirectory', 'core.create'))) > 0)
 		{
-			JToolBarHelper::addNew('familyunit.add');
+			JToolbarHelper::addNew('familyunit.add');
 		}
 
 		if (($canDo->get('core.edit')) || ($canDo->get('core.edit.own')))
 		{
-			JToolBarHelper::editList('familyunit.edit');
+			JToolbarHelper::editList('familyunit.edit');
 		}
 
 		if ($canDo->get('core.edit.state'))
 		{
-			JToolBarHelper::divider();
-			JToolBarHelper::publish('familyunits.publish', 'JTOOLBAR_PUBLISH', true);
-			JToolBarHelper::unpublish('familyunits.unpublish', 'JTOOLBAR_UNPUBLISH', true);
-			JToolBarHelper::divider();
-			JToolBarHelper::checkin('familyunits.checkin');
+			JToolbarHelper::divider();
+			JToolbarHelper::publish('familyunits.publish', 'JTOOLBAR_PUBLISH', true);
+			JToolbarHelper::unpublish('familyunits.unpublish', 'JTOOLBAR_UNPUBLISH', true);
+			JToolbarHelper::divider();
+			JToolbarHelper::checkin('familyunits.checkin');
 		}
 
 		if ($this->state->get('filter.published') == -2 && $canDo->get('core.delete'))
 		{
-			JToolBarHelper::deleteList('', 'familyunits.delete', 'JTOOLBAR_EMPTY_TRASH');
-			JToolBarHelper::divider();
+			JToolbarHelper::deleteList('', 'familyunits.delete', 'JTOOLBAR_EMPTY_TRASH');
+			JToolbarHelper::divider();
 		}
 		elseif ($canDo->get('core.edit.state'))
 		{
-			JToolBarHelper::trash('familyunits.trash');
-			JToolBarHelper::divider();
+			JToolbarHelper::trash('familyunits.trash');
+			JToolbarHelper::divider();
 		}
 
 		if ($canDo->get('core.admin'))
 		{
-			JToolBarHelper::preferences('com_churchdirectory');
-			JToolBarHelper::divider();
+			JToolbarHelper::preferences('com_churchdirectory');
+			JToolbarHelper::divider();
 		}
 
 		if (version_compare(JVERSION, '3.0.0', 'ge'))
 		{
-			JToolBarHelper::help('churchdirectory_familyunits', true);
+			JToolbarHelper::help('churchdirectory_familyunits', true);
 			JHtmlSidebar::setAction('index.php?option=com_churchdirectory&amp;view=familyunits');
 
 			JHtmlSidebar::addFilter(
@@ -156,7 +156,7 @@ class ChurchDirectoryViewFamilyUnits extends JViewLegacy
 			);
 		}
 
-		JToolBarHelper::help('churchdirectory_familyunit', true);
+		JToolbarHelper::help('churchdirectory_familyunit', true);
 	}
 
 	/**

@@ -227,8 +227,7 @@ code a b {
 
 .ac_results ul {
 	width: 100%;
-	list-style-position: outside;
-	list-style: none;
+	list-style: none outside none;
 	padding: 0;
 	margin: 0;
 }

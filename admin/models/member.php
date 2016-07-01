@@ -19,6 +19,40 @@ use Joomla\Registry\Registry;
  */
 class ChurchDirectoryModelMember extends JModelAdmin
 {
+	/**
+	 * The type alias for this content type.
+	 *
+	 * @var    string
+	 * @since  3.2
+	 */
+	public $typeAlias = 'com_churchdirectory.member';
+
+	/**
+	 * The context used for the associations table
+	 *
+	 * @var    string
+	 * @since  3.4.4
+	 */
+	protected $associationsContext = 'com_churchdirectory.item';
+
+	/**
+	 * Batch copy/move command. If set to false, the batch copy/move command is not supported
+	 *
+	 * @var  string
+	 */
+	protected $batch_copymove = 'category_id';
+
+	/**
+	 * Allowed batch commands
+	 *
+	 * @var array
+	 */
+	protected $batch_commands = array(
+		'assetgroup_id' => 'batchAccess',
+		'language_id'   => 'batchLanguage',
+		'tag'           => 'batchTag',
+		'user_id'       => 'batchUser'
+	);
 
 	/**
 	 * Method to perform batch operations on an item or a set of items.
@@ -45,7 +79,7 @@ class ChurchDirectoryModelMember extends JModelAdmin
 
 		if (empty($pks))
 		{
-			$this->setError(JText::_('JGLOBAL_NO_ITEM_SELECTED'));
+			JFactory::getApplication()->enqueueMessage(JText::_('JGLOBAL_NO_ITEM_SELECTED'), 'error');
 
 			return false;
 		}
@@ -107,7 +141,7 @@ class ChurchDirectoryModelMember extends JModelAdmin
 
 		if (!$done)
 		{
-			$this->setError(JText::_('JLIB_APPLICATION_ERROR_INSUFFICIENT_BATCH_INFORMATION'));
+			JFactory::getApplication()->enqueueMessage(JText::_('JLIB_APPLICATION_ERROR_INSUFFICIENT_BATCH_INFORMATION'), 'error');
 
 			return false;
 		}
@@ -133,8 +167,14 @@ class ChurchDirectoryModelMember extends JModelAdmin
 	{
 		$categoryId = (int) $value;
 
+		/** @type ChurchDirectoryTableMember $table */
 		$table = $this->getTable();
 		$i     = 0;
+
+		if (!parent::checkCategoryId($categoryId))
+		{
+			return false;
+		}
 
 		// Check that the category exists
 		if ($categoryId)
@@ -145,7 +185,7 @@ class ChurchDirectoryModelMember extends JModelAdmin
 				if ($error = $categoryTable->getError())
 				{
 					// Fatal error
-					$this->setError($error);
+					JFactory::getApplication()->enqueueMessage($error, 'error');
 
 					return false;
 				}
@@ -180,12 +220,12 @@ class ChurchDirectoryModelMember extends JModelAdmin
 			// Pop the first ID off the stack
 			$pk = array_shift($pks);
 
-			$table->reset();
+			$this->table->reset();
 
 			// Check that the row actually exists
-			if (!$table->load($pk))
+			if (!$this->table->load($pk))
 			{
-				if ($error = $table->getError())
+				if ($error = $this->table->getError())
 				{
 					// Fatal error
 					$this->setError($error);
@@ -201,15 +241,18 @@ class ChurchDirectoryModelMember extends JModelAdmin
 			}
 
 			// Alter the title & alias
-			$data         = $this->generateNewTitle($categoryId, $table->alias, $table->name);
-			$table->name  = $data['0'];
-			$table->alias = $data['1'];
+			$data         = $this->generateNewTitle($categoryId, $this->table->alias, $this->table->name);
+			$this->table->name  = $data['0'];
+			$this->table->alias = $data['1'];
 
 			// Reset the ID because we are making a copy
-			$table->id = 0;
+			$this->table->id = 0;
 
 			// New category ID
-			$table->catid = $categoryId;
+			$this->table->catid = $categoryId;
+
+			// Unpublish because we are making a copy
+			$this->table->published = 0;
 
 			// Check the row.
 			if (!$table->check())
@@ -219,20 +262,21 @@ class ChurchDirectoryModelMember extends JModelAdmin
 				return false;
 			}
 
+			$this->createTagsHelper($this->tagsObserver, $this->type, $pk, $this->typeAlias, $this->table);
+
 			// Store the row.
-			if (!$table->store())
+			if (!$this->table->store())
 			{
-				$this->setError($table->getError());
+				$this->setError($this->table->getError());
 
 				return false;
 			}
 
 			// Get the new item ID
-			$newId = $table->get('id');
+			$newId = $this->table->get('id');
 
 			// Add the new ID to the array
 			$newIds[$i] = $newId;
-			$i++;
 		}
 
 		// Clean the cache
@@ -275,7 +319,7 @@ class ChurchDirectoryModelMember extends JModelAdmin
 			}
 			else
 			{
-				$this->setError(JText::_('JLIB_APPLICATION_ERROR_BATCH_CANNOT_EDIT'));
+				JFactory::getApplication()->enqueueMessage(JText::_('JLIB_APPLICATION_ERROR_BATCH_CANNOT_EDIT'), 'error');
 
 				return false;
 			}
@@ -343,7 +387,7 @@ class ChurchDirectoryModelMember extends JModelAdmin
 	 * @param   string  $prefix  A prefix for the table class name. Optional.
 	 * @param   array   $config  Configuration array for model. Optional.
 	 *
-	 * @return    JTable    A database object
+	 * @return    ChurchDirectoryTableMember  A database object
 	 *
 	 * @since    1.7.0
 	 */
@@ -417,6 +461,33 @@ class ChurchDirectoryModelMember extends JModelAdmin
 			$item->metadata = $registry->toArray();
 		}
 
+		// Load associated contact items
+		$assoc = JLanguageAssociations::isEnabled();
+
+		if ($assoc)
+		{
+			$item->associations = array();
+
+			if ($item->id != null)
+			{
+				$associations = JLanguageAssociations::getAssociations('com_churchdirectory',
+					'#__churchdirectory_details', 'com_churchdirectory.item', $item->id
+				);
+
+				foreach ($associations as $tag => $association)
+				{
+					$item->associations[$tag] = $association->id;
+				}
+			}
+		}
+
+		// Load item tags
+		if (!empty($item->id))
+		{
+			$item->tags = new JHelperTags;
+			$item->tags->getTagIds($item->id, 'com_churchdirectory.member');
+		}
+
 		return $item;
 	}
 
@@ -429,6 +500,8 @@ class ChurchDirectoryModelMember extends JModelAdmin
 	 */
 	protected function loadFormData()
 	{
+		$app = JFactory::getApplication();
+
 		// Check the session for previously entered form data.
 		$data = JFactory::getApplication()->getUserState('com_churchdirectory.edit.member.data', array());
 
@@ -440,10 +513,13 @@ class ChurchDirectoryModelMember extends JModelAdmin
 			// Prime some default values.
 			if ($this->getState('member.id') == 0)
 			{
-				$app = JFactory::getApplication();
-				$data->set('catid', JFactory::getApplication()->input->getInt('catid', $app->getUserState('com_churchdirectory.members.filter.category_id')));
+				$data->set('catid',
+					JFactory::getApplication()->input->getInt('catid', $app->getUserState('com_churchdirectory.members.filter.category_id'), 'int')
+				);
 			}
 		}
+
+		$this->preprocessData('com_churchdirectory.member', $data);
 
 		return $data;
 	}
@@ -451,7 +527,7 @@ class ChurchDirectoryModelMember extends JModelAdmin
 	/**
 	 * Prepare and sanitise the table prior to saving.
 	 *
-	 * @param   JTable  $table  ?
+	 * @param   ChurchDirectoryTableMember  $table  ?
 	 *
 	 * @return    void
 	 *
@@ -460,10 +536,11 @@ class ChurchDirectoryModelMember extends JModelAdmin
 	protected function prepareTable($table)
 	{
 		$date = JFactory::getDate();
-		$user = JFactory::getUser();
 
 		$table->name  = htmlspecialchars_decode($table->name, ENT_QUOTES);
 		$table->alias = JApplicationHelper::stringURLSafe($table->alias);
+
+		$table->generateAlias();
 
 		if (empty($table->alias))
 		{
@@ -487,7 +564,7 @@ class ChurchDirectoryModelMember extends JModelAdmin
 	/**
 	 * A protected method to get a set of ordering conditions.
 	 *
-	 * @param   JTable  $table  A record object.
+	 * @param   ChurchDirectoryTableMember  $table  A record object.
 	 *
 	 * @return    array    An array of conditions to add to add to ordering queries.
 	 *
