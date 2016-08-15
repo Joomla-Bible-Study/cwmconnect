@@ -23,13 +23,13 @@ JLoader::register('Com_ChurchDirectoryInstallerScript', JPATH_COMPONENT_ADMINIST
  */
 class ChurchDirectoryModelDatabase extends InstallerModel
 {
-
 	/**
 	 * Context of model
 	 *
 	 * @var string
+	 * @since    1.7.0
 	 */
-	protected $_context = 'com_churchdirectory.discover';
+	protected $context = 'com_churchdirectory.discover';
 
 	/**
 	 * Method to auto-populate the model state.
@@ -56,6 +56,8 @@ class ChurchDirectoryModelDatabase extends InstallerModel
 	 * Fixes database problems
 	 *
 	 * @return void
+	 *
+	 * @since    1.7.0
 	 */
 	public function fix()
 	{
@@ -70,6 +72,8 @@ class ChurchDirectoryModelDatabase extends InstallerModel
 	 * Gets the changeset object
 	 *
 	 * @return  JSchemaChangeset
+	 *
+	 * @since    1.7.0
 	 */
 	public function getItems()
 	{
@@ -83,6 +87,8 @@ class ChurchDirectoryModelDatabase extends InstallerModel
 	 * Overrides Pagination
 	 *
 	 * @return boolean
+	 *
+	 * @since    1.7.0
 	 */
 	public function getPagination()
 	{
@@ -95,6 +101,7 @@ class ChurchDirectoryModelDatabase extends InstallerModel
 	 * @return  mixed  the return value from the query, or null if the query fails
 	 *
 	 * @throws Exception
+	 * @since    1.7.0
 	 */
 	public function getSchemaVersion()
 	{
@@ -115,6 +122,8 @@ class ChurchDirectoryModelDatabase extends InstallerModel
 	 * @param   JSchemaChangeSet  $changeSet  ??
 	 *
 	 * @return   mixed  string schema version if success, false if fail
+	 *
+	 * @since    1.7.0
 	 */
 	public function fixSchemaVersion($changeSet)
 	{
@@ -160,6 +169,8 @@ class ChurchDirectoryModelDatabase extends InstallerModel
 	 * Get current version from #__extensions table
 	 *
 	 * @return  mixed   version if successful, false if fail
+	 *
+	 * @since    1.7.0
 	 */
 	public function getUpdateVersion()
 	{
@@ -175,6 +186,8 @@ class ChurchDirectoryModelDatabase extends InstallerModel
 	 * Fix Joomla version in #__extensions table if wrong (doesn't equal JVersion short version)
 	 *
 	 * @return   mixed  string update version if success, false if fail
+	 *
+	 * @since    1.7.0
 	 */
 	public function fixUpdateVersion()
 	{
@@ -208,12 +221,14 @@ class ChurchDirectoryModelDatabase extends InstallerModel
 	 * Check if com_churchdirectory parameters are blank.
 	 *
 	 * @return  string  default text filters (if any)
+	 *
+	 * @since    1.7.0
 	 */
 	public function getDefaultTextFilters()
 	{
 		/** @var ChurchDirectoryTableMember $table */
 		$table = JTable::getInstance('Extension');
-		$table->load($table->find(array('name' => 'com_churchdirectory')));
+		$table->load($table->find(['name' => 'com_churchdirectory']));
 
 		return $table->params;
 	}
@@ -222,12 +237,14 @@ class ChurchDirectoryModelDatabase extends InstallerModel
 	 * Check if com_churchdirectory parameters are blank. If so, populate with com_content text filters.
 	 *
 	 * @return  mixed  boolean true if params are updated, null otherwise
+	 *
+	 * @since    1.7.0
 	 */
 	public function fixDefaultTextFilters()
 	{
 		/** @var ChurchDirectoryTableMember $table */
 		$table = JTable::getInstance('Extension');
-		$table->load($table->find(array('name' => 'com_churchdirectory')));
+		$table->load($table->find(['name' => 'com_churchdirectory']));
 
 		// Check for empty $config and non-empty content filters
 		if (!$table->params)
@@ -285,5 +302,4 @@ class ChurchDirectoryModelDatabase extends InstallerModel
 
 		return $jversion;
 	}
-
 }

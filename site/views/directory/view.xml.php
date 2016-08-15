@@ -154,7 +154,7 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 		$cparams          = $category->getParams();
 		$category->params = clone $params;
 		$category->params->merge($cparams);
-		$children = array($category->id => $children);
+		$children = [$category->id => $children];
 
 		$maxLevel         = $params->get('maxLevel', -1);
 		$this->maxLevel   = & $maxLevel;
@@ -167,7 +167,7 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 		$this->pagination = & $pagination;
 
 		// Creates an array of strings to hold the lines of the KML file.
-		$kml   = array('<?xml version="1.0" encoding="UTF-8"?>');
+		$kml   = ['<?xml version="1.0" encoding="UTF-8"?>'];
 		$kml[] = '<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2">';
 		$kml[] = '<Document>';
 		$kml[] = '<name>' . $items[0]->kml_name . '</name>';
@@ -233,11 +233,11 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 		$kml[] = '</scale>';
 		$kml[] = '</LabelStyle>';
 		$kml[] = '</Style> ';
-		$teams = $this->groupit(array('items' => $items, 'field' => 'category_title'));
+		$teams = $this->groupit(['items' => $items, 'field' => 'category_title']);
 
 		foreach ($teams as $c => $catid)
 		{
-			$newrows[$c] = $this->groupit(array('items' => $teams[$c], 'field' => 'suburb'));
+			$newrows[$c] = $this->groupit(['items' => $teams[$c], 'field' => 'suburb']);
 			$ckml_params = $catid[0]->kml_params;
 		}
 
@@ -410,7 +410,7 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 		$items = null;
 		$field = null;
 		extract($args);
-		$result = array();
+		$result = [];
 
 		foreach ($items as $item)
 		{
@@ -429,7 +429,7 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 			}
 			else
 			{
-				$result[$key]   = array();
+				$result[$key]   = [];
 				$result[$key][] = $item;
 			}
 		}

@@ -107,7 +107,7 @@ class ChurchDirectoryViewCategories extends JViewLegacy
 			return false;
 		}
 
-		$items = array($parent->id => $items);
+		$items = [$parent->id => $items];
 
 		// Escape strings for HTML output
 		$this->pageclass_sfx = htmlspecialchars($state->params->get('pageclass_sfx'));

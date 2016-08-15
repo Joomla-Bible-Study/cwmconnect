@@ -452,7 +452,7 @@ class PlgFinderChurchDirectory extends FinderIndexerAdapter
 		$case_when_category_alias .= $query->charLength('c.alias', '!=', '0');
 		$case_when_category_alias .= ' THEN ';
 		$c_id = $query->castAsChar('c.id');
-		$case_when_category_alias .= $query->concatenate(array($c_id, 'c.alias'), ':');
+		$case_when_category_alias .= $query->concatenate([$c_id, 'c.alias'], ':');
 		$case_when_category_alias .= ' ELSE ';
 		$case_when_category_alias .= $c_id . ' END as catslug';
 		$query->select($case_when_category_alias)

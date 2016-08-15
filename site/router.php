@@ -14,10 +14,12 @@ jimport('joomla.application.categories');
  * @param   array  &$query  An array of URL arguments
  *
  * @return  array    The URL arguments to use to assemble the subsequent URL.
+ *
+ * @since    1.5
  */
-function ChurchdirectoryBuildRoute(&$query)
+function churchdirectoryBuildRoute(&$query)
 {
-	$segments = array();
+	$segments = [];
 
 	// Get a menu item based on Itemid or currently active
 	$app      = JFactory::getApplication();
@@ -33,16 +35,19 @@ function ChurchdirectoryBuildRoute(&$query)
 	{
 		$menuItem = $menu->getItem($query['Itemid']);
 	}
+
 	$mView  = (empty($menuItem->query['view'])) ? null : $menuItem->query['view'];
 	$mId    = (empty($menuItem->query['id'])) ? null : $menuItem->query['id'];
 
 	if (isset($query['view']))
 	{
 		$view = $query['view'];
+
 		if (empty($query['Itemid']) || empty($menuItem) || $menuItem->component != 'com_churchdirectory')
 		{
 			$segments[] = $query['view'];
 		}
+
 		unset($query['view']);
 	}
 
@@ -52,6 +57,7 @@ function ChurchdirectoryBuildRoute(&$query)
 		unset($query['view']);
 		unset($query['catid']);
 		unset($query['id']);
+
 		return $segments;
 	}
 
@@ -67,27 +73,34 @@ function ChurchdirectoryBuildRoute(&$query)
 			{
 				$catid = $query['id'];
 			}
+
 			$menuCatid  = $mId;
 			$categories = JCategories::getInstance('ChurchDirectory');
 			$category   = $categories->get($catid);
+
 			if ($category)
 			{
 				$path  = array_reverse($category->getPath());
-				$array = array();
+				$array = [];
+
 				foreach ($path as $id)
 				{
 					if ((int) $id == (int) $menuCatid)
 					{
 						break;
 					}
+
 					if ($advanced)
 					{
 						list($tmp, $id) = explode(':', $id, 2);
 					}
+
 					$array[] = $id;
 				}
+
 				$segments = array_merge($segments, array_reverse($array));
 			}
+
 			if ($view == 'member')
 			{
 				if ($advanced)
@@ -98,9 +111,11 @@ function ChurchdirectoryBuildRoute(&$query)
 				{
 					$id = $query['id'];
 				}
+
 				$segments[] = $id;
 			}
 		}
+
 		unset($query['id']);
 		unset($query['catid']);
 	}
@@ -111,7 +126,6 @@ function ChurchdirectoryBuildRoute(&$query)
 		{
 			if ($query['layout'] == $menuItem->query['layout'])
 			{
-
 				unset($query['layout']);
 			}
 		}
@@ -133,10 +147,12 @@ function ChurchdirectoryBuildRoute(&$query)
  * @param   array  $segments  The segments of the URL to parse.
  *
  * @return  array  The URL attributes to be used by the application.
+ *
+ * @since    1.5
  */
 function churchdirectoryParseRoute($segments)
 {
-	$vars = array();
+	$vars = [];
 
 	// Get the active menu item.
 	$app      = JFactory::getApplication();
@@ -162,13 +178,15 @@ function churchdirectoryParseRoute($segments)
 
 	$contactCategory = JCategories::getInstance('ChurchDirectory')->get($id);
 
-	$categories    = ($contactCategory) ? $contactCategory->getChildren() : array();
+	$categories    = ($contactCategory) ? $contactCategory->getChildren() : [];
 	$vars['catid'] = $id;
 	$vars['id']    = $id;
 	$found         = 0;
+
 	foreach ($segments as $segment)
 	{
 		$segment = $advanced ? str_replace(':', '-', $segment) : $segment;
+
 		foreach ($categories as $category)
 		{
 			if ($category->slug == $segment || $category->alias == $segment)
@@ -181,6 +199,7 @@ function churchdirectoryParseRoute($segments)
 				break;
 			}
 		}
+
 		if ($found == 0)
 		{
 			if ($advanced)
@@ -198,10 +217,13 @@ function churchdirectoryParseRoute($segments)
 			{
 				$nid = $segment;
 			}
+
 			$vars['id']   = $nid;
 			$vars['view'] = 'member';
 		}
+
 		$found = 0;
 	}
+
 	return $vars;
 }

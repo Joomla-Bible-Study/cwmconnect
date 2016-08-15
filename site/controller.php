@@ -24,7 +24,7 @@ class ChurchDirectoryController extends JControllerLegacy
 	 * @since    1.7.0
 	 * @return  JControllerLegacy  A JControllerLegacy object to support chaining.
 	 */
-	public function display ($cachable = false, $urlparams = array())
+	public function display ($cachable = false, $urlparams = [])
 	{
 		$cachable = true;
 
@@ -39,10 +39,10 @@ class ChurchDirectoryController extends JControllerLegacy
 
 		$this->input->set('view', $vName);
 
-		$safeurlparams = array(
+		$safeurlparams = [
 			'catid'            => 'INT', 'id' => 'INT', 'cid' => 'ARRAY', 'year' => 'INT', 'month' => 'INT', 'limit' => 'UINT',
 			'limitstart'       => 'UINT', 'showall' => 'INT', 'return' => 'BASE64', 'filter' => 'STRING', 'filter_order' => 'CMD',
-			'filter_order_Dir' => 'CMD', 'filter-search' => 'STRING', 'print' => 'BOOLEAN', 'lang' => 'CMD');
+			'filter_order_Dir' => 'CMD', 'filter-search' => 'STRING', 'print' => 'BOOLEAN', 'lang' => 'CMD'];
 
 		parent::display($cachable, $safeurlparams);
 

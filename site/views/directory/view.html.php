@@ -241,9 +241,9 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 		$cparams          = $category->getParams();
 		$category->params = clone $params;
 		$category->params->merge($cparams);
-		$children = array($category->id => $children);
+		$children = [$category->id => $children];
 		$maxLevel = $params->get('maxLevel', -1);
-		$items    = RenderHelper::groupit(array('items' => & $items, 'field' => 'lname'));
+		$items    = RenderHelper::groupit(['items' => & $items, 'field' => 'lname']);
 
 		$this->renderHelper = $renderHelper;
 		$this->maxLevel     = & $maxLevel;
@@ -331,6 +331,8 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 	 * Abc Anchor list
 	 *
 	 * @return string
+	 *
+	 * @since       1.7.2
 	 */
 	public function abclinks()
 	{

@@ -15,17 +15,6 @@ defined('_JEXEC') or die;
  */
 class ChurchDirectoryControllerDirHeaders extends JControllerAdmin
 {
-
-	/**
-	 * Constructor.
-	 *
-	 * @param   array  $config  An optional associative array of configuration settings.
-	 */
-	public function __construct($config = array())
-	{
-		parent::__construct($config);
-	}
-
 	/**
 	 * Proxy for getModel.
 	 *
@@ -37,11 +26,10 @@ class ChurchDirectoryControllerDirHeaders extends JControllerAdmin
 	 *
 	 * @since    1.7.0
 	 */
-	public function getModel($name = 'DirHeader', $prefix = 'ChurchDirectoryModel', $config = array('ignore_request' => true))
+	public function getModel($name = 'DirHeader', $prefix = 'ChurchDirectoryModel', $config = ['ignore_request' => true])
 	{
 		$model = parent::getModel($name, $prefix, $config);
 
 		return $model;
 	}
-
 }

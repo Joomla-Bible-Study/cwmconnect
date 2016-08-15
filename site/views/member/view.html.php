@@ -18,11 +18,11 @@ require_once JPATH_COMPONENT . '/models/category.php';
  */
 class ChurchDirectoryViewMember extends JViewLegacy
 {
-
 	/**
 	 * Protected
 	 *
 	 * @var array
+	 * @since       1.7.2
 	 */
 	protected $state;
 
@@ -30,13 +30,15 @@ class ChurchDirectoryViewMember extends JViewLegacy
 	 * Protected
 	 *
 	 * @var array
+	 * @since       1.7.2
 	 */
 	protected $form;
 
 	/**
 	 * Protected
 	 *
-	 * @var JObject
+	 * @var Object
+	 * @since       1.7.2
 	 */
 	protected $item;
 
@@ -44,6 +46,7 @@ class ChurchDirectoryViewMember extends JViewLegacy
 	 * Protected
 	 *
 	 * @var array
+	 * @since       1.7.2
 	 */
 	protected $return_page;
 
@@ -54,7 +57,8 @@ class ChurchDirectoryViewMember extends JViewLegacy
 	/**
 	 * Protected
 	 *
-	 * @var JObject
+	 * @var Object
+	 * @since       1.7.2
 	 */
 	protected $params;
 
@@ -70,6 +74,8 @@ class ChurchDirectoryViewMember extends JViewLegacy
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
 	 *
 	 * @return boolean
+	 *
+	 * @since       1.7.2
 	 */
 	public function display($tpl = null)
 	{
@@ -90,7 +96,7 @@ class ChurchDirectoryViewMember extends JViewLegacy
 			$params->merge($item->params);
 
 			// Get Category Model data
-			$categoryModel = JModelLegacy::getInstance('Category', 'ChurchDirectoryModel', array('ignore_request' => true));
+			$categoryModel = JModelLegacy::getInstance('Category', 'ChurchDirectoryModel', ['ignore_request' => true]);
 			$categoryModel->setState('category.id', $item->catid);
 			$categoryModel->setState('list.ordering', 'a.name');
 			$categoryModel->setState('list.direction', 'asc');
@@ -127,6 +133,7 @@ class ChurchDirectoryViewMember extends JViewLegacy
 		{
 			$item->email_to = JHtml::_('email.cloak', $item->email_to);
 		}
+
 		if ($params->get('show_street_address')
 			|| $params->get('show_suburb')
 			|| $params->get('show_state')
@@ -202,6 +209,7 @@ class ChurchDirectoryViewMember extends JViewLegacy
 			{
 				$contact->link = JRoute::_(ChurchDirectoryHelperRoute::getMemberRoute($contact->slug, $contact->catid));
 			}
+
 			$item->link = JRoute::_(ChurchDirectoryHelperRoute::getMemberRoute($item->slug, $item->catid));
 		}
 
@@ -244,6 +252,8 @@ class ChurchDirectoryViewMember extends JViewLegacy
 	 * Prepares the document
 	 *
 	 * @return void
+	 *
+	 * @since       1.7.2
 	 */
 	protected function _prepareDocument()
 	{
@@ -272,20 +282,20 @@ class ChurchDirectoryViewMember extends JViewLegacy
 		// If the menu item does not concern this contact
 		if ($menu && ($menu->query['option'] != 'com_churchdirectory' || $menu->query['view'] != 'member' || $id != $this->item->id))
 		{
-
 			// If this is not a single churchdirectory menu item, set the page title to the contact title
 			if ($this->item->name)
 			{
 				$title = $this->item->name;
 			}
-			$path     = array(array('title' => $this->member->name, 'link' => ''));
+
+			$path     = [['title' => $this->member->name, 'link' => '']];
 			$category = JCategories::getInstance('ChurchDirectory')->get($this->member->catid);
 
 			while ($category && ($menu->query['option'] != 'com_churchdirectory'
 					|| $menu->query['view'] == 'member'
 					|| $id != $category->id) && $category->id > 1)
 			{
-				$path[]   = array('title' => $category->title, 'link' => ChurchDirectoryHelperRoute::getCategoryRoute($this->member->catid));
+				$path[]   = ['title' => $category->title, 'link' => ChurchDirectoryHelperRoute::getCategoryRoute($this->member->catid)];
 				$category = $category->getParent();
 			}
 
@@ -299,21 +309,22 @@ class ChurchDirectoryViewMember extends JViewLegacy
 
 		if (empty($title))
 		{
-			$title = $app->getCfg('sitename');
+			$title = $app->get('sitename');
 		}
-		elseif ($app->getCfg('sitename_pagetitles', 0) == 1)
+		elseif ($app->get('sitename_pagetitles', 0) == 1)
 		{
-			$title = JText::sprintf('JPAGETITLE', $app->getCfg('sitename'), $title);
+			$title = JText::sprintf('JPAGETITLE', $app->get('sitename'), $title);
 		}
-		elseif ($app->getCfg('sitename_pagetitles', 0) == 2)
+		elseif ($app->get('sitename_pagetitles', 0) == 2)
 		{
-			$title = JText::sprintf('JPAGETITLE', $title, $app->getCfg('sitename'));
+			$title = JText::sprintf('JPAGETITLE', $title, $app->get('sitename'));
 		}
 
 		if (empty($title))
 		{
 			$title = $this->item->name;
 		}
+
 		$this->document->setTitle($title);
 
 		if ($this->item->metadesc)
@@ -349,5 +360,4 @@ class ChurchDirectoryViewMember extends JViewLegacy
 			}
 		}
 	}
-
 }

@@ -17,7 +17,6 @@ JLoader::register('JHtmlDropdown', JPATH_SITE . '/libraries/cms/html/dropdown.ph
  */
 class JHtmlGeoUpdate extends JHtmlDropdown
 {
-
 	/**
 	 * Append a featured item to the current dropdown menu
 	 *
@@ -48,5 +47,4 @@ class JHtmlGeoUpdate extends JHtmlDropdown
 
 		return;
 	}
-
 }

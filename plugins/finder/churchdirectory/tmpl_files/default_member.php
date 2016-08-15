@@ -13,7 +13,7 @@ defined('_JEXEC') or die;
 $mime = !empty($this->result->mime) ? 'mime-' . $this->result->mime : null;
 
 // Get the base url.
-$base = JURI::getInstance()->toString(array('scheme', 'host', 'port'));
+$base = JUri::getInstance()->toString(['scheme', 'host', 'port']);
 
 // Get the route with highlighting information.
 if (!empty($this->query->highlight)
@@ -30,15 +30,25 @@ else
 ?>
 
 	<dt class="result-title <?php echo $mime; ?>">
-		<a href="<?php echo JRoute::_($route); ?>"><?php echo $this->result->title; ?></a>
+		<a href="<?php echo JRoute::_($route); ?>">
+			<?php echo $this->result->title; ?>
+		</a>
 	</dt>
-<?php if ($this->params->get('show_description', 1)): ?>
+<?php
+if ($this->params->get('show_description', 1))
+	:
+	?>
 	<dd class="result-text<?php echo $this->pageclass_sfx; ?>">
 		<?php echo JHtml::_('string.truncate', $this->result->description, $this->params->get('description_length', 255)); ?>
 	</dd>
-<?php endif; ?>
-<?php if ($this->params->get('show_url', 1)): ?>
+<?php
+endif; ?>
+<?php
+if ($this->params->get('show_url', 1))
+	:
+	?>
 	<dd class="result-url<?php echo $this->pageclass_sfx; ?>">
 		<?php echo $base . JRoute::_($this->result->route); ?>
 	</dd>
-<?php endif;
+<?php
+endif;

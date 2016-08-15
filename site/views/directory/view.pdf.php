@@ -225,15 +225,15 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 		$cparams          = $category->getParams();
 		$category->params = clone $params;
 		$category->params->merge($cparams);
-		$children = array($category->id => $children);
+		$children = [$category->id => $children];
 		$maxLevel = $params->get('maxLevel', -1);
-		$items    = RenderHelper::groupit(array('items' => & $items, 'field' => 'lname'));
+		$items    = RenderHelper::groupit(['items' => & $items, 'field' => 'lname']);
 
 		if (0)
 		{
 			foreach ($items as $s1)
 			{
-				$items[$s1] = RenderHelper::groupit(array('items' => $items[$s1], 'field' => 'suburb'));
+				$items[$s1] = RenderHelper::groupit(['items' => $items[$s1], 'field' => 'suburb']);
 			}
 		}
 

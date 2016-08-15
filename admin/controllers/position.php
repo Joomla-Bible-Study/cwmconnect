@@ -15,7 +15,6 @@ defined('_JEXEC') or die;
  */
 class ChurchDirectoryControllerPosition extends JControllerForm
 {
-
 	/**
 	 * Method override to check if you can add a new record.
 	 *
@@ -25,7 +24,7 @@ class ChurchDirectoryControllerPosition extends JControllerForm
 	 *
 	 * @since    1.7.0
 	 */
-	protected function allowAdd($data = array())
+	protected function allowAdd($data = [])
 	{
 		// Initialise variables.
 		$allow = null;
@@ -51,7 +50,7 @@ class ChurchDirectoryControllerPosition extends JControllerForm
 	 *
 	 * @since    1.7.0
 	 */
-	protected function allowEdit($data = array(), $key = 'id')
+	protected function allowEdit($data = [], $key = 'id')
 	{
 		// Initialise variables.
 		$recordId = (int) isset($data[$key]) ? $data[$key] : 0;
@@ -110,12 +109,11 @@ class ChurchDirectoryControllerPosition extends JControllerForm
 
 		// Set the model
 		/** @var $model JModelLegacy */
-		$model = $this->getModel('poision', '', array());
+		$model = $this->getModel('poision', '', []);
 
 		// Preset the redirect
 		$this->setRedirect(JRoute::_('index.php?option=com_churchdirectory&view=poisions' . $this->getRedirectToListAppend(), false));
 
 		parent::batch($model);
 	}
-
 }

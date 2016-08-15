@@ -33,7 +33,7 @@ class ChurchDirectoryModelMember extends JModelForm
 	 * @var int
 	 * @since       1.7.2
 	 */
-	protected $_item = null;
+	protected $item = null;
 
 	protected $member;
 
@@ -43,7 +43,7 @@ class ChurchDirectoryModelMember extends JModelForm
 	 * @var        string
 	 * @since       1.7.2
 	 */
-	protected $_context = 'com_churchdirectory.member';
+	protected $context = 'com_churchdirectory.member';
 
 	/**
 	 * Method to auto-populate the model state.
@@ -81,14 +81,14 @@ class ChurchDirectoryModelMember extends JModelForm
 	 * @param   array    $data      An optional array of data for the form to interrogate.
 	 * @param   boolean  $loadData  True if the form is to load its own data (default case), false if not.
 	 *
-	 * @return   JForm    A JForm object on success, false on failure
+	 * @return   bool|JForm    A JForm object on success, false on failure
 	 *
 	 * @since    1.6
 	 */
-	public function getForm($data = array(), $loadData = true)
+	public function getForm($data = [], $loadData = true)
 	{
 		// Get the form.
-		$form = $this->loadForm('com_churchdirectory.member', 'member', array('control' => 'jform', 'load_data' => true));
+		$form = $this->loadForm('com_churchdirectory.member', 'member', ['control' => 'jform', 'load_data' => true]);
 
 		if (empty($form))
 		{
@@ -97,7 +97,7 @@ class ChurchDirectoryModelMember extends JModelForm
 
 		$id     = (int) $this->getState('member.id');
 		$params = $this->getState('params');
-		$member = $this->_item[$id];
+		$member = $this->item[$id];
 		$params->merge($member->params);
 
 		if (!$params->get('show_email_copy', 0))
@@ -117,12 +117,9 @@ class ChurchDirectoryModelMember extends JModelForm
 	 */
 	protected function loadFormData()
 	{
-		$data = (array) JFactory::getApplication()->getUserState('com_churchdirectory.member.data', array());
+		$data = (array) JFactory::getApplication()->getUserState('com_churchdirectory.member.data', []);
 
-		if (version_compare(JVERSION, '3.0', 'ge'))
-		{
-			$this->preprocessData('com_churchdirectory.member', $data);
-		}
+		$this->preprocessData('com_churchdirectory.member', $data);
 
 		return $data;
 	}
@@ -141,12 +138,12 @@ class ChurchDirectoryModelMember extends JModelForm
 		// Initialise variables.
 		$pk = (!empty($pk)) ? $pk : (int) $this->getState('member.id');
 
-		if ($this->_item === null)
+		if ($this->item === null)
 		{
-			$this->_item = array();
+			$this->item = [];
 		}
 
-		if (!isset($this->_item[$pk]))
+		if (!isset($this->item[$pk]))
 		{
 			try
 			{
@@ -159,7 +156,7 @@ class ChurchDirectoryModelMember extends JModelForm
 				$case_when .= $query->charLength('a.alias', '!=', '0');
 				$case_when .= ' THEN ';
 				$a_id = $query->castAsChar('a.id');
-				$case_when .= $query->concatenate(array($a_id, 'a.alias'), ':');
+				$case_when .= $query->concatenate([$a_id, 'a.alias'], ':');
 				$case_when .= ' ELSE ';
 				$case_when .= $a_id . ' END as slug';
 
@@ -167,7 +164,7 @@ class ChurchDirectoryModelMember extends JModelForm
 				$case_when1 .= $query->charLength('c.alias', '!=', '0');
 				$case_when1 .= ' THEN ';
 				$c_id = $query->castAsChar('c.id');
-				$case_when1 .= $query->concatenate(array($c_id, 'c.alias'), ':');
+				$case_when1 .= $query->concatenate([$c_id, 'c.alias'], ':');
 				$case_when1 .= ' ELSE ';
 				$case_when1 .= $c_id . ' END as catslug';
 
@@ -254,25 +251,25 @@ class ChurchDirectoryModelMember extends JModelForm
 					}
 				}
 
-				$this->_item[$pk] = $data;
+				$this->item[$pk] = $data;
 			}
 			catch (Exception $e)
 			{
 				$this->setError($e);
-				$this->_item[$pk] = false;
+				$this->item[$pk] = false;
 			}
 		}
 
-		if ($this->_item[$pk])
+		if ($this->item[$pk])
 		{
 			if ($extendedData = $this->getChurchDirectoryQuery($pk))
 			{
-				$this->_item[$pk]->articles = $extendedData->articles;
-				$this->_item[$pk]->profile  = $extendedData->profile;
+				$this->item[$pk]->articles = $extendedData->articles;
+				$this->item[$pk]->profile  = $extendedData->profile;
 			}
 		}
 
-		return $this->_item[$pk];
+		return $this->item[$pk];
 	}
 
 	/**
@@ -302,7 +299,7 @@ class ChurchDirectoryModelMember extends JModelForm
 			$case_when .= $query->charLength('a.alias', '!=', '0');
 			$case_when .= ' THEN ';
 			$a_id = $query->castAsChar('a.id');
-			$case_when .= $query->concatenate(array($a_id, 'a.alias'), ':');
+			$case_when .= $query->concatenate([$a_id, 'a.alias'], ':');
 			$case_when .= ' ELSE ';
 			$case_when .= $a_id . ' END as slug';
 
@@ -310,7 +307,7 @@ class ChurchDirectoryModelMember extends JModelForm
 			$case_when1 .= $query->charLength('cc.alias', '!=', '0');
 			$case_when1 .= ' THEN ';
 			$c_id = $query->castAsChar('cc.id');
-			$case_when1 .= $query->concatenate(array($c_id, 'cc.alias'), ':');
+			$case_when1 .= $query->concatenate([$c_id, 'cc.alias'], ':');
 			$case_when1 .= ' ELSE ';
 			$case_when1 .= $c_id . ' END as catslug';
 			$query->select(
@@ -379,14 +376,14 @@ class ChurchDirectoryModelMember extends JModelForm
 				$case_when .= $query->charLength('a.alias', '!=', '0');
 				$case_when .= ' THEN ';
 				$a_id = $query->castAsChar('a.id');
-				$case_when .= $query->concatenate(array($a_id, 'a.alias'), ':');
+				$case_when .= $query->concatenate([$a_id, 'a.alias'], ':');
 				$case_when .= ' ELSE ';
 				$case_when .= $a_id . ' END as slug';
 				$case_when1 = ' CASE WHEN ';
 				$case_when1 .= $query->charLength('c.alias', '!=', '0');
 				$case_when1 .= ' THEN ';
 				$c_id = $query->castAsChar('c.id');
-				$case_when1 .= $query->concatenate(array($c_id, 'c.alias'), ':');
+				$case_when1 .= $query->concatenate([$c_id, 'c.alias'], ':');
 				$case_when1 .= ' ELSE ';
 				$case_when1 .= $c_id . ' END as catslug';
 				$query->select($case_when1 . ',' . $case_when);
@@ -417,7 +414,7 @@ class ChurchDirectoryModelMember extends JModelForm
 
 				// Get the profile information for the linked user
 				require_once JPATH_ADMINISTRATOR . '/components/com_users/models/user.php';
-				$userModel = JModelLegacy::getInstance('User', 'UsersModel', array('ignore_request' => true));
+				$userModel = JModelLegacy::getInstance('User', 'UsersModel', ['ignore_request' => true]);
 				$data      = $userModel->getItem((int) $result->user_id);
 
 				JPluginHelper::importPlugin('user');
@@ -427,10 +424,10 @@ class ChurchDirectoryModelMember extends JModelForm
 				$dispatcher = JEventDispatcher::getInstance();
 
 				// Trigger the form preparation event.
-				$dispatcher->trigger('onContentPrepareForm', array($form, $data));
+				$dispatcher->trigger('onContentPrepareForm', [$form, $data]);
 
 				// Trigger the data preparation event.
-				$dispatcher->trigger('onContentPrepareData', array('com_users.profile', $data));
+				$dispatcher->trigger('onContentPrepareData', ['com_users.profile', $data]);
 
 				// Load the data into the form after the plugins have operated.
 				$form->bind($data);

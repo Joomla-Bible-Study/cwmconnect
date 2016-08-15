@@ -21,7 +21,10 @@ class ChurchDirectoryViewHome extends JViewLegacy
 
 	protected $items;
 
-	/** @var  Registry */
+	/**
+	 * @var  Registry
+	 * @since       1.7.2
+	 */
 	protected $params;
 
 	protected $user;
@@ -30,7 +33,10 @@ class ChurchDirectoryViewHome extends JViewLegacy
 
 	protected $search;
 
-	/** @var  JDocument */
+	/**
+	 * @var  JDocument
+	 * @since       1.7.2
+	 */
 	public $document;
 
 	protected $renderHelper;
@@ -41,6 +47,8 @@ class ChurchDirectoryViewHome extends JViewLegacy
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
 	 *
 	 * @return mixed
+	 *
+	 * @since       1.7.2
 	 */
 	public function display($tpl = null)
 	{
@@ -61,9 +69,10 @@ class ChurchDirectoryViewHome extends JViewLegacy
 
 			return false;
 		}
+
 		$document   = JFactory::getDocument();
 		$renderer   = $document->loadRenderer('module');
-		$mod_params = array('style' => 'xhtml');
+		$mod_params = ['style' => 'xhtml'];
 		$contents   = '';
 		$mod        = JModuleHelper::getModule('mod_finder');
 		$registry   = new Registry;
@@ -92,6 +101,8 @@ class ChurchDirectoryViewHome extends JViewLegacy
 	 * Prepares the document
 	 *
 	 * @return void
+	 *
+	 * @since       1.7.2
 	 */
 	protected function prepareDocument()
 	{
@@ -111,6 +122,7 @@ class ChurchDirectoryViewHome extends JViewLegacy
 		{
 			$this->params->def('page_heading', JText::_('COM_CHURCHDIRECTORY_DEFAULT_PAGE_TITLE'));
 		}
+
 		$title = $this->params->get('page_title', '');
 
 		if (empty($title))
@@ -125,6 +137,7 @@ class ChurchDirectoryViewHome extends JViewLegacy
 		{
 			$title = JText::sprintf('JPAGETITLE', $title, $app->get('sitename'));
 		}
+
 		$this->document->setTitle($title);
 
 		if ($this->params->get('menu-meta_description'))
@@ -134,13 +147,12 @@ class ChurchDirectoryViewHome extends JViewLegacy
 
 		if ($this->params->get('menu-meta_keywords'))
 		{
-			$this->document->setMetadata('keywords', $this->params->get('menu-meta_keywords'));
+			$this->document->setMetaData('keywords', $this->params->get('menu-meta_keywords'));
 		}
 
 		if ($this->params->get('robots'))
 		{
-			$this->document->setMetadata('robots', $this->params->get('robots'));
+			$this->document->setMetaData('robots', $this->params->get('robots'));
 		}
 	}
-
 }

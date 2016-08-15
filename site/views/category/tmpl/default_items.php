@@ -35,17 +35,21 @@ defined('_JEXEC') or die;
 					</span>
 
 			<p>
-            <?php if ($this->params->get('show_image_headings')) : ?>
-                <?php if ( $item->image != null) : ?>
-                    <?php echo JHtml::image($item->image, JText::_('COM_CHURCHDIRECTORY_IMAGE_DETAILS'), array('align' => 'middle', 'height' => '100px', 'width' => '100px')); ?>
-                <?php else: ?>
-                    <?php echo JHtml::image('media/com_churchdirectory/images/200-photo_not_available.jpg', JText::_('COM_CHURCHDIRECTORY_IMAGE_DETAILS'), array('align' => 'middle', 'height' => '100px', 'width' => '100px')); ?>
-                <?php endif; ?>
-            <?php endif; ?>
-            <br/>
+			<?php if ($this->params->get('show_image_headings')) : ?>
+				<?php if ($item->image != null) : ?>
+					<?php echo JHtml::image($item->image, JText::_('COM_CHURCHDIRECTORY_IMAGE_DETAILS'), ['align' => 'middle', 'height' => '100px', 'width' => '100px']); ?>
+				<?php else: ?>
+					<?php echo JHtml::image('media/com_churchdirectory/images/200-photo_not_available.jpg', JText::_('COM_CHURCHDIRECTORY_IMAGE_DETAILS'), ['align' => 'middle', 'height' => '100px', 'width' => '100px']); ?>
+				<?php endif; ?>
+			<?php endif; ?>
+			<br/>
 			<strong class="list-title">
 				<a href="<?php echo JRoute::_(ChurchDirectoryHelperRoute::getMemberRoute($item->slug, $item->catid)); ?>">
-					<?php echo $item->name; if($this->params->get('show_lname')){echo ' '.$item->lname;} ?></a>
+					<?php echo $item->name;
+					if ($this->params->get('show_lname'))
+					{
+						echo ' ' . $item->lname;
+					} ?></a>
 				<?php if ($this->items[$i]->published == 0): ?>
 					<span class="label label-warning"><?php echo JText::_('JUNPUBLISHED'); ?></span>
 				<?php endif; ?>

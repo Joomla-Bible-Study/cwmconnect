@@ -20,20 +20,39 @@ use Joomla\Registry\Registry;
  */
 class ChurchDirectoryViewFeatured extends JViewLegacy
 {
-
-	/** Protected  @var array */
+	/**
+	 * Protected  @var array
+	 *
+	 * @since       1.7.2
+	 */
 	protected $state;
 
-	/**  Protected @var array */
+	/**
+	 * Protected @var array
+	 *
+	 * @since       1.7.2
+	 */
 	protected $items;
 
-	/** Protected  @var array */
+	/**
+	 * Protected  @var array
+	 *
+	 * @since       1.7.2
+	 */
 	protected $category;
 
-	/** Protected @var array */
+	/**
+	 * Protected @var array
+	 *
+	 * @since       1.7.2
+	 */
 	protected $categories;
 
-	/** Protected @var array */
+	/**
+	 * Protected @var array
+	 *
+	 * @since       1.7.2
+	 */
 	protected $pagination;
 
 	protected $pageclass_sfx;
@@ -42,7 +61,10 @@ class ChurchDirectoryViewFeatured extends JViewLegacy
 
 	protected $children;
 
-	/** @type  \Joomla\Registry\Registry */
+	/**
+	 * @type  \Joomla\Registry\Registry
+	 * @since       1.7.2
+	 */
 	protected $params;
 
 	protected $parent;
@@ -53,6 +75,8 @@ class ChurchDirectoryViewFeatured extends JViewLegacy
 	 * @param   string  $tpl  ?
 	 *
 	 * @return    mixed    False on error, null otherwise.
+	 *
+	 * @since       1.7.2
 	 */
 	public function display($tpl = null)
 	{
@@ -82,7 +106,7 @@ class ChurchDirectoryViewFeatured extends JViewLegacy
 			$item->slug = $item->alias ? ($item->id . ':' . $item->alias) : $item->id;
 			$temp       = new Registry;
 			$temp->loadString($item->params);
-			$item->params = clone($params);
+			$item->params = clone $params;
 			$item->params->merge($temp);
 
 			if ($item->params->get('show_email', 0) == 1)
@@ -122,6 +146,8 @@ class ChurchDirectoryViewFeatured extends JViewLegacy
 	 * Prepares the document
 	 *
 	 * @return void
+	 *
+	 * @since       1.7.2
 	 */
 	protected function _prepareDocument()
 	{
@@ -141,6 +167,7 @@ class ChurchDirectoryViewFeatured extends JViewLegacy
 		{
 			$this->params->def('page_heading', JText::_('COM_CONTACT_DEFAULT_PAGE_TITLE'));
 		}
+
 		$title = $this->params->get('page_title', '');
 
 		if (empty($title))
@@ -155,6 +182,7 @@ class ChurchDirectoryViewFeatured extends JViewLegacy
 		{
 			$title = JText::sprintf('JPAGETITLE', $title, $app->get('sitename'));
 		}
+
 		$this->document->setTitle($title);
 
 		if ($this->params->get('menu-meta_description'))
@@ -172,5 +200,4 @@ class ChurchDirectoryViewFeatured extends JViewLegacy
 			$this->document->setMetadata('robots', $this->params->get('robots'));
 		}
 	}
-
 }

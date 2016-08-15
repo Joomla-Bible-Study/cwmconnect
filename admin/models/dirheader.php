@@ -15,7 +15,6 @@ defined('_JEXEC') or die;
  */
 class ChurchDirectoryModelDirHeader extends JModelAdmin
 {
-
 	/**
 	 * Method to test whether a record can be deleted.
 	 *
@@ -33,28 +32,13 @@ class ChurchDirectoryModelDirHeader extends JModelAdmin
 			{
 				return false;
 			}
+
 			$user = JFactory::getUser();
 
 			return $user->authorise('core.delete');
 		}
 
 		return true;
-	}
-
-	/**
-	 * Method to test whether a record can have its state edited.
-	 *
-	 * @param   object  $record  A record object.
-	 *
-	 * @return    boolean    True if allowed to change the state of the record. Defaults to the permission set in the component.
-	 *
-	 * @since    1.7.0
-	 */
-	protected function canEditState($record)
-	{
-		$user = JFactory::getUser();
-
-		return parent::canEditState($record);
 	}
 
 	/**
@@ -68,7 +52,7 @@ class ChurchDirectoryModelDirHeader extends JModelAdmin
 	 *
 	 * @since    1.7.0
 	 */
-	public function getTable($type = 'DirHeader', $prefix = 'ChurchDirectoryTable', $config = array())
+	public function getTable($type = 'DirHeader', $prefix = 'ChurchDirectoryTable', $config = [])
 	{
 		return JTable::getInstance($type, $prefix, $config);
 	}
@@ -83,13 +67,13 @@ class ChurchDirectoryModelDirHeader extends JModelAdmin
 	 *
 	 * @since    1.7.0
 	 */
-	public function getForm($data = array(), $loadData = true)
+	public function getForm($data = [], $loadData = true)
 	{
 		jimport('joomla.form.form');
 		JForm::addFieldPath('JPATH_ADMINISTRATOR/components/com_users/models/fields');
 
 		// Get the form.
-		$form = $this->loadForm('com_churchdirectory.dirheader', 'dirheader', array('control' => 'jform', 'load_data' => $loadData));
+		$form = $this->loadForm('com_churchdirectory.dirheader', 'dirheader', ['control' => 'jform', 'load_data' => $loadData]);
 
 		if (empty($form))
 		{
@@ -113,20 +97,6 @@ class ChurchDirectoryModelDirHeader extends JModelAdmin
 	}
 
 	/**
-	 * Method to get a single record.
-	 *
-	 * @param   integer  $pk  The id of the primary key.
-	 *
-	 * @return    mixed    Object on success, false on failure.
-	 *
-	 * @since    1.7.0
-	 */
-	public function getItem($pk = null)
-	{
-		return parent::getItem($pk);
-	}
-
-	/**
 	 * Method to get the data that should be injected in the form.
 	 *
 	 * @return    mixed    The data for the form.
@@ -136,7 +106,7 @@ class ChurchDirectoryModelDirHeader extends JModelAdmin
 	protected function loadFormData()
 	{
 		// Check the session for previously entered form data.
-		$data = JFactory::getApplication()->getUserState('com_churchdirectory.edit.dirheader.data', array());
+		$data = JFactory::getApplication()->getUserState('com_churchdirectory.edit.dirheader.data', []);
 
 		if (empty($data))
 		{
@@ -158,8 +128,6 @@ class ChurchDirectoryModelDirHeader extends JModelAdmin
 	protected function prepareTable($table)
 	{
 		jimport('joomla.filter.output');
-		$date = JFactory::getDate();
-		$user = JFactory::getUser();
 
 		$table->name  = htmlspecialchars_decode($table->name, ENT_QUOTES);
 		$table->alias = JApplicationHelper::stringURLSafe($table->alias);
@@ -196,9 +164,8 @@ class ChurchDirectoryModelDirHeader extends JModelAdmin
 	 */
 	protected function getReorderConditions($table)
 	{
-		$condition = array();
+		$condition = [];
 
 		return $condition;
 	}
-
 }

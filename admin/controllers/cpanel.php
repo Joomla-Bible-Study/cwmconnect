@@ -15,7 +15,6 @@ defined('_JEXEC') or die;
  */
 class ChurchDirectoryControllerCpanel extends JControllerAdmin
 {
-
 	/**
 	 * Display funtion.
 	 *
@@ -23,11 +22,12 @@ class ChurchDirectoryControllerCpanel extends JControllerAdmin
 	 * @param   array    $urlparams  An array of safe url parameters and their variable types, for valid values see {@link JFilterInput::clean()}.
 	 *
 	 * @return  JControllerLegacy  A JControllerLegacy object to support chaining.
+	 *
+	 * @since    1.7.0
 	 */
-	public function display($cachable = false, $urlparams = array())
+	public function display($cachable = false, $urlparams = [])
 	{
 		JFactory::getApplication()->input->set('view', 'cpanel');
 		parent::display();
 	}
-
 }

@@ -36,9 +36,9 @@ defined('_JEXEC') or die;
 
 			<p>
 			<?php if ($item->image != null) : ?>
-				<?php echo JHtml::_('image', $item->image, JText::_('COM_CHURCHDIRECTORY_IMAGE_DETAILS'), array('align' => 'middle', 'height' => '100px', 'width' => '100px')); ?>
+				<?php echo JHtml::_('image', $item->image, JText::_('COM_CHURCHDIRECTORY_IMAGE_DETAILS'), ['align' => 'middle', 'height' => '100px', 'width' => '100px']); ?>
 			<?php else: ?>
-				<?php echo JHtml::_('image', 'media/com_churchdirectory/images/200-photo_not_available.jpg', JText::_('COM_CHURCHDIRECTORY_IMAGE_DETAILS'), array('align' => 'middle', 'height' => '100px', 'width' => '100px')); ?>
+				<?php echo JHtml::_('image', 'media/com_churchdirectory/images/200-photo_not_available.jpg', JText::_('COM_CHURCHDIRECTORY_IMAGE_DETAILS'), ['align' => 'middle', 'height' => '100px', 'width' => '100px']); ?>
 			<?php endif; ?><br/>
 			<strong class="list-title">
 				<a href="<?php echo JRoute::_(ChurchDirectoryHelperRoute::getMemberRoute($item->slug, $item->catid)); ?>">

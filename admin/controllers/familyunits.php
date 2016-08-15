@@ -15,17 +15,6 @@ defined('_JEXEC') or die;
  */
 class ChurchDirectoryControllerFamilyUnits extends JControllerAdmin
 {
-
-	/**
-	 * Constructor.
-	 *
-	 * @param   array  $config  An optional associative array of configuration settings.
-	 */
-	public function __construct($config = array())
-	{
-		parent::__construct($config);
-	}
-
 	/**
 	 * Proxy for getModel.
 	 *
@@ -37,7 +26,7 @@ class ChurchDirectoryControllerFamilyUnits extends JControllerAdmin
 	 *
 	 * @since    1.7.0
 	 */
-	public function getModel($name = 'FamilyUnit', $prefix = 'ChurchDirectoryModel', $config = array('ignore_request' => true))
+	public function getModel($name = 'FamilyUnit', $prefix = 'ChurchDirectoryModel', $config = ['ignore_request' => true])
 	{
 		$model = parent::getModel($name, $prefix, $config);
 
@@ -57,6 +46,6 @@ class ChurchDirectoryControllerFamilyUnits extends JControllerAdmin
 	 */
 	protected function postDeleteHook(JModelLegacy $model, $ids = null)
 	{
+		// Hold
 	}
-
 }

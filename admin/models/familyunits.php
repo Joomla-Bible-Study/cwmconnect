@@ -15,7 +15,6 @@ defined('_JEXEC') or die;
  */
 class ChurchDirectoryModelFamilyUnits extends JModelList
 {
-
 	/**
 	 * Constructor.
 	 *
@@ -24,11 +23,11 @@ class ChurchDirectoryModelFamilyUnits extends JModelList
 	 * @see        JController
 	 * @since      1.7.0
 	 */
-	public function __construct($config = array())
+	public function __construct($config = [])
 	{
 		if (empty($config['filter_fields']))
 		{
-			$config['filter_fields'] = array(
+			$config['filter_fields'] = [
 				'id', 'a.id',
 				'name', 'a.name',
 				'alias', 'a.alias',
@@ -43,7 +42,7 @@ class ChurchDirectoryModelFamilyUnits extends JModelList
 				'language', 'a.language',
 				'publish_up', 'a.publish_up',
 				'publish_down', 'a.publish_down',
-			);
+			];
 		}
 
 		parent::__construct($config);
@@ -210,5 +209,4 @@ class ChurchDirectoryModelFamilyUnits extends JModelList
 
 		return $query;
 	}
-
 }

@@ -26,11 +26,11 @@ class JHtmlIcon
 	 *
 	 * @since    1.5
 	 */
-	public static function email($member, $params, $attribs = array())
+	public static function email($member, $params, $attribs = [])
 	{
 		require_once JPATH_SITE . '/components/com_mailto/helpers/mailto.php';
 		$uri  = JUri::getInstance();
-		$base = $uri->toString(array('scheme', 'host', 'port'));
+		$base = $uri->toString(['scheme', 'host', 'port']);
 		$link = $base . JRoute::_(ContentHelperRoute::getArticleRoute($member->slug, $member->catid), false);
 		$url  = 'index.php?option=com_mailto&tmpl=component&link=' . MailtoHelper::addLink($link);
 
@@ -64,7 +64,7 @@ class JHtmlIcon
 	 *
 	 * @since    1.5
 	 */
-	public static function print_popup($member, $params, $attribs = array())
+	public static function print_popup($member, $params, $attribs = [])
 	{
 		$url = ChurchDirectoryHelperRoute::getMemberRoute($member->slug, $member->catid);
 		$url .= '&tmpl=component&print=1&layout=default';
@@ -99,7 +99,7 @@ class JHtmlIcon
 	 *
 	 * @since    1.5
 	 */
-	public static function print_screen($member, $params, $attribs = array())
+	public static function print_screen($member, $params, $attribs = [])
 	{
 		// Checks template image directory for image, if non found default are loaded
 		if ($params->get('show_icons'))

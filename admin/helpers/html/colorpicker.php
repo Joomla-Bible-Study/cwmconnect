@@ -1,5 +1,5 @@
 <?php
-/**
+	/**
 	 * @package     Joomla.Libraries
 	 * @subpackage  HTML
 	 *
@@ -18,12 +18,11 @@ defined('JPATH_PLATFORM') or die;
  */
 abstract class JHtmlColorPicker
 {
-
 	/**
 	 * @var    array  Array containing information for loaded files
 	 * @since  3.0
 	 */
-	protected static $loaded = array();
+	protected static $loaded = [];
 
 	/**
 	 * Method to load the Bootstrap JavaScript framework into the document head

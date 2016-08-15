@@ -23,7 +23,7 @@ class ChurchDirectoryModelCategories extends JModelList
 	 * @var        string
 	 * @since       1.7.2
 	 */
-	public $_context = 'com_churchdirectory.categories';
+	public $context = 'com_churchdirectory.categories';
 
 	/**
 	 * The category context (allows other extensions to derived from this model).
@@ -31,7 +31,7 @@ class ChurchDirectoryModelCategories extends JModelList
 	 * @var        string
 	 * @since       1.7.2
 	 */
-	protected $_extension = 'com_churchdirectory';
+	protected $extension = 'com_churchdirectory';
 
 	/**
 	 * The parent context
@@ -39,7 +39,7 @@ class ChurchDirectoryModelCategories extends JModelList
 	 * @var array
 	 * @since       1.7.2
 	 */
-	private $_parent = null;
+	private $parent = null;
 
 	/**
 	 * The items
@@ -47,7 +47,7 @@ class ChurchDirectoryModelCategories extends JModelList
 	 * @var array
 	 * @since       1.7.2
 	 */
-	private $_items = null;
+	private $items = null;
 
 	/**
 	 * Method to auto-populate the model state.
@@ -64,7 +64,7 @@ class ChurchDirectoryModelCategories extends JModelList
 	protected function populateState($ordering = null, $direction = null)
 	{
 		$app = JFactory::getApplication();
-		$this->setState('filter.extension', $this->_extension);
+		$this->setState('filter.extension', $this->extension);
 
 		// Get the parent id if defined.
 		$parentId = $app->input->getInt('id');
@@ -110,7 +110,7 @@ class ChurchDirectoryModelCategories extends JModelList
 	 */
 	public function getItems()
 	{
-		if (!count($this->_items))
+		if (!count($this->items))
 		{
 			$app    = JFactory::getApplication();
 			$menu   = $app->getMenu();
@@ -122,22 +122,22 @@ class ChurchDirectoryModelCategories extends JModelList
 				$params->loadString($active->params);
 			}
 
-			$options               = array();
+			$options               = [];
 			$options['countItems'] = $params->get('show_cat_items_cat', 1) || !$params->get('show_empty_categories_cat', 0);
 			$categories            = JCategories::getInstance('Churchdirectory', $options);
-			$this->_parent         = $categories->get($this->getState('filter.parentId', 'root'));
+			$this->parent          = $categories->get($this->getState('filter.parentId', 'root'));
 
-			if (is_object($this->_parent))
+			if (is_object($this->parent))
 			{
-				$this->_items = $this->_parent->getChildren();
+				$this->items = $this->parent->getChildren();
 			}
 			else
 			{
-				$this->_items = false;
+				$this->items = false;
 			}
 		}
 
-		return $this->_items;
+		return $this->items;
 	}
 
 	/**
@@ -149,11 +149,11 @@ class ChurchDirectoryModelCategories extends JModelList
 	 */
 	public function getParent()
 	{
-		if (!is_object($this->_parent))
+		if (!is_object($this->parent))
 		{
 			$this->getItems();
 		}
 
-		return $this->_parent;
+		return $this->parent;
 	}
 }

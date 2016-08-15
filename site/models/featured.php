@@ -23,7 +23,7 @@ class ChurchDirectoryModelFeatured extends JModelList
 	 * @var array
 	 * @since       1.7.2
 	 */
-	protected $_item = null;
+	protected $item = null;
 
 	/**
 	 * Articles
@@ -31,7 +31,7 @@ class ChurchDirectoryModelFeatured extends JModelList
 	 * @var array
 	 * @since       1.7.2
 	 */
-	protected $_articles = null;
+	protected $articles = null;
 
 	/**
 	 * Sibling items
@@ -39,7 +39,7 @@ class ChurchDirectoryModelFeatured extends JModelList
 	 * @var array
 	 * @since       1.7.2
 	 */
-	protected $_siblings = null;
+	protected $siblings = null;
 
 	/**
 	 * Childern items
@@ -47,7 +47,7 @@ class ChurchDirectoryModelFeatured extends JModelList
 	 * @var array
 	 * @since       1.7.2
 	 */
-	protected $_children = null;
+	protected $children = null;
 
 	/**
 	 * Parent item
@@ -55,7 +55,7 @@ class ChurchDirectoryModelFeatured extends JModelList
 	 * @var string
 	 * @since       1.7.2
 	 */
-	protected $_parent = null;
+	protected $parent = null;
 
 	/**
 	 * The category that applies.
@@ -64,7 +64,7 @@ class ChurchDirectoryModelFeatured extends JModelList
 	 * @var        object
 	 * @since       1.7.2
 	 */
-	protected $_category = null;
+	protected $category = null;
 
 	/**
 	 * The list of other cotnact categories.
@@ -73,7 +73,7 @@ class ChurchDirectoryModelFeatured extends JModelList
 	 * @var        array
 	 * @since       1.7.2
 	 */
-	protected $_categories = null;
+	protected $categories = null;
 
 	/**
 	 * Constructor.
@@ -83,11 +83,11 @@ class ChurchDirectoryModelFeatured extends JModelList
 	 * @see        JController
 	 * @since      1.6
 	 */
-	public function __construct($config = array())
+	public function __construct($config = [])
 	{
 		if (empty($config['filter_fields']))
 		{
-			$config['filter_fields'] = array(
+			$config['filter_fields'] = [
 				'id', 'a.id',
 				'name', 'a.name',
 				'con_position', 'a.con_position',
@@ -95,7 +95,7 @@ class ChurchDirectoryModelFeatured extends JModelList
 				'state', 'a.state',
 				'country', 'a.country',
 				'ordering', 'a.ordering',
-			);
+			];
 		}
 
 		parent::__construct($config);
@@ -118,7 +118,7 @@ class ChurchDirectoryModelFeatured extends JModelList
 		{
 			$item = & $items[$i];
 
-			if (!isset($this->_params))
+			if (!isset($this->params))
 			{
 				$params = new Registry;
 				$params->loadString($item->params);
@@ -236,7 +236,7 @@ class ChurchDirectoryModelFeatured extends JModelList
 
 		$listOrder = $app->input->getCmd('filter_order_Dir', 'ASC');
 
-		if (!in_array(strtoupper($listOrder), array('ASC', 'DESC', '')))
+		if (!in_array(strtoupper($listOrder), ['ASC', 'DESC', '']))
 		{
 			$listOrder = 'ASC';
 		}

@@ -18,7 +18,6 @@ defined('_JEXEC') or die;
  */
 class ChurchDirectoryModelFamilyUnit extends JModelAdmin
 {
-
 	/**
 	 * Method to test whether a record can be deleted.
 	 *
@@ -36,6 +35,7 @@ class ChurchDirectoryModelFamilyUnit extends JModelAdmin
 			{
 				return false;
 			}
+
 			$user = JFactory::getUser();
 
 			return $user->authorise('core.delete');
@@ -72,7 +72,7 @@ class ChurchDirectoryModelFamilyUnit extends JModelAdmin
 	 *
 	 * @since    1.7.0
 	 */
-	public function getTable($type = 'FamilyUnit', $prefix = 'ChurchDirectoryTable', $config = array())
+	public function getTable($type = 'FamilyUnit', $prefix = 'ChurchDirectoryTable', $config = [])
 	{
 		return JTable::getInstance($type, $prefix, $config);
 	}
@@ -93,7 +93,8 @@ class ChurchDirectoryModelFamilyUnit extends JModelAdmin
 		JForm::addFieldPath('JPATH_ADMINISTRATOR/components/com_users/models/fields');
 
 		// Get the form.
-		$form = $this->loadForm('com_churchdirectory.familyunit', 'familyunit', array('control' => 'jform', 'load_data' => $loadData));
+		$form = $this->loadForm('com_churchdirectory.familyunit', 'familyunit', ['control' => 'jform', 'load_data' => $loadData]);
+
 		if (empty($form))
 		{
 			return false;
@@ -116,20 +117,6 @@ class ChurchDirectoryModelFamilyUnit extends JModelAdmin
 	}
 
 	/**
-	 * Method to get a single record.
-	 *
-	 * @param   integer  $pk  The id of the primary key.
-	 *
-	 * @return    mixed    Object on success, false on failure.
-	 *
-	 * @since    1.7.0
-	 */
-	public function getItem($pk = null)
-	{
-		return parent::getItem($pk);
-	}
-
-	/**
 	 * Method to get the data that should be injected in the form.
 	 *
 	 * @return    mixed    The data for the form.
@@ -139,7 +126,7 @@ class ChurchDirectoryModelFamilyUnit extends JModelAdmin
 	protected function loadFormData()
 	{
 		// Check the session for previously entered form data.
-		$data = JFactory::getApplication()->getUserState('com_churchdirectory.edit.familyunit.data', array());
+		$data = JFactory::getApplication()->getUserState('com_churchdirectory.edit.familyunit.data', []);
 
 		if (empty($data))
 		{
@@ -172,7 +159,6 @@ class ChurchDirectoryModelFamilyUnit extends JModelAdmin
 
 		if (empty($table->id))
 		{
-
 			// Set ordering to the last item if not set
 			if (empty($table->ordering))
 			{
@@ -223,9 +209,8 @@ class ChurchDirectoryModelFamilyUnit extends JModelAdmin
 	 */
 	protected function getReorderConditions($table)
 	{
-		$condition = array();
+		$condition = [];
 
 		return $condition;
 	}
-
 }

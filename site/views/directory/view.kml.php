@@ -153,7 +153,7 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 		$cparams          = $category->getParams();
 		$category->params = clone $params;
 		$category->params->merge($cparams);
-		$children = array($category->id => $children);
+		$children = [$category->id => $children];
 
 		$maxLevel         = $params->get('maxLevel', -1);
 		$this->maxLevel   = & $maxLevel;
@@ -166,7 +166,7 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 		$this->pagination = & $pagination;
 
 		// Creates an array of strings to hold the lines of the KML file.
-		$kml   = array('<?xml version="1.0" encoding="UTF-8"?>');
+		$kml   = ['<?xml version="1.0" encoding="UTF-8"?>'];
 		$kml[] = '<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2"'
 			. ' xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom">';
 		$kml[] = '<Document>';
@@ -283,11 +283,11 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 		$kml[] = '</scale>';
 		$kml[] = '</LabelStyle>';
 		$kml[] = '</Style> ';
-		$teams = RenderHelper::groupit(array('items' => $items, 'field' => 'category_title'));
+		$teams = RenderHelper::groupit(['items' => $items, 'field' => 'category_title']);
 
 		foreach ($teams as $c => $catid)
 		{
-			$new_rows[$c] = RenderHelper::groupit(array('items' => $teams[$c], 'field' => 'suburb'));
+			$new_rows[$c] = RenderHelper::groupit(['items' => $teams[$c], 'field' => 'suburb']);
 			$ckml_params = $catid[0]->kml_params;
 		}
 

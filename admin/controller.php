@@ -22,7 +22,6 @@ if (file_exists($api))
  */
 class ChurchDirectoryController extends JControllerLegacy
 {
-
 	/**
 	 * The Default View
 	 *

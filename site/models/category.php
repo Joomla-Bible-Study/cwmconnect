@@ -24,7 +24,7 @@ class ChurchDirectoryModelCategory extends JModelList
 	 * @var array
 	 * @since       1.7.2
 	 */
-	protected $_item = null;
+	protected $item = null;
 
 	/**
 	 * Protect _articles
@@ -33,7 +33,7 @@ class ChurchDirectoryModelCategory extends JModelList
 	 * @var array
 	 * @since       1.7.2
 	 */
-	protected $_articles = null;
+	protected $articles = null;
 
 	/**
 	 * Protect _siblings
@@ -42,15 +42,16 @@ class ChurchDirectoryModelCategory extends JModelList
 	 * @var array
 	 * @since       1.7.2
 	 */
-	protected $_siblings = null;
+	protected $siblings = null;
 
 	/**
 	 * Protect _children
 	 *
 	 * @access protected
 	 * @var array
+	 * @since       1.7.2
 	 */
-	protected $_children = null;
+	protected $children = null;
 
 	/**
 	 * Protect _parent
@@ -59,7 +60,7 @@ class ChurchDirectoryModelCategory extends JModelList
 	 * @var object
 	 * @since       1.7.2
 	 */
-	protected $_parent = null;
+	protected $parent = null;
 
 	/**
 	 * The category that applies.
@@ -68,7 +69,7 @@ class ChurchDirectoryModelCategory extends JModelList
 	 * @var        object
 	 * @since       1.7.2
 	 */
-	protected $_category = null;
+	protected $category = null;
 
 	/**
 	 * The list of other newfeed categories.
@@ -77,11 +78,11 @@ class ChurchDirectoryModelCategory extends JModelList
 	 * @var        array
 	 * @since       1.7.2
 	 */
-	protected $_categories = null;
+	protected $categories = null;
 
-	protected $_rightsibling;
+	protected $rightsibling;
 
-	protected $_leftsibling;
+	protected $leftsibling;
 
 	/**
 	 * Constructor.
@@ -90,11 +91,11 @@ class ChurchDirectoryModelCategory extends JModelList
 	 *
 	 * @since       1.7.2
 	 */
-	public function __construct($config = array())
+	public function __construct($config = [])
 	{
 		if (empty($config['filter_fields']))
 		{
-			$config['filter_fields'] = array(
+			$config['filter_fields'] = [
 				'id', 'a.id',
 				'name', 'a.name',
 				'con_position', 'a.con_position',
@@ -106,7 +107,7 @@ class ChurchDirectoryModelCategory extends JModelList
 				'sortname1', 'a.sortname1',
 				'sortname2', 'a.sortname2',
 				'sortname3', 'a.sortname3'
-			);
+			];
 		}
 
 		parent::__construct($config);
@@ -124,12 +125,12 @@ class ChurchDirectoryModelCategory extends JModelList
 		// Invoke the parent getItems method to get the main list
 		$items = parent::getItems();
 
-		// Convert the params field into an object, saving original in _params
+		// Convert the params field into an object, saving original in params
 		for ($i = 0, $n = count($items); $i < $n; $i++)
 		{
 			$item = & $items[$i];
 
-			if (!isset($this->_params))
+			if (!isset($this->params))
 			{
 				$params = new Registry;
 				$params->loadString($item->params);
@@ -162,7 +163,7 @@ class ChurchDirectoryModelCategory extends JModelList
 		$case_when .= $query->charLength('a.alias', '!=', '0');
 		$case_when .= ' THEN ';
 		$a_id = $query->castAsChar('a.id');
-		$case_when .= $query->concatenate(array($a_id, 'a.alias'), ':');
+		$case_when .= $query->concatenate([$a_id, 'a.alias'], ':');
 		$case_when .= ' ELSE ';
 		$case_when .= $a_id . ' END as slug';
 
@@ -170,7 +171,7 @@ class ChurchDirectoryModelCategory extends JModelList
 		$case_when1 .= $query->charLength('c.alias', '!=', '0');
 		$case_when1 .= ' THEN ';
 		$c_id = $query->castAsChar('c.id');
-		$case_when1 .= $query->concatenate(array($c_id, 'c.alias'), ':');
+		$case_when1 .= $query->concatenate([$c_id, 'c.alias'], ':');
 		$case_when1 .= ' ELSE ';
 		$case_when1 .= $c_id . ' END as catslug';
 		$query->select($this->getState('list.select', 'a.*') . ',' . $case_when . ',' . $case_when1);
@@ -256,7 +257,6 @@ class ChurchDirectoryModelCategory extends JModelList
 		// Initialise variables.
 		$app    = JFactory::getApplication();
 		$params = JComponentHelper::getParams('com_churchdirectory');
-		$db     = $this->getDbo();
 
 		// List state information
 		$format = $app->input->getWord('format', 'default');
@@ -301,7 +301,7 @@ class ChurchDirectoryModelCategory extends JModelList
 		$this->setState('list.ordering', $orderCol);
 		$listOrder = $app->input->get('filter_order_Dir', 'ASC');
 
-		if (!in_array(strtoupper($listOrder), array('ASC', 'DESC', '')))
+		if (!in_array(strtoupper($listOrder), ['ASC', 'DESC', '']))
 		{
 			$listOrder = 'ASC';
 		}
@@ -336,7 +336,7 @@ class ChurchDirectoryModelCategory extends JModelList
 	 */
 	public function getCategory()
 	{
-		if (!is_object($this->_item))
+		if (!is_object($this->item))
 		{
 			$app    = JFactory::getApplication();
 			$menu   = $app->getMenu();
@@ -348,32 +348,32 @@ class ChurchDirectoryModelCategory extends JModelList
 				$params->loadString($active->params);
 			}
 
-			$options               = array();
+			$options               = [];
 			$options['countItems'] = $params->get('show_cat_items', 1) || $params->get('show_empty_categories', 0);
 			$categories            = JCategories::getInstance('ChurchDirectory', $options);
-			$this->_item           = $categories->get($this->getState('category.id', 'root'));
+			$this->item            = $categories->get($this->getState('category.id', 'root'));
 
-			if (is_object($this->_item))
+			if (is_object($this->item))
 			{
-				$this->_children = $this->_item->getChildren();
-				$this->_parent   = false;
+				$this->children = $this->item->getChildren();
+				$this->parent   = false;
 
-				if ($this->_item->getParent())
+				if ($this->item->getParent())
 				{
-					$this->_parent = $this->_item->getParent();
+					$this->parent = $this->item->getParent();
 				}
 
-				$this->_rightsibling = $this->_item->getSibling();
-				$this->_leftsibling  = $this->_item->getSibling(false);
+				$this->rightsibling = $this->item->getSibling();
+				$this->leftsibling  = $this->item->getSibling(false);
 			}
 			else
 			{
-				$this->_children = false;
-				$this->_parent   = false;
+				$this->children = false;
+				$this->parent   = false;
 			}
 		}
 
-		return $this->_item;
+		return $this->item;
 	}
 
 	/**
@@ -385,12 +385,12 @@ class ChurchDirectoryModelCategory extends JModelList
 	 */
 	public function getParent()
 	{
-		if (!is_object($this->_item))
+		if (!is_object($this->item))
 		{
 			$this->getCategory();
 		}
 
-		return $this->_parent;
+		return $this->parent;
 	}
 
 	/**
@@ -402,12 +402,12 @@ class ChurchDirectoryModelCategory extends JModelList
 	 */
 	public function &getLeftSibling()
 	{
-		if (!is_object($this->_item))
+		if (!is_object($this->item))
 		{
 			$this->getCategory();
 		}
 
-		return $this->_leftsibling;
+		return $this->leftsibling;
 	}
 
 	/**
@@ -419,12 +419,12 @@ class ChurchDirectoryModelCategory extends JModelList
 	 */
 	public function &getRightSibling()
 	{
-		if (!is_object($this->_item))
+		if (!is_object($this->item))
 		{
 			$this->getCategory();
 		}
 
-		return $this->_rightsibling;
+		return $this->rightsibling;
 	}
 
 	/**
@@ -436,11 +436,11 @@ class ChurchDirectoryModelCategory extends JModelList
 	 */
 	public function &getChildren()
 	{
-		if (!is_object($this->_item))
+		if (!is_object($this->item))
 		{
 			$this->getCategory();
 		}
 
-		return $this->_children;
+		return $this->children;
 	}
 }

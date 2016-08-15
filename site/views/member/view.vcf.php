@@ -9,7 +9,6 @@
 // No direct access
 defined('_JEXEC') or die;
 
-
 /**
  * Class for Member VCF
  *
@@ -18,11 +17,11 @@ defined('_JEXEC') or die;
  */
 class ChurchDirectoryViewMember extends JViewLegacy
 {
-
 	/**
 	 * Protected
 	 *
 	 * @var array
+	 * @since       1.7.2
 	 */
 	protected $state;
 
@@ -30,6 +29,7 @@ class ChurchDirectoryViewMember extends JViewLegacy
 	 * Protected
 	 *
 	 * @var array
+	 * @since       1.7.2
 	 */
 	protected $item;
 
@@ -39,6 +39,7 @@ class ChurchDirectoryViewMember extends JViewLegacy
 	 * @return bool
 	 *
 	 * @throws \Exception
+	 * @since       1.7.2
 	 */
 	public function display()
 	{
@@ -95,7 +96,7 @@ class ChurchDirectoryViewMember extends JViewLegacy
 		$web = new JApplicationWeb;
 		$web->setHeader('Content-disposition', 'attachment; filename="' . $card_name . '.vcf"', true);
 
-		$vcard = array();
+		$vcard = [];
 		$vcard[] .= 'BEGIN:VCARD';
 		$vcard[] .= 'VERSION:3.0';
 		$vcard[] = 'N:' . $lastname . ';' . $firstname . ';' . $middlename;
@@ -115,5 +116,4 @@ class ChurchDirectoryViewMember extends JViewLegacy
 
 		return true;
 	}
-
 }

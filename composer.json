@@ -7,12 +7,12 @@
     "license": "GPL-2.0+",
     "config": {
       "platform": {
-        "php": "5.3.10"
+        "php": "5.4.37"
       },
       "bin-dir": "bin"
     },
     "require": {
-      "php": ">=5.3.10",
+      "php": ">=5.4.37",
       "ircmaxell/password-compat": "1.*",
       "leafo/lessphp": "0.3.9",
       "paragonie/random_compat": "~1.0",

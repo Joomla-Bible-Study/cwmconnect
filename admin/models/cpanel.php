@@ -15,13 +15,5 @@ defined('_JEXEC') or die;
  */
 class ChurchDirectoryModelCpanel extends JModelLegacy
 {
-
-	/**
-	 * constructor (registers additional tasks to methods)
-	 */
-	public function __construct()
-	{
-		parent::__construct();
-	}
-
+	/** Holder */
 }

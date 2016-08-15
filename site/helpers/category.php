@@ -22,7 +22,7 @@ class ChurchDirectoryCategories extends JCategories
 	 *
 	 * @since    1.5
 	 */
-	public function __construct($options = array())
+	public function __construct($options = [])
 	{
 		$options['table']      = '#__churchdirectory_details';
 		$options['extension']  = 'com_churchdirectory';

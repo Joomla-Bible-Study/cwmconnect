@@ -18,11 +18,11 @@ defined('_JEXEC') or die;
  */
 class ChurchDirectoryHelper
 {
-
 	/**
 	 * Set Extension Name
 	 *
 	 * @var string
+	 * @since    1.7.0
 	 */
 	public static $extension = 'com_churchdirectory';
 
@@ -175,10 +175,12 @@ class ChurchDirectoryHelper
 	 * @param   int  $pk  ID
 	 *
 	 * @return array|bool
+	 *
+	 * @since    1.7.0
 	 */
 	public static function getAssociations($pk)
 	{
-		$associations = array();
+		$associations = [];
 		$db           = JFactory::getDbo();
 		$query        = $db->getQuery(true);
 		$query->from('#__churchdirectory_details as c');
@@ -187,11 +189,11 @@ class ChurchDirectoryHelper
 		$query->innerJoin('#__contact_details as c2 ON a2.id = c2.id');
 		$query->innerJoin('#__categories as ca ON c2.catid = ca.id AND ca.extension = ' . $db->quote('com_churchdirectory'));
 		$query->where('c.id =' . (int) $pk);
-		$select = array(
+		$select = [
 			'c2.language',
-			$query->concatenate(array('c2.id', 'c2.alias'), ':') . ' AS id',
-			$query->concatenate(array('ca.id', 'ca.alias'), ':') . ' AS catid'
-		);
+			$query->concatenate(['c2.id', 'c2.alias'], ':') . ' AS id',
+			$query->concatenate(['ca.id', 'ca.alias'], ':') . ' AS catid'
+		];
 		$query->select($select);
 		$db->setQuery($query);
 		$memberitems = $db->loadObjectList('language');
@@ -215,7 +217,7 @@ class ChurchDirectoryHelper
 	/**
 	 * Adds Count Items for Category Manager.
 	 *
-	 * @param   stdClass[] &$items The banner category objects
+	 * @param   stdClass[]  &$items  The banner category objects
 	 *
 	 * @return  stdClass[]
 	 *
@@ -265,5 +267,4 @@ class ChurchDirectoryHelper
 
 		return $items;
 	}
-
 }

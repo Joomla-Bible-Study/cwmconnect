@@ -142,9 +142,9 @@ class ChurchDirectoryViewCategory extends JViewLegacy
 		$cparams          = $category->getParams();
 		$category->params = clone $params;
 		$category->params->merge($cparams);
-		$children = array($category->id => $children);
+		$children = [$category->id => $children];
 		$this->loadHelper('render');
-		$this->renderHelper = new renderHelper;
+		$this->renderHelper = new RenderHelper;
 
 		$maxLevel         = $params->get('maxLevel', -1);
 		$this->maxLevel   = & $maxLevel;
@@ -186,6 +186,8 @@ class ChurchDirectoryViewCategory extends JViewLegacy
 	 * Prepares the document
 	 *
 	 * @return void;
+	 *
+	 * @since       1.7.2
 	 */
 	protected function _prepareDocument()
 	{
@@ -211,12 +213,12 @@ class ChurchDirectoryViewCategory extends JViewLegacy
 
 		if ($menu && ($menu->query['option'] != 'com_churchdirectory' || $menu->query['view'] == 'churchdirectory' || $id != $this->category->id))
 		{
-			$path     = array(array('title' => $this->category->title, 'link' => ''));
+			$path     = [['title' => $this->category->title, 'link' => '']];
 			$category = $this->category->getParent();
 
 			while (($menu->query['option'] != 'com_churchdirectory' || $menu->query['view'] == 'churchdirectory' || $id != $category->id) && $category->id > 1)
 			{
-				$path[]   = array('title' => $category->title, 'link' => ChurchDirectoryHelperRoute::getCategoryRoute($category->id));
+				$path[]   = ['title' => $category->title, 'link' => ChurchDirectoryHelperRoute::getCategoryRoute($category->id)];
 				$category = $category->getParent();
 			}
 
@@ -287,9 +289,9 @@ class ChurchDirectoryViewCategory extends JViewLegacy
 		if ($this->params->get('show_feed_link', 1) == 1)
 		{
 			$link    = '&format=feed&limitstart=';
-			$attribs = array('type' => 'application/rss+xml', 'title' => 'RSS 2.0');
+			$attribs = ['type' => 'application/rss+xml', 'title' => 'RSS 2.0'];
 			$this->document->addHeadLink(JRoute::_($link . '&type=rss'), 'alternate', 'rel', $attribs);
-			$attribs = array('type' => 'application/atom+xml', 'title' => 'Atom 1.0');
+			$attribs = ['type' => 'application/atom+xml', 'title' => 'Atom 1.0'];
 			$this->document->addHeadLink(JRoute::_($link . '&type=atom'), 'alternate', 'rel', $attribs);
 		}
 	}

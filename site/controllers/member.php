@@ -25,15 +25,15 @@ class ChurchDirectoryControllerMember extends JControllerForm
 	 *
 	 * @since       1.7.2
 	 */
-	public function getModel($name = '', $prefix = '', $config = array('ignore_request' => true))
+	public function getModel($name = '', $prefix = '', $config = [])
 	{
-		return parent::getModel($name, $prefix, array('ignore_request' => false));
+		return parent::getModel($name, $prefix, ['ignore_request' => false]);
 	}
 
 	/**
 	 * Custom Submit
 	 *
-	 * @return boolean
+	 * @return bool|JException
 	 *
 	 * @since       1.7.2
 	 */
@@ -50,7 +50,7 @@ class ChurchDirectoryControllerMember extends JControllerForm
 		$id     = (int) $stub;
 
 		// Get the data from POST
-		$data = $app->input->post->get('jform', array(), 'post', 'array');
+		$data = $app->input->post->get('jform', [], 'post', 'array');
 
 		$churchdirectory = $model->getItem($id);
 
@@ -118,7 +118,7 @@ class ChurchDirectoryControllerMember extends JControllerForm
 		}
 
 		// Validation succeeded, continue with custom handlers
-		$results = $dispatcher->trigger('onValidateChurchDirectory', array(&$churchdirectory, &$data));
+		$results = $dispatcher->trigger('onValidateChurchDirectory', [ & $churchdirectory, & $data]);
 
 		foreach ($results as $result)
 		{
@@ -168,7 +168,7 @@ class ChurchDirectoryControllerMember extends JControllerForm
 	 * @param   array   $data             ?
 	 * @param   object  $churchdirectory  ?
 	 *
-	 * @return array
+	 * @return bool|JException
 	 *
 	 * @since       1.7.2
 	 */
@@ -197,8 +197,8 @@ class ChurchDirectoryControllerMember extends JControllerForm
 
 		$mail = JFactory::getMailer();
 		$mail->addRecipient($churchdirectory->email_to);
-		$mail->addReplyTo(array($email, $name));
-		$mail->setSender(array($mailfrom, $fromname));
+		$mail->addReplyTo([$email, $name]);
+		$mail->setSender([$mailfrom, $fromname]);
 		$mail->setSubject($sitename . ': ' . $subject);
 		$mail->setBody($body);
 		$sent = $mail->Send();
@@ -214,8 +214,8 @@ class ChurchDirectoryControllerMember extends JControllerForm
 
 			$mail = JFactory::getMailer();
 			$mail->addRecipient($email);
-			$mail->addReplyTo(array($email, $name));
-			$mail->setSender(array($mailfrom, $fromname));
+			$mail->addReplyTo([$email, $name]);
+			$mail->setSender([$mailfrom, $fromname]);
 			$mail->setSubject($copysubject);
 			$mail->setBody($copytext);
 			$sent = $mail->Send();

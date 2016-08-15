@@ -15,7 +15,6 @@ defined('_JEXEC') or die;
  */
 class ChurchDirectoryModelDirHeaders extends JModelList
 {
-
 	/**
 	 * Constructor.
 	 *
@@ -24,11 +23,11 @@ class ChurchDirectoryModelDirHeaders extends JModelList
 	 * @see        JController
 	 * @since      1.7.0
 	 */
-	public function __construct($config = array())
+	public function __construct($config = [])
 	{
 		if (empty($config['filter_fields']))
 		{
-			$config['filter_fields'] = array(
+			$config['filter_fields'] = [
 				'id', 'a.id',
 				'name', 'a.name',
 				'alias', 'a.alias',
@@ -45,7 +44,7 @@ class ChurchDirectoryModelDirHeaders extends JModelList
 				'language', 'a.language',
 				'publish_up', 'a.publish_up',
 				'publish_down', 'a.publish_down',
-			);
+			];
 		}
 
 		parent::__construct($config);
@@ -169,6 +168,7 @@ class ChurchDirectoryModelDirHeaders extends JModelList
 
 		// Filter by published state
 		$published = $this->getState('filter.published');
+
 		if (is_numeric($published))
 		{
 			$query->where('a.published = ' . (int) $published);
@@ -180,6 +180,7 @@ class ChurchDirectoryModelDirHeaders extends JModelList
 
 		// Filter by search in name.
 		$search = $this->getState('filter.search');
+
 		if (!empty($search))
 		{
 			if (stripos($search, 'id:') === 0)
@@ -211,5 +212,4 @@ class ChurchDirectoryModelDirHeaders extends JModelList
 
 		return $query;
 	}
-
 }

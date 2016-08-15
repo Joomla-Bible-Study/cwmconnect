@@ -35,9 +35,9 @@ abstract class ChurchDirectoryHelperRoute
 	 */
 	public static function getMemberRoute($id, $catid)
 	{
-		$needles = array(
-			'churchdirectory' => array((int) $id)
-		);
+		$needles = [
+			'churchdirectory' => [(int) $id]
+		];
 
 		// Create the link
 		$link = 'index.php?option=com_churchdirectory&view=member&id=' . $id;
@@ -95,9 +95,9 @@ abstract class ChurchDirectoryHelperRoute
 		}
 		else
 		{
-			$needles = array(
-				'category' => array($id)
-			);
+			$needles = [
+				'category' => [$id]
+			];
 
 			if ($item = self::_findItem($needles))
 			{
@@ -111,10 +111,10 @@ abstract class ChurchDirectoryHelperRoute
 				if ($category)
 				{
 					$catids  = array_reverse($category->getPath());
-					$needles = array(
+					$needles = [
 						'category'   => $catids,
 						'categories' => $catids
-					);
+					];
 
 					if ($item = self::_findItem($needles))
 					{
@@ -148,7 +148,7 @@ abstract class ChurchDirectoryHelperRoute
 		// Prepare the reverse lookup array.
 		if (self::$lookup === null)
 		{
-			self::$lookup = array();
+			self::$lookup = [];
 
 			$component = JComponentHelper::getComponent('com_churchdirectory');
 			$items     = $menus->getItems('component_id', $component->id);
@@ -161,7 +161,7 @@ abstract class ChurchDirectoryHelperRoute
 
 					if (!isset(self::$lookup[$view]))
 					{
-						self::$lookup[$view] = array();
+						self::$lookup[$view] = [];
 					}
 
 					if (isset($item->query['id']))

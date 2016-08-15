@@ -44,7 +44,7 @@ class RenderHelper
 	public function getPosition($con_position, $getint = false, $params = null)
 	{
 		$i         = 0;
-		$positions = array();
+		$positions = [];
 		$results   = '';
 		$position  = null;
 		$db        = JFactory::getDbo();
@@ -336,7 +336,7 @@ class RenderHelper
 		$items = null;
 		$field = null;
 		extract($args);
-		$result = array();
+		$result = [];
 
 		foreach ($items as $item)
 		{
@@ -355,7 +355,7 @@ class RenderHelper
 			}
 			else
 			{
-				$result[$key]   = array();
+				$result[$key]   = [];
 				$result[$key][] = $item;
 			}
 		}
@@ -475,7 +475,7 @@ class RenderHelper
 		foreach ($records as $record)
 		{
 			list($this->burthyear, $this->burthmonth, $this->burthday) = explode('-', $record->birthdate);
-			$results[] = array('name' => $record->name, 'id' => $record->id, 'day' => $this->burthday, 'access' => $record->access);
+			$results[] = ['name' => $record->name, 'id' => $record->id, 'day' => $this->burthday, 'access' => $record->access];
 		}
 
 		return $results;
@@ -546,11 +546,11 @@ class RenderHelper
 			if ($record->f_name && $record->f_id != $this->f_id)
 			{
 				$this->f_id = $record->f_id;
-				$results[] = array('name' => $record->f_name, 'id' => $record->f_id, 'day' => $this->bday, 'access' => $record->access);
+				$results[] = ['name' => $record->f_name, 'id' => $record->f_id, 'day' => $this->bday, 'access' => $record->access];
 			}
 			elseif (!$record->f_name)
 			{
-				$results[] = array('name' => $record->name, 'id' => $record->id, 'day' => $this->bday, 'access' => $record->access);
+				$results[] = ['name' => $record->name, 'id' => $record->id, 'day' => $this->bday, 'access' => $record->access];
 			}
 			else
 			{
