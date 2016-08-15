@@ -10,19 +10,14 @@ env:
 
 matrix:
   include:
-    - php: 5.3
+    - php: 5.4
       env: INSTALL_APC="yes"
-#    - php: 5.4
-#      env: INSTALL_APC="yes"
 #    - php: 5.5
 #      env: INSTALL_APCU="yes"
 #    - php: 5.6
 #      env: RUN_PHPCS="yes" INSTALL_APCU="yes"
 #    - php: 7.0
 #      env: INSTALL_APCU_BC_BETA="no" INSTALL_MEMCACHED="no" INSTALL_REDIS="no" # Disabled apcu_bc install until https://github.c
-
-services:
-  - redis-server
 
 before_script:
   - phpenv config-rm xdebug.ini
@@ -35,11 +30,7 @@ before_script:
   - if [ "$INSTALL_APC" == "yes" ]; then phpenv config-add build/travis/phpenv/apc-$TRAVIS_PHP_VERSION.ini; fi
   - if [ "$INSTALL_APCU" == "yes" ]; then printf "\n" | pecl install apcu-4.0.10; fi
   - if [ "$INSTALL_APCU_BC_BETA" == "yes" ]; then printf "\n" | pecl install apcu_bc-beta; fi
-  - if [ "$INSTALL_REDIS" == "yes" ]; then phpenv config-add build/travis/phpenv/redis.ini; fi
 
 script:
   #- libraries/vendor/bin/phpunit --configuration travisci-phpunit.xml
   - sh -c "if [ '$TRAVIS_PHP_VERSION' != '7.0' ]; then bin/phpcs --report=full --extensions=php -p --standard=build/phpcs/Joomla .; fi"
-
-branches:
-  except:
