@@ -15,11 +15,11 @@ defined('_JEXEC') or die();
  */
 class ChurchDirectoryViewReports extends JViewLegacy
 {
-
 	/**
 	 * Protect Items
 	 *
 	 * @var array
+	 * @since    1.7.0
 	 */
 	protected $items;
 
@@ -27,6 +27,7 @@ class ChurchDirectoryViewReports extends JViewLegacy
 	 * Protect Pragination
 	 *
 	 * @var array
+	 * @since    1.7.0
 	 */
 	protected $pagination;
 
@@ -34,6 +35,7 @@ class ChurchDirectoryViewReports extends JViewLegacy
 	 * Protect State
 	 *
 	 * @var object
+	 * @since    1.7.0
 	 */
 	protected $state;
 
@@ -45,6 +47,8 @@ class ChurchDirectoryViewReports extends JViewLegacy
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
 	 *
 	 * @return mixed
+	 *
+	 * @since    1.7.0
 	 */
 	public function display($tpl = null)
 	{
@@ -79,16 +83,16 @@ class ChurchDirectoryViewReports extends JViewLegacy
 	protected function addToolbar()
 	{
 		$canDo = ChurchDirectoryHelper::getActions();
-		JToolBarHelper::title(JText::_('COM_CHURCHDIRECTORY_MANAGER_REPORTS'), 'churchdirectory.png');
+		JToolbarHelper::title(JText::_('COM_CHURCHDIRECTORY_MANAGER_REPORTS'), 'churchdirectory.png');
 
 		if ($canDo->get('core.admin'))
 		{
-			JToolBarHelper::divider();
-			JToolBarHelper::preferences('com_churchdirectory');
-			JToolBarHelper::divider();
+			JToolbarHelper::divider();
+			JToolbarHelper::preferences('com_churchdirectory');
+			JToolbarHelper::divider();
 		}
 
-		JToolBarHelper::help('churchdirectory', true);
+		JToolbarHelper::help('churchdirectory', true);
 	}
 
 	/**
@@ -102,5 +106,4 @@ class ChurchDirectoryViewReports extends JViewLegacy
 		$document = JFactory::getDocument();
 		$document->setTitle(JText::_('COM_CHURCHDIRECTORY_REPORTS'));
 	}
-
 }
