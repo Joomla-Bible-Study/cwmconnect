@@ -17,7 +17,6 @@ JFormHelper::loadRuleClass('email');
  */
 class JFormRuleChurchDirectoryEmail extends JFormRuleEmail
 {
-
 	/**
 	 * Method to test the email address and optionally check for uniqueness.
 	 *
@@ -30,6 +29,8 @@ class JFormRuleChurchDirectoryEmail extends JFormRuleEmail
 	 * @param   JForm             &$form     The form object for which the field is being tested.
 	 *
 	 * @return  boolean  True if the value is valid, false otherwise.
+	 *
+	 * @since    1.5
 	 */
 	public function test(& $element, $value, $group = null, &$input = null, &$form = null)
 	{
@@ -51,5 +52,4 @@ class JFormRuleChurchDirectoryEmail extends JFormRuleEmail
 
 		return true;
 	}
-
 }

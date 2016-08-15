@@ -16,7 +16,6 @@ use Joomla\Registry\Registry;
  */
 class RenderHelper
 {
-
 	protected $burthday;
 
 	protected $burthyear;
@@ -39,6 +38,8 @@ class RenderHelper
 	 * @param   JRegistry  $params        ID of Position
 	 *
 	 * @return string|bool
+	 *
+	 * @since    1.5
 	 */
 	public function getPosition($con_position, $getint = false, $params = null)
 	{
@@ -78,6 +79,7 @@ class RenderHelper
 			$position      = $db->loadObject();
 			$positions[$i] = $position;
 		}
+
 		$n  = count($positions);
 		$pi = '1';
 
@@ -96,6 +98,7 @@ class RenderHelper
 					{
 						$results .= $position->name;
 					}
+
 					$pi++;
 				}
 			}
@@ -111,7 +114,6 @@ class RenderHelper
 					$results = true;
 				}
 			}
-
 		}
 
 		return $results;
@@ -124,10 +126,11 @@ class RenderHelper
 	 * @param   string  $fm     ID the Family Position that you want to return.
 	 *
 	 * @return array  Array of family members
+	 *
+	 * @since    1.5
 	 */
 	public function getFamilyMembers($fu_id, $fm = '2')
 	{
-
 		$db    = JFactory::getDbo();
 		$query = $db->getQuery(true);
 
@@ -150,12 +153,14 @@ class RenderHelper
 				$params->loadString($item->params);
 				$item->params = $params;
 			}
+
 			if (!isset($this->_attribs))
 			{
 				$params = new Registry;
 				$params->loadString($item->attribs);
 				$item->attribs = $params;
 			}
+
 			if ($item->attribs->get('familypostion') != $fm)
 			{
 				unset($items[$i]);
@@ -172,6 +177,8 @@ class RenderHelper
 	 * @param   bool       $from      If from Admin or Site(True)
 	 *
 	 * @return string HTML string
+	 *
+	 * @since    1.5
 	 */
 	public function getChildren($families, $from = false)
 	{
@@ -179,6 +186,7 @@ class RenderHelper
 		{
 			$families = self::getFamilyMembers($families);
 		}
+
 		$n2   = count($families);
 		$i2   = $n2;
 		$name = '';
@@ -197,6 +205,7 @@ class RenderHelper
 			{
 				$name .= '&amp; ' . self::getMemberStatus($member, $from);
 			}
+
 			$i2--;
 		}
 
@@ -211,6 +220,8 @@ class RenderHelper
 	 * @param   bool  $from             If from Admin or Site(True)
 	 *
 	 * @return string
+	 *
+	 * @since    1.5
 	 */
 	public function getSpouse($fu_id, $family_position, $from = false)
 	{
@@ -222,6 +233,7 @@ class RenderHelper
 		{
 			$fm = 1;
 		}
+
 		$members = self::getFamilyMembers($fu_id, $fm);
 		$spouse  = null;
 
@@ -240,6 +252,8 @@ class RenderHelper
 	 * @param   bool    $from    If from Admin or Site(True)
 	 *
 	 * @return string HTML string returned
+	 *
+	 * @since    1.5
 	 */
 	public function getMemberStatus($member, $from = false)
 	{
@@ -300,6 +314,8 @@ class RenderHelper
 	 * @param   int  $rows_per_page  Number of Rows we want to see.
 	 *
 	 * @return int
+	 *
+	 * @since    1.5
 	 */
 	public function rowWidth($rows_per_page)
 	{
@@ -312,6 +328,8 @@ class RenderHelper
 	 * @param   array  $args  Array of Items to group
 	 *
 	 * @return array
+	 *
+	 * @since    1.5
 	 */
 	public static function groupit($args)
 	{
@@ -322,7 +340,6 @@ class RenderHelper
 
 		foreach ($items as $item)
 		{
-
 			if (!empty($item->$field))
 			{
 				$key = $item->$field;
@@ -331,6 +348,7 @@ class RenderHelper
 			{
 				$key = 'nomatch';
 			}
+
 			if (array_key_exists($key, $result))
 			{
 				$result[$key][] = $item;
@@ -351,6 +369,8 @@ class RenderHelper
 	 * @param   string  $name  Name of member
 	 *
 	 * @return stdClass
+	 *
+	 * @since    1.5
 	 */
 	public function getName($name)
 	{
@@ -404,6 +424,8 @@ class RenderHelper
 	 * @param   JRegistry  $params  Model Params
 	 *
 	 * @return array
+	 *
+	 * @since    1.5
 	 */
 	public function getBirthdays($params)
 	{
@@ -437,10 +459,12 @@ class RenderHelper
 
 		// Filter of birthdates to show
 		$date = $params->get('month', date('m'));
+
 		if ($date == '0')
 		{
 			$date = date('m');
 		}
+
 		$query->where('MONTH(a.birthdate) = ' . $date);
 
 		$query->where('a.birthdate != "0000-00-00"')
@@ -463,6 +487,8 @@ class RenderHelper
 	 * @param   JRegistry  $params  Model Params
 	 *
 	 * @return array
+	 *
+	 * @since    1.5
 	 */
 	public function getAnniversary($params)
 	{
@@ -500,10 +526,12 @@ class RenderHelper
 
 		// Filter of birthdates to show
 		$date = $params->get('month', date('m'));
+
 		if ($date == '0')
 		{
 			$date = date('m');
 		}
+
 		$query->where('MONTH(a.anniversary) = ' . $date);
 
 		$query->where('a.anniversary != "0000-00-00"')
@@ -514,6 +542,7 @@ class RenderHelper
 		foreach ($records as $i => $record)
 		{
 			list($this->byear, $this->bmonth, $this->bday) = explode('-', $record->anniversary);
+
 			if ($record->f_name && $record->f_id != $this->f_id)
 			{
 				$this->f_id = $record->f_id;
@@ -528,7 +557,6 @@ class RenderHelper
 				$this->f_id = null;
 				unset($records[$i]);
 			}
-
 		}
 
 		return $results;

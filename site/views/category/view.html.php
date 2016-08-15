@@ -17,11 +17,11 @@ defined('_JEXEC') or die;
  */
 class ChurchDirectoryViewCategory extends JViewLegacy
 {
-
 	/**
 	 * Protected state
 	 *
 	 * @var array
+	 * @since       1.7.2
 	 */
 	protected $state;
 
@@ -29,6 +29,7 @@ class ChurchDirectoryViewCategory extends JViewLegacy
 	 * Protected items
 	 *
 	 * @var array
+	 * @since       1.7.2
 	 */
 	protected $items;
 
@@ -36,6 +37,7 @@ class ChurchDirectoryViewCategory extends JViewLegacy
 	 * Protected category
 	 *
 	 * @var array
+	 * @since       1.7.2
 	 */
 	protected $category;
 
@@ -43,6 +45,7 @@ class ChurchDirectoryViewCategory extends JViewLegacy
 	 * Protected categories
 	 *
 	 * @var array
+	 * @since       1.7.2
 	 */
 	protected $categories;
 
@@ -50,10 +53,14 @@ class ChurchDirectoryViewCategory extends JViewLegacy
 	 * Protected pagination
 	 *
 	 * @var array
+	 * @since       1.7.2
 	 */
 	protected $pagination;
 
-	/** @type  Joomla\Registry\Registry */
+	/**
+	 * @type  Joomla\Registry\Registry
+	 * @since       1.7.2
+	 */
 	protected $params;
 
 	/**
@@ -62,10 +69,11 @@ class ChurchDirectoryViewCategory extends JViewLegacy
 	 * @param   string  $tpl  ?
 	 *
 	 * @return boolean
+	 *
+	 * @since       1.7.2
 	 */
 	public function display($tpl = null)
 	{
-
 		$app    = JFactory::getApplication();
 		$params = JComponentHelper::getParams('com_churchdirectory');
 
@@ -112,7 +120,7 @@ class ChurchDirectoryViewCategory extends JViewLegacy
 			$item->slug = $item->alias ? ($item->id . ':' . $item->alias) : $item->id;
 			$temp       = new JRegistry;
 			$temp->loadString($item->params);
-			$item->params = clone($params);
+			$item->params = clone $params;
 			$item->params->merge($temp);
 
 			if ($item->params->get('show_email', 0) == 1)
@@ -132,7 +140,7 @@ class ChurchDirectoryViewCategory extends JViewLegacy
 
 		// Setup the category parameters.
 		$cparams          = $category->getParams();
-		$category->params = clone($params);
+		$category->params = clone $params;
 		$category->params->merge($cparams);
 		$children = array($category->id => $children);
 		$this->loadHelper('render');
@@ -285,5 +293,4 @@ class ChurchDirectoryViewCategory extends JViewLegacy
 			$this->document->addHeadLink(JRoute::_($link . '&type=atom'), 'alternate', 'rel', $attribs);
 		}
 	}
-
 }

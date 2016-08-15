@@ -16,11 +16,12 @@ use Joomla\Registry\Registry;
  */
 class ChurchDirectoryViewCategories extends JViewLegacy
 {
-
 	/**
 	 * Protected state
 	 *
 	 * @var object
+	 *
+	 * @since       1.7.2
 	 */
 	protected $state = null;
 
@@ -28,6 +29,8 @@ class ChurchDirectoryViewCategories extends JViewLegacy
 	 * Protected item
 	 *
 	 * @var object
+	 *
+	 * @since       1.7.2
 	 */
 	protected $item = null;
 
@@ -35,6 +38,7 @@ class ChurchDirectoryViewCategories extends JViewLegacy
 	 * Protected items
 	 *
 	 * @var array
+	 * @since       1.7.2
 	 */
 	protected $items = null;
 
@@ -42,6 +46,7 @@ class ChurchDirectoryViewCategories extends JViewLegacy
 	 * Protected pagination
 	 *
 	 * @var object
+	 * @since       1.7.2
 	 */
 	protected $pagination = null;
 
@@ -49,12 +54,18 @@ class ChurchDirectoryViewCategories extends JViewLegacy
 
 	protected $maxLevelcat;
 
-	/** @type  Joomla\Registry\Registry */
+	/**
+	 * @type  Joomla\Registry\Registry
+	 * @since       1.7.2
+	 */
 	protected $params;
 
 	protected $parent;
 
-	/** @type  JDocument */
+	/**
+	 * @type  JDocument
+	 * @since       1.7.2
+	 */
 	public $document;
 
 	/**
@@ -63,6 +74,8 @@ class ChurchDirectoryViewCategories extends JViewLegacy
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
 	 *
 	 * @return  mixed  A string if successful, otherwise a Error object.
+	 *
+	 * @since       1.7.2
 	 */
 	public function display($tpl = null)
 	{
@@ -113,6 +126,8 @@ class ChurchDirectoryViewCategories extends JViewLegacy
 	 * Prepares the document
 	 *
 	 * @return void
+	 *
+	 * @since       1.7.2
 	 */
 	protected function _prepareDocument()
 	{
@@ -132,6 +147,7 @@ class ChurchDirectoryViewCategories extends JViewLegacy
 		{
 			$this->params->def('page_heading', JText::_('COM_CHURCHDIRECTORY_DEFAULT_PAGE_TITLE'));
 		}
+
 		$title = $this->params->get('page_title', '');
 
 		if (empty($title))
@@ -146,6 +162,7 @@ class ChurchDirectoryViewCategories extends JViewLegacy
 		{
 			$title = JText::sprintf('JPAGETITLE', $title, $app->getCfg('sitename'));
 		}
+
 		$this->document->setTitle($title);
 
 		if ($this->params->get('menu-meta_description'))
@@ -163,5 +180,4 @@ class ChurchDirectoryViewCategories extends JViewLegacy
 			$this->document->setMetaData('robots', $this->params->get('robots'));
 		}
 	}
-
 }

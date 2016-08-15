@@ -19,7 +19,6 @@ jimport('joomla.form.formrule');
  */
 class JFormRuleChurchDirectoryEmailMessage extends JFormRule
 {
-
 	/**
 	 * Method to test the value.
 	 *
@@ -32,6 +31,8 @@ class JFormRuleChurchDirectoryEmailMessage extends JFormRule
 	 * @param   JForm             $form     The form object for which the field is being tested.
 	 *
 	 * @return  boolean  True if the value is valid, false otherwise.
+	 *
+	 * @since    1.5
 	 */
 	public function test(SimpleXMLElement $element, $value, $group = null, Registry $input = null, JForm $form = null)
 	{
@@ -48,5 +49,4 @@ class JFormRuleChurchDirectoryEmailMessage extends JFormRule
 
 		return true;
 	}
-
 }

@@ -14,7 +14,6 @@ defined('_JEXEC') or die;
  */
 class ChurchDirectoryControllerHome extends JControllerForm
 {
-
 	/**
 	 * Get model
 	 *
@@ -23,10 +22,11 @@ class ChurchDirectoryControllerHome extends JControllerForm
 	 * @param   array   $config  Configuration array for model. Optional.
 	 *
 	 * @return  object  The model.
+	 *
+	 * @since       1.7.2
 	 */
-	public function getModel($name = '', $prefix = '', $config = array('ignore_request' => true))
+	public function getModel($name = '', $prefix = '', $config = [])
 	{
-		return parent::getModel($name, $prefix, $config);
+		return parent::getModel($name, $prefix, $config = ['ignore_request' => true]);
 	}
-
 }

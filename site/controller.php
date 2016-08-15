@@ -15,7 +15,6 @@ defined('_JEXEC') or die;
  */
 class ChurchDirectoryController extends JControllerLegacy
 {
-
 	/**
 	 * Method to display a view.
 	 *
@@ -37,6 +36,7 @@ class ChurchDirectoryController extends JControllerLegacy
 			$this->input->set('tmpl', 'component');
 			$cachable = false;
 		}
+
 		$this->input->set('view', $vName);
 
 		$safeurlparams = array(
@@ -48,5 +48,4 @@ class ChurchDirectoryController extends JControllerLegacy
 
 		return $this;
 	}
-
 }

@@ -17,11 +17,11 @@ use Joomla\Registry\Registry;
  */
 class ChurchDirectoryModelFeatured extends JModelList
 {
-
 	/**
 	 * Category items data
 	 *
 	 * @var array
+	 * @since       1.7.2
 	 */
 	protected $_item = null;
 
@@ -29,6 +29,7 @@ class ChurchDirectoryModelFeatured extends JModelList
 	 * Articles
 	 *
 	 * @var array
+	 * @since       1.7.2
 	 */
 	protected $_articles = null;
 
@@ -36,6 +37,7 @@ class ChurchDirectoryModelFeatured extends JModelList
 	 * Sibling items
 	 *
 	 * @var array
+	 * @since       1.7.2
 	 */
 	protected $_siblings = null;
 
@@ -43,6 +45,7 @@ class ChurchDirectoryModelFeatured extends JModelList
 	 * Childern items
 	 *
 	 * @var array
+	 * @since       1.7.2
 	 */
 	protected $_children = null;
 
@@ -50,6 +53,7 @@ class ChurchDirectoryModelFeatured extends JModelList
 	 * Parent item
 	 *
 	 * @var string
+	 * @since       1.7.2
 	 */
 	protected $_parent = null;
 
@@ -58,6 +62,7 @@ class ChurchDirectoryModelFeatured extends JModelList
 	 *
 	 * @access    protected
 	 * @var        object
+	 * @since       1.7.2
 	 */
 	protected $_category = null;
 
@@ -66,6 +71,7 @@ class ChurchDirectoryModelFeatured extends JModelList
 	 *
 	 * @access    protected
 	 * @var        array
+	 * @since       1.7.2
 	 */
 	protected $_categories = null;
 
@@ -99,6 +105,8 @@ class ChurchDirectoryModelFeatured extends JModelList
 	 * Method to get a list of items.
 	 *
 	 * @return    mixed    An array of objects on success, false on failure.
+	 *
+	 * @since       1.7.2
 	 */
 	public function getItems()
 	{
@@ -223,6 +231,7 @@ class ChurchDirectoryModelFeatured extends JModelList
 		{
 			$orderCol = 'ordering';
 		}
+
 		$this->setState('list.ordering', $orderCol);
 
 		$listOrder = $app->input->getCmd('filter_order_Dir', 'ASC');
@@ -231,6 +240,7 @@ class ChurchDirectoryModelFeatured extends JModelList
 		{
 			$listOrder = 'ASC';
 		}
+
 		$this->setState('list.direction', $listOrder);
 		$user = JFactory::getUser();
 
@@ -248,5 +258,4 @@ class ChurchDirectoryModelFeatured extends JModelList
 		// Load the parameters.
 		$this->setState('params', $params);
 	}
-
 }

@@ -19,11 +19,11 @@ jimport('joomla.event.dispatcher');
  */
 class ChurchDirectoryModelMember extends JModelForm
 {
-
 	/**
 	 * Protect view
 	 *
 	 * @var string
+	 * @since       1.7.2
 	 */
 	protected $view_item = 'member';
 
@@ -31,6 +31,7 @@ class ChurchDirectoryModelMember extends JModelForm
 	 * Protect item
 	 *
 	 * @var int
+	 * @since       1.7.2
 	 */
 	protected $_item = null;
 
@@ -40,6 +41,7 @@ class ChurchDirectoryModelMember extends JModelForm
 	 * Model context string.
 	 *
 	 * @var        string
+	 * @since       1.7.2
 	 */
 	protected $_context = 'com_churchdirectory.member';
 
@@ -110,6 +112,8 @@ class ChurchDirectoryModelMember extends JModelForm
 	 * Load form date
 	 *
 	 * @return array
+	 *
+	 * @since       1.7.2
 	 */
 	protected function loadFormData()
 	{
@@ -129,6 +133,8 @@ class ChurchDirectoryModelMember extends JModelForm
 	 * @param   int  $pk  Id of member
 	 *
 	 * @return mixed Object or null
+	 *
+	 * @since       1.7.2
 	 */
 	public function &getItem($pk = null)
 	{
@@ -278,6 +284,7 @@ class ChurchDirectoryModelMember extends JModelForm
 	 *
 	 * @throws Exception
 	 * @throws JException
+	 * @since       1.7.2
 	 */
 	protected function getChurchDirectoryQuery($pk = null)
 	{
@@ -324,6 +331,7 @@ class ChurchDirectoryModelMember extends JModelForm
 				$query->where('a.published IN (1,2)');
 				$query->where('cc.published IN (1,2)');
 			}
+
 			$groups = implode(',', $user->getAuthorisedViewLevels());
 			$query->where('a.access IN (' . $groups . ')');
 
@@ -397,10 +405,12 @@ class ChurchDirectoryModelMember extends JModelForm
 							' OR a.language=' . $db->quote('*'))
 					);
 				}
+
 				if (is_numeric($published))
 				{
 					$query->where('a.state IN (1,2)');
 				}
+
 				$db->setQuery($query, 0, 10);
 				$articles         = $db->loadObjectList();
 				$result->articles = $articles;
@@ -472,5 +482,4 @@ class ChurchDirectoryModelMember extends JModelForm
 
 		return true;
 	}
-
 }

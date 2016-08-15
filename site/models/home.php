@@ -20,11 +20,11 @@ jimport('joomla.event.dispatcher');
  */
 class ChurchDirectoryModelHome extends JModelList
 {
-
 	/**
 	 * Protect view
 	 *
 	 * @var string
+	 * @since       1.7.2
 	 */
 	protected $view_item = 'Home';
 
@@ -32,6 +32,7 @@ class ChurchDirectoryModelHome extends JModelList
 	 * Protect item
 	 *
 	 * @var int
+	 * @since       1.7.2
 	 */
 	protected $_item = null;
 
@@ -41,6 +42,7 @@ class ChurchDirectoryModelHome extends JModelList
 	 * Model context string.
 	 *
 	 * @var        string
+	 * @since       1.7.2
 	 */
 	protected $_context = 'com_churchdirectory.home';
 
@@ -71,6 +73,8 @@ class ChurchDirectoryModelHome extends JModelList
 	 * Method to get a list of items.
 	 *
 	 * @return    mixed    An array of objects on success, false on failure.
+	 *
+	 * @since       1.7.2
 	 */
 	public function getItems()
 	{
@@ -162,10 +166,13 @@ class ChurchDirectoryModelHome extends JModelList
 	 * Set Return Page if non passed
 	 *
 	 * @return string URL of current page.
+	 *
+	 * @since       1.7.2
 	 */
 	public function setReturnPage()
 	{
 		$Itemid = JFactory::getApplication()->input->getInt('Itemid');
+
 		if ($Itemid)
 		{
 			$Itemid = '&Itemid=' . $Itemid;
@@ -173,5 +180,4 @@ class ChurchDirectoryModelHome extends JModelList
 
 		return base64_encode('index.php?option=' . $this->option . '&view=' . $this->view_item . $Itemid);
 	}
-
 }

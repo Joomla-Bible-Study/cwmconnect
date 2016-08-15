@@ -19,11 +19,13 @@ class DirectoryHeaderHelper
 {
 	/**
 	 * @var string  Headers
+	 * @since    1.5
 	 */
 	public $header = null;
 
 	/**
 	 * @var string  Footers
+	 * @since    1.5
 	 */
 	public $footer = null;
 
@@ -33,6 +35,8 @@ class DirectoryHeaderHelper
 	 * @param   Registry  $params  HTML Params
 	 *
 	 * @return string
+	 *
+	 * @since    1.5
 	 */
 	public function setPages($params)
 	{
@@ -57,6 +61,7 @@ class DirectoryHeaderHelper
 				$header .= '<p>ID: ' . $b->id . '<br />';
 				$header .= 'Count: ' . $h . '</p>';
 			}
+
 			$header .= '<h2>' . $b->name . '</h2>';
 			$header .= $b->description;
 			$header .= '</div>';
@@ -75,5 +80,4 @@ class DirectoryHeaderHelper
 			$header = null;
 		}
 	}
-
 }

@@ -15,11 +15,11 @@ defined('_JEXEC') or die;
  */
 class ChurchDirectoryViewDirectory extends JViewLegacy
 {
-
 	/**
 	 * Protected
 	 *
 	 * @var array
+	 * @since       1.7.2
 	 */
 	protected $state;
 
@@ -27,6 +27,7 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 	 * Protected
 	 *
 	 * @var array
+	 * @since       1.7.2
 	 */
 	protected $items;
 
@@ -34,6 +35,7 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 	 * Protected
 	 *
 	 * @var array
+	 * @since       1.7.2
 	 */
 	protected $params;
 
@@ -41,6 +43,7 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 	 * Protected
 	 *
 	 * @var array
+	 * @since       1.7.2
 	 */
 	protected $kml_params;
 
@@ -48,6 +51,7 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 	 * Protected
 	 *
 	 * @var array
+	 * @since       1.7.2
 	 */
 	protected $category_params;
 
@@ -55,6 +59,7 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 	 * Protected
 	 *
 	 * @var array
+	 * @since       1.7.2
 	 */
 	protected $category;
 
@@ -62,6 +67,7 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 	 * Protected
 	 *
 	 * @var array
+	 * @since       1.7.2
 	 */
 	protected $children;
 
@@ -69,6 +75,7 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 	 * Protected
 	 *
 	 * @var array
+	 * @since       1.7.2
 	 */
 	protected $pagination;
 
@@ -82,6 +89,8 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
 	 *
 	 * @return  mixed  A string if successful, otherwise a Error object.
+	 *
+	 * @since       1.7.2
 	 */
 	public function display($tpl = null)
 	{
@@ -122,7 +131,7 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 			$item->event = new stdClass;
 			$temp        = new JRegistry;
 			$temp->loadString($item->params);
-			$item->params = clone($params);
+			$item->params = clone $params;
 			$item->params->merge($temp);
 
 			if ($item->params->get('dr_show_email', 0) == 1)
@@ -142,7 +151,7 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 
 		// Setup the category parameters.
 		$cparams          = $category->getParams();
-		$category->params = clone($params);
+		$category->params = clone $params;
 		$category->params->merge($cparams);
 		$children = array($category->id => $children);
 
@@ -196,6 +205,7 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 		{
 			$kml[] = $items[0]->kml_params->get('icscale');
 		}
+
 		$kml[] = '</scale>';
 		$kml[] = '<Icon>';
 		$kml[] = '<href>';
@@ -208,6 +218,7 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 		{
 			$kml[] = JURI::base() . $items[0]->category_params->get('image');
 		}
+
 		$kml[] = '</href>';
 		$kml[] = '</Icon>';
 		$kml[] = '<hotSpot x="0.5" y="0.5" xunits="fraction" yunits="fraction"/>';
@@ -223,6 +234,7 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 		{
 			$kml[] = $items[0]->kml_params->get('lsscale');
 		}
+
 		$kml[] = '</scale>';
 		$kml[] = '</LabelStyle>';
 		$kml[] = '</Style> ';
@@ -238,6 +250,7 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 		{
 			$kml[] = $items[0]->kml_params->get('icscale');
 		}
+
 		$kml[] = '</scale>';
 		$kml[] = '<Icon>';
 		$kml[] = '<href>';
@@ -250,6 +263,7 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 		{
 			$kml[] = JURI::base() . $items[0]->category_params->get('image');
 		}
+
 		$kml[] = '</href>';
 		$kml[] = '</Icon>';
 		$kml[] = '<hotSpot x="0.5" y="0.5" xunits="fraction" yunits="fraction"/>';
@@ -265,6 +279,7 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 		{
 			$kml[] = $items[0]->kml_params->get('lsscale');
 		}
+
 		$kml[] = '</scale>';
 		$kml[] = '</LabelStyle>';
 		$kml[] = '</Style> ';
@@ -275,6 +290,7 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 			$new_rows[$c] = RenderHelper::groupit(array('items' => $teams[$c], 'field' => 'suburb'));
 			$ckml_params = $catid[0]->kml_params;
 		}
+
 		$mycounter = '0';
 
 		foreach ($new_rows as $c => $suburb)
@@ -308,6 +324,7 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 					{
 						$kml[] = $row->params->get('visibility');
 					}
+
 					$kml[] = '</visibility><open>';
 
 					if ($row->params->get('open') == null)
@@ -318,6 +335,7 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 					{
 						$kml[] = $row->params->get('open');
 					}
+
 					$kml[] = '</open>';
 					$kml[] = '<gx:balloonVisibility>';
 
@@ -329,6 +347,7 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 					{
 						$kml[] = $row->params->get('gxballoonvisibility');
 					}
+
 					$kml[] = '</gx:balloonVisibility>';
 					$kml[] = '<address><![CDATA[';
 
@@ -336,6 +355,7 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 					{
 						$kml[] = $row->address . ',<br />';
 					}
+
 					$kml[] = $row->suburb . ', ' . $row->state . ' ' . $row->postcode;
 					$kml[] = ']]></address> <!-- string -->';
 					$kml[] = '<phoneNumber>' . $row->telephone . '</phoneNumber> <!-- string -->';
@@ -349,6 +369,7 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 					{
 						$kml[] = $row->kml_params->get('rmaxlines');
 					}
+
 					$kml[] = '">More coming soon</Snippet>   <!-- string -->';
 					$kml[] = '<description>' . '<![CDATA[<div style="padding: 10px;">';
 
@@ -360,38 +381,47 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 					{
 						$kml[] = '<img src="' . JURI::base() . $row->image . '" alt="Photo" width="100" hight="100" /><br />';
 					}
+
 					if (!empty($row->id))
 					{
 						$kml[] = '<b>Position:</b> Fixing sitll need to implement<br />';
 					}
+
 					if (!empty($row->spouse))
 					{
 						$kml[] = 'Spouse: ' . $row->spouse . '<br />';
 					}
+
 					if (!empty($row->children))
 					{
 						$kml[] = 'Children: ' . $row->children . '<br />';
 					}
+
 					if (!empty($row->misc))
 					{
 						$kml[] = $row->misc;
 					}
+
 					if (!empty($row->telephone))
 					{
 						$kml[] = '<br />PH: ' . $row->telephone;
 					}
+
 					if (!empty($row->fax))
 					{
 						$kml[] = '<br />Fax: ' . $row->fax;
 					}
+
 					if (!empty($row->mobile))
 					{
 						$kml[] = '<br />Cell: ' . $row->mobile;
 					}
+
 					if (!empty($row->email_to))
 					{
 						$kml[] = '<br />Email: <a href="mailto:' . $row->email_to . '">' . $row->email_to . '</a>';
 					}
+
 					$kml[] = '</div>]]>' . '</description>';
 					$kml[] = '<styleUrl>#text_photo_banner0</styleUrl>';
 					$kml[] = '<Point>';
@@ -411,5 +441,4 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 
 		return true;
 	}
-
 }

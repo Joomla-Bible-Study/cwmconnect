@@ -21,20 +21,39 @@ jimport('tcpdf.tcpdf');
  */
 class ChurchDirectoryViewDirectory extends JViewLegacy
 {
-
-	/** Protected @var object */
+	/**
+	 * Protected @var object
+	 *
+	 * @since       1.7.2
+	 */
 	protected $state = null;
 
-	/** Protected @var array */
+	/**
+	 * Protected @var array
+	 *
+	 * @since       1.7.2
+	 */
 	protected $items = null;
 
-	/** Protected @var array */
+	/**
+	 * Protected @var array
+	 *
+	 * @since       1.7.2
+	 */
 	protected $category = null;
 
-	/** Protected @var array */
+	/**
+	 * Protected @var array
+	 *
+	 * @since       1.7.2
+	 */
 	protected $categories = null;
 
-	/**  Protected  @var array */
+	/**
+	 * Protected  @var array
+	 *
+	 * @since       1.7.2
+	 */
 	protected $pagination = null;
 
 	protected $span;
@@ -59,6 +78,8 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
 	 *
 	 * @return  mixed  A string if successful, otherwise a Error object.
+	 *
+	 * @since       1.7.2
 	 */
 	public function display($tpl = null)
 	{
@@ -107,7 +128,7 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 			$item->slug = $item->alias ? ($item->id . ':' . $item->alias) : $item->id;
 			$temp       = new Joomla\Registry\Registry;
 			$temp->loadString($item->params);
-			$item->params = clone($params);
+			$item->params = clone $params;
 			$item->params->merge($temp);
 
 			if ($item->params->get('show_email', 0) == 1)
@@ -123,6 +144,7 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 					$item->email_to = '';
 				}
 			}
+
 			if ($item->params->get('dr_show_street_address') || $item->params->get('dr_show_suburb')
 				|| $item->params->get('dr_show_state') || $item->params->get('dr_show_postcode') || $item->params->get('dr_show_country'))
 			{
@@ -132,6 +154,7 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 			{
 				$params->set('address_check', 0);
 			}
+
 			if ($item->params->get('dr_show_email') || $item->params->get('dr_show_telephone')
 				|| $item->params->get('dr_show_fax') || $item->params->get('dr_show_mobile')
 				|| $item->params->get('dr_show_webpage') || $item->params->get('dr_show_spouse')
@@ -200,7 +223,7 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 
 		// Setup the category parameters.
 		$cparams          = $category->getParams();
-		$category->params = clone($params);
+		$category->params = clone $params;
 		$category->params->merge($cparams);
 		$children = array($category->id => $children);
 		$maxLevel = $params->get('maxLevel', -1);
@@ -211,7 +234,6 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 			foreach ($items as $s1)
 			{
 				$items[$s1] = RenderHelper::groupit(array('items' => $items[$s1], 'field' => 'suburb'));
-
 			}
 		}
 
@@ -293,6 +315,8 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 	 * ABC Links for bottom of page
 	 *
 	 * @return string
+	 *
+	 * @since       1.7.2
 	 */
 	public function abclinks()
 	{
@@ -327,5 +351,4 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 
 		return $links;
 	}
-
 }

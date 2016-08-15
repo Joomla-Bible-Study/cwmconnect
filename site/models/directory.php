@@ -17,7 +17,6 @@ use Joomla\Registry\Registry;
  */
 class ChurchDirectoryModelDirectory extends JModelList
 {
-
 	/**
 	 * Set view_item
 	 *
@@ -31,6 +30,7 @@ class ChurchDirectoryModelDirectory extends JModelList
 	 *
 	 * @access protected
 	 * @var array
+	 * @since       1.7.2
 	 */
 	protected $_item = null;
 
@@ -39,6 +39,7 @@ class ChurchDirectoryModelDirectory extends JModelList
 	 *
 	 * @access protected
 	 * @var array
+	 * @since       1.7.2
 	 */
 	protected $_articles = null;
 
@@ -47,6 +48,7 @@ class ChurchDirectoryModelDirectory extends JModelList
 	 *
 	 * @access protected
 	 * @var array
+	 * @since       1.7.2
 	 */
 	protected $_siblings = null;
 
@@ -55,6 +57,7 @@ class ChurchDirectoryModelDirectory extends JModelList
 	 *
 	 * @access protected
 	 * @var array
+	 * @since       1.7.2
 	 */
 	protected $_children = null;
 
@@ -63,6 +66,7 @@ class ChurchDirectoryModelDirectory extends JModelList
 	 *
 	 * @access protected
 	 * @var string
+	 * @since       1.7.2
 	 */
 	protected $_parent = null;
 
@@ -71,6 +75,7 @@ class ChurchDirectoryModelDirectory extends JModelList
 	 *
 	 * @access    protected
 	 * @var        object
+	 * @since       1.7.2
 	 */
 	protected $_category = null;
 
@@ -79,6 +84,7 @@ class ChurchDirectoryModelDirectory extends JModelList
 	 *
 	 * @access    protected
 	 * @var        array
+	 * @since       1.7.2
 	 */
 	protected $_categories = null;
 
@@ -144,18 +150,21 @@ class ChurchDirectoryModelDirectory extends JModelList
 				$kparams->loadString($item->kml_params);
 				$item->kml_params = $kparams;
 			}
+
 			if (!isset($this->_cparams))
 			{
 				$cparams = new Registry;
 				$cparams->loadString($item->category_params);
 				$item->category_params = $cparams;
 			}
+
 			if (!isset($this->_params))
 			{
 				$params = new Registry;
 				$params->loadString($item->params);
 				$item->params = $params;
 			}
+
 			if (!isset($this->_attribs))
 			{
 				$params = new Registry;
@@ -369,6 +378,7 @@ class ChurchDirectoryModelDirectory extends JModelList
 		{
 			$limit = 0;
 		}
+
 		$this->setState('list.limit', $limit);
 
 		$limitstart = $app->input->get('limitstart', 0, 'uint');
@@ -381,6 +391,7 @@ class ChurchDirectoryModelDirectory extends JModelList
 		{
 			$menuParams->loadString($menu->params);
 		}
+
 		$mergedParams = clone $params;
 		$mergedParams->merge($menuParams);
 		$orderCol = $app->input->get('filter_order', $mergedParams->get('dinitial_sort', 'ordering'));
@@ -389,6 +400,7 @@ class ChurchDirectoryModelDirectory extends JModelList
 		{
 			$orderCol = 'ordering';
 		}
+
 		$this->setState('list.ordering', $orderCol);
 
 		$listOrder = $app->input->get('filter_order_Dir', 'ASC');
@@ -397,6 +409,7 @@ class ChurchDirectoryModelDirectory extends JModelList
 		{
 			$listOrder = 'ASC';
 		}
+
 		$this->setState('list.direction', $listOrder);
 
 		$id = $app->input->get('id', 0, 'int');
@@ -411,6 +424,7 @@ class ChurchDirectoryModelDirectory extends JModelList
 			// Filter by start and end dates.
 			$this->setState('filter.publish_date', true);
 		}
+
 		$mstatus = $app->input->get('filter_mstatus', $mergedParams->get('mstatus', '0'));
 		$this->setState('filter.mstatus', $mstatus);
 		$this->setState('filter.language', $app->getLanguageFilter());
@@ -449,10 +463,12 @@ class ChurchDirectoryModelDirectory extends JModelList
 			{
 				$this->_children = $this->_item->getChildren();
 				$this->_parent   = false;
+
 				if ($this->_item->getParent())
 				{
 					$this->_parent = $this->_item->getParent();
 				}
+
 				$this->_rightsibling = $this->_item->getSibling();
 				$this->_leftsibling  = $this->_item->getSibling(false);
 			}
@@ -470,6 +486,8 @@ class ChurchDirectoryModelDirectory extends JModelList
 	 * Get the parent category.
 	 *
 	 * @return    mixed    An array of categories or false if an error occurs.
+	 *
+	 * @since       1.7.2
 	 */
 	public function getParent()
 	{
@@ -485,6 +503,8 @@ class ChurchDirectoryModelDirectory extends JModelList
 	 * Get the sibling (adjacent) categories.
 	 *
 	 * @return    mixed    An array of categories or false if an error occurs.
+	 *
+	 * @since       1.7.2
 	 */
 	private function &getLeftSibling()
 	{
@@ -500,6 +520,8 @@ class ChurchDirectoryModelDirectory extends JModelList
 	 * Get the sibling (adjacent) categories.
 	 *
 	 * @return    mixed    An array of categories or false if an error occurs.
+	 *
+	 * @since       1.7.2
 	 */
 	private function &getRightSibling()
 	{
@@ -515,6 +537,8 @@ class ChurchDirectoryModelDirectory extends JModelList
 	 * Get the child categories.
 	 *
 	 * @return    mixed    An array of categories or false if an error occurs.
+	 *
+	 * @since       1.7.2
 	 */
 	private function &getChildren()
 	{
@@ -525,5 +549,4 @@ class ChurchDirectoryModelDirectory extends JModelList
 
 		return $this->_children;
 	}
-
 }

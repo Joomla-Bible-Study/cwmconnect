@@ -14,7 +14,6 @@ defined('_JEXEC') or die;
  */
 class ChurchDirectoryControllerMember extends JControllerForm
 {
-
 	/**
 	 * Get model
 	 *
@@ -23,6 +22,8 @@ class ChurchDirectoryControllerMember extends JControllerForm
 	 * @param   array   $config  Configuration array for model. Optional.
 	 *
 	 * @return  object  The model.
+	 *
+	 * @since       1.7.2
 	 */
 	public function getModel($name = '', $prefix = '', $config = array('ignore_request' => true))
 	{
@@ -33,6 +34,8 @@ class ChurchDirectoryControllerMember extends JControllerForm
 	 * Custom Submit
 	 *
 	 * @return boolean
+	 *
+	 * @since       1.7.2
 	 */
 	public function submit()
 	{
@@ -166,6 +169,8 @@ class ChurchDirectoryControllerMember extends JControllerForm
 	 * @param   object  $churchdirectory  ?
 	 *
 	 * @return array
+	 *
+	 * @since       1.7.2
 	 */
 	private function _sendEmail($data, $churchdirectory)
 	{
@@ -176,6 +181,7 @@ class ChurchDirectoryControllerMember extends JControllerForm
 			$churchdirectory_user      = JUser::getInstance($churchdirectory->user_id);
 			$churchdirectory->email_to = $churchdirectory_user->get('email');
 		}
+
 		$mailfrom = $app->get('mailfrom');
 		$fromname = $app->get('fromname');
 		$sitename = $app->get('sitename');
@@ -217,5 +223,4 @@ class ChurchDirectoryControllerMember extends JControllerForm
 
 		return $sent;
 	}
-
 }

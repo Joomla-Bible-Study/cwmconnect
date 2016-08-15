@@ -20,13 +20,14 @@ JModelLegacy::addIncludePath(JPATH_SITE . '/components/com_churchdirectory/model
  */
 class ModBirthdayAnniversaryHelper
 {
-
 	/**
 	 * Convert a stdClass to an Array.
 	 *
 	 * @param   stdClass  $Class  Setup Variable
 	 *
 	 * @return array
+	 *
+	 * @since       1.7.2
 	 */
 	static public function object_to_array (stdClass $Class)
 	{
@@ -45,5 +46,4 @@ class ModBirthdayAnniversaryHelper
 
 		return $Class;
 	}
-
 }

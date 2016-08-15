@@ -17,11 +17,11 @@ use Joomla\Registry\Registry;
  */
 class ChurchDirectoryModelCategories extends JModelList
 {
-
 	/**
 	 * Model context string.
 	 *
 	 * @var        string
+	 * @since       1.7.2
 	 */
 	public $_context = 'com_churchdirectory.categories';
 
@@ -29,6 +29,7 @@ class ChurchDirectoryModelCategories extends JModelList
 	 * The category context (allows other extensions to derived from this model).
 	 *
 	 * @var        string
+	 * @since       1.7.2
 	 */
 	protected $_extension = 'com_churchdirectory';
 
@@ -36,6 +37,7 @@ class ChurchDirectoryModelCategories extends JModelList
 	 * The parent context
 	 *
 	 * @var array
+	 * @since       1.7.2
 	 */
 	private $_parent = null;
 
@@ -43,6 +45,7 @@ class ChurchDirectoryModelCategories extends JModelList
 	 * The items
 	 *
 	 * @var array
+	 * @since       1.7.2
 	 */
 	private $_items = null;
 
@@ -55,6 +58,8 @@ class ChurchDirectoryModelCategories extends JModelList
 	 * @param   string  $direction  An optional direction (asc|desc).
 	 *
 	 * @return  void
+	 *
+	 * @since       1.7.2
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
@@ -82,6 +87,8 @@ class ChurchDirectoryModelCategories extends JModelList
 	 * @param   string  $id  A prefix for the store id.
 	 *
 	 * @return  string  A store id.
+	 *
+	 * @since       1.7.2
 	 */
 	protected function getStoreId($id = '')
 	{
@@ -98,6 +105,8 @@ class ChurchDirectoryModelCategories extends JModelList
 	 * redefine the function an add some properties to make the styling more easy
 	 *
 	 * @return  mixed  An array of data items on success, false on failure.
+	 *
+	 * @since       1.7.2
 	 */
 	public function getItems()
 	{
@@ -112,6 +121,7 @@ class ChurchDirectoryModelCategories extends JModelList
 			{
 				$params->loadString($active->params);
 			}
+
 			$options               = array();
 			$options['countItems'] = $params->get('show_cat_items_cat', 1) || !$params->get('show_empty_categories_cat', 0);
 			$categories            = JCategories::getInstance('Churchdirectory', $options);
@@ -134,6 +144,8 @@ class ChurchDirectoryModelCategories extends JModelList
 	 * Get parent
 	 *
 	 * @return  array
+	 *
+	 * @since       1.7.2
 	 */
 	public function getParent()
 	{
@@ -144,5 +156,4 @@ class ChurchDirectoryModelCategories extends JModelList
 
 		return $this->_parent;
 	}
-
 }

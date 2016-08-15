@@ -15,11 +15,11 @@ defined('_JEXEC') or die;
  */
 abstract class ChurchDirectoryHelperRoute
 {
-
 	/**
 	 * Protect lookup
 	 *
 	 * @var string protect lookup
+	 * @since    1.5
 	 */
 	protected static $lookup;
 
@@ -30,6 +30,8 @@ abstract class ChurchDirectoryHelperRoute
 	 * @param   int  $catid  Category id
 	 *
 	 * @return string
+	 *
+	 * @since    1.5
 	 */
 	public static function getMemberRoute($id, $catid)
 	{
@@ -71,6 +73,8 @@ abstract class ChurchDirectoryHelperRoute
 	 * @param   JCategoryNode  $catid  Category ID
 	 *
 	 * @return string
+	 *
+	 * @since    1.5
 	 */
 	public static function getCategoryRoute($catid)
 	{
@@ -133,6 +137,8 @@ abstract class ChurchDirectoryHelperRoute
 	 * @param   array  $needles  Not sure what this is
 	 *
 	 * @return mixed
+	 *
+	 * @since    1.5
 	 */
 	protected static function _findItem($needles = null)
 	{
@@ -157,6 +163,7 @@ abstract class ChurchDirectoryHelperRoute
 					{
 						self::$lookup[$view] = array();
 					}
+
 					if (isset($item->query['id']))
 					{
 						self::$lookup[$view][$item->query['id']] = $item->id;
@@ -193,5 +200,4 @@ abstract class ChurchDirectoryHelperRoute
 
 		return null;
 	}
-
 }

@@ -15,11 +15,12 @@ defined('_JEXEC') or die;
  */
 class ChurchDirectoryCategories extends JCategories
 {
-
 	/**
 	 * Constructor Helper
 	 *
 	 * @param   array  $options  Array of options
+	 *
+	 * @since    1.5
 	 */
 	public function __construct($options = array())
 	{
@@ -28,5 +29,4 @@ class ChurchDirectoryCategories extends JCategories
 		$options['statefield'] = 'published';
 		parent::__construct($options);
 	}
-
 }

@@ -15,7 +15,6 @@ defined('_JEXEC') or die;
  */
 class PlgSearchChurchdirectory extends JPlugin
 {
-
 	/**
 	 * Constructor
 	 *
@@ -37,6 +36,8 @@ class PlgSearchChurchdirectory extends JPlugin
 	 * Content Search Areas
 	 *
 	 * @return  array An array of search areas
+	 *
+	 * @since       1.7.2
 	 */
 	public function onContentSearchAreas()
 	{
@@ -59,6 +60,8 @@ class PlgSearchChurchdirectory extends JPlugin
 	 * @param   string  $areas     ?
 	 *
 	 * @return  mixed
+	 *
+	 * @since       1.7.2
 	 */
 	public function onContentSearch($text, $phrase = '', $ordering = '', $areas = null)
 	{
@@ -79,16 +82,19 @@ class PlgSearchChurchdirectory extends JPlugin
 		$sArchived = $this->params->get('search_archived', 1);
 		$limit     = $this->params->def('search_limit', 50);
 		$state     = array();
+
 		if ($sContent)
 		{
 			$state[] = 1;
 		}
+
 		if ($sArchived)
 		{
 			$state[] = 2;
 		}
 
 		$text = trim($text);
+
 		if ($text == '')
 		{
 			return array();
@@ -177,5 +183,4 @@ class PlgSearchChurchdirectory extends JPlugin
 
 		return $rows;
 	}
-
 }

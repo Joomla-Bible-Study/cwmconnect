@@ -20,7 +20,6 @@ require_once JPATH_ADMINISTRATOR . '/components/com_finder/helpers/indexer/adapt
  */
 class PlgFinderChurchDirectory extends FinderIndexerAdapter
 {
-
 	/**
 	 * The plugin identifier.
 	 *
@@ -465,5 +464,4 @@ class PlgFinderChurchDirectory extends FinderIndexerAdapter
 
 		return $query;
 	}
-
 }

@@ -17,12 +17,12 @@ use Joomla\Registry\Registry;
  */
 class ChurchDirectoryModelCategory extends JModelList
 {
-
 	/**
 	 * Category items data
 	 *
 	 * @access protected
 	 * @var array
+	 * @since       1.7.2
 	 */
 	protected $_item = null;
 
@@ -31,6 +31,7 @@ class ChurchDirectoryModelCategory extends JModelList
 	 *
 	 * @access protected
 	 * @var array
+	 * @since       1.7.2
 	 */
 	protected $_articles = null;
 
@@ -39,6 +40,7 @@ class ChurchDirectoryModelCategory extends JModelList
 	 *
 	 * @access protected
 	 * @var array
+	 * @since       1.7.2
 	 */
 	protected $_siblings = null;
 
@@ -55,6 +57,7 @@ class ChurchDirectoryModelCategory extends JModelList
 	 *
 	 * @access protected
 	 * @var object
+	 * @since       1.7.2
 	 */
 	protected $_parent = null;
 
@@ -63,6 +66,7 @@ class ChurchDirectoryModelCategory extends JModelList
 	 *
 	 * @access    protected
 	 * @var        object
+	 * @since       1.7.2
 	 */
 	protected $_category = null;
 
@@ -71,6 +75,7 @@ class ChurchDirectoryModelCategory extends JModelList
 	 *
 	 * @access    protected
 	 * @var        array
+	 * @since       1.7.2
 	 */
 	protected $_categories = null;
 
@@ -82,6 +87,8 @@ class ChurchDirectoryModelCategory extends JModelList
 	 * Constructor.
 	 *
 	 * @param   array  $config  An optional associative array of configuration settings.
+	 *
+	 * @since       1.7.2
 	 */
 	public function __construct($config = array())
 	{
@@ -109,6 +116,8 @@ class ChurchDirectoryModelCategory extends JModelList
 	 * Method to get a list of items.
 	 *
 	 * @return    mixed    An array of objects on success, false on failure.
+	 *
+	 * @since       1.7.2
 	 */
 	public function getItems()
 	{
@@ -260,6 +269,7 @@ class ChurchDirectoryModelCategory extends JModelList
 		{
 			$limit = $app->getUserStateFromRequest('global.list.limit', 'limit', $app->get('list_limit'));
 		}
+
 		if (!$app->input->getInt('print'))
 		{
 			$this->setState('list.limit', $limit);
@@ -278,6 +288,7 @@ class ChurchDirectoryModelCategory extends JModelList
 		{
 			$menuParams->loadString($menu->params);
 		}
+
 		$mergedParams = clone $params;
 		$mergedParams->merge($menuParams);
 		$orderCol = $app->input->get('filter_order', $mergedParams->get('initial_sort', 'ordering'));
@@ -286,6 +297,7 @@ class ChurchDirectoryModelCategory extends JModelList
 		{
 			$orderCol = 'ordering';
 		}
+
 		$this->setState('list.ordering', $orderCol);
 		$listOrder = $app->input->get('filter_order_Dir', 'ASC');
 
@@ -293,6 +305,7 @@ class ChurchDirectoryModelCategory extends JModelList
 		{
 			$listOrder = 'ASC';
 		}
+
 		$this->setState('list.direction', $listOrder);
 
 		$id = $app->input->get('id', 0, 'int');
@@ -307,6 +320,7 @@ class ChurchDirectoryModelCategory extends JModelList
 			// Filter by start and end dates.
 			$this->setState('filter.publish_date', true);
 		}
+
 		$this->setState('filter.language', $app->getLanguageFilter());
 
 		// Load the parameters.
@@ -348,6 +362,7 @@ class ChurchDirectoryModelCategory extends JModelList
 				{
 					$this->_parent = $this->_item->getParent();
 				}
+
 				$this->_rightsibling = $this->_item->getSibling();
 				$this->_leftsibling  = $this->_item->getSibling(false);
 			}
@@ -365,6 +380,8 @@ class ChurchDirectoryModelCategory extends JModelList
 	 * Get the parent category.
 	 *
 	 * @return    mixed    An array of categories or false if an error occurs.
+	 *
+	 * @since       1.7.2
 	 */
 	public function getParent()
 	{
@@ -380,6 +397,8 @@ class ChurchDirectoryModelCategory extends JModelList
 	 * Get the sibling (adjacent) categories.
 	 *
 	 * @return    mixed    An array of categories or false if an error occurs.
+	 *
+	 * @since       1.7.2
 	 */
 	public function &getLeftSibling()
 	{
@@ -395,6 +414,8 @@ class ChurchDirectoryModelCategory extends JModelList
 	 * Get right Sibling
 	 *
 	 * @return string
+	 *
+	 * @since       1.7.2
 	 */
 	public function &getRightSibling()
 	{
@@ -410,6 +431,8 @@ class ChurchDirectoryModelCategory extends JModelList
 	 * Get the child categories.
 	 *
 	 * @return    mixed    An array of categories or false if an error occurs.
+	 *
+	 * @since       1.7.2
 	 */
 	public function &getChildren()
 	{
@@ -420,5 +443,4 @@ class ChurchDirectoryModelCategory extends JModelList
 
 		return $this->_children;
 	}
-
 }

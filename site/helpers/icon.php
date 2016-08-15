@@ -15,7 +15,6 @@ defined('_JEXEC') or die;
  */
 class JHtmlIcon
 {
-
 	/**
 	 * Icon for email
 	 *
@@ -24,6 +23,8 @@ class JHtmlIcon
 	 * @param   array      $attribs  Member attribs
 	 *
 	 * @return string
+	 *
+	 * @since    1.5
 	 */
 	public static function email($member, $params, $attribs = array())
 	{
@@ -60,6 +61,8 @@ class JHtmlIcon
 	 * @param   array      $attribs  Member attribs
 	 *
 	 * @return string
+	 *
+	 * @since    1.5
 	 */
 	public static function print_popup($member, $params, $attribs = array())
 	{
@@ -93,6 +96,8 @@ class JHtmlIcon
 	 * @param   array      $attribs  Member attribs
 	 *
 	 * @return string
+	 *
+	 * @since    1.5
 	 */
 	public static function print_screen($member, $params, $attribs = array())
 	{
@@ -108,5 +113,4 @@ class JHtmlIcon
 
 		return '<a href="#" onclick="window.print();return false;">' . $text . '</a>';
 	}
-
 }
