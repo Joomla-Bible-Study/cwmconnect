@@ -1,4 +1,5 @@
 #New Church Photo Directory System
+[![Build Status](https://travis-ci.org/Joomla-Bible-Study/joomla_churchdirectory.svg?branch=master)](https://travis-ci.org/Joomla-Bible-Study/joomla_churchdirectory)
 
 ##Aboute
 We are excited to announce the first release of Church Directory.
