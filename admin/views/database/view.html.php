@@ -74,14 +74,17 @@ class ChurchDirectoryViewDatabase extends JViewLegacy
 		{
 			$this->errorCount++;
 		}
+
 		if (!$this->filterParams)
 		{
 			$this->errorCount++;
 		}
+
 		if (($this->updateVersion != $this->jversion))
 		{
 			$this->errorCount++;
 		}
+
 		$this->setLayout('form');
 
 		// Check for errors.
@@ -115,6 +118,7 @@ class ChurchDirectoryViewDatabase extends JViewLegacy
 
 		JToolbarHelper::title(JText::_('COM_CHURCHDIRECTORY_DATABASE'), 'churchdirectory');
 		JToolbarHelper::divider();
+
 		if ($canDo)
 		{
 			JToolbarHelper::custom('database.fix', 'refresh', 'refresh', 'COM_CHURCHDIRECTORY_DATABASE_FIX', false);
@@ -133,5 +137,4 @@ class ChurchDirectoryViewDatabase extends JViewLegacy
 		$document = JFactory::getDocument();
 		$document->setTitle(JText::_('COM_CHURCHDIRECTORY_DATABASE'));
 	}
-
 }

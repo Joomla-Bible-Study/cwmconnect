@@ -37,6 +37,7 @@ $sortFields = $this->getSortFields();
 		Joomla.tableOrdering(order, dirn, '');
 	}
 </script>
+
 <form action="<?php echo JRoute::_('index.php?option=com_churchdirectory&view=familyunits'); ?>" method="post"
       name="adminForm" id="adminForm">
 	<?php if (!empty($this->sidebar)): ?>
@@ -72,9 +73,9 @@ $sortFields = $this->getSortFields();
 					        onchange="Joomla.orderTable()">
 						<option value=""><?php echo JText::_('JFIELD_ORDERING_DESC'); ?></option>
 						<option
-							value="asc" <?php if ($listDirn == 'asc') echo 'selected="selected"'; ?>><?php echo JText::_('JGLOBAL_ORDER_ASCENDING'); ?></option>
+								value="asc" <?php if ($listDirn == 'asc') echo 'selected="selected"'; ?>><?php echo JText::_('JGLOBAL_ORDER_ASCENDING'); ?></option>
 						<option
-							value="desc" <?php if ($listDirn == 'desc') echo 'selected="selected"'; ?>><?php echo JText::_('JGLOBAL_ORDER_DESCENDING'); ?></option>
+								value="desc" <?php if ($listDirn == 'desc') echo 'selected="selected"'; ?>><?php echo JText::_('JGLOBAL_ORDER_DESCENDING'); ?></option>
 					</select>
 				</div>
 				<div class="filter-select btn-group pull-right">
@@ -133,9 +134,9 @@ $sortFields = $this->getSortFields();
 				</thead>
 				<tbody>
 				<?php
-				$n = count($this->items);
+				$n              = count($this->items);
 				foreach ($this->items as $i => $item) :
-					$ordering   = $listOrder == 'a.ordering';
+					$ordering = $listOrder == 'a.ordering';
 					$canCreate  = $user->authorise('core.create');
 					$canEdit    = $user->authorise('core.edit');
 					$canCheckin = $user->authorise('core.manage', 'com_checkin') || $item->checked_out == $userId || $item->checked_out == 0;
@@ -158,7 +159,7 @@ $sortFields = $this->getSortFields();
 									<?php echo $this->escape($item->name); ?>
 								<?php endif; ?>
 								<span class="small">
-								<?php echo JText::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($item->alias));?>
+								<?php echo JText::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($item->alias)); ?>
 							</span>
 							</div>
 							<div class="pull-left">

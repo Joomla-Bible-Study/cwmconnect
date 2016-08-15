@@ -17,7 +17,6 @@ defined('_JEXEC') or die;
  */
 class ChurchDirectoryControllerDatabase extends JControllerLegacy
 {
-
 	/**
 	 * Tries to fix missing database updates
 	 *
@@ -41,5 +40,4 @@ class ChurchDirectoryControllerDatabase extends JControllerLegacy
 		$model->fix();
 		$this->setRedirect(JRoute::_('index.php?option=com_churchdirectory&view=database', false));
 	}
-
 }

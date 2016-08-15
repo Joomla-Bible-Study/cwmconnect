@@ -19,10 +19,6 @@ if (!JFactory::getUser()->authorise('core.manage', 'com_churchdirectory'))
 // Set some global property
 addCSS();
 
-// Require helper file
-// Register all files in the /the/path/ folder as classes with a name like:
-//JLoader::register('ChurchDirectoryHelper', dirname(__FILE__) . '/helpers/churchdirectory.php');
-
 $controller = JControllerLegacy::getInstance('churchdirectory');
 $controller->execute(JFactory::getApplication()->input->get('task'));
 $controller->redirect();

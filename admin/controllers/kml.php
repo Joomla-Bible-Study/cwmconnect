@@ -15,7 +15,6 @@ defined('_JEXEC') or die;
  */
 class ChurchDirectoryControllerKML extends JControllerForm
 {
-
 	/**
 	 * NOTE: This is needed to prevent Joomla 1.6's pluralization mechanisim from kicking in
 	 *
@@ -32,7 +31,7 @@ class ChurchDirectoryControllerKML extends JControllerForm
 	 *
 	 * @since    1.7.0
 	 */
-	protected function allowAdd($data = array())
+	protected function allowAdd($data = [])
 	{
 		// Initialise variables.
 		$allow = null;
@@ -58,7 +57,7 @@ class ChurchDirectoryControllerKML extends JControllerForm
 	 *
 	 * @since    1.7.0
 	 */
-	protected function allowEdit($data = array(), $key = 'id')
+	protected function allowEdit($data = [], $key = 'id')
 	{
 		// Initialise variables.
 		$recordId = (int) isset($data[$key]) ? $data[$key] : 0;
@@ -117,12 +116,11 @@ class ChurchDirectoryControllerKML extends JControllerForm
 
 		// Set the model
 		/** @var $model JModelLegacy */
-		$model = $this->getModel('ChurchDirectory', '', array());
+		$model = $this->getModel('ChurchDirectory', '', []);
 
 		// Preset the redirect
 		$this->setRedirect(JRoute::_('index.php?option=com_churchdirectory&view=kmls' . $this->getRedirectToListAppend(), false));
 
 		return parent::batch($model);
 	}
-
 }

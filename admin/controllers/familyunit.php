@@ -15,7 +15,6 @@ defined('_JEXEC') or die;
  */
 class ChurchDirectoryControllerFamilyUnit extends JControllerForm
 {
-
 	/**
 	 * Method override to check if you can add a new record.
 	 *
@@ -25,7 +24,7 @@ class ChurchDirectoryControllerFamilyUnit extends JControllerForm
 	 *
 	 * @since    1.7.0
 	 */
-	protected function allowAdd($data = array())
+	protected function allowAdd($data = [])
 	{
 		// Initialise variables.
 		$user  = JFactory::getUser();
@@ -44,7 +43,7 @@ class ChurchDirectoryControllerFamilyUnit extends JControllerForm
 	 *
 	 * @since    1.7.0
 	 */
-	protected function allowEdit($data = array(), $key = 'id')
+	protected function allowEdit($data = [], $key = 'id')
 	{
 		// Initialise variables.
 		$recordId = (int) isset($data[$key]) ? $data[$key] : 0;
@@ -87,5 +86,4 @@ class ChurchDirectoryControllerFamilyUnit extends JControllerForm
 		// Since there is no asset tracking, revert to the component permissions.
 		return parent::allowEdit($data, $key);
 	}
-
 }

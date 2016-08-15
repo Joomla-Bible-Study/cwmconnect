@@ -15,26 +15,46 @@ defined('_JEXEC') or die;
  */
 class ChurchDirectoryViewGeoUpdate extends JViewLegacy
 {
+	/**
+	 * @var array The pre versions to process
+	 * @since    1.7.0
+	 */
+	private $membersStack = [];
 
-	/** @var array The pre versions to process */
-	private $_membersStack = array();
-
-	/** @var int Total numbers of Versions */
+	/**
+	 * @var int Total numbers of Versions
+	 * @since    1.7.0
+	 */
 	public $totalMembers = 0;
 
-	/** @var int Numbers of Versions already processed */
+	/**
+	 * @var int Numbers of Versions already processed
+	 * @since    1.7.0
+	 */
 	public $doneMembers = 0;
 
-	/** @var string Running Now */
+	/**
+	 * @var string Running Now
+	 * @since    1.7.0
+	 */
 	public $running = null;
 
-	/** @var array Call stack for the Visioning System. */
-	public $callstack = array();
+	/**
+	 * @var array Call stack for the Visioning System.
+	 * @since    1.7.0
+	 */
+	public $callstack = [];
 
-	/** @var string More */
+	/**
+	 * @var string More
+	 * @since    1.7.0
+	 */
 	protected $more;
 
-	/** @var  string Percentage */
+	/**
+	 * @var  string Percentage
+	 * @since    1.7.0
+	 */
 	protected $percentage;
 
 	/**
@@ -43,6 +63,8 @@ class ChurchDirectoryViewGeoUpdate extends JViewLegacy
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
 	 *
 	 * @return  mixed  A string if successful, otherwise a Error object.
+	 *
+	 * @since    1.7.0
 	 */
 	public function display($tpl = null)
 	{
@@ -89,6 +111,8 @@ class ChurchDirectoryViewGeoUpdate extends JViewLegacy
 	 * Loads the file/folder stack from the session
 	 *
 	 * @return void
+	 *
+	 * @since    1.7.0
 	 */
 	private function loadStack()
 	{
@@ -97,9 +121,9 @@ class ChurchDirectoryViewGeoUpdate extends JViewLegacy
 
 		if (empty($stack))
 		{
-			$this->_membersStack = array();
-			$this->totalMembers  = 0;
-			$this->doneMembers   = 0;
+			$this->membersStack = [];
+			$this->totalMembers = 0;
+			$this->doneMembers  = 0;
 
 			return;
 		}
@@ -113,11 +137,11 @@ class ChurchDirectoryViewGeoUpdate extends JViewLegacy
 				$stack = gzinflate($stack);
 			}
 		}
+
 		$stack = json_decode($stack, true);
 
-		$this->_membersStack = $stack['members'];
-		$this->totalMembers  = $stack['total'];
-		$this->doneMembers   = $stack['done'];
+		$this->membersStack = $stack['members'];
+		$this->totalMembers = $stack['total'];
+		$this->doneMembers  = $stack['done'];
 	}
-
 }

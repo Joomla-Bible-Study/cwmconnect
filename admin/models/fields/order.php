@@ -17,7 +17,6 @@ jimport('joomla.form.formfield');
  */
 class JFormFieldOrdering extends JFormField
 {
-
 	/**
 	 * The form field type.
 	 *
@@ -36,7 +35,7 @@ class JFormFieldOrdering extends JFormField
 	protected function getInput()
 	{
 		// Initialize variables.
-		$html = array();
+		$html = [];
 		$attr = '';
 
 		// Initialize some field attributes.
@@ -71,5 +70,4 @@ class JFormFieldOrdering extends JFormField
 
 		return implode($html);
 	}
-
 }

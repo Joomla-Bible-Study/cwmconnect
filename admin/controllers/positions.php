@@ -15,16 +15,15 @@ defined('_JEXEC') or die;
  */
 class ChurchDirectoryControllerPositions extends JControllerAdmin
 {
+	protected $name = 'Position';
 
 	/**
-	 * Constructor.
+	 * The prefix of the models
 	 *
-	 * @param   array  $config  An optional associative array of configuration settings.
+	 * @var    string
+	 * @since  12.2
 	 */
-	public function __construct($config = array())
-	{
-		parent::__construct($config);
-	}
+	protected $model_prefix = 'ChurchDirectoryModel';
 
 	/**
 	 * Method to toggle the featured setting of a list of memberss.
@@ -41,7 +40,7 @@ class ChurchDirectoryControllerPositions extends JControllerAdmin
 		// Initialise variables.
 		$user  = JFactory::getUser();
 		$app   = JFactory::getApplication();
-		$ids   = $app->input->get('id', array(), 'array');
+		$ids   = $app->input->get('id', [], 'array');
 		$task  = $this->getTask();
 		$value = Joomla\Utilities\ArrayHelper::getValue($values, $task, 0, 'int');
 
@@ -51,7 +50,6 @@ class ChurchDirectoryControllerPositions extends JControllerAdmin
 		// Access checks.
 		foreach ($ids as $i => $id)
 		{
-
 			if (!$user->authorise('core.edit.state'))
 			{
 				// Prune items that you can't change.
@@ -87,9 +85,8 @@ class ChurchDirectoryControllerPositions extends JControllerAdmin
 	 *
 	 * @since    1.7.0
 	 */
-	public function getModel($name = 'Position', $prefix = 'ChurchDirectoryModel', $config = array('ignore_request' => true))
+	public function getModel($name, $prefix, $config= [])
 	{
-		return parent::getModel($name, $prefix, $config);
+		return parent::getModel($name, $prefix, $config = ['ignore_request' => true]);
 	}
-
 }

@@ -27,7 +27,6 @@ use Joomla\Registry\Registry;
  */
 class ChurchDirectoryTablePosition extends JTable
 {
-
 	/**
 	 * Constructor
 	 *
@@ -99,6 +98,7 @@ class ChurchDirectoryTablePosition extends JTable
 			{
 				$this->created = $date->toSql();
 			}
+
 			if (empty($this->created_by))
 			{
 				$this->created_by = $user->get('id');
@@ -119,8 +119,7 @@ class ChurchDirectoryTablePosition extends JTable
 	 */
 	public function check()
 	{
-
-		if (JFilterInput::checkAttribute(array('href', $this->webpage)))
+		if (JFilterInput::checkAttribute(['href', $this->webpage]))
 		{
 			$this->setError(JText::_('COM_CHURCHDIRECTORY_WARNING_PROVIDE_VALID_URL'));
 
@@ -143,6 +142,7 @@ class ChurchDirectoryTablePosition extends JTable
 
 			return false;
 		}
+
 		/** check for existing name */
 		$query = $this->_db->getQuery(true);
 		$query->select('id')
@@ -162,6 +162,7 @@ class ChurchDirectoryTablePosition extends JTable
 		{
 			$this->alias = $this->name;
 		}
+
 		$this->alias = JApplicationHelper::stringURLSafe($this->alias);
 
 		if (trim(str_replace('-', '', $this->alias)) == '')
@@ -180,5 +181,4 @@ class ChurchDirectoryTablePosition extends JTable
 
 		return true;
 	}
-
 }

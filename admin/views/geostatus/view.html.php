@@ -15,11 +15,11 @@ defined('_JEXEC') or die;
  */
 class ChurchDirectoryViewGeoStatus extends JViewLegacy
 {
-
 	/**
 	 * Protect pagination
 	 *
 	 * @var object
+	 * @since    1.7.0
 	 */
 	protected $pagination;
 
@@ -27,6 +27,7 @@ class ChurchDirectoryViewGeoStatus extends JViewLegacy
 	 * Protect state
 	 *
 	 * @var object
+	 * @since    1.7.0
 	 */
 	protected $state;
 
@@ -40,6 +41,8 @@ class ChurchDirectoryViewGeoStatus extends JViewLegacy
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
 	 *
 	 * @return    mixed
+	 *
+	 * @since    1.7.0
 	 */
 	public function display($tpl = null)
 	{
@@ -106,6 +109,8 @@ class ChurchDirectoryViewGeoStatus extends JViewLegacy
 	 * Set Document title
 	 *
 	 * @return void
+	 *
+	 * @since    1.7.0
 	 */
 	protected function setDocument()
 	{
@@ -122,7 +127,7 @@ class ChurchDirectoryViewGeoStatus extends JViewLegacy
 	 */
 	protected function getSortFields()
 	{
-		return array(
+		return [
 			'a.ordering'     => JText::_('JGRID_HEADING_ORDERING'),
 			'a.state'        => JText::_('JSTATUS'),
 			'a.name'         => JText::_('JGLOBAL_TITLE'),
@@ -132,7 +137,6 @@ class ChurchDirectoryViewGeoStatus extends JViewLegacy
 			'a.access'       => JText::_('JGRID_HEADING_ACCESS'),
 			'a.language'     => JText::_('JGRID_HEADING_LANGUAGE'),
 			'a.id'           => JText::_('JGRID_HEADING_ID')
-		);
+		];
 	}
-
 }

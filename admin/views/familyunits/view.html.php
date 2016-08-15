@@ -8,18 +8,18 @@
 defined('_JEXEC') or die;
 
 /**
- * View class for a list of churchdirectories.
+ * View class for a list of church directories.
  *
  * @package  ChurchDirectory.Admin
  * @since    1.7.0
  */
 class ChurchDirectoryViewFamilyUnits extends JViewLegacy
 {
-
 	/**
 	 * Protect items
 	 *
 	 * @var array
+	 * @since    1.7.0
 	 */
 	protected $items;
 
@@ -27,6 +27,7 @@ class ChurchDirectoryViewFamilyUnits extends JViewLegacy
 	 * Protect pagination
 	 *
 	 * @var array
+	 * @since    1.7.0
 	 */
 	protected $pagination;
 
@@ -34,6 +35,7 @@ class ChurchDirectoryViewFamilyUnits extends JViewLegacy
 	 * Protect state
 	 *
 	 * @var object
+	 * @since    1.7.0
 	 */
 	protected $state;
 
@@ -45,6 +47,8 @@ class ChurchDirectoryViewFamilyUnits extends JViewLegacy
 	 * @param   string  $tpl  ?
 	 *
 	 * @return    mixed
+	 *
+	 * @since    1.7.0
 	 */
 	public function display($tpl = null)
 	{
@@ -64,11 +68,7 @@ class ChurchDirectoryViewFamilyUnits extends JViewLegacy
 
 		// Set the toolbar
 		$this->addToolbar();
-
-		if (version_compare(JVERSION, '3.0', 'ge'))
-		{
-			$this->sidebar = JHtmlSidebar::render();
-		}
+		$this->sidebar = JHtmlSidebar::render();
 
 		// Set the document
 		$this->setDocument();
@@ -181,13 +181,12 @@ class ChurchDirectoryViewFamilyUnits extends JViewLegacy
 	 */
 	protected function getSortFields()
 	{
-		return array(
+		return [
 			'a.state'    => JText::_('JSTATUS'),
 			'a.name'     => JText::_('JGLOBAL_TITLE'),
 			'a.access'   => JText::_('JGRID_HEADING_ACCESS'),
 			'a.language' => JText::_('JGRID_HEADING_LANGUAGE'),
 			'a.id'       => JText::_('JGRID_HEADING_ID')
-		);
+		];
 	}
-
 }

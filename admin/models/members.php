@@ -15,7 +15,6 @@ defined('_JEXEC') or die;
  */
 class ChurchDirectoryModelMembers extends JModelList
 {
-
 	/**
 	 * Constructor.
 	 *
@@ -24,11 +23,11 @@ class ChurchDirectoryModelMembers extends JModelList
 	 * @see        JController
 	 * @since      1.7.0
 	 */
-	public function __construct($config = array())
+	public function __construct($config = [])
 	{
 		if (empty($config['filter_fields']))
 		{
-			$config['filter_fields'] = array(
+			$config['filter_fields'] = [
 				'id', 'a.id',
 				'name', 'a.name',
 				'lname', 'a.lname',
@@ -50,7 +49,7 @@ class ChurchDirectoryModelMembers extends JModelList
 				'publish_down', 'a.publish_down',
 				'ul.name', 'linked_user',
 				'mstatus', 'a.mstatus',
-			);
+			];
 		}
 
 		parent::__construct($config);
@@ -195,6 +194,7 @@ class ChurchDirectoryModelMembers extends JModelList
 
 		// Filter by published state
 		$published = $this->getState('filter.published');
+
 		if (is_numeric($published))
 		{
 			$query->where('a.published = ' . (int) $published);
@@ -206,6 +206,7 @@ class ChurchDirectoryModelMembers extends JModelList
 
 		// Filter by a single or group of categories.
 		$categoryId = $this->getState('filter.category_id');
+
 		if (is_numeric($categoryId))
 		{
 			$query->where('a.catid = ' . (int) $categoryId);
@@ -219,6 +220,7 @@ class ChurchDirectoryModelMembers extends JModelList
 
 		// Filter by search in name.
 		$search = $this->getState('filter.search');
+
 		if (!empty($search))
 		{
 			if (stripos($search, 'id:') === 0)
@@ -258,13 +260,14 @@ class ChurchDirectoryModelMembers extends JModelList
 		// Add the list ordering clause.
 		$orderCol  = $this->state->get('list.orderings', 'a.name');
 		$orderDirn = $this->state->get('list.directions', 'asc');
+
 		if ($orderCol == 'a.ordering' || $orderCol == 'category_title')
 		{
 			$orderCol = 'c.title ' . $orderDirn . ', a.ordering';
 		}
+
 		$query->order($db->escape($orderCol . ' ' . $orderDirn));
 
 		return $query;
 	}
-
 }

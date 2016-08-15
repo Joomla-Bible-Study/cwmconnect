@@ -19,8 +19,10 @@ class ChurchDirectoryControllerMembers extends JControllerAdmin
 	 * Constructor.
 	 *
 	 * @param   array  $config  An optional associative array of configuration settings.
+	 *
+	 * @since    1.7.0
 	 */
-	public function __construct($config = array())
+	public function __construct($config = [])
 	{
 		parent::__construct($config);
 
@@ -42,8 +44,8 @@ class ChurchDirectoryControllerMembers extends JControllerAdmin
 		// Initialise variables.
 		$app    = JFactory::getApplication();
 		$user   = JFactory::getUser();
-		$ids    = $app->input->get('cid', array(), 'array');
-		$values = array('featured' => 1, 'unfeatured' => 0);
+		$ids    = $app->input->get('cid', [], 'array');
+		$values = ['featured' => 1, 'unfeatured' => 0];
 		$task   = $this->getTask();
 		$value  = Joomla\Utilities\ArrayHelper::getValue($values, $task, 0, 'int');
 
@@ -108,8 +110,8 @@ class ChurchDirectoryControllerMembers extends JControllerAdmin
 	public function saveOrderAjax()
 	{
 		// Get the input
-		$pks   = $this->input->post->get('cid', array(), 'array');
-		$order = $this->input->post->get('order', array(), 'array');
+		$pks   = $this->input->post->get('cid', [], 'array');
+		$order = $this->input->post->get('order', [], 'array');
 
 		// Sanitize the input
 		Joomla\Utilities\ArrayHelper::toInteger($pks);
@@ -130,5 +132,4 @@ class ChurchDirectoryControllerMembers extends JControllerAdmin
 		// Close the application
 		JFactory::getApplication()->close();
 	}
-
 }

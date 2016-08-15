@@ -14,7 +14,6 @@ defined('JPATH_BASE') or die;
  */
 class JFormFieldModal_Members extends JFormField
 {
-
 	/**
 	 * The form field type.
 	 *
@@ -32,7 +31,6 @@ class JFormFieldModal_Members extends JFormField
 	 */
 	protected function getInput()
 	{
-
 		JHtml::_('behavior.framework');
 		JHtml::_('behavior.modal', 'a.modal');
 
@@ -42,7 +40,7 @@ class JFormFieldModal_Members extends JFormField
 		}
 
 		// Build the script.
-		$script   = array();
+		$script   = [];
 		$script[] = '	function jSelectChart_' . $this->id . '(id, name, object) {';
 		$script[] = '		document.id("' . $this->id . '_id").value = id;';
 		$script[] = '		document.id("' . $this->id . '_name").value = name;';
@@ -53,7 +51,7 @@ class JFormFieldModal_Members extends JFormField
 		JFactory::getDocument()->addScriptDeclaration(implode("\n", $script));
 
 		// Get the title of the linked chart
-		$db = JFactory::getDBO();
+		$db = JFactory::getDbo();
 		$db->setQuery(
 			'SELECT name' .
 				' FROM #__churchdirectory_details' .
@@ -109,5 +107,4 @@ class JFormFieldModal_Members extends JFormField
 
 		return $html;
 	}
-
 }

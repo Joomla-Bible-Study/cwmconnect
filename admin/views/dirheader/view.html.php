@@ -15,11 +15,12 @@ defined('_JEXEC') or die;
  */
 class ChurchDirectoryViewDirHeader extends JViewLegacy
 {
-
 	/**
 	 * Protect From
 	 *
 	 * @var array
+	 *
+	 * @since 1.7.0
 	 */
 	protected $form;
 
@@ -27,6 +28,8 @@ class ChurchDirectoryViewDirHeader extends JViewLegacy
 	 * Protect item
 	 *
 	 * @var object
+	 *
+	 * @since 1.7.0
 	 */
 	protected $item;
 
@@ -34,6 +37,8 @@ class ChurchDirectoryViewDirHeader extends JViewLegacy
 	 * Protect state
 	 *
 	 * @var object
+	 *
+	 * @since 1.7.0
 	 */
 	protected $state;
 
@@ -43,6 +48,8 @@ class ChurchDirectoryViewDirHeader extends JViewLegacy
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
 	 *
 	 * @return  mixed  A string if successful, otherwise a Error object.
+	 *
+	 * @since 1.7.0
 	 */
 	public function display($tpl = null)
 	{
@@ -60,7 +67,7 @@ class ChurchDirectoryViewDirHeader extends JViewLegacy
 		}
 
 		// Set the toolbar
-		$this->addToolBar();
+		$this->addToolbar();
 
 		// Set the document
 		$this->setDocument();
@@ -84,7 +91,7 @@ class ChurchDirectoryViewDirHeader extends JViewLegacy
 		$checkedOut = !($this->item->checked_out == 0 || $this->item->checked_out == $userId);
 		$canDo      = ChurchDirectoryHelper::getActions($this->state->get('filter.category_id'));
 
-		JToolBarHelper::title(
+		JToolbarHelper::title(
 			$isNew ? JText::_('COM_CHURCHDIRECTORY_MANAGER_DIRHEADER_NEW')
 			: JText::_('COM_CHURCHDIRECTORY_MANAGER_DIRHEADER_EDIT'),
 			'churchdirectory'
@@ -96,12 +103,12 @@ class ChurchDirectoryViewDirHeader extends JViewLegacy
 			// For new records, check the create permission.
 			if ($isNew && (count($user->getAuthorisedCategories('com_churchdirectory', 'core.create')) > 0))
 			{
-				JToolBarHelper::apply('dirheader.apply');
-				JToolBarHelper::save('dirheader.save');
-				JToolBarHelper::save2new('dirheader.save2new');
+				JToolbarHelper::apply('dirheader.apply');
+				JToolbarHelper::save('dirheader.save');
+				JToolbarHelper::save2new('dirheader.save2new');
 			}
 
-			JToolBarHelper::cancel('dirheader.cancel');
+			JToolbarHelper::cancel('dirheader.cancel');
 		}
 		else
 		{
@@ -111,13 +118,13 @@ class ChurchDirectoryViewDirHeader extends JViewLegacy
 				// Since it's an existing record, check the edit permission, or fall back to edit own if the owner.
 				if ($canDo->get('core.edit') || ($canDo->get('core.edit.own') && $this->item->created_by == $userId))
 				{
-					JToolBarHelper::apply('dirheader.apply');
-					JToolBarHelper::save('dirheader.save');
+					JToolbarHelper::apply('dirheader.apply');
+					JToolbarHelper::save('dirheader.save');
 
 					// We can save this record, but check the create permission to see if we can return to make a new one.
 					if ($canDo->get('core.create'))
 					{
-						JToolBarHelper::save2new('dirheader.save2new');
+						JToolbarHelper::save2new('dirheader.save2new');
 					}
 				}
 			}
@@ -125,14 +132,14 @@ class ChurchDirectoryViewDirHeader extends JViewLegacy
 			// If checked out, we can still save
 			if ($canDo->get('core.create'))
 			{
-				JToolBarHelper::save2copy('dirheader.save2copy');
+				JToolbarHelper::save2copy('dirheader.save2copy');
 			}
 
-			JToolBarHelper::cancel('dirheader.cancel', 'JTOOLBAR_CLOSE');
+			JToolbarHelper::cancel('dirheader.cancel', 'JTOOLBAR_CLOSE');
 		}
 
-		JToolBarHelper::divider();
-		JToolBarHelper::help('churchdirectory_dirheader', true);
+		JToolbarHelper::divider();
+		JToolbarHelper::help('churchdirectory_dirheader', true);
 	}
 
 	/**
@@ -150,5 +157,4 @@ class ChurchDirectoryViewDirHeader extends JViewLegacy
 				: JText::sprintf('COM_CHURCHDIRECTORY_DIRHEADER_EDITING', $this->item->name)
 		);
 	}
-
 }

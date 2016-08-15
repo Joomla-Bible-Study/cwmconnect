@@ -16,7 +16,6 @@ use Joomla\Registry\Registry;
  */
 class ChurchDirectoryTableMember extends JTable
 {
-
 	public $id;
 
 	public $name;
@@ -182,6 +181,7 @@ class ChurchDirectoryTableMember extends JTable
 			$registry->loadArray($array['metadata']);
 			$array['metadata'] = (string) $registry;
 		}
+
 		if (array_key_exists('con_position', $array) && is_array($array['con_position']))
 		{
 			$array['con_position'] = implode(',', $array['con_position']);
@@ -223,6 +223,7 @@ class ChurchDirectoryTableMember extends JTable
 			$registry->set('familypostion', '0');
 			$this->attribs = (string) $registry;
 		}
+
 		$date = JFactory::getDate();
 		$user = JFactory::getUser();
 
@@ -240,6 +241,7 @@ class ChurchDirectoryTableMember extends JTable
 			{
 				$this->created = $date->toSql();
 			}
+
 			if (empty($this->created_by))
 			{
 				$this->created_by = $user->get('id');
@@ -267,7 +269,7 @@ class ChurchDirectoryTableMember extends JTable
 		// Verify that the alias is unique
 		$table = JTable::getInstance('Member', 'ChurchDirectoryTable');
 
-		if ($table->load(array('alias' => $this->alias, 'catid' => $this->catid)) && ($table->id != $this->id || $this->id == 0))
+		if ($table->load(['alias' => $this->alias, 'catid' => $this->catid]) && ($table->id != $this->id || $this->id == 0))
 		{
 			$this->setError(JText::_('COM_CHURCHDIRECTORY_ERROR_UNIQUE_ALIAS'));
 
@@ -290,7 +292,7 @@ class ChurchDirectoryTableMember extends JTable
 	{
 		$this->default_con = intval($this->default_con);
 
-		if (JFilterInput::checkAttribute(array('href', $this->webpage)))
+		if (JFilterInput::checkAttribute(['href', $this->webpage]))
 		{
 			$this->setError(JText::_('COM_CHURCHDIRECTORY_WARNING_PROVIDE_VALID_URL'));
 
@@ -304,6 +306,7 @@ class ChurchDirectoryTableMember extends JTable
 
 			return false;
 		}
+
 		/** check for existing name */
 		/* TF removed - if same first name exists it errors - this should not be.
 				 * $query = 'SELECT id FROM #__churchdirectory_details WHERE name = ' . $this->_db->Quote($this->name) . ' AND catid = ' . (int) $this->catid;
@@ -322,12 +325,14 @@ class ChurchDirectoryTableMember extends JTable
 		{
 			$this->alias = $this->name;
 		}
+
 		$this->alias = JApplicationHelper::stringURLSafe($this->alias);
 
 		if (trim(str_replace('-', '', $this->alias)) == '')
 		{
 			$this->alias = JFactory::getDate()->format("Y-m-d-H-i-s");
 		}
+
 		/** check for valid category */
 		if (trim($this->catid) == '')
 		{
@@ -349,17 +354,20 @@ class ChurchDirectoryTableMember extends JTable
 		if (!empty($this->metakey))
 		{
 			// Only process if not empty
-			$bad_characters = array("\n", "\r", "\"", "<", ">");
+			$bad_characters = ["\n", "\r", "\"", "<", ">"];
 			$after_clean    = \Joomla\String\StringHelper::str_ireplace($bad_characters, "", $this->metakey);
 			$keys           = explode(',', $after_clean);
-			$clean_keys     = array();
+			$clean_keys     = [];
+
 			foreach ($keys as $key)
 			{
 				if (trim($key))
-				{ // Ignore blank keywords
+				{
+					// Ignore blank keywords
 					$clean_keys[] = trim($key);
 				}
 			}
+
 			$this->metakey = implode(", ", $clean_keys);
 		}
 
@@ -367,7 +375,7 @@ class ChurchDirectoryTableMember extends JTable
 		if (!empty($this->metadesc))
 		{
 			// Only process if not empty
-			$bad_characters = array("\"", "<", ">");
+			$bad_characters = ["\"", "<", ">"];
 			$this->metadesc = \Joomla\String\StringHelper::str_ireplace($bad_characters, "", $this->metadesc);
 		}
 
@@ -382,6 +390,8 @@ class ChurchDirectoryTableMember extends JTable
 	 * @param   boolean  $reset  True to reset the default values before loading the new row.
 	 *
 	 * @return  boolean  True if successful. False if row not found.
+	 *
+	 * @since    1.7.0
 	 */
 	public function load ($pk = null, $reset = true)
 	{
@@ -453,6 +463,8 @@ class ChurchDirectoryTableMember extends JTable
 	 * Remains public to be able to check for duplicated alias before saving
 	 *
 	 * @return  string
+	 *
+	 * @since    1.7.0
 	 */
 	public function generateAlias()
 	{
@@ -470,5 +482,4 @@ class ChurchDirectoryTableMember extends JTable
 
 		return $this->alias;
 	}
-
 }

@@ -17,7 +17,6 @@ use Joomla\Utilities\ArrayHelper;
  */
 class ChurchDirectoryModelPositions extends JModelList
 {
-
 	/**
 	 * Constructor.
 	 *
@@ -26,11 +25,11 @@ class ChurchDirectoryModelPositions extends JModelList
 	 * @see        JController
 	 * @since      1.7.0
 	 */
-	public function __construct($config = array())
+	public function __construct($config = [])
 	{
 		if (empty($config['filter_fields']))
 		{
-			$config['filter_fields'] = array(
+			$config['filter_fields'] = [
 				'id', 'a.id',
 				'name', 'a.name',
 				'alias', 'a.alias',
@@ -48,7 +47,7 @@ class ChurchDirectoryModelPositions extends JModelList
 				'ul.name', 'linked_user',
 				'tag',
 				'level', 'c.level',
-			);
+			];
 
 			$assoc = JLanguageAssociations::isEnabled();
 
@@ -168,10 +167,10 @@ class ChurchDirectoryModelPositions extends JModelList
 
 		// Join over the users for the linked user.
 		$query->select(
-			array(
+			[
 				$db->quoteName('ul.name', 'linked_user'),
 				$db->quoteName('ul.email')
-			)
+			]
 		)
 			->join(
 				'LEFT',
@@ -275,5 +274,4 @@ class ChurchDirectoryModelPositions extends JModelList
 
 		return $query;
 	}
-
 }

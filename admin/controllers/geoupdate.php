@@ -19,8 +19,10 @@ class ChurchDirectoryControllerGeoupdate extends JControllerAdmin
 	 * Constructor.
 	 *
 	 * @param   array  $config  An optional associative array of configuration settings.
+	 *
+	 * @since    1.7.0
 	 */
-	public function __construct($config = array())
+	public function __construct($config = [])
 	{
 		parent::__construct($config);
 
@@ -33,6 +35,8 @@ class ChurchDirectoryControllerGeoupdate extends JControllerAdmin
 	 * @param   string  $task  An optional associative array of configuration settings.
 	 *
 	 * @return void
+	 *
+	 * @since    1.7.0
 	 */
 	public function execute($task)
 	{
@@ -40,6 +44,7 @@ class ChurchDirectoryControllerGeoupdate extends JControllerAdmin
 		{
 			$task = 'browse';
 		}
+
 		parent::execute($task);
 	}
 
@@ -49,6 +54,8 @@ class ChurchDirectoryControllerGeoupdate extends JControllerAdmin
 	 * @param   int  $id  Id of member
 	 *
 	 * @return void
+	 *
+	 * @since    1.7.0
 	 */
 	public function browse($id = null)
 	{
@@ -58,6 +65,7 @@ class ChurchDirectoryControllerGeoupdate extends JControllerAdmin
 		{
 			$id = $app->input->getInt('id', 0);
 		}
+
 		$model = $this->getModel('geoupdate');
 		$state = $model->startScanning($id);
 		$app->input->set('scanstate', $state);

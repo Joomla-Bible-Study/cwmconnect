@@ -15,11 +15,11 @@ defined('_JEXEC') or die;
  */
 class ChurchDirectoryViewKML extends JViewLegacy
 {
-
 	/**
 	 * Protect form
 	 *
 	 * @var array
+	 * @since    1.7.0
 	 */
 	protected $form;
 
@@ -27,6 +27,7 @@ class ChurchDirectoryViewKML extends JViewLegacy
 	 * Protect item
 	 *
 	 * @var object
+	 * @since    1.7.0
 	 */
 	protected $item;
 
@@ -34,6 +35,7 @@ class ChurchDirectoryViewKML extends JViewLegacy
 	 * Protect state
 	 *
 	 * @var object
+	 * @since    1.7.0
 	 */
 	protected $state;
 
@@ -43,6 +45,8 @@ class ChurchDirectoryViewKML extends JViewLegacy
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
 	 *
 	 * @return  mixed  A string if successful, otherwise a Error object.
+	 *
+	 * @since    1.7.0
 	 */
 	public function display($tpl = null)
 	{
@@ -130,5 +134,4 @@ class ChurchDirectoryViewKML extends JViewLegacy
 		$document = JFactory::getDocument();
 		$document->setTitle($isNew ? JText::_('COM_CHURCHDIRECTORY_KML_CREATING') : JText::sprintf('COM_CHURCHDIRECTORY_KML_EDITING', $this->item->name));
 	}
-
 }

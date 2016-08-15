@@ -18,11 +18,12 @@ class ChurchDirectoryControllerDirectory extends JControllerAdmin
 	 * Display
 	 *
 	 * @return void
+	 *
+	 * @since    1.7.0
 	 */
 	public function display()
 	{
 		JFactory::getApplication()->input->set('view', 'directory');
 		parent::display();
 	}
-
 }

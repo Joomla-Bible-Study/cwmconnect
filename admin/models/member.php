@@ -39,6 +39,7 @@ class ChurchDirectoryModelMember extends JModelAdmin
 	 * Batch copy/move command. If set to false, the batch copy/move command is not supported
 	 *
 	 * @var  string
+	 * @since    1.7.0
 	 */
 	protected $batch_copymove = 'category_id';
 
@@ -46,13 +47,24 @@ class ChurchDirectoryModelMember extends JModelAdmin
 	 * Allowed batch commands
 	 *
 	 * @var array
+	 * @since    1.7.0
 	 */
-	protected $batch_commands = array(
+	protected $batch_commands = [
 		'assetgroup_id' => 'batchAccess',
 		'language_id'   => 'batchLanguage',
 		'tag'           => 'batchTag',
 		'user_id'       => 'batchUser'
-	);
+	];
+
+	protected $tagsObserver;
+
+	protected $type;
+
+	/**
+	 * @var ChurchDirectoryTableMember
+	 * @since    1.7.0
+	 */
+	protected $table;
 
 	/**
 	 * Method to perform batch operations on an item or a set of items.
@@ -93,6 +105,7 @@ class ChurchDirectoryModelMember extends JModelAdmin
 			if ($cmd == 'c')
 			{
 				$result = $this->batchCopy($commands['category_id'], $pks, $contexts);
+
 				if (is_array($result))
 				{
 					$pks = $result;
@@ -106,6 +119,7 @@ class ChurchDirectoryModelMember extends JModelAdmin
 			{
 				return false;
 			}
+
 			$done = true;
 		}
 
@@ -166,6 +180,7 @@ class ChurchDirectoryModelMember extends JModelAdmin
 	protected function batchCopy($value, $pks, $contexts)
 	{
 		$categoryId = (int) $value;
+		$newIds = [];
 
 		/** @type ChurchDirectoryTableMember $table */
 		$table = $this->getTable();
@@ -180,6 +195,7 @@ class ChurchDirectoryModelMember extends JModelAdmin
 		if ($categoryId)
 		{
 			$categoryTable = JTable::getInstance('Category');
+
 			if (!$categoryTable->load($categoryId))
 			{
 				if ($error = $categoryTable->getError())
@@ -207,6 +223,7 @@ class ChurchDirectoryModelMember extends JModelAdmin
 
 		// Check that the user has create permission for the component
 		$user = JFactory::getUser();
+
 		if (!$user->authorise('core.create', 'com_churchdirectory.category.' . $categoryId))
 		{
 			$this->setError(JText::_('JLIB_APPLICATION_ERROR_BATCH_CANNOT_CREATE'));
@@ -348,10 +365,12 @@ class ChurchDirectoryModelMember extends JModelAdmin
 			{
 				return false;
 			}
+
 			$user = JFactory::getUser();
 
 			return $user->authorise('core.delete', 'com_churchdirectory.member.' . (int) $record->catid);
 		}
+
 		return true;
 	}
 
@@ -391,7 +410,7 @@ class ChurchDirectoryModelMember extends JModelAdmin
 	 *
 	 * @since    1.7.0
 	 */
-	public function getTable($type = 'Member', $prefix = 'ChurchDirectoryTable', $config = array())
+	public function getTable($type = 'Member', $prefix = 'ChurchDirectoryTable', $config = [])
 	{
 		return JTable::getInstance($type, $prefix, $config);
 	}
@@ -406,13 +425,12 @@ class ChurchDirectoryModelMember extends JModelAdmin
 	 *
 	 * @since    1.7.0
 	 */
-	public function getForm($data = array(), $loadData = true)
+	public function getForm($data = [], $loadData = true)
 	{
-
 		JForm::addFieldPath(JPATH_ADMINISTRATOR . '/components/com_users/models/fields');
 
 		// Get the form.
-		$form = $this->loadForm('com_churchdirectory.member', 'member', array('control' => 'jform', 'load_data' => $loadData));
+		$form = $this->loadForm('com_churchdirectory.member', 'member', ['control' => 'jform', 'load_data' => $loadData]);
 
 		if (empty($form))
 		{
@@ -613,9 +631,9 @@ class ChurchDirectoryModelMember extends JModelAdmin
 				' SET a.featured = ' . (int) $value .
 				' WHERE a.id IN (' . implode(',', $pks) . ')'
 		);
+
 		if (!$db->execute())
 		{
-
 			return false;
 		}
 
@@ -642,5 +660,4 @@ class ChurchDirectoryModelMember extends JModelAdmin
 		parent::cleanCache('com_churchdirectory');
 		parent::cleanCache('mod_birthdayanniversary');
 	}
-
 }

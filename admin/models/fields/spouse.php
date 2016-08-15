@@ -19,7 +19,6 @@ use Joomla\Registry\Registry;
  */
 class JFormFieldSpouse extends JFormField
 {
-
 	/**
 	 * The form field type.
 	 *
@@ -69,9 +68,9 @@ class JFormFieldSpouse extends JFormField
 		{
 			$registry = new Registry;
 			$registry->loadString($item->attribs);
-			$family_position = $registry->toObject();
+
 			// Todo Need to fix this. Bcc;
-			$family_position = $registry->toObject('familypostion');
+			$family_position = $registry->get('familypostion');
 			$item            = (object) array_merge((array) $item, (array) $family_position);
 
 			if ($item->funitid != '0' && $item->id != $memberId)
@@ -86,12 +85,10 @@ class JFormFieldSpouse extends JFormField
 			}
 			elseif ($item->funitid <= '0' && $item->id == $memberId)
 			{
-
 				$html = '<h4>Old Record: ' . $item->spouse . '</h4>';
 			}
 		}
 
 		return $html;
 	}
-
 }

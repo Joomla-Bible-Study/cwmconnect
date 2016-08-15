@@ -15,11 +15,11 @@ defined('_JEXEC') or die;
  */
 class ChurchDirectoryViewMember extends JViewLegacy
 {
-
 	/**
 	 * Protect form
 	 *
 	 * @var array
+	 * @since    1.7.0
 	 */
 	protected $form;
 
@@ -27,6 +27,7 @@ class ChurchDirectoryViewMember extends JViewLegacy
 	 * Protect items
 	 *
 	 * @var object
+	 * @since    1.7.0
 	 */
 	protected $item;
 
@@ -34,10 +35,14 @@ class ChurchDirectoryViewMember extends JViewLegacy
 	 * Protect state
 	 *
 	 * @var object
+	 * @since    1.7.0
 	 */
 	protected $state;
 
-	/** @type  Object */
+	/**
+	 * @type  Object
+	 * @since    1.7.0
+	 */
 	protected $canDo;
 
 	protected $groups;
@@ -52,6 +57,8 @@ class ChurchDirectoryViewMember extends JViewLegacy
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
 	 *
 	 * @return  mixed  A string if successful, otherwise a Error object.
+	 *
+	 * @since    1.7.0
 	 */
 	public function display ($tpl = null)
 	{
@@ -72,6 +79,7 @@ class ChurchDirectoryViewMember extends JViewLegacy
 
 			return false;
 		}
+
 		$itemacess = $this->state->params->get('protectedaccess');
 		$groups    = $this->groups;
 
@@ -121,6 +129,7 @@ class ChurchDirectoryViewMember extends JViewLegacy
 				JToolbarHelper::save('member.save');
 				JToolbarHelper::save2new('member.save2new');
 			}
+
 			JToolbarHelper::cancel('member.cancel');
 		}
 		else
@@ -159,6 +168,8 @@ class ChurchDirectoryViewMember extends JViewLegacy
 	 * Set Document title
 	 *
 	 * @return void
+	 *
+	 * @since    1.7.0
 	 */
 	protected function setDocument ()
 	{
@@ -169,5 +180,4 @@ class ChurchDirectoryViewMember extends JViewLegacy
 				: JText::_('COM_CHURCHDIRECTORY_CHURCHDIRECTORY_MEMBER_EDITING')
 		);
 	}
-
 }

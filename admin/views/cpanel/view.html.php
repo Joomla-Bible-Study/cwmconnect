@@ -15,11 +15,12 @@ defined('_JEXEC') or die();
  */
 class ChurchDirectoryViewCpanel extends JViewLegacy
 {
-
 	/**
 	 * Protect Items
 	 *
 	 * @var array
+	 *
+	 * @since 1.7.0
 	 */
 	protected $items;
 
@@ -27,6 +28,8 @@ class ChurchDirectoryViewCpanel extends JViewLegacy
 	 * Protect Pragination
 	 *
 	 * @var array
+	 *
+	 * @since 1.7.0
 	 */
 	protected $pagination;
 
@@ -34,6 +37,8 @@ class ChurchDirectoryViewCpanel extends JViewLegacy
 	 * Protect State
 	 *
 	 * @var object
+	 *
+	 * @since 1.7.0
 	 */
 	protected $state;
 
@@ -45,6 +50,8 @@ class ChurchDirectoryViewCpanel extends JViewLegacy
 	 * @param   string  $tpl  ?
 	 *
 	 * @return mixed
+	 *
+	 * @since 1.7.0
 	 */
 	public function display($tpl = null)
 	{
@@ -64,11 +71,7 @@ class ChurchDirectoryViewCpanel extends JViewLegacy
 
 		// Set the toolbar
 		$this->addToolbar();
-
-		if (version_compare(JVERSION, '3.0', 'ge'))
-		{
-			$this->sidebar = JHtmlSidebar::render();
-		}
+		$this->sidebar = JHtmlSidebar::render();
 
 		// Set the document
 		$this->setDocument();
@@ -109,5 +112,4 @@ class ChurchDirectoryViewCpanel extends JViewLegacy
 		$document = JFactory::getDocument();
 		$document->setTitle(JText::_('COM_CHURCHDIRECTORY_ADMINISTRATION'));
 	}
-
 }

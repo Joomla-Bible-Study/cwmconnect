@@ -110,6 +110,7 @@ class ChurchDirectoryTableKML extends JTable
 			{
 				$this->created = $date->toSql();
 			}
+
 			if (empty($this->created_by))
 			{
 				$this->created_by = $user->get('id');
@@ -130,8 +131,7 @@ class ChurchDirectoryTableKML extends JTable
 	 */
 	public function check()
 	{
-
-		if (JFilterInput::checkAttribute(array('href', $this->webpage)))
+		if (JFilterInput::checkAttribute(['href', $this->webpage]))
 		{
 			$this->setError(JText::_('COM_CHURCHDIRECTORY_WARNING_PROVIDE_VALID_URL'));
 
@@ -154,12 +154,14 @@ class ChurchDirectoryTableKML extends JTable
 
 			return false;
 		}
+
 		/** check for existing name */
 		$query = $this->_db->getQuery(true);
 		$query->select('id')->from('#__churchdirectory_kml')->where('name = ' . $this->_db->q($this->name));
 		$this->_db->setQuery($query);
 
 		$xid = intval($this->_db->loadResult());
+
 		if ($xid && $xid != intval($this->id))
 		{
 			$this->setError(JText::_('COM_CHURCHDIRECTORY_WARNING_SAME_NAME'));
@@ -171,7 +173,9 @@ class ChurchDirectoryTableKML extends JTable
 		{
 			$this->alias = $this->name;
 		}
+
 		$this->alias = JApplicationHelper::stringURLSafe($this->alias);
+
 		if (trim(str_replace('-', '', $this->alias)) == '')
 		{
 			$this->alias = JFactory::getDate()->format("Y-m-d-H-i-s");
@@ -188,5 +192,4 @@ class ChurchDirectoryTableKML extends JTable
 
 		return true;
 	}
-
 }

@@ -15,11 +15,11 @@ defined('_JEXEC') or die;
  */
 class ChurchDirectoryViewMembers extends JViewLegacy
 {
-
 	/**
 	 * Protect items
 	 *
 	 * @var array
+	 * @since    1.7.0
 	 */
 	protected $items;
 
@@ -27,6 +27,7 @@ class ChurchDirectoryViewMembers extends JViewLegacy
 	 * Protect pagination
 	 *
 	 * @var object
+	 * @since    1.7.0
 	 */
 	protected $pagination;
 
@@ -34,6 +35,7 @@ class ChurchDirectoryViewMembers extends JViewLegacy
 	 * Protect state
 	 *
 	 * @var object
+	 * @since    1.7.0
 	 */
 	protected $state;
 
@@ -45,10 +47,11 @@ class ChurchDirectoryViewMembers extends JViewLegacy
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
 	 *
 	 * @return  mixed  A string if successful, otherwise a Error object.
+	 *
+	 * @since    1.7.0
 	 */
 	public function display($tpl = null)
 	{
-
 		// Assign data to the view
 		$this->items      = $this->get('Items');
 		$this->pagination = $this->get('Pagination');
@@ -145,6 +148,8 @@ class ChurchDirectoryViewMembers extends JViewLegacy
 	 * Set Document title
 	 *
 	 * @return void
+	 *
+	 * @since    1.7.0
 	 */
 	protected function setDocument()
 	{
@@ -161,7 +166,7 @@ class ChurchDirectoryViewMembers extends JViewLegacy
 	 */
 	protected function getSortFields()
 	{
-		return array(
+		return [
 			'a.ordering'     => JText::_('JGRID_HEADING_ORDERING'),
 			'a.state'        => JText::_('JSTATUS'),
 			'a.name'         => JText::_('JGLOBAL_TITLE'),
@@ -171,7 +176,6 @@ class ChurchDirectoryViewMembers extends JViewLegacy
 			'a.access'       => JText::_('JGRID_HEADING_ACCESS'),
 			'a.language'     => JText::_('JGRID_HEADING_LANGUAGE'),
 			'a.id'           => JText::_('JGRID_HEADING_ID')
-		);
+		];
 	}
-
 }

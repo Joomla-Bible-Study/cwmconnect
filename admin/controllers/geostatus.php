@@ -15,20 +15,6 @@ defined('_JEXEC') or die;
  */
 class ChurchDirectoryControllerGeoStatus extends JControllerAdmin
 {
-
-	/**
-	 * Constructor.
-	 *
-	 * @param   array  $config  An optional associative array of configuration settings.
-	 *
-	 * @see        JController
-	 * @since      1.7.0
-	 */
-	public function __construct($config = array())
-	{
-		parent::__construct($config);
-	}
-
 	/**
 	 * Method to update members geoupdate location.
 	 *
@@ -43,7 +29,7 @@ class ChurchDirectoryControllerGeoStatus extends JControllerAdmin
 
 		$app    = JFactory::getApplication();
 		$user   = JFactory::getUser();
-		$ids    = $this->input->get('cid', array(), 'array');
+		$ids    = $this->input->get('cid', [], 'array');
 
 		// Get the model.
 		/** @var  ChurchDirectoryModelGeoStatus $model */
@@ -106,8 +92,8 @@ class ChurchDirectoryControllerGeoStatus extends JControllerAdmin
 	public function saveOrderAjax()
 	{
 		// Get the input
-		$pks   = $this->input->post->get('cid', array(), 'array');
-		$order = $this->input->post->get('order', array(), 'array');
+		$pks   = $this->input->post->get('cid', [], 'array');
+		$order = $this->input->post->get('order', [], 'array');
 
 		// Sanitize the input
 		Joomla\Utilities\ArrayHelper::toInteger($pks);
@@ -128,5 +114,4 @@ class ChurchDirectoryControllerGeoStatus extends JControllerAdmin
 		// Close the application
 		JFactory::getApplication()->close();
 	}
-
 }

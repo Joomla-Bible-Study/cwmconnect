@@ -17,7 +17,6 @@ jimport('joomla.application.component.modeladmin');
  */
 class ChurchDirectoryModelPosition extends JModelAdmin
 {
-
 	const NAME = null;
 
 	/**
@@ -37,26 +36,13 @@ class ChurchDirectoryModelPosition extends JModelAdmin
 			{
 				return false;
 			}
+
 			$user = JFactory::getUser();
 
 			return $user->authorise('core.delete');
 		}
 
 		return true;
-	}
-
-	/**
-	 * Method to test whether a record can have its state edited.
-	 *
-	 * @param   object  $record  A record object.
-	 *
-	 * @return    boolean    True if allowed to change the state of the record. Defaults to the permission set in the component.
-	 *
-	 * @since    1.7.0
-	 */
-	protected function canEditState($record)
-	{
-		return parent::canEditState($record);
 	}
 
 	/**
@@ -85,13 +71,13 @@ class ChurchDirectoryModelPosition extends JModelAdmin
 	 *
 	 * @since    1.7.0
 	 */
-	public function getForm($data = array(), $loadData = true)
+	public function getForm($data = [], $loadData = true)
 	{
 		jimport('joomla.form.form');
 		JForm::addFieldPath('JPATH_ADMINISTRATOR/components/com_users/models/fields');
 
 		// Get the form.
-		$form = $this->loadForm('com_churchdirectory.position', 'position', array('control' => 'jform', 'load_data' => $loadData));
+		$form = $this->loadForm('com_churchdirectory.position', 'position', ['control' => 'jform', 'load_data' => $loadData]);
 
 		if (empty($form))
 		{
@@ -115,20 +101,6 @@ class ChurchDirectoryModelPosition extends JModelAdmin
 	}
 
 	/**
-	 * Method to get a single record.
-	 *
-	 * @param   integer  $pk  The id of the primary key.
-	 *
-	 * @return    mixed    Object on success, false on failure.
-	 *
-	 * @since    1.7.0
-	 */
-	public function getItem($pk = null)
-	{
-		return parent::getItem($pk);
-	}
-
-	/**
 	 * Method to get the data that should be injected in the form.
 	 *
 	 * @return    mixed    The data for the form.
@@ -138,7 +110,7 @@ class ChurchDirectoryModelPosition extends JModelAdmin
 	protected function loadFormData()
 	{
 		// Check the session for previously entered form data.
-		$data = JFactory::getApplication()->getUserState('com_churchdirectory.edit.position.data', array());
+		$data = JFactory::getApplication()->getUserState('com_churchdirectory.edit.position.data', []);
 
 		if (empty($data))
 		{
@@ -151,7 +123,7 @@ class ChurchDirectoryModelPosition extends JModelAdmin
 	/**
 	 * Prepare and sanitise the table prior to saving.
 	 *
-	 * @param   JTable  $table  A reference to a JTable object.
+	 * @param   ChurchDirectoryTablePosition  $table  A reference to a JTable object.
 	 *
 	 * @return  void
 	 *
@@ -204,7 +176,7 @@ class ChurchDirectoryModelPosition extends JModelAdmin
 
 		$db->setQuery($query->__toString());
 		$positions    = $db->loadObjectList();
-		$positiontemp = array();
+		$positiontemp = [];
 		$positionkey  = null;
 
 		foreach ($positions as $p)
@@ -212,7 +184,7 @@ class ChurchDirectoryModelPosition extends JModelAdmin
 			if ($p->con_position != '')
 			{
 				$con_position  = explode(',', $p->con_position);
-				$positiontemp  = array("name" => $p->name, "con_position" => $con_position, "id" => $p->id);
+				$positiontemp  = ["name" => $p->name, "con_position" => $con_position, "id" => $p->id];
 				$positionkey[] = $positiontemp;
 			}
 			else
@@ -220,6 +192,7 @@ class ChurchDirectoryModelPosition extends JModelAdmin
 				$positionkey[] = null;
 			}
 		}
+
 		$position = null;
 
 		if ($positionkey)
@@ -233,12 +206,13 @@ class ChurchDirectoryModelPosition extends JModelAdmin
 
 					if ($key === 0)
 					{
-						$positiontemp1 = array("name" => $d['name'], "id" => $d['id']);
+						$positiontemp1 = ["name" => $d['name'], "id" => $d['id']];
 						$position[]    = $positiontemp1;
 					}
 				}
 			}
 		}
+
 		$results = $position;
 
 		return $results;
@@ -255,9 +229,8 @@ class ChurchDirectoryModelPosition extends JModelAdmin
 	 */
 	protected function getReorderConditions($table)
 	{
-		$condition = array();
+		$condition = [];
 
 		return $condition;
 	}
-
 }

@@ -98,6 +98,7 @@ class ChurchDirectoryTableFamilyUnit extends JTable
 			{
 				$this->created = $date->toSql();
 			}
+
 			if (empty($this->created_by))
 			{
 				$this->created_by = $user->get('id');
@@ -118,8 +119,7 @@ class ChurchDirectoryTableFamilyUnit extends JTable
 	 */
 	public function check()
 	{
-
-		if (JFilterInput::checkAttribute(array('href', $this->webpage)))
+		if (JFilterInput::checkAttribute(['href', $this->webpage]))
 		{
 			$this->setError(JText::_('COM_CHURCHDIRECTORY_WARNING_PROVIDE_VALID_URL'));
 
@@ -142,8 +142,9 @@ class ChurchDirectoryTableFamilyUnit extends JTable
 
 			return false;
 		}
+
 		/** check for existing name */
-		$query = 'SELECT id FROM #__churchdirectory_familyunit WHERE name = ' . $this->_db->Quote($this->name);
+		$query = 'SELECT id FROM #__churchdirectory_familyunit WHERE name = ' . $this->_db->q($this->name);
 		$this->_db->setQuery($query);
 
 		$xid = intval($this->_db->loadResult());
@@ -159,6 +160,7 @@ class ChurchDirectoryTableFamilyUnit extends JTable
 		{
 			$this->alias = $this->name;
 		}
+
 		$this->alias = JApplicationHelper::stringURLSafe($this->alias);
 
 		if (trim(str_replace('-', '', $this->alias)) == '')
@@ -177,5 +179,4 @@ class ChurchDirectoryTableFamilyUnit extends JTable
 
 		return true;
 	}
-
 }

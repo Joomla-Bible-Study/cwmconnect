@@ -17,7 +17,6 @@ use Joomla\Registry\Registry;
  */
 class ChurchDirectoryModelReports extends JModelLegacy
 {
-
 	/**
 	 * Constructor
 	 *
@@ -26,11 +25,11 @@ class ChurchDirectoryModelReports extends JModelLegacy
 	 * @since   12.2
 	 * @throws  Exception
 	 */
-	public function __construct($config = array())
+	public function __construct($config = [])
 	{
 		if (empty($config['filter_fields']))
 		{
-			$config['filter_fields'] = array(
+			$config['filter_fields'] = [
 				'id', 'a.id',
 				'name', 'a.name',
 				'lname', 'a.lname',
@@ -41,8 +40,9 @@ class ChurchDirectoryModelReports extends JModelLegacy
 				'sortname1', 'a.sortname1',
 				'sortname2', 'a.sortname2',
 				'sortname3', 'a.sortname3'
-			);
+			];
 		}
+
 		parent::__construct($config);
 	}
 
@@ -75,6 +75,7 @@ class ChurchDirectoryModelReports extends JModelLegacy
 		{
 			$limit = 0;
 		}
+
 		$this->setState('list.limit', $limit);
 
 		$limitstart = $app->input->get('limitstart', 0, 'uint');
@@ -87,6 +88,7 @@ class ChurchDirectoryModelReports extends JModelLegacy
 		{
 			$menuParams->loadString($menu->params);
 		}
+
 		$mergedParams = clone $params;
 		$mergedParams->merge($menuParams);
 		$orderCol = $app->input->get('filter_order', $mergedParams->get('dinitial_sort', 'ordering'));
@@ -95,10 +97,11 @@ class ChurchDirectoryModelReports extends JModelLegacy
 
 		$listOrder = $app->input->get('filter_order_Dir', 'ASC');
 
-		if (!in_array(strtoupper($listOrder), array('ASC', 'DESC', '')))
+		if (!in_array(strtoupper($listOrder), ['ASC', 'DESC', '']))
 		{
 			$listOrder = 'ASC';
 		}
+
 		$this->setState('list.direction', $listOrder);
 
 		$id = $app->input->get('id', 0, 'int');
@@ -113,6 +116,7 @@ class ChurchDirectoryModelReports extends JModelLegacy
 			// Filter by start and end dates.
 			$this->setState('filter.publish_date', true);
 		}
+
 		$mstatus = $app->input->get('filter_mstatus', $mergedParams->get('mstatus', '0'));
 		$this->setState('filter.mstatus', $mstatus);
 
@@ -129,7 +133,6 @@ class ChurchDirectoryModelReports extends JModelLegacy
 	 */
 	protected function getListQuery()
 	{
-
 		$user = JFactory::getUser();
 
 		// Create a new query object.
@@ -141,7 +144,7 @@ class ChurchDirectoryModelReports extends JModelLegacy
 		$case_when .= $query->charLength('a.alias', '!=', '0');
 		$case_when .= ' THEN ';
 		$a_id = $query->castAsChar('a.id');
-		$case_when .= $query->concatenate(array($a_id, 'a.alias'), ':');
+		$case_when .= $query->concatenate([$a_id, 'a.alias'], ':');
 		$case_when .= ' ELSE ';
 		$case_when .= $a_id . ' END as slug';
 
@@ -149,7 +152,7 @@ class ChurchDirectoryModelReports extends JModelLegacy
 		$case_when1 .= $query->charLength('c.alias', '!=', '0');
 		$case_when1 .= ' THEN ';
 		$c_id = $query->castAsChar('c.id');
-		$case_when1 .= $query->concatenate(array($c_id, 'c.alias'), ':');
+		$case_when1 .= $query->concatenate([$c_id, 'c.alias'], ':');
 		$case_when1 .= ' ELSE ';
 		$case_when1 .= $c_id . ' END as catslug';
 
@@ -199,6 +202,7 @@ class ChurchDirectoryModelReports extends JModelLegacy
 
 		// Filter by state
 		$state = $this->getState('filter.published');
+
 		if (is_numeric($state))
 		{
 			$query->where('a.published = ' . (int) $state);
@@ -278,6 +282,8 @@ class ChurchDirectoryModelReports extends JModelLegacy
 	 * CVS Dump
 	 *
 	 * @return bool
+	 *
+	 * @since    1.7.0
 	 */
 	public function getCsv()
 	{
@@ -288,6 +294,7 @@ class ChurchDirectoryModelReports extends JModelLegacy
 		$csv   = fopen('php://output', 'w');
 
 		$count = 0;
+
 		foreach ($items as $line)
 		{
 			foreach ($line as $c => $item)
@@ -306,9 +313,11 @@ class ChurchDirectoryModelReports extends JModelLegacy
 					$reg->loadString($item);
 					$params = $reg->toObject();
 					$params_att = new stdClass;
+
 					foreach ($params as $p => $item_p)
 					{
 						$p = 'att_' . $p;
+
 						if ($p == 'sex')
 						{
 							switch ($item_p)
@@ -326,9 +335,9 @@ class ChurchDirectoryModelReports extends JModelLegacy
 							$params_att->$p = $item_p;
 						}
 					}
+
 					unset($line->attribs);
 					$line = (object) array_merge((array) $line, (array) $params_att);
-
 				}
 				elseif ($c == 'kml_params')
 				{
@@ -356,10 +365,12 @@ class ChurchDirectoryModelReports extends JModelLegacy
 				}
 				elseif ($c == 'con_position')
 				{
-					$pos = array();
+					$pos = [];
+
 					if ($item != 0)
 					{
 						$positions = explode(',', $item);
+
 						foreach ($positions as $p => $position)
 						{
 							$query = $this->_db->getQuery(true);
@@ -376,25 +387,26 @@ class ChurchDirectoryModelReports extends JModelLegacy
 					{
 						$pos[] = null;
 					}
+
 					unset($line->con_position);
-					$line = (object) array_merge((array) $line, array('con_position' => implode(",", $pos)));
+					$line = (object) array_merge((array) $line, ['con_position' => implode(",", $pos)]);
 				}
 				elseif ($c == 'image')
 				{
 					$line->$c = JUri::root() . $item;
 				}
 			}
+
 			if ($count == 0)
 			{
 				$array = get_object_vars($line);
 				fputcsv($csv, array_keys($array));
 			}
+
 			$count = 1;
 			fputcsv($csv, (array) $line);
-
 		}
 
 		return fclose($csv);
 	}
-
 }

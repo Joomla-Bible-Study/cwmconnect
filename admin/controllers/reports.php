@@ -15,7 +15,6 @@ defined('_JEXEC') or die;
  */
 class ChurchDirectoryControllerReports extends JControllerAdmin
 {
-
 	/**
 	 * Display funtion.
 	 *
@@ -23,8 +22,10 @@ class ChurchDirectoryControllerReports extends JControllerAdmin
 	 * @param   array    $urlparams  An array of safe url parameters and their variable types, for valid values see {@link JFilterInput::clean()}.
 	 *
 	 * @return  JControllerLegacy  A JControllerLegacy object to support chaining.
+	 *
+	 * @since    1.7.0
 	 */
-	public function display($cachable = false, $urlparams = array())
+	public function display($cachable = false, $urlparams = [])
 	{
 		JFactory::getApplication()->input->set('view', 'reports');
 		parent::display();
@@ -52,10 +53,11 @@ class ChurchDirectoryControllerReports extends JControllerAdmin
 	 * Report Export to CSV
 	 *
 	 * @return void
+	 *
+	 * @since    1.7.0
 	 */
 	public function export()
 	{
-
 		$jweb = new JApplicationWeb;
 		$report = $jweb->input->get('report');
 
@@ -72,7 +74,6 @@ class ChurchDirectoryControllerReports extends JControllerAdmin
 
 		$this->getModel()->getCsv();
 
-		jexit();
+		return null;
 	}
-
 }

@@ -17,7 +17,6 @@ jimport('joomla.application.component.modeladmin');
  */
 class ChurchDirectoryModelkml extends JModelAdmin
 {
-
 	/**
 	 * Method to test whether a record can be deleted.
 	 *
@@ -35,26 +34,13 @@ class ChurchDirectoryModelkml extends JModelAdmin
 			{
 				return false;
 			}
+
 			$user = JFactory::getUser();
 
 			return $user->authorise('core.delete');
 		}
 
 		return true;
-	}
-
-	/**
-	 * Method to test whether a record can have its state edited.
-	 *
-	 * @param   object  $record  A record object.
-	 *
-	 * @return    boolean    True if allowed to change the state of the record. Defaults to the permission set in the component.
-	 *
-	 * @since    1.7.0
-	 */
-	protected function canEditState($record)
-	{
-		return parent::canEditState($record);
 	}
 
 	/**
@@ -68,7 +54,7 @@ class ChurchDirectoryModelkml extends JModelAdmin
 	 *
 	 * @since    1.7.0
 	 */
-	public function getTable($type = 'KML', $prefix = 'ChurchDirectoryTable', $config = array())
+	public function getTable($type = 'KML', $prefix = 'ChurchDirectoryTable', $config = [])
 	{
 		return JTable::getInstance($type, $prefix, $config);
 	}
@@ -83,13 +69,13 @@ class ChurchDirectoryModelkml extends JModelAdmin
 	 *
 	 * @since    1.7.0
 	 */
-	public function getForm($data = array(), $loadData = true)
+	public function getForm($data = [], $loadData = true)
 	{
 		jimport('joomla.form.form');
 		JForm::addFieldPath('JPATH_ADMINISTRATOR/components/com_users/models/fields');
 
 		// Get the form.
-		$form = $this->loadForm('com_churchdirectory.kml', 'kml', array('control' => 'jform', 'load_data' => $loadData));
+		$form = $this->loadForm('com_churchdirectory.kml', 'kml', ['control' => 'jform', 'load_data' => $loadData]);
 
 		if (empty($form))
 		{
@@ -136,7 +122,7 @@ class ChurchDirectoryModelkml extends JModelAdmin
 	protected function loadFormData()
 	{
 		// Check the session for previously entered form data.
-		$data = JFactory::getApplication()->getUserState('com_churchdirectory.edit.kml.data', array());
+		$data = JFactory::getApplication()->getUserState('com_churchdirectory.edit.kml.data', []);
 
 		if (empty($data))
 		{
@@ -193,9 +179,8 @@ class ChurchDirectoryModelkml extends JModelAdmin
 	 */
 	protected function getReorderConditions($table)
 	{
-		$condition = array();
+		$condition = [];
 
 		return $condition;
 	}
-
 }

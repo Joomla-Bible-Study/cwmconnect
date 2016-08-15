@@ -24,8 +24,8 @@ JHtml::_('behavior.formvalidation');
 </script>
 
 <form
-	action="<?php echo JRoute::_('index.php?option=com_churchdirectory&view=familyunit&layout=edit&id=' . (int) $this->item->id); ?>"
-	method="post" name="adminForm" id="familyunit-form" class="form-validate form-horizontal">
+		action="<?php echo JRoute::_('index.php?option=com_churchdirectory&view=familyunit&layout=edit&id=' . (int) $this->item->id); ?>"
+		method="post" name="adminForm" id="familyunit-form" class="form-validate form-horizontal">
 	<div class="row-fluid">
 		<div class="span10  form-horizontal">
 			<ul class="nav nav-tabs">
@@ -38,9 +38,9 @@ JHtml::_('behavior.formvalidation');
 			<div class="tab-content">
 				<div class="tab-pane active" id="details">
 					<div class="control-group form-inline">
-						<?php echo $this->form->getLabel('name'); ?> <?php echo $this->form->getInput('name'); ?>
-						<?php echo $this->form->getLabel('alias'); ?> <?php echo $this->form->getInput('alias'); ?>
-						<?php echo $this->form->getLabel('id'); ?> <?php echo $this->form->getInput('id'); ?>
+						<?php echo $this->form->getLabel('name'); ?><?php echo $this->form->getInput('name'); ?>
+						<?php echo $this->form->getLabel('alias'); ?><?php echo $this->form->getInput('alias'); ?>
+						<?php echo $this->form->getLabel('id'); ?><?php echo $this->form->getInput('id'); ?>
 					</div>
 					<div class="clearfix"></div>
 					<div class="control-group">
@@ -147,7 +147,7 @@ JHtml::_('behavior.formvalidation');
 							</td>
 
 						</tr>
-					<?php
+						<?php
 					endforeach;
 				else:
 					?>

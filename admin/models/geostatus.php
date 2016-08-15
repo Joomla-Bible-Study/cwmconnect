@@ -15,7 +15,6 @@ defined('_JEXEC') or die;
  */
 class ChurchDirectoryModelGeoStatus extends JModelList
 {
-
 	/**
 	 * Constructor.
 	 *
@@ -24,11 +23,11 @@ class ChurchDirectoryModelGeoStatus extends JModelList
 	 * @see        JController
 	 * @since      1.7.0
 	 */
-	public function __construct($config = array())
+	public function __construct($config = [])
 	{
 		if (empty($config['filter_fields']))
 		{
-			$config['filter_fields'] = array(
+			$config['filter_fields'] = [
 				'id', 'a.id',
 				'name', 'a.name',
 				'lname', 'a.lname',
@@ -47,7 +46,7 @@ class ChurchDirectoryModelGeoStatus extends JModelList
 				'publish_up', 'a.publish_up',
 				'publish_down', 'a.publish_down',
 				'ul.name', 'linked_user',
-			);
+			];
 		}
 
 		parent::__construct($config);
@@ -239,6 +238,7 @@ class ChurchDirectoryModelGeoStatus extends JModelList
 		{
 			$orderCol = 'c.title ' . $orderDirn . ', a.ordering';
 		}
+
 		$query->order($this->_db->escape($orderCol . ' ' . $orderDirn));
 
 		return $query;

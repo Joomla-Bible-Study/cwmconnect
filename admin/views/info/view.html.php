@@ -7,7 +7,6 @@
 
 defined('_JEXEC') or die;
 
-
 /**
  * Class for Info
  *
@@ -16,11 +15,11 @@ defined('_JEXEC') or die;
  */
 class ChurchDirectoryViewInfo extends JViewLegacy
 {
-
 	/**
 	 * Protect Items
 	 *
 	 * @var array
+	 * @since    1.7.0
 	 */
 	protected $items;
 
@@ -28,6 +27,7 @@ class ChurchDirectoryViewInfo extends JViewLegacy
 	 * Protect Pagination
 	 *
 	 * @var array
+	 * @since    1.7.0
 	 */
 	protected $pagination;
 
@@ -35,6 +35,7 @@ class ChurchDirectoryViewInfo extends JViewLegacy
 	 * Protect State
 	 *
 	 * @var array
+	 * @since    1.7.0
 	 */
 	protected $state;
 
@@ -46,6 +47,8 @@ class ChurchDirectoryViewInfo extends JViewLegacy
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
 	 *
 	 * @return  mixed  A string if successful, otherwise a Error object.
+	 *
+	 * @since    1.7.0
 	 */
 	public function display($tpl = null)
 	{
@@ -94,6 +97,7 @@ class ChurchDirectoryViewInfo extends JViewLegacy
 	 * Set browser title
 	 *
 	 * @since 1.7.0
+	 *
 	 * @return void
 	 */
 	protected function setDocument()
@@ -101,5 +105,4 @@ class ChurchDirectoryViewInfo extends JViewLegacy
 		$document = JFactory::getDocument();
 		$document->setTitle(JText::_('COM_CHURCHDIRECTORY_INFO'));
 	}
-
 }

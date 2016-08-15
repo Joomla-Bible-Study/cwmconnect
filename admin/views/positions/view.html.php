@@ -23,6 +23,7 @@ class ChurchDirectoryViewPositions extends JViewLegacy
 	 * Protect items
 	 *
 	 * @var array protect items
+	 * @since    1.7.0
 	 */
 	protected $items;
 
@@ -30,6 +31,7 @@ class ChurchDirectoryViewPositions extends JViewLegacy
 	 * Protect items
 	 *
 	 * @var object protect pagination
+	 * @since    1.7.0
 	 */
 	protected $pagination;
 
@@ -37,6 +39,7 @@ class ChurchDirectoryViewPositions extends JViewLegacy
 	 * Protect state
 	 *
 	 * @var object protect state
+	 * @since    1.7.0
 	 */
 	protected $state;
 
@@ -48,6 +51,8 @@ class ChurchDirectoryViewPositions extends JViewLegacy
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
 	 *
 	 * @return  mixed  A string if successful, otherwise a Error object.
+	 *
+	 * @since    1.7.0
 	 */
 	public function display($tpl = null)
 	{
@@ -75,7 +80,6 @@ class ChurchDirectoryViewPositions extends JViewLegacy
 			$item->order_dn = true;
 		}
 
-
 		// We don't need toolbar in the modal window.
 		if ($this->getLayout() !== 'modal')
 		{
@@ -99,7 +103,6 @@ class ChurchDirectoryViewPositions extends JViewLegacy
 				$this->filterForm->setFieldAttribute('category_id', 'language', '*,' . $forcedLanguage, 'filter');
 			}
 		}
-
 
 		// Set the document
 		$this->setDocument();
@@ -180,6 +183,8 @@ class ChurchDirectoryViewPositions extends JViewLegacy
 	 * Set Document title
 	 *
 	 * @return void
+	 *
+	 * @since    1.7.0
 	 */
 	protected function setDocument()
 	{
@@ -196,14 +201,13 @@ class ChurchDirectoryViewPositions extends JViewLegacy
 	 */
 	protected function getSortFields()
 	{
-		return array(
+		return [
 			'a.ordering' => JText::_('JGRID_HEADING_ORDERING'),
 			'a.state'    => JText::_('JSTATUS'),
 			'a.name'     => JText::_('JGLOBAL_TITLE'),
 			'a.access'   => JText::_('JGRID_HEADING_ACCESS'),
 			'a.language' => JText::_('JGRID_HEADING_LANGUAGE'),
 			'a.id'       => JText::_('JGRID_HEADING_ID')
-		);
+		];
 	}
-
 }

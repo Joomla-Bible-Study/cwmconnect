@@ -15,11 +15,12 @@ defined('_JEXEC') or die;
  */
 class ChurchDirectoryViewDirHeaders extends JViewLegacy
 {
-
 	/**
 	 * Protect items
 	 *
 	 * @var array
+	 *
+	 * @since 1.7.0
 	 */
 	protected $items;
 
@@ -27,13 +28,17 @@ class ChurchDirectoryViewDirHeaders extends JViewLegacy
 	 * Protect pagination
 	 *
 	 * @var array
+	 *
+	 * @since 1.7.0
 	 */
 	protected $pagination;
 
 	/**
 	 * Protect state
 	 *
-	 * @var array
+	 * @var \Joomla\Registry\Registry
+	 *
+	 * @since 1.7.0
 	 */
 	protected $state;
 
@@ -92,36 +97,36 @@ class ChurchDirectoryViewDirHeaders extends JViewLegacy
 		$user  = JFactory::getUser();
 
 		// Get the toolbar object instance
-		$bar = JToolBar::getInstance('toolbar');
+		$bar = JToolbar::getInstance('toolbar');
 
-		JToolBarHelper::title(JText::_('COM_CHURCHDIRECTORY_MANAGER_DIRHEADERS'), 'churchdirectory');
+		JToolbarHelper::title(JText::_('COM_CHURCHDIRECTORY_MANAGER_DIRHEADERS'), 'churchdirectory');
 
 		if ($canDo->get('core.create') || (count($user->getAuthorisedCategories('com_churchdirectory', 'core.create'))) > 0)
 		{
-			JToolBarHelper::addNew('dirheader.add');
+			JToolbarHelper::addNew('dirheader.add');
 		}
 
 		if (($canDo->get('core.edit')) || ($canDo->get('core.edit.own')))
 		{
-			JToolBarHelper::editList('dirheader.edit');
+			JToolbarHelper::editList('dirheader.edit');
 		}
 
 		if ($canDo->get('core.edit.state'))
 		{
-			JToolBarHelper::divider();
-			JToolBarHelper::publish('dirheaders.publish', 'JTOOLBAR_PUBLISH', true);
-			JToolBarHelper::unpublish('dirheaders.unpublish', 'JTOOLBAR_UNPUBLISH', true);
-			JToolBarHelper::divider();
-			JToolBarHelper::checkin('dirheaders.checkin');
+			JToolbarHelper::divider();
+			JToolbarHelper::publish('dirheaders.publish', 'JTOOLBAR_PUBLISH', true);
+			JToolbarHelper::unpublish('dirheaders.unpublish', 'JTOOLBAR_UNPUBLISH', true);
+			JToolbarHelper::divider();
+			JToolbarHelper::checkin('dirheaders.checkin');
 		}
 
 		if ($this->state->get('filter.published') == -2 && $canDo->get('core.delete'))
 		{
-			JToolBarHelper::deleteList('', 'dirheaders.delete', 'JTOOLBAR_EMPTY_TRASH');
+			JToolbarHelper::deleteList('', 'dirheaders.delete', 'JTOOLBAR_EMPTY_TRASH');
 		}
 		elseif ($canDo->get('core.edit.state'))
 		{
-			JToolBarHelper::trash('dirheaders.trash');
+			JToolbarHelper::trash('dirheaders.trash');
 		}
 
 		if (version_compare(JVERSION, '3.0.0', 'ge'))
@@ -140,10 +145,10 @@ class ChurchDirectoryViewDirHeaders extends JViewLegacy
 
 		if ($canDo->get('core.admin'))
 		{
-			JToolBarHelper::preferences('com_churchdirectory');
+			JToolbarHelper::preferences('com_churchdirectory');
 		}
 
-		JToolBarHelper::help('churchdirectory_dirheader', true);
+		JToolbarHelper::help('churchdirectory_dirheader', true);
 
 		if (version_compare(JVERSION, '3.0', 'ge'))
 		{
@@ -190,7 +195,7 @@ class ChurchDirectoryViewDirHeaders extends JViewLegacy
 	 */
 	protected function getSortFields()
 	{
-		return array(
+		return [
 			'a.ordering'     => JText::_('JGRID_HEADING_ORDERING'),
 			'a.published'    => JText::_('JSTATUS'),
 			'a.name'         => JText::_('JGLOBAL_TITLE'),
@@ -200,7 +205,6 @@ class ChurchDirectoryViewDirHeaders extends JViewLegacy
 			'a.access'       => JText::_('JGRID_HEADING_ACCESS'),
 			'a.language'     => JText::_('JGRID_HEADING_LANGUAGE'),
 			'a.id'           => JText::_('JGRID_HEADING_ID')
-		);
+		];
 	}
-
 }
