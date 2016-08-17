@@ -8,7 +8,7 @@
 defined('_JEXEC') or die;
 
 /**
- * Articles list controller class.
+ * Reports list controller class.
  *
  * @package  ChurchDirectory.Admin
  * @since    1.7.0
@@ -42,7 +42,7 @@ class ChurchDirectoryControllerReports extends JControllerAdmin
 	 *
 	 * @since    1.7.0
 	 */
-	public function getModel($name = 'Reports', $prefix = 'ChurchDirectoryModel', $config = array('ignore_request' => true))
+	public function getModel($name = 'Reports', $prefix = 'ChurchDirectoryModel', $config = ['ignore_request' => true])
 	{
 		$model = parent::getModel($name, $prefix, $config);
 
@@ -50,7 +50,7 @@ class ChurchDirectoryControllerReports extends JControllerAdmin
 	}
 
 	/**
-	 * Report Export to CSV
+	 * Report Export
 	 *
 	 * @return void
 	 *
@@ -58,21 +58,11 @@ class ChurchDirectoryControllerReports extends JControllerAdmin
 	 */
 	public function export()
 	{
-		$jweb = new JApplicationWeb;
-		$report = $jweb->input->get('report');
+		$jWeb = new JApplicationWeb;
+		$report = $jWeb->input->get('report');
+		$type   = $jWeb->input->get('cdtype');
 
-		$date = new JDate('now');
-
-		// Clean the output buffer
-		@ob_end_clean();
-		$jweb->clearHeaders();
-
-		header("Content-type: text/csv");
-		header("Content-Disposition: attachment; filename=report." . $report . '.' . $date->format('Y-m-d-His') . ".csv");
-		header("Pragma: no-cache");
-		header("Expires: 0");
-
-		$this->getModel()->getCsv();
+		$this->getModel()->getExport($type, $report);
 
 		return null;
 	}

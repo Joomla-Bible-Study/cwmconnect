@@ -8,7 +8,7 @@
 defined('_JEXEC') or die();
 
 /**
- * Class view cpanel
+ * Class view Reports
  *
  * @package  ChurchDirectory.Admin
  * @since    1.7.0
@@ -53,6 +53,10 @@ class ChurchDirectoryViewReports extends JViewLegacy
 	public function display($tpl = null)
 	{
 		ChurchDirectoryHelper::addSubmenu('reports');
+
+		$this->items      = $this->get('Items');
+		$this->pagination = $this->get('Pagination');
+		$this->state = $this->get('State');
 
 		// Check for errors.
 		if (count($errors = $this->get('Errors')))

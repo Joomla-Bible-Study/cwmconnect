@@ -16,21 +16,6 @@ if (!JFactory::getUser()->authorise('core.manage', 'com_churchdirectory'))
 	return false;
 }
 
-// Set some global property
-addCSS();
-
 $controller = JControllerLegacy::getInstance('churchdirectory');
 $controller->execute(JFactory::getApplication()->input->get('task'));
 $controller->redirect();
-
-/**
- * Global css
- *
- * @since   1.7.0
- *
- * @return void
- */
-function addCSS()
-{
-	JHtml::stylesheet('media/com_churchdirectory/css/general.css');
-}

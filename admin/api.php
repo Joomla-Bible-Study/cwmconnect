@@ -16,12 +16,14 @@ if (defined('CHURCH_DIRECTORY_LOADED'))
 }
 
 // Manually enable code profiling by setting value to 1
-define('JBSM_PROFILER', 0);
+define('CHURCH_DIRECTORY_PROFILER', 0);
 
-// Load JBSM Class
-JLoader::discover('ChurchDirectory', JPATH_ROOT . 'components/com_churchdirectory', 'true', 'true');
-JLoader::discover('ChurchDirectory', JPATH_ADMINISTRATOR . 'components/com_churchdirectory', 'true', 'true');
-JHtml::addIncludePath(JPATH_ADMINISTRATOR . 'components/com_churchdirectory/helpers' . '/html/');
+// Load ChurchDirectory Class
+JLoader::discover('ChurchDirectory', JPATH_ROOT . '/components/com_churchdirectory', 'true', 'true');
+JLoader::discover('ChurchDirectory', JPATH_ADMINISTRATOR . '/components/com_churchdirectory', 'true', 'true');
+JHtml::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_churchdirectory/helpers' . '/html/');
 
-// JBSM has been initialized
-define('CHURCH_DIRECTORY', 1);
+JHtml::stylesheet('media/com_churchdirectory/css/general.css');
+
+// ChurchDirectory has been initialized
+define('CHURCH_DIRECTORY_LOADED', 1);

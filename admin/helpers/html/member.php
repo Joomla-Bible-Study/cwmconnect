@@ -7,7 +7,7 @@
 
 defined('_JEXEC') or die;
 
-JLoader::register('ChurchDirectoryHelper', JPATH_ADMINISTRATOR . '/components/com_churchdirectory/helpers/churchdirectory.php');
+JLoader::register('ChurchDirectoryHelper', JPATH_ADMINISTRATOR . '/components/com_churchdirectory/helpers/helper.php');
 
 /**
  * Abstract class for JhtmlMember
@@ -21,6 +21,8 @@ abstract class JHtmlMember
 	 * Association of members
 	 *
 	 * @param   int  $memberid  The Member item id
+	 *
+	 * @since 1.7.5
 	 *
 	 * @return mixed
 	 */
@@ -57,14 +59,14 @@ abstract class JHtmlMember
 		}
 
 		// Construct html
-		$text = array();
+		$text = [];
 
 		foreach ($associations as $tag => $associated)
 		{
 			if ($associated != $memberid)
 			{
 				$text[] = JText::sprintf('COM_CHURCHDIRECTORY_TIP_ASSOCIATED_LANGUAGE', JHtml::_('image', 'mod_languages/' . $items[$associated]->image . '.gif',
-						$items[$associated]->language_title, array('title' => $items[$associated]->language_title), true
+						$items[$associated]->language_title, ['title' => $items[$associated]->language_title], true
 				), $items[$associated]->name, $items[$associated]->category_title
 				);
 			}
@@ -87,10 +89,10 @@ abstract class JHtmlMember
 	public static function featured($value = 0, $i = 0, $canChange = true)
 	{
 		// Array of image, task, title, action
-		$states = array(
-			0 => array('disabled.png', 'members.featured', 'COM_CHURCHDIRECTORY_UNFEATURED', 'COM_CHURCHDIRECTORY_TOGGLE_TO_FEATURE'),
-			1 => array('featured.png', 'members.unfeatured', 'JFEATURED', 'COM_CHURCHDIRECTORY_TOGGLE_TO_UNFEATURE'),
-		);
+		$states = [
+			0 => ['disabled.png', 'members.featured', 'COM_CHURCHDIRECTORY_UNFEATURED', 'COM_CHURCHDIRECTORY_TOGGLE_TO_FEATURE'],
+			1 => ['featured.png', 'members.unfeatured', 'JFEATURED', 'COM_CHURCHDIRECTORY_TOGGLE_TO_UNFEATURE'],
+		];
 		$state  = Joomla\Utilities\ArrayHelper::getValue($states, (int) $value, $states[1]);
 		$html   = JHtml::_('image', 'admin/' . $state[0], JText::_($state[2]), null, true);
 
@@ -106,18 +108,18 @@ abstract class JHtmlMember
 	/**
 	 * Method to get the field options.
 	 *
-	 * @return   array    The field option objects.
+	 * @return   object    The field option objects.
 	 *
 	 * @since    1.6
 	 */
 	public static function status()
 	{
-		$options = array();
+		$options = [];
 
-		$options[] = array('value' => 0, 'text' => JText::_('COM_CHURCHDIRECTORY_ACTIVE_MEMBER'));
-		$options[] = array('value' => 1, 'text' => JText::_('COM_CHURCHDIRECTORY_INACTIVE'));
-		$options[] = array('value' => 2, 'text' => JText::_('COM_CHURCHDIRECTORY_ACTIVE_ATTENDEE'));
-		$options[] = array('value' => 3, 'text' => JText::_('COM_CHURCHDIRECTORY_NONE_MEMBER'));
+		$options[] = ['value' => 0, 'text' => JText::_('COM_CHURCHDIRECTORY_ACTIVE_MEMBER')];
+		$options[] = ['value' => 1, 'text' => JText::_('COM_CHURCHDIRECTORY_INACTIVE')];
+		$options[] = ['value' => 2, 'text' => JText::_('COM_CHURCHDIRECTORY_ACTIVE_ATTENDEE')];
+		$options[] = ['value' => 3, 'text' => JText::_('COM_CHURCHDIRECTORY_NONE_MEMBER')];
 
 		$object = new stdClass;
 

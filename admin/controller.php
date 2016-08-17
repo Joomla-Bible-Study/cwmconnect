@@ -42,8 +42,6 @@ class ChurchDirectoryController extends JControllerLegacy
 	 */
 	public function display($cachable = false, $urlparams = [])
 	{
-		require_once JPATH_COMPONENT . '/helpers/churchdirectory.php';
-
 		$this->input = new JInput;
 		$view        = $this->input->get('view', 'cpanel');
 		$layout      = $this->input->get('layout', 'default');

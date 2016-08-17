@@ -120,6 +120,9 @@ class ChurchDirectoryModelReports extends JModelLegacy
 		$mstatus = $app->input->get('filter_mstatus', $mergedParams->get('mstatus', '0'));
 		$this->setState('filter.mstatus', $mstatus);
 
+		$order = $app->input->get('filter_order', $mergedParams->get('order', 'a.id'));
+		$this->setState('filter.order', $order);
+
 		// Load the parameters.
 		$this->setState('params', $params);
 	}
@@ -264,7 +267,12 @@ class ChurchDirectoryModelReports extends JModelLegacy
 		}
 
 		// Filter by Member Status
-		$query->where('a.mstatus = ' . $this->getState('filter.mstatus'));
+		$mstatus = $this->getState('filter.mstatus');
+
+		if ($mstatus)
+		{
+			$query->where('a.mstatus = ' . $mstatus);
+		}
 
 		// Filter by language
 		if ($this->getState('filter.language'))
@@ -272,141 +280,36 @@ class ChurchDirectoryModelReports extends JModelLegacy
 			$query->where('a.language in (' . $db->q(JFactory::getLanguage()->getTag()) . ',' . $db->q('*') . ')');
 		}
 
+		$order = $this->getState('filter.order', 'a.id');
+
 		// Set sortname ordering if selected
-		$query->order($db->escape('a.id') . ' ' . $db->escape('ASC'));
+		$query->order($db->escape($order) . ' ' . $db->escape('ASC'));
 
 		return $query;
 	}
 
 	/**
-	 * CVS Dump
+	 * Export
 	 *
-	 * @return bool
+	 * @param   string  $type    Type of export
+	 * @param   string  $report  Name of report for file.
 	 *
-	 * @since    1.7.0
+	 * @since 1.7.10
+	 *
+	 * @return void
 	 */
-	public function getCsv()
+	public function getExport($type, $report)
 	{
 		$this->setState('filter.published', '1');
 		$this->populateState();
-		$db    = $this->getDbo();
-		$items = $db->setQuery($this->getListQuery())->loadObjectList();
-		$csv   = fopen('php://output', 'w');
 
-		$count = 0;
+		$reportBuild = new ChurchDirectoryReportbuild;
+		$items  = $this->_db->setQuery($this->getListQuery())->loadObjectList();
 
-		foreach ($items as $line)
+		switch ($type)
 		{
-			foreach ($line as $c => $item)
-			{
-				if ($c == 'params')
-				{
-					$reg = new Joomla\Registry\Registry;
-					$reg->loadString($item);
-					$params = $reg->toObject();
-					unset($line->params);
-					$line = (object) array_merge((array) $line, (array) $params);
-				}
-				elseif ($c == 'attribs')
-				{
-					$reg = new Joomla\Registry\Registry;
-					$reg->loadString($item);
-					$params = $reg->toObject();
-					$params_att = new stdClass;
-
-					foreach ($params as $p => $item_p)
-					{
-						$p = 'att_' . $p;
-
-						if ($p == 'sex')
-						{
-							switch ($item_p)
-							{
-								case (0):
-									$params_att->$p = 'M';
-									break;
-								case (1):
-									$params_att->$p = 'F';
-									break;
-							}
-						}
-						else
-						{
-							$params_att->$p = $item_p;
-						}
-					}
-
-					unset($line->attribs);
-					$line = (object) array_merge((array) $line, (array) $params_att);
-				}
-				elseif ($c == 'kml_params')
-				{
-					$reg = new Joomla\Registry\Registry;
-					$reg->loadString($item);
-					$params = $reg->toObject();
-					unset($line->kml_params);
-					$line = (object) array_merge((array) $line, (array) $params);
-				}
-				elseif ($c == 'category_params')
-				{
-					$reg = new Joomla\Registry\Registry;
-					$reg->loadString($item);
-					$params = $reg->toObject();
-					unset($line->category_params);
-					$line = (object) array_merge((array) $line, (array) $params);
-				}
-				elseif ($c == 'metadata')
-				{
-					$reg = new Joomla\Registry\Registry;
-					$reg->loadString($item);
-					$params = $reg->toObject();
-					unset($line->metadata);
-					$line = (object) array_merge((array) $line, (array) $params);
-				}
-				elseif ($c == 'con_position')
-				{
-					$pos = [];
-
-					if ($item != 0)
-					{
-						$positions = explode(',', $item);
-
-						foreach ($positions as $p => $position)
-						{
-							$query = $this->_db->getQuery(true);
-
-							// Join on Position.
-							$query->select('name');
-							$query->from('#__churchdirectory_position');
-							$query->where('id =' . $position);
-							$this->_db->setQuery($query);
-							$pos[] = $this->_db->loadResult();
-						}
-					}
-					else
-					{
-						$pos[] = null;
-					}
-
-					unset($line->con_position);
-					$line = (object) array_merge((array) $line, ['con_position' => implode(",", $pos)]);
-				}
-				elseif ($c == 'image')
-				{
-					$line->$c = JUri::root() . $item;
-				}
-			}
-
-			if ($count == 0)
-			{
-				$array = get_object_vars($line);
-				fputcsv($csv, array_keys($array));
-			}
-
-			$count = 1;
-			fputcsv($csv, (array) $line);
+			case 'csv':
+				$reportBuild->getCsv($items, $report);
 		}
-
-		return fclose($csv);
 	}
 }

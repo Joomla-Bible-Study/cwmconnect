@@ -1,0 +1,200 @@
+<?php
+/**
+ * Reports Builder
+ *
+ * @package    ChurchDirectory.Admin
+ * @copyright  2007 - 2016 (C) Joomla Bible Study Team All rights reserved.
+ * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ */
+
+/**
+ * Class ChurchDirectoryReportbuild
+ *
+ * @since  1.7.10
+ */
+class ChurchDirectoryReportbuild
+{
+	/**
+	 * Private
+	 *
+	 * @var JDatabaseDriver
+	 *
+	 * @since 1.7.10
+	 */
+	private $db;
+
+	/**
+	 * ChurchDirectoryReportbuild constructor.
+	 *
+	 * @since  1.7.10
+	 */
+	public function __construct()
+	{
+		if (!$this->db)
+		{
+			$this->db = JFactory::getDbo();
+		}
+	}
+
+	/**
+	 * CVS Dump
+	 *
+	 * @param   object  $items   Items to pass through
+	 * @param   string  $report  Name of report to return.
+	 *
+	 * @return bool
+	 *
+	 * @since    1.7.0
+	 */
+	public function getCsv($items, $report)
+	{
+		$date = new JDate('now');
+		$jWeb = new JApplicationWeb;
+
+		$csv   = fopen('php://output', 'w');
+		$jWeb->clearHeaders();
+
+		// Clean the output buffer,
+		@ob_end_clean();
+		@ob_start();
+
+		header("Content-type: text/csv");
+		header("Content-Disposition: attachment; filename=report." . $report . '.' . $date->format('Y-m-d-His') . ".csv");
+		header("Pragma: no-cache");
+		header("Expires: 0");
+		$count = 0;
+
+		foreach ($items as $line)
+		{
+			foreach ($line as $c => $item)
+			{
+				if ($c == 'params')
+				{
+					$reg = new Joomla\Registry\Registry;
+					$reg->loadString($item);
+					$params = $reg->toObject();
+					unset($line->params);
+					$line = (object) array_merge((array) $line, (array) $params);
+				}
+				elseif ($c == 'attribs')
+				{
+					$reg = new Joomla\Registry\Registry;
+					$reg->loadString($item);
+					$params     = $reg->toObject();
+					$params_att = new stdClass;
+
+					foreach ($params as $p => $item_p)
+					{
+						$p = 'att_' . $p;
+
+						if ($p == 'sex')
+						{
+							switch ($item_p)
+							{
+								case (0):
+									$params_att->$p = 'M';
+									break;
+								case (1):
+									$params_att->$p = 'F';
+									break;
+							}
+						}
+						else
+						{
+							$params_att->$p = $item_p;
+						}
+					}
+
+					unset($line->attribs);
+					$line = (object) array_merge((array) $line, (array) $params_att);
+				}
+				elseif ($c == 'kml_params')
+				{
+					$reg = new Joomla\Registry\Registry;
+					$reg->loadString($item);
+					$params = $reg->toObject();
+					unset($line->kml_params);
+					$line = (object) array_merge((array) $line, (array) $params);
+				}
+				elseif ($c == 'category_params')
+				{
+					$reg = new Joomla\Registry\Registry;
+					$reg->loadString($item);
+					$params = $reg->toObject();
+					unset($line->category_params);
+					$line = (object) array_merge((array) $line, (array) $params);
+				}
+				elseif ($c == 'metadata')
+				{
+					$reg = new Joomla\Registry\Registry;
+					$reg->loadString($item);
+					$params = $reg->toObject();
+					unset($line->metadata);
+					$line = (object) array_merge((array) $line, (array) $params);
+				}
+				elseif ($c == 'con_position')
+				{
+					$pos = [];
+
+					if ($item != 0)
+					{
+						$positions = explode(',', $item);
+
+						foreach ($positions as $p => $position)
+						{
+							$query = $this->db->getQuery(true);
+
+							// Join on Position.
+							$query->select('name');
+							$query->from('#__churchdirectory_position');
+							$query->where('id =' . $position);
+							$this->db->setQuery($query);
+							$pos[] = $this->db->loadResult();
+						}
+					}
+					else
+					{
+						$pos[] = null;
+					}
+
+					unset($line->con_position);
+					$line = (object) array_merge((array) $line, ['con_position' => implode(",", $pos)]);
+				}
+				elseif ($c == 'image')
+				{
+					$line->$c = JUri::root() . $item;
+				}
+			}
+
+			if ($count == 0)
+			{
+				$array = get_object_vars($line);
+				fputcsv($csv, array_keys($array));
+			}
+
+			$count = 1;
+			fputcsv($csv, (array) $line);
+		}
+
+		@ob_flush();
+		@flush();
+
+		fclose($csv);
+		exit;
+	}
+
+	/**
+	 * PDF export
+	 *
+	 * @param   object  $items   Items to pass through
+	 * @param   string  $report  Name of report to return.
+	 *
+	 * @return bool
+	 *
+	 * @since    1.7.0
+	 */
+	public function getPDF($items, $report)
+	{
+		// Hold
+	}
+}

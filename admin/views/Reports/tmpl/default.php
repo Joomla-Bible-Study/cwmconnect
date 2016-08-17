@@ -22,7 +22,7 @@ $user = JFactory::getUser();
 			<?php endif;
 			if (!in_array($this->state->get('reportslevel', '8'), $user->groups))
 				{
-					JFactory::getApplication()->enqueueMessage('Only Super Admin can access reports', 'worning');
+					JFactory::getApplication()->enqueueMessage('Only Super Admin can access reports', 'warning');
 				}
 				else
 				{
@@ -30,7 +30,7 @@ $user = JFactory::getUser();
 					<h2>Members Reports</h2>
 					<p>The fallowing button will output all Members in a CSV file.</p>
 
-					<a href="<?php echo JRoute::_('index.php?option=com_churchdirectory&task=reports.export&report=all'); ?>">
+					<a href="<?php echo JRoute::_('index.php?option=com_churchdirectory&task=reports.export&report=all&cdtype=csv'); ?>">
 						<img src="<?php echo JRoute::_(JUri::root() . 'media/com_churchdirectory/images/csv_file.png'); ?>" alt="" />
 						<span class="btn btn-default">Report CSV</span>
 					</a>
