@@ -72,7 +72,7 @@ class ChurchDirectoryModelPositions extends JModelList
 	 *
 	 * @since    1.7.0
 	 */
-	protected function populateState($ordering = '', $direction = '')
+	protected function populateState($ordering = 'a.name', $direction = 'asc')
 	{
 		// Initialise variables.
 		$app = JFactory::getApplication();
@@ -97,16 +97,8 @@ class ChurchDirectoryModelPositions extends JModelList
 		$this->setState('filter.tag', $this->getUserStateFromRequest($this->context . '.filter.tag', 'filter_tag', '', 'string'));
 		$this->setState('filter.level', $this->getUserStateFromRequest($this->context . '.filter.level', 'filter_level', null, 'int'));
 
-		// Workaroind for Joomla not passing state right.
-		$order = $this->getUserStateFromRequest($this->context . '.list.fullordering', 'list_fullordering', '', 'string');
-		$order = explode(' ', $order);
-		$ordering = $order[0];
-		$direction = $order[1];
-		$this->setState('list.orderings', $ordering);
-		$this->setState('list.directions', $direction);
-
 		// List state information.
-		parent::populateState();
+		parent::populateState($ordering, $direction);
 
 		// Force a language.
 		if (!empty($forcedLanguage))
@@ -157,49 +149,52 @@ class ChurchDirectoryModelPositions extends JModelList
 
 		// Select the required fields from the table.
 		$query->select(
-			$this->getState(
-				'list.select', 'a.id, a.name, a.alias, a.checked_out, a.checked_out_time, a.user_id' .
-				', a.published, a.access, a.created, a.created_by, a.ordering, a.language' .
-				', a.publish_up, a.publish_down'
+			$db->qn(
+				explode(', ', $this->getState(
+					'list.select', 'a.id, a.name, a.alias, a.checked_out, a.checked_out_time, a.user_id' .
+					', a.published, a.access, a.created, a.created_by, a.ordering, a.language' .
+					', a.publish_up, a.publish_down'
+					)
+				)
 			)
 		);
-		$query->from('#__churchdirectory_position AS a');
+		$query->from($db->qn('#__churchdirectory_position', 'a'));
 
 		// Join over the users for the linked user.
 		$query->select(
 			[
-				$db->quoteName('ul.name', 'linked_user'),
-				$db->quoteName('ul.email')
+				$db->qn('ul.name', 'linked_user'),
+				$db->qn('ul.email')
 			]
 		)
 			->join(
 				'LEFT',
-				$db->quoteName('#__users', 'ul') . ' ON ' . $db->quoteName('ul.id') . ' = ' . $db->quoteName('a.user_id')
+				$db->qn('#__users', 'ul') . ' ON ' . $db->qn('ul.id') . ' = ' . $db->qn('a.user_id')
 			);
 
 		// Join over the language
-		$query->select('l.title AS language_title');
-		$query->join('LEFT', $db->quoteName('#__languages') . ' AS l ON l.lang_code = a.language');
+		$query->select($db->qn('l.title', 'language_title'));
+		$query->join('LEFT', $db->qn('#__languages', 'l') . ' ON ' . $db->qn('l.lang_code') . ' = ' . $db->qn('a.language'));
 
 		// Join over the users for the checked out user.
-		$query->select('uc.name AS editor');
-		$query->join('LEFT', '#__users AS uc ON uc.id=a.checked_out');
+		$query->select($db->qn('uc.name', 'editor'));
+		$query->join('LEFT', $db->qn('#__users', 'uc') . ' ON ' . $db->qn('uc.id') . ' = ' . $db->qn('a.checked_out'));
 
 		// Join over the asset groups.
-		$query->select('ag.title AS access_level');
-		$query->join('LEFT', '#__viewlevels AS ag ON ag.id = a.access');
+		$query->select($db->qn('ag.title', 'access_level'));
+		$query->join('LEFT', $db->qn('#__viewlevels', 'ag') . ' ON ' . $db->qn('ag.id') . ' = ' . $db->qn('a.access'));
 
 		// Filter by access level.
 		if ($access = $this->getState('filter.access'))
 		{
-			$query->where('a.access = ' . (int) $access);
+			$query->where($db->qn('a.access') . ' = ' . (int) $access);
 		}
 
 		// Implement View Level Access
 		if (!$user->authorise('core.admin'))
 		{
 			$groups = implode(',', $user->getAuthorisedViewLevels());
-			$query->where('a.access IN (' . $groups . ')');
+			$query->where($db->qn('a.access') . ' IN (' . $groups . ')');
 		}
 
 		// Filter by published state
@@ -207,11 +202,11 @@ class ChurchDirectoryModelPositions extends JModelList
 
 		if (is_numeric($published))
 		{
-			$query->where('a.published = ' . (int) $published);
+			$query->where($db->qn('a.published') . ' = ' . (int) $published);
 		}
 		elseif ($published === '')
 		{
-			$query->where('(a.published = 0 OR a.published = 1)');
+			$query->where('(' . $db->qn('a.published') . ' = 0 OR ' . $db->qn('a.published') . ' = 1)');
 		}
 
 		// Filter by search in name.
@@ -246,12 +241,12 @@ class ChurchDirectoryModelPositions extends JModelList
 
 		if (is_numeric($tagId))
 		{
-			$query->where($db->quoteName('tagmap.tag_id') . ' = ' . (int) $tagId)
+			$query->where($db->qn('tagmap.tag_id') . ' = ' . (int) $tagId)
 				->join(
 					'LEFT',
-					$db->quoteName('#__contentitem_tag_map', 'tagmap')
-					. ' ON ' . $db->quoteName('tagmap.content_item_id') . ' = ' . $db->quoteName('a.id')
-					. ' AND ' . $db->quoteName('tagmap.type_alias') . ' = ' . $db->quote('com_churchdirectory.position')
+					$db->qn('#__contentitem_tag_map', 'tagmap')
+					. ' ON ' . $db->qn('tagmap.content_item_id') . ' = ' . $db->qn('a.id')
+					. ' AND ' . $db->qn('tagmap.type_alias') . ' = ' . $db->q('com_churchdirectory.position')
 				);
 		}
 
@@ -261,13 +256,13 @@ class ChurchDirectoryModelPositions extends JModelList
 			$query->where('c.level <= ' . (int) $level);
 		}
 
-		// Add the list ordering clause. Added s to list to bypass joomla
-		$orderCol  = $this->state->get('list.orderings', 'a.name');
-		$orderDirn = $this->state->get('list.directions', 'acs');
+		// Add the list ordering clause.
+		$orderCol  = $this->state->get('list.ordering', 'a.name');
+		$orderDirn = $this->state->get('list.direction', 'asc');
 
 		if ($orderCol == 'a.ordering' || $orderCol == 'category_title')
 		{
-			$orderCol = $db->quoteName('c.title') . ' ' . $orderDirn . ', ' . $db->quoteName('a.ordering');
+			$orderCol = $db->qn('c.title ') . $orderDirn . ', ' . $db->qn('a.ordering');
 		}
 
 		$query->order($db->escape($orderCol . ' ' . $orderDirn));

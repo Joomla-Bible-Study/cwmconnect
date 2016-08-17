@@ -57,6 +57,8 @@ class ChurchDirectoryViewGeoUpdate extends JViewLegacy
 	 */
 	protected $percentage;
 
+	protected $state;
+
 	/**
 	 * Display the view
 	 *
@@ -71,10 +73,13 @@ class ChurchDirectoryViewGeoUpdate extends JViewLegacy
 		// Set the toolbar title
 		JToolbarHelper::title(JText::_('COM_CHURCHDIRECTORY_TITLE_GEOUPDATE'), 'churchdirectory');
 		$app   = JFactory::getApplication();
-		$state = $app->input->getBool('scanstate', false);
-		$this->loadStack();
+		$this->state = $app->input->get('scanstate', false);
 
-		if ($state)
+		$load = $this->loadStack();
+		$more = true;
+		$percent = 0;
+
+		if ($this->state && $load)
 		{
 			if ($this->totalMembers > 0)
 			{
@@ -85,7 +90,7 @@ class ChurchDirectoryViewGeoUpdate extends JViewLegacy
 
 			$more = true;
 		}
-		else
+		elseif ($load)
 		{
 			$percent = 100;
 			$more    = false;
@@ -94,7 +99,7 @@ class ChurchDirectoryViewGeoUpdate extends JViewLegacy
 		$this->more = $more;
 		$this->setLayout('default');
 
-		$this->percentage = & $percent;
+		$this->percentage = $percent;
 
 		if ($more)
 		{
@@ -110,7 +115,7 @@ class ChurchDirectoryViewGeoUpdate extends JViewLegacy
 	/**
 	 * Loads the file/folder stack from the session
 	 *
-	 * @return void
+	 * @return bool
 	 *
 	 * @since    1.7.0
 	 */
@@ -119,13 +124,14 @@ class ChurchDirectoryViewGeoUpdate extends JViewLegacy
 		$session = JFactory::getSession();
 		$stack   = $session->get('geoupdate_stack', '', 'churchdirectory');
 
+
 		if (empty($stack))
 		{
 			$this->membersStack = [];
 			$this->totalMembers = 0;
 			$this->doneMembers  = 0;
 
-			return;
+			return false;
 		}
 
 		if (function_exists('base64_encode') && function_exists('base64_decode'))
@@ -143,5 +149,7 @@ class ChurchDirectoryViewGeoUpdate extends JViewLegacy
 		$this->membersStack = $stack['members'];
 		$this->totalMembers = $stack['total'];
 		$this->doneMembers  = $stack['done'];
+
+		return true;
 	}
 }

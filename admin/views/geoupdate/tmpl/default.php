@@ -16,16 +16,33 @@ JHtml::_('behavior.modal');
 	<h1><?php echo JText::_('COM_CHURCHDIRECTORY_LBL_GEOUPDATEDONE'); ?></h1>
 <?php endif; ?>
 
+<script type="text/javascript" language="javascript">
+	if (typeof jQuery == 'function') {
+		if (typeof jQuery.ui == 'object') {
+			jQuery('#nojquerywarning').css('display', 'none');
+		}
+	}
+</script>
+
 
 <div class="progress progress-striped active">
 	<div class="bar" style="width: <?php echo $this->percentage ?>%"></div>
 </div>
 
-<form action="index.php" name="adminForm" id="adminForm">
+<form action="index.php" name="adminForm" id="adminForm" method="get">
 	<input type="hidden" name="option" value="com_churchdirectory"/>
 	<input type="hidden" name="view" value="geoupdate"/>
-	<input type="hidden" name="task" value="geoupdate.run"/>
+	<?php if ($this->state === 'start')
+	{ ?>
+		<input type="hidden" name="task" value="geoupdate.browse"/>
+	<?php }
+	else
+	{
+		?>
+		<input type="hidden" name="task" value="geoupdate.run"/>
+	<?php } ?>
 	<input type="hidden" name="tmpl" value="component"/>
+	<?php echo JHtml::_('form.token'); ?>
 </form>
 
 <?php if (!$this->more): ?>

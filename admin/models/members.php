@@ -7,6 +7,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\Utilities\ArrayHelper;
+
 /**
  * Methods supporting a list of Member records.
  *
@@ -67,42 +69,41 @@ class ChurchDirectoryModelMembers extends JModelList
 	 *
 	 * @since    1.7.0
 	 */
-	protected function populateState($ordering = null, $direction = null)
+	protected function populateState($ordering = 'a.name', $direction = 'asc')
 	{
+		$app = JFactory::getApplication();
+
+		$forcedLanguage = $app->input->get('forcedLanguage', '', 'cmd');
+
 		// Adjust the context to support modal layouts.
-		if ($layout = JFactory::getApplication()->input->get('layout'))
+		if ($layout = $app->input->get('layout'))
 		{
 			$this->context .= '.' . $layout;
 		}
 
-		$search = $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search');
-		$this->setState('filter.search', $search);
+		// Adjust the context to support forced languages.
+		if ($forcedLanguage)
+		{
+			$this->context .= '.' . $forcedLanguage;
+		}
 
-		$access = $this->getUserStateFromRequest($this->context . '.filter.access', 'filter_access', 0, 'int');
-		$this->setState('filter.access', $access);
-
-		$published = $this->getUserStateFromRequest($this->context . '.filter.published', 'filter_published', '');
-		$this->setState('filter.published', $published);
-
-		$categoryId = $this->getUserStateFromRequest($this->context . '.filter.category_id', 'filter_category_id');
-		$this->setState('filter.category_id', $categoryId);
-
-		$language = $this->getUserStateFromRequest($this->context . '.filter.language', 'filter_language', '');
-		$this->setState('filter.language', $language);
-
-		$mstatus = $this->getUserStateFromRequest($this->context . '.filter.mstatus', 'filter_mstatus', '');
-		$this->setState('filter.mstatus', $mstatus);
-
-		// Workaroind for Joomla not passing state right.
-		$order     = $this->getUserStateFromRequest($this->context . '.list.fullordering', 'list_fullordering', '', 'string');
-		$order     = explode(' ', $order);
-		$ordering  = $order[0];
-		$direction = $order[1];
-		$this->setState('list.orderings', $ordering);
-		$this->setState('list.directions', $direction);
+		$this->setState('filter.search', $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search', '', 'string'));
+		$this->setState('filter.published', $this->getUserStateFromRequest($this->context . '.filter.published', 'filter_published', '', 'string'));
+		$this->setState('filter.category_id', $this->getUserStateFromRequest($this->context . '.filter.category_id', 'filter_category_id', '', 'string'));
+		$this->setState('filter.access', $this->getUserStateFromRequest($this->context . '.filter.access', 'filter_access', '', 'cmd'));
+		$this->setState('filter.language', $this->getUserStateFromRequest($this->context . '.filter.language', 'filter_language', '', 'string'));
+		$this->setState('filter.tag', $this->getUserStateFromRequest($this->context . '.filter.tag', 'filter_tag', '', 'string'));
+		$this->setState('filter.level', $this->getUserStateFromRequest($this->context . '.filter.level', 'filter_level', null, 'int'));
+		$this->setState('filter.mstatus', $this->getUserStateFromRequest($this->context . '.filter.mstatus', 'filter_mstatus', '', 'string'));
 
 		// List state information.
 		parent::populateState($ordering, $direction);
+
+		// Force a language.
+		if (!empty($forcedLanguage))
+		{
+			$this->setState('filter.language', $forcedLanguage);
+		}
 	}
 
 	/**
@@ -122,11 +123,13 @@ class ChurchDirectoryModelMembers extends JModelList
 	{
 		// Compile the store id.
 		$id .= ':' . $this->getState('filter.search');
-		$id .= ':' . $this->getState('filter.access');
 		$id .= ':' . $this->getState('filter.published');
 		$id .= ':' . $this->getState('filter.category_id');
+		$id .= ':' . $this->getState('filter.access');
 		$id .= ':' . $this->getState('filter.language');
 		$id .= ':' . $this->getState('filter.mstatus');
+		$id .= ':' . $this->getState('filter.tag');
+		$id .= ':' . $this->getState('filter.level');
 
 		return parent::getStoreId($id);
 	}
@@ -147,49 +150,53 @@ class ChurchDirectoryModelMembers extends JModelList
 
 		// Select the required fields from the table.
 		$query->select(
-			$this->getState(
-				'list.select', 'a.id, a.name, a.lname, a.funitid, a.alias, a.checked_out, a.checked_out_time, a.catid, a.user_id' .
-				', a.published, a.access, a.created, a.created_by, a.ordering, a.featured, a.language, a.mstatus' .
-				', a.publish_up, a.publish_down'
+			$db->qn(
+				explode(', ', $this->getState(
+					'list.select',
+					'a.id, a.name, a.lname, a.funitid, a.alias, a.checked_out, a.checked_out_time, a.catid, a.user_id' .
+					', a.published, a.access, a.created, a.created_by, a.ordering, a.featured, a.language, a.mstatus' .
+					', a.publish_up, a.publish_down'
+					)
+				)
 			)
 		);
-		$query->from('#__churchdirectory_details AS a');
+		$query->from($db->qn('#__churchdirectory_details', 'a'));
 
 		// Join over the users for the linked user.
-		$query->select('ul.name AS linked_user');
-		$query->join('LEFT', '#__users AS ul ON ul.id=a.user_id');
+		$query->select($db->qn('ul.name', 'linked_user'));
+		$query->join('LEFT', $db->qn('#__users', 'ul') . ' ON ' . $db->qn('ul.id') . ' = ' . $db->qn('a.user_id'));
 
 		// Join over the Fiamily Units.
-		$query->select('fu.name AS funitname');
-		$query->join('LEFT', '#__churchdirectory_familyunit AS fu ON fu.id=a.funitid');
+		$query->select($db->qn('fu.name', 'funitname'));
+		$query->join('LEFT', $db->qn('#__churchdirectory_familyunit', 'fu') . ' ON ' . $db->qn('fu.id') . ' = ' . $db->qn('a.funitid'));
 
 		// Join over the language
-		$query->select('l.title AS language_title');
-		$query->join('LEFT', $db->quoteName('#__languages') . ' AS l ON l.lang_code = a.language');
+		$query->select($db->qn('l.title', 'language_title'));
+		$query->join('LEFT', $db->qn('#__languages', 'l') . ' ON ' . $db->qn('l.lang_code') . ' = ' . $db->qn('a.language'));
 
 		// Join over the users for the checked out user.
-		$query->select('uc.name AS editor');
-		$query->join('LEFT', '#__users AS uc ON uc.id=a.checked_out');
+		$query->select($db->qn('uc.name', 'editor'));
+		$query->join('LEFT', $db->qn('#__users', 'uc') . ' ON ' . $db->qn('uc.id') . ' = ' . $db->qn('a.checked_out'));
 
 		// Join over the asset groups.
-		$query->select('ag.title AS access_level');
-		$query->join('LEFT', '#__viewlevels AS ag ON ag.id = a.access');
+		$query->select($db->qn('ag.title', 'access_level'));
+		$query->join('LEFT', $db->qn('#__viewlevels', 'ag') . ' ON ' . $db->qn('ag.id') . ' = ' . $db->qn('a.access'));
 
 		// Join over the categories.
-		$query->select('c.title AS category_title');
-		$query->join('LEFT', '#__categories AS c ON c.id = a.catid');
+		$query->select($db->qn('c.title', 'category_title'));
+		$query->join('LEFT', $db->qn('#__categories', 'c') . ' ON ' . $db->qn('c.id') . ' = ' . $db->qn('a.catid'));
 
 		// Filter by access level.
 		if ($access = $this->getState('filter.access'))
 		{
-			$query->where('a.access = ' . (int) $access);
+			$query->where($db->qn('a.access') . ' = ' . (int) $access);
 		}
 
 		// Implement View Level Access
 		if (!$user->authorise('core.admin'))
 		{
 			$groups = implode(',', $user->getAuthorisedViewLevels());
-			$query->where('a.access IN (' . $groups . ')');
+			$query->where($db->qn('a.access') . ' IN (' . $groups . ')');
 		}
 
 		// Filter by published state
@@ -197,11 +204,11 @@ class ChurchDirectoryModelMembers extends JModelList
 
 		if (is_numeric($published))
 		{
-			$query->where('a.published = ' . (int) $published);
+			$query->where($db->qn('a.published') . ' = ' . (int) $published);
 		}
 		elseif ($published === '')
 		{
-			$query->where('(a.published = 0 OR a.published = 1)');
+			$query->where('(' . $db->qn('a.published') . ' = 0 OR' . $db->qn('a.published') . ' = 1)');
 		}
 
 		// Filter by a single or group of categories.
@@ -209,13 +216,11 @@ class ChurchDirectoryModelMembers extends JModelList
 
 		if (is_numeric($categoryId))
 		{
-			$query->where('a.catid = ' . (int) $categoryId);
+			$query->where($db->qn('a.catid') . ' = ' . (int) $categoryId);
 		}
 		elseif (is_array($categoryId))
 		{
-			Joomla\Utilities\ArrayHelper::toInteger($categoryId);
-			$categoryId = implode(',', $categoryId);
-			$query->where('a.catid IN (' . $categoryId . ')');
+			$query->where($db->qn('a.catid') . ' IN (' . implode(',', ArrayHelper::toInteger($categoryId)) . ')');
 		}
 
 		// Filter by search in name.
@@ -229,41 +234,54 @@ class ChurchDirectoryModelMembers extends JModelList
 			}
 			elseif (stripos($search, 'author:') === 0)
 			{
-				$search = $db->q('%' . $db->escape(substr($search, 7), true) . '%');
+				$search = $db->q('%' . str_replace(' ', '%', $db->escape(trim(substr($search, 7)), true) . '%'));
 				$query->where('(uc.name LIKE ' . $search . ' OR uc.username LIKE ' . $search . ')');
 			}
 			elseif (stripos($search, 'zip:') === 0)
 			{
-				$search = $db->q('%' . $db->escape(substr($search, 4), true) . '%');
-				$search = trim($search);
+				$search = $db->q('%' . str_replace(' ', '%', $db->escape(trim(substr($search, 4)), true) . '%'));
 				$query->where('a.postcode LIKE ' . $search);
 			}
 			else
 			{
 				$search = $db->q('%' . $db->escape($search, true) . '%');
-				$query->where('(a.name LIKE ' . $search . ' OR a.alias LIKE ' . $search . ')');
+				$query->where('(' . $db->qn('a.name') . ' LIKE ' . $search . ' OR ' . $db->qn('a.alias') . ' LIKE ' . $search . ')');
 			}
 		}
 
 		// Filter on the language.
 		if ($language = $this->getState('filter.language'))
 		{
-			$query->where('a.language = ' . $db->quote($language));
+			$query->where($db->qn('a.language') . ' = ' . $db->q($language));
 		}
 
 		// Filter on the language.
 		if ($mstatus = $this->getState('filter.mstatus'))
 		{
-			$query->where('a.mstatus = ' . $db->quote($mstatus));
+			$query->where('a.mstatus = ' . $db->q($mstatus));
+		}
+
+		// Filter by a single tag.
+		$tagId = $this->getState('filter.tag');
+
+		if (is_numeric($tagId))
+		{
+			$query->where($db->quoteName('tagmap.tag_id') . ' = ' . (int) $tagId)
+				->join(
+					'LEFT',
+					$db->quoteName('#__contentitem_tag_map', 'tagmap')
+					. ' ON ' . $db->quoteName('tagmap.content_item_id') . ' = ' . $db->quoteName('a.id')
+					. ' AND ' . $db->quoteName('tagmap.type_alias') . ' = ' . $db->quote('com_churchdirectory.member')
+				);
 		}
 
 		// Add the list ordering clause.
-		$orderCol  = $this->state->get('list.orderings', 'a.name');
-		$orderDirn = $this->state->get('list.directions', 'asc');
+		$orderCol  = $this->state->get('list.ordering', 'a.name');
+		$orderDirn = $this->state->get('list.direction', 'asc');
 
 		if ($orderCol == 'a.ordering' || $orderCol == 'category_title')
 		{
-			$orderCol = 'c.title ' . $orderDirn . ', a.ordering';
+			$orderCol = $db->qn('c.title ') . $orderDirn . ', ' . $db->qn('a.ordering');
 		}
 
 		$query->order($db->escape($orderCol . ' ' . $orderDirn));

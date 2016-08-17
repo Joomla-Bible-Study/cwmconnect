@@ -13,24 +13,34 @@ defined('_JEXEC') or die;
  * @package  ChurchDirectory.Admin
  * @since    1.7.5
  */
-class ChurchDirectoryControllerGeoupdate extends JControllerAdmin
+class ChurchDirectoryControllerGeoupdate extends JControllerForm
 {
 	/**
-	 * Constructor.
+	 * The context for storing internal data, e.g. record.
 	 *
-	 * @param   array  $config  An optional associative array of configuration settings.
-	 *
-	 * @since    1.7.0
+	 * @var    string
+	 * @since  12.2
 	 */
-	public function __construct($config = [])
-	{
-		parent::__construct($config);
-
-		$this->modelName = 'geoupdate';
-	}
+	protected $context = 'geoupdate';
 
 	/**
-	 * Constructor.
+	 * The URL view item variable.
+	 *
+	 * @var    string
+	 * @since  12.2
+	 */
+	protected $view_item = 'geoupdate';
+
+	/**
+	 * The URL view list variable.
+	 *
+	 * @var    string
+	 * @since  12.2
+	 */
+	protected $view_list = 'geoupdate';
+
+	/**
+	 * Execute.
 	 *
 	 * @param   string  $task  An optional associative array of configuration settings.
 	 *
@@ -66,6 +76,7 @@ class ChurchDirectoryControllerGeoupdate extends JControllerAdmin
 			$id = $app->input->getInt('id', 0);
 		}
 
+		/** @var ChurchDirectoryModelGeoUpdate $model */
 		$model = $this->getModel('geoupdate');
 		$state = $model->startScanning($id);
 		$app->input->set('scanstate', $state);
@@ -77,11 +88,15 @@ class ChurchDirectoryControllerGeoupdate extends JControllerAdmin
 	 * Start the Update
 	 *
 	 * @return void
+	 *
+	 * @since 1.7.0
 	 */
 	public function run()
 	{
 		$app = JFactory::getApplication();
 		$id = $app->input->getInt('id', 0);
+
+		/** @var ChurchDirectoryModelGeoUpdate $model */
 		$model = $this->getModel('geoupdate');
 		$state = $model->run(true, $id);
 		$app->input->set('scanstate', $state);

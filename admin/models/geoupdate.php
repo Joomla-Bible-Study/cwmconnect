@@ -48,7 +48,7 @@ class ChurchDirectoryModelGeoUpdate extends JModelLegacy
 	private $memberID = null;
 
 	/**
-	 * Returns the current timestampt in decimal seconds
+	 * Returns the current time stampt in decimal seconds
 	 *
 	 * @return string
 	 *
@@ -218,6 +218,7 @@ class ChurchDirectoryModelGeoUpdate extends JModelLegacy
 		}
 
 		$this->loadStack();
+
 		$result = true;
 
 		while ($result && $this->haveEnoughTime())
@@ -251,9 +252,9 @@ class ChurchDirectoryModelGeoUpdate extends JModelLegacy
 		{
 			while (!empty($this->membersStack) && $this->haveEnoughTime())
 			{
-				$file = array_pop($this->membersStack);
+				$member = array_pop($this->membersStack);
 				$this->doneMembers++;
-				$this->update($file, $id);
+				$this->update($member, $id);
 			}
 		}
 
@@ -272,17 +273,22 @@ class ChurchDirectoryModelGeoUpdate extends JModelLegacy
 	/**
 	 * Start Looking though the members
 	 *
+	 * @param   int  $id  Id of member to prosses if needed.
+	 *
 	 * @return bool
 	 *
 	 * @since    1.7.0
 	 */
-	public function startScanning()
+	public function startScanning($id = null)
 	{
 		$this->resetStack();
 		$this->resetTimer();
 		$this->getMembers();
 
-		$id = JFactory::getApplication()->input->getInt('id', 0);
+		if (!$id)
+		{
+			$id = JFactory::getApplication()->input->getInt('id', 0);
+		}
 
 		if (empty($this->membersStack))
 		{
@@ -342,7 +348,7 @@ class ChurchDirectoryModelGeoUpdate extends JModelLegacy
 				$this->memberID = $row['id'];
 			}
 
-			$base_url = "http://maps.googleapis.com/maps/api/geocode/xml?address=";
+			$base_url = "https://maps.googleapis.com/maps/api/geocode/xml?address=";
 
 			// Initialize delay in geocode speed
 			$delay           = 0;
@@ -354,10 +360,18 @@ class ChurchDirectoryModelGeoUpdate extends JModelLegacy
 				$address     = str_replace(' ', '+', $row['address']);
 				$request_url = $base_url . $address . ",+" . str_replace(' ', '+', $row['suburb']) .
 					",+" . $row['state'] . '&sensor=true';
-				/** @var object $xml */
-				$xml = simplexml_load_file($request_url) or die("url not loading");
 
-				$status = $xml->status;
+				/** @var object $xml */
+				$xml = simplexml_load_file($request_url);
+
+				if ($xml)
+				{
+					$status = $xml->status;
+				}
+				else
+				{
+					return $geocode_pending;
+				}
 
 				if ($status == "OK")
 				{
