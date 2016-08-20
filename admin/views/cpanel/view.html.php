@@ -44,6 +44,8 @@ class ChurchDirectoryViewCpanel extends JViewLegacy
 
 	protected $sidebar;
 
+	protected $xml;
+
 	/**
 	 * Display Function
 	 *
@@ -58,6 +60,7 @@ class ChurchDirectoryViewCpanel extends JViewLegacy
 		$this->items      = $this->get('Items');
 		$this->pagination = $this->get('Pagination');
 		$this->state      = $this->get('State');
+		$this->xml        = simplexml_load_file(JPATH_ADMINISTRATOR . '/components/com_churchdirectory/churchdirectory.xml');
 
 		ChurchDirectoryHelper::addSubmenu('cpanel');
 

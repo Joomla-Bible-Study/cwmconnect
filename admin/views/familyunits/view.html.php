@@ -55,6 +55,8 @@ class ChurchDirectoryViewFamilyUnits extends JViewLegacy
 		$this->items      = $this->get('Items');
 		$this->pagination = $this->get('Pagination');
 		$this->state      = $this->get('State');
+		$this->filterForm = $this->get('FilterForm');
+		$this->activeFilters = $this->get('ActiveFilters');
 
 		ChurchDirectoryHelper::addSubmenu('familyunits');
 
@@ -126,37 +128,8 @@ class ChurchDirectoryViewFamilyUnits extends JViewLegacy
 			JToolbarHelper::divider();
 		}
 
-		if (version_compare(JVERSION, '3.0.0', 'ge'))
-		{
-			JToolbarHelper::help('churchdirectory_familyunits', true);
-			JHtmlSidebar::setAction('index.php?option=com_churchdirectory&amp;view=familyunits');
-
-			JHtmlSidebar::addFilter(
-				JText::_('JOPTION_SELECT_PUBLISHED'),
-				'filter_published',
-				JHtml::_('select.options', JHtml::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.published'), true)
-			);
-
-			JHtmlSidebar::addFilter(
-				JText::_('JOPTION_SELECT_CATEGORY'),
-				'filter_category_id',
-				JHtml::_('select.options', JHtml::_('category.options', 'com_churchdirectory'), 'value', 'text', $this->state->get('filter.category_id'))
-			);
-
-			JHtmlSidebar::addFilter(
-				JText::_('JOPTION_SELECT_ACCESS'),
-				'filter_access',
-				JHtml::_('select.options', JHtml::_('access.assetgroups'), 'value', 'text', $this->state->get('filter.access'))
-			);
-
-			JHtmlSidebar::addFilter(
-				JText::_('JOPTION_SELECT_LANGUAGE'),
-				'filter_language',
-				JHtml::_('select.options', JHtml::_('contentlanguage.existing', true, true), 'value', 'text', $this->state->get('filter.language'))
-			);
-		}
-
 		JToolbarHelper::help('churchdirectory_familyunit', true);
+		JHtmlSidebar::setAction('index.php?option=com_churchdirectory&amp;view=familyunits');
 	}
 
 	/**

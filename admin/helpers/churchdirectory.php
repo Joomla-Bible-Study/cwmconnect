@@ -217,7 +217,7 @@ class ChurchDirectoryHelper
 	/**
 	 * Adds Count Items for Category Manager.
 	 *
-	 * @param   stdClass[]  &$items  The banner category objects
+	 * @param   stdClass[]  &$items  The contact category objects
 	 *
 	 * @return  stdClass[]
 	 *
@@ -235,32 +235,32 @@ class ChurchDirectoryHelper
 			$item->count_published   = 0;
 			$query                   = $db->getQuery(true);
 			$query->select('published AS state, count(*) AS count')
-				->from($db->qn('#__churchdirctory_details'))
+				->from($db->qn('#__churchdirectory_details'))
 				->where('catid = ' . (int) $item->id)
 				->group('published');
 			$db->setQuery($query);
-			$members = $db->loadObjectList();
+			$contacts = $db->loadObjectList();
 
-			foreach ($members as $member)
+			foreach ($contacts as $contact)
 			{
-				if ($member->state == 1)
+				if ($contact->state == 1)
 				{
-					$item->count_published = $member->count;
+					$item->count_published = $contact->count;
 				}
 
-				if ($member->state == 0)
+				if ($contact->state == 0)
 				{
-					$item->count_unpublished = $member->count;
+					$item->count_unpublished = $contact->count;
 				}
 
-				if ($member->state == 2)
+				if ($contact->state == 2)
 				{
-					$item->count_archived = $member->count;
+					$item->count_archived = $contact->count;
 				}
 
-				if ($member->state == -2)
+				if ($contact->state == -2)
 				{
-					$item->count_trashed = $member->count;
+					$item->count_trashed = $contact->count;
 				}
 			}
 		}
