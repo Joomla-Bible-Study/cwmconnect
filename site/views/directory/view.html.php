@@ -38,7 +38,7 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 	protected $items = null;
 
 	/**
-	 * Protected @var array
+	 * Protected @var object
 	 *
 	 * @since       1.7.2
 	 */
@@ -314,16 +314,16 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 
 		if ($this->category->metakey)
 		{
-			$this->document->setMetadata('keywords', $this->category->metakey);
+			$this->document->setMetaData('keywords', $this->category->metakey);
 		}
 		elseif (!$this->category->metakey && $this->params->get('menu-meta_keywords'))
 		{
-			$this->document->setMetadata('keywords', $this->params->get('menu-meta_keywords'));
+			$this->document->setMetaData('keywords', $this->params->get('menu-meta_keywords'));
 		}
 
 		if ($this->params->get('robots'))
 		{
-			$this->document->setMetadata('robots', $this->params->get('robots'));
+			$this->document->setMetaData('robots', $this->params->get('robots'));
 		}
 	}
 

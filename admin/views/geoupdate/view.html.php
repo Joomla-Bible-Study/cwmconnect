@@ -124,7 +124,6 @@ class ChurchDirectoryViewGeoUpdate extends JViewLegacy
 		$session = JFactory::getSession();
 		$stack   = $session->get('geoupdate_stack', '', 'churchdirectory');
 
-
 		if (empty($stack))
 		{
 			$this->membersStack = [];
