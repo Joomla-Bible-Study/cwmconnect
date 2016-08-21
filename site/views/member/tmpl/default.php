@@ -11,7 +11,7 @@ defined('_JEXEC') or die;
 
 $cparams = JComponentHelper::getParams('com_media');
 $this->loadHelper('render');
-$renderHelper = new renderHelper;
+$renderHelper = new RenderHelper;
 
 jimport('joomla.html.html.bootstrap');
 ?>
@@ -159,7 +159,7 @@ jimport('joomla.html.html.bootstrap');
 	<?php if ($this->params->get('presentation_style') == 'tabs')
 	{
 		?>
-		<?php echo JHtml::_('bootstrap.addPanel', 'myTab', 'basic-details', JText::_('COM_CHURCHDIRECTORY_DETAILS', true)); ?>
+		<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'basic-details', JText::_('COM_CHURCHDIRECTORY_DETAILS', true)); ?>
 	<?php } ?>
 	<?php if ($this->params->get('presentation_style') == 'plain')
 	{
@@ -207,7 +207,7 @@ jimport('joomla.html.html.bootstrap');
 	}
 	if ($this->params->get('presentation_style') == 'tabs')
 	{
-		echo JHtml::_('bootstrap.endPanel');
+		echo JHtml::_('bootstrap.endTab');
 	}
 	if ($this->params->get('show_email_form') && !empty($this->member->email_to))
 	{
@@ -217,7 +217,7 @@ jimport('joomla.html.html.bootstrap');
 		}
 		if ($this->params->get('presentation_style') == 'tabs')
 		{
-			echo JHtml::_('bootstrap.addPanel', 'myTab', 'display-form', JText::_('COM_CHURCHDIRECTORY_EMAIL_FORM', true));
+			echo JHtml::_('bootstrap.addTab', 'myTab', 'display-form', JText::_('COM_CHURCHDIRECTORY_EMAIL_FORM', true));
 		}
 		if ($this->params->get('presentation_style') == 'plain')
 		{
@@ -235,7 +235,7 @@ jimport('joomla.html.html.bootstrap');
 		<?php if ($this->params->get('presentation_style') == 'tabs')
 	{
 		?>
-		<?php echo JHtml::_('bootstrap.endPanel'); ?>
+		<?php echo JHtml::_('bootstrap.endTab'); ?>
 	<?php } ?>
 
 	<?php } ?>
@@ -252,7 +252,7 @@ jimport('joomla.html.html.bootstrap');
 		<?php if ($this->params->get('presentation_style') == 'tabs')
 	{
 		?>
-		<?php echo JHtml::_('bootstrap.addPanel', 'myTab', 'display-links', JText::_('COM_CONTACT_LINKS', true)); ?>
+		<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'display-links', JText::_('COM_CONTACT_LINKS', true)); ?>
 	<?php } ?>
 		<?php if ($this->params->get('presentation_style') == 'plain')
 	{
@@ -270,7 +270,7 @@ jimport('joomla.html.html.bootstrap');
 		<?php if ($this->params->get('presentation_style') == 'tabs')
 	{
 		?>
-		<?php echo JHtml::_('bootstrap.endPanel'); ?>
+		<?php echo JHtml::_('bootstrap.endTab'); ?>
 	<?php } ?>
 	<?php } ?>
 
@@ -286,7 +286,7 @@ jimport('joomla.html.html.bootstrap');
 		<?php if ($this->params->get('presentation_style') == 'tabs')
 	{
 		?>
-		<?php echo JHtml::_('bootstrap.addPanel', 'myTab', 'display-articles', JText::_('JGLOBAL_ARTICLES', true)); ?>
+		<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'display-articles', JText::_('JGLOBAL_ARTICLES', true)); ?>
 	<?php } ?>
 		<?php if ($this->params->get('presentation_style') == 'plain')
 	{
@@ -304,7 +304,7 @@ jimport('joomla.html.html.bootstrap');
 		<?php if ($this->params->get('presentation_style') == 'tabs')
 	{
 		?>
-		<?php echo JHtml::_('bootstrap.endPanel'); ?>
+		<?php echo JHtml::_('bootstrap.endTab'); ?>
 	<?php } ?>
 
 	<?php } ?>
@@ -320,7 +320,7 @@ jimport('joomla.html.html.bootstrap');
 		<?php if ($this->params->get('presentation_style') == 'tabs')
 	{
 		?>
-		<?php echo JHtml::_('bootstrap.addPanel', 'myTab', 'display-profile', JText::_('COM_CHURCHDIRECTORY_PROFILE', true)); ?>
+		<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'display-profile', JText::_('COM_CHURCHDIRECTORY_PROFILE', true)); ?>
 	<?php } ?>
 		<?php if ($this->params->get('presentation_style') == 'plain')
 	{
@@ -338,7 +338,7 @@ jimport('joomla.html.html.bootstrap');
 		<?php if ($this->params->get('presentation_style') == 'tabs')
 	{
 		?>
-		<?php echo JHtml::_('bootstrap.endPanel'); ?>
+		<?php echo JHtml::_('bootstrap.endTab'); ?>
 	<?php } ?>
 
 	<?php } ?>
@@ -354,7 +354,7 @@ jimport('joomla.html.html.bootstrap');
 		<?php if ($this->params->get('presentation_style') == 'tabs')
 	{
 		?>
-		<?php echo JHtml::_('bootstrap.addPanel', 'myTab', 'display-misc'); ?>
+		<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'display-misc', JText::_('COM_CHURCHDIRECTORY_OTHER_INFORMATION')); ?>
 	<?php } ?>
 		<?php if ($this->params->get('presentation_style') == 'plain')
 	{
@@ -385,7 +385,7 @@ jimport('joomla.html.html.bootstrap');
 		<?php if ($this->params->get('presentation_style') == 'tabs')
 	{
 		?>
-		<?php echo JHtml::_('bootstrap.endPanel'); ?>
+		<?php echo JHtml::_('bootstrap.endTab'); ?>
 	<?php } ?>
 
 	<?php } ?>
@@ -398,7 +398,7 @@ jimport('joomla.html.html.bootstrap');
 	<?php if ($this->params->get('presentation_style') == 'tabs')
 	{
 		?>
-		<?php echo JHtml::_('bootstrap.endPane'); ?>
+		<?php echo JHtml::_('bootstrap.endTabSet'); ?>
 	<?php } ?>
-
+	<?php echo $this->item->event->afterDisplayContent; ?>
 </div>
