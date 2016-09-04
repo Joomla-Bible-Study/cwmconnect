@@ -1,4 +1,4 @@
-#New Church Photo Directory System
+#Joomla Church Directory System Templates.
 [![Build Status](https://travis-ci.org/Joomla-Bible-Study/joomla_churchdirectory.svg?branch=master)](https://travis-ci.org/Joomla-Bible-Study/joomla_churchdirectory)
 
 ##Aboute Templates
