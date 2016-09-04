@@ -88,9 +88,10 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 	/**
 	 * Display function
 	 *
-	 * @param   string $tpl The name of the template file to parse; automatically searches through the template paths.
+	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
 	 *
 	 * @return  mixed  A string if successful, otherwise a Error object.
+	 *
 	 * @since       1.7.2
 	 */
 	public function display ($tpl = null)
@@ -99,22 +100,28 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 
 		// Get some data from the models
 		$state      = $this->get('State');
+		/** @var Registry $params */
 		$params     = $state->params;
 		$items      = $this->get('Items');
 		$category   = $this->get('Category');
 		$children   = $this->get('Children');
 		$parent     = $this->get('Parent');
 		$pagination = $this->get('Pagination');
-		header('Content-type: application/vnd.google-earth.kml+xml');
-		header('Content-disposition: attachment; filename="' . $items[0]->kml_alias . '.kml"');
 
 		// Check whether category access level allows access.
 		$user   = JFactory::getUser();
 		$groups = $user->getAuthorisedViewLevels();
 
-		if ($items == false)
+		if (!in_array($category->access, $groups))
 		{
-			$app->enqueueMessage(JText::_('COM_CHURCHDIRECTOY_ERROR_DIRECTORY_NOT_FOUND'), 'error');
+			echo JText::_('JERROR_ALERTNOAUTHOR');
+
+			return false;
+		}
+
+		if ($items == false || empty($items))
+		{
+			echo JText::_('COM_CHURCHDIRECTOY_ERROR_DIRECTORY_NOT_FOUND');
 
 			return false;
 		}
@@ -207,11 +214,11 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 
 		if ($items[0]->category_params->get('image') === null)
 		{
-			$kml[] = JURI::base() . 'media/com_churchdirectory/images/kml_icons/iconb.png';
+			$kml[] = JUri::base() . 'media/com_churchdirectory/images/kml_icons/iconb.png';
 		}
 		else
 		{
-			$kml[] = JURI::base() . $items[0]->category_params->get('image');
+			$kml[] = JUri::base() . $items[0]->category_params->get('image');
 		}
 
 		$kml[] = '</href>';
@@ -279,11 +286,13 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 		$kml[] = '</LabelStyle>';
 		$kml[] = '</Style> ';
 		$teams = RenderHelper::groupit(['items' => $items, 'field' => 'category_title']);
+		$new_rows = [];
+		$ckml_params = new Registry;
 
 		foreach ($teams as $c => $catid)
 		{
 			$new_rows[$c] = RenderHelper::groupit(['items' => $teams[$c], 'field' => 'suburb']);
-			$ckml_params  = $catid[0]->kml_params;
+			$ckml_params->merge($catid[0]->kml_params);
 		}
 
 		$mycounter = '0';
@@ -428,6 +437,11 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 			} /* End the country folder */
 			$kml[] = '</Folder>';
 		}
+
+
+		header('Content-type: application/vnd.google-earth.kml+xml');
+		header('Content-disposition: attachment; filename="' . $items[0]->kml_alias . '.kml"');
+
 		// End KML file
 		$kml[]     = '</Document>';
 		$kml[]     = '</kml>';

@@ -110,14 +110,14 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 
 		if (!in_array($category->access, $groups))
 		{
-			$app->enqueueMessage(JText::_('JERROR_ALERTNOAUTHOR'), 'error');
+			echo JText::_('JERROR_ALERTNOAUTHOR');
 
 			return false;
 		}
 
 		if ($items == false)
 		{
-			$app->enqueueMessage(JText::_('COM_CHURCHDIRECTOY_ERROR_DIRECTORY_NOT_FOUND'), 'error');
+			echo JText::_('COM_CHURCHDIRECTOY_ERROR_DIRECTORY_NOT_FOUND');
 
 			return false;
 		}
