@@ -6,9 +6,12 @@ language: php
 env:
   global:
     - RUN_PHPCS="yes"
+    - INSTALL_MEMCACHE="yes"
+    - INSTALL_MEMCACHED="yes"
     - INSTALL_REDIS="yes"
 
 matrix:
+  fast_finish: true
   include:
     - php: 5.4
       env: INSTALL_APC="yes"
@@ -18,6 +21,11 @@ matrix:
 #      env: RUN_PHPCS="yes" INSTALL_APCU="yes"
 #    - php: 7.0
 #      env: INSTALL_APCU_BC_BETA="no" INSTALL_MEMCACHED="no" INSTALL_REDIS="no" # Disabled apcu_bc install until https://github.c
+
+services:
+  - memcache
+  - memcached
+  - redis-server
 
 before_script:
   - phpenv config-rm xdebug.ini
