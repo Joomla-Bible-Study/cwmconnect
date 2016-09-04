@@ -1,781 +1,776 @@
 <?xml version="1.0" encoding="utf-8"?>
 <form>
-    <fieldset addfieldpath="/administrator/components/com_categories/models/fields">
-        <field name="id"
-               type="text"
-               label="JGLOBAL_FIELD_ID_LABEL"
-               description="JGLOBAL_FIELD_ID_DESC"
-               size="10"
-               default="0"
-               readonly="true"
-               class="readonly"
-                />
-
-        <field name="asset_id" type="hidden" filter="unset"/>
-
-        <field name="name" type="text" label="COM_CHURCHDIRECTORY_FIELD_NAME_LABEL"
-               description="COM_CHURCHDIRECTORY_FIELD_NAME_DESC" class="inputbox"
-               size="30" required="true"/>
-
-        <field name="surname" type="text" label="COM_CHURCHDIRECTORY_FIELD_SURNAME_LABEL"
-               description="COM_CHURCHDIRECTORY_FIELD_SURNAME_DESC" class="inputbox"
-               size="30"/>
-
-        <field name="lname" type="text" label="COM_CHURCHDIRECTORY_FIELD_LNAME_LABEL"
-               description="COM_CHURCHDIRECTORY_FIELD_LNAME_DESC" class="inputbox"
-               size="30" required="true"/>
-
-        <field name="alias" type="text" label="JFIELD_ALIAS_LABEL"
-               description="JFIELD_ALIAS_DESC" class="inputbox" size="30"/>
-
-        <field name="user_id" type="user"
-               label="COM_CHURCHDIRECTORY_FIELD_LINKED_USER_LABEL"
-               description="COM_CHURCHDIRECTORY_FIELD_LINKED_USER_DESC"/>
-
-        <field id="published" name="published" type="list" label="JSTATUS"
-               description="JFIELD_PUBLISHED_DESC"
-               class="inputbox span12 small"
-               size="1"
-               default="1">
-            <option value="1">
-                JPUBLISHED
-            </option>
-            <option value="0">
-                JUNPUBLISHED
-            </option>
-            <option value="2">
-                JARCHIVED
-            </option>
-            <option value="-2">
-                JTRASHED
-            </option>
-        </field>
-
-        <field name="catid" type="categoryedit" extension="com_churchdirectory"
-               label="JCATEGORY" description="JFIELD_CATEGORY_DESC" class="inputbox"
-               required="true"/>
-
-        <field name="buttonspacer" description="JGLOBAL_ACTION_PERMISSIONS_DESCRIPTION"
-               type="spacer"/>
-
-        <field name="access" type="accesslevel" label="JFIELD_ACCESS_LABEL"
-               description="JFIELD_ACCESS_DESC" class="inputbox span12 small" size="1"/>
-
-        <field name="sortname1" type="text"
-               label="COM_CHURCHDIRECTORY_FIELD_SORTNAME1_LABEL" description="COM_CHURCHDIRECTORY_FIELD_SORTNAME1_DESC"
-               class="inputbox" size="30"/>
-
-        <field name="sortname2" type="text"
-               label="COM_CHURCHDIRECTORY_FIELD_SORTNAME2_LABEL" description="COM_CHURCHDIRECTORY_FIELD_SORTNAME2_DESC"
-               class="inputbox" size="30"/>
-
-        <field name="sortname3" type="text"
-               label="COM_CHURCHDIRECTORY_FIELD_SORTNAME3_LABEL" description="COM_CHURCHDIRECTORY_FIELD_SORTNAME3_DESC"
-               class="inputbox" size="30"/>
-
-        <field name="con_position" size="15" type="sql" label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_POSITION_LABEL"
-               description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_POSITION_DESC"
-               query="SELECT id, name FROM #__churchdirectory_position WHERE published = 1 ORDER by name ASC"
-               key_field="id" value_field="name" multiple="true" default="-1">
-            <option value="-1">COM_CHURCHDIRECTORY_SELECT_POSITION</option>
-        </field>
-
-        <field name="funitid"
-               type="sql"
-               class="inputbox"
-               query="SELECT id, name FROM #__churchdirectory_familyunit WHERE published = 1 ORDER by name ASC"
-               key_field="id"
-               value_field="name"
-               default="-1"
-               label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_FAMILYUNIT_LABEL"
-               description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_FAMILYUNIT_DESC"
-               required=""
-                >
-            <option value="-1">COM_CHURCHDIRECTORY_SELECT_FAMILYUNIT</option>
-        </field>
-
-
-        <field name="email_to" type="email"
-               label="JGLOBAL_EMAIL"
-               description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_EMAIL_DESC"
-               class="inputbox"
-               cols="30"
-                />
-
-        <field name="address" type="textarea"
-               label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_ADDRESS_LABEL"
-               description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_ADDRESS_DESC"
-               class="inputbox" rows="3" cols="30"/>
-
-        <field name="suburb" type="text"
-               label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_SUBURB_LABEL"
-               description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_SUBURB_DESC"
-               class="inputbox" size="30"/>
-
-        <field name="state" type="text"
-               label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_STATE_LABEL"
-               description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_STATE_DESC" class="inputbox"
-               size="30"/>
-
-        <field name="postcode" type="text"
-               label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_POSTCODE_LABEL"
-               description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_POSTCODE_DESC"
-               class="inputbox" size="30"/>
-
-        <field name="country" type="text"
-               label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_COUNTRY_LABEL"
-               description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_COUNTRY_DESC"
-               class="inputbox" size="30"/>
-
-        <field name="telephone" type="text"
-               label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_TELEPHONE_LABEL"
-               description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_TELEPHONE_DESC"
-               class="inputbox" size="30"/>
-
-        <field name="mobile" type="text"
-               label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_MOBILE_LABEL"
-               description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_MOBILE_DESC"
-               class="inputbox" size="30"/>
-
-        <field name="fax" type="text"
-               label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_FAX_LABEL"
-               description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_FAX_DESC"
-               class="inputbox" size="30"/>
-
-        <field name="webpage" type="url"
-               label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_WEBPAGE_LABEL"
-               description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_WEBPAGE_DESC"
-               class="inputbox" size="30"/>
-
-        <field name="misc" type="editor"
-               label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_MISC_LABEL"
-               description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_MISC_DESC"
-               class="inputbox"
-               filter="JComponentHelper::filterText"
-               buttons="true"
-               hide="readmore,pagebreak"
-                />
-
-        <field name="note" type="editor"
-               label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_NOTE_LABEL"
-               description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_NOTE_DESC"
-               class="inputbox"
-               filter="JComponentHelper::filterText"
-               buttons="true"
-               hide="readmore,pagebreak"
-                />
-
-        <field name="image" type="media" hide_none="1"
-               label="COM_CHURCHDIRECTORY_FIELD_PARAMS_IMAGE_LABEL"
-               description="COM_CHURCHDIRECTORY_FIELD_PARAMS_IMAGE_DESC"/>
-
-        <field name="created_by" type="user" label="JGLOBAL_FIELD_CREATED_BY_LABEL"
-               description="COM_CHURCHDIRECTORY_FIELD_CREATED_BY_DESC"/>
-
-        <field name="created_by_alias" type="text"
-               label="COM_CHURCHDIRECTORY_FIELD_CREATED_BY_ALIAS_LABEL"
-               description="COM_CHURCHDIRECTORY_FIELD_CREATED_BY_ALIAS_DESC"
-               class="inputbox" size="20"/>
-
-        <field name="created" type="calendar"
-               label="COM_CHURCHDIRECTORY_FIELD_CREATED_LABEL" description="COM_CHURCHDIRECTORY_FIELD_CREATED_DESC"
-               class="inputbox" size="22" format="%Y-%m-%d %H:%M:%S" filter="user_utc"/>
-
-        <field name="modified" type="calendar" class="readonly"
-               label="JGLOBAL_FIELD_MODIFIED_LABEL" description="COM_CHURCHDIRECTORY_FIELD_MODIFIED_DESC"
-               size="22" readonly="true" format="%Y-%m-%d %H:%M:%S" filter="user_utc"/>
-
-        <field name="modified_by" type="user" label="JGLOBAL_FIELD_MODIFIED_BY_LABEL"
-               class="readonly" readonly="true" filter="unset"/>x
-
-        <field name="checked_out" type="hidden" filter="unset"/>
-
-        <field name="checked_out_time" type="hidden" filter="unset"/>
-
-        <field name="ordering" type="order" class="inputbox"
-               label="JFIELD_ORDERING_LABEL" description="JFIELD_ORDERING_DESC" content_type="com_churchdirectory.member"/>
-
-        <field name="publish_up" type="calendar"
-               label="COM_CHURCHDIRECTORY_FIELD_PUBLISH_UP_LABEL"
-               description="COM_CHURCHDIRECTORY_FIELD_PUBLISH_UP_DESC"
-               class="inputbox" format="%Y-%m-%d %H:%M:%S" size="22" filter="user_utc"/>
-
-        <field name="publish_down" type="calendar"
-               label="COM_CHURCHDIRECTORY_FIELD_PUBLISH_DOWN_LABEL"
-               description="COM_CHURCHDIRECTORY_FIELD_PUBLISH_DOWN_DESC"
-               class="inputbox" format="%Y-%m-%d %H:%M:%S" size="22" filter="user_utc"/>
-
-        <field name="metakey" type="textarea" label="JFIELD_META_KEYWORDS_LABEL"
-               description="JFIELD_META_KEYWORDS_DESC" class="inputbox" rows="3"
-               cols="30"/>
-
-        <field name="metadesc" type="textarea" label="JFIELD_META_DESCRIPTION_LABEL"
-               description="JFIELD_META_DESCRIPTION_DESC" class="inputbox" rows="3"
-               cols="30"/>
-
-        <field name="language" type="contentlanguage" label="JFIELD_LANGUAGE_LABEL"
-               description="COM_CHURCHDIRECTORY_FIELD_LANGUAGE_DESC"
-               class="inputbox span12 small">
-            <option value="*">JALL</option>
-        </field>
-        <field name="featured" type="list" label="JFEATURED"
-               description="COM_CHURCHDIRECTORY_FIELD_FEATURED_DESC"
-               class="inputbox span12 small" default="0">
-            <option value="0">JNO</option>
-            <option value="1">JYES</option>
-        </field>
-
-        <field name="contact_icons" type="list" default="0"
-               label="COM_CHURCHDIRECTORY_FIELD_ICONS_SETTINGS"
-               description="COM_CHURCHDIRECTORY_FIELD_ICONS_SETTINGS_DESC">
-            <option value="0">COM_CHURCHDIRECTORY_FIELD_VALUE_NONE
-            </option>
-            <option value="1">COM_CHURCHDIRECTORY_FIELD_VALUE_TEXT
-            </option>
-            <option value="2">COM_CHURCHDIRECTORY_FIELD_VALUE_ICONS
-            </option>
-        </field>
-
-        <field name="icon_address" type="media" hide_none="1"
-               label="COM_CHURCHDIRECTORY_FIELD_ICONS_ADDRESS_LABEL"
-               description="COM_CHURCHDIRECTORY_FIELD_ICONS_ADDRESS_DESC"/>
-
-        <field name="icon_email" type="media" hide_none="1"
-               label="COM_CHURCHDIRECTORY_FIELD_ICONS_EMAIL_LABEL"
-               description="COM_CHURCHDIRECTORY_FIELD_ICONS_EMAIL_DESC"/>
-
-        <field name="icon_telephone" type="media" hide_none="1"
-               label="COM_CHURCHDIRECTORY_FIELD_ICONS_TELEPHONE_LABEL"
-               description="COM_CHURCHDIRECTORY_FIELD_ICONS_TELEPHONE_DESC"/>
-
-        <field name="icon_mobile" type="media" hide_none="1"
-               label="COM_CHURCHDIRECTORY_FIELD_ICONS_MOBILE_LABEL"
-               description="COM_CHURCHDIRECTORY_FIELD_ICONS_MOBILE_DESC"/>
-
-        <field name="icon_fax" type="media" hide_none="1"
-               label="COM_CHURCHDIRECTORY_FIELD_ICONS_FAX_LABEL"
-               description="COM_CHURCHDIRECTORY_FIELD_ICONS_FAX_DESC"/>
-
-        <field name="icon_misc" type="media" hide_none="1"
-               label="COM_CHURCHDIRECTORY_FIELD_ICONS_MISC_LABEL"
-               description="COM_CHURCHDIRECTORY_FIELD_ICONS_MISC_DESC"/>
-
-        <field name="skype" type="text"
-               label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_SKYPE_LABEL"
-               description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_SKYPE_DESC" class="inputbox span12 small"
-               size="30"/>
-
-        <field name="yahoo_msg" type="text"
-               label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_YAHOO_MSG_LABEL"
-               description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_YAHOO_MSG_DESC"
-               class="inputbox span12 small" size="30"/>
-
-        <field name="lat" type="text" label="COM_CHURCHDIRECTORY_FIELD_KML_LAT_LABEL"
-               description="COM_CHURCHDIRECTORY_FIELD_KML_LAT_DESC" class="inputbox span12 small"
-               size="11"/>
-
-        <field name="lng" type="text" label="COM_CHURCHDIRECTORY_FIELD_KML_LNG_LABEL"
-               description="COM_CHURCHDIRECTORY_FIELD_KML_LNG_DESC" class="inputbox span12 small"
-               size="11"/>
-        <field name="spouse" type="spouse"
-               label="COM_CHURCHDIRECTORY_FIELD_SPOUSE_LABEL" description="COM_CHURCHDIRECTORY_FIELD_SPOUSE_DESC"
-               class="readonly span12 small" size="30" readonly="true"/>
-        <field name="children" type="textarea"
-               label="COM_CHURCHDIRECTORY_FIELD_CHILDREN_LABEL" description="COM_CHURCHDIRECTORY_FIELD_CHILDREN_DESC"
-               class="inputbox span12 small" rows="3" cols="30"/>
-        <field name="anniversary" type="calendar"
-               label="COM_CHURCHDIRECTORY_FIELD_MEMBER_ANNIVERSARY_LABEL"
-               description="COM_CHURCHDIRECTORY_FIELD_MEMBER_ANNIVERSARY_DESC"
-               class="inputbox span12 small" format="%Y-%m-%d" size="22"/>
-        <field name="birthdate" type="calendar"
-               label="COM_CHURCHDIRECTORY_FIELD_MEMBER_BIRTHDATE_LABEL"
-               description="COM_CHURCHDIRECTORY_FIELD_MEMBER_BIRTHDATE_DESC"
-               class="inputbox span12 small" format="%Y-%m-%d" size="22"/>
-        <field name="mstatus" type="list"
-               label="COM_CHURCHDIRECTORY_FIELD_MEMBERSSTATUS_LABEL"
-               description="COM_CHURCHDIRECTORY_FIELD_MEMBERSSTATUS_DESC"
-               class="inputbox span12 small"
-               default="0">
-            <option value="0">COM_CHURCHDIRECTORY_ACTIVE_MEMBER</option>
-            <option value="1">COM_CHURCHDIRECTORY_INACTIVE</option>
-            <option value="2">COM_CHURCHDIRECTORY_ACTIVE_ATTENDEE</option>
-            <option value="3">COM_CHURCHDIRECTORY_NONE_MEMBER</option>
-        </field>
-    </fieldset>
-
-    <fields name="params">
-        <field name="visibility" type="list"
-               label="COM_CHURCHDIRECTORY_FIELD_KML_VISIBILITY_LABEL"
-               description="COM_CHURCHDIRECTORY_FIELD_KML_VISIBILITY_MEMBER_DESC"
-               class="inputbox span12 small"
-               default="1">
-            <option value="0">JHIDE</option>
-            <option value="1">JSHOW</option>
-        </field>
-        <field name="scale" type="text"
-               label="COM_CHURCHDIRECTORY_FIELD_KML_SCALE_LABEL" description="COM_CHURCHDIRECTORY_FIELD_KML_SCALE_DESC"
-               class="inputbox span12 small" size="30" default="1.1"/>
-        <field name="open" type="list"
-               label="COM_CHURCHDIRECTORY_FIELD_KML_OPEN_LABEL"
-               description="COM_CHURCHDIRECTORY_FIELD_KML_OPEN_DESC"
-               class="inputbox span12 small"
-               default="0">
-            <option value="0">JHIDE</option>
-            <option value="1">JSHOW</option>
-        </field>
-        <field name="gxballoonvisibility" type="list"
-               label="COM_CHURCHDIRECTORY_FIELD_KML_GXBOLLOONVISIBILITY_LABEL"
-               description="COM_CHURCHDIRECTORY_FIELD_KML_GXBOLLOONVISIBILITY_DESC"
-               class="inputbox span12 small"
-               default="0">
-            <option value="0">JHIDE</option>
-            <option value="1">JSHOW</option>
-        </field>
-        <fieldset name="jbasic" label="JGLOBAL_FIELDSET_DISPLAY_OPTIONS">
-            <field name="show_contact_category" type="list"
-                   label="JGLOBAL_SHOW_CATEGORY_LABEL" description="COM_CHURCHDIRECTORY_FIELD_SHOW_CATEGORY_DESC">
-                <option value="">JGLOBAL_USE_GLOBAL</option>
-                <option value="hide">JHIDE</option>
-                <option value="show_no_link">COM_CHURCHDIRECTORY_FIELD_VALUE_NO_LINK
-                </option>
-                <option value="show_with_link">COM_CHURCHDIRECTORY_FIELD_VALUE_WITH_LINK
-                </option>
-            </field>
-
-            <field name="show_contact_list"
-                   type="radio"
-                   class="btn-group"
-                   label="COM_CHURCHDIRECTORY_FIELD_MEMBER_SHOW_LIST_LABEL"
-                   description="COM_CHURCHDIRECTORY_FIELD_MEMBER_SHOW_LIST_DESC">
-                <option value="">JGLOBAL_USE_GLOBAL</option>
-                <option value="0">JHIDE</option>
-                <option value="1">JSHOW</option>
-            </field>
-
-            <field name="presentation_style" type="list"
-                   description="COM_CHURCHDIRECTORY_FIELD_PRESENTATION_DESC"
-                   label="COM_CHURCHDIRECTORY_FIELD_PRESENTATION_LABEL">
-                <option value="">JGLOBAL_USE_GLOBAL</option>
-                <option value="sliders">COM_CHURCHDIRECTORY_FIELD_VALUE_SLIDERS
-                </option>
-                <option value="tabs">COM_CHURCHDIRECTORY_FIELD_VALUE_TABS</option>
-                <option value="plain">COM_CHURCHDIRECTORY_FIELD_VALUE_PLAIN</option>
-            </field>
-
-            <field name="show_name" type="list"
-                   label="COM_CHURCHDIRECTORY_FIELD_PARAMS_NAME_LABEL"
-                   description="COM_CHURCHDIRECTORY_FIELD_PARAMS_NAME_DESC">
-                <option value="">JGLOBAL_USE_GLOBAL</option>
-                <option value="0">JHIDE</option>
-                <option value="1">JSHOW</option>
-            </field>
-
-            <field name="show_position" type="list"
-                   label="COM_CHURCHDIRECTORY_FIELD_PARAMS_MEMBER_POSITION_LABEL"
-                   description="COM_CHURCHDIRECTORY_FIELD_PARAMS_MEMBER_POSITION_DESC">
-                <option value="">JGLOBAL_USE_GLOBAL</option>
-                <option value="0">JHIDE</option>
-                <option value="1">JSHOW</option>
-            </field>
-
-            <field name="show_email" type="list" label="JGLOBAL_EMAIL"
-                   description="COM_CHURCHDIRECTORY_FIELD_PARAMS_MEMBER_E_MAIL_DESC">
-                <option value="">JGLOBAL_USE_GLOBAL</option>
-                <option value="0">JHIDE</option>
-                <option value="1">JSHOW</option>
-            </field>
-
-            <field name="show_street_address" type="list"
-                   label="COM_CHURCHDIRECTORY_FIELD_PARAMS_STREET_ADDRESS_LABEL"
-                   description="COM_CHURCHDIRECTORY_FIELD_PARAMS_STREET_ADDRESS_DESC">
-                <option value="">JGLOBAL_USE_GLOBAL</option>
-                <option value="0">JHIDE</option>
-                <option value="1">JSHOW</option>
-            </field>
-
-            <field name="show_suburb" type="list"
-                   label="COM_CHURCHDIRECTORY_FIELD_PARAMS_TOWN-SUBURB_LABEL"
-                   description="COM_CHURCHDIRECTORY_FIELD_PARAMS_TOWN-SUBURB_DESC">
-                <option value="">JGLOBAL_USE_GLOBAL</option>
-                <option value="0">JHIDE</option>
-                <option value="1">JSHOW</option>
-            </field>
-
-            <field name="show_state" type="list"
-                   label="COM_CHURCHDIRECTORY_FIELD_PARAMS_STATE-COUNTY_LABEL"
-                   description="COM_CHURCHDIRECTORY_FIELD_PARAMS_STATE-COUNTY_DESC">
-                <option value="">JGLOBAL_USE_GLOBAL</option>
-                <option value="0">JHIDE</option>
-                <option value="1">JSHOW</option>
-            </field>
-
-            <field name="show_postcode" type="list"
-
-                   label="COM_CHURCHDIRECTORY_FIELD_PARAMS_POST-ZIP_CODE_LABEL"
-                   description="COM_CHURCHDIRECTORY_FIELD_PARAMS_POST-ZIP_CODE_DESC">
-                <option value="">JGLOBAL_USE_GLOBAL</option>
-                <option value="0">JHIDE</option>
-                <option value="1">JSHOW</option>
-            </field>
-
-            <field name="show_country" type="list"
-                   label="COM_CHURCHDIRECTORY_FIELD_PARAMS_COUNTRY_LABEL"
-                   description="COM_CHURCHDIRECTORY_FIELD_PARAMS_COUNTRY_DESC">
-                <option value="">JGLOBAL_USE_GLOBAL</option>
-                <option value="0">JHIDE</option>
-                <option value="1">JSHOW</option>
-            </field>
-
-            <field name="show_telephone" type="list"
-                   label="COM_CHURCHDIRECTORY_FIELD_PARAMS_TELEPHONE_LABEL"
-                   description="COM_CHURCHDIRECTORY_FIELD_PARAMS_TELEPHONE_DESC">
-                <option value="">JGLOBAL_USE_GLOBAL</option>
-                <option value="0">JHIDE</option>
-                <option value="1">JSHOW</option>
-            </field>
-
-            <field name="show_mobile" type="list"
-                   label="COM_CHURCHDIRECTORY_FIELD_PARAMS_MOBILE_LABEL"
-                   description="COM_CHURCHDIRECTORY_FIELD_PARAMS_MOBILE_DESC">
-                <option value="">JGLOBAL_USE_GLOBAL</option>
-                <option value="0">JHIDE</option>
-                <option value="1">JSHOW</option>
-            </field>
-
-            <field name="show_fax" type="list"
-                   label="COM_CHURCHDIRECTORY_FIELD_PARAMS_FAX_LABEL"
-                   description="COM_CHURCHDIRECTORY_FIELD_PARAMS_FAX_DESC">
-                <option value="">JGLOBAL_USE_GLOBAL</option>
-                <option value="0">JHIDE</option>
-                <option value="1">JSHOW</option>
-            </field>
-
-            <field name="show_webpage" type="list"
-                   label="COM_CHURCHDIRECTORY_FIELD_PARAMS_WEBPAGE_LABEL"
-                   description="COM_CHURCHDIRECTORY_FIELD_PARAMS_WEBPAGE_DESC">
-                <option value="">JGLOBAL_USE_GLOBAL</option>
-                <option value="0">JHIDE</option>
-                <option value="1">JSHOW</option>
-            </field>
-
-            <field name="show_misc" type="list"
-                   label="COM_CHURCHDIRECTORY_FIELD_PARAMS_MISC_INFO_LABEL"
-                   description="COM_CHURCHDIRECTORY_FIELD_PARAMS_MISC_INFO_DESC">
-                <option value="">JGLOBAL_USE_GLOBAL</option>
-                <option value="0">JHIDE</option>
-                <option value="1">JSHOW</option>
-            </field>
-
-            <field name="show_image" type="list"
-                   label="COM_CHURCHDIRECTORY_FIELD_PARAMS_SHOW_IMAGE_LABEL"
-                   description="COM_CHURCHDIRECTORY_FIELD_PARAMS_SHOW_IMAGE_DESC">
-                <option value="">JGLOBAL_USE_GLOBAL</option>
-                <option value="0">JHIDE</option>
-                <option value="1">JSHOW</option>
-            </field>
-
-            <field name="allow_vcard" type="list"
-                   label="COM_CHURCHDIRECTORY_FIELD_PARAMS_VCARD_LABEL"
-                   description="COM_CHURCHDIRECTORY_FIELD_PARAMS_VCARD_DESC">
-                <option value="">JGLOBAL_USE_GLOBAL</option>
-                <option value="0">JHIDE</option>
-                <option value="1">JSHOW</option>
-            </field>
-
-            <field name="show_articles" label="COM_CHURCHDIRECTORY_FIELD_ARTICLES_SHOW_LABEL"
-                   description="COM_CHURCHDIRECTORY_FIELD_ARTICLES_SHOW_DESC" type="list">
-                <option value="">JGLOBAL_USE_GLOBAL</option>
-                <option value="0">JHIDE</option>
-                <option value="1">JSHOW</option>
-            </field>
-            <field name="show_profile" type="list"
-
-                   label="COM_CHURCHDIRECTORY_FIELD_PROFILE_SHOW_LABEL"
-                   description="COM_CHURCHDIRECTORY_FIELD_PROFILE_SHOW_DESC">
-                <option value="">JGLOBAL_USE_GLOBAL</option>
-                <option value="0">JHIDE</option>
-                <option value="1">JSHOW</option>
-            </field>
-
-            <field name="show_links" label="COM_CHURCHDIRECTORY_FIELD_SHOW_LINKS_LABEL"
-                   description="COM_CHURCHDIRECTORY_FIELD_SHOW_LINKS_DESC" type="list">
-                <option value="">JGLOBAL_USE_GLOBAL</option>
-                <option value="0">JHIDE</option>
-                <option value="1">JSHOW</option>
-            </field>
-
-            <field name="linka_name" type="text"
-                   label="COM_CHURCHDIRECTORY_FIELD_LINKA_NAME_LABEL"
-                   description="COM_CHURCHDIRECTORY_FIELD_LINK_NAME_DESC"
-                   class="inputbox" size="30"/>
-
-            <field name="linka" type="url" filter="url"
-                   label="COM_CHURCHDIRECTORY_FIELD_LINKA_LABEL" description="COM_CHURCHDIRECTORY_FIELD_LINKA_DESC"
-                   class="inputbox" size="30"/>
-
-            <field name="linkb_name" type="text"
-                   label="COM_CHURCHDIRECTORY_FIELD_LINKB_NAME_LABEL"
-                   description="COM_CHURCHDIRECTORY_FIELD_LINK_NAME_DESC"
-                   class="inputbox" size="30"/>
-
-            <field name="linkb" type="url" filter="url"
-                   label="COM_CHURCHDIRECTORY_FIELD_LINKB_LABEL" description="COM_CHURCHDIRECTORY_FIELD_LINKB_DESC"
-                   class="inputbox" size="30"/>
-
-            <field name="linkc_name" type="text"
-                   label="COM_CHURCHDIRECTORY_FIELD_LINKC_NAME_LABEL"
-                   description="COM_CHURCHDIRECTORY_FIELD_LINK_NAME_DESC"
-                   class="inputbox" size="30"/>
-
-            <field name="linkc" type="url" filter="url"
-                   label="COM_CHURCHDIRECTORY_FIELD_LINKC_LABEL" description="COM_CHURCHDIRECTORY_FIELD_LINKC_DESC"
-                   class="inputbox" size="30"/>
-
-            <field name="linkd_name" type="text"
-                   label="COM_CHURCHDIRECTORY_FIELD_LINKD_NAME_LABEL"
-                   description="COM_CHURCHDIRECTORY_FIELD_LINK_NAME_DESC"
-                   class="inputbox" size="30"/>
-
-            <field name="linkd" type="url" filter="url"
-                   label="COM_CHURCHDIRECTORY_FIELD_LINKD_LABEL" description="COM_CHURCHDIRECTORY_FIELD_LINKD_DESC"
-                   class="inputbox" size="30"/>
-
-            <field name="linke_name" type="text"
-                   label="COM_CHURCHDIRECTORY_FIELD_LINKE_NAME_LABEL"
-                   description="COM_CHURCHDIRECTORY_FIELD_LINK_NAME_DESC"
-                   class="inputbox" size="30"/>
-
-            <field name="linke" type="url" filter="url"
-                   label="COM_CHURCHDIRECTORY_FIELD_LINKE_LABEL" description="COM_CHURCHDIRECTORY_FIELD_LINKE_DESC"
-                   class="inputbox" size="30"/>
-            <field name="contact_layout" type="componentlayout" label="JFIELD_ALT_LAYOUT_LABEL"
-                   description="JFIELD_ALT_COMPONENT_LAYOUT_DESC" extension="com_churchdirectory"
-                   view="contact" useglobal="true"/>
-        </fieldset>
-
-        <fieldset name="email" label="COM_CHURCHDIRECTORY_FIELDSET_MEMBER_FORM">
-
-            <field name="show_email_form" type="list"
-
-                   label="COM_CHURCHDIRECTORY_FIELD_EMAIL_SHOW_FORM_LABEL"
-                   description="COM_CHURCHDIRECTORY_FIELD_EMAIL_SHOW_FORM_DESC">
-                <option value="">JGLOBAL_USE_GLOBAL</option>
-                <option value="0">JHIDE</option>
-                <option value="1">JSHOW</option>
-            </field>
-
-            <field name="show_email_copy" type="list"
-
-                   label="COM_CHURCHDIRECTORY_FIELD_EMAIL_EMAIL_COPY_LABEL"
-                   description="COM_CHURCHDIRECTORY_FIELD_EMAIL_EMAIL_COPY_DESC">
-                <option value="">JGLOBAL_USE_GLOBAL</option>
-                <option value="0">JHIDE</option>
-                <option value="1">JSHOW</option>
-            </field>
-
-            <field name="banned_email" type="textarea"
-
-                   label="COM_CHURCHDIRECTORY_FIELD_EMAIL_BANNED_EMAIL_LABEL" rows="3"
-                   cols="30" description="COM_CHURCHDIRECTORY_FIELD_EMAIL_BANNED_EMAIL_DESC"/>
-
-            <field name="banned_subject" type="textarea"
-
-                   label="COM_CHURCHDIRECTORY_FIELD_EMAIL_BANNED_SUBJECT_LABEL" rows="3"
-                   cols="30" description="COM_CHURCHDIRECTORY_FIELD_EMAIL_BANNED_SUBJECT_DESC"/>
-
-            <field name="banned_text" type="textarea"
-
-                   label="COM_CHURCHDIRECTORY_FIELD_EMAIL_BANNED_TEXT_LABEL" rows="3"
-                   cols="30" description="COM_CHURCHDIRECTORY_FIELD_EMAIL_BANNED_TEXT_DESC"/>
-
-            <field name="validate_session" type="list"
-
-                   label="COM_CHURCHDIRECTORY_FIELD_CONFIG_SESSION_CHECK_LABEL"
-                   description="COM_CHURCHDIRECTORY_FIELD_CONFIG_SESSION_CHECK_DESC">
-                <option value="">JGLOBAL_USE_GLOBAL</option>
-                <option value="0">JNO</option>
-                <option value="1">JYES</option>
-            </field>
-
-            <field name="custom_reply" type="list"
-
-                   label="COM_CHURCHDIRECTORY_FIELD_CONFIG_CUSTOM_REPLY_LABEL"
-                   description="COM_CHURCHDIRECTORY_FIELD_CONFIG_CUSTOM_REPLY_DESC">
-                <option value="">JGLOBAL_USE_GLOBAL</option>
-                <option value="0">JNO</option>
-                <option value="1">JYES</option>
-            </field>
-
-            <field name="redirect" type="text" size="30"
-                   label="COM_CHURCHDIRECTORY_FIELD_CONFIG_REDIRECT_LABEL"
-                   description="COM_CHURCHDIRECTORY_FIELD_CONFIG_REDIRECT_DESC"/>
-        </fieldset>
-    </fields>
-    <fields name="metadata">
-        <fieldset name="jmetadata" label="JGLOBAL_FIELDSET_METADATA_OPTIONS">
-
-            <field name="robots" type="list" label="JFIELD_METADATA_ROBOTS_LABEL"
-                   description="JFIELD_METADATA_ROBOTS_DESC">
-                <option value="">JGLOBAL_USE_GLOBAL</option>
-                <option value="index, follow">JGLOBAL_INDEX_FOLLOW</option>
-                <option value="noindex, follow">JGLOBAL_NOINDEX_FOLLOW</option>
-                <option value="index, nofollow">JGLOBAL_INDEX_NOFOLLOW</option>
-                <option value="noindex, nofollow">JGLOBAL_NOINDEX_NOFOLLOW</option>
-            </field>
-
-            <field name="rights" type="text" label="JFIELD_METADATA_RIGHTS_LABEL"
-                   description="JFIELD_METADATA_RIGHTS_DESC" size="20"/>
-        </fieldset>
-    </fields>
-    <fields name="attribs">
-        <fieldset name="msg"
-                  label="COM_CHURCHDIRECTORY_IM_DETAILS"
-                  description="COM_CHURCHDIRECTORY_MEMBER_MSG_INFO_FIELDSET_DESC">
-            <field name="msn_msg" type="text"
-                   label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_MSN_MSG_LABEL"
-                   description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_MSN_MSG_DESC"
-                   class="inputbox span12 small" size="30"/>
-            <field name="google_msg" type="text"
-                   label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_GOOGLE_MSG_LABEL"
-                   description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_GOOGLE_MSG_DESC"
-                   class="inputbox span12 small" size="30"/>
-            <field name="aol_msg" type="text"
-                   label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_AOL_MSG_LABEL"
-                   description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_AOL_MSG_DESC"
-                   class="inputbox span12 small" size="30"/>
-            <field name="facebook_msg" type="text"
-                   label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_FACEBOOK_MSG_LABEL"
-                   description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_FACEBOOK_MSG_DESC"
-                   class="inputbox span12 small" size="30"/>
-            <field name="twitter_msg" type="text"
-                   label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_TWITTER_MSG_LABEL"
-                   description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_TWITTER_MSG_DESC"
-                   class="inputbox span12 small" size="30"/>
-        </fieldset>
-        <field name="sex"
-               type="list"
-               class="btn-group span12"
-               label="COM_CHURCHDIRECTORY_FIELD_SEX_LABEL"
-               description="COM_CHURCHDIRECTORY_FIELD_SEX_DESC"
-               required="true">
-	        <option value="">COM_CHURCHDIRECTORY_SEX_SELECT_ONE</option>
-            <option value="0">COM_CHURCHDIRECTORY_FEMALE</option>
-            <option value="1">COM_CHURCHDIRECTORY_MALE</option>
-        </field>
-        <fieldset name="protected"
-                  label="COM_CHURCHDIRECTORY_MEMBER_PROTECTED_INFO_FIELDSET_LABEL"
-                  description="COM_CHURCHDIRECTORY_MEMBER_PROTECTED_INFO_FIELDSET_DESC">
-            <field name="bpc_date" type="calendar"
-                   label="COM_CHURCHDIRECTORY_FIELD_BCP_DATE_LABEL"
-                   description="COM_CHURCHDIRECTORY_FIELD_BCP_DATE_DESC"
-                   class="inputbox" format="%Y-%m-%d" size="22" filter="user_utc"/>
-            <field name="memberotherinfo" type="textarea"
-                   label="COM_CHURCHDIRECTORY_FIELD_MEMBER_OTHER_INFO_LABEL"
-                   description="COM_CHURCHDIRECTORY_FIELD_MEMBER_OTHER_INFO_DESC"
-                   class="inputbox span12 small" rows="3" cols="30"/>
-        </fieldset>
-        <field name="familypostion" type="list"
-               label="COM_CHURCHDIRECTORY_FAMILYPOSTION_LABEL"
-               description="COM_CHURCHDIRECTORY_FAMILYPOSTION_DESC"
-               class="inputbox"
-               default="0" OnChange="setTypeEmail(this.form);">
-            <option value="0">COM_CHURCHDIRECTORY_HEAD_OF_HOUSEHOLD</option>
-            <option value="1">COM_CHURCHDIRECTORY_SPOUSE</option>
-            <option value="2">COM_CHURCHDIRECTORY_CHILED</option>
-        </field>
-        <fieldset name="mailingaddress"
-                  label="COM_CHURCHDIRECTORY_MAILING_ADDRESS_FIELDSET_LABEL"
-                  description="COM_CHURCHDIRECTORY_MAILING_ADDRESS_FIELDSET_DESC">
-            <field name="mailingaddress" type="textarea"
-                   label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_MAILING_ADDRESS_LABEL"
-                   description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_MAILING_ADDRESS_DESC"
-                   class="inputbox span12 small" rows="3" cols="30"/>
-
-            <field name="mailingsuburb" type="text"
-                   label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_SUBURB_LABEL"
-                   description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_SUBURB_DESC"
-                   class="inputbox span12 small" size="30"/>
-
-            <field name="mailingstate" type="text"
-                   label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_STATE_LABEL"
-                   description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_STATE_DESC"
-                   class="inputbox span12 small" size="30"/>
-
-            <field name="mailingpostcode" type="text"
-                   label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_POSTCODE_LABEL"
-                   description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_POSTCODE_DESC"
-                   class="inputbox span12 small" size="30"/>
-
-            <field name="mailingcountry" type="text"
-                   label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_COUNTRY_LABEL"
-                   description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_COUNTRY_DESC"
-                   class="inputbox span12 small" size="30"/>
-        </fieldset>
-        <fieldset name="occupation"
-                  label="COM_CHURCHDIRECTORY_OCCUPATOIN_INFO_FIELDSET_LABEL"
-                  description="COM_CHURCHDIRECTORY_OCCUPATOIN_INFO_FIELDSET_DESC">
-
-            <field name="jobtitle" type="text"
-                   label="COM_CHURCHDIRECTORY_FIELD_JOB_TITLE_LABEL"
-                   description="COM_CHURCHDIRECTORY_FIELD_JOB_TITLE_DESC"
-                   class="inputbox span12 small" size="30"/>
-
-            <field name="employer" type="text"
-                   label="COM_CHURCHDIRECTORY_FIELD_EMPLOYER_LABEL"
-                   description="COM_CHURCHDIRECTORY_FIELD_EMPLOYER_DESC"
-                   class="inputbox span12 small" size="30"/>
-
-            <field name="email_to" type="email"
-                   label="JGLOBAL_EMAIL"
-                   description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_EMAIL_DESC"
-                   class="inputbox span12 small"
-                   cols="30"
-                    />
-
-            <field name="address" type="textarea"
-                   label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_ADDRESS_LABEL"
-                   description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_ADDRESS_DESC"
-                   class="inputbox span12 small" rows="3" cols="30"/>
-
-            <field name="suburb" type="text"
-                   label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_SUBURB_LABEL"
-                   description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_SUBURB_DESC"
-                   class="inputbox span12 small" size="30"/>
-
-            <field name="state" type="text"
-                   label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_STATE_LABEL"
-                   description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_STATE_DESC" class="inputbox span12 small"
-                   size="30"/>
-
-            <field name="postcode" type="text"
-                   label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_POSTCODE_LABEL"
-                   description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_POSTCODE_DESC"
-                   class="inputbox span12 small" size="30"/>
-
-            <field name="country" type="text"
-                   label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_COUNTRY_LABEL"
-                   description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_COUNTRY_DESC"
-                   class="inputbox span12 small" size="30"/>
-
-            <field name="telephone" type="text"
-                   label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_TELEPHONE_LABEL"
-                   description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_TELEPHONE_DESC"
-                   class="inputbox span12 small" size="30"/>
-
-            <field name="mobile" type="text"
-                   label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_MOBILE_LABEL"
-                   description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_MOBILE_DESC"
-                   class="inputbox span12 small" size="30"/>
-
-            <field name="fax" type="text"
-                   label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_FAX_LABEL"
-                   description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_FAX_DESC"
-                   class="inputbox span12 small" size="30"/>
-
-            <field name="webpage" type="url"
-                   label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_WEBPAGE_LABEL"
-                   description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_WEBPAGE_DESC"
-                   class="inputbox span12 small" size="30"/>
-        </fieldset>
-    </fields>
+	<fieldset addfieldpath="/administrator/components/com_categories/models/fields">
+		<field name="id"
+		       type="text"
+		       label="JGLOBAL_FIELD_ID_LABEL"
+		       description="JGLOBAL_FIELD_ID_DESC"
+		       size="10"
+		       default="0"
+		       readonly="true"
+		       class="readonly"
+		/>
+
+		<field name="asset_id" type="hidden" filter="unset"/>
+
+		<field name="name" type="text" label="COM_CHURCHDIRECTORY_FIELD_NAME_LABEL"
+		       description="COM_CHURCHDIRECTORY_FIELD_NAME_DESC" class="inputbox"
+		       size="30" required="true"/>
+
+		<field name="surname" type="text" label="COM_CHURCHDIRECTORY_FIELD_SURNAME_LABEL"
+		       description="COM_CHURCHDIRECTORY_FIELD_SURNAME_DESC" class="inputbox"
+		       size="30"/>
+
+		<field name="lname" type="text" label="COM_CHURCHDIRECTORY_FIELD_LNAME_LABEL"
+		       description="COM_CHURCHDIRECTORY_FIELD_LNAME_DESC" class="inputbox"
+		       size="30" required="true"/>
+
+		<field name="alias" type="text" label="JFIELD_ALIAS_LABEL"
+		       description="JFIELD_ALIAS_DESC" class="inputbox" size="30"/>
+
+		<field name="user_id" type="user"
+		       label="COM_CHURCHDIRECTORY_FIELD_LINKED_USER_LABEL"
+		       description="COM_CHURCHDIRECTORY_FIELD_LINKED_USER_DESC"/>
+
+		<field id="published" name="published" type="list" label="JSTATUS"
+		       description="JFIELD_PUBLISHED_DESC"
+		       class="inputbox span12 small"
+		       size="1"
+		       default="1">
+			<option value="1">
+				JPUBLISHED
+			</option>
+			<option value="0">
+				JUNPUBLISHED
+			</option>
+			<option value="2">
+				JARCHIVED
+			</option>
+			<option value="-2">
+				JTRASHED
+			</option>
+		</field>
+
+		<field name="catid" type="categoryedit" extension="com_churchdirectory"
+		       label="JCATEGORY" description="JFIELD_CATEGORY_DESC" class="inputbox"
+		       required="true"/>
+
+		<field name="buttonspacer" description="JGLOBAL_ACTION_PERMISSIONS_DESCRIPTION"
+		       type="spacer"/>
+
+		<field name="access" type="accesslevel" label="JFIELD_ACCESS_LABEL"
+		       description="JFIELD_ACCESS_DESC" class="inputbox span12 small" size="1"/>
+
+		<field name="sortname1" type="text"
+		       label="COM_CHURCHDIRECTORY_FIELD_SORTNAME1_LABEL" description="COM_CHURCHDIRECTORY_FIELD_SORTNAME1_DESC"
+		       class="inputbox" size="30"/>
+
+		<field name="sortname2" type="text"
+		       label="COM_CHURCHDIRECTORY_FIELD_SORTNAME2_LABEL" description="COM_CHURCHDIRECTORY_FIELD_SORTNAME2_DESC"
+		       class="inputbox" size="30"/>
+
+		<field name="sortname3" type="text"
+		       label="COM_CHURCHDIRECTORY_FIELD_SORTNAME3_LABEL" description="COM_CHURCHDIRECTORY_FIELD_SORTNAME3_DESC"
+		       class="inputbox" size="30"/>
+
+		<field name="con_position" size="15" type="sql" label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_POSITION_LABEL"
+		       description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_POSITION_DESC"
+		       query="SELECT id, name FROM #__churchdirectory_position WHERE published = 1 ORDER by name ASC"
+		       key_field="id" value_field="name" multiple="true" default="-1">
+			<option value="-1">COM_CHURCHDIRECTORY_SELECT_POSITION</option>
+		</field>
+
+		<field name="funitid"
+		       type="sql"
+		       class="inputbox"
+		       query="SELECT id, name FROM #__churchdirectory_familyunit WHERE published = 1 ORDER by name ASC"
+		       key_field="id"
+		       value_field="name"
+		       default="-1"
+		       label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_FAMILYUNIT_LABEL"
+		       description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_FAMILYUNIT_DESC"
+		       required=""
+		>
+			<option value="-1">COM_CHURCHDIRECTORY_SELECT_FAMILYUNIT</option>
+		</field>
+
+		<field name="email_to" type="email"
+		       label="JGLOBAL_EMAIL"
+		       description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_EMAIL_DESC"
+		       class="inputbox"
+		       cols="30"
+		/>
+
+		<field name="address" type="textarea"
+		       label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_ADDRESS_LABEL"
+		       description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_ADDRESS_DESC"
+		       class="inputbox" rows="3" cols="30"/>
+
+		<field name="suburb" type="text"
+		       label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_SUBURB_LABEL"
+		       description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_SUBURB_DESC"
+		       class="inputbox" size="30"/>
+
+		<field name="state" type="text"
+		       label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_STATE_LABEL"
+		       description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_STATE_DESC" class="inputbox"
+		       size="30"/>
+
+		<field name="postcode" type="text"
+		       label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_POSTCODE_LABEL"
+		       description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_POSTCODE_DESC"
+		       class="inputbox" size="30"/>
+
+		<field name="country" type="text"
+		       label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_COUNTRY_LABEL"
+		       description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_COUNTRY_DESC"
+		       class="inputbox" size="30"/>
+
+		<field name="telephone" type="text"
+		       label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_TELEPHONE_LABEL"
+		       description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_TELEPHONE_DESC"
+		       class="inputbox" size="30"/>
+
+		<field name="mobile" type="text"
+		       label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_MOBILE_LABEL"
+		       description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_MOBILE_DESC"
+		       class="inputbox" size="30"/>
+
+		<field name="fax" type="text"
+		       label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_FAX_LABEL"
+		       description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_FAX_DESC"
+		       class="inputbox" size="30"/>
+
+		<field name="webpage" type="url"
+		       label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_WEBPAGE_LABEL"
+		       description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_WEBPAGE_DESC"
+		       class="inputbox" size="30"/>
+
+		<field name="misc" type="editor"
+		       label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_MISC_LABEL"
+		       description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_MISC_DESC"
+		       class="inputbox"
+		       filter="JComponentHelper::filterText"
+		       buttons="true"
+		       hide="readmore,pagebreak"
+		/>
+		<field name="note" type="textarea"
+		       label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_NOTE_LABEL"
+		       description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_NOTE_DESC"
+		       class="inputbox"
+		/>
+
+		<field name="image" type="media" hide_none="1"
+		       label="COM_CHURCHDIRECTORY_FIELD_PARAMS_IMAGE_LABEL"
+		       description="COM_CHURCHDIRECTORY_FIELD_PARAMS_IMAGE_DESC"/>
+
+		<field name="created_by" type="user" label="JGLOBAL_FIELD_CREATED_BY_LABEL"
+		       description="COM_CHURCHDIRECTORY_FIELD_CREATED_BY_DESC"/>
+
+		<field name="created_by_alias" type="text"
+		       label="COM_CHURCHDIRECTORY_FIELD_CREATED_BY_ALIAS_LABEL"
+		       description="COM_CHURCHDIRECTORY_FIELD_CREATED_BY_ALIAS_DESC"
+		       class="inputbox" size="20"/>
+
+		<field name="created" type="calendar"
+		       label="COM_CHURCHDIRECTORY_FIELD_CREATED_LABEL" description="COM_CHURCHDIRECTORY_FIELD_CREATED_DESC"
+		       class="inputbox" size="22" format="%Y-%m-%d %H:%M:%S" filter="user_utc"/>
+
+		<field name="modified" type="calendar" class="readonly"
+		       label="JGLOBAL_FIELD_MODIFIED_LABEL" description="COM_CHURCHDIRECTORY_FIELD_MODIFIED_DESC"
+		       size="22" readonly="true" format="%Y-%m-%d %H:%M:%S" filter="user_utc"/>
+
+		<field name="modified_by" type="user" label="JGLOBAL_FIELD_MODIFIED_BY_LABEL"
+		       class="readonly" readonly="true" filter="unset"/>x
+
+		<field name="checked_out" type="hidden" filter="unset"/>
+
+		<field name="checked_out_time" type="hidden" filter="unset"/>
+
+		<field name="ordering" type="order" class="inputbox"
+		       label="JFIELD_ORDERING_LABEL" description="JFIELD_ORDERING_DESC" content_type="com_churchdirectory.member"/>
+
+		<field name="publish_up" type="calendar"
+		       label="COM_CHURCHDIRECTORY_FIELD_PUBLISH_UP_LABEL"
+		       description="COM_CHURCHDIRECTORY_FIELD_PUBLISH_UP_DESC"
+		       class="inputbox" format="%Y-%m-%d %H:%M:%S" size="22" filter="user_utc"/>
+
+		<field name="publish_down" type="calendar"
+		       label="COM_CHURCHDIRECTORY_FIELD_PUBLISH_DOWN_LABEL"
+		       description="COM_CHURCHDIRECTORY_FIELD_PUBLISH_DOWN_DESC"
+		       class="inputbox" format="%Y-%m-%d %H:%M:%S" size="22" filter="user_utc"/>
+
+		<field name="metakey" type="textarea" label="JFIELD_META_KEYWORDS_LABEL"
+		       description="JFIELD_META_KEYWORDS_DESC" class="inputbox" rows="3"
+		       cols="30"/>
+
+		<field name="metadesc" type="textarea" label="JFIELD_META_DESCRIPTION_LABEL"
+		       description="JFIELD_META_DESCRIPTION_DESC" class="inputbox" rows="3"
+		       cols="30"/>
+
+		<field name="language" type="contentlanguage" label="JFIELD_LANGUAGE_LABEL"
+		       description="COM_CHURCHDIRECTORY_FIELD_LANGUAGE_DESC"
+		       class="inputbox span12 small">
+			<option value="*">JALL</option>
+		</field>
+		<field name="featured" type="list" label="JFEATURED"
+		       description="COM_CHURCHDIRECTORY_FIELD_FEATURED_DESC"
+		       class="inputbox span12 small" default="0">
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+		<field name="contact_icons" type="list" default="0"
+		       label="COM_CHURCHDIRECTORY_FIELD_ICONS_SETTINGS"
+		       description="COM_CHURCHDIRECTORY_FIELD_ICONS_SETTINGS_DESC">
+			<option value="0">COM_CHURCHDIRECTORY_FIELD_VALUE_NONE
+			</option>
+			<option value="1">COM_CHURCHDIRECTORY_FIELD_VALUE_TEXT
+			</option>
+			<option value="2">COM_CHURCHDIRECTORY_FIELD_VALUE_ICONS
+			</option>
+		</field>
+
+		<field name="icon_address" type="media" hide_none="1"
+		       label="COM_CHURCHDIRECTORY_FIELD_ICONS_ADDRESS_LABEL"
+		       description="COM_CHURCHDIRECTORY_FIELD_ICONS_ADDRESS_DESC"/>
+
+		<field name="icon_email" type="media" hide_none="1"
+		       label="COM_CHURCHDIRECTORY_FIELD_ICONS_EMAIL_LABEL"
+		       description="COM_CHURCHDIRECTORY_FIELD_ICONS_EMAIL_DESC"/>
+
+		<field name="icon_telephone" type="media" hide_none="1"
+		       label="COM_CHURCHDIRECTORY_FIELD_ICONS_TELEPHONE_LABEL"
+		       description="COM_CHURCHDIRECTORY_FIELD_ICONS_TELEPHONE_DESC"/>
+
+		<field name="icon_mobile" type="media" hide_none="1"
+		       label="COM_CHURCHDIRECTORY_FIELD_ICONS_MOBILE_LABEL"
+		       description="COM_CHURCHDIRECTORY_FIELD_ICONS_MOBILE_DESC"/>
+
+		<field name="icon_fax" type="media" hide_none="1"
+		       label="COM_CHURCHDIRECTORY_FIELD_ICONS_FAX_LABEL"
+		       description="COM_CHURCHDIRECTORY_FIELD_ICONS_FAX_DESC"/>
+
+		<field name="icon_misc" type="media" hide_none="1"
+		       label="COM_CHURCHDIRECTORY_FIELD_ICONS_MISC_LABEL"
+		       description="COM_CHURCHDIRECTORY_FIELD_ICONS_MISC_DESC"/>
+
+		<field name="skype" type="text"
+		       label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_SKYPE_LABEL"
+		       description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_SKYPE_DESC" class="inputbox span12 small"
+		       size="30"/>
+
+		<field name="yahoo_msg" type="text"
+		       label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_YAHOO_MSG_LABEL"
+		       description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_YAHOO_MSG_DESC"
+		       class="inputbox span12 small" size="30"/>
+
+		<field name="lat" type="text" label="COM_CHURCHDIRECTORY_FIELD_KML_LAT_LABEL"
+		       description="COM_CHURCHDIRECTORY_FIELD_KML_LAT_DESC" class="inputbox span12 small"
+		       size="11"/>
+
+		<field name="lng" type="text" label="COM_CHURCHDIRECTORY_FIELD_KML_LNG_LABEL"
+		       description="COM_CHURCHDIRECTORY_FIELD_KML_LNG_DESC" class="inputbox span12 small"
+		       size="11"/>
+		<field name="spouse" type="spouse"
+		       label="COM_CHURCHDIRECTORY_FIELD_SPOUSE_LABEL" description="COM_CHURCHDIRECTORY_FIELD_SPOUSE_DESC"
+		       class="readonly span12 small" size="30" readonly="true"/>
+		<field name="children" type="textarea"
+		       label="COM_CHURCHDIRECTORY_FIELD_CHILDREN_LABEL" description="COM_CHURCHDIRECTORY_FIELD_CHILDREN_DESC"
+		       class="inputbox span12 small" rows="3" cols="30"/>
+		<field name="anniversary" type="calendar"
+		       label="COM_CHURCHDIRECTORY_FIELD_MEMBER_ANNIVERSARY_LABEL"
+		       description="COM_CHURCHDIRECTORY_FIELD_MEMBER_ANNIVERSARY_DESC"
+		       class="inputbox span12 small" format="%Y-%m-%d" size="22"/>
+		<field name="birthdate" type="calendar"
+		       label="COM_CHURCHDIRECTORY_FIELD_MEMBER_BIRTHDATE_LABEL"
+		       description="COM_CHURCHDIRECTORY_FIELD_MEMBER_BIRTHDATE_DESC"
+		       class="inputbox span12 small" format="%Y-%m-%d" size="22"/>
+		<field name="mstatus" type="list"
+		       label="COM_CHURCHDIRECTORY_FIELD_MEMBERSSTATUS_LABEL"
+		       description="COM_CHURCHDIRECTORY_FIELD_MEMBERSSTATUS_DESC"
+		       class="inputbox span12 small"
+		       default="0">
+			<option value="0">COM_CHURCHDIRECTORY_ACTIVE_MEMBER</option>
+			<option value="1">COM_CHURCHDIRECTORY_INACTIVE</option>
+			<option value="2">COM_CHURCHDIRECTORY_ACTIVE_ATTENDEE</option>
+			<option value="3">COM_CHURCHDIRECTORY_NONE_MEMBER</option>
+		</field>
+	</fieldset>
+
+	<fields name="params">
+		<field name="visibility" type="list"
+		       label="COM_CHURCHDIRECTORY_FIELD_KML_VISIBILITY_LABEL"
+		       description="COM_CHURCHDIRECTORY_FIELD_KML_VISIBILITY_MEMBER_DESC"
+		       class="inputbox span12 small"
+		       default="1">
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
+		</field>
+		<field name="scale" type="text"
+		       label="COM_CHURCHDIRECTORY_FIELD_KML_SCALE_LABEL" description="COM_CHURCHDIRECTORY_FIELD_KML_SCALE_DESC"
+		       class="inputbox span12 small" size="30" default="1.1"/>
+		<field name="open" type="list"
+		       label="COM_CHURCHDIRECTORY_FIELD_KML_OPEN_LABEL"
+		       description="COM_CHURCHDIRECTORY_FIELD_KML_OPEN_DESC"
+		       class="inputbox span12 small"
+		       default="0">
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
+		</field>
+		<field name="gxballoonvisibility" type="list"
+		       label="COM_CHURCHDIRECTORY_FIELD_KML_GXBOLLOONVISIBILITY_LABEL"
+		       description="COM_CHURCHDIRECTORY_FIELD_KML_GXBOLLOONVISIBILITY_DESC"
+		       class="inputbox span12 small"
+		       default="0">
+			<option value="0">JHIDE</option>
+			<option value="1">JSHOW</option>
+		</field>
+		<fieldset name="jbasic" label="JGLOBAL_FIELDSET_DISPLAY_OPTIONS">
+			<field name="show_contact_category" type="list"
+			       label="JGLOBAL_SHOW_CATEGORY_LABEL" description="COM_CHURCHDIRECTORY_FIELD_SHOW_CATEGORY_DESC">
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="hide">JHIDE</option>
+				<option value="show_no_link">COM_CHURCHDIRECTORY_FIELD_VALUE_NO_LINK
+				</option>
+				<option value="show_with_link">COM_CHURCHDIRECTORY_FIELD_VALUE_WITH_LINK
+				</option>
+			</field>
+
+			<field name="show_contact_list"
+			       type="radio"
+			       class="btn-group"
+			       label="COM_CHURCHDIRECTORY_FIELD_MEMBER_SHOW_LIST_LABEL"
+			       description="COM_CHURCHDIRECTORY_FIELD_MEMBER_SHOW_LIST_DESC">
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+
+			<field name="presentation_style" type="list"
+			       description="COM_CHURCHDIRECTORY_FIELD_PRESENTATION_DESC"
+			       label="COM_CHURCHDIRECTORY_FIELD_PRESENTATION_LABEL">
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="sliders">COM_CHURCHDIRECTORY_FIELD_VALUE_SLIDERS
+				</option>
+				<option value="tabs">COM_CHURCHDIRECTORY_FIELD_VALUE_TABS</option>
+				<option value="plain">COM_CHURCHDIRECTORY_FIELD_VALUE_PLAIN</option>
+			</field>
+
+			<field name="show_name" type="list"
+			       label="COM_CHURCHDIRECTORY_FIELD_PARAMS_NAME_LABEL"
+			       description="COM_CHURCHDIRECTORY_FIELD_PARAMS_NAME_DESC">
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+
+			<field name="show_position" type="list"
+			       label="COM_CHURCHDIRECTORY_FIELD_PARAMS_MEMBER_POSITION_LABEL"
+			       description="COM_CHURCHDIRECTORY_FIELD_PARAMS_MEMBER_POSITION_DESC">
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+
+			<field name="show_email" type="list" label="JGLOBAL_EMAIL"
+			       description="COM_CHURCHDIRECTORY_FIELD_PARAMS_MEMBER_E_MAIL_DESC">
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+
+			<field name="show_street_address" type="list"
+			       label="COM_CHURCHDIRECTORY_FIELD_PARAMS_STREET_ADDRESS_LABEL"
+			       description="COM_CHURCHDIRECTORY_FIELD_PARAMS_STREET_ADDRESS_DESC">
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+
+			<field name="show_suburb" type="list"
+			       label="COM_CHURCHDIRECTORY_FIELD_PARAMS_TOWN-SUBURB_LABEL"
+			       description="COM_CHURCHDIRECTORY_FIELD_PARAMS_TOWN-SUBURB_DESC">
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+
+			<field name="show_state" type="list"
+			       label="COM_CHURCHDIRECTORY_FIELD_PARAMS_STATE-COUNTY_LABEL"
+			       description="COM_CHURCHDIRECTORY_FIELD_PARAMS_STATE-COUNTY_DESC">
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+
+			<field name="show_postcode" type="list"
+
+			       label="COM_CHURCHDIRECTORY_FIELD_PARAMS_POST-ZIP_CODE_LABEL"
+			       description="COM_CHURCHDIRECTORY_FIELD_PARAMS_POST-ZIP_CODE_DESC">
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+
+			<field name="show_country" type="list"
+			       label="COM_CHURCHDIRECTORY_FIELD_PARAMS_COUNTRY_LABEL"
+			       description="COM_CHURCHDIRECTORY_FIELD_PARAMS_COUNTRY_DESC">
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+
+			<field name="show_telephone" type="list"
+			       label="COM_CHURCHDIRECTORY_FIELD_PARAMS_TELEPHONE_LABEL"
+			       description="COM_CHURCHDIRECTORY_FIELD_PARAMS_TELEPHONE_DESC">
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+
+			<field name="show_mobile" type="list"
+			       label="COM_CHURCHDIRECTORY_FIELD_PARAMS_MOBILE_LABEL"
+			       description="COM_CHURCHDIRECTORY_FIELD_PARAMS_MOBILE_DESC">
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+
+			<field name="show_fax" type="list"
+			       label="COM_CHURCHDIRECTORY_FIELD_PARAMS_FAX_LABEL"
+			       description="COM_CHURCHDIRECTORY_FIELD_PARAMS_FAX_DESC">
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+
+			<field name="show_webpage" type="list"
+			       label="COM_CHURCHDIRECTORY_FIELD_PARAMS_WEBPAGE_LABEL"
+			       description="COM_CHURCHDIRECTORY_FIELD_PARAMS_WEBPAGE_DESC">
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+
+			<field name="show_misc" type="list"
+			       label="COM_CHURCHDIRECTORY_FIELD_PARAMS_MISC_INFO_LABEL"
+			       description="COM_CHURCHDIRECTORY_FIELD_PARAMS_MISC_INFO_DESC">
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+
+			<field name="show_image" type="list"
+			       label="COM_CHURCHDIRECTORY_FIELD_PARAMS_SHOW_IMAGE_LABEL"
+			       description="COM_CHURCHDIRECTORY_FIELD_PARAMS_SHOW_IMAGE_DESC">
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+
+			<field name="allow_vcard" type="list"
+			       label="COM_CHURCHDIRECTORY_FIELD_PARAMS_VCARD_LABEL"
+			       description="COM_CHURCHDIRECTORY_FIELD_PARAMS_VCARD_DESC">
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+
+			<field name="show_articles" label="COM_CHURCHDIRECTORY_FIELD_ARTICLES_SHOW_LABEL"
+			       description="COM_CHURCHDIRECTORY_FIELD_ARTICLES_SHOW_DESC" type="list">
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+			<field name="show_profile" type="list"
+
+			       label="COM_CHURCHDIRECTORY_FIELD_PROFILE_SHOW_LABEL"
+			       description="COM_CHURCHDIRECTORY_FIELD_PROFILE_SHOW_DESC">
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+
+			<field name="show_links" label="COM_CHURCHDIRECTORY_FIELD_SHOW_LINKS_LABEL"
+			       description="COM_CHURCHDIRECTORY_FIELD_SHOW_LINKS_DESC" type="list">
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+
+			<field name="linka_name" type="text"
+			       label="COM_CHURCHDIRECTORY_FIELD_LINKA_NAME_LABEL"
+			       description="COM_CHURCHDIRECTORY_FIELD_LINK_NAME_DESC"
+			       class="inputbox" size="30"/>
+
+			<field name="linka" type="url" filter="url"
+			       label="COM_CHURCHDIRECTORY_FIELD_LINKA_LABEL" description="COM_CHURCHDIRECTORY_FIELD_LINKA_DESC"
+			       class="inputbox" size="30"/>
+
+			<field name="linkb_name" type="text"
+			       label="COM_CHURCHDIRECTORY_FIELD_LINKB_NAME_LABEL"
+			       description="COM_CHURCHDIRECTORY_FIELD_LINK_NAME_DESC"
+			       class="inputbox" size="30"/>
+
+			<field name="linkb" type="url" filter="url"
+			       label="COM_CHURCHDIRECTORY_FIELD_LINKB_LABEL" description="COM_CHURCHDIRECTORY_FIELD_LINKB_DESC"
+			       class="inputbox" size="30"/>
+
+			<field name="linkc_name" type="text"
+			       label="COM_CHURCHDIRECTORY_FIELD_LINKC_NAME_LABEL"
+			       description="COM_CHURCHDIRECTORY_FIELD_LINK_NAME_DESC"
+			       class="inputbox" size="30"/>
+
+			<field name="linkc" type="url" filter="url"
+			       label="COM_CHURCHDIRECTORY_FIELD_LINKC_LABEL" description="COM_CHURCHDIRECTORY_FIELD_LINKC_DESC"
+			       class="inputbox" size="30"/>
+
+			<field name="linkd_name" type="text"
+			       label="COM_CHURCHDIRECTORY_FIELD_LINKD_NAME_LABEL"
+			       description="COM_CHURCHDIRECTORY_FIELD_LINK_NAME_DESC"
+			       class="inputbox" size="30"/>
+
+			<field name="linkd" type="url" filter="url"
+			       label="COM_CHURCHDIRECTORY_FIELD_LINKD_LABEL" description="COM_CHURCHDIRECTORY_FIELD_LINKD_DESC"
+			       class="inputbox" size="30"/>
+
+			<field name="linke_name" type="text"
+			       label="COM_CHURCHDIRECTORY_FIELD_LINKE_NAME_LABEL"
+			       description="COM_CHURCHDIRECTORY_FIELD_LINK_NAME_DESC"
+			       class="inputbox" size="30"/>
+
+			<field name="linke" type="url" filter="url"
+			       label="COM_CHURCHDIRECTORY_FIELD_LINKE_LABEL" description="COM_CHURCHDIRECTORY_FIELD_LINKE_DESC"
+			       class="inputbox" size="30"/>
+			<field name="contact_layout" type="componentlayout" label="JFIELD_ALT_LAYOUT_LABEL"
+			       description="JFIELD_ALT_COMPONENT_LAYOUT_DESC" extension="com_churchdirectory"
+			       view="contact" useglobal="true"/>
+		</fieldset>
+
+		<fieldset name="email" label="COM_CHURCHDIRECTORY_FIELDSET_MEMBER_FORM">
+
+			<field name="show_email_form" type="list"
+
+			       label="COM_CHURCHDIRECTORY_FIELD_EMAIL_SHOW_FORM_LABEL"
+			       description="COM_CHURCHDIRECTORY_FIELD_EMAIL_SHOW_FORM_DESC">
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+
+			<field name="show_email_copy" type="list"
+
+			       label="COM_CHURCHDIRECTORY_FIELD_EMAIL_EMAIL_COPY_LABEL"
+			       description="COM_CHURCHDIRECTORY_FIELD_EMAIL_EMAIL_COPY_DESC">
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+
+			<field name="banned_email" type="textarea"
+
+			       label="COM_CHURCHDIRECTORY_FIELD_EMAIL_BANNED_EMAIL_LABEL" rows="3"
+			       cols="30" description="COM_CHURCHDIRECTORY_FIELD_EMAIL_BANNED_EMAIL_DESC"/>
+
+			<field name="banned_subject" type="textarea"
+
+			       label="COM_CHURCHDIRECTORY_FIELD_EMAIL_BANNED_SUBJECT_LABEL" rows="3"
+			       cols="30" description="COM_CHURCHDIRECTORY_FIELD_EMAIL_BANNED_SUBJECT_DESC"/>
+
+			<field name="banned_text" type="textarea"
+
+			       label="COM_CHURCHDIRECTORY_FIELD_EMAIL_BANNED_TEXT_LABEL" rows="3"
+			       cols="30" description="COM_CHURCHDIRECTORY_FIELD_EMAIL_BANNED_TEXT_DESC"/>
+
+			<field name="validate_session" type="list"
+
+			       label="COM_CHURCHDIRECTORY_FIELD_CONFIG_SESSION_CHECK_LABEL"
+			       description="COM_CHURCHDIRECTORY_FIELD_CONFIG_SESSION_CHECK_DESC">
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+			</field>
+
+			<field name="custom_reply" type="list"
+
+			       label="COM_CHURCHDIRECTORY_FIELD_CONFIG_CUSTOM_REPLY_LABEL"
+			       description="COM_CHURCHDIRECTORY_FIELD_CONFIG_CUSTOM_REPLY_DESC">
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+			</field>
+
+			<field name="redirect" type="text" size="30"
+			       label="COM_CHURCHDIRECTORY_FIELD_CONFIG_REDIRECT_LABEL"
+			       description="COM_CHURCHDIRECTORY_FIELD_CONFIG_REDIRECT_DESC"/>
+		</fieldset>
+	</fields>
+	<fields name="metadata">
+		<fieldset name="jmetadata" label="JGLOBAL_FIELDSET_METADATA_OPTIONS">
+
+			<field name="robots" type="list" label="JFIELD_METADATA_ROBOTS_LABEL"
+			       description="JFIELD_METADATA_ROBOTS_DESC">
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="index, follow">JGLOBAL_INDEX_FOLLOW</option>
+				<option value="noindex, follow">JGLOBAL_NOINDEX_FOLLOW</option>
+				<option value="index, nofollow">JGLOBAL_INDEX_NOFOLLOW</option>
+				<option value="noindex, nofollow">JGLOBAL_NOINDEX_NOFOLLOW</option>
+			</field>
+
+			<field name="rights" type="text" label="JFIELD_METADATA_RIGHTS_LABEL"
+			       description="JFIELD_METADATA_RIGHTS_DESC" size="20"/>
+		</fieldset>
+	</fields>
+	<fields name="attribs">
+		<fieldset name="msg"
+		          label="COM_CHURCHDIRECTORY_IM_DETAILS"
+		          description="COM_CHURCHDIRECTORY_MEMBER_MSG_INFO_FIELDSET_DESC">
+			<field name="msn_msg" type="text"
+			       label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_MSN_MSG_LABEL"
+			       description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_MSN_MSG_DESC"
+			       class="inputbox span12 small" size="30"/>
+			<field name="google_msg" type="text"
+			       label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_GOOGLE_MSG_LABEL"
+			       description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_GOOGLE_MSG_DESC"
+			       class="inputbox span12 small" size="30"/>
+			<field name="aol_msg" type="text"
+			       label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_AOL_MSG_LABEL"
+			       description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_AOL_MSG_DESC"
+			       class="inputbox span12 small" size="30"/>
+			<field name="facebook_msg" type="text"
+			       label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_FACEBOOK_MSG_LABEL"
+			       description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_FACEBOOK_MSG_DESC"
+			       class="inputbox span12 small" size="30"/>
+			<field name="twitter_msg" type="text"
+			       label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_TWITTER_MSG_LABEL"
+			       description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_TWITTER_MSG_DESC"
+			       class="inputbox span12 small" size="30"/>
+		</fieldset>
+		<field name="sex"
+		       type="list"
+		       class="btn-group span12"
+		       label="COM_CHURCHDIRECTORY_FIELD_SEX_LABEL"
+		       description="COM_CHURCHDIRECTORY_FIELD_SEX_DESC"
+		       required="true">
+			<option value="">COM_CHURCHDIRECTORY_SEX_SELECT_ONE</option>
+			<option value="0">COM_CHURCHDIRECTORY_FEMALE</option>
+			<option value="1">COM_CHURCHDIRECTORY_MALE</option>
+		</field>
+		<fieldset name="protected"
+		          label="COM_CHURCHDIRECTORY_MEMBER_PROTECTED_INFO_FIELDSET_LABEL"
+		          description="COM_CHURCHDIRECTORY_MEMBER_PROTECTED_INFO_FIELDSET_DESC">
+			<field name="bpc_date" type="calendar"
+			       label="COM_CHURCHDIRECTORY_FIELD_BCP_DATE_LABEL"
+			       description="COM_CHURCHDIRECTORY_FIELD_BCP_DATE_DESC"
+			       class="inputbox" format="%Y-%m-%d" size="22" filter="user_utc"/>
+			<field name="memberotherinfo" type="textarea"
+			       label="COM_CHURCHDIRECTORY_FIELD_MEMBER_OTHER_INFO_LABEL"
+			       description="COM_CHURCHDIRECTORY_FIELD_MEMBER_OTHER_INFO_DESC"
+			       class="inputbox span12 small" rows="3" cols="30"/>
+		</fieldset>
+		<field name="familypostion" type="list"
+		       label="COM_CHURCHDIRECTORY_FAMILYPOSTION_LABEL"
+		       description="COM_CHURCHDIRECTORY_FAMILYPOSTION_DESC"
+		       class="inputbox"
+		       default="0" OnChange="setTypeEmail(this.form);">
+			<option value="0">COM_CHURCHDIRECTORY_HEAD_OF_HOUSEHOLD</option>
+			<option value="1">COM_CHURCHDIRECTORY_SPOUSE</option>
+			<option value="2">COM_CHURCHDIRECTORY_CHILED</option>
+		</field>
+		<fieldset name="mailingaddress"
+		          label="COM_CHURCHDIRECTORY_MAILING_ADDRESS_FIELDSET_LABEL"
+		          description="COM_CHURCHDIRECTORY_MAILING_ADDRESS_FIELDSET_DESC">
+			<field name="mailingaddress" type="textarea"
+			       label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_MAILING_ADDRESS_LABEL"
+			       description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_MAILING_ADDRESS_DESC"
+			       class="inputbox span12 small" rows="3" cols="30"/>
+
+			<field name="mailingsuburb" type="text"
+			       label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_SUBURB_LABEL"
+			       description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_SUBURB_DESC"
+			       class="inputbox span12 small" size="30"/>
+
+			<field name="mailingstate" type="text"
+			       label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_STATE_LABEL"
+			       description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_STATE_DESC"
+			       class="inputbox span12 small" size="30"/>
+
+			<field name="mailingpostcode" type="text"
+			       label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_POSTCODE_LABEL"
+			       description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_POSTCODE_DESC"
+			       class="inputbox span12 small" size="30"/>
+
+			<field name="mailingcountry" type="text"
+			       label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_COUNTRY_LABEL"
+			       description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_COUNTRY_DESC"
+			       class="inputbox span12 small" size="30"/>
+		</fieldset>
+		<fieldset name="occupation"
+		          label="COM_CHURCHDIRECTORY_OCCUPATOIN_INFO_FIELDSET_LABEL"
+		          description="COM_CHURCHDIRECTORY_OCCUPATOIN_INFO_FIELDSET_DESC">
+
+			<field name="jobtitle" type="text"
+			       label="COM_CHURCHDIRECTORY_FIELD_JOB_TITLE_LABEL"
+			       description="COM_CHURCHDIRECTORY_FIELD_JOB_TITLE_DESC"
+			       class="inputbox span12 small" size="30"/>
+
+			<field name="employer" type="text"
+			       label="COM_CHURCHDIRECTORY_FIELD_EMPLOYER_LABEL"
+			       description="COM_CHURCHDIRECTORY_FIELD_EMPLOYER_DESC"
+			       class="inputbox span12 small" size="30"/>
+
+			<field name="email_to" type="email"
+			       label="JGLOBAL_EMAIL"
+			       description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_EMAIL_DESC"
+			       class="inputbox span12 small"
+			       cols="30"
+			/>
+
+			<field name="address" type="textarea"
+			       label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_ADDRESS_LABEL"
+			       description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_ADDRESS_DESC"
+			       class="inputbox span12 small" rows="3" cols="30"/>
+
+			<field name="suburb" type="text"
+			       label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_SUBURB_LABEL"
+			       description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_SUBURB_DESC"
+			       class="inputbox span12 small" size="30"/>
+
+			<field name="state" type="text"
+			       label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_STATE_LABEL"
+			       description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_STATE_DESC" class="inputbox span12 small"
+			       size="30"/>
+
+			<field name="postcode" type="text"
+			       label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_POSTCODE_LABEL"
+			       description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_POSTCODE_DESC"
+			       class="inputbox span12 small" size="30"/>
+
+			<field name="country" type="text"
+			       label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_COUNTRY_LABEL"
+			       description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_COUNTRY_DESC"
+			       class="inputbox span12 small" size="30"/>
+
+			<field name="telephone" type="text"
+			       label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_TELEPHONE_LABEL"
+			       description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_TELEPHONE_DESC"
+			       class="inputbox span12 small" size="30"/>
+
+			<field name="mobile" type="text"
+			       label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_MOBILE_LABEL"
+			       description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_MOBILE_DESC"
+			       class="inputbox span12 small" size="30"/>
+
+			<field name="fax" type="text"
+			       label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_FAX_LABEL"
+			       description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_FAX_DESC"
+			       class="inputbox span12 small" size="30"/>
+
+			<field name="webpage" type="url"
+			       label="COM_CHURCHDIRECTORY_FIELD_INFORMATION_WEBPAGE_LABEL"
+			       description="COM_CHURCHDIRECTORY_FIELD_INFORMATION_WEBPAGE_DESC"
+			       class="inputbox span12 small" size="30"/>
+		</fieldset>
+	</fields>
 </form>

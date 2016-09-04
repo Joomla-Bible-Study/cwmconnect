@@ -8,35 +8,18 @@
 defined('_JEXEC') or die;
 
 JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
-$version = version_compare(JVERSION, '3.0', 'ge');
+
 JHtml::_('bootstrap.tooltip');
 JHtml::_('behavior.multiselect');
-JHtml::_('dropdown.init');
 JHtml::_('formbehavior.chosen', 'select');
 
 $user       = JFactory::getUser();
 $userId     = $user->get('id');
 $listOrder  = $this->escape($this->state->get('list.ordering'));
 $listDirn   = $this->escape($this->state->get('list.direction'));
-$archived   = $this->state->get('filter.published') == 2 ? true : false;
-$trashed    = $this->state->get('filter.published') == -2 ? true : false;
 $canOrder   = $user->authorise('core.edit.state', 'com_churchdirectory.category');
 $saveOrder  = $listOrder == 'a.ordering';
-$sortFields = $this->getSortFields();
 ?>
-<script type="text/javascript">
-	Joomla.orderTable = function () {
-		table = document.getElementById("sortTable");
-		direction = document.getElementById("directionTable");
-		order = table.options[table.selectedIndex].value;
-		if (order != '<?php echo $listOrder; ?>') {
-			dirn = 'asc';
-		} else {
-			dirn = direction.options[direction.selectedIndex].value;
-		}
-		Joomla.tableOrdering(order, dirn, '');
-	}
-</script>
 
 <form action="<?php echo JRoute::_('index.php?option=com_churchdirectory&view=familyunits'); ?>" method="post"
       name="adminForm" id="adminForm">
@@ -48,65 +31,8 @@ $sortFields = $this->getSortFields();
 		<?php else : ?>
 		<div id="j-main-container">
 			<?php endif; ?>
-			<div id="filter-bar">
-				<div class="filter-search btn-group pull-left">
-					<label for="filter_search"
-					       class="element-invisible"><?php echo JText::_('JSEARCH_FILTER_LABEL'); ?></label>
-					<input type="text" name="filter_search" id="filter_search"
-					       value="<?php echo $this->escape($this->state->get('filter.search')); ?>"
-					       title="<?php echo JText::_('COM_CHURCHDIRECTORY_SEARCH_IN_NAME'); ?>"/>
-				</div>
-				<div class="filter-search btn-group pull-left">
-					<button type="submit"><?php echo JText::_('JSEARCH_FILTER_SUBMIT'); ?></button>
-					<button type="button"
-					        onclick="document.id('filter_search').value='';this.form.submit();"><?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?></button>
-				</div>
-				<div class="filter-select btn-group pull-right hidden-phone">
-					<label for="limit"
-					       class="element-invisible"><?php echo JText::_('JFIELD_PLG_SEARCH_SEARCHLIMIT_DESC'); ?></label>
-					<?php echo $this->pagination->getLimitBox(); ?>
-				</div>
-				<div class="filter-select btn-group pull-right hidden-phone">
-					<label for="directionTable"
-					       class="element-invisible"><?php echo JText::_('JFIELD_ORDERING_DESC'); ?></label>
-					<select name="directionTable" id="directionTable" class="input-medium"
-					        onchange="Joomla.orderTable()">
-						<option value=""><?php echo JText::_('JFIELD_ORDERING_DESC'); ?></option>
-						<option
-								value="asc" <?php if ($listDirn == 'asc') echo 'selected="selected"'; ?>><?php echo JText::_('JGLOBAL_ORDER_ASCENDING'); ?></option>
-						<option
-								value="desc" <?php if ($listDirn == 'desc') echo 'selected="selected"'; ?>><?php echo JText::_('JGLOBAL_ORDER_DESCENDING'); ?></option>
-					</select>
-				</div>
-				<div class="filter-select btn-group pull-right">
-					<label for="sortTable" class="element-invisible"><?php echo JText::_('JGLOBAL_SORT_BY'); ?></label>
-					<select name="sortTable" id="sortTable" class="input-medium" onchange="Joomla.orderTable()">
-						<option value=""><?php echo JText::_('JGLOBAL_SORT_BY'); ?></option>
-						<?php echo JHtml::_('select.options', $sortFields, 'value', 'text', $listOrder); ?>
-					</select>
-				</div>
-				<?php if (!$version): ?>
-					<div class="filter-select pull-right">
-
-						<select name="filter_published" class="inputbox" onchange="this.form.submit()">
-							<option value=""><?php echo JText::_('JOPTION_SELECT_PUBLISHED'); ?></option>
-							<?php echo JHtml::_('select.options', JHtml::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.published'), true); ?>
-						</select>
-
-						<select name="filter_access" class="inputbox" onchange="this.form.submit()">
-							<option value=""><?php echo JText::_('JOPTION_SELECT_ACCESS'); ?></option>
-							<?php echo JHtml::_('select.options', JHtml::_('access.assetgroups'), 'value', 'text', $this->state->get('filter.access')); ?>
-						</select>
-
-						<select name="filter_language" class="inputbox" onchange="this.form.submit()">
-							<option value=""><?php echo JText::_('JOPTION_SELECT_LANGUAGE'); ?></option>
-							<?php echo JHtml::_('select.options', JHtml::_('contentlanguage.existing', true, true), 'value', 'text', $this->state->get('filter.language')); ?>
-						</select>
-					</div>
-				<?php endif; ?>
-			</div>
+			<?php echo JLayoutHelper::render('joomla.searchtools.default', ['view' => $this]); ?>
 			<div class="clr"></div>
-
 			<table class="table table-striped" id="articleList">
 				<thead>
 				<tr>
@@ -162,44 +88,19 @@ $sortFields = $this->getSortFields();
 								<?php echo JText::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($item->alias)); ?>
 							</span>
 							</div>
-							<div class="pull-left">
-								<?php
-								if ($version)
+						</td>
+						<td class="center">
+							<div class="btn-group">
+								<?php echo JHtml::_('jgrid.published', $item->published, $i, 'familyunits.', $canChange, 'cb', $item->publish_up, $item->publish_down); ?>
+								<?php // Create dropdown items and render the dropdown list.
+								if ($canChange)
 								{
-									// Create dropdown items
-									JHtml::_('dropdown.edit', $item->id, 'familyunit.');
-									JHtml::_('dropdown.divider');
-									if ($item->published) :
-										JHtml::_('dropdown.unpublish', 'cb' . $i, 'familyunits.');
-									else :
-										JHtml::_('dropdown.publish', 'cb' . $i, 'familyunits.');
-									endif;
-
-									if ($archived) :
-										JHtml::_('dropdown.unarchive', 'cb' . $i, 'familyunits.');
-									else :
-										JHtml::_('dropdown.archive', 'cb' . $i, 'familyunits.');
-									endif;
-
-									if ($item->checked_out) :
-										JHtml::_('dropdown.checkin', 'cb' . $i, 'familyunits.');
-									endif;
-
-									if ($trashed) :
-										JHtml::_('dropdown.untrash', 'cb' . $i, 'familyunits.');
-									else :
-										JHtml::_('dropdown.trash', 'cb' . $i, 'familyunits.');
-									endif;
-
-									// Render dropdown list
-									echo JHtml::_('dropdown.render');
-
+									JHtml::_('actionsdropdown.' . ((int) $item->published === 2 ? 'un' : '') . 'archive', 'cb' . $i, 'familyunits');
+									JHtml::_('actionsdropdown.' . ((int) $item->published === -2 ? 'un' : '') . 'trash', 'cb' . $i, 'familyunits');
+									echo JHtml::_('actionsdropdown.render', $this->escape($item->name));
 								}
 								?>
 							</div>
-						</td>
-						<td align="center">
-							<?php echo JHtml::_('jgrid.published', $item->published, $i, 'familyunits.', $canChange, 'cb', $item->publish_up, $item->publish_down); ?>
 						</td>
 						<td class="small hidden-phone">
 							<?php echo $item->access_level; ?>

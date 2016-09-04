@@ -19,10 +19,9 @@ JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 			<?php endif; ?>
 			<!-- Begin Content -->
 			<div class="pull-left span8">
-				<p>Welcome to the new and improved Church Directory System this is a alpha release and has lot of bugs
-				   and things not completed.<br/>
-				   All core function should be working. Directory rendering is till not fully functional and working on
-				   family unit.<br/><br/>
+				<p>Welcome to the new Church Directory System this is a bata release it is not completed.<br/>
+				   All core function should be working. Directory rendering is till not fully functional. You can render
+				   KML and csv reprots on the church directory for backup.<br/><br/>
 				   Thanks for supporting the work.<br/><br/>
 				   Joomla Bible Study Team</p>
 				<p>Version: <?php echo $this->xml->version; ?></p>
