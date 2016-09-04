@@ -438,7 +438,6 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 			$kml[] = '</Folder>';
 		}
 
-
 		header('Content-type: application/vnd.google-earth.kml+xml');
 		header('Content-disposition: attachment; filename="' . $items[0]->kml_alias . '.kml"');
 
