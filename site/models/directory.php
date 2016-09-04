@@ -508,7 +508,7 @@ class ChurchDirectoryModelDirectory extends JModelList
 	 *
 	 * @since       1.7.2
 	 */
-	private function &getLeftSibling()
+	public function &getLeftSibling()
 	{
 		if (!is_object($this->item))
 		{
@@ -525,7 +525,7 @@ class ChurchDirectoryModelDirectory extends JModelList
 	 *
 	 * @since       1.7.2
 	 */
-	private function &getRightSibling()
+	public function &getRightSibling()
 	{
 		if (!is_object($this->item))
 		{
@@ -542,7 +542,7 @@ class ChurchDirectoryModelDirectory extends JModelList
 	 *
 	 * @since       1.7.2
 	 */
-	private function &getChildren()
+	public function &getChildren()
 	{
 		if (!is_object($this->item))
 		{

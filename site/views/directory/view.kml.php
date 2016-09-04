@@ -7,6 +7,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\Registry\Registry;
+
 /**
  * HTML Contact View class for the Contact component
  *
@@ -86,13 +88,12 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 	/**
 	 * Display function
 	 *
-	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
+	 * @param   string $tpl The name of the template file to parse; automatically searches through the template paths.
 	 *
 	 * @return  mixed  A string if successful, otherwise a Error object.
-	 *
 	 * @since       1.7.2
 	 */
-	public function display($tpl = null)
+	public function display ($tpl = null)
 	{
 		$app = JFactory::getApplication();
 
@@ -104,10 +105,8 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 		$children   = $this->get('Children');
 		$parent     = $this->get('Parent');
 		$pagination = $this->get('Pagination');
-		$doc        = JFactory::getDocument();
-		$doc->setMetaData('Content-Type', 'application/vnd.google-earth.kml+xml', true);
-		$jweb = new JApplicationWeb;
-		$jweb->setHeader('Content-disposition', 'attachment; filename="' . $items[0]->kml_alias . '.kml"', true);
+		header('Content-type: application/vnd.google-earth.kml+xml');
+		header('Content-disposition: attachment; filename="' . $items[0]->kml_alias . '.kml"');
 
 		// Check whether category access level allows access.
 		$user   = JFactory::getUser();
@@ -123,13 +122,13 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 		// Prepare the data.
 		for ($i = 0, $n = count($items); $i < $n; $i++)
 		{
-			$item = & $items[$i];
+			$item = &$items[$i];
 
 			// Compute the contact slug.
 			$item->slug = $item->alias ? ($item->id . ':' . $item->alias) : $item->id;
 
 			$item->event = new stdClass;
-			$temp        = new JRegistry;
+			$temp        = new Registry;
 			$temp->loadString($item->params);
 			$item->params = clone $params;
 			$item->params->merge($temp);
@@ -138,11 +137,7 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 			{
 				$item->email_to = trim($item->email_to);
 
-				if (!empty($item->email_to) && JMailHelper::isEmailAddress($item->email_to))
-				{
-					$item->email_to = JHtml::_('email.cloak', $item->email_to);
-				}
-				else
+				if (empty($item->email_to) && !JMailHelper::isEmailAddress($item->email_to))
 				{
 					$item->email_to = null;
 				}
@@ -156,19 +151,19 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 		$children = [$category->id => $children];
 
 		$maxLevel         = $params->get('maxLevel', -1);
-		$this->maxLevel   = & $maxLevel;
-		$this->state      = & $state;
-		$this->items      = & $items;
-		$this->category   = & $category;
-		$this->children   = & $children;
-		$this->params     = & $params;
-		$this->parent     = & $parent;
-		$this->pagination = & $pagination;
+		$this->maxLevel   = &$maxLevel;
+		$this->state      = &$state;
+		$this->items      = &$items;
+		$this->category   = &$category;
+		$this->children   = &$children;
+		$this->params     = &$params;
+		$this->parent     = &$parent;
+		$this->pagination = &$pagination;
 
 		// Creates an array of strings to hold the lines of the KML file.
 		$kml   = ['<?xml version="1.0" encoding="UTF-8"?>'];
 		$kml[] = '<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2"'
-			. ' xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom">';
+				. ' xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom">';
 		$kml[] = '<Document>';
 		$kml[] = '<name>' . $items[0]->kml_name . '</name>';
 		$kml[] = '<open>' . $items[0]->kml_params->get('open') . '</open>';
@@ -257,11 +252,11 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 
 		if ($items[0]->category_params->get('image') === null)
 		{
-			$kml[] = JURI::base() . 'media/com_churchdirectory/images/kml_icons/iconb.png';
+			$kml[] = JUri::base() . 'media/com_churchdirectory/images/kml_icons/iconb.png';
 		}
 		else
 		{
-			$kml[] = JURI::base() . $items[0]->category_params->get('image');
+			$kml[] = JUri::base() . $items[0]->category_params->get('image');
 		}
 
 		$kml[] = '</href>';
@@ -288,7 +283,7 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 		foreach ($teams as $c => $catid)
 		{
 			$new_rows[$c] = RenderHelper::groupit(['items' => $teams[$c], 'field' => 'suburb']);
-			$ckml_params = $catid[0]->kml_params;
+			$ckml_params  = $catid[0]->kml_params;
 		}
 
 		$mycounter = '0';
@@ -375,11 +370,11 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 
 					if (empty($row->image))
 					{
-						$kml[] = '<img src="' . JURI::base() . 'media/com_churchdirectory/images/photo_not_available.jpg" alt="Photo" width="100" hight="100" /><br />';
+						$kml[] = '<img src="' . JUri::base() . 'media/com_churchdirectory/images/photo_not_available.jpg" alt="Photo" width="100" hight="100" /><br />';
 					}
 					else
 					{
-						$kml[] = '<img src="' . JURI::base() . $row->image . '" alt="Photo" width="100" hight="100" /><br />';
+						$kml[] = '<img src="' . JUri::base() . $row->image . '" alt="Photo" width="100" hight="100" /><br />';
 					}
 
 					if (!empty($row->id))

@@ -6,11 +6,6 @@
  */
 defined('_JEXEC') or die;
 JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
-JHtml::_('bootstrap.tooltip');
-JHtml::_('behavior.modal');
-JHtml::_('dropdown.init');
-JHtml::_('formbehavior.chosen', 'select');
-JHtml::_('behavior.multiselect');
 ?>
 <form action="<?php echo JRoute::_('index.php?option=com_churchdirectory'); ?>" method="post" name="adminForm"
       id="adminForm">
@@ -30,7 +25,7 @@ JHtml::_('behavior.multiselect');
 				   family unit.<br/><br/>
 				   Thanks for supporting the work.<br/><br/>
 				   Joomla Bible Study Team</p>
-				<p>Version: 1.7.6</p>
+				<p>Version: <?php echo $this->xml->version; ?></p>
 			</div>
 			<div class="pull-right span4">
 				<div id="cpanel" class="btn-group">
