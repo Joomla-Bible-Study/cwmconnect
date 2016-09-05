@@ -8,6 +8,7 @@
 defined('_JEXEC') or die;
 
 use Joomla\Registry\Registry;
+
 /**
  * Class for Rendering out Page Elements
  *
@@ -33,9 +34,9 @@ class RenderHelper
 	/**
 	 * Get Position
 	 *
-	 * @param   string     $con_position  ID of Position
-	 * @param   bool       $getint        ID of Position
-	 * @param   JRegistry  $params        ID of Position
+	 * @param   string    $con_position  ID of Position
+	 * @param   bool      $getint        ID of Position
+	 * @param   Registry  $params        ID of Position
 	 *
 	 * @return string|bool
 	 *
@@ -145,7 +146,7 @@ class RenderHelper
 		// Convert the params field into an object, saving original in _params
 		for ($i = 0, $n = count($items); $i < $n; $i++)
 		{
-			$item = & $items[$i];
+			$item = &$items[$i];
 
 			if (!isset($this->_params))
 			{
@@ -161,7 +162,7 @@ class RenderHelper
 				$item->attribs = $params;
 			}
 
-			if ($item->attribs->get('familypostion') != $fm)
+			if ($item->attribs->get('familypostion') == $fm)
 			{
 				unset($items[$i]);
 			}
@@ -173,14 +174,15 @@ class RenderHelper
 	/**
 	 * Get Children from families
 	 *
-	 * @param   int|array  $families  Int if family id and Array of family members
-	 * @param   bool       $from      If from Admin or Site(True)
+	 * @param   int|array  $families        Int if family id and Array of family members
+	 * @param   bool       $from            If from Admin or Site(True)
+	 * @param   string     $oldchildren_rc  Old Childeren Records.
 	 *
 	 * @return string HTML string
 	 *
 	 * @since    1.5
 	 */
-	public function getChildren($families, $from = false)
+	public function getChildren($families, $from = false, $oldchildren_rc = null)
 	{
 		if (is_int($families))
 		{
@@ -191,22 +193,35 @@ class RenderHelper
 		$i2   = $n2;
 		$name = '';
 
-		foreach ($families as $member)
+		foreach ($families as $i => $member)
 		{
-			if (($n2 == $i2 && $n2 < 2) || ($n2 == 2 && $n2 == $i2))
+			if (isset($member->attribs) && $member->attribs->get('familypostion') == 2)
 			{
-				$name .= self::getMemberStatus($member, $from) . ' ';
-			}
-			elseif ($n2 > 2 && $i2 > 1)
-			{
-				$name .= self::getMemberStatus($member, $from) . ', ';
-			}
-			elseif ($i2 == 1 && $n2 >= 2)
-			{
-				$name .= '&amp; ' . self::getMemberStatus($member, $from);
+				if (($n2 == $i2 && $n2 < 2) || ($n2 == 2 && $n2 == $i2))
+				{
+					$name .= self::getMemberStatus($member, $from) . ' ';
+				}
+				elseif ($n2 > 2 && $i2 > 1)
+				{
+					$name .= self::getMemberStatus($member, $from) . ', ';
+				}
+				elseif ($i2 == 1 && $n2 >= 2)
+				{
+					$name .= '&amp; ' . self::getMemberStatus($member, $from);
+				}
 			}
 
 			$i2--;
+		}
+
+		if ($name || $oldchildren_rc)
+		{
+			if ($name)
+			{
+				$name = $name . ' ';
+			}
+
+			$name = '<span class="jicons-text">' . JText::_('COM_CHURCHDIRECTORY_CHILDREN') . ': </span>' . $name . $oldchildren_rc;
 		}
 
 		return $name;
@@ -301,7 +316,7 @@ class RenderHelper
 			else
 			{
 				$mstatus = '<span style="color: gray;"><a href="index.php?option=com_churchdirectory&view=member&id=' .
-						(int) $member->id . '">( ' . $member->name . ' )</a></span>';
+					(int) $member->id . '">( ' . $member->name . ' )</a></span>';
 			}
 		}
 
@@ -421,7 +436,7 @@ class RenderHelper
 	/**
 	 * Get Birthdays for This Month
 	 *
-	 * @param   JRegistry  $params  Model Params
+	 * @param   Registry  $params  Model Params
 	 *
 	 * @return array
 	 *
@@ -484,7 +499,7 @@ class RenderHelper
 	/**
 	 * Get Anniversary's for this Month
 	 *
-	 * @param   JRegistry  $params  Model Params
+	 * @param   Registry  $params  Model Params
 	 *
 	 * @return array
 	 *
@@ -492,8 +507,8 @@ class RenderHelper
 	 */
 	public function getAnniversary($params)
 	{
-		$user    = JFactory::getUser();
-		$groups  = implode(',', $user->getAuthorisedViewLevels());
+		$user   = JFactory::getUser();
+		$groups = implode(',', $user->getAuthorisedViewLevels());
 
 		$db      = JFactory::getDbo();
 		$results = false;
@@ -546,7 +561,7 @@ class RenderHelper
 			if ($record->f_name && $record->f_id != $this->f_id)
 			{
 				$this->f_id = $record->f_id;
-				$results[] = ['name' => $record->f_name, 'id' => $record->f_id, 'day' => $this->bday, 'access' => $record->access];
+				$results[]  = ['name' => $record->f_name, 'id' => $record->f_id, 'day' => $this->bday, 'access' => $record->access];
 			}
 			elseif (!$record->f_name)
 			{
@@ -560,5 +575,137 @@ class RenderHelper
 		}
 
 		return $results;
+	}
+
+	/**
+	 * Render Address
+	 *
+	 * @param   object    $item    Items to render
+	 * @param   Registry  $params  Params
+	 *
+	 * @return string
+	 *
+	 * @since version
+	 */
+	public function renderAddress($item, $params)
+	{
+		$html = '';
+
+		if (($params->get('address_check') > 0)
+			&& ($item->address || $item->suburb || $item->state || $item->country || $item->postcode))
+		{
+			$html .= '<span class="' . $params->get('marker_class') . '">' .
+				$params->get('marker_address') .
+				'</span>';
+			$html .= '<address class="pull-left">';
+		}
+
+		if ($item->address && $params->get('dr_show_street_address'))
+		{
+			$html .= '<span class="churchdirectory-street">' .
+				nl2br($item->address) .
+				'</span><br/>';
+		}
+
+		if ($item->suburb && $params->get('dr_show_suburb'))
+		{
+			$html .= '<span class="churchdirectory-suburb">' .
+				$item->suburb .
+				'</span>';
+		}
+
+		if ($item->state && $params->get('dr_show_state'))
+		{
+			$html .= ' <span class="churchdirectory-state">, ' .
+				$item->state .
+				'</span>';
+		}
+
+		if ($item->postcode && $params->get('dr_show_postcode'))
+		{
+			$html .= '<span class="churchdirectory-postcode"> ' .
+				$item->postcode .
+				'</span>';
+		}
+
+		if ($item->country && $params->get('dr_show_country'))
+		{
+			$html .= '<br/><span class="churchdirectory-country">' .
+				$item->country .
+				'</span>';
+		}
+
+		if ($params->get('address_check') > 0
+			&& ($item->address || $item->suburb || $item->state || $item->country || $item->postcode))
+		{
+			$html .= '</address><br/>';
+		}
+
+		return $html;
+	}
+
+	/**
+	 * Render Address
+	 *
+	 * @param   object    $item    Items to render
+	 * @param   Registry  $params  Params
+	 * @param   object    $name    Name of Record.
+	 *
+	 * @return string
+	 *
+	 * @since version
+	 */
+	public function renderPhonesNumbers($item, $params, $name = null)
+	{
+		$html = '';
+
+		if ($name)
+		{
+			$name = $name->firstname . ' : ';
+		}
+
+		if (($params->get('other_check') > 0)
+			&& ($item->email_to || $item->telephone || $item->fax || $item->mobile || $item->webpage || $item->spouse || $item->children))
+		{
+			$html .= '<div class="churchdirectory-churchdirectoryinfo inner">';
+		}
+
+		if ($item->email_to && $params->get('dr_show_email'))
+		{
+			$html .= $name . '<span class="' . $params->get('marker_class') . '">' . $params->get('marker_email') . '&nbsp;&nbsp;' .
+				$item->email_to . '</span>';
+		}
+
+		if ($item->telephone && $params->get('dr_show_telephone'))
+		{
+			$html .= '<br/>' . $name . '<span class="' . $params->get('marker_class') . '">' . $params->get('marker_telephone') . '&nbsp;&nbsp;' .
+				nl2br($item->telephone) . '</span>';
+		}
+
+		if ($item->fax && $params->get('dr_show_fax'))
+		{
+			$html .= '<br/>' . $name . '<span class="' . $params->get('marker_class') . '">' .
+				$params->get('marker_fax') . '&nbsp;&nbsp;' . nl2br($item->fax) . '</span>';
+		}
+
+		if ($item->mobile && $params->get('dr_show_mobile'))
+		{
+			$html .= '<br/>' . $name . '<span class="' . $params->get('marker_class') . '">' .
+				$params->get('marker_mobile') . '&nbsp;&nbsp;' . nl2br($item->mobile) . '</span>';
+		}
+
+		if ($item->webpage && $params->get('dr_show_webpage'))
+		{
+			$html .= '<br/>' . $name . '<span class="' . $params->get('marker_class') . '">Site:&nbsp;&nbsp;<a href="' . $item->webpage .
+				'" target="_blank">' . JText::_('COM_CHURCHDIRECTORY_WEBPAGE') . '</a></span>';
+		}
+
+		if ($params->get('other_check') > 0
+			&& ($item->email_to || $item->telephone || $item->fax || $item->mobile || $item->webpage || $item->spouse || $item->children))
+		{
+			$html .= '</div>';
+		}
+
+		return $html;
 	}
 }

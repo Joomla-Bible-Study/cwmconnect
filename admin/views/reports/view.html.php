@@ -68,11 +68,7 @@ class ChurchDirectoryViewReports extends JViewLegacy
 
 		// Set the toolbar
 		$this->addToolbar();
-
 		$this->sidebar = JHtmlSidebar::render();
-
-		// Set the document
-		$this->setDocument();
 
 		// Display the template
 		return parent::display($tpl);
@@ -87,7 +83,7 @@ class ChurchDirectoryViewReports extends JViewLegacy
 	protected function addToolbar()
 	{
 		$canDo = ChurchDirectoryHelper::getActions();
-		JToolbarHelper::title(JText::_('COM_CHURCHDIRECTORY_MANAGER_REPORTS'), 'churchdirectory.png');
+		JToolbarHelper::title(JText::_('COM_CHURCHDIRECTORY_MANAGER_REPORTS'), 'checkbox');
 
 		if ($canDo->get('core.admin'))
 		{
@@ -97,17 +93,5 @@ class ChurchDirectoryViewReports extends JViewLegacy
 		}
 
 		JToolbarHelper::help('churchdirectory', true);
-	}
-
-	/**
-	 * Set browser title
-	 *
-	 * @since 1.7.0
-	 * @return void
-	 */
-	protected function setDocument()
-	{
-		$document = JFactory::getDocument();
-		$document->setTitle(JText::_('COM_CHURCHDIRECTORY_REPORTS'));
 	}
 }

@@ -18,7 +18,6 @@
 // LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 // OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 // THE SOFTWARE.
-
 (function ($) {
     // Simple wrapper around jQuery animate to simplify animating progress from your app
     // Inputs: Progress as a percent, Callback
@@ -64,7 +63,6 @@
         });
     };
 })(jQuery);
-
 $(function () {
     // Hide the label at start
     $('#progress_bar .ui-progress .ui-label').hide();

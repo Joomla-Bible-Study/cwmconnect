@@ -98,9 +98,6 @@ class ChurchDirectoryViewDatabase extends JViewLegacy
 		// Set the toolbar
 		$this->addToolbar();
 
-		// Set the document
-		$this->setDocument();
-
 		// Display the template
 		return parent::display($tpl);
 	}
@@ -116,25 +113,12 @@ class ChurchDirectoryViewDatabase extends JViewLegacy
 	{
 		$canDo = ChurchDirectoryHelper::getActions();
 
-		JToolbarHelper::title(JText::_('COM_CHURCHDIRECTORY_DATABASE'), 'churchdirectory');
+		JToolbarHelper::title(JText::_('COM_CHURCHDIRECTORY_DATABASE'), 'puzzle install');
 		JToolbarHelper::divider();
 
 		if ($canDo)
 		{
 			JToolbarHelper::custom('database.fix', 'refresh', 'refresh', 'COM_CHURCHDIRECTORY_DATABASE_FIX', false);
 		}
-	}
-
-	/**
-	 * Set document browser title
-	 *
-	 * @return void
-	 *
-	 * @since 1.7.0
-	 */
-	protected function setDocument()
-	{
-		$document = JFactory::getDocument();
-		$document->setTitle(JText::_('COM_CHURCHDIRECTORY_DATABASE'));
 	}
 }

@@ -137,7 +137,7 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 
 				if (!empty($item->email_to) && JMailHelper::isEmailAddress($item->email_to))
 				{
-					$item->email_to = JHtml::_('email.cloak', $item->email_to);
+					$item->email_to = '<a href="mailto::' . $item->email_to . '">' . $item->email_to . '</a>';
 				}
 				else
 				{
@@ -260,53 +260,60 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 		@ob_end_clean();
 
 		// Create new PDF document
-		$pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+		$this->pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
 
 		// Set document information
-		$pdf->SetCreator('Nashville First SDA Church');
-		$pdf->SetAuthor('NFSDA Church');
-		$pdf->SetTitle($this->params->get('page_title', ''));
-		$pdf->SetSubject('Church Directory');
-		$pdf->SetKeywords('Directory, PDF, Members');
+		$this->pdf->SetCreator(PDF_CREATOR);
+		$this->pdf->SetAuthor('NFSDA Church');
+		$this->pdf->SetTitle($this->params->get('page_title', ''));
+		$this->pdf->SetSubject('Church Directory');
+		$this->pdf->SetKeywords('Directory, PDF, Members');
+
+		// Set default header data
+		$this->pdf->setHeaderData($params->get('pdf_logo'), $params->get('pdf_logo_width'), $this->params->get('page_heading'), $params->get('pdf_header_string'));
 
 		// Remove default header/footer
-		$pdf->setPrintHeader(true);
-		$pdf->setPrintFooter(true);
+		$this->pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
+		$this->pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
 
 		// Set default monospaced font
-		$pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
+		$this->pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
 
 		// Set margins
-		$pdf->SetMargins(10, 10, 10);
+		$this->pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
+		$this->pdf->setHeaderMargin(PDF_MARGIN_HEADER);
+		$this->pdf->setFooterMargin(PDF_MARGIN_FOOTER);
 
 		// Set auto page breaks
-		$pdf->SetAutoPageBreak(true, PDF_MARGIN_BOTTOM);
+		$this->pdf->SetAutoPageBreak(true, PDF_MARGIN_BOTTOM);
+
+		$this->pdf->setCellHeightRatio(1.25);
 
 		// Set image scale factor
-		$pdf->setImageScale(2.5);
+		$this->pdf->setImageScale(2.5);
 
 		// ---------------------------------------------------------
 
 		// Set font
-		$pdf->SetFont('times', '', 9);
+		$this->pdf->SetFont('times', 'BI', 8, '', 'false');
 
 		// Add a page
-		$pdf->AddPage();
+//		$this->pdf->AddPage();
 
 		// Set some text to print
 		$html = $this->loadTemplate($tpl);
 
 		// Print a block of text using Write()
-		$pdf->writeHTML($html, true, false, false, false, '');
+//		$this->pdf->writeHTML($html, true, 0, true, true);
 
 		// ---------------------------------------------------------
-		$pdf->lastPage();
+//		$this->pdf->lastPage();
 
 		$jweb  = new JApplicationWeb;
 		$jweb->clearHeaders();
 
 		// Close and output PDF document
-		$pdf->Output($title . '.pdf', 'I');
+		$this->pdf->Output($title . '.pdf', 'I');
 
 		return null;
 	}

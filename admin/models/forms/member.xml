@@ -52,8 +52,8 @@
 		</field>
 
 		<field name="catid" type="categoryedit" extension="com_churchdirectory"
-		       label="JCATEGORY" description="JFIELD_CATEGORY_DESC" class="inputbox"
-		       required="true"/>
+		       label="JCATEGORY" description="JFIELD_CATEGORY_DESC"
+		       required="true" default=""/>
 
 		<field name="buttonspacer" description="JGLOBAL_ACTION_PERMISSIONS_DESCRIPTION"
 		       type="spacer"/>
@@ -188,7 +188,8 @@
 		<field name="checked_out_time" type="hidden" filter="unset"/>
 
 		<field name="ordering" type="order" class="inputbox"
-		       label="JFIELD_ORDERING_LABEL" description="JFIELD_ORDERING_DESC" content_type="com_churchdirectory.member"/>
+		       label="JFIELD_ORDERING_LABEL" description="JFIELD_ORDERING_DESC"
+		       content_type="com_churchdirectory.member"/>
 
 		<field name="publish_up" type="calendar"
 		       label="COM_CHURCHDIRECTORY_FIELD_PUBLISH_UP_LABEL"

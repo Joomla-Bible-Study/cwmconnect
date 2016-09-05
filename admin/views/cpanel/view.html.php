@@ -81,9 +81,6 @@ class ChurchDirectoryViewCpanel extends JViewLegacy
 		$this->addToolbar();
 		$this->sidebar = JHtmlSidebar::render();
 
-		// Set the document
-		$this->setDocument();
-
 		// Display the template
 		return parent::display($tpl);
 	}
@@ -97,7 +94,7 @@ class ChurchDirectoryViewCpanel extends JViewLegacy
 	protected function addToolbar()
 	{
 		$canDo = ChurchDirectoryHelper::getActions('com_churchdirectory');
-		JToolbarHelper::title(JText::_('COM_CHURCHDIRECTORY_MANAGER_CPANEL'), 'churchdirectory.png');
+		JToolbarHelper::title(JText::_('COM_CHURCHDIRECTORY_MANAGER_CPANEL'), 'address contact');
 
 		if ($canDo->get('core.admin'))
 		{
@@ -107,17 +104,5 @@ class ChurchDirectoryViewCpanel extends JViewLegacy
 		}
 
 		JToolbarHelper::help('churchdirectory', true);
-	}
-
-	/**
-	 * Set browser title
-	 *
-	 * @since 1.7.0
-	 * @return void
-	 */
-	protected function setDocument()
-	{
-		$document = JFactory::getDocument();
-		$document->setTitle(JText::_('COM_CHURCHDIRECTORY_ADMINISTRATION'));
 	}
 }

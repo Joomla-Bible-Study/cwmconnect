@@ -71,9 +71,6 @@ class ChurchDirectoryViewPosition extends JViewLegacy
 		// Set the toolbar
 		$this->addToolbar();
 
-		// Set the document
-		$this->setDocument();
-
 		// Display the template
 		return parent::display($tpl);
 	}
@@ -140,22 +137,5 @@ class ChurchDirectoryViewPosition extends JViewLegacy
 
 		JToolbarHelper::divider();
 		JToolbarHelper::help('churchdirectory_position', true);
-	}
-
-	/**
-	 * Set Document Title
-	 *
-	 * @return void
-	 *
-	 * @since    1.7.0
-	 */
-	protected function setDocument()
-	{
-		$isNew    = ($this->item->id < 1);
-		$document = JFactory::getDocument();
-		$document->setTitle(
-			$isNew ? JText::_('COM_CHURCHDIRECTORY_POSITION_CREATING')
-				: JText::sprintf('COM_CHURCHDIRECTORY_POSITION_EDITING', $this->item->name)
-		);
 	}
 }

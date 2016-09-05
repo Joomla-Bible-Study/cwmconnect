@@ -94,9 +94,6 @@ class ChurchDirectoryViewMember extends JViewLegacy
 		// Set the toolbar
 		$this->addToolbar();
 
-		// Set the document
-		$this->setDocument();
-
 		// Display the template
 		return parent::display($tpl);
 	}
@@ -117,7 +114,7 @@ class ChurchDirectoryViewMember extends JViewLegacy
 		$canDo      = ChurchDirectoryHelper::getActions('com_churchdirectory', 'category', $this->item->catid);
 		JToolbarHelper::title(
 			$isNew ? JText::_('COM_CHURCHDIRECTORY_MANAGER_MEMBER_NEW')
-				: JText::_('COM_CHURCHDIRECTORY_MANAGER_MEMBER_EDIT'), 'churchdirectory');
+				: JText::_('COM_CHURCHDIRECTORY_MANAGER_MEMBER_EDIT'), 'address contact');
 
 		// Build the actions for new and existing records.
 		if ($isNew)
@@ -162,22 +159,5 @@ class ChurchDirectoryViewMember extends JViewLegacy
 
 		JToolbarHelper::divider();
 		JToolbarHelper::help('member_contact', true);
-	}
-
-	/**
-	 * Set Document title
-	 *
-	 * @return void
-	 *
-	 * @since    1.7.0
-	 */
-	protected function setDocument ()
-	{
-		$isNew    = ($this->item->id < 1);
-		$document = JFactory::getDocument();
-		$document->setTitle(
-			$isNew ? JText::_('COM_CHURCHDIRECTORY_CHURCHDIRECTORY_MEMBER_CREATING')
-				: JText::_('COM_CHURCHDIRECTORY_CHURCHDIRECTORY_MEMBER_EDITING')
-		);
 	}
 }

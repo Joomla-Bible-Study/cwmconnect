@@ -73,9 +73,6 @@ class ChurchDirectoryViewMembers extends JViewLegacy
 		$this->addToolbar();
 		$this->sidebar = JHtmlSidebar::render();
 
-		// Set the document
-		$this->setDocument();
-
 		// Display the template
 		return parent::display($tpl);
 	}
@@ -95,7 +92,7 @@ class ChurchDirectoryViewMembers extends JViewLegacy
 		// Get the toolbar object instance
 		$bar = JToolbar::getInstance('toolbar');
 
-		JToolbarHelper::title(JText::_('COM_CHURCHDIRECTORY_MANAGER_MEMBERS'), 'churchdirectory');
+		JToolbarHelper::title(JText::_('COM_CHURCHDIRECTORY_MANAGER_MEMBERS'), 'address contact');
 
 		if ($canDo->get('core.create') || (count($user->getAuthorisedCategories('com_churchdirectory', 'core.create'))) > 0)
 		{
@@ -142,19 +139,6 @@ class ChurchDirectoryViewMembers extends JViewLegacy
 
 		JToolbarHelper::help('churchdirectory_members', true);
 		JHtmlSidebar::setAction('index.php?option=com_churchdirectory&amp;view=members');
-	}
-
-	/**
-	 * Set Document title
-	 *
-	 * @return void
-	 *
-	 * @since    1.7.0
-	 */
-	protected function setDocument()
-	{
-		$document = JFactory::getDocument();
-		$document->setTitle(JText::_('COM_CHURCHDIRECTORY_ADMINISTRATION_MEMBERS'));
 	}
 
 	/**

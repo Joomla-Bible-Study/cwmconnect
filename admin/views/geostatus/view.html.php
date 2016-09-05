@@ -64,14 +64,7 @@ class ChurchDirectoryViewGeoStatus extends JViewLegacy
 
 		// Set the toolbar
 		$this->addToolbar();
-
-		if (version_compare(JVERSION, '3.0', 'ge'))
-		{
-			$this->sidebar = JHtmlSidebar::render();
-		}
-
-		// Set the document
-		$this->setDocument();
+		$this->sidebar = JHtmlSidebar::render();
 
 		// Display the template
 		return parent::display($tpl);
@@ -91,7 +84,7 @@ class ChurchDirectoryViewGeoStatus extends JViewLegacy
 		$bar = JToolbar::getInstance('toolbar');
 
 		// Set the toolbar title
-		JToolbarHelper::title(JText::_('COM_CHURCHDIRECTORY_TITLE_GEOUPDATE_STATUS'), 'churchdirectory');
+		JToolbarHelper::title(JText::_('COM_CHURCHDIRECTORY_TITLE_GEOUPDATE_STATUS'), 'geo');
 
 		$bar->appendButton('Popup', 'refresh', 'COM_CHURCHDIRECTORY_GEOUPDATE',
 			'index.php?option=com_churchdirectory&view=geoupdate&tmpl=component', 550, 350
@@ -103,19 +96,6 @@ class ChurchDirectoryViewGeoStatus extends JViewLegacy
 		}
 
 		JToolbarHelper::help('churchdirectory_geoupdate', true);
-	}
-
-	/**
-	 * Set Document title
-	 *
-	 * @return void
-	 *
-	 * @since    1.7.0
-	 */
-	protected function setDocument()
-	{
-		$document = JFactory::getDocument();
-		$document->setTitle(JText::_('COM_CHURCHDIRECTORY_ADMINISTRATION_MEMBERS'));
 	}
 
 	/**

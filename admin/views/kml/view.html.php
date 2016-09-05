@@ -66,9 +66,6 @@ class ChurchDirectoryViewKML extends JViewLegacy
 		// Set the toolbar
 		$this->addToolbar();
 
-		// Set the document
-		$this->setDocument();
-
 		// Display the template
 		return parent::display($tpl);
 	}
@@ -120,18 +117,5 @@ class ChurchDirectoryViewKML extends JViewLegacy
 
 		JToolbarHelper::divider();
 		JToolbarHelper::help('churchdirectory_kml', true);
-	}
-
-	/**
-	 * Set browser title
-	 *
-	 * @since 1.7.0
-	 * @return void
-	 */
-	protected function setDocument()
-	{
-		$isNew    = ($this->item->id < 1);
-		$document = JFactory::getDocument();
-		$document->setTitle($isNew ? JText::_('COM_CHURCHDIRECTORY_KML_CREATING') : JText::sprintf('COM_CHURCHDIRECTORY_KML_EDITING', $this->item->name));
 	}
 }

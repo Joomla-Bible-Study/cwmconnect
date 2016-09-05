@@ -104,9 +104,6 @@ class ChurchDirectoryViewPositions extends JViewLegacy
 			}
 		}
 
-		// Set the document
-		$this->setDocument();
-
 		// Display the template
 		return parent::display($tpl);
 	}
@@ -122,9 +119,6 @@ class ChurchDirectoryViewPositions extends JViewLegacy
 	{
 		$user  = JFactory::getUser();
 		$canDo = ChurchDirectoryHelper::getActions('com_churchdirectory');
-
-		// Get the toolbar object instance
-		$bar = JToolbar::getInstance('toolbar');
 
 		JToolbarHelper::title(JText::_('COM_CHURCHDIRECTORY_MANAGER_POSITIONS'), 'churchdirectory');
 
@@ -177,19 +171,6 @@ class ChurchDirectoryViewPositions extends JViewLegacy
 		JToolbarHelper::help('churchdirectory_position', true);
 
 		JHtmlSidebar::setAction('index.php?option=com_churchdirectory&amp;view=positions');
-	}
-
-	/**
-	 * Set Document title
-	 *
-	 * @return void
-	 *
-	 * @since    1.7.0
-	 */
-	protected function setDocument()
-	{
-		$document = JFactory::getDocument();
-		$document->setTitle(JText::_('COM_CHURCHDIRECTORY_POSITIONS'));
 	}
 
 	/**

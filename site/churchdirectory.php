@@ -23,12 +23,12 @@ else
 }
 
 // Old PHP version detected. EJECT! EJECT! EJECT!
-if (!version_compare($version, '5.3.0', '>='))
+if (!version_compare($version, '5.4.0', '>='))
 {
 	JFactory::getApplication()->enqueueMessage('PHP versions 4.x, 5.0, 5.1 and 5.2 are no longer supported by Church Direcotory.<br/>
 <br/>The version of PHP used on your site is obsolete and contains known security vulenrabilities. Moreover,
 it is missing features required by Church Directory to work properly or at all.
- Please ask your host to upgrade your server to the latest PHP 5.3 release.
+ Please ask your host to upgrade your server to the latest PHP 5.4 release.
 Thank you!', 'error');
 
 	return false;
@@ -38,17 +38,17 @@ require_once JPATH_COMPONENT . '/helpers/route.php';
 
 JLoader::register('RenderHelper', JPATH_SITE . '/components/com_churchdirectory/helpers/render.php');
 JHtml::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_churchdirectory/helpers/html');
-JHtml::_('bootstrap.framework');
-JHtml::_('bootstrap.loadcss');
+//JHtml::_('bootstrap.framework');
+//JHtml::_('bootstrap.loadcss');
 
 // Load FOF
-include_once JPATH_SITE . '/libraries/fof/include.php';
+//include_once JPATH_SITE . '/libraries/fof/include.php';
 
 // Load tcpdf
 include_once JPATH_SITE . '/libraries/tcpdf/tcpdf.php';
 
-JHtml::stylesheet('media/com_churchdirectory/css/general.css');
-JHtml::stylesheet('media/com_churchdirectory/css/churchdirectory.css');
+//JHtml::stylesheet('media/com_churchdirectory/css/general.css');
+//JHtml::stylesheet('media/com_churchdirectory/css/churchdirectory.css');
 
 $controller = JControllerLegacy::getInstance('ChurchDirectory');
 $controller->execute(JFactory::getApplication()->input->get('task'));

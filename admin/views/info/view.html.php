@@ -67,14 +67,7 @@ class ChurchDirectoryViewInfo extends JViewLegacy
 		}
 
 		$this->addToolbar();
-
-		if (version_compare(JVERSION, '3.0', 'ge'))
-		{
-			$this->sidebar = JHtmlSidebar::render();
-		}
-
-		// Set the document
-		$this->setDocument();
+		$this->sidebar = JHtmlSidebar::render();
 
 		// Display the template
 		return parent::display($tpl);
@@ -89,20 +82,7 @@ class ChurchDirectoryViewInfo extends JViewLegacy
 	 */
 	protected function addToolbar()
 	{
-		JToolbarHelper::title(JText::_('COM_CHURCHDIRECTORY_MANAGER_INFO'), 'churchdirectory.png');
+		JToolbarHelper::title(JText::_('COM_CHURCHDIRECTORY_MANAGER_INFO'), 'info');
 		JToolbarHelper::help('churchdirectory', true);
-	}
-
-	/**
-	 * Set browser title
-	 *
-	 * @since 1.7.0
-	 *
-	 * @return void
-	 */
-	protected function setDocument()
-	{
-		$document = JFactory::getDocument();
-		$document->setTitle(JText::_('COM_CHURCHDIRECTORY_INFO'));
 	}
 }

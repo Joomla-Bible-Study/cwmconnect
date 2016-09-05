@@ -49,8 +49,27 @@ JHtml::addIncludePath(JPATH_COMPONENT . '/helpers');
 	echo '<hr />';
 	foreach ($this->items as $s1 => $sort1)
 	{
+		if(isset($this->pdf))
+		{
+			// Add a page
+			$this->pdf->AddPage();
+		}
+
 		$this->items = $sort1;
-		echo $this->loadTemplate('items');
+		$html = trim($this->loadTemplate('items'), "\n");
+
+		if(isset($this->pdf))
+		{
+			// Print a block of text using Write()
+			$this->pdf->writeHTML($html, true, 0, true, true);
+
+			// ---------------------------------------------------------
+			$this->pdf->lastPage();
+		}
+		else
+		{
+			echo $html;
+		}
 	}
 	// Last call to close out table.
 	echo '<a name="bottom"></a></div></div>';
