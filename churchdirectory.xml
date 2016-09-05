@@ -112,8 +112,8 @@
 	<!-- Extension Update Specification -->
 
 	<updateservers>
-		<server type="collection" priority="1" name="pkg_churchdirectory_package">
-			<![CDATA[http://http://www.joomlabiblestudy.org/index.php?option=com_ars&view=update&task=stream&format=xml&id=10&dummy=extension.xml]]></server>
+		<server type="extension" priority="1" name="Joomla Church Directory Package">
+			<![CDATA[http://www.joomlabiblestudy.org/index.php?option=com_ars&view=update&task=stream&format=xml&id=10&dummy=extension.xml]]></server>
 	</updateservers>
 
 

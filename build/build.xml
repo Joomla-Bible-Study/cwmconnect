@@ -40,11 +40,13 @@
 		<include name="**"/>
 	</fileset>
 	<fileset dir="${src}" id="allfiles">
+		<exclude name=".git/**"/>
 		<include name="admin/**"/>
 		<include name="site/**"/>
 		<include name="media/**"/>
 		<include name="modules/**"/>
 		<include name="plugins/**"/>
+		<exclude name="libraries/tcpdf/examples/**" />
 		<include name="libraries/tcpdf/**"/>
 		<include name="churchdirectory.xml"/>
 		<include name="churchdirectory.scrip.php"/>
