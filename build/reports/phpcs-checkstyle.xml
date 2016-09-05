@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<checkstyle version="1.5.6">
+<file name="/Users/bcordis/PHPProFiles/joomla_churchdirectory/build/phpcs/Joomla/ruleset.xml">
+ <error line="1" column="1" severity="error" message="Short PHP opening tag used; expected &quot;&lt;?php&quot; but found &quot;&lt;?&quot;" source="Generic.PHP.DisallowShortOpenTag.Found"/>
+ <error line="1" column="3" severity="error" message="Missing file doc comment" source="Joomla.Commenting.FileComment.Missing"/>
+ <error line="1" column="14" severity="error" message="Expected 1 space before &quot;=&quot;; 0 found" source="Joomla.WhiteSpace.OperatorSpacing.NoSpaceBefore"/>
+ <error line="1" column="14" severity="error" message="Expected 1 space after &quot;=&quot;; 0 found" source="Joomla.WhiteSpace.OperatorSpacing.NoSpaceAfter"/>
+</file>
+</checkstyle>

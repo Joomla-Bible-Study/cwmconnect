@@ -391,10 +391,4 @@ CREATE TABLE IF NOT EXISTS `#__churchdirectory_update` (
 --
 
 INSERT INTO `#__churchdirectory_update` (`id`, `version`) VALUES
-  (1, '1.7.1'),
-  (2, '1.7.2'),
-  (3, '1.7.3'),
-  (4, '1.7.4'),
-  (5, '1.7.5'),
-  (6, '1.7.6'),
-  (7, '1.7.7');
+  (1, '1.7.10');

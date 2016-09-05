@@ -1,13 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="ChurchDirectory" basedir="../" default="build">
-	<property name="test" value="/opt/local/apache2/htdocs/j2" override="true"/>
+	<php expression="include('libraries/vendor/autoload.php')"/>
+
+	<property name="test" value="/Users/bcordis/Sites/j3" override="true"/>
+	<property name="project.name" value="Joomla Church Directory"/>
 	<property name="testadmincomp"
-	          value="/opt/local/apache2/htdocs/j2/administrator/components/com_churchdirectory"
+	          value="/Users/bcordis/Sites/j3/administrator/components/com_churchdirectory"
 	          override="true"/>
 
 	<!-- set global properties for this build -->
 	<property name="dist" value="dist"/>
 	<property name="src" value="${project.basedir}" override="true"/>
+
+	<!-- Joomla version to run the unit tests against -->
+	<property name="joomla.version" value="3.3.6"/>
+
+	<property name="src.test" value="${src}/tests/test"/>
+	<property name="dest.test" value="${src}/admin/views/test"/>
+
+	<target name="init" description="Create artifact directories">
+		<mkdir dir="${src}/build/packages"/>
+		<mkdir dir="${src}/build/reports"/>
+		<mkdir dir="${src}/docs"/>
+	</target>
+
+	<!-- List of all files that are packaged and distributed -->
+	<fileset dir="${src}" id="distributed_files">
+		<include name="admin/**/*"/>
+		<include name="libraries/tcpdf/**/*"/>
+		<include name="media/**/*"/>
+		<include name="modules/**/*"/>
+		<include name="plugins/**/*"/>
+		<include name="site/**/*"/>
+		<include name="templates/**/*"/>
+		<exclude name=".git"/>
+	</fileset>
 
 	<fileset dir="./site" id="component_files">
 		<include name="**"/>
@@ -16,11 +43,13 @@
 		<include name="admin/**"/>
 		<include name="site/**"/>
 		<include name="media/**"/>
+		<include name="modules/**"/>
+		<include name="plugins/**"/>
+		<include name="libraries/tcpdf/**"/>
 		<include name="churchdirectory.xml"/>
 		<include name="churchdirectory.scrip.php"/>
 		<include name="changelog.php"/>
 		<include name="copyright.txt"/>
-		<include name="index.html"/>
 		<include name="LICENSE.txt"/>
 	</fileset>
 
@@ -30,7 +59,6 @@
 		</echo>
 		<copy file="${src}/admin/churchdirectory.php"
 		      todir="${testadmincomp}"/>
-		<copy file="${src}/admin/index.html" todir="${testadmincomp}"/>
 		<echo msg="Copying site files if needed..."/>
 		<copy todir="${test}/components/com_churchdirectory">
 			<fileset refid="component_files"/>
@@ -45,6 +73,20 @@
 		<echo msg="Build for Joomla Bible Study, Please modify location as you need."/>
 	</target>
 
+	<!-- Measure the size of the project -->
+	<target name="size" depends="init" description="Measures the size of the project">
+		<phploc reportType="txt" reportName="project-size" reportDirectory="${src}/build/reports">
+			<fileset refid="distributed_files"/>
+		</phploc>
+	</target>
+
+	<!-- Creates API documentation -->
+	<target name="phpdoc" depends="init" description="Generate project API documentation">
+		<phpdoc2 title="${project.name} API" destdir="${src}/docs" template="responsive">
+			<fileset refid="distributed_files"/>
+		</phpdoc2>
+	</target>
+
 	<target name="reset">
 		<echo msg="Reset back to Dev State"/>
 		<delete file="${src}/admin/churchdirectory.xml"/>
@@ -55,8 +97,11 @@
 
 	<target name="clean">
 		<echo message="Cleaning directories"/>
-		<delete file="build/packages/com_churchdirectory_dev.zip"/>
-		<delete file="build/packages/com_churchdirectory_dev.tar.gz"/>
+		<delete>
+			<fileset dir="${src}/build/packages/">
+				<include name="*.*"/>
+			</fileset>
+		</delete>
 	</target>
 
 	<!-- ============================================  -->
@@ -64,17 +109,21 @@
 	<!-- ============================================  -->
 	<target name="build">
 		<echo message="Building package"/>
+		<propertyprompt propertyName="version" defaultValue="dev" promptText="Enter version you are releasing."/>
 
 		<mkdir dir="packages"/>
 		<delete file="${src}/admin/churchdirectory.xml"/>
 		<delete file="${src}/admin/churchdirectory.script.php"/>
 
-		<delete file="${src}/build/packages/com_churchdirectory_dev.zip"/>
-		<delete file="${src}/build/packages/com_churchdirectory_dev.tar.gz"/>
-		<zip destfile="${src}/build/packages/com_churchdirectory_dev.zip">
+		<delete>
+			<fileset dir="${src}/build/packages/">
+				<include name="*.*"/>
+			</fileset>
+		</delete>
+		<zip destfile="${src}/build/packages/com_churchdirectory-${version}.zip">
 			<fileset refid="allfiles"/>
 		</zip>
-		<tar destfile="${src}/build/packages/com_churchdirectory_dev.tar.gz" compression="gzip">
+		<tar destfile="${src}/build/packages/com_churchdirectory-${version}.tar.gz" compression="gzip">
 			<fileset refid="allfiles"/>
 		</tar>
 		<symlink target="${src}/churchdirectory.xml" link="admin/churchdirectory.xml"/>

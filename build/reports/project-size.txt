@@ -29,3 +29,54 @@ Functions:                                           48
 Constants:                                           64
   Global constants:                                  64
   Class constants:                                    0
+Directories                                         59
+Files                                              142
+
+Size
+  Lines of Code (LOC)                            23834
+  Comment Lines of Code (CLOC)                    6225 (26.12%)
+  Non-Comment Lines of Code (NCLOC)              17609 (73.88%)
+  Logical Lines of Code (LLOC)                    6219 (26.09%)
+    Classes                                       4380 (70.43%)
+      Average Class Length                          47
+      Average Method Length                         13
+    Functions                                       71 (1.14%)
+      Average Function Length                       23
+    Not in classes or functions                   1768 (28.43%)
+
+Complexity
+  Cyclomatic Complexity / LLOC                    0.33
+  Cyclomatic Complexity / Number of Methods       4.64
+
+Dependencies
+  Global Accesses                                    0
+    Global Constants                                 0 (0.00%)
+    Global Variables                                 0 (0.00%)
+    Super-Global Variables                           0 (0.00%)
+  Attribute Accesses                              3376
+    Non-Static                                    3365 (99.67%)
+    Static                                          11 (0.33%)
+  Method Calls                                    5179
+    Non-Static                                    3549 (68.53%)
+    Static                                        1630 (31.47%)
+
+Structure
+  Namespaces                                         0
+  Interfaces                                         0
+  Traits                                             0
+  Classes                                           93
+    Abstract Classes                                 3 (3.23%)
+    Concrete Classes                                90 (96.77%)
+  Methods                                          330
+    Scope
+      Non-Static Methods                           312 (94.55%)
+      Static Methods                                18 (5.45%)
+    Visibility
+      Public Method                                192 (58.18%)
+      Non-Public Methods                           138 (41.82%)
+  Functions                                          3
+    Named Functions                                  3 (100.00%)
+    Anonymous Functions                              0 (0.00%)
+  Constants                                          4
+    Global Constants                                 3 (75.00%)
+    Class Constants                                  1 (25.00%)

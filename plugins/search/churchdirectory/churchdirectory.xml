@@ -12,7 +12,6 @@
 	<files>
 		<filename plugin="churchdirectory">churchdirectory.php</filename>
 		<folder>language</folder>
-		<filename>index.html</filename>
 	</files>
 	<config>
 		<fields name="params">

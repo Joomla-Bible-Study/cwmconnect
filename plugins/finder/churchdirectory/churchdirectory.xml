@@ -12,6 +12,5 @@
 	<files>
 		<file plugin="churchdirectory">churchdirectory.php</file>
 		<folder>language</folder>
-		<filename>index.html</filename>
 	</files>
 </extension>
