@@ -56,7 +56,7 @@ JHtml::addIncludePath(JPATH_COMPONENT . '/helpers');
 		}
 
 		$this->items = $sort1;
-		$html = trim($this->loadTemplate('items'), "\n");
+		$html = $this->loadTemplate('items');
 
 		if(isset($this->pdf))
 		{

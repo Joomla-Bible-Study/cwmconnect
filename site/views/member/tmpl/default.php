@@ -11,9 +11,8 @@ defined('_JEXEC') or die;
 
 $cparams = JComponentHelper::getParams('com_media');
 $this->loadHelper('render');
-$renderHelper = new RenderHelper;
+$renderHelper = new ChurchDirectoryRenderHelper;
 
-jimport('joomla.html.html.bootstrap');
 ?>
 <div class="contact<?php echo $this->pageclass_sfx ?>">
 	<?php if ($this->params->get('show_page_heading'))

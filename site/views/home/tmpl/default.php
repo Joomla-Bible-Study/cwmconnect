@@ -10,11 +10,11 @@ $login = $this->user->get('guest') ? true : false;
 $check = in_array($this->params->get('accesslevel'), $this->user->get('_authLevels'));
 $count = count($this->items);
 ?>
-<div>
+<div class="chhome clear" style="padding: 5px;">
 	<h1 class="center"><?php if ($this->params->get('show_page_heading', 0))
 		{
 			echo $this->params->get('page_heading');
-		}?>
+		} ?>
 	</h1>
 
 	<div class="span2 pull-left">
@@ -38,13 +38,13 @@ $count = count($this->items);
 			}
 			?>
 			<br/><br/>
-		<?php
+			<?php
 		}
 		if (!$check)
 		{
 			?>
 			<span>Please register as a church member. This directory is for church members only</span>
-		<?php
+			<?php
 		}
 		elseif ($check)
 		{
@@ -68,13 +68,14 @@ $count = count($this->items);
 											     style="max-width:240px; border: none;"><br/>
 										<?php } ?>
 										<span class="large buld"><?php echo $item->name ?></span><br/>
-										<span
-											class="small"><?php echo $this->renderHelper->getPosition($item->con_position); ?></span>
+										<span class="small">
+											<?php echo $this->renderHelper->getPosition($item->con_position); ?>
+										</span>
 									</a>
 								</div>
 
 							</div>
-						<?php
+							<?php
 						}
 						else
 						{
@@ -89,13 +90,14 @@ $count = count($this->items);
 											     style="max-width:240px; border: none;"><br/>
 										<?php } ?>
 										<span class="large buld"><?php echo $item->name ?></span><br/>
-										<span
-											class="small"><?php echo $this->renderHelper->getPosition($item->con_position); ?></span>
+										<span class="small">
+											<?php echo $this->renderHelper->getPosition($item->con_position); ?>
+										</span>
 									</a>
 								</div>
 
 							</div>
-						<?php
+							<?php
 						}
 					} ?>
 				</div>

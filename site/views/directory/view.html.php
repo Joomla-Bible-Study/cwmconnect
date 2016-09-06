@@ -81,6 +81,10 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 
 	protected $header;
 
+	/**
+	 * @var  ChurchDirectoryRenderHelper
+	 * @since Version
+	 */
 	protected $renderHelper;
 
 	protected $count;
@@ -126,7 +130,7 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 		$this->subcount = count($items);
 		$children       = $this->get('Children');
 		$this->loadHelper('render');
-		$renderHelper = new RenderHelper;
+		$renderHelper = new ChurchDirectoryRenderHelper;
 		$this->span   = $renderHelper->rowWidth($params->get('rows_per_page'));
 		JLoader::register('DirectoryHeaderHelper', JPATH_SITE . '/components/com_churchdirectory/helpers/directoryheader.php');
 		$this->header = new DirectoryHeaderHelper;
@@ -243,7 +247,7 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 		$category->params->merge($cparams);
 		$children = [$category->id => $children];
 		$maxLevel = $params->get('maxLevel', -1);
-		$items    = RenderHelper::groupit(['items' => & $items, 'field' => 'lname']);
+		$items    = $this->renderHelper->groupit(['items' => & $items, 'field' => 'lname']);
 
 		$this->renderHelper = $renderHelper;
 		$this->maxLevel     = & $maxLevel;

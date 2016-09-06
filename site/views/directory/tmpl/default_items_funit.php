@@ -21,7 +21,6 @@ $this->renderHelper = new ChurchDirectoryRenderHelper;
 <?php
 foreach ($this->items as $item)
 {
-	$this->item = $item;
 	if ($this->printed_items == 0 && $this->printed_rows == 0)
 	{
 		echo '<!-- new start ' . $item->name . '-->';

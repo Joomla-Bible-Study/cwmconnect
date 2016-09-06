@@ -39,6 +39,10 @@ class ChurchDirectoryViewHome extends JViewLegacy
 	 */
 	public $document;
 
+	/**
+	 * @var ChurchDirectoryRenderHelper
+	 * @since version
+	 */
 	protected $renderHelper;
 
 	/**
@@ -88,7 +92,7 @@ class ChurchDirectoryViewHome extends JViewLegacy
 		$contents .= $renderer->render($mod, $mod_params);
 		$this->search       = $contents;
 
-		$this->renderHelper = new RenderHelper;
+		$this->renderHelper = new ChurchDirectoryRenderHelper;
 		$this->params       = & $params;
 		$this->user         = & $user;
 		$this->items        = & $items;

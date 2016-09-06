@@ -144,7 +144,7 @@ class ChurchDirectoryViewCategory extends JViewLegacy
 		$category->params->merge($cparams);
 		$children = [$category->id => $children];
 		$this->loadHelper('render');
-		$this->renderHelper = new RenderHelper;
+		$this->renderHelper = new ChurchDirectoryRenderHelper;
 
 		$maxLevel         = $params->get('maxLevel', -1);
 		$this->maxLevel   = & $maxLevel;

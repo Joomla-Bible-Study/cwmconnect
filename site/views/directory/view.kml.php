@@ -96,7 +96,7 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 	 */
 	public function display ($tpl = null)
 	{
-		$app = JFactory::getApplication();
+		$renderHelper = new ChurchDirectoryRenderHelper;
 
 		// Get some data from the models
 		$state      = $this->get('State');
@@ -285,13 +285,13 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 		$kml[] = '</scale>';
 		$kml[] = '</LabelStyle>';
 		$kml[] = '</Style> ';
-		$teams = RenderHelper::groupit(['items' => $items, 'field' => 'category_title']);
+		$teams = $renderHelper->groupit(['items' => $items, 'field' => 'category_title']);
 		$new_rows = [];
 		$ckml_params = new Registry;
 
 		foreach ($teams as $c => $catid)
 		{
-			$new_rows[$c] = RenderHelper::groupit(['items' => $teams[$c], 'field' => 'suburb']);
+			$new_rows[$c] = $renderHelper->groupit(['items' => $teams[$c], 'field' => 'suburb']);
 			$ckml_params->merge($catid[0]->kml_params);
 		}
 

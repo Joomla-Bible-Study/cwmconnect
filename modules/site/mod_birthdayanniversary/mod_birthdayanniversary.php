@@ -19,7 +19,7 @@ JLoader::register('RenderHelper', JPATH_SITE . '/components/com_churchdirectory/
 addCSS();
 
 /* Get the RenderHelper Class for the Module to us */
-$render = new RenderHelper;
+$render = new ChurchDirectoryRenderHelper;
 
 /* Return members that have Birthdays of this month. */
 $birthdays = $render->getBirthdays($params);

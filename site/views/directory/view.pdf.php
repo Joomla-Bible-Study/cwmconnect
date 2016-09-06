@@ -73,6 +73,12 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 	protected $count;
 
 	/**
+	 * @var  TCPDF
+	 * @since version
+	 */
+	protected $pdf;
+
+	/**
 	 * Display the view
 	 *
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
@@ -114,7 +120,7 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 		$children       = $this->get('Children');
 		$pagination     = $this->get('Pagination');
 		$this->loadHelper('render');
-		$renderHelper = new RenderHelper;
+		$renderHelper = new ChurchDirectoryRenderHelper;
 		$this->span   = $renderHelper->rowWidth($params->get('rows_per_page'));
 		JLoader::register('DirectoryHeaderHelper', JPATH_SITE . '/components/com_churchdirectory/helpers/directoryheader.php');
 		$this->header = new DirectoryHeaderHelper;
@@ -227,13 +233,13 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 		$category->params->merge($cparams);
 		$children = [$category->id => $children];
 		$maxLevel = $params->get('maxLevel', -1);
-		$items    = RenderHelper::groupit(['items' => & $items, 'field' => 'lname']);
+		$items    = $renderHelper->groupit(['items' => & $items, 'field' => 'lname']);
 
 		if (0)
 		{
 			foreach ($items as $s1)
 			{
-				$items[$s1] = RenderHelper::groupit(['items' => $items[$s1], 'field' => 'suburb']);
+				$items[$s1] = $renderHelper->groupit(['items' => $items[$s1], 'field' => 'suburb']);
 			}
 		}
 
@@ -297,17 +303,8 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 		// Set font
 		$this->pdf->SetFont('times', 'BI', 8, '', 'false');
 
-		// Add a page
-//		$this->pdf->AddPage();
-
 		// Set some text to print
 		$html = $this->loadTemplate($tpl);
-
-		// Print a block of text using Write()
-//		$this->pdf->writeHTML($html, true, 0, true, true);
-
-		// ---------------------------------------------------------
-//		$this->pdf->lastPage();
 
 		$jweb  = new JApplicationWeb;
 		$jweb->clearHeaders();

@@ -19,7 +19,7 @@ elseif (function_exists('phpversion'))
 else
 {
 // No version info. I'll lie and hope for the best.
-	$version = '5.0.0';
+	$version = '5.4.0';
 }
 
 // Old PHP version detected. EJECT! EJECT! EJECT!
@@ -34,22 +34,23 @@ Thank you!', 'error');
 	return false;
 }
 
-require_once JPATH_COMPONENT . '/helpers/route.php';
+JLoader::register('ChurchDirectoryHelperRoute', JPATH_COMPONENT . '/helpers/route.php');
 
-JLoader::register('RenderHelper', JPATH_SITE . '/components/com_churchdirectory/helpers/render.php');
-JHtml::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_churchdirectory/helpers/html');
-//JHtml::_('bootstrap.framework');
-//JHtml::_('bootstrap.loadcss');
+JHtml::_('bootstrap.framework');
+JHtml::_('bootstrap.loadcss');
 
-// Load FOF
-//include_once JPATH_SITE . '/libraries/fof/include.php';
+// Always load JBSM API if it exists.
+$api = JPATH_ADMINISTRATOR . '/components/com_churchdirectory/api.php';
+
+if (file_exists($api))
+{
+	require_once $api;
+}
 
 // Load tcpdf
 include_once JPATH_SITE . '/libraries/tcpdf/tcpdf.php';
 
-//JHtml::stylesheet('media/com_churchdirectory/css/general.css');
-//JHtml::stylesheet('media/com_churchdirectory/css/churchdirectory.css');
-
+JHtml::stylesheet('media/com_churchdirectory/css/churchdirectory.css');
 $controller = JControllerLegacy::getInstance('ChurchDirectory');
 $controller->execute(JFactory::getApplication()->input->get('task'));
 $controller->redirect();

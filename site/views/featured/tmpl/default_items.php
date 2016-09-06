@@ -14,7 +14,7 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 // Create a shortcut for params.
 $params = & $this->item->params;
 $this->loadHelper('render');
-$renderHelper = new renderHelper();
+$renderHelper = new ChurchDirectoryRenderHelper;
 ?>
 
 <?php if (empty($this->items)) : ?>

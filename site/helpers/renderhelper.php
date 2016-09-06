@@ -15,7 +15,7 @@ use Joomla\Registry\Registry;
  * @package  ChurchDirectory.Site
  * @since    1.7.5
  */
-class RenderHelper
+class ChurchDirectoryRenderHelper
 {
 	protected $burthday;
 
@@ -346,7 +346,7 @@ class RenderHelper
 	 *
 	 * @since    1.5
 	 */
-	public static function groupit($args)
+	public function groupit($args)
 	{
 		$items = null;
 		$field = null;
