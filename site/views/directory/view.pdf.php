@@ -276,7 +276,12 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 		$this->pdf->SetKeywords('Directory, PDF, Members');
 
 		// Set default header data
-		$this->pdf->setHeaderData($params->get('pdf_logo'), $params->get('pdf_logo_width'), $this->params->get('page_heading'), $params->get('pdf_header_string'));
+		$this->pdf->setHeaderData(
+			$params->get('pdf_logo'),
+			$params->get('pdf_logo_width'),
+			$this->params->get('page_heading'),
+			$params->get('pdf_header_string')
+		);
 
 		// Remove default header/footer
 		$this->pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
