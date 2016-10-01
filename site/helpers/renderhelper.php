@@ -162,7 +162,7 @@ class ChurchDirectoryRenderHelper
 				$item->attribs = $params;
 			}
 
-			if ($item->attribs->get('familypostion') == $fm)
+			if ((int) $item->attribs->get('familypostion') !== $fm)
 			{
 				unset($items[$i]);
 			}
@@ -489,7 +489,8 @@ class ChurchDirectoryRenderHelper
 
 		foreach ($records as $record)
 		{
-			list($this->burthyear, $this->burthmonth, $this->burthday) = explode('-', $record->birthdate);
+			list($get_date, $get_time) = explode(" ", $$record->birthdate);
+			list($this->byear, $this->bmonth, $this->bday, $this->time) = explode('-', $get_date);
 			$results[] = ['name' => $record->name, 'id' => $record->id, 'day' => $this->burthday, 'access' => $record->access];
 		}
 
@@ -556,7 +557,8 @@ class ChurchDirectoryRenderHelper
 
 		foreach ($records as $i => $record)
 		{
-			list($this->byear, $this->bmonth, $this->bday) = explode('-', $record->anniversary);
+			list($get_date, $get_time) = explode(" ", $record->anniversary);
+			list($this->byear, $this->bmonth, $this->bday, $this->time) = explode('-', $get_date);
 
 			if ($record->f_name && $record->f_id != $this->f_id)
 			{
