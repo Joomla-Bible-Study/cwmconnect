@@ -1,5 +1,5 @@
 ------------------------------------------------------
-Church Directory manager component for 1.7+
+Church Directory
 
 Copyright (C) 2016 Joomla Bible Study Team All rights reserved.
 
