@@ -47,7 +47,7 @@ $renderHelper = new ChurchDirectoryRenderHelper;
             </th>
 			<?php if ($this->params->get('show_position_headings')) : ?>
             <th class="item-position">
-				<?php echo JHtml::_('grid.sort', 'COM_CHURCHDIRECTORY_POSITION', 'a.con_position', $listDirn, $listOrder); ?>
+				<?php echo JHtml::_('grid.sort', 'COM_CHURCHDIRECTORY_POSITIONS', 'a.con_position', $listDirn, $listOrder); ?>
             </th>
 			<?php endif; ?>
 			<?php if ($this->params->get('show_email_headings')) : ?>

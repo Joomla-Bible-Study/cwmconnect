@@ -52,11 +52,10 @@ $renderHelper = new ChurchDirectoryRenderHelper;
 	} ?>
 	<?php if ($this->params->get('dr_show_children') && $this->member->attribs->get('familypostion') != '2')
 	{
-		$children = $renderHelper->getChildren((int) $this->member->fu_id);
+		$children = $renderHelper->getChildren((int) $this->member->fu_id, false, $this->member->children);
 		?>
 		<p>
-			<?php echo '<span class="jicons-text">' . JText::_('COM_CHURCHDIRECTORY_CHILDREN') . ': </span>';
-
+			<?php
 			if ($children)
 			{
 				echo $children . '<br />';
@@ -166,238 +165,243 @@ $renderHelper = new ChurchDirectoryRenderHelper;
 		<?php echo '<h3>' . JText::_('COM_CHURCHDIRECTORY_DETAILS') . '</h3>'; ?>
 	<?php } ?>
 
-	<?php if ($this->member->image && $this->params->get('show_image'))
-	{
-		?>
-		<div class="thumbnail pull-right">
-			<?php echo JHtml::_('image', $this->member->image, JText::_('COM_CHURCHDIRECTORY_IMAGE_DETAILS'), ['align' => 'middle']); ?>
-		</div>
+	<div class="row" style="padding-left: 20px;">
 		<?php
-	}
+		if ($this->member->con_position && $this->params->get('show_position'))
+		{
+			?>
+			<div class="span6">
+				<span class="span4 jicons-text">
+						<?php if ($this->member->con_position != '-1')
+						{
+							echo JText::_('COM_CHURCHDIRECTORY_POSITIONS') . ':';
+						}
+						?>
+				</span>
+				<span class="span8">
+					<?php echo $renderHelper->getPosition($this->member->con_position); ?>
+				</span>
+			</div>
+			<?php
+		}
 
-	if ($this->member->con_position && $this->params->get('show_position'))
-	{
-		?>
-		<dl class="contact-position dl-horizontal">
-			<dt>
-				<?php if ($this->member->con_position != '-1')
-				{
-					echo JText::_('COM_CHURCHDIRECTORY_POSITION');
-				} ?>
-			</dt>
-			<dd>
-				<?php echo $renderHelper->getPosition($this->member->con_position); ?>
-			</dd>
-		</dl>
-		<?php
-	}
-	echo $this->loadTemplate('address');
+		if (!empty($this->member->image) && $this->params->get('show_image'))
+		{
+			?>
+			<div class="span6">
+				<?php echo JHtml::_('image', $this->member->image, JText::_('COM_CHURCHDIRECTORY_IMAGE_DETAILS'), ['align' => 'right', 'class' => 'thumbnail', 'style' => 'max-width: 250px;']); ?>
+			</div>
+			<?php
+		}
+		echo "</div>";
+		echo '<div class="clearfix"></div>';
+		echo $this->loadTemplate('address');
 
-	if ($this->params->get('allow_vcard'))
-	{
-		echo JText::_('COM_CHURCHDIRECTORY_DOWNLOAD_INFORMATION_AS'); ?>
-		<a href="<?php echo JRoute::_('index.php?option=com_contact&amp;view=contact&amp;id=' . $this->member->id . '&amp;format=vcf'); ?>">
-			<?php echo JText::_('COM_CHURCHDIRECTORY_VCARD'); ?></a>
-		<?php
-	}
-	if ($this->params->get('presentation_style') == 'sliders')
-	{
-		echo JHtml::_('bootstrap.endSlide');
-	}
-	if ($this->params->get('presentation_style') == 'tabs')
-	{
-		echo JHtml::_('bootstrap.endTab');
-	}
-	if ($this->params->get('show_email_form') && !empty($this->member->email_to))
-	{
+		if ($this->params->get('allow_vcard'))
+		{
+			echo JText::_('COM_CHURCHDIRECTORY_DOWNLOAD_INFORMATION_AS'); ?>
+			<a href="<?php echo JRoute::_('index.php?option=com_contact&amp;view=contact&amp;id=' . $this->member->id . '&amp;format=vcf'); ?>">
+				<?php echo JText::_('COM_CHURCHDIRECTORY_VCARD'); ?></a>
+			<?php
+		}
 		if ($this->params->get('presentation_style') == 'sliders')
 		{
-			echo JHtml::_('bootstrap.addSlide', 'slide-contact', JText::_('COM_CHURCHDIRECTORY_EMAIL_FORM'), 'display-form');
+			echo JHtml::_('bootstrap.endSlide');
 		}
 		if ($this->params->get('presentation_style') == 'tabs')
 		{
-			echo JHtml::_('bootstrap.addTab', 'myTab', 'display-form', JText::_('COM_CHURCHDIRECTORY_EMAIL_FORM', true));
+			echo JHtml::_('bootstrap.endTab');
 		}
-		if ($this->params->get('presentation_style') == 'plain')
+		if ($this->params->get('show_email_form') && !empty($this->member->email_to))
+		{
+			if ($this->params->get('presentation_style') == 'sliders')
+			{
+				echo JHtml::_('bootstrap.addSlide', 'slide-contact', JText::_('COM_CHURCHDIRECTORY_EMAIL_FORM'), 'display-form');
+			}
+			if ($this->params->get('presentation_style') == 'tabs')
+			{
+				echo JHtml::_('bootstrap.addTab', 'myTab', 'display-form', JText::_('COM_CHURCHDIRECTORY_EMAIL_FORM', true));
+			}
+			if ($this->params->get('presentation_style') == 'plain')
+			{
+				?>
+				<?php echo '<h3>' . JText::_('COM_CHURCHDIRECTORY_EMAIL_FORM') . '</h3>'; ?>
+			<?php } ?>
+
+			<?php echo $this->loadTemplate('form'); ?>
+
+			<?php if ($this->params->get('presentation_style') == 'sliders')
 		{
 			?>
-			<?php echo '<h3>' . JText::_('COM_CHURCHDIRECTORY_EMAIL_FORM') . '</h3>'; ?>
+			<?php echo JHtml::_('bootstrap.endSlide'); ?>
+		<?php } ?>
+			<?php if ($this->params->get('presentation_style') == 'tabs')
+		{
+			?>
+			<?php echo JHtml::_('bootstrap.endTab'); ?>
 		<?php } ?>
 
-		<?php echo $this->loadTemplate('form'); ?>
+		<?php } ?>
 
-		<?php if ($this->params->get('presentation_style') == 'sliders')
-	{
-		?>
-		<?php echo JHtml::_('bootstrap.endSlide'); ?>
-	<?php } ?>
-		<?php if ($this->params->get('presentation_style') == 'tabs')
-	{
-		?>
-		<?php echo JHtml::_('bootstrap.endTab'); ?>
-	<?php } ?>
+		<?php if ($this->params->get('show_links') && $this->member->params->get('link' . 'a') != null)
+		{
+			?>
 
-	<?php } ?>
+			<?php if ($this->params->get('presentation_style') == 'sliders')
+		{
+			?>
+			<?php echo JHtml::_('bootstrap.addSlide', 'slide-links', JText::_('COM_CHURCHDIRECTORY_LINKS'), 'display-form'); ?>
+		<?php } ?>
+			<?php if ($this->params->get('presentation_style') == 'tabs')
+		{
+			?>
+			<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'display-links', JText::_('COM_CONTACT_LINKS', true)); ?>
+		<?php } ?>
+			<?php if ($this->params->get('presentation_style') == 'plain')
+		{
+			?>
+			<?php echo '<h3>' . JText::_('COM_CHURCHDIRECTORY_LINKS') . '</h3>'; ?>
+		<?php } ?>
 
-	<?php if ($this->params->get('show_links') && $this->member->params->get('link' . 'a') != null)
-	{
-		?>
+			<?php echo $this->loadTemplate('links'); ?>
 
-		<?php if ($this->params->get('presentation_style') == 'sliders')
-	{
-		?>
-		<?php echo JHtml::_('bootstrap.addSlide', 'slide-links', JText::_('COM_CHURCHDIRECTORY_LINKS'), 'display-form'); ?>
-	<?php } ?>
-		<?php if ($this->params->get('presentation_style') == 'tabs')
-	{
-		?>
-		<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'display-links', JText::_('COM_CONTACT_LINKS', true)); ?>
-	<?php } ?>
-		<?php if ($this->params->get('presentation_style') == 'plain')
-	{
-		?>
-		<?php echo '<h3>' . JText::_('COM_CHURCHDIRECTORY_LINKS') . '</h3>'; ?>
-	<?php } ?>
+			<?php if ($this->params->get('presentation_style') == 'sliders')
+		{
+			?>
+			<?php echo JHtml::_('bootstrap.endSlide'); ?>
+		<?php } ?>
+			<?php if ($this->params->get('presentation_style') == 'tabs')
+		{
+			?>
+			<?php echo JHtml::_('bootstrap.endTab'); ?>
+		<?php } ?>
+		<?php } ?>
 
-		<?php echo $this->loadTemplate('links'); ?>
+		<?php if ($this->params->get('show_articles') && $this->member->user_id && $this->member->articles)
+		{
+			?>
 
-		<?php if ($this->params->get('presentation_style') == 'sliders')
-	{
-		?>
-		<?php echo JHtml::_('bootstrap.endSlide'); ?>
-	<?php } ?>
-		<?php if ($this->params->get('presentation_style') == 'tabs')
-	{
-		?>
-		<?php echo JHtml::_('bootstrap.endTab'); ?>
-	<?php } ?>
-	<?php } ?>
+			<?php if ($this->params->get('presentation_style') == 'sliders')
+		{
+			?>
+			<?php echo JHtml::_('bootstrap.addSlide', 'slide-contact', JText::_('JGLOBAL_ARTICLES'), 'display-articles'); ?>
+		<?php } ?>
+			<?php if ($this->params->get('presentation_style') == 'tabs')
+		{
+			?>
+			<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'display-articles', JText::_('JGLOBAL_ARTICLES', true)); ?>
+		<?php } ?>
+			<?php if ($this->params->get('presentation_style') == 'plain')
+		{
+			?>
+			<?php echo '<h3>' . JText::_('JGLOBAL_ARTICLES') . '</h3>'; ?>
+		<?php } ?>
 
-	<?php if ($this->params->get('show_articles') && $this->member->user_id && $this->member->articles)
-	{
-		?>
+			<?php echo $this->loadTemplate('articles'); ?>
 
-		<?php if ($this->params->get('presentation_style') == 'sliders')
-	{
-		?>
-		<?php echo JHtml::_('bootstrap.addSlide', 'slide-contact', JText::_('JGLOBAL_ARTICLES'), 'display-articles'); ?>
-	<?php } ?>
-		<?php if ($this->params->get('presentation_style') == 'tabs')
-	{
-		?>
-		<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'display-articles', JText::_('JGLOBAL_ARTICLES', true)); ?>
-	<?php } ?>
-		<?php if ($this->params->get('presentation_style') == 'plain')
-	{
-		?>
-		<?php echo '<h3>' . JText::_('JGLOBAL_ARTICLES') . '</h3>'; ?>
-	<?php } ?>
+			<?php if ($this->params->get('presentation_style') == 'sliders')
+		{
+			?>
+			<?php echo JHtml::_('bootstrap.endSlide'); ?>
+		<?php } ?>
+			<?php if ($this->params->get('presentation_style') == 'tabs')
+		{
+			?>
+			<?php echo JHtml::_('bootstrap.endTab'); ?>
+		<?php } ?>
 
-		<?php echo $this->loadTemplate('articles'); ?>
+		<?php } ?>
+		<?php if ($this->params->get('show_profile') && $this->member->user_id && JPluginHelper::isEnabled('user', 'profile'))
+		{
+			?>
 
-		<?php if ($this->params->get('presentation_style') == 'sliders')
-	{
-		?>
-		<?php echo JHtml::_('bootstrap.endSlide'); ?>
-	<?php } ?>
-		<?php if ($this->params->get('presentation_style') == 'tabs')
-	{
-		?>
-		<?php echo JHtml::_('bootstrap.endTab'); ?>
-	<?php } ?>
+			<?php if ($this->params->get('presentation_style') == 'sliders')
+		{
+			?>
+			<?php echo JHtml::_('bootstrap.addSlide', 'slide-contact', JText::_('COM_CHURCHDIRECTORY_PROFILE'), 'display-profile'); ?>
+		<?php } ?>
+			<?php if ($this->params->get('presentation_style') == 'tabs')
+		{
+			?>
+			<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'display-profile', JText::_('COM_CHURCHDIRECTORY_PROFILE', true)); ?>
+		<?php } ?>
+			<?php if ($this->params->get('presentation_style') == 'plain')
+		{
+			?>
+			<?php echo '<h3>' . JText::_('COM_CHURCHDIRECTORY_PROFILE') . '</h3>'; ?>
+		<?php } ?>
 
-	<?php } ?>
-	<?php if ($this->params->get('show_profile') && $this->member->user_id && JPluginHelper::isEnabled('user', 'profile'))
-	{
-		?>
+			<?php echo $this->loadTemplate('profile'); ?>
 
-		<?php if ($this->params->get('presentation_style') == 'sliders')
-	{
-		?>
-		<?php echo JHtml::_('bootstrap.addSlide', 'slide-contact', JText::_('COM_CHURCHDIRECTORY_PROFILE'), 'display-profile'); ?>
-	<?php } ?>
-		<?php if ($this->params->get('presentation_style') == 'tabs')
-	{
-		?>
-		<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'display-profile', JText::_('COM_CHURCHDIRECTORY_PROFILE', true)); ?>
-	<?php } ?>
-		<?php if ($this->params->get('presentation_style') == 'plain')
-	{
-		?>
-		<?php echo '<h3>' . JText::_('COM_CHURCHDIRECTORY_PROFILE') . '</h3>'; ?>
-	<?php } ?>
+			<?php if ($this->params->get('presentation_style') == 'sliders')
+		{
+			?>
+			<?php echo JHtml::_('bootstrap.endSlide'); ?>
+		<?php } ?>
+			<?php if ($this->params->get('presentation_style') == 'tabs')
+		{
+			?>
+			<?php echo JHtml::_('bootstrap.endTab'); ?>
+		<?php } ?>
 
-		<?php echo $this->loadTemplate('profile'); ?>
+		<?php } ?>
+		<?php if ($this->member->misc && $this->params->get('show_misc'))
+		{
+			?>
 
-		<?php if ($this->params->get('presentation_style') == 'sliders')
-	{
-		?>
-		<?php echo JHtml::_('bootstrap.endSlide'); ?>
-	<?php } ?>
-		<?php if ($this->params->get('presentation_style') == 'tabs')
-	{
-		?>
-		<?php echo JHtml::_('bootstrap.endTab'); ?>
-	<?php } ?>
+			<?php if ($this->params->get('presentation_style') == 'sliders')
+		{
+			?>
+			<?php echo JHtml::_('bootstrap.addSlide', 'slide-contact', JText::_('COM_CHURCHDIRECTORY_OTHER_INFORMATION'), 'display-misc'); ?>
+		<?php } ?>
+			<?php if ($this->params->get('presentation_style') == 'tabs')
+		{
+			?>
+			<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'display-misc', JText::_('COM_CHURCHDIRECTORY_OTHER_INFORMATION')); ?>
+		<?php } ?>
+			<?php if ($this->params->get('presentation_style') == 'plain')
+		{
+			?>
+			<?php echo '<h3>' . JText::_('COM_CHURCHDIRECTORY_OTHER_INFORMATION') . '</h3>'; ?>
+		<?php } ?>
 
-	<?php } ?>
-	<?php if ($this->member->misc && $this->params->get('show_misc'))
-	{
-		?>
-
-		<?php if ($this->params->get('presentation_style') == 'sliders')
-	{
-		?>
-		<?php echo JHtml::_('bootstrap.addSlide', 'slide-contact', JText::_('COM_CHURCHDIRECTORY_OTHER_INFORMATION'), 'display-misc'); ?>
-	<?php } ?>
-		<?php if ($this->params->get('presentation_style') == 'tabs')
-	{
-		?>
-		<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'display-misc', JText::_('COM_CHURCHDIRECTORY_OTHER_INFORMATION')); ?>
-	<?php } ?>
-		<?php if ($this->params->get('presentation_style') == 'plain')
-	{
-		?>
-		<?php echo '<h3>' . JText::_('COM_CHURCHDIRECTORY_OTHER_INFORMATION') . '</h3>'; ?>
-	<?php } ?>
-
-		<div class="contact-miscinfo">
-			<dl class="dl-horizontal">
-				<dt>
+			<div class="contact-miscinfo">
+				<dl class="dl-horizontal">
+					<dt>
 							<span class="<?php echo $this->params->get('marker_class'); ?>">
 								<?php echo $this->params->get('marker_misc'); ?>
 							</span>
-				</dt>
-				<dd>
+					</dt>
+					<dd>
 							<span class="contact-misc">
 								<?php echo $this->member->misc; ?>
 							</span>
-				</dd>
-			</dl>
-		</div>
+					</dd>
+				</dl>
+			</div>
+
+			<?php if ($this->params->get('presentation_style') == 'sliders')
+		{
+			?>
+			<?php echo JHtml::_('bootstrap.endSlide'); ?>
+		<?php } ?>
+			<?php if ($this->params->get('presentation_style') == 'tabs')
+		{
+			?>
+			<?php echo JHtml::_('bootstrap.endTab'); ?>
+		<?php } ?>
+
+		<?php } ?>
 
 		<?php if ($this->params->get('presentation_style') == 'sliders')
-	{
-		?>
-		<?php echo JHtml::_('bootstrap.endSlide'); ?>
-	<?php } ?>
+		{
+			?>
+			<?php echo JHtml::_('bootstrap.endAccordion'); ?>
+		<?php } ?>
 		<?php if ($this->params->get('presentation_style') == 'tabs')
-	{
-		?>
-		<?php echo JHtml::_('bootstrap.endTab'); ?>
-	<?php } ?>
-
-	<?php } ?>
-
-	<?php if ($this->params->get('presentation_style') == 'sliders')
-	{
-		?>
-		<?php echo JHtml::_('bootstrap.endAccordion'); ?>
-	<?php } ?>
-	<?php if ($this->params->get('presentation_style') == 'tabs')
-	{
-		?>
-		<?php echo JHtml::_('bootstrap.endTabSet'); ?>
-	<?php } ?>
-	<?php echo $this->item->event->afterDisplayContent; ?>
-</div>
+		{
+			?>
+			<?php echo JHtml::_('bootstrap.endTabSet'); ?>
+		<?php } ?>
+		<?php echo $this->item->event->afterDisplayContent; ?>
+	</div>

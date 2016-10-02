@@ -12,11 +12,11 @@ defined('_JEXEC') or die;
  * jicon-text, jicon-none, jicon-icon
  */
 ?>
-<dl class="contact-address dl-horizontal">
+<dl class="contact-address dl-horizontal" itemprop="address" itemscope itemtype="https://schema.org/PostalAddress">
 	<?php if ($this->params->get('dr_show_address_full') === '1') : ?>
 		<?php if ($this->member->attribs->get('mailingaddress')
-				|| $this->member->attribs->get('mailingsuburb')
-				|| $this->member->attribs->get('mailingstate')
+			|| $this->member->attribs->get('mailingsuburb')
+			|| $this->member->attribs->get('mailingstate')
 		) :
 			?>
 			<?php if ($this->params->get('address_check') > 0) : ?>
@@ -26,40 +26,34 @@ defined('_JEXEC') or die;
                 </span>
 			</dt>
 		<?php endif; ?>
-			<?php if ($this->member->address && $this->params->get('show_street_address')) : ?>
 			<dd>
-		<span class="churchdirectory-street">
-                        <?php echo nl2br($this->member->attribs->get('mailingaddress')); ?>
+				<?php if ($this->member->address && $this->params->get('show_street_address')) : ?>
+
+					<span class="churchdirectory-street" itemprop="streetAddress">
+                        <?php echo nl2br($this->member->attribs->get('mailingaddress')) . ', <br />'; ?>
                     </span>
-			</dd>
-		<?php endif; ?>
-			<?php if ($this->member->suburb && $this->params->get('show_suburb')) : ?>
-			<dd>
-			<span class="churchdirectory-suburb">
-                        <?php echo $this->member->attribs->get('mailingsuburb'); ?>
+				<?php endif; ?>
+				<?php if ($this->member->suburb && $this->params->get('show_suburb')) : ?>
+					<span class="churchdirectory-suburb" itemprop="addressLocality">
+                        <?php echo $this->member->attribs->get('mailingsuburb') . ', '; ?>
                     </span>
-		<?php endif; ?>
-			<?php if ($this->member->state && $this->params->get('show_state')) : ?>
-			<dd>
-			<span class="churchdirectory-state">
+				<?php endif; ?>
+				<?php if ($this->member->state && $this->params->get('show_state')) : ?>
+					<span class="churchdirectory-state" itemprop="addressRegion">
                         <?php echo $this->member->attribs->get('mailingstate'); ?>
                     </span>
-			</dd>
-		<?php endif; ?>
-			<?php if ($this->member->postcode && $this->params->get('show_postcode')) : ?>
-			<dd>
-			<span class="churchdirectory-postcode">
+				<?php endif; ?>
+				<?php if ($this->member->postcode && $this->params->get('show_postcode')) : ?>
+					<span class="churchdirectory-postcode" itemprop="postalCode">
                         <?php echo $this->member->attribs->get('mailingpostcode'); ?>
                     </span>
-			</dd>
-		<?php endif; ?>
-			<?php if ($this->member->country && $this->params->get('show_country')) : ?>
-			<dd>
-			<span class="churchdirectory-country">
+				<?php endif; ?>
+				<?php if ($this->member->country && $this->params->get('show_country')) : ?>
+					<span class="churchdirectory-country" itemprop="addressCountry">
                         <?php echo $this->member->attribs->get('mailingcountry'); ?>
                     </span>
+				<?php endif; ?>
 			</dd>
-		<?php endif; ?>
 		<?php endif; ?>
 		<?php if (($this->params->get('address_check') > 0) && ($this->member->address || $this->member->suburb || $this->member->state || $this->member->country || $this->member->postcode)) : ?>
 			<?php if ($this->params->get('address_check') > 0) : ?>
@@ -69,41 +63,34 @@ defined('_JEXEC') or die;
                 </span>
 				</dt>
 			<?php endif; ?>
-			<?php if ($this->member->address && $this->params->get('show_street_address')) : ?>
-				<dd>
-            <span class="churchdirectory-street">
-                        <?php echo nl2br($this->member->address); ?>
+			<dd>
+				<?php if ($this->member->address && $this->params->get('show_street_address')) : ?>
+
+					<span class="churchdirectory-street" itemprop="streetAddress">
+                        <?php echo nl2br($this->member->address) . ', <br />'; ?>
                     </span>
-				</dd>
-			<?php endif; ?>
-			<?php if ($this->member->suburb && $this->params->get('show_suburb')) : ?>
-				<dd>
-		<span class="churchdirectory-suburb">
-                        <?php echo $this->member->suburb; ?>
+				<?php endif; ?>
+				<?php if ($this->member->suburb && $this->params->get('show_suburb')) : ?>
+					<span class="churchdirectory-suburb" itemprop="addressLocality">
+                        <?php echo $this->member->suburb . ', '; ?>
                     </span>
-				</dd>
-			<?php endif; ?>
-			<?php if ($this->member->state && $this->params->get('show_state')) : ?>
-				<dd>
-            <span class="churchdirectory-state">
+				<?php endif; ?>
+				<?php if ($this->member->state && $this->params->get('show_state')) : ?>
+					<span class="churchdirectory-state" itemprop="addressRegion">
                         <?php echo $this->member->state; ?>
                     </span>
-				</dd>
-			<?php endif; ?>
-			<?php if ($this->member->postcode && $this->params->get('show_postcode')) : ?>
-				<dd>
-            <span class="churchdirectory-postcode">
+				<?php endif; ?>
+				<?php if ($this->member->postcode && $this->params->get('show_postcode')) : ?>
+					<span class="churchdirectory-postcode" itemprop="postalCode">
                         <?php echo $this->member->postcode; ?>
                     </span>
-				</dd>
-			<?php endif; ?>
-			<?php if ($this->member->country && $this->params->get('show_country')) : ?>
-				<dd>
-            <span class="churchdirectory-country">
+				<?php endif; ?>
+				<?php if ($this->member->country && $this->params->get('show_country')) : ?>
+					<span class="churchdirectory-country" itemprop="addressCountry">
                         <?php echo $this->member->country; ?>
                     </span>
-				</dd>
-			<?php endif; ?>
+				<?php endif; ?>
+			</dd>
 		<?php endif; ?>
 	<?php elseif ($this->params->get('show_address_full') != '1') : ?>
 		<?php if ($this->member->attribs->get('mailingaddress') || $this->member->attribs->get('mailingsuburb') || $this->member->attribs->get('mailingstate')): ?>
@@ -114,41 +101,34 @@ defined('_JEXEC') or die;
                 </span>
 				</dt>
 			<?php endif; ?>
-			<?php if ($this->member->address && $this->params->get('show_street_address')) : ?>
-				<dd>
-            <span class="churchdirectory-street">
-                        <?php echo nl2br($this->member->attribs->get('mailingaddress')); ?>
+			<dd>
+				<?php if ($this->member->address && $this->params->get('show_street_address')) : ?>
+
+					<span class="churchdirectory-street" itemprop="streetAddress">
+                        <?php echo nl2br($this->member->attribs->get('mailingaddress')) . ', <br />'; ?>
                     </span>
-				</dd>
-			<?php endif; ?>
-			<?php if ($this->member->suburb && $this->params->get('show_suburb')) : ?>
-				<dd>
-            <span class="churchdirectory-suburb">
-                        <?php echo $this->member->attribs->get('mailingsuburb'); ?>
+				<?php endif; ?>
+				<?php if ($this->member->suburb && $this->params->get('show_suburb')) : ?>
+					<span class="churchdirectory-suburb" itemprop="addressLocality">
+                        <?php echo $this->member->attribs->get('mailingsuburb') . ', '; ?>
                     </span>
-				</dd>
-			<?php endif; ?>
-			<?php if ($this->member->state && $this->params->get('show_state')) : ?>
-				<dd>
-            <span class="churchdirectory-state">
+				<?php endif; ?>
+				<?php if ($this->member->state && $this->params->get('show_state')) : ?>
+					<span class="churchdirectory-state" itemprop="addressRegion">
                         <?php echo $this->member->attribs->get('mailingstate'); ?>
                     </span>
-				</dd>
-			<?php endif; ?>
-			<?php if ($this->member->postcode && $this->params->get('show_postcode')) : ?>
-				<dd>
-            <span class="churchdirectory-postcode">
+				<?php endif; ?>
+				<?php if ($this->member->postcode && $this->params->get('show_postcode')) : ?>
+					<span class="churchdirectory-postcode" itemprop="postalCode">
                         <?php echo $this->member->attribs->get('mailingpostcode'); ?>
                     </span>
-				</dd>
-			<?php endif; ?>
-			<?php if ($this->member->country && $this->params->get('show_country')) : ?>
-				<dd>
-            <span class="churchdirectory-country">
+				<?php endif; ?>
+				<?php if ($this->member->country && $this->params->get('show_country')) : ?>
+					<span class="churchdirectory-country" itemprop="addressCountry">
                         <?php echo $this->member->attribs->get('mailingcountry'); ?>
                     </span>
-				</dd>
-			<?php endif; ?>
+				<?php endif; ?>
+			</dd>
 		<?php else: ?>
 			<?php if (($this->params->get('address_check') > 0) && ($this->member->address || $this->member->suburb || $this->member->state || $this->member->country || $this->member->postcode)) : ?>
 				<?php if ($this->params->get('address_check') > 0) : ?>
@@ -158,46 +138,33 @@ defined('_JEXEC') or die;
                 </span>
 					</dt>
 				<?php endif; ?>
-
-				<?php if ($this->member->address && $this->params->get('show_street_address')) : ?>
-					<dd>
-                <span class="churchdirectory-street">
-                        <?php echo nl2br($this->member->address); ?>
+				<dd>
+					<?php if ($this->member->address && $this->params->get('show_street_address')) : ?>
+						<span class="churchdirectory-street" itemprop="streetAddress">
+                        <?php echo nl2br($this->member->address) . ', <br />'; ?>
                     </span>
-					</dd>
-				<?php endif; ?>
-
-				<?php if ($this->member->suburb && $this->params->get('show_suburb')) : ?>
-					<dd>
-                <span class="churchdirectory-suburb">
-                        <?php echo $this->member->suburb; ?>
+					<?php endif; ?>
+					<?php if ($this->member->suburb && $this->params->get('show_suburb')) : ?>
+						<span class="churchdirectory-suburb" itemprop="addressLocality">
+                        <?php echo $this->member->suburb . ', '; ?>
                     </span>
-					</dd>
-				<?php endif; ?>
-
-				<?php if ($this->member->state && $this->params->get('show_state')) : ?>
-					<dd>
-                <span class="churchdirectory-state">
+					<?php endif; ?>
+					<?php if ($this->member->state && $this->params->get('show_state')) : ?>
+						<span class="churchdirectory-state" itemprop="addressRegion">
                         <?php echo $this->member->state; ?>
                     </span>
-					</dd>
-				<?php endif; ?>
-
-				<?php if ($this->member->postcode && $this->params->get('show_postcode')) : ?>
-					<dd>
-                <span class="churchdirectory-postcode">
+					<?php endif; ?>
+					<?php if ($this->member->postcode && $this->params->get('show_postcode')) : ?>
+						<span class="churchdirectory-postcode" itemprop="postalCode">
                         <?php echo $this->member->postcode; ?>
                     </span>
-					</dd>
-				<?php endif; ?>
-
-				<?php if ($this->member->country && $this->params->get('show_country')) : ?>
-					<dd>
-                <span class="churchdirectory-country">
+					<?php endif; ?>
+					<?php if ($this->member->country && $this->params->get('show_country')) : ?>
+						<span class="churchdirectory-country" itemprop="addressCountry">
                         <?php echo $this->member->country; ?>
                     </span>
-					</dd>
-				<?php endif; ?>
+					<?php endif; ?>
+				</dd>
 			<?php endif; ?>
 		<?php endif; ?>
 	<?php endif; ?>
@@ -224,7 +191,7 @@ defined('_JEXEC') or die;
             </span>
 		</dt>
 		<dd>
-            <span class="churchdirectory-telephone">
+            <span class="churchdirectory-telephone" itemprop="telephone">
                 <?php echo nl2br($this->member->telephone); ?>
             </span>
 		</dd>
@@ -236,7 +203,7 @@ defined('_JEXEC') or die;
             </span>
 		</dt>
 		<dd>
-            <span class="churchdirectory-fax">
+            <span class="churchdirectory-fax" itemprop="faxNumber">
                 <?php echo nl2br($this->member->fax); ?>
             </span>
 		</dd>
@@ -248,7 +215,7 @@ defined('_JEXEC') or die;
             </span>
 		</dt>
 		<dd>
-            <span class="churchdirectory-mobile">
+            <span class="churchdirectory-mobile" itemprop="telephone">
                 <?php echo nl2br($this->member->mobile); ?>
             </span>
 		</dd>
@@ -269,7 +236,7 @@ defined('_JEXEC') or die;
 	                $a = 'http://';
                 } ?>
 	            <a href="<?php echo $a . $this->member->webpage; ?>" target="_blank">
-		            <?php echo $this->member->webpage; ?></a>
+		            <?php echo JStringPunycode::urlToUTF8($this->member->webpage); ?></a>
             </span>
 		</dd>
 	<?php endif; ?>

@@ -70,13 +70,14 @@ abstract class ChurchDirectoryHelperRoute
 	/**
 	 * Get Category Route
 	 *
-	 * @param   JCategoryNode  $catid  Category ID
+	 * @param   mixed  $catid     The id of the contact's category either an integer id or an instance of JCategoryNode
+	 * @param   mixed  $language  The id of the language being used.
 	 *
 	 * @return string
 	 *
 	 * @since    1.5
 	 */
-	public static function getCategoryRoute($catid)
+	public static function getCategoryRoute($catid, $language = 0)
 	{
 		if ($catid instanceof JCategoryNode)
 		{
@@ -89,42 +90,30 @@ abstract class ChurchDirectoryHelperRoute
 			$category = JCategories::getInstance('ChurchDirectory')->get($id);
 		}
 
-		if ($id < 1)
+		if ($id < 1|| !($category instanceof JCategoryNode))
 		{
 			$link = '';
 		}
 		else
 		{
-			$needles = [
-				'category' => [$id]
-			];
+			$needles = array();
+
+			// Create the link
+			$link = 'index.php?option=com_churchdirectory&view=category&id=' . $id;
+
+			$catids  = array_reverse($category->getPath());
+			$needle['category']   = $catids;
+			$needle['categories'] = $catids;
+
+			if ($language && $language != "*" && JLanguageMultilang::isEnabled())
+			{
+				$link .= '&lang=' . $language;
+				$needles['language'] = $language;
+			}
 
 			if ($item = self::_findItem($needles))
 			{
-				$link = 'index.php?Itemid=' . $item;
-			}
-			else
-			{
-				// Create the link
-				$link = 'index.php?option=com_churchdirectory&view=category&id=' . $id;
-
-				if ($category)
-				{
-					$catids  = array_reverse($category->getPath());
-					$needles = [
-						'category'   => $catids,
-						'categories' => $catids
-					];
-
-					if ($item = self::_findItem($needles))
-					{
-						$link .= '&Itemid=' . $item;
-					}
-					elseif ($item = self::_findItem())
-					{
-						$link .= '&Itemid=' . $item;
-					}
-				}
+				$link .= '&Itemid=' . $item;
 			}
 		}
 
@@ -144,14 +133,24 @@ abstract class ChurchDirectoryHelperRoute
 	{
 		$app   = JFactory::getApplication();
 		$menus = $app->getMenu('site');
+		$language = isset($needles['language']) ? $needles['language'] : '*';
 
 		// Prepare the reverse lookup array.
-		if (self::$lookup === null)
+		if (!isset(self::$lookup[$language]))
 		{
-			self::$lookup = [];
+			self::$lookup[$language] = [];
 
 			$component = JComponentHelper::getComponent('com_churchdirectory');
-			$items     = $menus->getItems('component_id', $component->id);
+			$attributes = array('component_id');
+			$values     = array($component->id);
+
+			if ($language != '*')
+			{
+				$attributes[] = 'language';
+				$values[] = array($needles['language'], '*');
+			}
+
+			$items = $menus->getItems($attributes, $values);
 
 			foreach ($items as $item)
 			{
@@ -159,14 +158,22 @@ abstract class ChurchDirectoryHelperRoute
 				{
 					$view = $item->query['view'];
 
-					if (!isset(self::$lookup[$view]))
+					if (!isset(self::$lookup[$language][$view]))
 					{
-						self::$lookup[$view] = [];
+						self::$lookup[$language][$view] = array();
 					}
 
 					if (isset($item->query['id']))
 					{
-						self::$lookup[$view][$item->query['id']] = $item->id;
+						/**
+						 * Here it will become a bit tricky
+						 * language != * can override existing entries
+						 * language == * cannot override existing entries
+						 */
+						if (!isset(self::$lookup[$language][$view][$item->query['id']]) || $item->language != '*')
+						{
+							self::$lookup[$language][$view][$item->query['id']] = $item->id;
+						}
 					}
 				}
 			}
@@ -176,28 +183,30 @@ abstract class ChurchDirectoryHelperRoute
 		{
 			foreach ($needles as $view => $ids)
 			{
-				if (isset(self::$lookup[$view]))
+				if (isset(self::$lookup[$language][$view]))
 				{
 					foreach ($ids as $id)
 					{
-						if (isset(self::$lookup[$view][(int) $id]))
+						if (isset(self::$lookup[$language][$view][(int) $id]))
 						{
-							return self::$lookup[$view][(int) $id];
+							return self::$lookup[$language][$view][(int) $id];
 						}
 					}
 				}
 			}
 		}
-		else
-		{
-			$active = $menus->getActive();
 
-			if ($active)
-			{
-				return $active->id;
-			}
+		// Check if the active menuitem matches the requested language
+		$active = $menus->getActive();
+
+		if ($active && ($language == '*' || in_array($active->language, array('*', $language)) || !JLanguageMultilang::isEnabled()))
+		{
+			return $active->id;
 		}
 
-		return null;
+		// If not found, return language specific home link
+		$default = $menus->getDefault($language);
+
+		return !empty($default->id) ? $default->id : null;
 	}
 }

@@ -34,8 +34,6 @@ Thank you!', 'error');
 	return false;
 }
 
-JLoader::register('ChurchDirectoryHelperRoute', JPATH_COMPONENT . '/helpers/route.php');
-
 JHtml::_('bootstrap.framework');
 JHtml::_('bootstrap.loadcss');
 
@@ -46,6 +44,8 @@ if (file_exists($api))
 {
 	require_once $api;
 }
+
+JLoader::register('ChurchDirectoryHelperRoute', JPATH_COMPONENT . '/helpers/routehelper.php');
 
 // Load tcpdf
 include_once JPATH_SITE . '/libraries/tcpdf/tcpdf.php';

@@ -60,7 +60,7 @@ class ChurchDirectoryRenderHelper
 
 				$query->select('id, name');
 				$query->from('#__churchdirectory_position');
-				$query->where('id = ' . $id);
+				$query->where('id = ' . (int) $id);
 
 				$db->setQuery($query);
 				$position      = $db->loadObject();
@@ -72,11 +72,11 @@ class ChurchDirectoryRenderHelper
 		{
 			$query = $db->getQuery(true);
 
-			$query->select('position.id, position.name');
-			$query->from('#__churchdirectory_position AS position');
-			$query->where('position.id = ' . $con_position);
+			$query->select('id, name');
+			$query->from('#__churchdirectory_position');
+			$query->where('id = ' . (int) $con_position);
 
-			$db->setQuery($query->__toString());
+			$db->setQuery($query);
 			$position      = $db->loadObject();
 			$positions[$i] = $position;
 		}
@@ -92,12 +92,12 @@ class ChurchDirectoryRenderHelper
 				{
 					if ($n != $pi)
 					{
-						$results .= $position->name;
-						$results .= '</dd><dd>';
+						$results .= '&bull; ' . $position->name;
+						$results .= '<br />';
 					}
 					else
 					{
-						$results .= $position->name;
+						$results .= '&bull; ' . $position->name;
 					}
 
 					$pi++;
@@ -123,14 +123,15 @@ class ChurchDirectoryRenderHelper
 	/**
 	 * Get Family Members Build
 	 *
-	 * @param   int     $fu_id  ID of Family unit
-	 * @param   string  $fm     ID the Family Position that you want to return.
+	 * @param   int     $fu_id     ID of Family unit
+	 * @param   string  $fm        ID the Family Position that you want to return.
+	 * @param   bool    $children  If trying to find childern.
 	 *
 	 * @return array  Array of family members
 	 *
 	 * @since    1.5
 	 */
-	public function getFamilyMembers($fu_id, $fm = '2')
+	public function getFamilyMembers($fu_id, $fm = '2', $children = false)
 	{
 		$db    = JFactory::getDbo();
 		$query = $db->getQuery(true);
@@ -140,7 +141,7 @@ class ChurchDirectoryRenderHelper
 		$query->where('members.funitid = ' . (int) $fu_id);
 		$query->order('members.name DESC');
 
-		$db->setQuery($query->__toString());
+		$db->setQuery($query);
 		$items = $db->loadObjectList();
 
 		// Convert the params field into an object, saving original in _params
@@ -162,7 +163,7 @@ class ChurchDirectoryRenderHelper
 				$item->attribs = $params;
 			}
 
-			if ((int) $item->attribs->get('familypostion') !== $fm)
+			if ((int) $item->attribs->get('familypostion') !== $fm && !$children)
 			{
 				unset($items[$i]);
 			}
@@ -186,7 +187,7 @@ class ChurchDirectoryRenderHelper
 	{
 		if (is_int($families))
 		{
-			$families = self::getFamilyMembers($families);
+			$families = self::getFamilyMembers($families, 2, true);
 		}
 
 		$n2   = count($families);
@@ -214,9 +215,9 @@ class ChurchDirectoryRenderHelper
 			$i2--;
 		}
 
-		if ($name || $oldchildren_rc)
+		if (!empty($name) || !empty($oldchildren_rc))
 		{
-			if ($name)
+			if (!empty($name))
 			{
 				$name = $name . ' ';
 			}
@@ -472,6 +473,15 @@ class ChurchDirectoryRenderHelper
 		// Select state to unpublished if up-path category is unpublished
 		$query->join('LEFT OUTER', '(' . $subquery . ') AS badcats ON badcats.id = c.id');
 
+		// Filter by start and end dates.
+		$nullDate = $db->q($db->getNullDate());
+		$nowDate  = $db->q(JFactory::getDate()->toSql());
+
+		// Filter by published state.
+		$query->where('a.published = ' . 1);
+		$query->where('(a.publish_up = ' . $nullDate . ' OR a.publish_up <= ' . $nowDate . ')');
+		$query->where('(a.publish_down = ' . $nullDate . ' OR a.publish_down >= ' . $nowDate . ')');
+
 		// Filter of birthdates to show
 		$date = $params->get('month', date('m'));
 
@@ -535,6 +545,15 @@ class ChurchDirectoryRenderHelper
 
 		// Select state to unpublished if up-path category is unpublished
 		$query->join('LEFT OUTER', '(' . $subquery . ') AS badcats ON badcats.id = c.id');
+
+		// Filter by start and end dates.
+		$nullDate = $db->q($db->getNullDate());
+		$nowDate  = $db->q(JFactory::getDate()->toSql());
+
+		// Filter by published state.
+		$query->where('a.published = ' . 1);
+		$query->where('(a.publish_up = ' . $nullDate . ' OR a.publish_up <= ' . $nowDate . ')');
+		$query->where('(a.publish_down = ' . $nullDate . ' OR a.publish_down >= ' . $nowDate . ')');
 
 		// Join over Familey info
 		$query->select('f.name as f_name, f.id as f_id');

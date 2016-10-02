@@ -68,7 +68,7 @@ class ChurchDirectoryRouter extends JComponentRouterBase
 
 		if (isset($view) and ($view == 'category' or $view == 'member'))
 		{
-			if ($mId != intval($query['id']) || $mView != $view)
+			if ($mId != (int) $query['id'] || $mView != $view)
 			{
 				if ($view == 'member' && isset($query['catid']))
 				{
@@ -110,7 +110,7 @@ class ChurchDirectoryRouter extends JComponentRouterBase
 				{
 					if ($advanced)
 					{
-						list($tmp, $id) = explode(':', $query['id'], 2);
+						@list($tmp, $id) = explode(':', $query['id'], 2);
 					}
 					else
 					{
@@ -141,6 +141,13 @@ class ChurchDirectoryRouter extends JComponentRouterBase
 					unset($query['layout']);
 				}
 			}
+		}
+
+		$total = count($segments);
+
+		for ($i = 0; $i < $total; $i++)
+		{
+			$segments[$i] = str_replace(':', '-', $segments[$i]);
 		}
 
 		return $segments;
