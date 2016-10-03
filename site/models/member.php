@@ -207,6 +207,8 @@ class ChurchDirectoryModelMember extends JModelForm
 				if (empty($data))
 				{
 					$app->enqueueMessage(JText::_('COM_CHURCHDIRECTORY_ERROR_MEMBER_NOT_FOUND'), 'error');
+
+					return $this->item[$pk];
 				}
 
 				// Check for published state if filter set.
