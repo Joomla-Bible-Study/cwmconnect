@@ -456,13 +456,12 @@ class ChurchDirectoryRenderHelper
 			->from($db->qn('#__churchdirectory_details') . ' AS a')
 			->where('a.access IN (' . $groups . ')')
 			->join('INNER', '#__categories AS c ON c.id = a.catid')
-			->where('c.access IN (' . $groups . ')');
-		$query->where('a.published = 1');
+			->where('c.access IN (' . $groups . ')')
+			->where('a.published = 1');
 
-		// Sqlsrv change... aliased c.published to cat_published
 		// Join to check for category published state in parent categories up the tree
 		$query->select('c.published as cat_published, CASE WHEN badcats.id is null THEN c.published ELSE 0 END AS parents_published');
-		$subquery = 'SELECT `cat.id` as id FROM `#__categories` AS cat JOIN `#__categories` AS parent ';
+		$subquery = 'SELECT cat.id as id FROM #__categories AS cat JOIN #__categories AS parent ';
 		$subquery .= 'ON cat.lft BETWEEN parent.lft AND parent.rgt ';
 		$subquery .= 'WHERE parent.extension = ' . $db->quote('com_churchdirectory');
 
@@ -499,9 +498,9 @@ class ChurchDirectoryRenderHelper
 
 		foreach ($records as $record)
 		{
-			list($get_date, $get_time) = explode(" ", $$record->birthdate);
-			list($this->byear, $this->bmonth, $this->bday, $this->time) = explode('-', $get_date);
-			$results[] = ['name' => $record->name, 'id' => $record->id, 'day' => $this->burthday, 'access' => $record->access];
+			list($get_date, $get_time) = explode(" ", $record->birthdate);
+			list($this->byear, $this->bmonth, $this->bday) = explode('-', $get_date);
+			$results[] = ['name' => $record->name, 'id' => $record->id, 'day' => $this->bday, 'access' => $record->access];
 		}
 
 		return $results;
@@ -532,10 +531,9 @@ class ChurchDirectoryRenderHelper
 			->where('c.access IN (' . $groups . ')');
 		$query->where('a.published = 1');
 
-		// Sqlsrv change... aliased c.published to cat_published
 		// Join to check for category published state in parent categories up the tree
 		$query->select('c.published as cat_published, CASE WHEN badcats.id is null THEN c.published ELSE 0 END AS parents_published');
-		$subquery = 'SELECT `cat.id` as id FROM `#__categories` AS cat JOIN `#__categories` AS parent ';
+		$subquery = 'SELECT cat.id as id FROM #__categories AS cat JOIN #__categories AS parent ';
 		$subquery .= 'ON cat.lft BETWEEN parent.lft AND parent.rgt ';
 		$subquery .= 'WHERE parent.extension = ' . $db->quote('com_churchdirectory');
 
@@ -577,7 +575,7 @@ class ChurchDirectoryRenderHelper
 		foreach ($records as $i => $record)
 		{
 			list($get_date, $get_time) = explode(" ", $record->anniversary);
-			list($this->byear, $this->bmonth, $this->bday, $this->time) = explode('-', $get_date);
+			list($this->byear, $this->bmonth, $this->bday) = explode('-', $get_date);
 
 			if ($record->f_name && $record->f_id != $this->f_id)
 			{

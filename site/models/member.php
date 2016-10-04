@@ -95,14 +95,18 @@ class ChurchDirectoryModelMember extends JModelForm
 			return false;
 		}
 
-		$id     = (int) $this->getState('member.id');
-		$params = $this->getState('params');
-		$member = $this->item[$id];
-		$params->merge($member->params);
+		$id = (int) $this->getState('member.id');
 
-		if (!$params->get('show_email_copy', 0))
+		if ($id)
 		{
-			$form->removeField('member_email_copy');
+			$params = $this->getState('params');
+			$member = $this->item[$id];
+			$params->merge($member->params);
+
+			if (!$params->get('show_email_copy', 0))
+			{
+				$form->removeField('member_email_copy');
+			}
 		}
 
 		return $form;

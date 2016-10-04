@@ -15,25 +15,20 @@ defined('_JEXEC') or die;
  */
 abstract class ChurchDirectoryHelperRoute
 {
-	/**
-	 * Protect lookup
-	 *
-	 * @var string protect lookup
-	 * @since    1.5
-	 */
 	protected static $lookup;
 
 	/**
 	 * Get member route
 	 *
-	 * @param   int  $id     The route of the Member
-	 * @param   int  $catid  Category id
+	 * @param   integer  $id        The id of the contact
+	 * @param   integer  $catid     The id of the contact's category
+	 * @param   mixed    $language  The id of the language being used.
 	 *
 	 * @return string
 	 *
 	 * @since    1.5
 	 */
-	public static function getMemberRoute($id, $catid)
+	public static function getMemberRoute($id, $catid, $language = 0)
 	{
 		$needles = [
 			'churchdirectory' => [(int) $id]
@@ -55,11 +50,13 @@ abstract class ChurchDirectoryHelperRoute
 			}
 		}
 
-		if ($item = self::_findItem($needles))
+		if ($language && $language != "*" && JLanguageMultilang::isEnabled())
 		{
-			$link .= '&Itemid=' . $item;
+			$link .= '&lang=' . $language;
+			$needles['language'] = $language;
 		}
-		elseif ($item = self::_findItem())
+
+		if ($item = self::_findItem($needles))
 		{
 			$link .= '&Itemid=' . $item;
 		}
@@ -101,7 +98,7 @@ abstract class ChurchDirectoryHelperRoute
 			// Create the link
 			$link = 'index.php?option=com_churchdirectory&view=category&id=' . $id;
 
-			$catids  = array_reverse($category->getPath());
+			$catids               = array_reverse($category->getPath());
 			$needle['category']   = $catids;
 			$needle['categories'] = $catids;
 
