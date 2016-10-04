@@ -1,3 +1,0 @@
-[submodule "libraries/tcpdf"]
-	path = libraries/tcpdf
-	url = https://github.com/tecnickcom/TCPDF.git
