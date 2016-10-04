@@ -1,0 +1,2303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+    <meta charset="utf-8"/>
+    <title>API Documentation</title>
+    <meta name="author" content=""/>
+    <meta name="description" content=""/>
+
+    <link href="../css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
+    <link href="../css/font-awesome.min.css" rel="stylesheet">
+    <link href="../css/prism.css" rel="stylesheet" media="all"/>
+    <link href="../css/template.css" rel="stylesheet" media="all"/>
+    
+    <!--[if lt IE 9]>
+    <script src="../js/html5.js"></script>
+    <![endif]-->
+    <script src="../js/jquery-1.11.0.min.js"></script>
+    <script src="../js/ui/1.10.4/jquery-ui.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/jquery.smooth-scroll.js"></script>
+    <script src="../js/prism.min.js"></script>
+    <!-- TODO: Add http://jscrollpane.kelvinluck.com/ to style the scrollbars for browsers not using webkit-->
+    <script type="text/javascript">
+    function loadExternalCodeSnippets() {
+        Array.prototype.slice.call(document.querySelectorAll('pre[data-src]')).forEach(function (pre) {
+            var src = pre.getAttribute('data-src');
+            var extension = (src.match(/\.(\w+)$/) || [, ''])[1];
+            var language = 'php';
+
+            var code = document.createElement('code');
+            code.className = 'language-' + language;
+
+            pre.textContent = '';
+
+            code.textContent = 'Loading…';
+
+            pre.appendChild(code);
+
+            var xhr = new XMLHttpRequest();
+
+            xhr.open('GET', src, true);
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4) {
+
+                    if (xhr.status < 400 && xhr.responseText) {
+                        code.textContent = xhr.responseText;
+
+                        Prism.highlightElement(code);
+                    }
+                    else if (xhr.status >= 400) {
+                        code.textContent = '✖ Error ' + xhr.status + ' while fetching file: ' + xhr.statusText;
+                    }
+                    else {
+                        code.textContent = '✖ Error: File does not exist or is empty';
+                    }
+                }
+            };
+
+            xhr.send(null);
+        });
+    }
+
+    $(document).ready(function(){
+        loadExternalCodeSnippets();
+    });
+    $('#source-view').on('shown', function () {
+        loadExternalCodeSnippets();
+    })
+</script>
+
+    <link rel="shortcut icon" href="../images/favicon.ico"/>
+    <link rel="apple-touch-icon" href="../images/apple-touch-icon.png"/>
+    <link rel="apple-touch-icon" sizes="72x72" href="../images/apple-touch-icon-72x72.png"/>
+    <link rel="apple-touch-icon" sizes="114x114" href="../images/apple-touch-icon-114x114.png"/>
+</head>
+<body>
+
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <i class="icon-ellipsis-vertical"></i>
+            </a>
+            <a class="brand" href="../index.html">API Documentation</a>
+
+            <div class="nav-collapse">
+                <ul class="nav pull-right">
+                                        <li class="dropdown" id="charts-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Charts <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="../graphs/class.html">
+                                    <i class="icon-list-alt"></i>&#160;Class hierarchy diagram
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown" id="reports-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Reports <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="../reports/errors.html">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">305</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="../reports/markers.html">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <i class="icon-list-alt"></i>&#160;Markers <span class="label label-info pull-right">3</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="../reports/deprecated.html">
+                                                                                                                                                                                                                                                                    <i class="icon-list-alt"></i>&#160;Deprecated <span class="label label-info pull-right">2</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!--<div class="go_to_top">-->
+    <!--<a href="#___" style="color: inherit">Back to top&#160;&#160;<i class="icon-upload icon-white"></i></a>-->
+    <!--</div>-->
+</div>
+
+<div id="___" class="container-fluid">
+        <section class="row-fluid">
+        <div class="span2 sidebar">
+                                <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-1336665046"></a>
+                                <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
+            </div>
+            <div id="namespace-1336665046" class="accordion-body collapse in">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/ChurchDirectoryCategories.html">ChurchDirectoryCategories</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryController.html">ChurchDirectoryController</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryController.html">ChurchDirectoryController</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryControllerCpanel.html">ChurchDirectoryControllerCpanel</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryControllerDatabase.html">ChurchDirectoryControllerDatabase</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryControllerDirectory.html">ChurchDirectoryControllerDirectory</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryControllerDirHeader.html">ChurchDirectoryControllerDirHeader</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryControllerDirHeaders.html">ChurchDirectoryControllerDirHeaders</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryControllerFamilyUnit.html">ChurchDirectoryControllerFamilyUnit</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryControllerFamilyUnits.html">ChurchDirectoryControllerFamilyUnits</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryControllerGeoStatus.html">ChurchDirectoryControllerGeoStatus</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryControllerGeoupdate.html">ChurchDirectoryControllerGeoupdate</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryControllerHome.html">ChurchDirectoryControllerHome</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryControllerKML.html">ChurchDirectoryControllerKML</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryControllerKMLs.html">ChurchDirectoryControllerKMLs</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryControllerMember.html">ChurchDirectoryControllerMember</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryControllerMember.html">ChurchDirectoryControllerMember</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryControllerMembers.html">ChurchDirectoryControllerMembers</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryControllerPosition.html">ChurchDirectoryControllerPosition</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryControllerPositions.html">ChurchDirectoryControllerPositions</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryControllerReports.html">ChurchDirectoryControllerReports</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryDB.html">ChurchDirectoryDB</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryHelper.html">ChurchDirectoryHelper</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryHelperRoute.html">ChurchDirectoryHelperRoute</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryModelCategories.html">ChurchDirectoryModelCategories</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryModelCategory.html">ChurchDirectoryModelCategory</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryModelCpanel.html">ChurchDirectoryModelCpanel</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryModelDatabase.html">ChurchDirectoryModelDatabase</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryModelDirectory.html">ChurchDirectoryModelDirectory</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryModelDirHeader.html">ChurchDirectoryModelDirHeader</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryModelDirHeaders.html">ChurchDirectoryModelDirHeaders</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryModelFamilyUnit.html">ChurchDirectoryModelFamilyUnit</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryModelFamilyUnits.html">ChurchDirectoryModelFamilyUnits</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryModelFeatured.html">ChurchDirectoryModelFeatured</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryModelGeoStatus.html">ChurchDirectoryModelGeoStatus</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryModelGeoUpdate.html">ChurchDirectoryModelGeoUpdate</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryModelHome.html">ChurchDirectoryModelHome</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryModelkml.html">ChurchDirectoryModelkml</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryModelKMLs.html">ChurchDirectoryModelKMLs</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryModelMember.html">ChurchDirectoryModelMember</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryModelMember.html">ChurchDirectoryModelMember</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryModelMembers.html">ChurchDirectoryModelMembers</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryModelPosition.html">ChurchDirectoryModelPosition</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryModelPositions.html">ChurchDirectoryModelPositions</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryModelReports.html">ChurchDirectoryModelReports</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryRenderHelper.html">ChurchDirectoryRenderHelper</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryReportbuild.html">ChurchDirectoryReportbuild</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryRouter.html">ChurchDirectoryRouter</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryTableDirHeader.html">ChurchDirectoryTableDirHeader</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryTableFamilyUnit.html">ChurchDirectoryTableFamilyUnit</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryTableKML.html">ChurchDirectoryTableKML</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryTableMember.html">ChurchDirectoryTableMember</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryTablePosition.html">ChurchDirectoryTablePosition</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryViewCategories.html">ChurchDirectoryViewCategories</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryViewCategory.html">ChurchDirectoryViewCategory</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryViewCategory.html">ChurchDirectoryViewCategory</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryViewCpanel.html">ChurchDirectoryViewCpanel</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryViewDatabase.html">ChurchDirectoryViewDatabase</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryViewDirectory.html">ChurchDirectoryViewDirectory</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryViewDirectory.html">ChurchDirectoryViewDirectory</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryViewDirectory.html">ChurchDirectoryViewDirectory</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryViewDirectory.html">ChurchDirectoryViewDirectory</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryViewDirHeader.html">ChurchDirectoryViewDirHeader</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryViewDirHeaders.html">ChurchDirectoryViewDirHeaders</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryViewFamilyUnit.html">ChurchDirectoryViewFamilyUnit</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryViewFamilyUnits.html">ChurchDirectoryViewFamilyUnits</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryViewFeatured.html">ChurchDirectoryViewFeatured</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryViewGeoStatus.html">ChurchDirectoryViewGeoStatus</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryViewGeoUpdate.html">ChurchDirectoryViewGeoUpdate</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryViewHome.html">ChurchDirectoryViewHome</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryViewInfo.html">ChurchDirectoryViewInfo</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryViewKML.html">ChurchDirectoryViewKML</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryViewMember.html">ChurchDirectoryViewMember</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryViewMember.html">ChurchDirectoryViewMember</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryViewMember.html">ChurchDirectoryViewMember</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryViewMembers.html">ChurchDirectoryViewMembers</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryViewPosition.html">ChurchDirectoryViewPosition</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryViewPositions.html">ChurchDirectoryViewPositions</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryViewReports.html">ChurchDirectoryViewReports</a></li>
+                                                    <li class="class"><a href="../classes/Com_ChurchdirectoryInstallerScript.html">Com_ChurchdirectoryInstallerScript</a></li>
+                                                    <li class="class"><a href="../classes/DirectoryHeaderHelper.html">DirectoryHeaderHelper</a></li>
+                                                    <li class="class"><a href="../classes/JFormFieldModal_Members.html">JFormFieldModal_Members</a></li>
+                                                    <li class="class"><a href="../classes/JFormFieldOrdering.html">JFormFieldOrdering</a></li>
+                                                    <li class="class"><a href="../classes/JFormFieldSpouse.html">JFormFieldSpouse</a></li>
+                                                    <li class="class"><a href="../classes/JFormRuleChurchDirectoryEmail.html">JFormRuleChurchDirectoryEmail</a></li>
+                                                    <li class="class"><a href="../classes/JFormRuleChurchDirectoryEmailMessage.html">JFormRuleChurchDirectoryEmailMessage</a></li>
+                                                    <li class="class"><a href="../classes/JFormRuleChurchDirectoryEmailSubject.html">JFormRuleChurchDirectoryEmailSubject</a></li>
+                                                    <li class="class"><a href="../classes/JHtmlColorPicker.html">JHtmlColorPicker</a></li>
+                                                    <li class="class"><a href="../classes/JHtmlGeoUpdate.html">JHtmlGeoUpdate</a></li>
+                                                    <li class="class"><a href="../classes/JHtmlIcon.html">JHtmlIcon</a></li>
+                                                    <li class="class"><a href="../classes/JHtmlMember.html">JHtmlMember</a></li>
+                                                    <li class="class"><a href="../classes/ModBirthdayAnniversaryHelper.html">ModBirthdayAnniversaryHelper</a></li>
+                                                    <li class="class"><a href="../classes/PlgFinderChurchDirectory.html">PlgFinderChurchDirectory</a></li>
+                                                    <li class="class"><a href="../classes/PlgSearchChurchdirectory.html">PlgSearchChurchdirectory</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        </div>
+    </section>
+    <section class="row-fluid">
+        <div class="span10 offset2">
+            <div class="row-fluid">
+                <div class="span8 content class">
+                    <nav>
+                                                <a href="../namespaces/default.html">\</a> <i class="icon-level-up"></i>
+                                            </nav>
+                    <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal"><i class="icon-code"></i></a>
+
+                    <h1><small>\</small>ChurchDirectoryTableMember</h1>
+                    <p><em>Member Table Class</em></p>
+                    
+                    
+                                        
+                    <section id="summary">
+                        <h2>Summary</h2>
+                        <section class="row-fluid heading">
+                            <section class="span4">
+                                <a href="#methods">Methods</a>
+                            </section>
+                            <section class="span4">
+                                <a href="#properties">Properties</a>
+                            </section>
+                            <section class="span4">
+                                <a href="#constants">Constants</a>
+                            </section>
+                        </section>
+                        <section class="row-fluid public">
+                            <section class="span4">
+                                                                    <a href="../classes/ChurchDirectoryTableMember.html#method___construct" class="">__construct()</a><br />
+                                                                    <a href="../classes/ChurchDirectoryTableMember.html#method_bind" class="">bind()</a><br />
+                                                                    <a href="../classes/ChurchDirectoryTableMember.html#method_store" class="">store()</a><br />
+                                                                    <a href="../classes/ChurchDirectoryTableMember.html#method_check" class="">check()</a><br />
+                                                                    <a href="../classes/ChurchDirectoryTableMember.html#method_load" class="">load()</a><br />
+                                                                    <a href="../classes/ChurchDirectoryTableMember.html#method_generateAlias" class="">generateAlias()</a><br />
+                                                            </section>
+                            <section class="span4">
+                                                                    <a href="../classes/ChurchDirectoryTableMember.html#property_id" class="">$id</a><br />
+                                                                    <a href="../classes/ChurchDirectoryTableMember.html#property_name" class="">$name</a><br />
+                                                                    <a href="../classes/ChurchDirectoryTableMember.html#property_lname" class="">$lname</a><br />
+                                                                    <a href="../classes/ChurchDirectoryTableMember.html#property_alias" class="">$alias</a><br />
+                                                                    <a href="../classes/ChurchDirectoryTableMember.html#property_con_position" class="">$con_position</a><br />
+                                                                    <a href="../classes/ChurchDirectoryTableMember.html#property_contact_id" class="">$contact_id</a><br />
+                                                                    <a href="../classes/ChurchDirectoryTableMember.html#property_address" class="">$address</a><br />
+                                                                    <a href="../classes/ChurchDirectoryTableMember.html#property_suburb" class="">$suburb</a><br />
+                                                                    <a href="../classes/ChurchDirectoryTableMember.html#property_state" class="">$state</a><br />
+                                                                    <a href="../classes/ChurchDirectoryTableMember.html#property_country" class="">$country</a><br />
+                                                                    <a href="../classes/ChurchDirectoryTableMember.html#property_postcode" class="">$postcode</a><br />
+                                                                    <a href="../classes/ChurchDirectoryTableMember.html#property_postcodeaddon" class="">$postcodeaddon</a><br />
+                                                                    <a href="../classes/ChurchDirectoryTableMember.html#property_telephone" class="">$telephone</a><br />
+                                                                    <a href="../classes/ChurchDirectoryTableMember.html#property_fax" class="">$fax</a><br />
+                                                                    <a href="../classes/ChurchDirectoryTableMember.html#property_misc" class="">$misc</a><br />
+                                                                    <a href="../classes/ChurchDirectoryTableMember.html#property_spouse" class="">$spouse</a><br />
+                                                                    <a href="../classes/ChurchDirectoryTableMember.html#property_children" class="">$children</a><br />
+                                                                    <a href="../classes/ChurchDirectoryTableMember.html#property_image" class="">$image</a><br />
+                                                                    <a href="../classes/ChurchDirectoryTableMember.html#property_imagepos" class="">$imagepos</a><br />
+                                                                    <a href="../classes/ChurchDirectoryTableMember.html#property_email_to" class="">$email_to</a><br />
+                                                                    <a href="../classes/ChurchDirectoryTableMember.html#property_default_con" class="">$default_con</a><br />
+                                                                    <a href="../classes/ChurchDirectoryTableMember.html#property_published" class="">$published</a><br />
+                                                                    <a href="../classes/ChurchDirectoryTableMember.html#property_checked_out" class="">$checked_out</a><br />
+                                                                    <a href="../classes/ChurchDirectoryTableMember.html#property_checked_out_time" class="">$checked_out_time</a><br />
+                                                                    <a href="../classes/ChurchDirectoryTableMember.html#property_ordering" class="">$ordering</a><br />
+                                                                    <a href="../classes/ChurchDirectoryTableMember.html#property_params" class="">$params</a><br />
+                                                                    <a href="../classes/ChurchDirectoryTableMember.html#property_user_id" class="">$user_id</a><br />
+                                                                    <a href="../classes/ChurchDirectoryTableMember.html#property_catid" class="">$catid</a><br />
+                                                                    <a href="../classes/ChurchDirectoryTableMember.html#property_kmlid" class="">$kmlid</a><br />
+                                                                    <a href="../classes/ChurchDirectoryTableMember.html#property_funitid" class="">$funitid</a><br />
+                                                                    <a href="../classes/ChurchDirectoryTableMember.html#property_access" class="">$access</a><br />
+                                                                    <a href="../classes/ChurchDirectoryTableMember.html#property_mobile" class="">$mobile</a><br />
+                                                                    <a href="../classes/ChurchDirectoryTableMember.html#property_webpage" class="">$webpage</a><br />
+                                                                    <a href="../classes/ChurchDirectoryTableMember.html#property_sortname1" class="">$sortname1</a><br />
+                                                                    <a href="../classes/ChurchDirectoryTableMember.html#property_sortname2" class="">$sortname2</a><br />
+                                                                    <a href="../classes/ChurchDirectoryTableMember.html#property_sortname3" class="">$sortname3</a><br />
+                                                                    <a href="../classes/ChurchDirectoryTableMember.html#property_language" class="">$language</a><br />
+                                                                    <a href="../classes/ChurchDirectoryTableMember.html#property_created" class="">$created</a><br />
+                                                                    <a href="../classes/ChurchDirectoryTableMember.html#property_created_by" class="">$created_by</a><br />
+                                                                    <a href="../classes/ChurchDirectoryTableMember.html#property_created_by_alias" class="">$created_by_alias</a><br />
+                                                                    <a href="../classes/ChurchDirectoryTableMember.html#property_modified" class="">$modified</a><br />
+                                                                    <a href="../classes/ChurchDirectoryTableMember.html#property_modified_by" class="">$modified_by</a><br />
+                                                                    <a href="../classes/ChurchDirectoryTableMember.html#property_metakey" class="">$metakey</a><br />
+                                                                    <a href="../classes/ChurchDirectoryTableMember.html#property_metadesc" class="">$metadesc</a><br />
+                                                                    <a href="../classes/ChurchDirectoryTableMember.html#property_metadata" class="">$metadata</a><br />
+                                                                    <a href="../classes/ChurchDirectoryTableMember.html#property_featured" class="">$featured</a><br />
+                                                                    <a href="../classes/ChurchDirectoryTableMember.html#property_xreference" class="">$xreference</a><br />
+                                                                    <a href="../classes/ChurchDirectoryTableMember.html#property_publish_up" class="">$publish_up</a><br />
+                                                                    <a href="../classes/ChurchDirectoryTableMember.html#property_publish_down" class="">$publish_down</a><br />
+                                                                    <a href="../classes/ChurchDirectoryTableMember.html#property_skype" class="">$skype</a><br />
+                                                                    <a href="../classes/ChurchDirectoryTableMember.html#property_yahoo_msg" class="">$yahoo_msg</a><br />
+                                                                    <a href="../classes/ChurchDirectoryTableMember.html#property_lat" class="">$lat</a><br />
+                                                                    <a href="../classes/ChurchDirectoryTableMember.html#property_lng" class="">$lng</a><br />
+                                                                    <a href="../classes/ChurchDirectoryTableMember.html#property_birthdate" class="">$birthdate</a><br />
+                                                                    <a href="../classes/ChurchDirectoryTableMember.html#property_anniversary" class="">$anniversary</a><br />
+                                                                    <a href="../classes/ChurchDirectoryTableMember.html#property_attribs" class="">$attribs</a><br />
+                                                                    <a href="../classes/ChurchDirectoryTableMember.html#property_version" class="">$version</a><br />
+                                                                    <a href="../classes/ChurchDirectoryTableMember.html#property_hits" class="">$hits</a><br />
+                                                                    <a href="../classes/ChurchDirectoryTableMember.html#property_surname" class="">$surname</a><br />
+                                                                    <a href="../classes/ChurchDirectoryTableMember.html#property_mstatus" class="">$mstatus</a><br />
+                                                            </section>
+                            <section class="span4">
+                                                                    <em>No constants found</em>
+                                                            </section>
+                        </section>
+                        <section class="row-fluid protected">
+                            <section class="span4">
+                                                                    <a href="../classes/ChurchDirectoryTableMember.html#method__getAssetName" class="">_getAssetName()</a><br />
+                                                                    <a href="../classes/ChurchDirectoryTableMember.html#method__getAssetTitle" class="">_getAssetTitle()</a><br />
+                                                                    <a href="../classes/ChurchDirectoryTableMember.html#method__getAssetParentId" class="">_getAssetParentId()</a><br />
+                                                            </section>
+                            <section class="span4">
+                                                                    <em>No protected properties found</em>
+                                                            </section>
+                            <section class="span4">
+                                <em>N/A</em>
+                            </section>
+                        </section>
+                        <section class="row-fluid private">
+                            <section class="span4">
+                                                                    <em>No private methods found</em>
+                                                            </section>
+                            <section class="span4">
+                                                                    <em>No private properties found</em>
+                                                            </section>
+                            <section class="span4">
+                                <em>N/A</em>
+                            </section>
+                        </section>
+                    </section>
+                </div>
+                <aside class="span4 detailsbar">
+                                        
+                    
+                    <dl>
+                        <dt>File</dt>
+                            <dd><a href="../files/admin.tables.member.html"><div class="path-wrapper">admin/tables/member.php</div></a></dd>
+                                                <dt>Package</dt>
+                            <dd><div class="namespace-wrapper">ChurchDirectory.Admin</div></dd>
+                                                <dt>Class hierarchy</dt>
+                            <dd class="hierarchy">
+                                                                                                                                                                                                                                                                                                
+                                        <div class="namespace-wrapper">\JTable</div>
+                                                                                                    <div class="namespace-wrapper">\ChurchDirectoryTableMember</div>
+                            </dd>
+
+                        
+                        
+                        
+                        
+                                                                        </dl>
+                    <h2>Tags</h2>
+                    <table class="table table-condensed">
+                                            <tr>
+                            <th>
+                                since
+                            </th>
+                            <td>
+                                                                    
+                                                            </td>
+                        </tr>
+                                        </table>
+                </aside>
+            </div>
+
+                        
+                                    <a id="properties" name="properties"></a>
+            <div class="row-fluid">
+                <div class="span8 content class">
+                    <h2>Properties</h2>
+                </div>
+                <aside class="span4 detailsbar"></aside>
+            </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_id" name="property_id" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$id</h3>
+                <pre class="signature">$id : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_name" name="property_name" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$name</h3>
+                <pre class="signature">$name : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_lname" name="property_lname" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$lname</h3>
+                <pre class="signature">$lname : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_alias" name="property_alias" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$alias</h3>
+                <pre class="signature">$alias : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_con_position" name="property_con_position" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$con_position</h3>
+                <pre class="signature">$con_position : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_contact_id" name="property_contact_id" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$contact_id</h3>
+                <pre class="signature">$contact_id : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_address" name="property_address" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$address</h3>
+                <pre class="signature">$address : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_suburb" name="property_suburb" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$suburb</h3>
+                <pre class="signature">$suburb : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_state" name="property_state" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$state</h3>
+                <pre class="signature">$state : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_country" name="property_country" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$country</h3>
+                <pre class="signature">$country : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_postcode" name="property_postcode" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$postcode</h3>
+                <pre class="signature">$postcode : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_postcodeaddon" name="property_postcodeaddon" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$postcodeaddon</h3>
+                <pre class="signature">$postcodeaddon : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_telephone" name="property_telephone" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$telephone</h3>
+                <pre class="signature">$telephone : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_fax" name="property_fax" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$fax</h3>
+                <pre class="signature">$fax : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_misc" name="property_misc" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$misc</h3>
+                <pre class="signature">$misc : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_spouse" name="property_spouse" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$spouse</h3>
+                <pre class="signature">$spouse : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_children" name="property_children" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$children</h3>
+                <pre class="signature">$children : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_image" name="property_image" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$image</h3>
+                <pre class="signature">$image : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_imagepos" name="property_imagepos" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$imagepos</h3>
+                <pre class="signature">$imagepos : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_email_to" name="property_email_to" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$email_to</h3>
+                <pre class="signature">$email_to : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_default_con" name="property_default_con" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$default_con</h3>
+                <pre class="signature">$default_con : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_published" name="property_published" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$published</h3>
+                <pre class="signature">$published : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_checked_out" name="property_checked_out" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$checked_out</h3>
+                <pre class="signature">$checked_out : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_checked_out_time" name="property_checked_out_time" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$checked_out_time</h3>
+                <pre class="signature">$checked_out_time : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_ordering" name="property_ordering" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$ordering</h3>
+                <pre class="signature">$ordering : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_params" name="property_params" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$params</h3>
+                <pre class="signature">$params : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_user_id" name="property_user_id" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$user_id</h3>
+                <pre class="signature">$user_id : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_catid" name="property_catid" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$catid</h3>
+                <pre class="signature">$catid : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_kmlid" name="property_kmlid" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$kmlid</h3>
+                <pre class="signature">$kmlid : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_funitid" name="property_funitid" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$funitid</h3>
+                <pre class="signature">$funitid : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_access" name="property_access" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$access</h3>
+                <pre class="signature">$access : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_mobile" name="property_mobile" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$mobile</h3>
+                <pre class="signature">$mobile : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_webpage" name="property_webpage" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$webpage</h3>
+                <pre class="signature">$webpage : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_sortname1" name="property_sortname1" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$sortname1</h3>
+                <pre class="signature">$sortname1 : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_sortname2" name="property_sortname2" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$sortname2</h3>
+                <pre class="signature">$sortname2 : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_sortname3" name="property_sortname3" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$sortname3</h3>
+                <pre class="signature">$sortname3 : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_language" name="property_language" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$language</h3>
+                <pre class="signature">$language : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_created" name="property_created" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$created</h3>
+                <pre class="signature">$created : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_created_by" name="property_created_by" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$created_by</h3>
+                <pre class="signature">$created_by : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_created_by_alias" name="property_created_by_alias" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$created_by_alias</h3>
+                <pre class="signature">$created_by_alias : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_modified" name="property_modified" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$modified</h3>
+                <pre class="signature">$modified : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_modified_by" name="property_modified_by" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$modified_by</h3>
+                <pre class="signature">$modified_by : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_metakey" name="property_metakey" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$metakey</h3>
+                <pre class="signature">$metakey : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_metadesc" name="property_metadesc" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$metadesc</h3>
+                <pre class="signature">$metadesc : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_metadata" name="property_metadata" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$metadata</h3>
+                <pre class="signature">$metadata : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_featured" name="property_featured" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$featured</h3>
+                <pre class="signature">$featured : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_xreference" name="property_xreference" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$xreference</h3>
+                <pre class="signature">$xreference : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_publish_up" name="property_publish_up" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$publish_up</h3>
+                <pre class="signature">$publish_up : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_publish_down" name="property_publish_down" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$publish_down</h3>
+                <pre class="signature">$publish_down : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_skype" name="property_skype" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$skype</h3>
+                <pre class="signature">$skype : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_yahoo_msg" name="property_yahoo_msg" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$yahoo_msg</h3>
+                <pre class="signature">$yahoo_msg : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_lat" name="property_lat" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$lat</h3>
+                <pre class="signature">$lat : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_lng" name="property_lng" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$lng</h3>
+                <pre class="signature">$lng : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_birthdate" name="property_birthdate" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$birthdate</h3>
+                <pre class="signature">$birthdate : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_anniversary" name="property_anniversary" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$anniversary</h3>
+                <pre class="signature">$anniversary : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_attribs" name="property_attribs" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$attribs</h3>
+                <pre class="signature">$attribs : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_version" name="property_version" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$version</h3>
+                <pre class="signature">$version : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_hits" name="property_hits" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$hits</h3>
+                <pre class="signature">$hits : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_surname" name="property_surname" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$surname</h3>
+                <pre class="signature">$surname : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_mstatus" name="property_mstatus" class="anchor"></a>
+            <article class="property">
+                <h3 class="public ">$mstatus</h3>
+                <pre class="signature">$mstatus : </pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                                            
+                                    <a id="methods" name="methods"></a>
+            <div class="row-fluid">
+                <div class="span8 content class"><h2>Methods</h2></div>
+                <aside class="span4 detailsbar"></aside>
+            </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method___construct" name="method___construct" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">__construct()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">__construct(  <span class="argument">$db</span>) </pre>
+                <p><em>Constructor</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td></td>
+                                <td>$db </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            1.0                                
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_bind" name="method_bind" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">bind()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">bind(mixed  <span class="argument">$array</span>, mixed  <span class="argument">$ignore = &#039;&#039;</span>) : boolean</pre>
+                <p><em>Override bind function</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>mixed</td>
+                                <td>$array </td>
+                                <td><p>An associative array or object to bind to the JTable instance.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>mixed</td>
+                                <td>$ignore </td>
+                                <td><p>An optional array or space separated list of properties to ignore while binding.</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    boolean
+                                            &mdash; <p>True on success.</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                                            <dt>See also</dt>
+                                                                <dd><a href="http://docs.joomla.org/JTable/bind"><span class="namespace-wrapper">http://docs.joomla.org/JTable/bind</span></a></dd>
+                                                                </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            1.7.0                                
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_store" name="method_store" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">store()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">store(boolean  <span class="argument">$updateNulls = false</span>) : boolean</pre>
+                <p><em>Stores a Member</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>boolean</td>
+                                <td>$updateNulls </td>
+                                <td><p>True to update fields even if they are null.</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    boolean
+                                            &mdash; <p>True on success, false on failure.</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            1.7.0                                
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_check" name="method_check" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">check()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">check() : boolean</pre>
+                <p><em>Overloaded check function</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    boolean
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                                            <dt>See also</dt>
+                                                                <dd><a href=""><span class="namespace-wrapper"></span></a></dd>
+                                                                </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            1.7.0                                
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_load" name="method_load" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">load()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">load(mixed  <span class="argument">$pk = null</span>, boolean  <span class="argument">$reset = true</span>) : boolean</pre>
+                <p><em>Pre load items</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>mixed</td>
+                                <td>$pk </td>
+                                <td><p>An optional primary key value to load the row by, or an array of fields to match.  If not
+set the instance property value is used.</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>boolean</td>
+                                <td>$reset </td>
+                                <td><p>True to reset the default values before loading the new row.</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    boolean
+                                            &mdash; <p>True if successful. False if row not found.</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            1.7.0                                
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_generateAlias" name="method_generateAlias" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">generateAlias()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">generateAlias() : string</pre>
+                <p><em>Generate a valid alias from title / date.</em></p>
+                <p>Remains public to be able to check for duplicated alias before saving</p>
+
+                
+                
+                                    <h4>Returns</h4>
+                    string
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            1.7.0                                
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method__getAssetName" name="method__getAssetName" class="anchor"></a>
+            <article class="method">
+                <h3 class="protected ">_getAssetName()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">_getAssetName() : string</pre>
+                <p><em>Method to compute the default name of the asset.</em></p>
+                <p>The default name is in the form <code>table_name.id</code>
+where id is the value of the primary key of the table.</p>
+
+                
+                
+                                    <h4>Returns</h4>
+                    string
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            1.6                                
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method__getAssetTitle" name="method__getAssetTitle" class="anchor"></a>
+            <article class="method">
+                <h3 class="protected ">_getAssetTitle()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">_getAssetTitle() : string</pre>
+                <p><em>Method to return the title to use for the asset table.</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    string
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            1.6                                
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method__getAssetParentId" name="method__getAssetParentId" class="anchor"></a>
+            <article class="method">
+                <h3 class="protected ">_getAssetParentId()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">_getAssetParentId(\JTable  <span class="argument">$table = null</span>, integer  <span class="argument">$id = null</span>) : integer</pre>
+                <p><em>Get the parent asset id for the record</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>\JTable</td>
+                                <td>$table </td>
+                                <td><p>?</p></td>
+                            </tr>
+                                                    <tr>
+                                <td>integer</td>
+                                <td>$id </td>
+                                <td><p>?</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    integer
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            1.6                                
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                                    </div>
+    </section>
+
+    <div id="source-view" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="source-view-label" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="source-view-label">member.php</h3>
+        </div>
+        <div class="modal-body">
+            <pre data-src="../files/admin/tables/member.php.txt" class="language-php line-numbers"></pre>
+        </div>
+    </div>
+
+    <footer class="row-fluid">
+        <section class="span10 offset2">
+            <section class="row-fluid">
+                <section class="span10 offset1">
+                    <section class="row-fluid footer-sections">
+                        <section class="span4">
+                                                        <h1><i class="icon-code"></i></h1>
+                            <div>
+                                <ul>
+                                                                    </ul>
+                            </div>
+                        </section>
+                        <section class="span4">
+                                                        <h1><i class="icon-bar-chart"></i></h1>
+                            <div>
+                                <ul>
+                                    <li><a href="../graphs/class.html">Class Hierarchy Diagram</a></li>
+                                </ul>
+                            </div>
+                        </section>
+                        <section class="span4">
+                                                        <h1><i class="icon-pushpin"></i></h1>
+                            <div>
+                                <ul>
+                                    <li><a href="../reports/errors.html">Errors</a></li>
+                                    <li><a href="../reports/markers.html">Markers</a></li>
+                                </ul>
+                            </div>
+                        </section>
+                    </section>
+                </section>
+            </section>
+            <section class="row-fluid">
+                <section class="span10 offset1">
+                    <hr />
+                    Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
+                    on 
+Warning: date_default_timezone_get(): It is not safe to rely on the system's timezone settings. You are *required* to use the date.timezone setting or the date_default_timezone_set() function. In case you used any of those methods and you are still getting this warning, you most likely misspelled the timezone identifier. We selected the timezone 'UTC' for now, but please set date.timezone to select your timezone. in phar:///Users/bcordis/PHPProFiles/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 89
+October 4th, 2016 at 04:52.
+                </section>
+            </section>
+        </section>
+    </footer>
+</div>
+
+</body>
+</html>

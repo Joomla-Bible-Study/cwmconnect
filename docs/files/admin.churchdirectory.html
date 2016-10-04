@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+    <meta charset="utf-8"/>
+    <title>API Documentation</title>
+    <meta name="author" content=""/>
+    <meta name="description" content=""/>
+
+    <link href="../css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
+    <link href="../css/font-awesome.min.css" rel="stylesheet">
+    <link href="../css/prism.css" rel="stylesheet" media="all"/>
+    <link href="../css/template.css" rel="stylesheet" media="all"/>
+    
+    <!--[if lt IE 9]>
+    <script src="../js/html5.js"></script>
+    <![endif]-->
+    <script src="../js/jquery-1.11.0.min.js"></script>
+    <script src="../js/ui/1.10.4/jquery-ui.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/jquery.smooth-scroll.js"></script>
+    <script src="../js/prism.min.js"></script>
+    <!-- TODO: Add http://jscrollpane.kelvinluck.com/ to style the scrollbars for browsers not using webkit-->
+        <script type="text/javascript">
+        function loadExternalCodeSnippets() {
+            Array.prototype.slice.call(document.querySelectorAll('pre[data-src]')).forEach(function (pre) {
+                var src = pre.getAttribute('data-src');
+                var extension = (src.match(/\.(\w+)$/) || [, ''])[1];
+                var language = 'php';
+
+                var code = document.createElement('code');
+                code.className = 'language-' + language;
+
+                pre.textContent = '';
+
+                code.textContent = 'Loading…';
+
+                pre.appendChild(code);
+
+                var xhr = new XMLHttpRequest();
+
+                xhr.open('GET', src, true);
+
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState == 4) {
+
+                        if (xhr.status < 400 && xhr.responseText) {
+                            code.textContent = xhr.responseText;
+
+                            Prism.highlightElement(code);
+                        }
+                        else if (xhr.status >= 400) {
+                            code.textContent = '✖ Error ' + xhr.status + ' while fetching file: ' + xhr.statusText;
+                        }
+                        else {
+                            code.textContent = '✖ Error: File does not exist or is empty';
+                        }
+                    }
+                };
+
+                xhr.send(null);
+            });
+        }
+
+        $(document).ready(function(){
+            loadExternalCodeSnippets();
+        });
+        $('#source-view').on('shown', function () {
+            loadExternalCodeSnippets();
+        })
+    </script>
+
+    <link rel="shortcut icon" href="../images/favicon.ico"/>
+    <link rel="apple-touch-icon" href="../images/apple-touch-icon.png"/>
+    <link rel="apple-touch-icon" sizes="72x72" href="../images/apple-touch-icon-72x72.png"/>
+    <link rel="apple-touch-icon" sizes="114x114" href="../images/apple-touch-icon-114x114.png"/>
+</head>
+<body>
+
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <i class="icon-ellipsis-vertical"></i>
+            </a>
+            <a class="brand" href="../index.html">API Documentation</a>
+
+            <div class="nav-collapse">
+                <ul class="nav pull-right">
+                                        <li class="dropdown" id="charts-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Charts <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="../graphs/class.html">
+                                    <i class="icon-list-alt"></i>&#160;Class hierarchy diagram
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown" id="reports-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Reports <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="../reports/errors.html">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">305</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="../reports/markers.html">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <i class="icon-list-alt"></i>&#160;Markers <span class="label label-info pull-right">3</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="../reports/deprecated.html">
+                                                                                                                                                                                                                                                                    <i class="icon-list-alt"></i>&#160;Deprecated <span class="label label-info pull-right">2</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!--<div class="go_to_top">-->
+    <!--<a href="#___" style="color: inherit">Back to top&#160;&#160;<i class="icon-upload icon-white"></i></a>-->
+    <!--</div>-->
+</div>
+
+<div id="___" class="container-fluid">
+        <section class="row-fluid">
+        <div class="span2 sidebar">
+                                <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-1346357660"></a>
+                                <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
+            </div>
+            <div id="namespace-1346357660" class="accordion-body collapse in">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/ChurchDirectoryCategories.html">ChurchDirectoryCategories</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryController.html">ChurchDirectoryController</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryController.html">ChurchDirectoryController</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryControllerCpanel.html">ChurchDirectoryControllerCpanel</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryControllerDatabase.html">ChurchDirectoryControllerDatabase</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryControllerDirectory.html">ChurchDirectoryControllerDirectory</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryControllerDirHeader.html">ChurchDirectoryControllerDirHeader</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryControllerDirHeaders.html">ChurchDirectoryControllerDirHeaders</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryControllerFamilyUnit.html">ChurchDirectoryControllerFamilyUnit</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryControllerFamilyUnits.html">ChurchDirectoryControllerFamilyUnits</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryControllerGeoStatus.html">ChurchDirectoryControllerGeoStatus</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryControllerGeoupdate.html">ChurchDirectoryControllerGeoupdate</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryControllerHome.html">ChurchDirectoryControllerHome</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryControllerKML.html">ChurchDirectoryControllerKML</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryControllerKMLs.html">ChurchDirectoryControllerKMLs</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryControllerMember.html">ChurchDirectoryControllerMember</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryControllerMember.html">ChurchDirectoryControllerMember</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryControllerMembers.html">ChurchDirectoryControllerMembers</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryControllerPosition.html">ChurchDirectoryControllerPosition</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryControllerPositions.html">ChurchDirectoryControllerPositions</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryControllerReports.html">ChurchDirectoryControllerReports</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryDB.html">ChurchDirectoryDB</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryHelper.html">ChurchDirectoryHelper</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryHelperRoute.html">ChurchDirectoryHelperRoute</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryModelCategories.html">ChurchDirectoryModelCategories</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryModelCategory.html">ChurchDirectoryModelCategory</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryModelCpanel.html">ChurchDirectoryModelCpanel</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryModelDatabase.html">ChurchDirectoryModelDatabase</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryModelDirectory.html">ChurchDirectoryModelDirectory</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryModelDirHeader.html">ChurchDirectoryModelDirHeader</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryModelDirHeaders.html">ChurchDirectoryModelDirHeaders</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryModelFamilyUnit.html">ChurchDirectoryModelFamilyUnit</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryModelFamilyUnits.html">ChurchDirectoryModelFamilyUnits</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryModelFeatured.html">ChurchDirectoryModelFeatured</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryModelGeoStatus.html">ChurchDirectoryModelGeoStatus</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryModelGeoUpdate.html">ChurchDirectoryModelGeoUpdate</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryModelHome.html">ChurchDirectoryModelHome</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryModelkml.html">ChurchDirectoryModelkml</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryModelKMLs.html">ChurchDirectoryModelKMLs</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryModelMember.html">ChurchDirectoryModelMember</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryModelMember.html">ChurchDirectoryModelMember</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryModelMembers.html">ChurchDirectoryModelMembers</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryModelPosition.html">ChurchDirectoryModelPosition</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryModelPositions.html">ChurchDirectoryModelPositions</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryModelReports.html">ChurchDirectoryModelReports</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryRenderHelper.html">ChurchDirectoryRenderHelper</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryReportbuild.html">ChurchDirectoryReportbuild</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryRouter.html">ChurchDirectoryRouter</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryTableDirHeader.html">ChurchDirectoryTableDirHeader</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryTableFamilyUnit.html">ChurchDirectoryTableFamilyUnit</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryTableKML.html">ChurchDirectoryTableKML</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryTableMember.html">ChurchDirectoryTableMember</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryTablePosition.html">ChurchDirectoryTablePosition</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryViewCategories.html">ChurchDirectoryViewCategories</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryViewCategory.html">ChurchDirectoryViewCategory</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryViewCategory.html">ChurchDirectoryViewCategory</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryViewCpanel.html">ChurchDirectoryViewCpanel</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryViewDatabase.html">ChurchDirectoryViewDatabase</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryViewDirectory.html">ChurchDirectoryViewDirectory</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryViewDirectory.html">ChurchDirectoryViewDirectory</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryViewDirectory.html">ChurchDirectoryViewDirectory</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryViewDirectory.html">ChurchDirectoryViewDirectory</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryViewDirHeader.html">ChurchDirectoryViewDirHeader</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryViewDirHeaders.html">ChurchDirectoryViewDirHeaders</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryViewFamilyUnit.html">ChurchDirectoryViewFamilyUnit</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryViewFamilyUnits.html">ChurchDirectoryViewFamilyUnits</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryViewFeatured.html">ChurchDirectoryViewFeatured</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryViewGeoStatus.html">ChurchDirectoryViewGeoStatus</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryViewGeoUpdate.html">ChurchDirectoryViewGeoUpdate</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryViewHome.html">ChurchDirectoryViewHome</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryViewInfo.html">ChurchDirectoryViewInfo</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryViewKML.html">ChurchDirectoryViewKML</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryViewMember.html">ChurchDirectoryViewMember</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryViewMember.html">ChurchDirectoryViewMember</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryViewMember.html">ChurchDirectoryViewMember</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryViewMembers.html">ChurchDirectoryViewMembers</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryViewPosition.html">ChurchDirectoryViewPosition</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryViewPositions.html">ChurchDirectoryViewPositions</a></li>
+                                                    <li class="class"><a href="../classes/ChurchDirectoryViewReports.html">ChurchDirectoryViewReports</a></li>
+                                                    <li class="class"><a href="../classes/Com_ChurchdirectoryInstallerScript.html">Com_ChurchdirectoryInstallerScript</a></li>
+                                                    <li class="class"><a href="../classes/DirectoryHeaderHelper.html">DirectoryHeaderHelper</a></li>
+                                                    <li class="class"><a href="../classes/JFormFieldModal_Members.html">JFormFieldModal_Members</a></li>
+                                                    <li class="class"><a href="../classes/JFormFieldOrdering.html">JFormFieldOrdering</a></li>
+                                                    <li class="class"><a href="../classes/JFormFieldSpouse.html">JFormFieldSpouse</a></li>
+                                                    <li class="class"><a href="../classes/JFormRuleChurchDirectoryEmail.html">JFormRuleChurchDirectoryEmail</a></li>
+                                                    <li class="class"><a href="../classes/JFormRuleChurchDirectoryEmailMessage.html">JFormRuleChurchDirectoryEmailMessage</a></li>
+                                                    <li class="class"><a href="../classes/JFormRuleChurchDirectoryEmailSubject.html">JFormRuleChurchDirectoryEmailSubject</a></li>
+                                                    <li class="class"><a href="../classes/JHtmlColorPicker.html">JHtmlColorPicker</a></li>
+                                                    <li class="class"><a href="../classes/JHtmlGeoUpdate.html">JHtmlGeoUpdate</a></li>
+                                                    <li class="class"><a href="../classes/JHtmlIcon.html">JHtmlIcon</a></li>
+                                                    <li class="class"><a href="../classes/JHtmlMember.html">JHtmlMember</a></li>
+                                                    <li class="class"><a href="../classes/ModBirthdayAnniversaryHelper.html">ModBirthdayAnniversaryHelper</a></li>
+                                                    <li class="class"><a href="../classes/PlgFinderChurchDirectory.html">PlgFinderChurchDirectory</a></li>
+                                                    <li class="class"><a href="../classes/PlgSearchChurchdirectory.html">PlgSearchChurchdirectory</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        </div>
+    </section>
+    <section class="row-fluid">
+        <div class="span10 offset2">
+            <div class="row-fluid">
+                <div class="span8 content file">
+                    <nav>
+                                                                    </nav>
+
+                    <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal"><i class="icon-code"></i></a>
+                    <h1><small>admin</small>churchdirectory.php</h1>
+                    <p><em></em></p>
+                    
+
+                    
+                    
+                                    </div>
+
+                <aside class="span4 detailsbar">
+                    <dl>
+                                                    <dt>Package</dt>
+                            <dd><div class="namespace-wrapper">\ChurchDirectory.Admin</div></dd>
+                        
+                        
+                    </dl>
+                    <h2>Tags</h2>
+                    <table class="table table-condensed">
+                                                    <tr>
+                                <th>
+                                    copyright
+                                </th>
+                                <td>
+                                                                            <p>2007 - 2016 (C) Joomla Bible Study Team All rights reserved.</p>
+                                                                    </td>
+                            </tr>
+                                                    <tr>
+                                <th>
+                                    license
+                                </th>
+                                <td>
+                                                                            <p>GNU General Public License version 2 or later; see LICENSE.txt</p>
+                                                                    </td>
+                            </tr>
+                                            </table>
+
+                </aside>
+            </div>
+
+            
+            
+        </div>
+    </section>
+
+    <div id="source-view" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="source-view-label" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="source-view-label"></h3>
+        </div>
+        <div class="modal-body">
+            <pre data-src="../files/admin/churchdirectory.php.txt" class="language-php line-numbers"></pre>
+        </div>
+    </div>
+
+    <footer class="row-fluid">
+        <section class="span10 offset2">
+            <section class="row-fluid">
+                <section class="span10 offset1">
+                    <section class="row-fluid footer-sections">
+                        <section class="span4">
+                                                        <h1><i class="icon-code"></i></h1>
+                            <div>
+                                <ul>
+                                                                    </ul>
+                            </div>
+                        </section>
+                        <section class="span4">
+                                                        <h1><i class="icon-bar-chart"></i></h1>
+                            <div>
+                                <ul>
+                                    <li><a href="../graphs/class.html">Class Hierarchy Diagram</a></li>
+                                </ul>
+                            </div>
+                        </section>
+                        <section class="span4">
+                                                        <h1><i class="icon-pushpin"></i></h1>
+                            <div>
+                                <ul>
+                                    <li><a href="../reports/errors.html">Errors</a></li>
+                                    <li><a href="../reports/markers.html">Markers</a></li>
+                                </ul>
+                            </div>
+                        </section>
+                    </section>
+                </section>
+            </section>
+            <section class="row-fluid">
+                <section class="span10 offset1">
+                    <hr />
+                    Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
+                    on 
+Warning: date_default_timezone_get(): It is not safe to rely on the system's timezone settings. You are *required* to use the date.timezone setting or the date_default_timezone_set() function. In case you used any of those methods and you are still getting this warning, you most likely misspelled the timezone identifier. We selected the timezone 'UTC' for now, but please set date.timezone to select your timezone. in phar:///Users/bcordis/PHPProFiles/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 89
+October 4th, 2016 at 04:52.
+                </section>
+            </section>
+        </section>
+    </footer>
+</div>
+
+</body>
+</html>
