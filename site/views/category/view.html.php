@@ -9,6 +9,8 @@
 // No direct access
 defined('_JEXEC') or die;
 
+use Joomla\Registry\Registry;
+
 /**
  * HTML View class for the ChurchDirectorys component
  *
@@ -36,7 +38,7 @@ class ChurchDirectoryViewCategory extends JViewLegacy
 	/**
 	 * Protected category
 	 *
-	 * @var array
+	 * @var object
 	 * @since       1.7.2
 	 */
 	protected $category;
@@ -118,7 +120,7 @@ class ChurchDirectoryViewCategory extends JViewLegacy
 		{
 			$item       = & $items[$i];
 			$item->slug = $item->alias ? ($item->id . ':' . $item->alias) : $item->id;
-			$temp       = new JRegistry;
+			$temp       = new Registry;
 			$temp->loadString($item->params);
 			$item->params = clone $params;
 			$item->params->merge($temp);

@@ -155,7 +155,7 @@ else
 	}?>
 	<div class="clearfix"></div>
 	<?php
-	if ($this->params->def('show_page_birthann', 1))
+	if ($this->params->def('show_page_birthann', 0))
 	{
 		echo $this->loadTemplate('birthann');
 	}?>
