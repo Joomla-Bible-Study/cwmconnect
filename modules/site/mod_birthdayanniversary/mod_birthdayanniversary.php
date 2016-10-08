@@ -10,6 +10,14 @@
  * */
 defined('_JEXEC') or die;
 
+// Always load JBSM API if it exists.
+$api = JPATH_ADMINISTRATOR . '/components/com_churchdirectory/api.php';
+
+if (file_exists($api))
+{
+	require_once $api;
+}
+
 // Include the Birthday/Anniversary functions only once
 require_once dirname(__FILE__) . '/helper.php';
 
