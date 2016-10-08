@@ -1,6 +1,6 @@
 <?php
 /**
- * Model for Birthday and Annversary
+ * Model for Birthday and Anniversary
  *
  * @package     ChurchDirectory
  * @subpackage  Model.BirthdayAnniversary
