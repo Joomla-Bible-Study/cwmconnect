@@ -136,10 +136,10 @@
                                 <div class="accordion" style="margin-bottom: 0">
         <div class="accordion-group">
             <div class="accordion-heading">
-                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-270710951"></a>
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-2034909980"></a>
                                 <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
             </div>
-            <div id="namespace-270710951" class="accordion-body collapse in">
+            <div id="namespace-2034909980" class="accordion-body collapse in">
                 <div class="accordion-inner">
 
                     
@@ -256,7 +256,7 @@
                     <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal"><i class="icon-code"></i></a>
 
                     <h1><small>\</small>ChurchDirectoryControllerMember</h1>
-                    <p><em>Controller for ChurchDirectory</em></p>
+                    <p><em>class for Member</em></p>
                     
                     
                                         
@@ -275,8 +275,7 @@
                         </section>
                         <section class="row-fluid public">
                             <section class="span4">
-                                                                    <a href="../classes/ChurchDirectoryControllerMember.html#method_getModel" class="">getModel()</a><br />
-                                                                    <a href="../classes/ChurchDirectoryControllerMember.html#method_submit" class="">submit()</a><br />
+                                                                    <a href="../classes/ChurchDirectoryControllerMember.html#method_batch" class="">batch()</a><br />
                                                             </section>
                             <section class="span4">
                                                                     <em>No public properties found</em>
@@ -287,7 +286,8 @@
                         </section>
                         <section class="row-fluid protected">
                             <section class="span4">
-                                                                    <em>No protected methods found</em>
+                                                                    <a href="../classes/ChurchDirectoryControllerMember.html#method_allowAdd" class="">allowAdd()</a><br />
+                                                                    <a href="../classes/ChurchDirectoryControllerMember.html#method_allowEdit" class="">allowEdit()</a><br />
                                                             </section>
                             <section class="span4">
                                                                     <em>No protected properties found</em>
@@ -298,7 +298,7 @@
                         </section>
                         <section class="row-fluid private">
                             <section class="span4">
-                                                                    <a href="../classes/ChurchDirectoryControllerMember.html#method__sendEmail" class="">_sendEmail()</a><br />
+                                                                    <em>No private methods found</em>
                                                             </section>
                             <section class="span4">
                                                                     <em>No private properties found</em>
@@ -314,9 +314,9 @@
                     
                     <dl>
                         <dt>File</dt>
-                            <dd><a href="../files/site.controllers.member.html"><div class="path-wrapper">site/controllers/member.php</div></a></dd>
+                            <dd><a href="../files/admin.controllers.member.html"><div class="path-wrapper">admin/controllers/member.php</div></a></dd>
                                                 <dt>Package</dt>
-                            <dd><div class="namespace-wrapper">ChurchDirectory.Site</div></dd>
+                            <dd><div class="namespace-wrapper">ChurchDirectory.Admin</div></dd>
                                                 <dt>Class hierarchy</dt>
                             <dd class="hierarchy">
                                                                                                                                                                                                                                                                                                 
@@ -353,37 +353,67 @@
 
                                     <div class="row-fluid">
         <div class="span8 content class">
-            <a id="method_getModel" name="method_getModel" class="anchor"></a>
+            <a id="method_batch" name="method_batch" class="anchor"></a>
             <article class="method">
-                <h3 class="public ">getModel()</h3>
+                <h3 class="public ">batch()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">getModel(string  <span class="argument">$name = &#039;&#039;</span>, string  <span class="argument">$prefix = &#039;&#039;</span>, array  <span class="argument">$config = array()</span>) : object</pre>
-                <p><em>Get model</em></p>
+                <pre class="signature" style="margin-right: 54px;">batch(\JModelLegacy  <span class="argument">$model</span>) : void</pre>
+                <p><em>Method to run batch operations.</em></p>
                 
 
                                     <h4>Parameters</h4>
                     <table class="table table-condensed table-hover">
                                                     <tr>
-                                <td>string</td>
-                                <td>$name </td>
-                                <td><p>The model name. Optional.</p></td>
+                                <td>\JModelLegacy</td>
+                                <td>$model </td>
+                                <td><p>The model of the component being processed.</p></td>
                             </tr>
-                                                    <tr>
-                                <td>string</td>
-                                <td>$prefix </td>
-                                <td><p>The class prefix. Optional.</p></td>
-                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            since
+                        </th>
+                        <td>
+                                                            1.6                                
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_allowAdd" name="method_allowAdd" class="anchor"></a>
+            <article class="method">
+                <h3 class="protected ">allowAdd()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">allowAdd(array  <span class="argument">$data = array()</span>) : boolean</pre>
+                <p><em>Method override to check if you can add a new record.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
                                                     <tr>
                                 <td>array</td>
-                                <td>$config </td>
-                                <td><p>Configuration array for model. Optional.</p></td>
+                                <td>$data </td>
+                                <td><p>An array of input data.</p></td>
                             </tr>
                                             </table>
                 
                 
                                     <h4>Returns</h4>
-                    object
-                                            &mdash; <p>The model.</p>
+                    boolean
                                     				
                             </article>
         </div>
@@ -398,7 +428,7 @@
                             since
                         </th>
                         <td>
-                                                            1.7.2                                
+                                                            1.7.0                                
                                                     </td>
                     </tr>
                             </table>
@@ -407,47 +437,12 @@
 
                                     <div class="row-fluid">
         <div class="span8 content class">
-            <a id="method_submit" name="method_submit" class="anchor"></a>
+            <a id="method_allowEdit" name="method_allowEdit" class="anchor"></a>
             <article class="method">
-                <h3 class="public ">submit()</h3>
+                <h3 class="protected ">allowEdit()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">submit() : boolean|\JException</pre>
-                <p><em>Custom Submit</em></p>
-                
-
-                
-                
-                                    <h4>Returns</h4>
-                    boolean|\JException
-                                    				
-                            </article>
-        </div>
-        <aside class="span4 detailsbar">
-            <h1><i class="icon-arrow-down"></i></h1>
-                                                            <dl>
-                                                                            </dl>
-            <h2>Tags</h2>
-            <table class="table table-condensed">
-                                    <tr>
-                        <th>
-                            since
-                        </th>
-                        <td>
-                                                            1.7.2                                
-                                                    </td>
-                    </tr>
-                            </table>
-        </aside>
-    </div>
-
-                                                                    <div class="row-fluid">
-        <div class="span8 content class">
-            <a id="method__sendEmail" name="method__sendEmail" class="anchor"></a>
-            <article class="method">
-                <h3 class="private ">_sendEmail()</h3>
-                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
-                <pre class="signature" style="margin-right: 54px;">_sendEmail(array  <span class="argument">$data</span>, object  <span class="argument">$churchdirectory</span>, boolean  <span class="argument">$copy_email_activated</span>) : boolean|\JException</pre>
-                <p><em>Send email</em></p>
+                <pre class="signature" style="margin-right: 54px;">allowEdit(array  <span class="argument">$data = array()</span>, string  <span class="argument">$key = &#039;id&#039;</span>) : boolean</pre>
+                <p><em>Method override to check if you can edit an existing record.</em></p>
                 
 
                                     <h4>Parameters</h4>
@@ -455,23 +450,18 @@
                                                     <tr>
                                 <td>array</td>
                                 <td>$data </td>
-                                <td><p>The data to send in the email.</p></td>
+                                <td><p>An array of input data.</p></td>
                             </tr>
                                                     <tr>
-                                <td>object</td>
-                                <td>$churchdirectory </td>
-                                <td><p>The user information to send the email to</p></td>
-                            </tr>
-                                                    <tr>
-                                <td>boolean</td>
-                                <td>$copy_email_activated </td>
-                                <td><p>True to send a copy of the email to the user.</p></td>
+                                <td>string</td>
+                                <td>$key </td>
+                                <td><p>The name of the key for the primary key.</p></td>
                             </tr>
                                             </table>
                 
                 
                                     <h4>Returns</h4>
-                    boolean|\JException
+                    boolean
                                     				
                             </article>
         </div>
@@ -486,14 +476,14 @@
                             since
                         </th>
                         <td>
-                                                            1.7.2                                
+                                                            1.6                                
                                                     </td>
                     </tr>
                             </table>
         </aside>
     </div>
 
-                                    </div>
+                                                    </div>
     </section>
 
     <div id="source-view" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="source-view-label" aria-hidden="true">
@@ -502,7 +492,7 @@
             <h3 id="source-view-label">member.php</h3>
         </div>
         <div class="modal-body">
-            <pre data-src="../files/site/controllers/member.php.txt" class="language-php line-numbers"></pre>
+            <pre data-src="../files/admin/controllers/member.php.txt" class="language-php line-numbers"></pre>
         </div>
     </div>
 
@@ -544,7 +534,7 @@
                     Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
                     on 
 Warning: date_default_timezone_get(): It is not safe to rely on the system's timezone settings. You are *required* to use the date.timezone setting or the date_default_timezone_set() function. In case you used any of those methods and you are still getting this warning, you most likely misspelled the timezone identifier. We selected the timezone 'UTC' for now, but please set date.timezone to select your timezone. in phar:///Users/bcordis/PHPProFiles/phpDocumentor.phar/vendor/twig/twig/lib/Twig/Extension/Core.php on line 89
-October 4th, 2016 at 04:52.
+October 4th, 2016 at 05:16.
                 </section>
             </section>
         </section>

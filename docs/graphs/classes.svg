@@ -13,893 +13,893 @@
 <path fill="none" stroke="gray" d="M274,-8C274,-8 520,-8 520,-8 526,-8 532,-14 532,-20 532,-20 532,-4603 532,-4603 532,-4609 526,-4615 520,-4615 520,-4615 274,-4615 274,-4615 268,-4615 262,-4609 262,-4603 262,-4603 262,-20 262,-20 262,-14 268,-8 274,-8"/>
 <text text-anchor="middle" x="397" y="-4602.2" font-family="Times,serif" font-size="11.00" fill="gray">Global</text>
 </g>
-<!-- \\Com_ChurchdirectoryInstallerScript -->
-<g id="node1" class="node"><title>\\Com_ChurchdirectoryInstallerScript</title>
-<polygon fill="none" stroke="black" points="517.437,-4588 276.563,-4588 276.563,-4552 517.437,-4552 517.437,-4588"/>
-<text text-anchor="middle" x="397" y="-4566.7" font-family="Courier,monospace" font-size="11.00">Com_ChurchdirectoryInstallerScript</text>
+<!-- \\JHtmlColorPicker -->
+<g id="node1" class="node"><title>\\JHtmlColorPicker</title>
+<polygon fill="none" stroke="black" points="457.618,-4588 336.382,-4588 336.382,-4552 457.618,-4552 457.618,-4588"/>
+<text text-anchor="start" x="363.995" y="-4572.2" font-family="Courier,monospace" font-size="11.00">«abstract»</text>
+<text text-anchor="start" x="344.191" y="-4561.2" font-family="Courier,monospace" font-size="11.00">JHtmlColorPicker</text>
 </g>
-<!-- \\ChurchDirectoryController -->
-<g id="node2" class="node"><title>\\ChurchDirectoryController</title>
-<polygon fill="none" stroke="black" points="487.527,-4480 306.473,-4480 306.473,-4444 487.527,-4444 487.527,-4480"/>
-<text text-anchor="middle" x="397" y="-4458.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryController</text>
+<!-- \\ChurchDirectoryModelGeoUpdate -->
+<g id="node2" class="node"><title>\\ChurchDirectoryModelGeoUpdate</title>
+<polygon fill="none" stroke="black" points="500.932,-4480 293.068,-4480 293.068,-4444 500.932,-4444 500.932,-4480"/>
+<text text-anchor="middle" x="397" y="-4458.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryModelGeoUpdate</text>
 </g>
-<!-- \\JControllerLegacy -->
-<g id="node86" class="node"><title>\\JControllerLegacy</title>
-<ellipse fill="none" stroke="black" cx="99" cy="-4489" rx="78.2521" ry="18"/>
-<text text-anchor="middle" x="99" y="-4484.8" font-family="Times,serif" font-size="14.00" fill="gray">\JControllerLegacy</text>
+<!-- \\JModelLegacy -->
+<g id="node86" class="node"><title>\\JModelLegacy</title>
+<ellipse fill="none" stroke="black" cx="99" cy="-4462" rx="65.2304" ry="18"/>
+<text text-anchor="middle" x="99" y="-4457.8" font-family="Times,serif" font-size="14.00" fill="gray">\JModelLegacy</text>
 </g>
-<!-- \\ChurchDirectoryController&#45;&gt;\\JControllerLegacy -->
-<g id="edge1" class="edge"><title>\\ChurchDirectoryController&#45;&gt;\\JControllerLegacy</title>
-<path fill="none" stroke="black" d="M306.387,-4470.17C267.025,-4473.76 221.101,-4477.95 182.579,-4481.47"/>
-<polygon fill="none" stroke="black" points="182.08,-4478 172.439,-4482.39 182.716,-4484.97 182.08,-4478"/>
+<!-- \\ChurchDirectoryModelGeoUpdate&#45;&gt;\\JModelLegacy -->
+<g id="edge1" class="edge"><title>\\ChurchDirectoryModelGeoUpdate&#45;&gt;\\JModelLegacy</title>
+<path fill="none" stroke="black" d="M292.889,-4462C254.014,-4462 210.575,-4462 174.776,-4462"/>
+<polygon fill="none" stroke="black" points="174.41,-4458.5 164.41,-4462 174.41,-4465.5 174.41,-4458.5"/>
 </g>
-<!-- \\ChurchDirectoryControllerCpanel -->
-<g id="node3" class="node"><title>\\ChurchDirectoryControllerCpanel</title>
-<polygon fill="none" stroke="black" points="507.134,-4264 286.866,-4264 286.866,-4228 507.134,-4228 507.134,-4264"/>
-<text text-anchor="middle" x="397" y="-4242.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryControllerCpanel</text>
+<!-- \\ChurchDirectoryModelReports -->
+<g id="node3" class="node"><title>\\ChurchDirectoryModelReports</title>
+<polygon fill="none" stroke="black" points="494.229,-4426 299.771,-4426 299.771,-4390 494.229,-4390 494.229,-4426"/>
+<text text-anchor="middle" x="397" y="-4404.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryModelReports</text>
 </g>
-<!-- \\JControllerAdmin -->
-<g id="node87" class="node"><title>\\JControllerAdmin</title>
-<ellipse fill="none" stroke="black" cx="99" cy="-4192" rx="76.8416" ry="18"/>
-<text text-anchor="middle" x="99" y="-4187.8" font-family="Times,serif" font-size="14.00" fill="gray">\JControllerAdmin</text>
-</g>
-<!-- \\ChurchDirectoryControllerCpanel&#45;&gt;\\JControllerAdmin -->
-<g id="edge2" class="edge"><title>\\ChurchDirectoryControllerCpanel&#45;&gt;\\JControllerAdmin</title>
-<path fill="none" stroke="black" d="M297.025,-4227.94C255.524,-4220.37 208.225,-4211.74 170.374,-4204.84"/>
-<polygon fill="none" stroke="black" points="170.93,-4201.38 160.464,-4203.03 169.674,-4208.27 170.93,-4201.38"/>
-</g>
-<!-- \\ChurchDirectoryControllerDatabase -->
-<g id="node4" class="node"><title>\\ChurchDirectoryControllerDatabase</title>
-<polygon fill="none" stroke="black" points="513.836,-4534 280.164,-4534 280.164,-4498 513.836,-4498 513.836,-4534"/>
-<text text-anchor="middle" x="397" y="-4512.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryControllerDatabase</text>
-</g>
-<!-- \\ChurchDirectoryControllerDatabase&#45;&gt;\\JControllerLegacy -->
-<g id="edge3" class="edge"><title>\\ChurchDirectoryControllerDatabase&#45;&gt;\\JControllerLegacy</title>
-<path fill="none" stroke="black" d="M279.863,-4505.41C247.267,-4502.43 212.507,-4499.26 182.32,-4496.51"/>
-<polygon fill="none" stroke="black" points="182.544,-4493.01 172.268,-4495.59 181.908,-4499.99 182.544,-4493.01"/>
-</g>
-<!-- \\ChurchDirectoryControllerDirectory -->
-<g id="node5" class="node"><title>\\ChurchDirectoryControllerDirectory</title>
-<polygon fill="none" stroke="black" points="517.437,-4156 276.563,-4156 276.563,-4120 517.437,-4120 517.437,-4156"/>
-<text text-anchor="middle" x="397" y="-4134.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryControllerDirectory</text>
-</g>
-<!-- \\ChurchDirectoryControllerDirectory&#45;&gt;\\JControllerAdmin -->
-<g id="edge4" class="edge"><title>\\ChurchDirectoryControllerDirectory&#45;&gt;\\JControllerAdmin</title>
-<path fill="none" stroke="black" d="M297.025,-4156.06C255.524,-4163.63 208.225,-4172.26 170.374,-4179.16"/>
-<polygon fill="none" stroke="black" points="169.674,-4175.73 160.464,-4180.97 170.93,-4182.62 169.674,-4175.73"/>
-</g>
-<!-- \\ChurchDirectoryControllerDirHeader -->
-<g id="node6" class="node"><title>\\ChurchDirectoryControllerDirHeader</title>
-<polygon fill="none" stroke="black" points="517.437,-3886 276.563,-3886 276.563,-3850 517.437,-3850 517.437,-3886"/>
-<text text-anchor="middle" x="397" y="-3864.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryControllerDirHeader</text>
-</g>
-<!-- \\JControllerForm -->
-<g id="node88" class="node"><title>\\JControllerForm</title>
-<ellipse fill="none" stroke="black" cx="99" cy="-3760" rx="71.5376" ry="18"/>
-<text text-anchor="middle" x="99" y="-3755.8" font-family="Times,serif" font-size="14.00" fill="gray">\JControllerForm</text>
-</g>
-<!-- \\ChurchDirectoryControllerDirHeader&#45;&gt;\\JControllerForm -->
-<g id="edge5" class="edge"><title>\\ChurchDirectoryControllerDirHeader&#45;&gt;\\JControllerForm</title>
-<path fill="none" stroke="black" d="M292.113,-3849.92C281.838,-3847.28 271.65,-3844.32 262,-3841 216.939,-3825.5 168.459,-3799.97 136.398,-3781.71"/>
-<polygon fill="none" stroke="black" points="137.816,-3778.49 127.403,-3776.54 134.324,-3784.56 137.816,-3778.49"/>
-</g>
-<!-- \\ChurchDirectoryControllerDirHeaders -->
-<g id="node7" class="node"><title>\\ChurchDirectoryControllerDirHeaders</title>
-<polygon fill="none" stroke="black" points="520.538,-4102 273.462,-4102 273.462,-4066 520.538,-4066 520.538,-4102"/>
-<text text-anchor="middle" x="397" y="-4080.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryControllerDirHeaders</text>
-</g>
-<!-- \\ChurchDirectoryControllerDirHeaders&#45;&gt;\\JControllerAdmin -->
-<g id="edge6" class="edge"><title>\\ChurchDirectoryControllerDirHeaders&#45;&gt;\\JControllerAdmin</title>
-<path fill="none" stroke="black" d="M292.113,-4102.08C281.838,-4104.72 271.65,-4107.68 262,-4111 217.209,-4126.4 169.041,-4151.72 136.978,-4169.96"/>
-<polygon fill="none" stroke="black" points="134.898,-4167.12 127.972,-4175.13 138.386,-4173.19 134.898,-4167.12"/>
-</g>
-<!-- \\ChurchDirectoryControllerFamilyUnit -->
-<g id="node8" class="node"><title>\\ChurchDirectoryControllerFamilyUnit</title>
-<polygon fill="none" stroke="black" points="520.538,-3778 273.462,-3778 273.462,-3742 520.538,-3742 520.538,-3778"/>
-<text text-anchor="middle" x="397" y="-3756.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryControllerFamilyUnit</text>
-</g>
-<!-- \\ChurchDirectoryControllerFamilyUnit&#45;&gt;\\JControllerForm -->
-<g id="edge7" class="edge"><title>\\ChurchDirectoryControllerFamilyUnit&#45;&gt;\\JControllerForm</title>
-<path fill="none" stroke="black" d="M273.469,-3760C242.306,-3760 209.589,-3760 181.073,-3760"/>
-<polygon fill="none" stroke="black" points="180.767,-3756.5 170.767,-3760 180.767,-3763.5 180.767,-3756.5"/>
-</g>
-<!-- \\ChurchDirectoryControllerFamilyUnits -->
-<g id="node9" class="node"><title>\\ChurchDirectoryControllerFamilyUnits</title>
-<polygon fill="none" stroke="black" points="523.639,-4048 270.361,-4048 270.361,-4012 523.639,-4012 523.639,-4048"/>
-<text text-anchor="middle" x="397" y="-4026.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryControllerFamilyUnits</text>
-</g>
-<!-- \\ChurchDirectoryControllerFamilyUnits&#45;&gt;\\JControllerAdmin -->
-<g id="edge8" class="edge"><title>\\ChurchDirectoryControllerFamilyUnits&#45;&gt;\\JControllerAdmin</title>
-<path fill="none" stroke="black" d="M284.183,-4048.07C276.531,-4050.66 269.063,-4053.62 262,-4057 205.082,-4084.27 151.359,-4136.03 122.339,-4166.93"/>
-<polygon fill="none" stroke="black" points="119.732,-4164.6 115.506,-4174.31 124.869,-4169.35 119.732,-4164.6"/>
-</g>
-<!-- \\ChurchDirectoryControllerGeoStatus -->
-<g id="node10" class="node"><title>\\ChurchDirectoryControllerGeoStatus</title>
-<polygon fill="none" stroke="black" points="517.437,-3994 276.563,-3994 276.563,-3958 517.437,-3958 517.437,-3994"/>
-<text text-anchor="middle" x="397" y="-3972.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryControllerGeoStatus</text>
-</g>
-<!-- \\ChurchDirectoryControllerGeoStatus&#45;&gt;\\JControllerAdmin -->
-<g id="edge9" class="edge"><title>\\ChurchDirectoryControllerGeoStatus&#45;&gt;\\JControllerAdmin</title>
-<path fill="none" stroke="black" d="M280.097,-3994.1C273.812,-3996.69 267.732,-3999.64 262,-4003 193.382,-4043.25 139.684,-4123.34 114.927,-4165.16"/>
-<polygon fill="none" stroke="black" points="111.812,-4163.55 109.813,-4173.96 117.864,-4167.07 111.812,-4163.55"/>
-</g>
-<!-- \\ChurchDirectoryControllerGeoupdate -->
-<g id="node11" class="node"><title>\\ChurchDirectoryControllerGeoupdate</title>
-<polygon fill="none" stroke="black" points="517.437,-3454 276.563,-3454 276.563,-3418 517.437,-3418 517.437,-3454"/>
-<text text-anchor="middle" x="397" y="-3432.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryControllerGeoupdate</text>
-</g>
-<!-- \\ChurchDirectoryControllerGeoupdate&#45;&gt;\\JControllerForm -->
-<g id="edge10" class="edge"><title>\\ChurchDirectoryControllerGeoupdate&#45;&gt;\\JControllerForm</title>
-<path fill="none" stroke="black" d="M276.609,-3454.01C271.488,-3456.64 266.585,-3459.62 262,-3463 168.335,-3532.03 122.623,-3672.08 106.737,-3731.89"/>
-<polygon fill="none" stroke="black" points="103.299,-3731.21 104.195,-3741.77 110.078,-3732.96 103.299,-3731.21"/>
-</g>
-<!-- \\ChurchDirectoryControllerKML -->
-<g id="node12" class="node"><title>\\ChurchDirectoryControllerKML</title>
-<polygon fill="none" stroke="black" points="497.33,-3940 296.67,-3940 296.67,-3904 497.33,-3904 497.33,-3940"/>
-<text text-anchor="middle" x="397" y="-3918.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryControllerKML</text>
-</g>
-<!-- \\ChurchDirectoryControllerKML&#45;&gt;\\JControllerForm -->
-<g id="edge11" class="edge"><title>\\ChurchDirectoryControllerKML&#45;&gt;\\JControllerForm</title>
-<path fill="none" stroke="black" d="M296.48,-3907.75C284.566,-3904.36 272.808,-3900.18 262,-3895 205.082,-3867.73 151.359,-3815.97 122.339,-3785.07"/>
-<polygon fill="none" stroke="black" points="124.869,-3782.65 115.506,-3777.69 119.732,-3787.4 124.869,-3782.65"/>
-</g>
-<!-- \\ChurchDirectoryControllerKMLs -->
-<g id="node13" class="node"><title>\\ChurchDirectoryControllerKMLs</title>
-<polygon fill="none" stroke="black" points="500.932,-4426 293.068,-4426 293.068,-4390 500.932,-4390 500.932,-4426"/>
-<text text-anchor="middle" x="397" y="-4404.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryControllerKMLs</text>
-</g>
-<!-- \\ChurchDirectoryControllerKMLs&#45;&gt;\\JControllerAdmin -->
-<g id="edge12" class="edge"><title>\\ChurchDirectoryControllerKMLs&#45;&gt;\\JControllerAdmin</title>
-<path fill="none" stroke="black" d="M293.129,-4394.68C282.226,-4391.12 271.621,-4386.64 262,-4381 193.382,-4340.75 139.684,-4260.66 114.927,-4218.84"/>
-<polygon fill="none" stroke="black" points="117.864,-4216.93 109.813,-4210.04 111.812,-4220.45 117.864,-4216.93"/>
+<!-- \\ChurchDirectoryModelReports&#45;&gt;\\JModelLegacy -->
+<g id="edge2" class="edge"><title>\\ChurchDirectoryModelReports&#45;&gt;\\JModelLegacy</title>
+<path fill="none" stroke="black" d="M299.488,-4425.61C254.946,-4433.73 203.296,-4443.16 163.713,-4450.38"/>
+<polygon fill="none" stroke="black" points="162.872,-4446.97 153.663,-4452.21 164.129,-4453.86 162.872,-4446.97"/>
 </g>
 <!-- \\ChurchDirectoryControllerMember -->
-<g id="node14" class="node"><title>\\ChurchDirectoryControllerMember</title>
-<polygon fill="none" stroke="black" points="507.134,-3724 286.866,-3724 286.866,-3688 507.134,-3688 507.134,-3724"/>
-<text text-anchor="middle" x="397" y="-3702.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryControllerMember</text>
+<g id="node4" class="node"><title>\\ChurchDirectoryControllerMember</title>
+<polygon fill="none" stroke="black" points="507.134,-4372 286.866,-4372 286.866,-4336 507.134,-4336 507.134,-4372"/>
+<text text-anchor="middle" x="397" y="-4350.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryControllerMember</text>
+</g>
+<!-- \\JControllerForm -->
+<g id="node87" class="node"><title>\\JControllerForm</title>
+<ellipse fill="none" stroke="black" cx="99" cy="-4192" rx="71.5376" ry="18"/>
+<text text-anchor="middle" x="99" y="-4187.8" font-family="Times,serif" font-size="14.00" fill="gray">\JControllerForm</text>
 </g>
 <!-- \\ChurchDirectoryControllerMember&#45;&gt;\\JControllerForm -->
-<g id="edge13" class="edge"><title>\\ChurchDirectoryControllerMember&#45;&gt;\\JControllerForm</title>
-<path fill="none" stroke="black" d="M297.025,-3724.06C254.444,-3731.82 205.759,-3740.71 167.439,-3747.7"/>
-<polygon fill="none" stroke="black" points="166.635,-3744.29 157.425,-3749.52 167.891,-3751.17 166.635,-3744.29"/>
-</g>
-<!-- \\ChurchDirectoryControllerMembers -->
-<g id="node15" class="node"><title>\\ChurchDirectoryControllerMembers</title>
-<polygon fill="none" stroke="black" points="510.734,-4372 283.266,-4372 283.266,-4336 510.734,-4336 510.734,-4372"/>
-<text text-anchor="middle" x="397" y="-4350.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryControllerMembers</text>
-</g>
-<!-- \\ChurchDirectoryControllerMembers&#45;&gt;\\JControllerAdmin -->
-<g id="edge14" class="edge"><title>\\ChurchDirectoryControllerMembers&#45;&gt;\\JControllerAdmin</title>
-<path fill="none" stroke="black" d="M284.183,-4335.93C276.531,-4333.34 269.063,-4330.38 262,-4327 205.082,-4299.73 151.359,-4247.97 122.339,-4217.07"/>
+<g id="edge3" class="edge"><title>\\ChurchDirectoryControllerMember&#45;&gt;\\JControllerForm</title>
+<path fill="none" stroke="black" d="M286.624,-4336.74C278.12,-4333.97 269.812,-4330.74 262,-4327 205.082,-4299.73 151.359,-4247.97 122.339,-4217.07"/>
 <polygon fill="none" stroke="black" points="124.869,-4214.65 115.506,-4209.69 119.732,-4219.4 124.869,-4214.65"/>
 </g>
-<!-- \\ChurchDirectoryControllerPosition -->
-<g id="node16" class="node"><title>\\ChurchDirectoryControllerPosition</title>
-<polygon fill="none" stroke="black" points="513.836,-3832 280.164,-3832 280.164,-3796 513.836,-3796 513.836,-3832"/>
-<text text-anchor="middle" x="397" y="-3810.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryControllerPosition</text>
+<!-- \\ChurchDirectoryModelCpanel -->
+<g id="node5" class="node"><title>\\ChurchDirectoryModelCpanel</title>
+<polygon fill="none" stroke="black" points="490.628,-4534 303.372,-4534 303.372,-4498 490.628,-4498 490.628,-4534"/>
+<text text-anchor="middle" x="397" y="-4512.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryModelCpanel</text>
 </g>
-<!-- \\ChurchDirectoryControllerPosition&#45;&gt;\\JControllerForm -->
-<g id="edge15" class="edge"><title>\\ChurchDirectoryControllerPosition&#45;&gt;\\JControllerForm</title>
-<path fill="none" stroke="black" d="M297.025,-3795.94C254.444,-3788.18 205.759,-3779.29 167.439,-3772.3"/>
-<polygon fill="none" stroke="black" points="167.891,-3768.83 157.425,-3770.48 166.635,-3775.71 167.891,-3768.83"/>
+<!-- \\ChurchDirectoryModelCpanel&#45;&gt;\\JModelLegacy -->
+<g id="edge4" class="edge"><title>\\ChurchDirectoryModelCpanel&#45;&gt;\\JModelLegacy</title>
+<path fill="none" stroke="black" d="M303.156,-4499.06C257.829,-4490.79 204.448,-4481.05 163.782,-4473.64"/>
+<polygon fill="none" stroke="black" points="164.195,-4470.15 153.729,-4471.8 162.939,-4477.04 164.195,-4470.15"/>
 </g>
 <!-- \\ChurchDirectoryControllerPositions -->
-<g id="node17" class="node"><title>\\ChurchDirectoryControllerPositions</title>
-<polygon fill="none" stroke="black" points="517.437,-4318 276.563,-4318 276.563,-4282 517.437,-4282 517.437,-4318"/>
-<text text-anchor="middle" x="397" y="-4296.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryControllerPositions</text>
+<g id="node6" class="node"><title>\\ChurchDirectoryControllerPositions</title>
+<polygon fill="none" stroke="black" points="517.437,-3616 276.563,-3616 276.563,-3580 517.437,-3580 517.437,-3616"/>
+<text text-anchor="middle" x="397" y="-3594.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryControllerPositions</text>
+</g>
+<!-- \\JControllerAdmin -->
+<g id="node88" class="node"><title>\\JControllerAdmin</title>
+<ellipse fill="none" stroke="black" cx="99" cy="-3760" rx="76.8416" ry="18"/>
+<text text-anchor="middle" x="99" y="-3755.8" font-family="Times,serif" font-size="14.00" fill="gray">\JControllerAdmin</text>
 </g>
 <!-- \\ChurchDirectoryControllerPositions&#45;&gt;\\JControllerAdmin -->
-<g id="edge16" class="edge"><title>\\ChurchDirectoryControllerPositions&#45;&gt;\\JControllerAdmin</title>
-<path fill="none" stroke="black" d="M292.113,-4281.92C281.838,-4279.28 271.65,-4276.32 262,-4273 217.209,-4257.6 169.041,-4232.28 136.978,-4214.04"/>
-<polygon fill="none" stroke="black" points="138.386,-4210.81 127.972,-4208.87 134.898,-4216.88 138.386,-4210.81"/>
+<g id="edge5" class="edge"><title>\\ChurchDirectoryControllerPositions&#45;&gt;\\JControllerAdmin</title>
+<path fill="none" stroke="black" d="M284.183,-3616.07C276.531,-3618.66 269.063,-3621.62 262,-3625 205.082,-3652.27 151.359,-3704.03 122.339,-3734.93"/>
+<polygon fill="none" stroke="black" points="119.732,-3732.6 115.506,-3742.31 124.869,-3737.35 119.732,-3732.6"/>
 </g>
-<!-- \\ChurchDirectoryControllerReports -->
-<g id="node18" class="node"><title>\\ChurchDirectoryControllerReports</title>
-<polygon fill="none" stroke="black" points="510.734,-4210 283.266,-4210 283.266,-4174 510.734,-4174 510.734,-4210"/>
-<text text-anchor="middle" x="397" y="-4188.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryControllerReports</text>
+<!-- \\ChurchDirectoryControllerDirectory -->
+<g id="node7" class="node"><title>\\ChurchDirectoryControllerDirectory</title>
+<polygon fill="none" stroke="black" points="517.437,-3508 276.563,-3508 276.563,-3472 517.437,-3472 517.437,-3508"/>
+<text text-anchor="middle" x="397" y="-3486.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryControllerDirectory</text>
 </g>
-<!-- \\ChurchDirectoryControllerReports&#45;&gt;\\JControllerAdmin -->
-<g id="edge17" class="edge"><title>\\ChurchDirectoryControllerReports&#45;&gt;\\JControllerAdmin</title>
-<path fill="none" stroke="black" d="M283.251,-4192C251.105,-4192 216.603,-4192 186.304,-4192"/>
-<polygon fill="none" stroke="black" points="186.199,-4188.5 176.199,-4192 186.199,-4195.5 186.199,-4188.5"/>
+<!-- \\ChurchDirectoryControllerDirectory&#45;&gt;\\JControllerAdmin -->
+<g id="edge6" class="edge"><title>\\ChurchDirectoryControllerDirectory&#45;&gt;\\JControllerAdmin</title>
+<path fill="none" stroke="black" d="M277.947,-3508.05C272.38,-3510.66 267.026,-3513.63 262,-3517 181.073,-3571.28 130.352,-3681.02 110.094,-3732.35"/>
+<polygon fill="none" stroke="black" points="106.781,-3731.21 106.449,-3741.8 113.312,-3733.73 106.781,-3731.21"/>
 </g>
-<!-- \\ChurchDirectoryHelper -->
-<g id="node19" class="node"><title>\\ChurchDirectoryHelper</title>
-<polygon fill="none" stroke="black" points="474.123,-3616 319.877,-3616 319.877,-3580 474.123,-3580 474.123,-3616"/>
-<text text-anchor="middle" x="397" y="-3594.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryHelper</text>
+<!-- \\ChurchDirectoryModelDatabase -->
+<g id="node8" class="node"><title>\\ChurchDirectoryModelDatabase</title>
+<polygon fill="none" stroke="black" points="497.33,-3454 296.67,-3454 296.67,-3418 497.33,-3418 497.33,-3454"/>
+<text text-anchor="middle" x="397" y="-3432.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryModelDatabase</text>
+</g>
+<!-- \\InstallerModel -->
+<g id="node89" class="node"><title>\\InstallerModel</title>
+<ellipse fill="none" stroke="black" cx="99" cy="-3436" rx="64.7545" ry="18"/>
+<text text-anchor="middle" x="99" y="-3431.8" font-family="Times,serif" font-size="14.00" fill="gray">\InstallerModel</text>
+</g>
+<!-- \\ChurchDirectoryModelDatabase&#45;&gt;\\InstallerModel -->
+<g id="edge7" class="edge"><title>\\ChurchDirectoryModelDatabase&#45;&gt;\\InstallerModel</title>
+<path fill="none" stroke="black" d="M296.613,-3436C256.545,-3436 211.129,-3436 174.048,-3436"/>
+<polygon fill="none" stroke="black" points="173.822,-3432.5 163.822,-3436 173.822,-3439.5 173.822,-3432.5"/>
+</g>
+<!-- \\ChurchDirectoryModelMember -->
+<g id="node9" class="node"><title>\\ChurchDirectoryModelMember</title>
+<polygon fill="none" stroke="black" points="490.628,-3400 303.372,-3400 303.372,-3364 490.628,-3364 490.628,-3400"/>
+<text text-anchor="middle" x="397" y="-3378.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryModelMember</text>
+</g>
+<!-- \\JModelForm -->
+<g id="node90" class="node"><title>\\JModelForm</title>
+<ellipse fill="none" stroke="black" cx="99" cy="-3382" rx="58.0169" ry="18"/>
+<text text-anchor="middle" x="99" y="-3377.8" font-family="Times,serif" font-size="14.00" fill="gray">\JModelForm</text>
+</g>
+<!-- \\ChurchDirectoryModelMember&#45;&gt;\\JModelForm -->
+<g id="edge8" class="edge"><title>\\ChurchDirectoryModelMember&#45;&gt;\\JModelForm</title>
+<path fill="none" stroke="black" d="M303.156,-3382C259.329,-3382 207.971,-3382 167.859,-3382"/>
+<polygon fill="none" stroke="black" points="167.652,-3378.5 157.652,-3382 167.652,-3385.5 167.652,-3378.5"/>
+</g>
+<!-- \\ChurchDirectoryControllerHome -->
+<g id="node10" class="node"><title>\\ChurchDirectoryControllerHome</title>
+<polygon fill="none" stroke="black" points="500.932,-4264 293.068,-4264 293.068,-4228 500.932,-4228 500.932,-4264"/>
+<text text-anchor="middle" x="397" y="-4242.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryControllerHome</text>
+</g>
+<!-- \\ChurchDirectoryControllerHome&#45;&gt;\\JControllerForm -->
+<g id="edge9" class="edge"><title>\\ChurchDirectoryControllerHome&#45;&gt;\\JControllerForm</title>
+<path fill="none" stroke="black" d="M297.025,-4227.94C254.444,-4220.18 205.759,-4211.29 167.439,-4204.3"/>
+<polygon fill="none" stroke="black" points="167.891,-4200.83 157.425,-4202.48 166.635,-4207.71 167.891,-4200.83"/>
+</g>
+<!-- \\JHtmlGeoUpdate -->
+<g id="node11" class="node"><title>\\JHtmlGeoUpdate</title>
+<polygon fill="none" stroke="black" points="451.416,-3346 342.584,-3346 342.584,-3310 451.416,-3310 451.416,-3346"/>
+<text text-anchor="middle" x="397" y="-3324.7" font-family="Courier,monospace" font-size="11.00">JHtmlGeoUpdate</text>
+</g>
+<!-- \\JHtmlDropdown -->
+<g id="node91" class="node"><title>\\JHtmlDropdown</title>
+<ellipse fill="none" stroke="black" cx="99" cy="-3328" rx="72.0222" ry="18"/>
+<text text-anchor="middle" x="99" y="-3323.8" font-family="Times,serif" font-size="14.00" fill="gray">\JHtmlDropdown</text>
+</g>
+<!-- \\JHtmlGeoUpdate&#45;&gt;\\JHtmlDropdown -->
+<g id="edge10" class="edge"><title>\\JHtmlGeoUpdate&#45;&gt;\\JHtmlDropdown</title>
+<path fill="none" stroke="black" d="M342.739,-3328C297.799,-3328 232.753,-3328 181.304,-3328"/>
+<polygon fill="none" stroke="black" points="181.205,-3324.5 171.205,-3328 181.205,-3331.5 181.205,-3324.5"/>
+</g>
+<!-- \\ChurchDirectoryViewHome -->
+<g id="node12" class="node"><title>\\ChurchDirectoryViewHome</title>
+<polygon fill="none" stroke="black" points="480.825,-2374 313.175,-2374 313.175,-2338 480.825,-2338 480.825,-2374"/>
+<text text-anchor="middle" x="397" y="-2352.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryViewHome</text>
+</g>
+<!-- \\JViewLegacy -->
+<g id="node92" class="node"><title>\\JViewLegacy</title>
+<ellipse fill="none" stroke="black" cx="99" cy="-2545" rx="60.8094" ry="18"/>
+<text text-anchor="middle" x="99" y="-2540.8" font-family="Times,serif" font-size="14.00" fill="gray">\JViewLegacy</text>
+</g>
+<!-- \\ChurchDirectoryViewHome&#45;&gt;\\JViewLegacy -->
+<g id="edge11" class="edge"><title>\\ChurchDirectoryViewHome&#45;&gt;\\JViewLegacy</title>
+<path fill="none" stroke="black" d="M312.937,-2364.87C295.443,-2368.87 277.582,-2374.65 262,-2383 199.203,-2416.67 144.966,-2482.54 118.059,-2519.06"/>
+<polygon fill="none" stroke="black" points="115.16,-2517.1 112.124,-2527.25 120.827,-2521.21 115.16,-2517.1"/>
+</g>
+<!-- \\ChurchDirectoryViewFamilyUnit -->
+<g id="node13" class="node"><title>\\ChurchDirectoryViewFamilyUnit</title>
+<polygon fill="none" stroke="black" points="500.932,-2320 293.068,-2320 293.068,-2284 500.932,-2284 500.932,-2320"/>
+<text text-anchor="middle" x="397" y="-2298.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryViewFamilyUnit</text>
+</g>
+<!-- \\ChurchDirectoryViewFamilyUnit&#45;&gt;\\JViewLegacy -->
+<g id="edge12" class="edge"><title>\\ChurchDirectoryViewFamilyUnit&#45;&gt;\\JViewLegacy</title>
+<path fill="none" stroke="black" d="M293.097,-2314.58C282.14,-2318.27 271.532,-2322.98 262,-2329 187.247,-2376.19 134.717,-2471.07 112.234,-2517.77"/>
+<polygon fill="none" stroke="black" points="108.995,-2516.43 107.895,-2526.97 115.327,-2519.42 108.995,-2516.43"/>
+</g>
+<!-- \\ChurchDirectoryModelGeoStatus -->
+<g id="node14" class="node"><title>\\ChurchDirectoryModelGeoStatus</title>
+<polygon fill="none" stroke="black" points="500.932,-1942 293.068,-1942 293.068,-1906 500.932,-1906 500.932,-1942"/>
+<text text-anchor="middle" x="397" y="-1920.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryModelGeoStatus</text>
+</g>
+<!-- \\JModelList -->
+<g id="node93" class="node"><title>\\JModelList</title>
+<ellipse fill="none" stroke="black" cx="99" cy="-1546" rx="52.7038" ry="18"/>
+<text text-anchor="middle" x="99" y="-1541.8" font-family="Times,serif" font-size="14.00" fill="gray">\JModelList</text>
+</g>
+<!-- \\ChurchDirectoryModelGeoStatus&#45;&gt;\\JModelList -->
+<g id="edge13" class="edge"><title>\\ChurchDirectoryModelGeoStatus&#45;&gt;\\JModelList</title>
+<path fill="none" stroke="black" d="M293.086,-1913.85C281.881,-1909.76 271.218,-1904.28 262,-1897 155.242,-1812.66 115.978,-1641.8 104.258,-1574.33"/>
+<polygon fill="none" stroke="black" points="107.643,-1573.34 102.55,-1564.05 100.738,-1574.49 107.643,-1573.34"/>
+</g>
+<!-- \\ChurchDirectoryModelPositions -->
+<g id="node15" class="node"><title>\\ChurchDirectoryModelPositions</title>
+<polygon fill="none" stroke="black" points="500.932,-1834 293.068,-1834 293.068,-1798 500.932,-1798 500.932,-1834"/>
+<text text-anchor="middle" x="397" y="-1812.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryModelPositions</text>
+</g>
+<!-- \\ChurchDirectoryModelPositions&#45;&gt;\\JModelList -->
+<g id="edge14" class="edge"><title>\\ChurchDirectoryModelPositions&#45;&gt;\\JModelList</title>
+<path fill="none" stroke="black" d="M293.102,-1804.06C282.084,-1800.26 271.46,-1795.35 262,-1789 180.876,-1734.59 130.105,-1624.45 109.946,-1573.28"/>
+<polygon fill="none" stroke="black" points="113.181,-1571.94 106.323,-1563.86 106.649,-1574.45 113.181,-1571.94"/>
+</g>
+<!-- \\ChurchDirectoryModelMembers -->
+<g id="node16" class="node"><title>\\ChurchDirectoryModelMembers</title>
+<polygon fill="none" stroke="black" points="494.229,-1780 299.771,-1780 299.771,-1744 494.229,-1744 494.229,-1780"/>
+<text text-anchor="middle" x="397" y="-1758.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryModelMembers</text>
+</g>
+<!-- \\ChurchDirectoryModelMembers&#45;&gt;\\JModelList -->
+<g id="edge15" class="edge"><title>\\ChurchDirectoryModelMembers&#45;&gt;\\JModelList</title>
+<path fill="none" stroke="black" d="M299.771,-1750.73C286.553,-1746.89 273.565,-1741.78 262,-1735 193.209,-1694.65 139.413,-1614.26 114.74,-1572.52"/>
+<polygon fill="none" stroke="black" points="117.696,-1570.64 109.648,-1563.75 111.642,-1574.16 117.696,-1570.64"/>
+</g>
+<!-- \\ChurchDirectoryControllerCpanel -->
+<g id="node17" class="node"><title>\\ChurchDirectoryControllerCpanel</title>
+<polygon fill="none" stroke="black" points="507.134,-3940 286.866,-3940 286.866,-3904 507.134,-3904 507.134,-3940"/>
+<text text-anchor="middle" x="397" y="-3918.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryControllerCpanel</text>
+</g>
+<!-- \\ChurchDirectoryControllerCpanel&#45;&gt;\\JControllerAdmin -->
+<g id="edge16" class="edge"><title>\\ChurchDirectoryControllerCpanel&#45;&gt;\\JControllerAdmin</title>
+<path fill="none" stroke="black" d="M286.624,-3904.74C278.12,-3901.97 269.812,-3898.74 262,-3895 205.082,-3867.73 151.359,-3815.97 122.339,-3785.07"/>
+<polygon fill="none" stroke="black" points="124.869,-3782.65 115.506,-3777.69 119.732,-3787.4 124.869,-3782.65"/>
+</g>
+<!-- \\ChurchDirectoryViewCpanel -->
+<g id="node18" class="node"><title>\\ChurchDirectoryViewCpanel</title>
+<polygon fill="none" stroke="black" points="487.527,-2212 306.473,-2212 306.473,-2176 487.527,-2176 487.527,-2212"/>
+<text text-anchor="middle" x="397" y="-2190.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryViewCpanel</text>
+</g>
+<!-- \\ChurchDirectoryViewCpanel&#45;&gt;\\JViewLegacy -->
+<g id="edge17" class="edge"><title>\\ChurchDirectoryViewCpanel&#45;&gt;\\JViewLegacy</title>
+<path fill="none" stroke="black" d="M306.427,-2200.34C290.508,-2204.6 274.912,-2211.12 262,-2221 161.895,-2297.57 119.243,-2452.82 105.439,-2516.63"/>
+<polygon fill="none" stroke="black" points="101.943,-2516.25 103.327,-2526.76 108.795,-2517.68 101.943,-2516.25"/>
+</g>
+<!-- \\ChurchDirectoryModelDirHeaders -->
+<g id="node19" class="node"><title>\\ChurchDirectoryModelDirHeaders</title>
+<polygon fill="none" stroke="black" points="504.032,-1564 289.968,-1564 289.968,-1528 504.032,-1528 504.032,-1564"/>
+<text text-anchor="middle" x="397" y="-1542.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryModelDirHeaders</text>
+</g>
+<!-- \\ChurchDirectoryModelDirHeaders&#45;&gt;\\JModelList -->
+<g id="edge18" class="edge"><title>\\ChurchDirectoryModelDirHeaders&#45;&gt;\\JModelList</title>
+<path fill="none" stroke="black" d="M289.973,-1546C247.213,-1546 199.358,-1546 162.375,-1546"/>
+<polygon fill="none" stroke="black" points="162.245,-1542.5 152.245,-1546 162.245,-1549.5 162.245,-1542.5"/>
 </g>
 <!-- \\ChurchDirectoryDB -->
 <g id="node20" class="node"><title>\\ChurchDirectoryDB</title>
 <polygon fill="none" stroke="black" points="461.218,-3562 332.782,-3562 332.782,-3526 461.218,-3526 461.218,-3562"/>
 <text text-anchor="middle" x="397" y="-3540.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryDB</text>
 </g>
-<!-- \\JHtmlColorPicker -->
-<g id="node21" class="node"><title>\\JHtmlColorPicker</title>
-<polygon fill="none" stroke="black" points="457.618,-3508 336.382,-3508 336.382,-3472 457.618,-3472 457.618,-3508"/>
-<text text-anchor="start" x="363.995" y="-3492.2" font-family="Courier,monospace" font-size="11.00">«abstract»</text>
-<text text-anchor="start" x="344.191" y="-3481.2" font-family="Courier,monospace" font-size="11.00">JHtmlColorPicker</text>
-</g>
-<!-- \\JHtmlGeoUpdate -->
-<g id="node22" class="node"><title>\\JHtmlGeoUpdate</title>
-<polygon fill="none" stroke="black" points="451.416,-3292 342.584,-3292 342.584,-3256 451.416,-3256 451.416,-3292"/>
-<text text-anchor="middle" x="397" y="-3270.7" font-family="Courier,monospace" font-size="11.00">JHtmlGeoUpdate</text>
-</g>
-<!-- \\JHtmlDropdown -->
-<g id="node89" class="node"><title>\\JHtmlDropdown</title>
-<ellipse fill="none" stroke="black" cx="99" cy="-3274" rx="72.0222" ry="18"/>
-<text text-anchor="middle" x="99" y="-3269.8" font-family="Times,serif" font-size="14.00" fill="gray">\JHtmlDropdown</text>
-</g>
-<!-- \\JHtmlGeoUpdate&#45;&gt;\\JHtmlDropdown -->
-<g id="edge18" class="edge"><title>\\JHtmlGeoUpdate&#45;&gt;\\JHtmlDropdown</title>
-<path fill="none" stroke="black" d="M342.739,-3274C297.799,-3274 232.753,-3274 181.304,-3274"/>
-<polygon fill="none" stroke="black" points="181.205,-3270.5 171.205,-3274 181.205,-3277.5 181.205,-3270.5"/>
-</g>
-<!-- \\JHtmlMember -->
-<g id="node23" class="node"><title>\\JHtmlMember</title>
-<polygon fill="none" stroke="black" points="441.113,-3400 352.887,-3400 352.887,-3364 441.113,-3364 441.113,-3400"/>
-<text text-anchor="start" x="363.995" y="-3384.2" font-family="Courier,monospace" font-size="11.00">«abstract»</text>
-<text text-anchor="start" x="360.694" y="-3373.2" font-family="Courier,monospace" font-size="11.00">JHtmlMember</text>
-</g>
-<!-- \\ChurchDirectoryReportbuild -->
-<g id="node24" class="node"><title>\\ChurchDirectoryReportbuild</title>
-<polygon fill="none" stroke="black" points="490.628,-3346 303.372,-3346 303.372,-3310 490.628,-3310 490.628,-3346"/>
-<text text-anchor="middle" x="397" y="-3324.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryReportbuild</text>
-</g>
-<!-- \\ChurchDirectoryModelCpanel -->
-<g id="node25" class="node"><title>\\ChurchDirectoryModelCpanel</title>
-<polygon fill="none" stroke="black" points="490.628,-3238 303.372,-3238 303.372,-3202 490.628,-3202 490.628,-3238"/>
-<text text-anchor="middle" x="397" y="-3216.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryModelCpanel</text>
-</g>
-<!-- \\JModelLegacy -->
-<g id="node90" class="node"><title>\\JModelLegacy</title>
-<ellipse fill="none" stroke="black" cx="99" cy="-3166" rx="65.2304" ry="18"/>
-<text text-anchor="middle" x="99" y="-3161.8" font-family="Times,serif" font-size="14.00" fill="gray">\JModelLegacy</text>
-</g>
-<!-- \\ChurchDirectoryModelCpanel&#45;&gt;\\JModelLegacy -->
-<g id="edge19" class="edge"><title>\\ChurchDirectoryModelCpanel&#45;&gt;\\JModelLegacy</title>
-<path fill="none" stroke="black" d="M303.156,-3203.06C257.829,-3194.79 204.448,-3185.05 163.782,-3177.64"/>
-<polygon fill="none" stroke="black" points="164.195,-3174.15 153.729,-3175.8 162.939,-3181.04 164.195,-3174.15"/>
-</g>
-<!-- \\ChurchDirectoryModelDatabase -->
-<g id="node26" class="node"><title>\\ChurchDirectoryModelDatabase</title>
-<polygon fill="none" stroke="black" points="497.33,-3076 296.67,-3076 296.67,-3040 497.33,-3040 497.33,-3076"/>
-<text text-anchor="middle" x="397" y="-3054.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryModelDatabase</text>
-</g>
-<!-- \\InstallerModel -->
-<g id="node91" class="node"><title>\\InstallerModel</title>
-<ellipse fill="none" stroke="black" cx="99" cy="-3058" rx="64.7545" ry="18"/>
-<text text-anchor="middle" x="99" y="-3053.8" font-family="Times,serif" font-size="14.00" fill="gray">\InstallerModel</text>
-</g>
-<!-- \\ChurchDirectoryModelDatabase&#45;&gt;\\InstallerModel -->
-<g id="edge20" class="edge"><title>\\ChurchDirectoryModelDatabase&#45;&gt;\\InstallerModel</title>
-<path fill="none" stroke="black" d="M296.613,-3058C256.545,-3058 211.129,-3058 174.048,-3058"/>
-<polygon fill="none" stroke="black" points="173.822,-3054.5 163.822,-3058 173.822,-3061.5 173.822,-3054.5"/>
-</g>
-<!-- \\ChurchDirectoryModelDirHeader -->
-<g id="node27" class="node"><title>\\ChurchDirectoryModelDirHeader</title>
-<polygon fill="none" stroke="black" points="500.932,-2914 293.068,-2914 293.068,-2878 500.932,-2878 500.932,-2914"/>
-<text text-anchor="middle" x="397" y="-2892.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryModelDirHeader</text>
-</g>
-<!-- \\JModelAdmin -->
-<g id="node92" class="node"><title>\\JModelAdmin</title>
-<ellipse fill="none" stroke="black" cx="99" cy="-2923" rx="63.8202" ry="18"/>
-<text text-anchor="middle" x="99" y="-2918.8" font-family="Times,serif" font-size="14.00" fill="gray">\JModelAdmin</text>
-</g>
-<!-- \\ChurchDirectoryModelDirHeader&#45;&gt;\\JModelAdmin -->
-<g id="edge21" class="edge"><title>\\ChurchDirectoryModelDirHeader&#45;&gt;\\JModelAdmin</title>
-<path fill="none" stroke="black" d="M292.889,-2905.41C252.322,-2909.11 206.785,-2913.26 170.147,-2916.6"/>
-<polygon fill="none" stroke="black" points="169.701,-2913.13 160.06,-2917.52 170.337,-2920.1 169.701,-2913.13"/>
-</g>
-<!-- \\ChurchDirectoryModelDirHeaders -->
-<g id="node28" class="node"><title>\\ChurchDirectoryModelDirHeaders</title>
-<polygon fill="none" stroke="black" points="504.032,-2698 289.968,-2698 289.968,-2662 504.032,-2662 504.032,-2698"/>
-<text text-anchor="middle" x="397" y="-2676.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryModelDirHeaders</text>
-</g>
-<!-- \\JModelList -->
-<g id="node93" class="node"><title>\\JModelList</title>
-<ellipse fill="none" stroke="black" cx="99" cy="-2518" rx="52.7038" ry="18"/>
-<text text-anchor="middle" x="99" y="-2513.8" font-family="Times,serif" font-size="14.00" fill="gray">\JModelList</text>
-</g>
-<!-- \\ChurchDirectoryModelDirHeaders&#45;&gt;\\JModelList -->
-<g id="edge22" class="edge"><title>\\ChurchDirectoryModelDirHeaders&#45;&gt;\\JModelList</title>
-<path fill="none" stroke="black" d="M289.778,-2663.75C280.176,-2660.75 270.775,-2657.2 262,-2653 204.778,-2625.59 150.785,-2573.42 121.876,-2542.57"/>
-<polygon fill="none" stroke="black" points="124.437,-2540.19 115.08,-2535.22 119.296,-2544.94 124.437,-2540.19"/>
-</g>
-<!-- \\ChurchDirectoryModelFamilyUnit -->
-<g id="node29" class="node"><title>\\ChurchDirectoryModelFamilyUnit</title>
-<polygon fill="none" stroke="black" points="504.032,-2860 289.968,-2860 289.968,-2824 504.032,-2824 504.032,-2860"/>
-<text text-anchor="middle" x="397" y="-2838.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryModelFamilyUnit</text>
-</g>
-<!-- \\ChurchDirectoryModelFamilyUnit&#45;&gt;\\JModelAdmin -->
-<g id="edge23" class="edge"><title>\\ChurchDirectoryModelFamilyUnit&#45;&gt;\\JModelAdmin</title>
-<path fill="none" stroke="black" d="M299.057,-2860.06C286.534,-2862.82 273.925,-2865.82 262,-2869 223.057,-2879.37 179.793,-2893.95 147.778,-2905.35"/>
-<polygon fill="none" stroke="black" points="146.453,-2902.11 138.221,-2908.78 148.815,-2908.7 146.453,-2902.11"/>
-</g>
-<!-- \\ChurchDirectoryModelFamilyUnits -->
-<g id="node30" class="node"><title>\\ChurchDirectoryModelFamilyUnits</title>
-<polygon fill="none" stroke="black" points="507.134,-2590 286.866,-2590 286.866,-2554 507.134,-2554 507.134,-2590"/>
-<text text-anchor="middle" x="397" y="-2568.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryModelFamilyUnits</text>
-</g>
-<!-- \\ChurchDirectoryModelFamilyUnits&#45;&gt;\\JModelList -->
-<g id="edge24" class="edge"><title>\\ChurchDirectoryModelFamilyUnits&#45;&gt;\\JModelList</title>
-<path fill="none" stroke="black" d="M297.025,-2553.94C250.024,-2545.37 195.587,-2535.44 155.86,-2528.19"/>
-<polygon fill="none" stroke="black" points="156.3,-2524.71 145.834,-2526.36 155.044,-2531.6 156.3,-2524.71"/>
-</g>
-<!-- \\JFormFieldModal_Members -->
-<g id="node31" class="node"><title>\\JFormFieldModal_Members</title>
-<polygon fill="none" stroke="black" points="480.825,-2104 313.175,-2104 313.175,-2068 480.825,-2068 480.825,-2104"/>
-<text text-anchor="middle" x="397" y="-2082.7" font-family="Courier,monospace" font-size="11.00">JFormFieldModal_Members</text>
-</g>
-<!-- \\JFormField -->
-<g id="node94" class="node"><title>\\JFormField</title>
-<ellipse fill="none" stroke="black" cx="99" cy="-2140" rx="53.197" ry="18"/>
-<text text-anchor="middle" x="99" y="-2135.8" font-family="Times,serif" font-size="14.00" fill="gray">\JFormField</text>
-</g>
-<!-- \\JFormFieldModal_Members&#45;&gt;\\JFormField -->
-<g id="edge25" class="edge"><title>\\JFormFieldModal_Members&#45;&gt;\\JFormField</title>
-<path fill="none" stroke="black" d="M313.154,-2101.11C263.173,-2110.23 200.806,-2121.61 156.475,-2129.7"/>
-<polygon fill="none" stroke="black" points="155.667,-2126.29 146.458,-2131.52 156.924,-2133.17 155.667,-2126.29"/>
-</g>
-<!-- \\JFormFieldOrdering -->
-<g id="node32" class="node"><title>\\JFormFieldOrdering</title>
-<polygon fill="none" stroke="black" points="464.319,-2212 329.681,-2212 329.681,-2176 464.319,-2176 464.319,-2212"/>
-<text text-anchor="middle" x="397" y="-2190.7" font-family="Courier,monospace" font-size="11.00">JFormFieldOrdering</text>
-</g>
-<!-- \\JFormFieldOrdering&#45;&gt;\\JFormField -->
-<g id="edge26" class="edge"><title>\\JFormFieldOrdering&#45;&gt;\\JFormField</title>
-<path fill="none" stroke="black" d="M329.572,-2181.88C277.427,-2172.37 205.635,-2159.27 156.292,-2150.27"/>
-<polygon fill="none" stroke="black" points="156.893,-2146.82 146.427,-2148.47 155.636,-2153.71 156.893,-2146.82"/>
-</g>
-<!-- \\JFormFieldSpouse -->
-<g id="node33" class="node"><title>\\JFormFieldSpouse</title>
-<polygon fill="none" stroke="black" points="457.618,-2158 336.382,-2158 336.382,-2122 457.618,-2122 457.618,-2158"/>
-<text text-anchor="middle" x="397" y="-2136.7" font-family="Courier,monospace" font-size="11.00">JFormFieldSpouse</text>
-</g>
-<!-- \\JFormFieldSpouse&#45;&gt;\\JFormField -->
-<g id="edge27" class="edge"><title>\\JFormFieldSpouse&#45;&gt;\\JFormField</title>
-<path fill="none" stroke="black" d="M336.1,-2140C285.685,-2140 213.825,-2140 162.65,-2140"/>
-<polygon fill="none" stroke="black" points="162.381,-2136.5 152.381,-2140 162.381,-2143.5 162.381,-2136.5"/>
-</g>
-<!-- \\ChurchDirectoryModelGeoStatus -->
-<g id="node34" class="node"><title>\\ChurchDirectoryModelGeoStatus</title>
-<polygon fill="none" stroke="black" points="500.932,-2536 293.068,-2536 293.068,-2500 500.932,-2500 500.932,-2536"/>
-<text text-anchor="middle" x="397" y="-2514.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryModelGeoStatus</text>
-</g>
-<!-- \\ChurchDirectoryModelGeoStatus&#45;&gt;\\JModelList -->
-<g id="edge28" class="edge"><title>\\ChurchDirectoryModelGeoStatus&#45;&gt;\\JModelList</title>
-<path fill="none" stroke="black" d="M292.889,-2518C249.424,-2518 200.254,-2518 162.437,-2518"/>
-<polygon fill="none" stroke="black" points="162.086,-2514.5 152.086,-2518 162.086,-2521.5 162.086,-2514.5"/>
-</g>
-<!-- \\ChurchDirectoryModelGeoUpdate -->
-<g id="node35" class="node"><title>\\ChurchDirectoryModelGeoUpdate</title>
-<polygon fill="none" stroke="black" points="500.932,-3184 293.068,-3184 293.068,-3148 500.932,-3148 500.932,-3184"/>
-<text text-anchor="middle" x="397" y="-3162.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryModelGeoUpdate</text>
-</g>
-<!-- \\ChurchDirectoryModelGeoUpdate&#45;&gt;\\JModelLegacy -->
-<g id="edge29" class="edge"><title>\\ChurchDirectoryModelGeoUpdate&#45;&gt;\\JModelLegacy</title>
-<path fill="none" stroke="black" d="M292.889,-3166C254.014,-3166 210.575,-3166 174.776,-3166"/>
-<polygon fill="none" stroke="black" points="174.41,-3162.5 164.41,-3166 174.41,-3169.5 174.41,-3162.5"/>
-</g>
-<!-- \\ChurchDirectoryModelkml -->
-<g id="node36" class="node"><title>\\ChurchDirectoryModelkml</title>
-<polygon fill="none" stroke="black" points="480.825,-2968 313.175,-2968 313.175,-2932 480.825,-2932 480.825,-2968"/>
-<text text-anchor="middle" x="397" y="-2946.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryModelkml</text>
-</g>
-<!-- \\ChurchDirectoryModelkml&#45;&gt;\\JModelAdmin -->
-<g id="edge30" class="edge"><title>\\ChurchDirectoryModelkml&#45;&gt;\\JModelAdmin</title>
-<path fill="none" stroke="black" d="M313.154,-2942.44C268.028,-2938.33 212.806,-2933.29 169.877,-2929.37"/>
-<polygon fill="none" stroke="black" points="170.077,-2925.88 159.8,-2928.45 169.441,-2932.85 170.077,-2925.88"/>
-</g>
-<!-- \\ChurchDirectoryModelKMLs -->
-<g id="node37" class="node"><title>\\ChurchDirectoryModelKMLs</title>
-<polygon fill="none" stroke="black" points="484.426,-2374 309.574,-2374 309.574,-2338 484.426,-2338 484.426,-2374"/>
-<text text-anchor="middle" x="397" y="-2352.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryModelKMLs</text>
-</g>
-<!-- \\ChurchDirectoryModelKMLs&#45;&gt;\\JModelList -->
-<g id="edge31" class="edge"><title>\\ChurchDirectoryModelKMLs&#45;&gt;\\JModelList</title>
-<path fill="none" stroke="black" d="M309.595,-2366.85C293.309,-2370.7 276.767,-2375.93 262,-2383 204.778,-2410.41 150.785,-2462.58 121.876,-2493.43"/>
-<polygon fill="none" stroke="black" points="119.296,-2491.06 115.08,-2500.78 124.437,-2495.81 119.296,-2491.06"/>
-</g>
-<!-- \\ChurchDirectoryModelMember -->
-<g id="node38" class="node"><title>\\ChurchDirectoryModelMember</title>
-<polygon fill="none" stroke="black" points="490.628,-2050 303.372,-2050 303.372,-2014 490.628,-2014 490.628,-2050"/>
-<text text-anchor="middle" x="397" y="-2028.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryModelMember</text>
-</g>
-<!-- \\JModelForm -->
-<g id="node95" class="node"><title>\\JModelForm</title>
-<ellipse fill="none" stroke="black" cx="99" cy="-2032" rx="58.0169" ry="18"/>
-<text text-anchor="middle" x="99" y="-2027.8" font-family="Times,serif" font-size="14.00" fill="gray">\JModelForm</text>
-</g>
-<!-- \\ChurchDirectoryModelMember&#45;&gt;\\JModelForm -->
-<g id="edge32" class="edge"><title>\\ChurchDirectoryModelMember&#45;&gt;\\JModelForm</title>
-<path fill="none" stroke="black" d="M303.156,-2032C259.329,-2032 207.971,-2032 167.859,-2032"/>
-<polygon fill="none" stroke="black" points="167.652,-2028.5 157.652,-2032 167.652,-2035.5 167.652,-2028.5"/>
-</g>
-<!-- \\ChurchDirectoryModelMembers -->
-<g id="node39" class="node"><title>\\ChurchDirectoryModelMembers</title>
-<polygon fill="none" stroke="black" points="494.229,-2320 299.771,-2320 299.771,-2284 494.229,-2284 494.229,-2320"/>
-<text text-anchor="middle" x="397" y="-2298.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryModelMembers</text>
-</g>
-<!-- \\ChurchDirectoryModelMembers&#45;&gt;\\JModelList -->
-<g id="edge33" class="edge"><title>\\ChurchDirectoryModelMembers&#45;&gt;\\JModelList</title>
-<path fill="none" stroke="black" d="M299.771,-2313.27C286.553,-2317.11 273.565,-2322.22 262,-2329 193.209,-2369.35 139.413,-2449.74 114.74,-2491.48"/>
-<polygon fill="none" stroke="black" points="111.642,-2489.84 109.648,-2500.25 117.696,-2493.36 111.642,-2489.84"/>
-</g>
-<!-- \\ChurchDirectoryModelPosition -->
-<g id="node40" class="node"><title>\\ChurchDirectoryModelPosition</title>
-<polygon fill="none" stroke="black" points="497.33,-3022 296.67,-3022 296.67,-2986 497.33,-2986 497.33,-3022"/>
-<text text-anchor="middle" x="397" y="-3000.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryModelPosition</text>
-</g>
-<!-- \\ChurchDirectoryModelPosition&#45;&gt;\\JModelAdmin -->
-<g id="edge34" class="edge"><title>\\ChurchDirectoryModelPosition&#45;&gt;\\JModelAdmin</title>
-<path fill="none" stroke="black" d="M299.057,-2985.94C286.534,-2983.18 273.925,-2980.18 262,-2977 223.057,-2966.63 179.793,-2952.05 147.778,-2940.65"/>
-<polygon fill="none" stroke="black" points="148.815,-2937.3 138.221,-2937.22 146.453,-2943.89 148.815,-2937.3"/>
-</g>
-<!-- \\ChurchDirectoryModelPositions -->
-<g id="node41" class="node"><title>\\ChurchDirectoryModelPositions</title>
-<polygon fill="none" stroke="black" points="500.932,-2806 293.068,-2806 293.068,-2770 500.932,-2770 500.932,-2806"/>
-<text text-anchor="middle" x="397" y="-2784.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryModelPositions</text>
-</g>
-<!-- \\ChurchDirectoryModelPositions&#45;&gt;\\JModelList -->
-<g id="edge35" class="edge"><title>\\ChurchDirectoryModelPositions&#45;&gt;\\JModelList</title>
-<path fill="none" stroke="black" d="M293.102,-2776.06C282.084,-2772.26 271.46,-2767.35 262,-2761 180.876,-2706.59 130.105,-2596.45 109.946,-2545.28"/>
-<polygon fill="none" stroke="black" points="113.181,-2543.94 106.323,-2535.86 106.649,-2546.45 113.181,-2543.94"/>
-</g>
-<!-- \\ChurchDirectoryModelReports -->
-<g id="node42" class="node"><title>\\ChurchDirectoryModelReports</title>
-<polygon fill="none" stroke="black" points="494.229,-3130 299.771,-3130 299.771,-3094 494.229,-3094 494.229,-3130"/>
-<text text-anchor="middle" x="397" y="-3108.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryModelReports</text>
-</g>
-<!-- \\ChurchDirectoryModelReports&#45;&gt;\\JModelLegacy -->
-<g id="edge36" class="edge"><title>\\ChurchDirectoryModelReports&#45;&gt;\\JModelLegacy</title>
-<path fill="none" stroke="black" d="M299.488,-3129.61C254.946,-3137.73 203.296,-3147.16 163.713,-3154.38"/>
-<polygon fill="none" stroke="black" points="162.872,-3150.97 153.663,-3156.21 164.129,-3157.86 162.872,-3150.97"/>
-</g>
-<!-- \\ChurchDirectoryTableDirHeader -->
-<g id="node43" class="node"><title>\\ChurchDirectoryTableDirHeader</title>
-<polygon fill="none" stroke="black" points="500.932,-1780 293.068,-1780 293.068,-1744 500.932,-1744 500.932,-1780"/>
-<text text-anchor="middle" x="397" y="-1758.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryTableDirHeader</text>
-</g>
-<!-- \\JTable -->
-<g id="node96" class="node"><title>\\JTable</title>
-<ellipse fill="none" stroke="black" cx="99" cy="-1870" rx="35.5377" ry="18"/>
-<text text-anchor="middle" x="99" y="-1865.8" font-family="Times,serif" font-size="14.00" fill="gray">\JTable</text>
-</g>
-<!-- \\ChurchDirectoryTableDirHeader&#45;&gt;\\JTable -->
-<g id="edge37" class="edge"><title>\\ChurchDirectoryTableDirHeader&#45;&gt;\\JTable</title>
-<path fill="none" stroke="black" d="M293.188,-1779.8C282.55,-1782.51 271.986,-1785.57 262,-1789 214.503,-1805.33 163.208,-1832.82 131.346,-1851.18"/>
-<polygon fill="none" stroke="black" points="129.381,-1848.28 122.501,-1856.33 132.904,-1854.32 129.381,-1848.28"/>
-</g>
-<!-- \\ChurchDirectoryTableFamilyUnit -->
-<g id="node44" class="node"><title>\\ChurchDirectoryTableFamilyUnit</title>
-<polygon fill="none" stroke="black" points="504.032,-1996 289.968,-1996 289.968,-1960 504.032,-1960 504.032,-1996"/>
-<text text-anchor="middle" x="397" y="-1974.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryTableFamilyUnit</text>
-</g>
-<!-- \\ChurchDirectoryTableFamilyUnit&#45;&gt;\\JTable -->
-<g id="edge38" class="edge"><title>\\ChurchDirectoryTableFamilyUnit&#45;&gt;\\JTable</title>
-<path fill="none" stroke="black" d="M292.113,-1959.92C281.838,-1957.28 271.65,-1954.32 262,-1951 214.503,-1934.67 163.208,-1907.18 131.346,-1888.82"/>
-<polygon fill="none" stroke="black" points="132.904,-1885.68 122.501,-1883.67 129.381,-1891.72 132.904,-1885.68"/>
-</g>
-<!-- \\ChurchDirectoryTableKML -->
-<g id="node45" class="node"><title>\\ChurchDirectoryTableKML</title>
-<polygon fill="none" stroke="black" points="480.825,-1942 313.175,-1942 313.175,-1906 480.825,-1906 480.825,-1942"/>
-<text text-anchor="middle" x="397" y="-1920.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryTableKML</text>
-</g>
-<!-- \\ChurchDirectoryTableKML&#45;&gt;\\JTable -->
-<g id="edge39" class="edge"><title>\\ChurchDirectoryTableKML&#45;&gt;\\JTable</title>
-<path fill="none" stroke="black" d="M313.154,-1908.89C257.619,-1898.75 186.793,-1885.83 142.407,-1877.74"/>
-<polygon fill="none" stroke="black" points="143.002,-1874.29 132.536,-1875.94 141.746,-1881.17 143.002,-1874.29"/>
-</g>
-<!-- \\ChurchDirectoryTableMember -->
-<g id="node46" class="node"><title>\\ChurchDirectoryTableMember</title>
-<polygon fill="none" stroke="black" points="490.628,-1888 303.372,-1888 303.372,-1852 490.628,-1852 490.628,-1888"/>
-<text text-anchor="middle" x="397" y="-1866.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryTableMember</text>
-</g>
-<!-- \\ChurchDirectoryTableMember&#45;&gt;\\JTable -->
-<g id="edge40" class="edge"><title>\\ChurchDirectoryTableMember&#45;&gt;\\JTable</title>
-<path fill="none" stroke="black" d="M303.156,-1870C250.327,-1870 186.556,-1870 144.728,-1870"/>
-<polygon fill="none" stroke="black" points="144.587,-1866.5 134.587,-1870 144.586,-1873.5 144.587,-1866.5"/>
-</g>
-<!-- \\ChurchDirectoryTablePosition -->
-<g id="node47" class="node"><title>\\ChurchDirectoryTablePosition</title>
-<polygon fill="none" stroke="black" points="497.33,-1834 296.67,-1834 296.67,-1798 497.33,-1798 497.33,-1834"/>
-<text text-anchor="middle" x="397" y="-1812.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryTablePosition</text>
-</g>
-<!-- \\ChurchDirectoryTablePosition&#45;&gt;\\JTable -->
-<g id="edge41" class="edge"><title>\\ChurchDirectoryTablePosition&#45;&gt;\\JTable</title>
-<path fill="none" stroke="black" d="M297.025,-1834.06C244.613,-1843.62 182.954,-1854.87 142.757,-1862.2"/>
-<polygon fill="none" stroke="black" points="141.977,-1858.78 132.768,-1864.02 143.233,-1865.67 141.977,-1858.78"/>
-</g>
-<!-- \\ChurchDirectoryViewCpanel -->
-<g id="node48" class="node"><title>\\ChurchDirectoryViewCpanel</title>
-<polygon fill="none" stroke="black" points="487.527,-430 306.473,-430 306.473,-394 487.527,-394 487.527,-430"/>
-<text text-anchor="middle" x="397" y="-408.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryViewCpanel</text>
-</g>
-<!-- \\JViewLegacy -->
-<g id="node97" class="node"><title>\\JViewLegacy</title>
-<ellipse fill="none" stroke="black" cx="99" cy="-1141" rx="60.8094" ry="18"/>
-<text text-anchor="middle" x="99" y="-1136.8" font-family="Times,serif" font-size="14.00" fill="gray">\JViewLegacy</text>
-</g>
-<!-- \\ChurchDirectoryViewCpanel&#45;&gt;\\JViewLegacy -->
-<g id="edge42" class="edge"><title>\\ChurchDirectoryViewCpanel&#45;&gt;\\JViewLegacy</title>
-<path fill="none" stroke="black" d="M306.475,-415.425C289.987,-419.843 274.165,-427.171 262,-439 162.325,-535.925 113.599,-993.9 102.5,-1112.76"/>
-<polygon fill="none" stroke="black" points="98.9998,-1112.6 101.57,-1122.88 105.97,-1113.24 98.9998,-1112.6"/>
-</g>
-<!-- \\ChurchDirectoryViewDatabase -->
-<g id="node49" class="node"><title>\\ChurchDirectoryViewDatabase</title>
-<polygon fill="none" stroke="black" points="494.229,-1726 299.771,-1726 299.771,-1690 494.229,-1690 494.229,-1726"/>
-<text text-anchor="middle" x="397" y="-1704.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryViewDatabase</text>
-</g>
-<!-- \\ChurchDirectoryViewDatabase&#45;&gt;\\JViewLegacy -->
-<g id="edge43" class="edge"><title>\\ChurchDirectoryViewDatabase&#45;&gt;\\JViewLegacy</title>
-<path fill="none" stroke="black" d="M299.822,-1701.84C285.908,-1697.39 272.699,-1690.75 262,-1681 107.661,-1540.33 98.0565,-1259.07 99.1398,-1169.26"/>
-<polygon fill="none" stroke="black" points="102.643,-1169.1 99.3214,-1159.04 95.6441,-1168.98 102.643,-1169.1"/>
-</g>
-<!-- \\ChurchDirectoryViewDirHeader -->
-<g id="node50" class="node"><title>\\ChurchDirectoryViewDirHeader</title>
-<polygon fill="none" stroke="black" points="497.33,-1672 296.67,-1672 296.67,-1636 497.33,-1636 497.33,-1672"/>
-<text text-anchor="middle" x="397" y="-1650.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryViewDirHeader</text>
-</g>
-<!-- \\ChurchDirectoryViewDirHeader&#45;&gt;\\JViewLegacy -->
-<g id="edge44" class="edge"><title>\\ChurchDirectoryViewDirHeader&#45;&gt;\\JViewLegacy</title>
-<path fill="none" stroke="black" d="M296.662,-1646.43C283.969,-1642.05 271.957,-1635.8 262,-1627 121.562,-1502.84 102.562,-1253.71 100.232,-1169.53"/>
-<polygon fill="none" stroke="black" points="103.729,-1169.36 100.013,-1159.44 96.7309,-1169.51 103.729,-1169.36"/>
-</g>
-<!-- \\ChurchDirectoryViewDirHeaders -->
-<g id="node51" class="node"><title>\\ChurchDirectoryViewDirHeaders</title>
-<polygon fill="none" stroke="black" points="500.932,-1618 293.068,-1618 293.068,-1582 500.932,-1582 500.932,-1618"/>
-<text text-anchor="middle" x="397" y="-1596.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryViewDirHeaders</text>
-</g>
-<!-- \\ChurchDirectoryViewDirHeaders&#45;&gt;\\JViewLegacy -->
-<g id="edge45" class="edge"><title>\\ChurchDirectoryViewDirHeaders&#45;&gt;\\JViewLegacy</title>
-<path fill="none" stroke="black" d="M293.224,-1590.76C281.863,-1586.53 271.124,-1580.77 262,-1573 135.029,-1464.87 107.433,-1246.87 101.554,-1169.24"/>
-<polygon fill="none" stroke="black" points="105.045,-1168.98 100.861,-1159.25 98.0616,-1169.46 105.045,-1168.98"/>
-</g>
-<!-- \\ChurchDirectoryViewFamilyUnit -->
-<g id="node52" class="node"><title>\\ChurchDirectoryViewFamilyUnit</title>
-<polygon fill="none" stroke="black" points="500.932,-1564 293.068,-1564 293.068,-1528 500.932,-1528 500.932,-1564"/>
-<text text-anchor="middle" x="397" y="-1542.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryViewFamilyUnit</text>
-</g>
-<!-- \\ChurchDirectoryViewFamilyUnit&#45;&gt;\\JViewLegacy -->
-<g id="edge46" class="edge"><title>\\ChurchDirectoryViewFamilyUnit&#45;&gt;\\JViewLegacy</title>
-<path fill="none" stroke="black" d="M293.227,-1536.22C281.932,-1532.07 271.209,-1526.48 262,-1519 148.421,-1426.71 112.866,-1239.87 103.205,-1169.06"/>
-<polygon fill="none" stroke="black" points="106.671,-1168.57 101.915,-1159.1 99.7288,-1169.47 106.671,-1168.57"/>
-</g>
-<!-- \\ChurchDirectoryViewFamilyUnits -->
-<g id="node53" class="node"><title>\\ChurchDirectoryViewFamilyUnits</title>
-<polygon fill="none" stroke="black" points="504.032,-1510 289.968,-1510 289.968,-1474 504.032,-1474 504.032,-1510"/>
-<text text-anchor="middle" x="397" y="-1488.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryViewFamilyUnits</text>
-</g>
-<!-- \\ChurchDirectoryViewFamilyUnits&#45;&gt;\\JViewLegacy -->
-<g id="edge47" class="edge"><title>\\ChurchDirectoryViewFamilyUnits&#45;&gt;\\JViewLegacy</title>
-<path fill="none" stroke="black" d="M289.915,-1480.3C279.909,-1476.42 270.388,-1471.42 262,-1465 161.895,-1388.43 119.243,-1233.18 105.439,-1169.37"/>
-<polygon fill="none" stroke="black" points="108.795,-1168.32 103.327,-1159.24 101.943,-1169.75 108.795,-1168.32"/>
-</g>
-<!-- \\ChurchDirectoryViewGeoStatus -->
-<g id="node54" class="node"><title>\\ChurchDirectoryViewGeoStatus</title>
-<polygon fill="none" stroke="black" points="497.33,-1456 296.67,-1456 296.67,-1420 497.33,-1420 497.33,-1456"/>
-<text text-anchor="middle" x="397" y="-1434.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryViewGeoStatus</text>
-</g>
-<!-- \\ChurchDirectoryViewGeoStatus&#45;&gt;\\JViewLegacy -->
-<g id="edge48" class="edge"><title>\\ChurchDirectoryViewGeoStatus&#45;&gt;\\JViewLegacy</title>
-<path fill="none" stroke="black" d="M296.582,-1427.79C284.263,-1423.76 272.373,-1418.32 262,-1411 174.729,-1349.4 126.3,-1224.53 108.263,-1168.87"/>
-<polygon fill="none" stroke="black" points="111.498,-1167.49 105.153,-1159 104.822,-1169.59 111.498,-1167.49"/>
-</g>
-<!-- \\ChurchDirectoryViewGeoUpdate -->
-<g id="node55" class="node"><title>\\ChurchDirectoryViewGeoUpdate</title>
-<polygon fill="none" stroke="black" points="497.33,-1402 296.67,-1402 296.67,-1366 497.33,-1366 497.33,-1402"/>
-<text text-anchor="middle" x="397" y="-1380.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryViewGeoUpdate</text>
-</g>
-<!-- \\ChurchDirectoryViewGeoUpdate&#45;&gt;\\JViewLegacy -->
-<g id="edge49" class="edge"><title>\\ChurchDirectoryViewGeoUpdate&#45;&gt;\\JViewLegacy</title>
-<path fill="none" stroke="black" d="M296.568,-1372.55C284.386,-1368.71 272.536,-1363.65 262,-1357 187.247,-1309.81 134.717,-1214.93 112.234,-1168.23"/>
-<polygon fill="none" stroke="black" points="115.327,-1166.58 107.895,-1159.03 108.995,-1169.57 115.327,-1166.58"/>
-</g>
-<!-- \\ChurchDirectoryViewInfo -->
-<g id="node56" class="node"><title>\\ChurchDirectoryViewInfo</title>
-<polygon fill="none" stroke="black" points="480.825,-1348 313.175,-1348 313.175,-1312 480.825,-1312 480.825,-1348"/>
-<text text-anchor="middle" x="397" y="-1326.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryViewInfo</text>
-</g>
-<!-- \\ChurchDirectoryViewInfo&#45;&gt;\\JViewLegacy -->
-<g id="edge50" class="edge"><title>\\ChurchDirectoryViewInfo&#45;&gt;\\JViewLegacy</title>
-<path fill="none" stroke="black" d="M312.937,-1321.13C295.443,-1317.13 277.582,-1311.35 262,-1303 199.203,-1269.33 144.966,-1203.46 118.059,-1166.94"/>
-<polygon fill="none" stroke="black" points="120.827,-1164.79 112.124,-1158.75 115.16,-1168.9 120.827,-1164.79"/>
-</g>
-<!-- \\ChurchDirectoryViewKML -->
-<g id="node57" class="node"><title>\\ChurchDirectoryViewKML</title>
-<polygon fill="none" stroke="black" points="477.724,-1294 316.276,-1294 316.276,-1258 477.724,-1258 477.724,-1294"/>
-<text text-anchor="middle" x="397" y="-1272.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryViewKML</text>
-</g>
-<!-- \\ChurchDirectoryViewKML&#45;&gt;\\JViewLegacy -->
-<g id="edge51" class="edge"><title>\\ChurchDirectoryViewKML&#45;&gt;\\JViewLegacy</title>
-<path fill="none" stroke="black" d="M316.183,-1265.21C297.969,-1261.31 278.987,-1256.05 262,-1249 210.919,-1227.8 158.958,-1189.58 128.108,-1164.76"/>
-<polygon fill="none" stroke="black" points="129.947,-1161.74 119.984,-1158.14 125.525,-1167.17 129.947,-1161.74"/>
-</g>
-<!-- \\ChurchDirectoryViewMember -->
-<g id="node58" class="node"><title>\\ChurchDirectoryViewMember</title>
-<polygon fill="none" stroke="black" points="487.527,-1186 306.473,-1186 306.473,-1150 487.527,-1150 487.527,-1186"/>
-<text text-anchor="middle" x="397" y="-1164.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryViewMember</text>
-</g>
-<!-- \\ChurchDirectoryViewMember&#45;&gt;\\JViewLegacy -->
-<g id="edge52" class="edge"><title>\\ChurchDirectoryViewMember&#45;&gt;\\JViewLegacy</title>
-<path fill="none" stroke="black" d="M306.387,-1159.83C261.681,-1155.75 208.51,-1150.9 167.334,-1147.14"/>
-<polygon fill="none" stroke="black" points="167.413,-1143.63 157.136,-1146.21 166.777,-1150.61 167.413,-1143.63"/>
-</g>
-<!-- \\ChurchDirectoryViewMembers -->
-<g id="node59" class="node"><title>\\ChurchDirectoryViewMembers</title>
-<polygon fill="none" stroke="black" points="490.628,-1132 303.372,-1132 303.372,-1096 490.628,-1096 490.628,-1132"/>
-<text text-anchor="middle" x="397" y="-1110.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryViewMembers</text>
-</g>
-<!-- \\ChurchDirectoryViewMembers&#45;&gt;\\JViewLegacy -->
-<g id="edge53" class="edge"><title>\\ChurchDirectoryViewMembers&#45;&gt;\\JViewLegacy</title>
-<path fill="none" stroke="black" d="M303.156,-1122.47C259.079,-1126.49 207.387,-1131.2 167.176,-1134.87"/>
-<polygon fill="none" stroke="black" points="166.852,-1131.39 157.212,-1135.78 167.488,-1138.36 166.852,-1131.39"/>
-</g>
-<!-- \\ChurchDirectoryViewPosition -->
-<g id="node60" class="node"><title>\\ChurchDirectoryViewPosition</title>
-<polygon fill="none" stroke="black" points="494.229,-1078 299.771,-1078 299.771,-1042 494.229,-1042 494.229,-1078"/>
-<text text-anchor="middle" x="397" y="-1056.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryViewPosition</text>
-</g>
-<!-- \\ChurchDirectoryViewPosition&#45;&gt;\\JViewLegacy -->
-<g id="edge54" class="edge"><title>\\ChurchDirectoryViewPosition&#45;&gt;\\JViewLegacy</title>
-<path fill="none" stroke="black" d="M299.78,-1077.9C287.019,-1080.71 274.154,-1083.76 262,-1087 222.797,-1097.44 179.216,-1112.15 147.139,-1123.58"/>
-<polygon fill="none" stroke="black" points="145.801,-1120.34 137.571,-1127.01 148.166,-1126.93 145.801,-1120.34"/>
-</g>
 <!-- \\ChurchDirectoryViewPositions -->
-<g id="node61" class="node"><title>\\ChurchDirectoryViewPositions</title>
-<polygon fill="none" stroke="black" points="497.33,-1024 296.67,-1024 296.67,-988 497.33,-988 497.33,-1024"/>
-<text text-anchor="middle" x="397" y="-1002.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryViewPositions</text>
+<g id="node21" class="node"><title>\\ChurchDirectoryViewPositions</title>
+<polygon fill="none" stroke="black" points="497.33,-2158 296.67,-2158 296.67,-2122 497.33,-2122 497.33,-2158"/>
+<text text-anchor="middle" x="397" y="-2136.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryViewPositions</text>
 </g>
 <!-- \\ChurchDirectoryViewPositions&#45;&gt;\\JViewLegacy -->
-<g id="edge55" class="edge"><title>\\ChurchDirectoryViewPositions&#45;&gt;\\JViewLegacy</title>
-<path fill="none" stroke="black" d="M296.627,-1021.48C284.749,-1024.65 272.959,-1028.45 262,-1033 210.919,-1054.2 158.958,-1092.42 128.108,-1117.24"/>
-<polygon fill="none" stroke="black" points="125.525,-1114.83 119.984,-1123.86 129.947,-1120.26 125.525,-1114.83"/>
+<g id="edge19" class="edge"><title>\\ChurchDirectoryViewPositions&#45;&gt;\\JViewLegacy</title>
+<path fill="none" stroke="black" d="M296.632,-2148.57C284.092,-2152.83 272.13,-2158.77 262,-2167 148.421,-2259.29 112.866,-2446.13 103.205,-2516.94"/>
+<polygon fill="none" stroke="black" points="99.7288,-2516.53 101.915,-2526.9 106.671,-2517.43 99.7288,-2516.53"/>
+</g>
+<!-- \\ChurchDirectoryControllerDatabase -->
+<g id="node22" class="node"><title>\\ChurchDirectoryControllerDatabase</title>
+<polygon fill="none" stroke="black" points="513.836,-1078 280.164,-1078 280.164,-1042 513.836,-1042 513.836,-1078"/>
+<text text-anchor="middle" x="397" y="-1056.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryControllerDatabase</text>
+</g>
+<!-- \\JControllerLegacy -->
+<g id="node94" class="node"><title>\\JControllerLegacy</title>
+<ellipse fill="none" stroke="black" cx="99" cy="-1087" rx="78.2521" ry="18"/>
+<text text-anchor="middle" x="99" y="-1082.8" font-family="Times,serif" font-size="14.00" fill="gray">\JControllerLegacy</text>
+</g>
+<!-- \\ChurchDirectoryControllerDatabase&#45;&gt;\\JControllerLegacy -->
+<g id="edge20" class="edge"><title>\\ChurchDirectoryControllerDatabase&#45;&gt;\\JControllerLegacy</title>
+<path fill="none" stroke="black" d="M279.863,-1070.59C247.267,-1073.57 212.507,-1076.74 182.32,-1079.49"/>
+<polygon fill="none" stroke="black" points="181.908,-1076.01 172.268,-1080.41 182.544,-1082.99 181.908,-1076.01"/>
+</g>
+<!-- \\ChurchDirectoryViewDirHeader -->
+<g id="node23" class="node"><title>\\ChurchDirectoryViewDirHeader</title>
+<polygon fill="none" stroke="black" points="497.33,-2104 296.67,-2104 296.67,-2068 497.33,-2068 497.33,-2104"/>
+<text text-anchor="middle" x="397" y="-2082.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryViewDirHeader</text>
+</g>
+<!-- \\ChurchDirectoryViewDirHeader&#45;&gt;\\JViewLegacy -->
+<g id="edge21" class="edge"><title>\\ChurchDirectoryViewDirHeader&#45;&gt;\\JViewLegacy</title>
+<path fill="none" stroke="black" d="M296.616,-2094.03C284.005,-2098.35 272.027,-2104.46 262,-2113 135.029,-2221.13 107.433,-2439.13 101.554,-2516.76"/>
+<polygon fill="none" stroke="black" points="98.0616,-2516.54 100.861,-2526.75 105.045,-2517.02 98.0616,-2516.54"/>
+</g>
+<!-- \\ChurchDirectoryControllerPosition -->
+<g id="node24" class="node"><title>\\ChurchDirectoryControllerPosition</title>
+<polygon fill="none" stroke="black" points="513.836,-4210 280.164,-4210 280.164,-4174 513.836,-4174 513.836,-4210"/>
+<text text-anchor="middle" x="397" y="-4188.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryControllerPosition</text>
+</g>
+<!-- \\ChurchDirectoryControllerPosition&#45;&gt;\\JControllerForm -->
+<g id="edge22" class="edge"><title>\\ChurchDirectoryControllerPosition&#45;&gt;\\JControllerForm</title>
+<path fill="none" stroke="black" d="M279.863,-4192C246.685,-4192 211.265,-4192 180.707,-4192"/>
+<polygon fill="none" stroke="black" points="180.541,-4188.5 170.541,-4192 180.541,-4195.5 180.541,-4188.5"/>
 </g>
 <!-- \\ChurchDirectoryViewReports -->
-<g id="node62" class="node"><title>\\ChurchDirectoryViewReports</title>
-<polygon fill="none" stroke="black" points="490.628,-754 303.372,-754 303.372,-718 490.628,-718 490.628,-754"/>
-<text text-anchor="middle" x="397" y="-732.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryViewReports</text>
+<g id="node25" class="node"><title>\\ChurchDirectoryViewReports</title>
+<polygon fill="none" stroke="black" points="490.628,-3292 303.372,-3292 303.372,-3256 490.628,-3256 490.628,-3292"/>
+<text text-anchor="middle" x="397" y="-3270.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryViewReports</text>
 </g>
 <!-- \\ChurchDirectoryViewReports&#45;&gt;\\JViewLegacy -->
-<g id="edge56" class="edge"><title>\\ChurchDirectoryViewReports&#45;&gt;\\JViewLegacy</title>
-<path fill="none" stroke="black" d="M303.175,-742.517C288.279,-746.844 273.879,-753.347 262,-763 148.421,-855.293 112.866,-1042.13 103.205,-1112.94"/>
-<polygon fill="none" stroke="black" points="99.7288,-1112.53 101.915,-1122.9 106.671,-1113.43 99.7288,-1112.53"/>
-</g>
-<!-- \\ModBirthdayAnniversaryHelper -->
-<g id="node63" class="node"><title>\\ModBirthdayAnniversaryHelper</title>
-<polygon fill="none" stroke="black" points="497.33,-1240 296.67,-1240 296.67,-1204 497.33,-1204 497.33,-1240"/>
-<text text-anchor="middle" x="397" y="-1218.7" font-family="Courier,monospace" font-size="11.00">ModBirthdayAnniversaryHelper</text>
-</g>
-<!-- \\PlgFinderChurchDirectory -->
-<g id="node64" class="node"><title>\\PlgFinderChurchDirectory</title>
-<polygon fill="none" stroke="black" points="484.426,-376 309.574,-376 309.574,-340 484.426,-340 484.426,-376"/>
-<text text-anchor="middle" x="397" y="-354.7" font-family="Courier,monospace" font-size="11.00">PlgFinderChurchDirectory</text>
-</g>
-<!-- \\FinderIndexerAdapter -->
-<g id="node98" class="node"><title>\\FinderIndexerAdapter</title>
-<ellipse fill="none" stroke="black" cx="99" cy="-358" rx="91.2807" ry="18"/>
-<text text-anchor="middle" x="99" y="-353.8" font-family="Times,serif" font-size="14.00" fill="gray">\FinderIndexerAdapter</text>
-</g>
-<!-- \\PlgFinderChurchDirectory&#45;&gt;\\FinderIndexerAdapter -->
-<g id="edge57" class="edge"><title>\\PlgFinderChurchDirectory&#45;&gt;\\FinderIndexerAdapter</title>
-<path fill="none" stroke="black" d="M309.589,-358C275.498,-358 236.101,-358 200.729,-358"/>
-<polygon fill="none" stroke="black" points="200.381,-354.5 190.381,-358 200.381,-361.5 200.381,-354.5"/>
-</g>
-<!-- \\PlgSearchChurchdirectory -->
-<g id="node65" class="node"><title>\\PlgSearchChurchdirectory</title>
-<polygon fill="none" stroke="black" points="484.426,-322 309.574,-322 309.574,-286 484.426,-286 484.426,-322"/>
-<text text-anchor="middle" x="397" y="-300.7" font-family="Courier,monospace" font-size="11.00">PlgSearchChurchdirectory</text>
-</g>
-<!-- \\JPlugin -->
-<g id="node99" class="node"><title>\\JPlugin</title>
-<ellipse fill="none" stroke="black" cx="99" cy="-304" rx="39.206" ry="18"/>
-<text text-anchor="middle" x="99" y="-299.8" font-family="Times,serif" font-size="14.00" fill="gray">\JPlugin</text>
-</g>
-<!-- \\PlgSearchChurchdirectory&#45;&gt;\\JPlugin -->
-<g id="edge58" class="edge"><title>\\PlgSearchChurchdirectory&#45;&gt;\\JPlugin</title>
-<path fill="none" stroke="black" d="M309.589,-304C256.983,-304 191.741,-304 148.152,-304"/>
-<polygon fill="none" stroke="black" points="148.104,-300.5 138.104,-304 148.104,-307.5 148.104,-300.5"/>
-</g>
-<!-- \\ChurchDirectoryControllerHome -->
-<g id="node66" class="node"><title>\\ChurchDirectoryControllerHome</title>
-<polygon fill="none" stroke="black" points="500.932,-3670 293.068,-3670 293.068,-3634 500.932,-3634 500.932,-3670"/>
-<text text-anchor="middle" x="397" y="-3648.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryControllerHome</text>
-</g>
-<!-- \\ChurchDirectoryControllerHome&#45;&gt;\\JControllerForm -->
-<g id="edge59" class="edge"><title>\\ChurchDirectoryControllerHome&#45;&gt;\\JControllerForm</title>
-<path fill="none" stroke="black" d="M293.188,-3669.8C282.55,-3672.51 271.986,-3675.57 262,-3679 216.939,-3694.5 168.459,-3720.03 136.398,-3738.29"/>
-<polygon fill="none" stroke="black" points="134.324,-3735.44 127.403,-3743.46 137.816,-3741.51 134.324,-3735.44"/>
-</g>
-<!-- \\ChurchDirectoryCategories -->
-<g id="node67" class="node"><title>\\ChurchDirectoryCategories</title>
-<polygon fill="none" stroke="black" points="487.527,-268 306.473,-268 306.473,-232 487.527,-232 487.527,-268"/>
-<text text-anchor="middle" x="397" y="-246.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryCategories</text>
-</g>
-<!-- \\JCategories -->
-<g id="node100" class="node"><title>\\JCategories</title>
-<ellipse fill="none" stroke="black" cx="99" cy="-250" rx="53.6471" ry="18"/>
-<text text-anchor="middle" x="99" y="-245.8" font-family="Times,serif" font-size="14.00" fill="gray">\JCategories</text>
-</g>
-<!-- \\ChurchDirectoryCategories&#45;&gt;\\JCategories -->
-<g id="edge60" class="edge"><title>\\ChurchDirectoryCategories&#45;&gt;\\JCategories</title>
-<path fill="none" stroke="black" d="M306.387,-250C260.171,-250 204.91,-250 163.205,-250"/>
-<polygon fill="none" stroke="black" points="163.178,-246.5 153.178,-250 163.178,-253.5 163.178,-246.5"/>
-</g>
-<!-- \\DirectoryHeaderHelper -->
-<g id="node68" class="node"><title>\\DirectoryHeaderHelper</title>
-<polygon fill="none" stroke="black" points="474.123,-970 319.877,-970 319.877,-934 474.123,-934 474.123,-970"/>
-<text text-anchor="middle" x="397" y="-948.7" font-family="Courier,monospace" font-size="11.00">DirectoryHeaderHelper</text>
-</g>
-<!-- \\JHtmlIcon -->
-<g id="node69" class="node"><title>\\JHtmlIcon</title>
-<polygon fill="none" stroke="black" points="434.911,-916 359.089,-916 359.089,-880 434.911,-880 434.911,-916"/>
-<text text-anchor="middle" x="397" y="-894.7" font-family="Courier,monospace" font-size="11.00">JHtmlIcon</text>
-</g>
-<!-- \\ChurchDirectoryRenderHelper -->
-<g id="node70" class="node"><title>\\ChurchDirectoryRenderHelper</title>
-<polygon fill="none" stroke="black" points="494.229,-862 299.771,-862 299.771,-826 494.229,-826 494.229,-862"/>
-<text text-anchor="middle" x="397" y="-840.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryRenderHelper</text>
-</g>
-<!-- \\ChurchDirectoryHelperRoute -->
-<g id="node71" class="node"><title>\\ChurchDirectoryHelperRoute</title>
-<polygon fill="none" stroke="black" points="490.628,-808 303.372,-808 303.372,-772 490.628,-772 490.628,-808"/>
-<text text-anchor="start" x="363.995" y="-792.2" font-family="Courier,monospace" font-size="11.00">«abstract»</text>
-<text text-anchor="start" x="311.186" y="-781.2" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryHelperRoute</text>
-</g>
-<!-- \\ChurchDirectoryModelCategories -->
-<g id="node72" class="node"><title>\\ChurchDirectoryModelCategories</title>
-<polygon fill="none" stroke="black" points="504.032,-2482 289.968,-2482 289.968,-2446 504.032,-2446 504.032,-2482"/>
-<text text-anchor="middle" x="397" y="-2460.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryModelCategories</text>
-</g>
-<!-- \\ChurchDirectoryModelCategories&#45;&gt;\\JModelList -->
-<g id="edge61" class="edge"><title>\\ChurchDirectoryModelCategories&#45;&gt;\\JModelList</title>
-<path fill="none" stroke="black" d="M297.025,-2482.06C250.024,-2490.63 195.587,-2500.56 155.86,-2507.81"/>
-<polygon fill="none" stroke="black" points="155.044,-2504.4 145.834,-2509.64 156.3,-2511.29 155.044,-2504.4"/>
-</g>
-<!-- \\ChurchDirectoryModelCategory -->
-<g id="node73" class="node"><title>\\ChurchDirectoryModelCategory</title>
-<polygon fill="none" stroke="black" points="497.33,-2428 296.67,-2428 296.67,-2392 497.33,-2392 497.33,-2428"/>
-<text text-anchor="middle" x="397" y="-2406.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryModelCategory</text>
-</g>
-<!-- \\ChurchDirectoryModelCategory&#45;&gt;\\JModelList -->
-<g id="edge62" class="edge"><title>\\ChurchDirectoryModelCategory&#45;&gt;\\JModelList</title>
-<path fill="none" stroke="black" d="M296.417,-2426.99C284.692,-2429.9 272.996,-2433.22 262,-2437 216.127,-2452.78 166.711,-2478.95 134.681,-2497.27"/>
-<polygon fill="none" stroke="black" points="132.632,-2494.41 125.725,-2502.44 136.134,-2500.47 132.632,-2494.41"/>
-</g>
-<!-- \\ChurchDirectoryModelDirectory -->
-<g id="node74" class="node"><title>\\ChurchDirectoryModelDirectory</title>
-<polygon fill="none" stroke="black" points="500.932,-2266 293.068,-2266 293.068,-2230 500.932,-2230 500.932,-2266"/>
-<text text-anchor="middle" x="397" y="-2244.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryModelDirectory</text>
-</g>
-<!-- \\ChurchDirectoryModelDirectory&#45;&gt;\\JModelList -->
-<g id="edge63" class="edge"><title>\\ChurchDirectoryModelDirectory&#45;&gt;\\JModelList</title>
-<path fill="none" stroke="black" d="M293.102,-2259.94C282.084,-2263.74 271.46,-2268.65 262,-2275 180.876,-2329.41 130.105,-2439.55 109.946,-2490.72"/>
-<polygon fill="none" stroke="black" points="106.649,-2489.55 106.323,-2500.14 113.181,-2492.06 106.649,-2489.55"/>
-</g>
-<!-- \\ChurchDirectoryModelFeatured -->
-<g id="node75" class="node"><title>\\ChurchDirectoryModelFeatured</title>
-<polygon fill="none" stroke="black" points="497.33,-2752 296.67,-2752 296.67,-2716 497.33,-2716 497.33,-2752"/>
-<text text-anchor="middle" x="397" y="-2730.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryModelFeatured</text>
-</g>
-<!-- \\ChurchDirectoryModelFeatured&#45;&gt;\\JModelList -->
-<g id="edge64" class="edge"><title>\\ChurchDirectoryModelFeatured&#45;&gt;\\JModelList</title>
-<path fill="none" stroke="black" d="M296.618,-2721.78C284.493,-2718.07 272.644,-2713.24 262,-2707 193.209,-2666.65 139.413,-2586.26 114.74,-2544.52"/>
-<polygon fill="none" stroke="black" points="117.696,-2542.64 109.648,-2535.75 111.642,-2546.16 117.696,-2542.64"/>
-</g>
-<!-- \\ChurchDirectoryModelHome -->
-<g id="node76" class="node"><title>\\ChurchDirectoryModelHome</title>
-<polygon fill="none" stroke="black" points="484.426,-2644 309.574,-2644 309.574,-2608 484.426,-2608 484.426,-2644"/>
-<text text-anchor="middle" x="397" y="-2622.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryModelHome</text>
-</g>
-<!-- \\ChurchDirectoryModelHome&#45;&gt;\\JModelList -->
-<g id="edge65" class="edge"><title>\\ChurchDirectoryModelHome&#45;&gt;\\JModelList</title>
-<path fill="none" stroke="black" d="M309.674,-2612.11C293.624,-2608.55 277.148,-2604.21 262,-2599 216.127,-2583.22 166.711,-2557.05 134.681,-2538.73"/>
-<polygon fill="none" stroke="black" points="136.134,-2535.53 125.725,-2533.56 132.632,-2541.59 136.134,-2535.53"/>
-</g>
-<!-- \\JFormRuleChurchDirectoryEmail -->
-<g id="node77" class="node"><title>\\JFormRuleChurchDirectoryEmail</title>
-<polygon fill="none" stroke="black" points="500.932,-214 293.068,-214 293.068,-178 500.932,-178 500.932,-214"/>
-<text text-anchor="middle" x="397" y="-192.7" font-family="Courier,monospace" font-size="11.00">JFormRuleChurchDirectoryEmail</text>
-</g>
-<!-- \\JFormRuleEmail -->
-<g id="node101" class="node"><title>\\JFormRuleEmail</title>
-<ellipse fill="none" stroke="black" cx="99" cy="-196" rx="72.9826" ry="18"/>
-<text text-anchor="middle" x="99" y="-191.8" font-family="Times,serif" font-size="14.00" fill="gray">\JFormRuleEmail</text>
-</g>
-<!-- \\JFormRuleChurchDirectoryEmail&#45;&gt;\\JFormRuleEmail -->
-<g id="edge66" class="edge"><title>\\JFormRuleChurchDirectoryEmail&#45;&gt;\\JFormRuleEmail</title>
-<path fill="none" stroke="black" d="M292.889,-196C256.751,-196 216.669,-196 182.448,-196"/>
-<polygon fill="none" stroke="black" points="182.026,-192.5 172.026,-196 182.026,-199.5 182.026,-192.5"/>
-</g>
-<!-- \\JFormRuleChurchDirectoryEmailMessage -->
-<g id="node78" class="node"><title>\\JFormRuleChurchDirectoryEmailMessage</title>
-<polygon fill="none" stroke="black" points="523.639,-160 270.361,-160 270.361,-124 523.639,-124 523.639,-160"/>
-<text text-anchor="middle" x="397" y="-138.7" font-family="Courier,monospace" font-size="11.00">JFormRuleChurchDirectoryEmailMessage</text>
-</g>
-<!-- \\JFormRule -->
-<g id="node102" class="node"><title>\\JFormRule</title>
-<ellipse fill="none" stroke="black" cx="99" cy="-115" rx="51.7433" ry="18"/>
-<text text-anchor="middle" x="99" y="-110.8" font-family="Times,serif" font-size="14.00" fill="gray">\JFormRule</text>
-</g>
-<!-- \\JFormRuleChurchDirectoryEmailMessage&#45;&gt;\\JFormRule -->
-<g id="edge67" class="edge"><title>\\JFormRuleChurchDirectoryEmailMessage&#45;&gt;\\JFormRule</title>
-<path fill="none" stroke="black" d="M270.04,-130.51C231.704,-127.014 191.35,-123.333 159.579,-120.435"/>
-<polygon fill="none" stroke="black" points="159.856,-116.945 149.579,-119.522 159.22,-123.916 159.856,-116.945"/>
-</g>
-<!-- \\JFormRuleChurchDirectoryEmailSubject -->
-<g id="node79" class="node"><title>\\JFormRuleChurchDirectoryEmailSubject</title>
-<polygon fill="none" stroke="black" points="523.639,-106 270.361,-106 270.361,-70 523.639,-70 523.639,-106"/>
-<text text-anchor="middle" x="397" y="-84.7" font-family="Courier,monospace" font-size="11.00">JFormRuleChurchDirectoryEmailSubject</text>
-</g>
-<!-- \\JFormRuleChurchDirectoryEmailSubject&#45;&gt;\\JFormRule -->
-<g id="edge68" class="edge"><title>\\JFormRuleChurchDirectoryEmailSubject&#45;&gt;\\JFormRule</title>
-<path fill="none" stroke="black" d="M270.04,-99.4896C231.704,-102.986 191.35,-106.667 159.579,-109.565"/>
-<polygon fill="none" stroke="black" points="159.22,-106.084 149.579,-110.478 159.856,-113.055 159.22,-106.084"/>
-</g>
-<!-- \\ChurchDirectoryRouter -->
-<g id="node80" class="node"><title>\\ChurchDirectoryRouter</title>
-<polygon fill="none" stroke="black" points="474.123,-52 319.877,-52 319.877,-16 474.123,-16 474.123,-52"/>
-<text text-anchor="middle" x="397" y="-30.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryRouter</text>
-</g>
-<!-- \\JComponentRouterBase -->
-<g id="node103" class="node"><title>\\JComponentRouterBase</title>
-<ellipse fill="none" stroke="black" cx="99" cy="-34" rx="98.5657" ry="18"/>
-<text text-anchor="middle" x="99" y="-29.8" font-family="Times,serif" font-size="14.00" fill="gray">\JComponentRouterBase</text>
-</g>
-<!-- \\ChurchDirectoryRouter&#45;&gt;\\JComponentRouterBase -->
-<g id="edge69" class="edge"><title>\\ChurchDirectoryRouter&#45;&gt;\\JComponentRouterBase</title>
-<path fill="none" stroke="black" d="M319.773,-34C285.796,-34 245.161,-34 208.125,-34"/>
-<polygon fill="none" stroke="black" points="207.784,-30.5001 197.784,-34 207.783,-37.5001 207.784,-30.5001"/>
-</g>
-<!-- \\ChurchDirectoryViewCategories -->
-<g id="node81" class="node"><title>\\ChurchDirectoryViewCategories</title>
-<polygon fill="none" stroke="black" points="500.932,-646 293.068,-646 293.068,-610 500.932,-610 500.932,-646"/>
-<text text-anchor="middle" x="397" y="-624.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryViewCategories</text>
-</g>
-<!-- \\ChurchDirectoryViewCategories&#45;&gt;\\JViewLegacy -->
-<g id="edge70" class="edge"><title>\\ChurchDirectoryViewCategories&#45;&gt;\\JViewLegacy</title>
-<path fill="none" stroke="black" d="M293.28,-636.791C281.841,-641.09 271.068,-646.984 262,-655 121.562,-779.155 102.562,-1028.29 100.232,-1112.47"/>
-<polygon fill="none" stroke="black" points="96.7309,-1112.49 100.013,-1122.56 103.729,-1112.64 96.7309,-1112.49"/>
+<g id="edge23" class="edge"><title>\\ChurchDirectoryViewReports&#45;&gt;\\JViewLegacy</title>
+<path fill="none" stroke="black" d="M303.371,-3269.71C288.01,-3265.22 273.399,-3258.08 262,-3247 162.325,-3150.07 113.599,-2692.1 102.5,-2573.24"/>
+<polygon fill="none" stroke="black" points="105.97,-2572.76 101.57,-2563.12 98.9998,-2573.4 105.97,-2572.76"/>
 </g>
 <!-- \\ChurchDirectoryViewCategory -->
-<g id="node82" class="node"><title>\\ChurchDirectoryViewCategory</title>
-<polygon fill="none" stroke="black" points="494.229,-592 299.771,-592 299.771,-556 494.229,-556 494.229,-592"/>
-<text text-anchor="middle" x="397" y="-570.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryViewCategory</text>
+<g id="node26" class="node"><title>\\ChurchDirectoryViewCategory</title>
+<polygon fill="none" stroke="black" points="494.229,-3238 299.771,-3238 299.771,-3202 494.229,-3202 494.229,-3238"/>
+<text text-anchor="middle" x="397" y="-3216.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryViewCategory</text>
 </g>
 <!-- \\ChurchDirectoryViewCategory&#45;&gt;\\JViewLegacy -->
-<g id="edge71" class="edge"><title>\\ChurchDirectoryViewCategory&#45;&gt;\\JViewLegacy</title>
-<path fill="none" stroke="black" d="M299.822,-580.158C285.908,-584.611 272.699,-591.249 262,-601 107.661,-741.666 98.0565,-1022.93 99.1398,-1112.74"/>
-<polygon fill="none" stroke="black" points="95.6441,-1113.02 99.3214,-1122.96 102.643,-1112.9 95.6441,-1113.02"/>
+<g id="edge24" class="edge"><title>\\ChurchDirectoryViewCategory&#45;&gt;\\JViewLegacy</title>
+<path fill="none" stroke="black" d="M299.764,-3214.38C285.773,-3209.87 272.555,-3203.08 262,-3193 169.379,-3104.56 115.989,-2686.35 103.081,-2573.25"/>
+<polygon fill="none" stroke="black" points="106.556,-2572.83 101.959,-2563.28 99.5997,-2573.61 106.556,-2572.83"/>
+</g>
+<!-- \\ChurchDirectoryControllerGeoupdate -->
+<g id="node27" class="node"><title>\\ChurchDirectoryControllerGeoupdate</title>
+<polygon fill="none" stroke="black" points="517.437,-4156 276.563,-4156 276.563,-4120 517.437,-4120 517.437,-4156"/>
+<text text-anchor="middle" x="397" y="-4134.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryControllerGeoupdate</text>
+</g>
+<!-- \\ChurchDirectoryControllerGeoupdate&#45;&gt;\\JControllerForm -->
+<g id="edge25" class="edge"><title>\\ChurchDirectoryControllerGeoupdate&#45;&gt;\\JControllerForm</title>
+<path fill="none" stroke="black" d="M297.025,-4156.06C254.444,-4163.82 205.759,-4172.71 167.439,-4179.7"/>
+<polygon fill="none" stroke="black" points="166.635,-4176.29 157.425,-4181.52 167.891,-4183.17 166.635,-4176.29"/>
+</g>
+<!-- \\ChurchDirectoryModelFeatured -->
+<g id="node28" class="node"><title>\\ChurchDirectoryModelFeatured</title>
+<polygon fill="none" stroke="black" points="497.33,-1618 296.67,-1618 296.67,-1582 497.33,-1582 497.33,-1618"/>
+<text text-anchor="middle" x="397" y="-1596.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryModelFeatured</text>
+</g>
+<!-- \\ChurchDirectoryModelFeatured&#45;&gt;\\JModelList -->
+<g id="edge26" class="edge"><title>\\ChurchDirectoryModelFeatured&#45;&gt;\\JModelList</title>
+<path fill="none" stroke="black" d="M297.025,-1581.94C250.024,-1573.37 195.587,-1563.44 155.86,-1556.19"/>
+<polygon fill="none" stroke="black" points="156.3,-1552.71 145.834,-1554.36 155.044,-1559.6 156.3,-1552.71"/>
+</g>
+<!-- \\ChurchDirectoryHelperRoute -->
+<g id="node29" class="node"><title>\\ChurchDirectoryHelperRoute</title>
+<polygon fill="none" stroke="black" points="490.628,-3076 303.372,-3076 303.372,-3040 490.628,-3040 490.628,-3076"/>
+<text text-anchor="start" x="363.995" y="-3060.2" font-family="Courier,monospace" font-size="11.00">«abstract»</text>
+<text text-anchor="start" x="311.186" y="-3049.2" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryHelperRoute</text>
+</g>
+<!-- \\ChurchDirectoryHelper -->
+<g id="node30" class="node"><title>\\ChurchDirectoryHelper</title>
+<polygon fill="none" stroke="black" points="474.123,-3022 319.877,-3022 319.877,-2986 474.123,-2986 474.123,-3022"/>
+<text text-anchor="middle" x="397" y="-3000.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryHelper</text>
+</g>
+<!-- \\ChurchDirectoryViewMember -->
+<g id="node31" class="node"><title>\\ChurchDirectoryViewMember</title>
+<polygon fill="none" stroke="black" points="487.527,-3130 306.473,-3130 306.473,-3094 487.527,-3094 487.527,-3130"/>
+<text text-anchor="middle" x="397" y="-3108.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryViewMember</text>
+</g>
+<!-- \\ChurchDirectoryViewMember&#45;&gt;\\JViewLegacy -->
+<g id="edge27" class="edge"><title>\\ChurchDirectoryViewMember&#45;&gt;\\JViewLegacy</title>
+<path fill="none" stroke="black" d="M306.368,-3107.77C290.083,-3103.38 274.365,-3096.27 262,-3085 107.661,-2944.33 98.0565,-2663.07 99.1398,-2573.26"/>
+<polygon fill="none" stroke="black" points="102.643,-2573.1 99.3214,-2563.04 95.6441,-2572.98 102.643,-2573.1"/>
+</g>
+<!-- \\PlgSearchChurchdirectory -->
+<g id="node32" class="node"><title>\\PlgSearchChurchdirectory</title>
+<polygon fill="none" stroke="black" points="484.426,-1024 309.574,-1024 309.574,-988 484.426,-988 484.426,-1024"/>
+<text text-anchor="middle" x="397" y="-1002.7" font-family="Courier,monospace" font-size="11.00">PlgSearchChurchdirectory</text>
+</g>
+<!-- \\JPlugin -->
+<g id="node95" class="node"><title>\\JPlugin</title>
+<ellipse fill="none" stroke="black" cx="99" cy="-1006" rx="39.206" ry="18"/>
+<text text-anchor="middle" x="99" y="-1001.8" font-family="Times,serif" font-size="14.00" fill="gray">\JPlugin</text>
+</g>
+<!-- \\PlgSearchChurchdirectory&#45;&gt;\\JPlugin -->
+<g id="edge28" class="edge"><title>\\PlgSearchChurchdirectory&#45;&gt;\\JPlugin</title>
+<path fill="none" stroke="black" d="M309.589,-1006C256.983,-1006 191.741,-1006 148.152,-1006"/>
+<polygon fill="none" stroke="black" points="148.104,-1002.5 138.104,-1006 148.104,-1009.5 148.104,-1002.5"/>
+</g>
+<!-- \\ChurchDirectoryRenderHelper -->
+<g id="node33" class="node"><title>\\ChurchDirectoryRenderHelper</title>
+<polygon fill="none" stroke="black" points="494.229,-2860 299.771,-2860 299.771,-2824 494.229,-2824 494.229,-2860"/>
+<text text-anchor="middle" x="397" y="-2838.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryRenderHelper</text>
+</g>
+<!-- \\JFormFieldSpouse -->
+<g id="node34" class="node"><title>\\JFormFieldSpouse</title>
+<polygon fill="none" stroke="black" points="457.618,-970 336.382,-970 336.382,-934 457.618,-934 457.618,-970"/>
+<text text-anchor="middle" x="397" y="-948.7" font-family="Courier,monospace" font-size="11.00">JFormFieldSpouse</text>
+</g>
+<!-- \\JFormField -->
+<g id="node96" class="node"><title>\\JFormField</title>
+<ellipse fill="none" stroke="black" cx="99" cy="-898" rx="53.197" ry="18"/>
+<text text-anchor="middle" x="99" y="-893.8" font-family="Times,serif" font-size="14.00" fill="gray">\JFormField</text>
+</g>
+<!-- \\JFormFieldSpouse&#45;&gt;\\JFormField -->
+<g id="edge29" class="edge"><title>\\JFormFieldSpouse&#45;&gt;\\JFormField</title>
+<path fill="none" stroke="black" d="M336.1,-941.072C283.521,-931.48 207.616,-917.633 156.177,-908.249"/>
+<polygon fill="none" stroke="black" points="156.695,-904.785 146.23,-906.434 155.439,-911.672 156.695,-904.785"/>
+</g>
+<!-- \\ChurchDirectoryCategories -->
+<g id="node35" class="node"><title>\\ChurchDirectoryCategories</title>
+<polygon fill="none" stroke="black" points="487.527,-808 306.473,-808 306.473,-772 487.527,-772 487.527,-808"/>
+<text text-anchor="middle" x="397" y="-786.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryCategories</text>
+</g>
+<!-- \\JCategories -->
+<g id="node97" class="node"><title>\\JCategories</title>
+<ellipse fill="none" stroke="black" cx="99" cy="-790" rx="53.6471" ry="18"/>
+<text text-anchor="middle" x="99" y="-785.8" font-family="Times,serif" font-size="14.00" fill="gray">\JCategories</text>
+</g>
+<!-- \\ChurchDirectoryCategories&#45;&gt;\\JCategories -->
+<g id="edge30" class="edge"><title>\\ChurchDirectoryCategories&#45;&gt;\\JCategories</title>
+<path fill="none" stroke="black" d="M306.387,-790C260.171,-790 204.91,-790 163.205,-790"/>
+<polygon fill="none" stroke="black" points="163.178,-786.5 153.178,-790 163.178,-793.5 163.178,-786.5"/>
+</g>
+<!-- \\JHtmlMember -->
+<g id="node36" class="node"><title>\\JHtmlMember</title>
+<polygon fill="none" stroke="black" points="441.113,-2698 352.887,-2698 352.887,-2662 441.113,-2662 441.113,-2698"/>
+<text text-anchor="start" x="363.995" y="-2682.2" font-family="Courier,monospace" font-size="11.00">«abstract»</text>
+<text text-anchor="start" x="360.694" y="-2671.2" font-family="Courier,monospace" font-size="11.00">JHtmlMember</text>
+</g>
+<!-- \\JFormFieldModal_Members -->
+<g id="node37" class="node"><title>\\JFormFieldModal_Members</title>
+<polygon fill="none" stroke="black" points="480.825,-916 313.175,-916 313.175,-880 480.825,-880 480.825,-916"/>
+<text text-anchor="middle" x="397" y="-894.7" font-family="Courier,monospace" font-size="11.00">JFormFieldModal_Members</text>
+</g>
+<!-- \\JFormFieldModal_Members&#45;&gt;\\JFormField -->
+<g id="edge31" class="edge"><title>\\JFormFieldModal_Members&#45;&gt;\\JFormField</title>
+<path fill="none" stroke="black" d="M313.154,-898C265.495,-898 206.574,-898 162.767,-898"/>
+<polygon fill="none" stroke="black" points="162.536,-894.5 152.536,-898 162.536,-901.5 162.536,-894.5"/>
+</g>
+<!-- \\ChurchDirectoryControllerReports -->
+<g id="node38" class="node"><title>\\ChurchDirectoryControllerReports</title>
+<polygon fill="none" stroke="black" points="510.734,-3778 283.266,-3778 283.266,-3742 510.734,-3742 510.734,-3778"/>
+<text text-anchor="middle" x="397" y="-3756.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryControllerReports</text>
+</g>
+<!-- \\ChurchDirectoryControllerReports&#45;&gt;\\JControllerAdmin -->
+<g id="edge32" class="edge"><title>\\ChurchDirectoryControllerReports&#45;&gt;\\JControllerAdmin</title>
+<path fill="none" stroke="black" d="M283.251,-3760C251.105,-3760 216.603,-3760 186.304,-3760"/>
+<polygon fill="none" stroke="black" points="186.199,-3756.5 176.199,-3760 186.199,-3763.5 186.199,-3756.5"/>
+</g>
+<!-- \\ChurchDirectoryControllerKMLs -->
+<g id="node39" class="node"><title>\\ChurchDirectoryControllerKMLs</title>
+<polygon fill="none" stroke="black" points="500.932,-3724 293.068,-3724 293.068,-3688 500.932,-3688 500.932,-3724"/>
+<text text-anchor="middle" x="397" y="-3702.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryControllerKMLs</text>
+</g>
+<!-- \\ChurchDirectoryControllerKMLs&#45;&gt;\\JControllerAdmin -->
+<g id="edge33" class="edge"><title>\\ChurchDirectoryControllerKMLs&#45;&gt;\\JControllerAdmin</title>
+<path fill="none" stroke="black" d="M297.025,-3724.06C255.524,-3731.63 208.225,-3740.26 170.374,-3747.16"/>
+<polygon fill="none" stroke="black" points="169.674,-3743.73 160.464,-3748.97 170.93,-3750.62 169.674,-3743.73"/>
+</g>
+<!-- \\ChurchDirectoryViewDirHeaders -->
+<g id="node40" class="node"><title>\\ChurchDirectoryViewDirHeaders</title>
+<polygon fill="none" stroke="black" points="500.932,-2806 293.068,-2806 293.068,-2770 500.932,-2770 500.932,-2806"/>
+<text text-anchor="middle" x="397" y="-2784.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryViewDirHeaders</text>
+</g>
+<!-- \\ChurchDirectoryViewDirHeaders&#45;&gt;\\JViewLegacy -->
+<g id="edge34" class="edge"><title>\\ChurchDirectoryViewDirHeaders&#45;&gt;\\JViewLegacy</title>
+<path fill="none" stroke="black" d="M293.097,-2775.42C282.14,-2771.73 271.532,-2767.02 262,-2761 187.247,-2713.81 134.717,-2618.93 112.234,-2572.23"/>
+<polygon fill="none" stroke="black" points="115.327,-2570.58 107.895,-2563.03 108.995,-2573.57 115.327,-2570.58"/>
 </g>
 <!-- \\ChurchDirectoryViewDirectory -->
-<g id="node83" class="node"><title>\\ChurchDirectoryViewDirectory</title>
-<polygon fill="none" stroke="black" points="497.33,-538 296.67,-538 296.67,-502 497.33,-502 497.33,-538"/>
-<text text-anchor="middle" x="397" y="-516.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryViewDirectory</text>
+<g id="node41" class="node"><title>\\ChurchDirectoryViewDirectory</title>
+<polygon fill="none" stroke="black" points="497.33,-2752 296.67,-2752 296.67,-2716 497.33,-2716 497.33,-2752"/>
+<text text-anchor="middle" x="397" y="-2730.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryViewDirectory</text>
 </g>
 <!-- \\ChurchDirectoryViewDirectory&#45;&gt;\\JViewLegacy -->
-<g id="edge72" class="edge"><title>\\ChurchDirectoryViewDirectory&#45;&gt;\\JViewLegacy</title>
-<path fill="none" stroke="black" d="M296.546,-526.953C283.794,-531.414 271.795,-537.844 262,-547 176.407,-627.008 118.611,-1005.57 103.77,-1112.7"/>
-<polygon fill="none" stroke="black" points="100.283,-1112.37 102.394,-1122.75 107.218,-1113.32 100.283,-1112.37"/>
+<g id="edge35" class="edge"><title>\\ChurchDirectoryViewDirectory&#45;&gt;\\JViewLegacy</title>
+<path fill="none" stroke="black" d="M296.356,-2720.79C284.402,-2717.23 272.667,-2712.72 262,-2707 199.203,-2673.33 144.966,-2607.46 118.059,-2570.94"/>
+<polygon fill="none" stroke="black" points="120.827,-2568.79 112.124,-2562.75 115.16,-2572.9 120.827,-2568.79"/>
+</g>
+<!-- \\ChurchDirectoryControllerDirHeaders -->
+<g id="node42" class="node"><title>\\ChurchDirectoryControllerDirHeaders</title>
+<polygon fill="none" stroke="black" points="520.538,-3670 273.462,-3670 273.462,-3634 520.538,-3634 520.538,-3670"/>
+<text text-anchor="middle" x="397" y="-3648.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryControllerDirHeaders</text>
+</g>
+<!-- \\ChurchDirectoryControllerDirHeaders&#45;&gt;\\JControllerAdmin -->
+<g id="edge36" class="edge"><title>\\ChurchDirectoryControllerDirHeaders&#45;&gt;\\JControllerAdmin</title>
+<path fill="none" stroke="black" d="M292.113,-3670.08C281.838,-3672.72 271.65,-3675.68 262,-3679 217.209,-3694.4 169.041,-3719.72 136.978,-3737.96"/>
+<polygon fill="none" stroke="black" points="134.898,-3735.12 127.972,-3743.13 138.386,-3741.19 134.898,-3735.12"/>
+</g>
+<!-- \\ChurchDirectoryModelHome -->
+<g id="node43" class="node"><title>\\ChurchDirectoryModelHome</title>
+<polygon fill="none" stroke="black" points="484.426,-1510 309.574,-1510 309.574,-1474 484.426,-1474 484.426,-1510"/>
+<text text-anchor="middle" x="397" y="-1488.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryModelHome</text>
+</g>
+<!-- \\ChurchDirectoryModelHome&#45;&gt;\\JModelList -->
+<g id="edge37" class="edge"><title>\\ChurchDirectoryModelHome&#45;&gt;\\JModelList</title>
+<path fill="none" stroke="black" d="M309.589,-1507.76C260.142,-1516.78 199.532,-1527.84 156.233,-1535.74"/>
+<polygon fill="none" stroke="black" points="155.377,-1532.34 146.167,-1537.58 156.633,-1539.23 155.377,-1532.34"/>
+</g>
+<!-- \\ChurchDirectoryControllerKML -->
+<g id="node44" class="node"><title>\\ChurchDirectoryControllerKML</title>
+<polygon fill="none" stroke="black" points="497.33,-4102 296.67,-4102 296.67,-4066 497.33,-4066 497.33,-4102"/>
+<text text-anchor="middle" x="397" y="-4080.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryControllerKML</text>
+</g>
+<!-- \\ChurchDirectoryControllerKML&#45;&gt;\\JControllerForm -->
+<g id="edge38" class="edge"><title>\\ChurchDirectoryControllerKML&#45;&gt;\\JControllerForm</title>
+<path fill="none" stroke="black" d="M296.417,-4100.99C284.692,-4103.9 272.996,-4107.22 262,-4111 216.939,-4126.5 168.459,-4152.03 136.398,-4170.29"/>
+<polygon fill="none" stroke="black" points="134.324,-4167.44 127.403,-4175.46 137.816,-4173.51 134.324,-4167.44"/>
+</g>
+<!-- \\ChurchDirectoryModelCategories -->
+<g id="node45" class="node"><title>\\ChurchDirectoryModelCategories</title>
+<polygon fill="none" stroke="black" points="504.032,-1348 289.968,-1348 289.968,-1312 504.032,-1312 504.032,-1348"/>
+<text text-anchor="middle" x="397" y="-1326.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryModelCategories</text>
+</g>
+<!-- \\ChurchDirectoryModelCategories&#45;&gt;\\JModelList -->
+<g id="edge39" class="edge"><title>\\ChurchDirectoryModelCategories&#45;&gt;\\JModelList</title>
+<path fill="none" stroke="black" d="M289.66,-1344.49C279.98,-1347.84 270.597,-1351.96 262,-1357 193.209,-1397.35 139.413,-1477.74 114.74,-1519.48"/>
+<polygon fill="none" stroke="black" points="111.642,-1517.84 109.648,-1528.25 117.696,-1521.36 111.642,-1517.84"/>
+</g>
+<!-- \\ChurchDirectoryController -->
+<g id="node46" class="node"><title>\\ChurchDirectoryController</title>
+<polygon fill="none" stroke="black" points="487.527,-1132 306.473,-1132 306.473,-1096 487.527,-1096 487.527,-1132"/>
+<text text-anchor="middle" x="397" y="-1110.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryController</text>
+</g>
+<!-- \\ChurchDirectoryController&#45;&gt;\\JControllerLegacy -->
+<g id="edge40" class="edge"><title>\\ChurchDirectoryController&#45;&gt;\\JControllerLegacy</title>
+<path fill="none" stroke="black" d="M306.387,-1105.83C267.025,-1102.24 221.101,-1098.05 182.579,-1094.53"/>
+<polygon fill="none" stroke="black" points="182.716,-1091.03 172.439,-1093.61 182.08,-1098 182.716,-1091.03"/>
+</g>
+<!-- \\ChurchDirectoryViewMembers -->
+<g id="node47" class="node"><title>\\ChurchDirectoryViewMembers</title>
+<polygon fill="none" stroke="black" points="490.628,-2536 303.372,-2536 303.372,-2500 490.628,-2500 490.628,-2536"/>
+<text text-anchor="middle" x="397" y="-2514.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryViewMembers</text>
+</g>
+<!-- \\ChurchDirectoryViewMembers&#45;&gt;\\JViewLegacy -->
+<g id="edge41" class="edge"><title>\\ChurchDirectoryViewMembers&#45;&gt;\\JViewLegacy</title>
+<path fill="none" stroke="black" d="M303.156,-2526.47C259.079,-2530.49 207.387,-2535.2 167.176,-2538.87"/>
+<polygon fill="none" stroke="black" points="166.852,-2535.39 157.212,-2539.78 167.488,-2542.36 166.852,-2535.39"/>
+</g>
+<!-- \\JFormRuleChurchDirectoryEmailMessage -->
+<g id="node48" class="node"><title>\\JFormRuleChurchDirectoryEmailMessage</title>
+<polygon fill="none" stroke="black" points="523.639,-754 270.361,-754 270.361,-718 523.639,-718 523.639,-754"/>
+<text text-anchor="middle" x="397" y="-732.7" font-family="Courier,monospace" font-size="11.00">JFormRuleChurchDirectoryEmailMessage</text>
+</g>
+<!-- \\JFormRule -->
+<g id="node98" class="node"><title>\\JFormRule</title>
+<ellipse fill="none" stroke="black" cx="99" cy="-709" rx="51.7433" ry="18"/>
+<text text-anchor="middle" x="99" y="-704.8" font-family="Times,serif" font-size="14.00" fill="gray">\JFormRule</text>
+</g>
+<!-- \\JFormRuleChurchDirectoryEmailMessage&#45;&gt;\\JFormRule -->
+<g id="edge42" class="edge"><title>\\JFormRuleChurchDirectoryEmailMessage&#45;&gt;\\JFormRule</title>
+<path fill="none" stroke="black" d="M270.04,-724.51C231.704,-721.014 191.35,-717.333 159.579,-714.435"/>
+<polygon fill="none" stroke="black" points="159.856,-710.945 149.579,-713.522 159.22,-717.916 159.856,-710.945"/>
+</g>
+<!-- \\Com_ChurchdirectoryInstallerScript -->
+<g id="node49" class="node"><title>\\Com_ChurchdirectoryInstallerScript</title>
+<polygon fill="none" stroke="black" points="517.437,-1996 276.563,-1996 276.563,-1960 517.437,-1960 517.437,-1996"/>
+<text text-anchor="middle" x="397" y="-1974.7" font-family="Courier,monospace" font-size="11.00">Com_ChurchdirectoryInstallerScript</text>
+</g>
+<!-- \\ChurchDirectoryModelFamilyUnit -->
+<g id="node50" class="node"><title>\\ChurchDirectoryModelFamilyUnit</title>
+<polygon fill="none" stroke="black" points="504.032,-592 289.968,-592 289.968,-556 504.032,-556 504.032,-592"/>
+<text text-anchor="middle" x="397" y="-570.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryModelFamilyUnit</text>
+</g>
+<!-- \\JModelAdmin -->
+<g id="node99" class="node"><title>\\JModelAdmin</title>
+<ellipse fill="none" stroke="black" cx="99" cy="-547" rx="63.8202" ry="18"/>
+<text text-anchor="middle" x="99" y="-542.8" font-family="Times,serif" font-size="14.00" fill="gray">\JModelAdmin</text>
+</g>
+<!-- \\ChurchDirectoryModelFamilyUnit&#45;&gt;\\JModelAdmin -->
+<g id="edge43" class="edge"><title>\\ChurchDirectoryModelFamilyUnit&#45;&gt;\\JModelAdmin</title>
+<path fill="none" stroke="black" d="M289.973,-564.329C250.114,-560.693 205.826,-556.653 170.046,-553.389"/>
+<polygon fill="none" stroke="black" points="169.987,-549.87 159.711,-552.447 169.351,-556.841 169.987,-549.87"/>
+</g>
+<!-- \\ChurchDirectoryReportbuild -->
+<g id="node51" class="node"><title>\\ChurchDirectoryReportbuild</title>
+<polygon fill="none" stroke="black" points="490.628,-1888 303.372,-1888 303.372,-1852 490.628,-1852 490.628,-1888"/>
+<text text-anchor="middle" x="397" y="-1866.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryReportbuild</text>
+</g>
+<!-- \\ChurchDirectoryTablePosition -->
+<g id="node52" class="node"><title>\\ChurchDirectoryTablePosition</title>
+<polygon fill="none" stroke="black" points="497.33,-322 296.67,-322 296.67,-286 497.33,-286 497.33,-322"/>
+<text text-anchor="middle" x="397" y="-300.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryTablePosition</text>
+</g>
+<!-- \\JTable -->
+<g id="node100" class="node"><title>\\JTable</title>
+<ellipse fill="none" stroke="black" cx="99" cy="-304" rx="35.5377" ry="18"/>
+<text text-anchor="middle" x="99" y="-299.8" font-family="Times,serif" font-size="14.00" fill="gray">\JTable</text>
+</g>
+<!-- \\ChurchDirectoryTablePosition&#45;&gt;\\JTable -->
+<g id="edge44" class="edge"><title>\\ChurchDirectoryTablePosition&#45;&gt;\\JTable</title>
+<path fill="none" stroke="black" d="M296.613,-304C245.273,-304 185.153,-304 145.038,-304"/>
+<polygon fill="none" stroke="black" points="144.783,-300.5 134.783,-304 144.783,-307.5 144.783,-300.5"/>
+</g>
+<!-- \\ChurchDirectoryModelFamilyUnits -->
+<g id="node53" class="node"><title>\\ChurchDirectoryModelFamilyUnits</title>
+<polygon fill="none" stroke="black" points="507.134,-1186 286.866,-1186 286.866,-1150 507.134,-1150 507.134,-1186"/>
+<text text-anchor="middle" x="397" y="-1164.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryModelFamilyUnits</text>
+</g>
+<!-- \\ChurchDirectoryModelFamilyUnits&#45;&gt;\\JModelList -->
+<g id="edge45" class="edge"><title>\\ChurchDirectoryModelFamilyUnits&#45;&gt;\\JModelList</title>
+<path fill="none" stroke="black" d="M286.701,-1180.66C277.841,-1184.41 269.449,-1189.12 262,-1195 155.242,-1279.34 115.978,-1450.2 104.258,-1517.67"/>
+<polygon fill="none" stroke="black" points="100.738,-1517.51 102.55,-1527.95 107.643,-1518.66 100.738,-1517.51"/>
+</g>
+<!-- \\ChurchDirectoryViewFamilyUnits -->
+<g id="node54" class="node"><title>\\ChurchDirectoryViewFamilyUnits</title>
+<polygon fill="none" stroke="black" points="504.032,-2482 289.968,-2482 289.968,-2446 504.032,-2446 504.032,-2482"/>
+<text text-anchor="middle" x="397" y="-2460.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryViewFamilyUnits</text>
+</g>
+<!-- \\ChurchDirectoryViewFamilyUnits&#45;&gt;\\JViewLegacy -->
+<g id="edge46" class="edge"><title>\\ChurchDirectoryViewFamilyUnits&#45;&gt;\\JViewLegacy</title>
+<path fill="none" stroke="black" d="M299.057,-2482.06C286.534,-2484.82 273.925,-2487.82 262,-2491 222.797,-2501.44 179.216,-2516.15 147.139,-2527.58"/>
+<polygon fill="none" stroke="black" points="145.801,-2524.34 137.571,-2531.01 148.166,-2530.93 145.801,-2524.34"/>
+</g>
+<!-- \\DirectoryHeaderHelper -->
+<g id="node55" class="node"><title>\\DirectoryHeaderHelper</title>
+<polygon fill="none" stroke="black" points="474.123,-1672 319.877,-1672 319.877,-1636 474.123,-1636 474.123,-1672"/>
+<text text-anchor="middle" x="397" y="-1650.7" font-family="Courier,monospace" font-size="11.00">DirectoryHeaderHelper</text>
+</g>
+<!-- \\ChurchDirectoryControllerMembers -->
+<g id="node56" class="node"><title>\\ChurchDirectoryControllerMembers</title>
+<polygon fill="none" stroke="black" points="510.734,-3886 283.266,-3886 283.266,-3850 510.734,-3850 510.734,-3886"/>
+<text text-anchor="middle" x="397" y="-3864.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryControllerMembers</text>
+</g>
+<!-- \\ChurchDirectoryControllerMembers&#45;&gt;\\JControllerAdmin -->
+<g id="edge47" class="edge"><title>\\ChurchDirectoryControllerMembers&#45;&gt;\\JControllerAdmin</title>
+<path fill="none" stroke="black" d="M292.113,-3849.92C281.838,-3847.28 271.65,-3844.32 262,-3841 217.209,-3825.6 169.041,-3800.28 136.978,-3782.04"/>
+<polygon fill="none" stroke="black" points="138.386,-3778.81 127.972,-3776.87 134.898,-3784.88 138.386,-3778.81"/>
+</g>
+<!-- \\ChurchDirectoryViewDatabase -->
+<g id="node57" class="node"><title>\\ChurchDirectoryViewDatabase</title>
+<polygon fill="none" stroke="black" points="494.229,-2266 299.771,-2266 299.771,-2230 494.229,-2230 494.229,-2266"/>
+<text text-anchor="middle" x="397" y="-2244.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryViewDatabase</text>
+</g>
+<!-- \\ChurchDirectoryViewDatabase&#45;&gt;\\JViewLegacy -->
+<g id="edge48" class="edge"><title>\\ChurchDirectoryViewDatabase&#45;&gt;\\JViewLegacy</title>
+<path fill="none" stroke="black" d="M299.699,-2257.23C286.274,-2261.34 273.245,-2267.06 262,-2275 174.729,-2336.6 126.3,-2461.47 108.263,-2517.13"/>
+<polygon fill="none" stroke="black" points="104.822,-2516.41 105.153,-2527 111.498,-2518.51 104.822,-2516.41"/>
+</g>
+<!-- \\ChurchDirectoryTableFamilyUnit -->
+<g id="node58" class="node"><title>\\ChurchDirectoryTableFamilyUnit</title>
+<polygon fill="none" stroke="black" points="504.032,-268 289.968,-268 289.968,-232 504.032,-232 504.032,-268"/>
+<text text-anchor="middle" x="397" y="-246.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryTableFamilyUnit</text>
+</g>
+<!-- \\ChurchDirectoryTableFamilyUnit&#45;&gt;\\JTable -->
+<g id="edge49" class="edge"><title>\\ChurchDirectoryTableFamilyUnit&#45;&gt;\\JTable</title>
+<path fill="none" stroke="black" d="M297.025,-268.056C244.613,-277.618 182.954,-288.866 142.757,-296.2"/>
+<polygon fill="none" stroke="black" points="141.977,-292.784 132.768,-298.022 143.233,-299.671 141.977,-292.784"/>
+</g>
+<!-- \\JHtmlIcon -->
+<g id="node59" class="node"><title>\\JHtmlIcon</title>
+<polygon fill="none" stroke="black" points="434.911,-1456 359.089,-1456 359.089,-1420 434.911,-1420 434.911,-1456"/>
+<text text-anchor="middle" x="397" y="-1434.7" font-family="Courier,monospace" font-size="11.00">JHtmlIcon</text>
+</g>
+<!-- \\ChurchDirectoryControllerGeoStatus -->
+<g id="node60" class="node"><title>\\ChurchDirectoryControllerGeoStatus</title>
+<polygon fill="none" stroke="black" points="517.437,-3832 276.563,-3832 276.563,-3796 517.437,-3796 517.437,-3832"/>
+<text text-anchor="middle" x="397" y="-3810.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryControllerGeoStatus</text>
+</g>
+<!-- \\ChurchDirectoryControllerGeoStatus&#45;&gt;\\JControllerAdmin -->
+<g id="edge50" class="edge"><title>\\ChurchDirectoryControllerGeoStatus&#45;&gt;\\JControllerAdmin</title>
+<path fill="none" stroke="black" d="M297.025,-3795.94C255.524,-3788.37 208.225,-3779.74 170.374,-3772.84"/>
+<polygon fill="none" stroke="black" points="170.93,-3769.38 160.464,-3771.03 169.674,-3776.27 170.93,-3769.38"/>
+</g>
+<!-- \\ChurchDirectoryTableDirHeader -->
+<g id="node61" class="node"><title>\\ChurchDirectoryTableDirHeader</title>
+<polygon fill="none" stroke="black" points="500.932,-430 293.068,-430 293.068,-394 500.932,-394 500.932,-430"/>
+<text text-anchor="middle" x="397" y="-408.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryTableDirHeader</text>
+</g>
+<!-- \\ChurchDirectoryTableDirHeader&#45;&gt;\\JTable -->
+<g id="edge51" class="edge"><title>\\ChurchDirectoryTableDirHeader&#45;&gt;\\JTable</title>
+<path fill="none" stroke="black" d="M293.188,-394.196C282.55,-391.491 271.986,-388.434 262,-385 214.503,-368.665 163.208,-341.18 131.346,-322.818"/>
+<polygon fill="none" stroke="black" points="132.904,-319.675 122.501,-317.667 129.381,-325.724 132.904,-319.675"/>
+</g>
+<!-- \\ModBirthdayAnniversaryHelper -->
+<g id="node62" class="node"><title>\\ModBirthdayAnniversaryHelper</title>
+<polygon fill="none" stroke="black" points="497.33,-1294 296.67,-1294 296.67,-1258 497.33,-1258 497.33,-1294"/>
+<text text-anchor="middle" x="397" y="-1272.7" font-family="Courier,monospace" font-size="11.00">ModBirthdayAnniversaryHelper</text>
+</g>
+<!-- \\ChurchDirectoryControllerDirHeader -->
+<g id="node63" class="node"><title>\\ChurchDirectoryControllerDirHeader</title>
+<polygon fill="none" stroke="black" points="517.437,-4048 276.563,-4048 276.563,-4012 517.437,-4012 517.437,-4048"/>
+<text text-anchor="middle" x="397" y="-4026.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryControllerDirHeader</text>
+</g>
+<!-- \\ChurchDirectoryControllerDirHeader&#45;&gt;\\JControllerForm -->
+<g id="edge52" class="edge"><title>\\ChurchDirectoryControllerDirHeader&#45;&gt;\\JControllerForm</title>
+<path fill="none" stroke="black" d="M284.183,-4048.07C276.531,-4050.66 269.063,-4053.62 262,-4057 205.082,-4084.27 151.359,-4136.03 122.339,-4166.93"/>
+<polygon fill="none" stroke="black" points="119.732,-4164.6 115.506,-4174.31 124.869,-4169.35 119.732,-4164.6"/>
+</g>
+<!-- \\ChurchDirectoryTableMember -->
+<g id="node64" class="node"><title>\\ChurchDirectoryTableMember</title>
+<polygon fill="none" stroke="black" points="490.628,-214 303.372,-214 303.372,-178 490.628,-178 490.628,-214"/>
+<text text-anchor="middle" x="397" y="-192.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryTableMember</text>
+</g>
+<!-- \\ChurchDirectoryTableMember&#45;&gt;\\JTable -->
+<g id="edge53" class="edge"><title>\\ChurchDirectoryTableMember&#45;&gt;\\JTable</title>
+<path fill="none" stroke="black" d="M303.235,-211.353C289.254,-214.624 275.128,-218.485 262,-223 214.503,-239.335 163.208,-266.82 131.346,-285.182"/>
+<polygon fill="none" stroke="black" points="129.381,-282.276 122.501,-290.333 132.904,-288.325 129.381,-282.276"/>
+</g>
+<!-- \\ChurchDirectoryControllerFamilyUnits -->
+<g id="node65" class="node"><title>\\ChurchDirectoryControllerFamilyUnits</title>
+<polygon fill="none" stroke="black" points="523.639,-3994 270.361,-3994 270.361,-3958 523.639,-3958 523.639,-3994"/>
+<text text-anchor="middle" x="397" y="-3972.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryControllerFamilyUnits</text>
+</g>
+<!-- \\ChurchDirectoryControllerFamilyUnits&#45;&gt;\\JControllerAdmin -->
+<g id="edge54" class="edge"><title>\\ChurchDirectoryControllerFamilyUnits&#45;&gt;\\JControllerAdmin</title>
+<path fill="none" stroke="black" d="M280.097,-3957.9C273.812,-3955.31 267.732,-3952.36 262,-3949 193.382,-3908.75 139.684,-3828.66 114.927,-3786.84"/>
+<polygon fill="none" stroke="black" points="117.864,-3784.93 109.813,-3778.04 111.812,-3788.45 117.864,-3784.93"/>
+</g>
+<!-- \\ChurchDirectoryModelCategory -->
+<g id="node66" class="node"><title>\\ChurchDirectoryModelCategory</title>
+<polygon fill="none" stroke="black" points="497.33,-1726 296.67,-1726 296.67,-1690 497.33,-1690 497.33,-1726"/>
+<text text-anchor="middle" x="397" y="-1704.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryModelCategory</text>
+</g>
+<!-- \\ChurchDirectoryModelCategory&#45;&gt;\\JModelList -->
+<g id="edge55" class="edge"><title>\\ChurchDirectoryModelCategory&#45;&gt;\\JModelList</title>
+<path fill="none" stroke="black" d="M296.48,-1693.75C284.566,-1690.36 272.808,-1686.18 262,-1681 204.778,-1653.59 150.785,-1601.42 121.876,-1570.57"/>
+<polygon fill="none" stroke="black" points="124.437,-1568.19 115.08,-1563.22 119.296,-1572.94 124.437,-1568.19"/>
+</g>
+<!-- \\ChurchDirectoryViewInfo -->
+<g id="node67" class="node"><title>\\ChurchDirectoryViewInfo</title>
+<polygon fill="none" stroke="black" points="480.825,-2914 313.175,-2914 313.175,-2878 480.825,-2878 480.825,-2914"/>
+<text text-anchor="middle" x="397" y="-2892.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryViewInfo</text>
+</g>
+<!-- \\ChurchDirectoryViewInfo&#45;&gt;\\JViewLegacy -->
+<g id="edge56" class="edge"><title>\\ChurchDirectoryViewInfo&#45;&gt;\\JViewLegacy</title>
+<path fill="none" stroke="black" d="M313.063,-2891.3C294.885,-2887.15 276.702,-2880.25 262,-2869 161.895,-2792.43 119.243,-2637.18 105.439,-2573.37"/>
+<polygon fill="none" stroke="black" points="108.795,-2572.32 103.327,-2563.24 101.943,-2573.75 108.795,-2572.32"/>
+</g>
+<!-- \\ChurchDirectoryModelkml -->
+<g id="node68" class="node"><title>\\ChurchDirectoryModelkml</title>
+<polygon fill="none" stroke="black" points="480.825,-538 313.175,-538 313.175,-502 480.825,-502 480.825,-538"/>
+<text text-anchor="middle" x="397" y="-516.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryModelkml</text>
+</g>
+<!-- \\ChurchDirectoryModelkml&#45;&gt;\\JModelAdmin -->
+<g id="edge57" class="edge"><title>\\ChurchDirectoryModelkml&#45;&gt;\\JModelAdmin</title>
+<path fill="none" stroke="black" d="M313.154,-527.557C268.028,-531.673 212.806,-536.71 169.877,-540.626"/>
+<polygon fill="none" stroke="black" points="169.441,-537.151 159.8,-541.545 170.077,-544.122 169.441,-537.151"/>
+</g>
+<!-- \\ChurchDirectoryViewPosition -->
+<g id="node69" class="node"><title>\\ChurchDirectoryViewPosition</title>
+<polygon fill="none" stroke="black" points="494.229,-2644 299.771,-2644 299.771,-2608 494.229,-2608 494.229,-2644"/>
+<text text-anchor="middle" x="397" y="-2622.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryViewPosition</text>
+</g>
+<!-- \\ChurchDirectoryViewPosition&#45;&gt;\\JViewLegacy -->
+<g id="edge58" class="edge"><title>\\ChurchDirectoryViewPosition&#45;&gt;\\JViewLegacy</title>
+<path fill="none" stroke="black" d="M299.78,-2608.1C287.019,-2605.29 274.154,-2602.24 262,-2599 222.797,-2588.56 179.216,-2573.85 147.139,-2562.42"/>
+<polygon fill="none" stroke="black" points="148.166,-2559.07 137.571,-2558.99 145.801,-2565.66 148.166,-2559.07"/>
+</g>
+<!-- \\ChurchDirectoryRouter -->
+<g id="node70" class="node"><title>\\ChurchDirectoryRouter</title>
+<polygon fill="none" stroke="black" points="474.123,-160 319.877,-160 319.877,-124 474.123,-124 474.123,-160"/>
+<text text-anchor="middle" x="397" y="-138.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryRouter</text>
+</g>
+<!-- \\JComponentRouterBase -->
+<g id="node101" class="node"><title>\\JComponentRouterBase</title>
+<ellipse fill="none" stroke="black" cx="99" cy="-142" rx="98.5657" ry="18"/>
+<text text-anchor="middle" x="99" y="-137.8" font-family="Times,serif" font-size="14.00" fill="gray">\JComponentRouterBase</text>
+</g>
+<!-- \\ChurchDirectoryRouter&#45;&gt;\\JComponentRouterBase -->
+<g id="edge59" class="edge"><title>\\ChurchDirectoryRouter&#45;&gt;\\JComponentRouterBase</title>
+<path fill="none" stroke="black" d="M319.773,-142C285.796,-142 245.161,-142 208.125,-142"/>
+<polygon fill="none" stroke="black" points="207.784,-138.5 197.784,-142 207.783,-145.5 207.784,-138.5"/>
+</g>
+<!-- \\ChurchDirectoryModelDirHeader -->
+<g id="node71" class="node"><title>\\ChurchDirectoryModelDirHeader</title>
+<polygon fill="none" stroke="black" points="500.932,-646 293.068,-646 293.068,-610 500.932,-610 500.932,-646"/>
+<text text-anchor="middle" x="397" y="-624.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryModelDirHeader</text>
+</g>
+<!-- \\ChurchDirectoryModelDirHeader&#45;&gt;\\JModelAdmin -->
+<g id="edge60" class="edge"><title>\\ChurchDirectoryModelDirHeader&#45;&gt;\\JModelAdmin</title>
+<path fill="none" stroke="black" d="M299.057,-609.94C286.534,-607.176 273.925,-604.176 262,-601 223.057,-590.628 179.793,-576.045 147.778,-564.648"/>
+<polygon fill="none" stroke="black" points="148.815,-561.302 138.221,-561.221 146.453,-567.891 148.815,-561.302"/>
+</g>
+<!-- \\ChurchDirectoryModelKMLs -->
+<g id="node72" class="node"><title>\\ChurchDirectoryModelKMLs</title>
+<polygon fill="none" stroke="black" points="484.426,-1402 309.574,-1402 309.574,-1366 484.426,-1366 484.426,-1402"/>
+<text text-anchor="middle" x="397" y="-1380.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryModelKMLs</text>
+</g>
+<!-- \\ChurchDirectoryModelKMLs&#45;&gt;\\JModelList -->
+<g id="edge61" class="edge"><title>\\ChurchDirectoryModelKMLs&#45;&gt;\\JModelList</title>
+<path fill="none" stroke="black" d="M309.595,-1394.85C293.309,-1398.7 276.767,-1403.93 262,-1411 204.778,-1438.41 150.785,-1490.58 121.876,-1521.43"/>
+<polygon fill="none" stroke="black" points="119.296,-1519.06 115.08,-1528.78 124.437,-1523.81 119.296,-1519.06"/>
 </g>
 <!-- \\ChurchDirectoryViewFeatured -->
-<g id="node84" class="node"><title>\\ChurchDirectoryViewFeatured</title>
-<polygon fill="none" stroke="black" points="494.229,-484 299.771,-484 299.771,-448 494.229,-448 494.229,-484"/>
-<text text-anchor="middle" x="397" y="-462.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryViewFeatured</text>
+<g id="node73" class="node"><title>\\ChurchDirectoryViewFeatured</title>
+<polygon fill="none" stroke="black" points="494.229,-2590 299.771,-2590 299.771,-2554 494.229,-2554 494.229,-2590"/>
+<text text-anchor="middle" x="397" y="-2568.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryViewFeatured</text>
 </g>
 <!-- \\ChurchDirectoryViewFeatured&#45;&gt;\\JViewLegacy -->
-<g id="edge73" class="edge"><title>\\ChurchDirectoryViewFeatured&#45;&gt;\\JViewLegacy</title>
-<path fill="none" stroke="black" d="M299.764,-471.619C285.773,-476.126 272.555,-482.921 262,-493 169.379,-581.443 115.989,-999.649 103.081,-1112.75"/>
-<polygon fill="none" stroke="black" points="99.5997,-1112.39 101.959,-1122.72 106.556,-1113.17 99.5997,-1112.39"/>
+<g id="edge62" class="edge"><title>\\ChurchDirectoryViewFeatured&#45;&gt;\\JViewLegacy</title>
+<path fill="none" stroke="black" d="M299.488,-2563.2C256.28,-2559.26 206.383,-2554.7 167.3,-2551.14"/>
+<polygon fill="none" stroke="black" points="167.371,-2547.63 157.094,-2550.21 166.735,-2554.6 167.371,-2547.63"/>
 </g>
-<!-- \\ChurchDirectoryViewHome -->
-<g id="node85" class="node"><title>\\ChurchDirectoryViewHome</title>
-<polygon fill="none" stroke="black" points="480.825,-700 313.175,-700 313.175,-664 480.825,-664 480.825,-700"/>
-<text text-anchor="middle" x="397" y="-678.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryViewHome</text>
+<!-- \\PlgFinderChurchDirectory -->
+<g id="node74" class="node"><title>\\PlgFinderChurchDirectory</title>
+<polygon fill="none" stroke="black" points="484.426,-106 309.574,-106 309.574,-70 484.426,-70 484.426,-106"/>
+<text text-anchor="middle" x="397" y="-84.7" font-family="Courier,monospace" font-size="11.00">PlgFinderChurchDirectory</text>
 </g>
-<!-- \\ChurchDirectoryViewHome&#45;&gt;\\JViewLegacy -->
-<g id="edge74" class="edge"><title>\\ChurchDirectoryViewHome&#45;&gt;\\JViewLegacy</title>
-<path fill="none" stroke="black" d="M312.877,-685.441C294.498,-689.62 276.273,-696.845 262,-709 135.029,-817.129 107.433,-1035.13 101.554,-1112.76"/>
-<polygon fill="none" stroke="black" points="98.0616,-1112.54 100.861,-1122.75 105.045,-1113.02 98.0616,-1112.54"/>
+<!-- \\FinderIndexerAdapter -->
+<g id="node102" class="node"><title>\\FinderIndexerAdapter</title>
+<ellipse fill="none" stroke="black" cx="99" cy="-88" rx="91.2807" ry="18"/>
+<text text-anchor="middle" x="99" y="-83.8" font-family="Times,serif" font-size="14.00" fill="gray">\FinderIndexerAdapter</text>
+</g>
+<!-- \\PlgFinderChurchDirectory&#45;&gt;\\FinderIndexerAdapter -->
+<g id="edge63" class="edge"><title>\\PlgFinderChurchDirectory&#45;&gt;\\FinderIndexerAdapter</title>
+<path fill="none" stroke="black" d="M309.589,-88C275.498,-88 236.101,-88 200.729,-88"/>
+<polygon fill="none" stroke="black" points="200.381,-84.5001 190.381,-88 200.381,-91.5001 200.381,-84.5001"/>
+</g>
+<!-- \\ChurchDirectoryViewCategories -->
+<g id="node75" class="node"><title>\\ChurchDirectoryViewCategories</title>
+<polygon fill="none" stroke="black" points="500.932,-2428 293.068,-2428 293.068,-2392 500.932,-2392 500.932,-2428"/>
+<text text-anchor="middle" x="397" y="-2406.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryViewCategories</text>
+</g>
+<!-- \\ChurchDirectoryViewCategories&#45;&gt;\\JViewLegacy -->
+<g id="edge64" class="edge"><title>\\ChurchDirectoryViewCategories&#45;&gt;\\JViewLegacy</title>
+<path fill="none" stroke="black" d="M293.067,-2426.45C282.4,-2429.42 271.863,-2432.91 262,-2437 210.919,-2458.2 158.958,-2496.42 128.108,-2521.24"/>
+<polygon fill="none" stroke="black" points="125.525,-2518.83 119.984,-2527.86 129.947,-2524.26 125.525,-2518.83"/>
+</g>
+<!-- \\JFormRuleChurchDirectoryEmailSubject -->
+<g id="node76" class="node"><title>\\JFormRuleChurchDirectoryEmailSubject</title>
+<polygon fill="none" stroke="black" points="523.639,-700 270.361,-700 270.361,-664 523.639,-664 523.639,-700"/>
+<text text-anchor="middle" x="397" y="-678.7" font-family="Courier,monospace" font-size="11.00">JFormRuleChurchDirectoryEmailSubject</text>
+</g>
+<!-- \\JFormRuleChurchDirectoryEmailSubject&#45;&gt;\\JFormRule -->
+<g id="edge65" class="edge"><title>\\JFormRuleChurchDirectoryEmailSubject&#45;&gt;\\JFormRule</title>
+<path fill="none" stroke="black" d="M270.04,-693.49C231.704,-696.986 191.35,-700.667 159.579,-703.565"/>
+<polygon fill="none" stroke="black" points="159.22,-700.084 149.579,-704.478 159.856,-707.055 159.22,-700.084"/>
+</g>
+<!-- \\ChurchDirectoryControllerFamilyUnit -->
+<g id="node77" class="node"><title>\\ChurchDirectoryControllerFamilyUnit</title>
+<polygon fill="none" stroke="black" points="520.538,-4318 273.462,-4318 273.462,-4282 520.538,-4282 520.538,-4318"/>
+<text text-anchor="middle" x="397" y="-4296.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryControllerFamilyUnit</text>
+</g>
+<!-- \\ChurchDirectoryControllerFamilyUnit&#45;&gt;\\JControllerForm -->
+<g id="edge66" class="edge"><title>\\ChurchDirectoryControllerFamilyUnit&#45;&gt;\\JControllerForm</title>
+<path fill="none" stroke="black" d="M292.113,-4281.92C281.838,-4279.28 271.65,-4276.32 262,-4273 216.939,-4257.5 168.459,-4231.97 136.398,-4213.71"/>
+<polygon fill="none" stroke="black" points="137.816,-4210.49 127.403,-4208.54 134.324,-4216.56 137.816,-4210.49"/>
+</g>
+<!-- \\ChurchDirectoryModelDirectory -->
+<g id="node78" class="node"><title>\\ChurchDirectoryModelDirectory</title>
+<polygon fill="none" stroke="black" points="500.932,-1240 293.068,-1240 293.068,-1204 500.932,-1204 500.932,-1240"/>
+<text text-anchor="middle" x="397" y="-1218.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryModelDirectory</text>
+</g>
+<!-- \\ChurchDirectoryModelDirectory&#45;&gt;\\JModelList -->
+<g id="edge67" class="edge"><title>\\ChurchDirectoryModelDirectory&#45;&gt;\\JModelList</title>
+<path fill="none" stroke="black" d="M293.209,-1232.88C282.047,-1236.85 271.361,-1242.1 262,-1249 168.335,-1318.03 122.623,-1458.08 106.737,-1517.89"/>
+<polygon fill="none" stroke="black" points="103.299,-1517.21 104.195,-1527.77 110.078,-1518.96 103.299,-1517.21"/>
+</g>
+<!-- \\JFormFieldOrdering -->
+<g id="node79" class="node"><title>\\JFormFieldOrdering</title>
+<polygon fill="none" stroke="black" points="464.319,-862 329.681,-862 329.681,-826 464.319,-826 464.319,-862"/>
+<text text-anchor="middle" x="397" y="-840.7" font-family="Courier,monospace" font-size="11.00">JFormFieldOrdering</text>
+</g>
+<!-- \\JFormFieldOrdering&#45;&gt;\\JFormField -->
+<g id="edge68" class="edge"><title>\\JFormFieldOrdering&#45;&gt;\\JFormField</title>
+<path fill="none" stroke="black" d="M329.572,-856.119C277.427,-865.632 205.635,-878.729 156.292,-887.731"/>
+<polygon fill="none" stroke="black" points="155.636,-884.292 146.427,-889.53 156.893,-891.179 155.636,-884.292"/>
+</g>
+<!-- \\JFormRuleChurchDirectoryEmail -->
+<g id="node80" class="node"><title>\\JFormRuleChurchDirectoryEmail</title>
+<polygon fill="none" stroke="black" points="500.932,-52 293.068,-52 293.068,-16 500.932,-16 500.932,-52"/>
+<text text-anchor="middle" x="397" y="-30.7" font-family="Courier,monospace" font-size="11.00">JFormRuleChurchDirectoryEmail</text>
+</g>
+<!-- \\JFormRuleEmail -->
+<g id="node103" class="node"><title>\\JFormRuleEmail</title>
+<ellipse fill="none" stroke="black" cx="99" cy="-34" rx="72.9826" ry="18"/>
+<text text-anchor="middle" x="99" y="-29.8" font-family="Times,serif" font-size="14.00" fill="gray">\JFormRuleEmail</text>
+</g>
+<!-- \\JFormRuleChurchDirectoryEmail&#45;&gt;\\JFormRuleEmail -->
+<g id="edge69" class="edge"><title>\\JFormRuleChurchDirectoryEmail&#45;&gt;\\JFormRuleEmail</title>
+<path fill="none" stroke="black" d="M292.889,-34C256.751,-34 216.669,-34 182.448,-34"/>
+<polygon fill="none" stroke="black" points="182.026,-30.5001 172.026,-34 182.026,-37.5001 182.026,-30.5001"/>
+</g>
+<!-- \\ChurchDirectoryViewGeoUpdate -->
+<g id="node81" class="node"><title>\\ChurchDirectoryViewGeoUpdate</title>
+<polygon fill="none" stroke="black" points="497.33,-3184 296.67,-3184 296.67,-3148 497.33,-3148 497.33,-3184"/>
+<text text-anchor="middle" x="397" y="-3162.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryViewGeoUpdate</text>
+</g>
+<!-- \\ChurchDirectoryViewGeoUpdate&#45;&gt;\\JViewLegacy -->
+<g id="edge70" class="edge"><title>\\ChurchDirectoryViewGeoUpdate&#45;&gt;\\JViewLegacy</title>
+<path fill="none" stroke="black" d="M296.546,-3159.05C283.794,-3154.59 271.795,-3148.16 262,-3139 176.407,-3058.99 118.611,-2680.43 103.77,-2573.3"/>
+<polygon fill="none" stroke="black" points="107.218,-2572.68 102.394,-2563.25 100.283,-2573.63 107.218,-2572.68"/>
+</g>
+<!-- \\ChurchDirectoryViewGeoStatus -->
+<g id="node82" class="node"><title>\\ChurchDirectoryViewGeoStatus</title>
+<polygon fill="none" stroke="black" points="497.33,-2968 296.67,-2968 296.67,-2932 497.33,-2932 497.33,-2968"/>
+<text text-anchor="middle" x="397" y="-2946.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryViewGeoStatus</text>
+</g>
+<!-- \\ChurchDirectoryViewGeoStatus&#45;&gt;\\JViewLegacy -->
+<g id="edge71" class="edge"><title>\\ChurchDirectoryViewGeoStatus&#45;&gt;\\JViewLegacy</title>
+<path fill="none" stroke="black" d="M296.632,-2941.43C284.092,-2937.17 272.13,-2931.23 262,-2923 148.421,-2830.71 112.866,-2643.87 103.205,-2573.06"/>
+<polygon fill="none" stroke="black" points="106.671,-2572.57 101.915,-2563.1 99.7288,-2573.47 106.671,-2572.57"/>
+</g>
+<!-- \\ChurchDirectoryViewKML -->
+<g id="node83" class="node"><title>\\ChurchDirectoryViewKML</title>
+<polygon fill="none" stroke="black" points="477.724,-2050 316.276,-2050 316.276,-2014 477.724,-2014 477.724,-2050"/>
+<text text-anchor="middle" x="397" y="-2028.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryViewKML</text>
+</g>
+<!-- \\ChurchDirectoryViewKML&#45;&gt;\\JViewLegacy -->
+<g id="edge72" class="edge"><title>\\ChurchDirectoryViewKML&#45;&gt;\\JViewLegacy</title>
+<path fill="none" stroke="black" d="M316.039,-2034.31C296.496,-2038.35 276.935,-2045.8 262,-2059 121.562,-2183.16 102.562,-2432.29 100.232,-2516.47"/>
+<polygon fill="none" stroke="black" points="96.7309,-2516.49 100.013,-2526.56 103.729,-2516.64 96.7309,-2516.49"/>
+</g>
+<!-- \\ChurchDirectoryTableKML -->
+<g id="node84" class="node"><title>\\ChurchDirectoryTableKML</title>
+<polygon fill="none" stroke="black" points="480.825,-376 313.175,-376 313.175,-340 480.825,-340 480.825,-376"/>
+<text text-anchor="middle" x="397" y="-354.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryTableKML</text>
+</g>
+<!-- \\ChurchDirectoryTableKML&#45;&gt;\\JTable -->
+<g id="edge73" class="edge"><title>\\ChurchDirectoryTableKML&#45;&gt;\\JTable</title>
+<path fill="none" stroke="black" d="M313.154,-342.886C257.619,-332.755 186.793,-319.834 142.407,-311.736"/>
+<polygon fill="none" stroke="black" points="143.002,-308.287 132.536,-309.936 141.746,-315.174 143.002,-308.287"/>
+</g>
+<!-- \\ChurchDirectoryModelPosition -->
+<g id="node85" class="node"><title>\\ChurchDirectoryModelPosition</title>
+<polygon fill="none" stroke="black" points="497.33,-484 296.67,-484 296.67,-448 497.33,-448 497.33,-484"/>
+<text text-anchor="middle" x="397" y="-462.7" font-family="Courier,monospace" font-size="11.00">ChurchDirectoryModelPosition</text>
+</g>
+<!-- \\ChurchDirectoryModelPosition&#45;&gt;\\JModelAdmin -->
+<g id="edge74" class="edge"><title>\\ChurchDirectoryModelPosition&#45;&gt;\\JModelAdmin</title>
+<path fill="none" stroke="black" d="M299.057,-484.06C286.534,-486.824 273.925,-489.824 262,-493 223.057,-503.372 179.793,-517.955 147.778,-529.352"/>
+<polygon fill="none" stroke="black" points="146.453,-526.109 138.221,-532.779 148.815,-532.698 146.453,-526.109"/>
 </g>
 </g>
 </svg>

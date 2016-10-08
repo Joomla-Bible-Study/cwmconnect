@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<phpdocumentor>
+	<parser>
+		<default-package-name>ChurchDirecory</default-package-name>
+		<target>docs</target>
+	</parser>
+	<transformer>
+		<target>docs</target>
+	</transformer>
+	<files>
+		<directory>.</directory>
+		<ignore>bin/*</ignore>
+		<ignore>docs/*</ignore>
+		<ignore>build/*</ignore>
+		<ignore>libraries/*</ignore>
+	</files>
+	<plugins>
+		<plugin path="Core">
+			<option name="a">value</option>
+		</plugin>
+	</plugins>
+</phpdocumentor>
