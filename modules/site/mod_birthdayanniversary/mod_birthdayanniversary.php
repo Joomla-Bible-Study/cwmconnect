@@ -21,8 +21,6 @@ if (file_exists($api))
 // Include the Birthday/Anniversary functions only once
 require_once dirname(__FILE__) . '/helper.php';
 
-JLoader::register('RenderHelper', JPATH_SITE . '/components/com_churchdirectory/helpers/render.php');
-
 /* Set some global property */
 addCSS();
 
