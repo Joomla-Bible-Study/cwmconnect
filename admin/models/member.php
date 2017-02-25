@@ -400,6 +400,28 @@ class ChurchDirectoryModelMember extends JModelAdmin
 	}
 
 	/**
+	 * Save data
+	 *
+	 * @param   array  $data  The form data.
+	 *
+	 * @return  boolean  True on success, False on error.
+	 *
+	 * @since 1.7.2
+	 */
+	public function save($data)
+	{
+		$save = parent::save($data);
+
+		if ($save !== false)
+		{
+			$geoupdate = new ChurchDirectoryControllerGeoupdate;
+			$geoupdate->browse($data->id);
+		}
+
+		return $save;
+	}
+
+	/**
 	 * Returns a Table object, always creating it
 	 *
 	 * @param   string  $type    The table type to instantiate

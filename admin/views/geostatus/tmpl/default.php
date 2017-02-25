@@ -49,7 +49,7 @@ $sortFields = $this->getSortFields();
 <div id="j-sidebar-container" class="span2">
 	<?php echo $this->sidebar; ?>
 </div>
-        <div id="j-main-container" class="span10">
+	<div id="j-main-container" class="span10">
         <?php else : ?>
             <div id="j-main-container">
             <?php endif; ?>
@@ -205,7 +205,7 @@ $sortFields = $this->getSortFields();
 				// Create dropdown items
 				JHtml::_('dropdown.edit', $item->id, 'member.');
 				JHtml::_('dropdown.divider');
-				JHtml::_('geoupdate.update', $item->id, 'geoupdate.');
+				JHtml::_('geoupdate.update', $item->id);
 
 				// Render dropdown list
 				echo JHtml::_('dropdown.render');
