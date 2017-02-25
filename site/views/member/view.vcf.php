@@ -36,12 +36,14 @@ class ChurchDirectoryViewMember extends JViewLegacy
 	/**
 	 * Display
 	 *
+	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
+	 *
 	 * @return bool
 	 *
 	 * @throws \Exception
 	 * @since       1.7.2
 	 */
-	public function display()
+	public function display($tpl = null)
 	{
 		// Get model data.
 		$item = $this->get('Item');
@@ -93,8 +95,7 @@ class ChurchDirectoryViewMember extends JViewLegacy
 
 		$rev = date('c', strtotime($item->modified));
 
-		$web = new JApplicationWeb;
-		$web->setHeader('Content-disposition', 'attachment; filename="' . $card_name . '.vcf"', true);
+		JFactory::getApplication()->setHeader('Content-disposition', 'attachment; filename="' . $card_name . '.vcf"', true);
 
 		$vcard = [];
 		$vcard[] .= 'BEGIN:VCARD';
