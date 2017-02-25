@@ -170,7 +170,7 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 		// Creates an array of strings to hold the lines of the KML file.
 		$kml   = ['<?xml version="1.0" encoding="UTF-8"?>'];
 		$kml[] = '<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2"'
-				. ' xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom">';
+				. ' xmlns:atom="http://www.w3.org/2005/Atom">';
 		$kml[] = '<Document>';
 		$kml[] = '<name>' . $items[0]->kml_name . '</name>';
 		$kml[] = '<open>' . $items[0]->kml_params->get('open') . '</open>';
@@ -184,17 +184,6 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 		 <gx:altitudeMode>' . $items[0]->kml_params->get('gxaltitudeMode') . '</gx:altitudeMode>
   	     </LookAt>    <!-- Camera or LookAt -->';
 		$kml[] = $items[0]->kml_style;
-
-		$kml[] = '<StyleMap id="text_photo_banner0">
-		<Pair>
-			<key>normal</key>
-			<styleUrl>#text_photo_banner</styleUrl>
-		</Pair>
-		<Pair>
-			<key>highlight</key>
-			<styleUrl>#text_photo_banner1</styleUrl>
-		</Pair>
-	</StyleMap>';
 		$kml[] = '<Style id="text_photo_banner">';
 		$kml[] = '<IconStyle>';
 		$kml[] = '<scale>';
@@ -426,8 +415,7 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 						$kml[] = '<br />Email: <a href="mailto:' . $row->email_to . '">' . $row->email_to . '</a>';
 					}
 
-					$kml[] = '</div>]]>' . '</description>';
-					$kml[] = '<styleUrl>#text_photo_banner0</styleUrl>';
+					$kml[] = '</div>]]></description>';
 					$kml[] = '<Point>';
 					$kml[] = '<coordinates>' . $row->lng . ',' . $row->lat . ',0</coordinates>';
 					$kml[] = '</Point>';
