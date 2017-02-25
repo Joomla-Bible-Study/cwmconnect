@@ -19,8 +19,8 @@ if (defined('CHURCH_DIRECTORY_LOADED'))
 define('CHURCH_DIRECTORY_PROFILER', 0);
 
 // Load ChurchDirectory Class
-JLoader::discover('ChurchDirectory', JPATH_ROOT . '/components/com_churchdirectory', 'true', 'true');
 JLoader::discover('ChurchDirectory', JPATH_ADMINISTRATOR . '/components/com_churchdirectory', 'true', 'true');
+JLoader::discover('ChurchDirectory', JPATH_ROOT . '/components/com_churchdirectory', 'true', 'true');
 JLoader::register('ChurchDirectoryHelper', JPATH_ADMINISTRATOR . '/components/com_churchdirectory/helpers/churchdirectory.php');
 JHtml::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_churchdirectory/helpers' . '/html/');
 

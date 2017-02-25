@@ -4,10 +4,11 @@
  * @copyright  2007 - 2016 (C) Joomla Bible Study Team All rights reserved.
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
+
 defined('_JEXEC') or die;
 
 /**
- * Routing class from com_contact
+ * Routing class from com_churchdirectory
  *
  * @since  3.3
  */
@@ -18,7 +19,7 @@ class ChurchDirectoryRouter extends JComponentRouterBase
 	 *
 	 * @param   array  &$query  An array of URL arguments
 	 *
-	 * @return  array    The URL arguments to use to assemble the subsequent URL.
+	 * @return  array  The URL arguments to use to assemble the subsequent URL.
 	 *
 	 * @since    1.5
 	 */
@@ -27,18 +28,16 @@ class ChurchDirectoryRouter extends JComponentRouterBase
 		$segments = [];
 
 		// Get a menu item based on Itemid or currently active
-		$app      = JFactory::getApplication();
-		$menu     = $app->getMenu();
 		$params   = JComponentHelper::getParams('com_churchdirectory');
 		$advanced = $params->get('sef_advanced_link', 0);
 
 		if (empty($query['Itemid']))
 		{
-			$menuItem = $menu->getActive();
+			$menuItem = $this->menu->getActive();
 		}
 		else
 		{
-			$menuItem = $menu->getItem($query['Itemid']);
+			$menuItem = $this->menu->getItem($query['Itemid']);
 		}
 
 		$mView = (empty($menuItem->query['view'])) ? null : $menuItem->query['view'];
@@ -68,7 +67,7 @@ class ChurchDirectoryRouter extends JComponentRouterBase
 
 		if (isset($view) and ($view == 'category' or $view == 'member'))
 		{
-			if ($mId != intval($query['id']) || $mView != $view)
+			if ($mId != (int) $query['id'] || $mView != $view)
 			{
 				if ($view == 'member' && isset($query['catid']))
 				{
@@ -110,7 +109,7 @@ class ChurchDirectoryRouter extends JComponentRouterBase
 				{
 					if ($advanced)
 					{
-						list($tmp, $id) = explode(':', $query['id'], 2);
+						@list($tmp, $id) = explode(':', $query['id'], 2);
 					}
 					else
 					{
@@ -143,6 +142,13 @@ class ChurchDirectoryRouter extends JComponentRouterBase
 			}
 		}
 
+		$total = count($segments);
+
+		for ($i = 0; $i < $total; $i++)
+		{
+			$segments[$i] = str_replace(':', '-', $segments[$i]);
+		}
+
 		return $segments;
 	}
 
@@ -157,12 +163,16 @@ class ChurchDirectoryRouter extends JComponentRouterBase
 	 */
 	public function parse(&$segments)
 	{
+		$total = count($segments);
 		$vars = [];
 
+		for ($i = 0; $i < $total; $i++)
+		{
+			$segments[$i] = preg_replace('/-/', ':', $segments[$i], 1);
+		}
+
 		// Get the active menu item.
-		$app      = JFactory::getApplication();
-		$menu     = $app->getMenu();
-		$item     = $menu->getActive();
+		$item     = $this->menu->getActive();
 		$params   = JComponentHelper::getParams('com_churchdirectory');
 		$advanced = $params->get('sef_advanced_link', 0);
 
@@ -214,7 +224,7 @@ class ChurchDirectoryRouter extends JComponentRouterBase
 					$query->select($db->quoteName('id'))
 						->from('#__churchdirectory_details')
 						->where($db->quoteName('catid') . ' = ' . (int) $vars['catid'])
-						->where($db->quoteName('alias') . ' = ' . $db->quote($db->quote($segment)));
+						->where($db->quoteName('alias') . ' = ' . $db->quote($segment));
 					$db->setQuery($query);
 					$nid = $db->loadResult();
 				}
@@ -232,4 +242,42 @@ class ChurchDirectoryRouter extends JComponentRouterBase
 
 		return $vars;
 	}
+}
+
+/**
+ * ChurchDirectory router functions
+ *
+ * These functions are proxys for the new router interface
+ * for old SEF extensions.
+ *
+ * @param   array  &$query  An array of URL arguments
+ *
+ * @return  array  The URL arguments to use to assemble the subsequent URL.
+ *
+ * @deprecated  4.0  Use Class based routers instead
+ */
+function churchdirectoryBuildRoute(&$query)
+{
+	$router = new ChurchDirectoryRouter;
+
+	return $router->build($query);
+}
+
+/**
+ * ChurchDirectory router functions
+ *
+ * These functions are proxys for the new router interface
+ * for old SEF extensions.
+ *
+ * @param   array  $segments  The segments of the URL to parse.
+ *
+ * @return  array  The URL attributes to be used by the application.
+ *
+ * @deprecated  4.0  Use Class based routers instead
+ */
+function churchdirectoryParseRoute($segments)
+{
+	$router = new ChurchDirectoryRouter;
+
+	return $router->parse($segments);
 }

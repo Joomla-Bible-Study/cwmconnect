@@ -54,7 +54,7 @@ defined('_JEXEC') or die;
 			<dl class="contact-position dl-horizontal">
 				<dt>
 					<?php if ($item->con_position != '-1'): ?>
-						<?php echo JText::_('COM_CHURCHDIRECTORY_POSITION'); ?>
+						<?php echo JText::_('COM_CHURCHDIRECTORY_POSITIONS'); ?>
 					<?php endif; ?>
 				</dt>
 				<dd>

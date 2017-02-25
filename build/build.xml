@@ -49,7 +49,7 @@
 		<exclude name="libraries/tcpdf/examples/**" />
 		<include name="libraries/tcpdf/**"/>
 		<include name="churchdirectory.xml"/>
-		<include name="churchdirectory.scrip.php"/>
+		<include name="churchdirectory.script.php"/>
 		<include name="changelog.php"/>
 		<include name="copyright.txt"/>
 		<include name="LICENSE.txt"/>
@@ -113,7 +113,7 @@
 		<echo message="Building package"/>
 		<propertyprompt propertyName="version" defaultValue="dev" promptText="Enter version you are releasing."/>
 
-		<mkdir dir="packages"/>
+		<mkdir dir="${src}/build/packages"/>
 		<delete file="${src}/admin/churchdirectory.xml"/>
 		<delete file="${src}/admin/churchdirectory.script.php"/>
 
@@ -125,9 +125,6 @@
 		<zip destfile="${src}/build/packages/com_churchdirectory-${version}.zip">
 			<fileset refid="allfiles"/>
 		</zip>
-		<tar destfile="${src}/build/packages/com_churchdirectory-${version}.tar.gz" compression="gzip">
-			<fileset refid="allfiles"/>
-		</tar>
 		<symlink target="${src}/churchdirectory.xml" link="admin/churchdirectory.xml"/>
 		<symlink target="${src}/churchdirectory.script.php" link="admin/churchdirectory.script.php"/>
 	</target>

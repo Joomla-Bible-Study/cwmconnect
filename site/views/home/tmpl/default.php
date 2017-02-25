@@ -10,7 +10,7 @@ $login = $this->user->get('guest') ? true : false;
 $check = in_array($this->params->get('accesslevel'), $this->user->get('_authLevels'));
 $count = count($this->items);
 ?>
-<div class="chhome clear" style="padding: 5px;">
+<div class="chhome" style="padding: 5px;">
 	<h1 class="center"><?php if ($this->params->get('show_page_heading', 0))
 		{
 			echo $this->params->get('page_heading');
@@ -60,7 +60,7 @@ $count = count($this->items);
 							?>
 							<div class="span6 pull-left">
 								<div class="center">
-									<a href="<?php echo JUri::root(); ?>/index.php?option=com_churchdirectory&view=member&id=<?php echo $item->id; ?>">
+									<a href="<?php echo JRoute::_('index.php?option=com_churchdirectory&view=member&id=' . $item->id); ?>">
 										<?php if ($item->image && $item->image != '/')
 										{ ?>
 											<img src="<?php echo $item->image; ?>"
@@ -82,7 +82,7 @@ $count = count($this->items);
 							?>
 							<div class="span6 pull-left">
 								<div class="center">
-									<a href="<?php echo JUri::root(); ?>/index.php?option=com_churchdirectory&view=member&id=<?php echo $item->id; ?>">
+									<a href="<?php echo JRoute::_('index.php?option=com_churchdirectory&view=member&id=' . $item->id); ?>">
 										<?php if ($item->image && $item->image != '/')
 										{ ?>
 											<img src="<?php echo $item->image; ?>"

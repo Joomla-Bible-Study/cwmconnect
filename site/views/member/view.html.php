@@ -104,6 +104,10 @@ class ChurchDirectoryViewMember extends JViewLegacy
 
 			$contacts = $categoryModel->getItems();
 		}
+		else
+		{
+			return null;
+		}
 
 		// Check for errors.
 		if (count($errors = $this->get('Errors')))

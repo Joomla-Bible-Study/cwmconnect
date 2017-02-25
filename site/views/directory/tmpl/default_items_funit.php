@@ -68,7 +68,7 @@ foreach ($this->items as $item)
 			$families = $this->renderHelper->getFamilyMembers($item->funitid);
 			?>
 			<span id="contact-name"><?php echo $item->funit_name; ?></span><br/>
-			<?php $children = $this->renderHelper->getChildren($families, true, $item->children);
+			<?php $children = $this->renderHelper->getChildren($families, false, $item->children);
 			if ($this->params->get('dr_show_children') && $children || $item->children) :
 				echo $children; ?>
 			<?php endif; ?>
@@ -129,14 +129,14 @@ foreach ($this->items as $item)
 					<span id="contact-name"><?php echo $item->name; ?></span>
 				<?php endif; ?>
 				<?php if ($item->children && $this->params->get('dr_show_children')) :
-					$children = $this->renderHelper->getChildren($item, true, $item->children);
+					$children = $this->renderHelper->getChildren($item, false, $item->children);
 					?><br/>
 					<span><?php echo $children; ?></span>
 				<?php endif; ?>
 				<?php if ($item->con_position && $this->params->get('show_position')) : ?>
 					<br/><span class="contact-position">
 							<?php if ($item->con_position != '-1'): ?>
-								<?php echo JText::_('COM_CHURCHDIRECTORY_POSITION') . ': '; ?>
+								<?php echo JText::_('COM_CHURCHDIRECTORY_POSITIONS') . ': '; ?>
 							<?php endif; ?>
 							<?php echo $this->renderHelper->getPosition($item->con_position); ?>
 					</span>

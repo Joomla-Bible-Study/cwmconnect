@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<extension type="library" version="3.1" method="upgrade">
+  <name>TCPDF</name>
+  <libraryname>tcpdf</libraryname>
+  <version>6.2.8</version>
+  <creationDate>2016-10-01</creationDate>
+  <author>Nicola Asuni / Davide Tampellini</author>
+  <authorUrl>Tecnick.com / www.fabbricabinaria.it</authorUrl>
+  <authorEmail>webmaster@fabbricabinaria.it</authorEmail>
+  <description><![CDATA[TCPDF library for Joomla!. <br/>
+  Please note that FabbricaBinaria has only created an installation package, all credit belongs to Nicola Asuni (www.teknick.com)<br> This is a lite version, only most used fonts are included.]]>
+  </description>
+
+  <files folder="tcpdf">
+    <folder>config</folder>
+    <folder>fonts</folder>
+    <folder>include</folder>
+    <folder>tools</folder>
+    <file>CHANGELOG.TXT</file>
+    <file>composer.json</file>
+    <file>LICENSE.TXT</file>
+    <file>README.md</file>
+    <file>tcpdf_autoconfig.php</file>
+    <file>tcpdf_barcodes_1d.php</file>
+    <file>tcpdf_barcodes_2d.php</file>
+    <file>tcpdf_import.php</file>
+    <file>tcpdf_parser.php</file>
+    <file>tcpdf.php</file>
+  </files>
+</extension>

@@ -50,8 +50,7 @@ class ChurchDirectoryControllerMember extends JControllerForm
 		$id     = (int) $stub;
 
 		// Get the data from POST
-		$data = $app->input->post->get('jform', [], 'post', 'array');
-
+		$data = $app->input->post->get('jform', [], 'array');
 		$churchdirectory = $model->getItem($id);
 
 		$params->merge($churchdirectory->params);
@@ -75,7 +74,6 @@ class ChurchDirectoryControllerMember extends JControllerForm
 
 		// ChurchDirectory plugins
 		JPluginHelper::importPlugin('churchdirectory');
-
 		$dispatcher = JEventDispatcher::getInstance();
 
 		// Validate the posted data.
@@ -133,7 +131,7 @@ class ChurchDirectoryControllerMember extends JControllerForm
 
 		if (!$params->get('custom_reply'))
 		{
-			$sent = $this->_sendEmail($data, $churchdirectory);
+			$sent = $this->_sendEmail($data, $churchdirectory, $params->get('show_email_copy'));
 		}
 
 		// Set the success message if it was a success
@@ -165,14 +163,15 @@ class ChurchDirectoryControllerMember extends JControllerForm
 	/**
 	 * Send email
 	 *
-	 * @param   array   $data             ?
-	 * @param   object  $churchdirectory  ?
+	 * @param   array    $data                  The data to send in the email.
+	 * @param   object   $churchdirectory       The user information to send the email to
+	 * @param   boolean  $copy_email_activated  True to send a copy of the email to the user.
 	 *
 	 * @return bool|JException
 	 *
 	 * @since       1.7.2
 	 */
-	private function _sendEmail($data, $churchdirectory)
+	private function _sendEmail($data, $churchdirectory, $copy_email_activated)
 	{
 		$app = JFactory::getApplication();
 
@@ -187,7 +186,7 @@ class ChurchDirectoryControllerMember extends JControllerForm
 		$sitename = $app->get('sitename');
 
 		$name    = $data['churchdirectory_name'];
-		$email   = $data['churchdirectory_email'];
+		$email   = JStringPunycode::emailToPunycode($data['churchdirectory_email']);
 		$subject = $data['churchdirectory_subject'];
 		$body    = $data['churchdirectory_message'];
 
@@ -203,10 +202,8 @@ class ChurchDirectoryControllerMember extends JControllerForm
 		$mail->setBody($body);
 		$sent = $mail->Send();
 
-		// If we are supposed to copy the sender, do so.
-
 		// Check whether email copy function activated
-		if (array_key_exists('churchdirectory_email_copy', $data))
+		if ($copy_email_activated == true && !empty($data['churchdirectory_email_copy']))
 		{
 			$copytext = JText::sprintf('COM_CHURCHDIRECTORY_COPYTEXT_OF', $churchdirectory->name, $sitename);
 			$copytext .= "\r\n\r\n" . $body;
