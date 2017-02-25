@@ -8,11 +8,11 @@
  */
 
 /**
- * Class ChurchDirectoryReportbuild
+ * Class ChurchDirectoryReportBuild
  *
  * @since  1.7.10
  */
-class ChurchDirectoryReportbuild
+class ChurchDirectoryReportBuild
 {
 	/**
 	 * Private
@@ -24,7 +24,7 @@ class ChurchDirectoryReportbuild
 	private $db;
 
 	/**
-	 * ChurchDirectoryReportbuild constructor.
+	 * ChurchDirectoryReportBuild constructor.
 	 *
 	 * @since  1.7.10
 	 */

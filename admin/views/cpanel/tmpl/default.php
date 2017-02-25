@@ -26,19 +26,6 @@ JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 				   Joomla Bible Study Team</p>
 				<p>Version: <?php echo $this->xml->version; ?></p>
 			</div>
-			<div class="pull-right span4">
-				<div id="cpanel" class="btn-group">
-					<a href="index.php?option=com_churchdirectory&view=geoupdate&tmpl=component" class="modal btn"
-					   rel="{handler: 'iframe', size: {x: 600, y: 250}}">
-						<img src="<?php echo rtrim(JURI::base(), '/'); ?>/../media/com_churchdirectory/images/icons/icon-32-geoupdate.png"
-						     border="0" alt="<?php echo JText::_('COM_CHURCHDIRECTORY_TITLE_GEOUPDATE') ?>" width="32"
-						     height="32" align='middle' style="float: none"/>
-						<span>
-						<?php echo JText::_('COM_CHURCHDIRECTORY_TITLE_GEOUPDATE') ?><br/>
-					</span>
-					</a>
-				</div>
-			</div>
 			<!-- End Content -->
 		</div>
 </form>

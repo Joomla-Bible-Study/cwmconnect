@@ -8,6 +8,14 @@
 
 defined('_JEXEC') or die;
 
+// Always load JBSM API if it exists.
+$api = JPATH_ADMINISTRATOR . '/components/com_churchdirectory/api.php';
+
+if (file_exists($api))
+{
+	require_once $api;
+}
+
 // Access check.
 if (!JFactory::getUser()->authorise('core.manage', 'com_churchdirectory'))
 {

@@ -6,14 +6,6 @@
  */
 defined('_JEXEC') or die;
 
-// Always load JBSM API if it exists.
-$api = JPATH_ADMINISTRATOR . '/components/com_churchdirectory/api.php';
-
-if (file_exists($api))
-{
-	require_once $api;
-}
-
 /**
  * Component Controller
  *
@@ -47,12 +39,6 @@ class ChurchDirectoryController extends JControllerLegacy
 		$layout      = $this->input->get('layout', 'default');
 		$id          = $this->input->getInt('id', 0);
 
-		$type = $this->input->get('view');
-
-		if (!$type)
-		{
-			$this->input->get('view', 'cpanel');
-		}
 		// Check for edit form.
 		if ($view == 'member' && $layout == 'edit' && !$this->checkEditId('com_churchdirectory.edit.member', $id))
 		{
