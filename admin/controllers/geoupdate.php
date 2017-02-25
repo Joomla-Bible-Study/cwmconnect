@@ -76,6 +76,9 @@ class ChurchDirectoryControllerGeoupdate extends JControllerForm
 			$id = $app->input->getInt('id', 0);
 		}
 
+		// Make sure system knows what view to us.
+		JFactory::getApplication()->input->set('view', 'geoupdate');
+
 		/** @var ChurchDirectoryModelGeoUpdate $model */
 		$model = $this->getModel('geoupdate');
 		$state = $model->startScanning($id);
