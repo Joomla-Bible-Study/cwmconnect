@@ -414,8 +414,9 @@ class ChurchDirectoryModelMember extends JModelAdmin
 
 		if ($save !== false)
 		{
-			$geoupdate = new ChurchDirectoryControllerGeoupdate;
-			$geoupdate->browse($data->id);
+			JLoader::register('ChurchDirectoryModelGeoUpdate', JPATH_ADMINISTRATOR . '/components/com_churchdirectory/models/geoupdate.php');
+			$geoupdate = new ChurchDirectoryModelGeoUpdate;
+			$geoupdate->run(true, $data['id']);
 		}
 
 		return $save;

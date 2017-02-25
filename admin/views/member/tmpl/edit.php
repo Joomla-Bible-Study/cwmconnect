@@ -197,7 +197,7 @@ JFactory::getDocument()->addScriptDeclaration('
 	</div>
 	<div class="control-group">
 		<div class="control-label"><?php echo $this->form->getLabel('postcode'); ?></div>
-		<div class="controls"><?php echo $this->form->getInput('postcode'); ?></div>
+		<div class="controls"><?php echo $this->form->getInput('postcode'); ?> - <?php echo $this->form->getInput('postcodeaddon'); ?></div>
 	</div>
 	<div class="control-group">
 		<div class="control-label"><?php echo $this->form->getLabel('country'); ?></div>

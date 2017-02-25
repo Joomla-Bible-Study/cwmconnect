@@ -944,7 +944,7 @@
 		<field name="dr_mstatus" type="list"
 		       label="COM_CHURCHDIRECTORY_FIELD_MEMBERSSTATUS_LABEL"
 		       description="COM_CHURCHDIRECTORY_FIELD_MEMBERSSTATUS_DESC"
-		       class="inputbox span12 small"
+		       class="inputbox small"
 		       default="0">
 			<option value="0">COM_CHURCHDIRECTORY_ACTIVE_MEMBER</option>
 			<option value="1">COM_CHURCHDIRECTORY_INACTIVE</option>
@@ -1065,6 +1065,7 @@
 		/>
 		<field name="sef_advanced_link"
 		       type="radio"
+		       class="btn-group"
 		       default="0"
 		       label="COM_CHURCHDIRECTORY_FIELD_SEF_LABLE"
 		       description="COM_CHURCHDIRECTORY_FIELD_SEF_DESC">

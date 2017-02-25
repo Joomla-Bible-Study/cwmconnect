@@ -18,11 +18,13 @@ if (defined('CHURCH_DIRECTORY_LOADED'))
 // Manually enable code profiling by setting value to 1
 define('CHURCH_DIRECTORY_PROFILER', 0);
 
-// Load ChurchDirectory Class
-JLoader::discover('ChurchDirectory', JPATH_ADMINISTRATOR . '/components/com_churchdirectory', 'true', 'true');
-JLoader::discover('ChurchDirectory', JPATH_ROOT . '/components/com_churchdirectory', '', 'true');
+// Load JBSM Class
+JLoader::discover('ChurchDirectory', JPATH_ROOT . '/components/com_churchdirectory/helpers', 'false', 'true');
+JLoader::discover('ChurchDirectoryTable', JPATH_ROOT . '/components/com_churchdirectory/tables', 'false', 'true');
+JLoader::discover('ChurchDirectory', JPATH_ADMINISTRATOR . '/components/com_churchdirectory/helpers', 'false', 'true');
+JLoader::discover('ChurchDirectoryTable', JPATH_ADMINISTRATOR . '/components/com_churchdirectory/tables', 'false', 'true');
 JLoader::register('ChurchDirectoryHelper', JPATH_ADMINISTRATOR . '/components/com_churchdirectory/helpers/churchdirectory.php');
-JHtml::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_churchdirectory/helpers' . '/html/');
+JHtml::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_churchdirectory/helpers/html/');
 
 JHtml::stylesheet('media/com_churchdirectory/css/general.css');
 

@@ -32,6 +32,9 @@ class ChurchDirectoryModelGeoStatus extends JModelList
 				'name', 'a.name',
 				'lname', 'a.lname',
 				'alias', 'a.alias',
+				'address', 'a.address',
+				'suburb', 'a.suburb',
+				'postcode', 'a.postcode',
 				'checked_out', 'a.checked_out',
 				'checked_out_time', 'a.checked_out_time',
 				'catid', 'a.catid', 'category_title',
@@ -132,7 +135,7 @@ class ChurchDirectoryModelGeoStatus extends JModelList
 		// Select the required fields from the table.
 		$query->select(
 			$this->getState(
-				'list.select', 'a.id, a.name, a.lname, a.alias, a.checked_out, a.checked_out_time, a.catid, a.user_id' .
+				'list.select', 'a.id, a.name, a.lname, a.alias, a.address, a.state, a.suburb, a.postcode, a.checked_out, a.checked_out_time, a.catid, a.user_id' .
 				', a.published, a.access, a.created, a.created_by, a.ordering, a.featured, a.language' .
 				', a.publish_up, a.publish_down'
 			)

@@ -87,7 +87,7 @@ class ChurchDirectoryViewGeoStatus extends JViewLegacy
 		JToolbarHelper::title(JText::_('COM_CHURCHDIRECTORY_TITLE_GEOUPDATE_STATUS'), 'geo');
 
 		$bar->appendButton('Popup', 'refresh', 'COM_CHURCHDIRECTORY_GEOUPDATE',
-			'index.php?option=com_churchdirectory&view=geoupdate&tmpl=component', 550, 350
+			'index.php?option=com_churchdirectory&task=geoupdate.browse&tmpl=component', 550, 350
 		);
 
 		if ($canDo->get('core.admin'))
