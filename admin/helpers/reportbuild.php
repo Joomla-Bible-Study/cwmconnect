@@ -196,5 +196,22 @@ class ChurchDirectoryReportBuild
 	public function getPDF($items, $report)
 	{
 		// Hold
+		return false;
+	}
+
+	/**
+	 * PDF export
+	 *
+	 * @param   object  $items   Items to pass through
+	 * @param   string  $report  Name of report to return.
+	 *
+	 * @return bool
+	 *
+	 * @since    1.7.0
+	 */
+	public function getKML($items, $report)
+	{
+		// Hold
+		return false;
 	}
 }
