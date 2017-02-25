@@ -197,10 +197,11 @@ $renderHelper = new ChurchDirectoryRenderHelper;
 		echo '<div class="clearfix"></div>';
 		echo $this->loadTemplate('address');
 
+		var_dump($this->params->get('allow_vcard'));
 		if ($this->params->get('allow_vcard'))
 		{
 			echo JText::_('COM_CHURCHDIRECTORY_DOWNLOAD_INFORMATION_AS'); ?>
-			<a href="<?php echo JRoute::_('index.php?option=com_contact&amp;view=contact&amp;id=' . $this->member->id . '&amp;format=vcf'); ?>">
+			<a href="<?php echo JRoute::_('index.php?option=com_churchdirectory&amp;view=member&amp;id=' . $this->member->id . '&amp;format=vcf'); ?>">
 				<?php echo JText::_('COM_CHURCHDIRECTORY_VCARD'); ?></a>
 			<?php
 		}
