@@ -6,8 +6,8 @@
 		<field
 			name="search"
 			type="text"
-			label="COM_CONTACT_FILTER_SEARCH_LABEL"
-			description="COM_CONTACT_FILTER_SEARCH_DESC"
+			label="COM_CHURCHDIRECTORY_FILTER_SEARCH_LABEL"
+			description="COM_CHURCHDIRECTORY_FILTER_SEARCH_DESC"
 			hint="JSEARCH_FILTER"
 		/>
 
@@ -26,7 +26,7 @@
 			type="category"
 			label="JOPTION_FILTER_CATEGORY"
 			description="JOPTION_FILTER_CATEGORY_DESC"
-			extension="com_contact"
+			extension="com_churchdirectory"
 			published="0,1,2"
 			onchange="this.form.submit();"
 			>
@@ -85,8 +85,8 @@
 		<field
 			name="fullordering"
 			type="list"
-			label="COM_CONTACT_LIST_FULL_ORDERING"
-			description="COM_CONTACT_LIST_FULL_ORDERING_DESC"
+			label="COM_CHURCHDIRECTORY_LIST_FULL_ORDERING"
+			description="COM_CHURCHDIRECTORY_LIST_FULL_ORDERING_DESC"
 			default="a.name ASC"
 			onchange="this.form.submit();"
 			>
@@ -99,8 +99,8 @@
 			<option value="a.name DESC">JGLOBAL_TITLE_DESC</option>
 			<option value="category_title ASC">JCATEGORY_ASC</option>
 			<option value="category_title DESC">JCATEGORY_DESC</option>
-			<option value="ul.name ASC">COM_CONTACT_FIELD_LINKED_USER_LABEL_ASC</option>
-			<option value="ul.name DESC">COM_CONTACT_FIELD_LINKED_USER_LABEL_DESC</option>
+			<option value="ul.name ASC">COM_CHURCHDIRECTORY_FIELD_LINKED_USER_LABEL_ASC</option>
+			<option value="ul.name DESC">COM_CHURCHDIRECTORY_FIELD_LINKED_USER_LABEL_DESC</option>
 			<option value="a.featured ASC">JFEATURED_ASC</option>
 			<option value="a.featured DESC">JFEATURED_DESC</option>
 			<option value="access_level ASC">JGRID_HEADING_ACCESS_ASC</option>
@@ -126,8 +126,8 @@
 		<field
 			name="limit"
 			type="limitbox"
-			label="COM_CONTACT_LIST_LIMIT"
-			description="COM_CONTACT_LIST_LIMIT_DESC"
+			label="COM_CHURCHDIRECTORY_LIST_LIMIT"
+			description="COM_CHURCHDIRECTORY_LIST_LIMIT_DESC"
 			default="25"
 			class="input-mini"
 			onchange="this.form.submit();"

@@ -1,10 +1,10 @@
-#New Church Photo Directory System
+# New Church Photo Directory System
 [![Build Status](https://travis-ci.org/Joomla-Bible-Study/joomla_churchdirectory.svg?branch=master)](https://travis-ci.org/Joomla-Bible-Study/joomla_churchdirectory)
 
-##Aboute
+## About
 We are excited to announce the first release of Church Directory.
 
-###Fetchers:
+### Fetchers:
 <ol>
 <li><p>Secured Directory Content</p></li>
 <li><p>Church Photo Directory listing</p></li>
@@ -13,7 +13,7 @@ We are excited to announce the first release of Church Directory.
 <li><p>Full Search</p></li>
 </ol>
 
-##Documintation
+## Documentation
 I'm working on documentation on how this works and hope to have it done soon.
 
-###<a href="http://www.joomlabiblestudy.org" target="_blank" type="html">Sponsored by Joomla Bible Study</a>
+### <a href="http://www.joomlabiblestudy.org" target="_blank" type="html">Sponsored by Joomla Bible Study</a>
