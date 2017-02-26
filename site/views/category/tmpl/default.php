@@ -20,12 +20,14 @@ $isModal = JFactory::getApplication()->input->get('print') == 1;
 if ($isModal)
 {
 	$href = '"#" onclick="window.print(); return false;"';
+	$kmlhref = '';
 }
 else
 {
 	$href = 'status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,resizable=yes,width=640,height=480,directories=no,location=no';
 	$href = "window.open(this.href,'win2','" . $href . "'); return false;";
 	$href = '"index.php?option=com_churchdirectory&view=category&id=' . $this->category->id . '&Itemid=' . JFactory::getApplication()->input->get('Itemid') . '&tmpl=component&print=1" ' . $href;
+	$kmlhref = '"index.php?option=com_churchdirectory&view=category&id=' . $this->category->id . '&Itemid=' . JFactory::getApplication()->input->get('Itemid') . '&tmpl=component&format=kml"';
 }
 ?>
 
@@ -50,6 +52,11 @@ else
 		<a href=<?php echo $href; ?>>
 			<?php echo JHtml::image('media/com_churchdirectory/images/printButton.png', 'Print', ''); ?>
 		</a>
+        <?php if ($kmlhref) { ?>
+        <a href=<?php echo $kmlhref; ?>>
+			<?php echo JHtml::image('media/com_churchdirectory/images/kmlButton.png', 'KML', ''); ?>
+        </a>
+        <?php } ?>
 	</div>
 	<?php if ($this->params->def('show_description', 1) || $this->params->def('show_description_image', 1))
 	{

@@ -270,8 +270,8 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 
 		// Set document information
 		$this->pdf->SetCreator(PDF_CREATOR);
-		$this->pdf->SetAuthor('NFSDA Church');
-		$this->pdf->SetTitle($this->params->get('page_title', ''));
+		$this->pdf->SetAuthor('Church Directory Creater');
+		$this->pdf->SetTitle($this->params->get('page_title', 'Printable Directory'));
 		$this->pdf->SetSubject('Church Directory');
 		$this->pdf->SetKeywords('Directory, PDF, Members');
 

@@ -42,4 +42,28 @@ class ChurchDirectoryDB
 	{
 		// Hold
 	}
+
+	/**
+	 * Get KML Table
+	 *
+	 * @return mixed
+	 *
+	 * @since 1.8.1
+	 */
+	public function getKMLdb()
+	{
+		$db = JFactory::getDbo();
+
+		$query = $db->getQuery(true)->select('*')->from('#__churchdirectory_kml')->where('id = ' . 1);
+		$db->setQuery($query);
+
+		$kml = $db->loadObject();
+
+		// Loade Reg
+		$reg = new Joomla\Registry\Registry;
+		$reg->loadString($kml->params);
+		$kml->params = $reg;
+
+		return $kml;
+	}
 }

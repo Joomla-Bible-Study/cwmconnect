@@ -220,6 +220,10 @@ class ChurchDirectoryModelCategory extends JModelList
 			$query->where('(a.name LIKE ' . $search . ')');
 		}
 
+		// Join over the categories.
+		$query->select('ca.title AS category_title, ca.params AS category_params, ca.alias AS category_alias, ca.access AS category_access');
+		$query->join('INNER', '#__categories AS ca ON ca.id = a.catid');
+
 		// Filter by language
 		if ($this->getState('filter.language'))
 		{

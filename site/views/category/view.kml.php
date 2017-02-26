@@ -15,7 +15,7 @@ use Joomla\Registry\Registry;
  * @package  ChurchDirectory.Site
  * @since    1.7.0
  */
-class ChurchDirectoryViewDirectory extends JViewLegacy
+class ChurchDirectoryViewCategory extends JViewLegacy
 {
 	/**
 	 * Protected
@@ -93,6 +93,7 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 	 * @return  mixed  A string if successful, otherwise a Error object.
 	 *
 	 * @since       1.7.2
+	 * @throws  Exception
 	 */
 	public function display ($tpl = null)
 	{
@@ -104,6 +105,17 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 		$params     = $state->params;
 		$items      = $this->get('Items');
 		$category   = $this->get('Category');
+		$parent     = $this->get('Parent');
+
+		if ($category == false)
+		{
+			throw new Exception(JText::_('JGLOBAL_CATEGORY_NOT_FOUND'), 404);
+		}
+
+		if ($parent === false)
+		{
+			throw new Exception(JText::_('JGLOBAL_CATEGORY_NOT_FOUND'), 404);
+		}
 
 		// Check whether category access level allows access.
 		$user   = JFactory::getUser();
@@ -111,16 +123,12 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 
 		if (!in_array($category->access, $groups))
 		{
-			echo JText::_('JERROR_ALERTNOAUTHOR');
-
-			return false;
+			throw new Exception(JText::_('JERROR_ALERTNOAUTHOR'), 403);
 		}
 
-		if ($items == false || empty($items))
+		if (empty($items))
 		{
-			echo JText::_('COM_CHURCHDIRECTOY_ERROR_DIRECTORY_NOT_FOUND');
-
-			return false;
+			throw new Exception('No Data', 404);
 		}
 
 		// Prepare the data.

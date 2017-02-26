@@ -197,7 +197,6 @@ $renderHelper = new ChurchDirectoryRenderHelper;
 		echo '<div class="clearfix"></div>';
 		echo $this->loadTemplate('address');
 
-		var_dump($this->params->get('allow_vcard'));
 		if ($this->params->get('allow_vcard'))
 		{
 			echo JText::_('COM_CHURCHDIRECTORY_DOWNLOAD_INFORMATION_AS'); ?>
