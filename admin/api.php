@@ -28,5 +28,15 @@ JHtml::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_churchdirectory/hel
 
 JHtml::stylesheet('media/com_churchdirectory/css/general.css');
 
+// Include the JLog class.
+jimport('joomla.log.log');
+JLog::addLogger(
+	array(
+		'text_file' => 'com_churchdirectory.errors.php'
+	),
+	JLog::ALL,
+	'com_churchdirectory'
+);
+
 // ChurchDirectory has been initialized
 define('CHURCH_DIRECTORY_LOADED', 1);
