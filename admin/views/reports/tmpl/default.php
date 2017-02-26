@@ -7,6 +7,12 @@
 
 defined('_JEXEC') or die;
 
+// Include the component HTML helpers.
+JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
+
+JHtml::_('behavior.formvalidation');
+JHtml::_('formbehavior.chosen', 'select');
+
 $user = JFactory::getUser();
 
 ?>
@@ -27,30 +33,47 @@ $user = JFactory::getUser();
 			else
 			{
 				?>
-				<div>
-					<h2>Members Reports</h2>
-					<p>The fallowing button will output all Members in a CSV file.</p>
+				<div class="span6">
+					<div>
+						<h2>Members Reports</h2>
+						<p>The fallowing button will output all Members in a CSV file.</p>
 
-					<a href="<?php echo JRoute::_('index.php?option=com_churchdirectory&task=reports.export&report=all&cdtype=csv'); ?>">
-						<img
-							src="<?php echo JRoute::_(JUri::root() . 'media/com_churchdirectory/images/csv_file.png'); ?>"
-							alt=""/>
-						<span class="btn btn-default">Report CSV</span>
-					</a>
+						<a href="<?php echo JRoute::_('index.php?option=com_churchdirectory&task=reports.export&report=all&cdtype=csv'); ?>">
+							<img
+									src="<?php echo JRoute::_(JUri::root() . 'media/com_churchdirectory/images/csv_file.png'); ?>"
+									alt=""/>
+							<span class="btn btn-default">Report CSV</span>
+						</a>
+					</div>
+					<div>
+						<h2>Google Earth KML</h2>
+						<p>The fallowing button will output all Members in a KML file to use with Google maps or Google
+							Earth.</p><a
+								href="<?php echo JRoute::_("index.php?option=com_churchdirectory&view=reports&format=row&cdtype=kml&" . JSession::getFormToken() . "=1") ?>"
+								class="btn btn-default">KML</a>
+					</div>
+					<div>
+						<h2>PDF</h2>
+						<p>The fallowing button will output all Members in a pdf file
+							Earth.</p><a
+								href="<?php echo JRoute::_("index.php?option=com_churchdirectory&view=reports&format=row&cdtype=pdf&" . JSession::getFormToken() . "=1") ?>"
+								class="btn btn-default">PDF</a>
+					</div>
 				</div>
-				<div>
-					<h2>Google Earth KML</h2>
-					<p>The fallowing button will output all Members in a KML file to use with Google maps or Google
-						Earth.</p><a
-						href="<?php echo JRoute::_(JUri::root() . "index.php?option=com_churchdirectory&view=directory&format=kml") ?>"
-						class="btn btn-default">KML</a>
-				</div>
-				<div>
-					<h2>PDF</h2>
-					<p>The fallowing button will output all Members in a pdf file
-						Earth.</p><a
-						href="<?php echo JRoute::_(JUri::root() . "index.php?option=com_churchdirectory&view=directory&format=pdf") ?>"
-						class="btn btn-default">PDF</a>
+				<div class="span6">
+
+					<div class="control-group">
+						<div class="control-label"><?php echo $this->form->getLabel('catid'); ?></div>
+						<div class="controls"><?php echo $this->form->getInput('catid'); ?></div>
+					</div>
+					<div class="control-group">
+						<div class="control-label"><?php echo $this->form->getLabel('published'); ?></div>
+						<div class="controls"><?php echo $this->form->getInput('published'); ?></div>
+					</div>
+					<div class="control-group">
+						<div class="control-label"><?php echo $this->form->getLabel('chtype'); ?></div>
+						<div class="controls"><?php echo $this->form->getInput('chtype'); ?></div>
+					</div>
 				</div>
 				<?php
 			}

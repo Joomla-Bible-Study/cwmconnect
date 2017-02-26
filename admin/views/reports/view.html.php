@@ -54,6 +54,8 @@ class ChurchDirectoryViewReports extends JViewLegacy
 	{
 		ChurchDirectoryHelper::addSubmenu('reports');
 
+		// Initialise variables.
+		$this->form       = $this->get('Form');
 		$this->items      = $this->get('Items');
 		$this->pagination = $this->get('Pagination');
 		$this->state = $this->get('State');

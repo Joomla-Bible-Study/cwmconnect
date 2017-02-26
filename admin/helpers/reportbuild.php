@@ -196,6 +196,8 @@ class ChurchDirectoryReportBuild
 	public function getPDF($items, $report = null)
 	{
 		// Hold
+		echo 'Coming Soon';
+
 		return false;
 	}
 

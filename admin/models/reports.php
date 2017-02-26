@@ -15,35 +15,70 @@ use Joomla\Registry\Registry;
  * @package  ChurchDirectory.Admin
  * @since    1.7.0
  */
-class ChurchDirectoryModelReports extends JModelLegacy
+class ChurchDirectoryModelReports extends JModelAdmin
 {
 	/**
-	 * Constructor
+	 * The type alias for this content type.
 	 *
-	 * @param   array  $config  An array of configuration options (name, state, dbo, table_path, ignore_request).
-	 *
-	 * @since   12.2
-	 * @throws  Exception
+	 * @var    string
+	 * @since  3.2
 	 */
-	public function __construct($config = [])
+	public $typeAlias = 'com_churchdirectory.reports';
+
+	/**
+	 * The context used for the associations table
+	 *
+	 * @var    string
+	 * @since  3.4.4
+	 */
+	protected $associationsContext = 'com_churchdirectory.item';
+
+	/**
+	 * Batch copy/move command. If set to false, the batch copy/move command is not supported
+	 *
+	 * @var  string
+	 * @since    1.7.0
+	 */
+	protected $batch_copymove = 'category_id';
+
+	/**
+	 * Method to get the row form.
+	 *
+	 * @param   array    $data      Data for the form.
+	 * @param   boolean  $loadData  True if the form is to load its own data (default case), false if not.
+	 *
+	 * @return    mixed    A JForm object on success, false on failure
+	 *
+	 * @since    1.7.0
+	 */
+	public function getForm($data = [], $loadData = true)
 	{
-		if (empty($config['filter_fields']))
+		JForm::addFieldPath(JPATH_ADMINISTRATOR . '/components/com_users/models/fields');
+
+		// Get the form.
+		$form = $this->loadForm('com_churchdirectory.reports', 'reports', ['control' => 'jform', 'load_data' => $loadData]);
+
+		if (empty($form))
 		{
-			$config['filter_fields'] = [
-				'id', 'a.id',
-				'name', 'a.name',
-				'lname', 'a.lname',
-				'suburb', 'a.suburb',
-				'state', 'a.state',
-				'country', 'a.country',
-				'ordering', 'a.ordering',
-				'sortname1', 'a.sortname1',
-				'sortname2', 'a.sortname2',
-				'sortname3', 'a.sortname3'
-			];
+			return false;
 		}
 
-		parent::__construct($config);
+		// Modify the form based on access controls.
+		if (!$this->canEditState((object) $data))
+		{
+			// Disable fields for display.
+			$form->setFieldAttribute('featured', 'disabled', 'true');
+			$form->setFieldAttribute('ordering', 'disabled', 'true');
+			$form->setFieldAttribute('published', 'disabled', 'true');
+
+			// Disable fields while saving.
+			// The controller has already verified this is a record you can edit.
+			$form->setFieldAttribute('featured', 'filter', 'unset');
+			$form->setFieldAttribute('ordering', 'filter', 'unset');
+			$form->setFieldAttribute('published', 'filter', 'unset');
+		}
+
+		return $form;
 	}
 
 	/**
@@ -57,7 +92,6 @@ class ChurchDirectoryModelReports extends JModelLegacy
 	 *
 	 * @since    1.6
 	 */
-
 	protected function populateState($ordering = null, $direction = null)
 	{
 		// Initialise variables.
@@ -300,16 +334,60 @@ class ChurchDirectoryModelReports extends JModelLegacy
 	 */
 	public function getExport($type, $report)
 	{
+		// Check for request forgeries.
+		JSession::checkToken('get') or JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
+
+		$params = JComponentHelper::getParams('com_churchdirectory');
 		$this->setState('filter.published', '1');
 		$this->populateState();
 
 		$reportBuild = new ChurchDirectoryReportbuild;
 		$items  = $this->_db->setQuery($this->getListQuery())->loadObjectList();
 
+
+		// Prepare the data.
+		for ($i = 0, $n = count($items); $i < $n; $i++)
+		{
+			$item = &$items[$i];
+
+			// Compute the contact slug.
+			$item->slug = $item->alias ? ($item->id . ':' . $item->alias) : $item->id;
+
+			$item->event = new stdClass;
+			$temp        = new Registry;
+			$temp->loadString($item->params);
+			$item->params = clone $params;
+			$item->params->merge($temp);
+
+			// Build Cat params
+			$reg = new Joomla\Registry\Registry;
+			$reg->loadString($item->category_params);
+			$item->category_params = $reg;
+
+			if ($item->params->get('dr_show_email', 0) == 1)
+			{
+				$item->email_to = trim($item->email_to);
+
+				if (empty($item->email_to) && !JMailHelper::isEmailAddress($item->email_to))
+				{
+					$item->email_to = null;
+				}
+			}
+		}
+
 		switch ($type)
 		{
 			case 'csv':
 				$reportBuild->getCsv($items, $report);
+				break;
+			case 'kml':
+				$reportBuild->getKML($items, $report);
+				break;
+			case 'pdf':
+				$reportBuild->getPDF($items, $report);
+				break;
 		}
+
+		return;
 	}
 }

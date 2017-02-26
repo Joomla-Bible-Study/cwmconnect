@@ -1,50 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <form>
-    <fields name="params">
+    <fields name="params" addfieldpath="/administrator/components/com_categories/models/fields">
 
     </fields>
     <fieldset>
         <field name="language" type="contentlanguage" label="JFIELD_LANGUAGE_LABEL"
                description="COM_CHURCHDIRECTORY_FIELD_LANGUAGE_DESC"
-               class="inputbox span12 small"
+               class="inputbox small"
         >
             <option value="*">JALL</option>
         </field>
-        <field name="alias"
-               type="text"
-               label="JFIELD_ALIAS_LABEL"
-               description="JFIELD_ALIAS_DESC"
-               class="inputbox"
-               size="30"
-		/>
         <field name="access"
                type="accesslevel"
                label="JFIELD_ACCESS_LABEL"
                description="JFIELD_ACCESS_DESC"
-               class="inputbox span12 small"
+               class="inputbox small"
                size="1"
 		/>
-
-        <field name="id"
-               type="text"
-               label="JGLOBAL_FIELD_ID_LABEL"
-               description="JGLOBAL_FIELD_ID_DESC"
-               size="10"
-               default="0"
-               readonly="true"
-               class="readonly"
-		/>
-        <field name="name"
-               type="text"
-               label="COM_CHURCHDIRECTORY_FIELD_POSITION_NAME_LABEL"
-               description="COM_CHURCHDIRECTORY_FIELD_POSITION_NAME_DESC"
-               class="inputbox"
-               size="30"
-               required="true"
-		 />
+        <field name="catid" type="categoryedit" extension="com_churchdirectory"
+               label="JCATEGORY" description="JFIELD_CATEGORY_DESC"
+               required="true" default="">
+                <option value="">
+                    COM_CHURCHDIRECTORY_CATEGORY_SELECT
+                </option>
+        </field>
         <field id="published" name="published" type="list" label="JSTATUS"
                description="JFIELD_PUBLISHED_DESC"
-               class="inputbox span12 small"
+               class="inputbox small"
                size="1"
                default="1">
             <option value="1">
@@ -58,6 +40,22 @@
             </option>
             <option value="-2">
                 JTRASHED
+            </option>
+
+        </field>
+        <field name="chtype" type="list" label="COM_CHURCHDIRECTORY_FIELD_CHTYPE_LABEL"
+               description="COM_CHURCHDIRECTORY_FIELD_CHTYPE_DESC"
+               class="inputbox small"
+               size="1"
+               default="">
+            <option value="csv">
+                CSV
+            </option>
+            <option value="kml">
+                KML
+            </option>
+            <option value="pdf">
+                PDF
             </option>
 
         </field>
