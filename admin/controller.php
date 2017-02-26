@@ -72,17 +72,6 @@ class ChurchDirectoryController extends JControllerLegacy
 			return false;
 		}
 
-		if (version_compare(JVERSION, '3.0', 'ge'))
-		{
-			$versionName = true;
-		}
-		else
-		{
-			$versionName = false;
-		}
-
-		define('CHURCHDIRECTORY_CHECKREL', $versionName);
-
 		parent::display();
 
 		return $this;
