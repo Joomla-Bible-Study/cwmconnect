@@ -29,7 +29,7 @@ JHtml::_('behavior.modal');
 	<div class="bar" style="width: <?php echo $this->percentage ?>%"></div>
 </div>
 
-<form action="index.php" name="adminForm" id="adminForm" method="get">
+<form action="<?php JRoute::_('index.php?option=com_churchdirectory&view=geostatus'); ?>" name="adminForm" id="adminForm" method="get">
 	<input type="hidden" name="option" value="com_churchdirectory"/>
 	<input type="hidden" name="view" value="geoupdate"/>
 	<?php if ($this->state === 'start')
@@ -49,10 +49,12 @@ JHtml::_('behavior.modal');
 	<div class="alert alert-info">
 		<p><?php echo JText::_('COM_CHURCHDIRECTORY_LBL_AUTOCLOSE_IN_3S'); ?></p>
 	</div>
-	<script type="text/javascript">
-		window.setTimeout('closeme();', 3000);
-		function closeme() {
+    <script type="text/javascript">
+		window.setTimeout('closeme();', 300);
+		function closeme()
+		{
 			parent.SqueezeBox.close();
+			window.parent.document.location = 'index.php?option=com_churchdirectory&view=geostatus';
 		}
-	</script>
+    </script>
 <?php endif; ?>

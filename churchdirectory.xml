@@ -5,8 +5,8 @@
 	<author>Joomla Bible Study Team</author>
 	<copyright>2007 - 2016 (C) Joomla Bible Study Team All rights reserved</copyright>
 	<license>GNU General Public License version 3 or later; see LICENSE.txt</license>
-	<version>1.8.1</version>
-	<creationDate>Feb 26, 2017</creationDate>
+	<version>1.8.2</version>
+	<creationDate>March 4, 2017</creationDate>
 	<authorEmail>info@joomlabiblestudy.org</authorEmail>
 	<authorUrl>http://www.joomlabiblestudy.org</authorUrl>
 	<description>COM_CHURCHDIRECTORY_XML_DESCRIPTION</description>
@@ -56,7 +56,7 @@
 			      alt="Churchdirectory/Cpanel">COM_CHURCHDIRECTORY_CPANEL
 			</menu>
 			<menu link="option=com_churchdirectory&amp;view=members"
-			      img="../media/com_churchdirectory/images/menu/icon-16-members.png" alt="Churchdirectory/Contacts">
+			      img="../media/com_churchdirectory/images/menu/icon-16-members.png" alt="Churchdirectory/Members">
 				COM_CHURCHDIRECTORY_MEMBERS
 			</menu>
 			<menu link="option=com_categories&amp;extension=com_churchdirectory" view="categories"
@@ -76,15 +76,23 @@
 			</menu>
 			<menu link="option=com_churchdirectory&amp;view=dirheaders"
 			      img="../media/com_churchdirectory/images/menu/icon-16-dirheader.png"
-			      alt="Churchdirectory/DirectoryHeaders">COM_CHURCHDIRECTORY_DIRHEADER
-			</menu>
-			<menu link="option=com_churchdirectory&amp;view=reports"
-			      img="../media/com_churchdirectory/images/menu/icon-16-churchdirectory.png"
-			      alt="Churchdirectory/ReportsHeaders">COM_CHURCHDIRECTORY_REPORTS
+			      alt="Churchdirectory/Directory Headers">COM_CHURCHDIRECTORY_DIRHEADER
 			</menu>
 			<menu link="option=com_churchdirectory&amp;view=positions"
 			      img="../media/com_churchdirectory/images/menu/icon-16-position.png" alt="Churchdirectory/Positions">
 				COM_CHURCHDIRECTORY_POSITIONS
+			</menu>
+			<menu link="option=com_churchdirectory&amp;view=geoupdate"
+			      img="../media/com_churchdirectory/images/menu/icon-16-churchdirectory.png" alt="Churchdirectory/GeoUpdate">
+				COM_CHURCHDIRECTORY_GEOUPDATE
+			</menu>
+			<menu link="option=com_churchdirectory&amp;view=reports"
+			      img="../media/com_churchdirectory/images/menu/icon-16-churchdirectory.png"
+			      alt="Churchdirectory/Reports">COM_CHURCHDIRECTORY_REPORTS
+			</menu>
+			<menu link="option=com_churchdirectory&amp;view=database"
+			      img="../media/com_churchdirectory/images/menu/icon-16-churchdirectory.png"
+			      alt="Churchdirectory/DataBase">COM_CHURCHDIRECTORY_DATABASE
 			</menu>
 		</submenu>
 		<files folder="admin">
@@ -123,6 +131,6 @@
 
 	<!--  Dependencies -->
 	<dependencies>
-		<dependency type="platform" name="joomla" operator="=" version="3.3"/>
+		<dependency type="platform" name="joomla" operator="=" version="3.4"/>
 	</dependencies>
 </extension>

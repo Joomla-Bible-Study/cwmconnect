@@ -222,8 +222,6 @@ class ChurchDirectoryModelReports extends JModelAdmin
 
 		// Change for sqlsrv... aliased c.published to cat_published
 		// Join to check for category published state in parent categories up the tree
-		$query->select('c.published, CASE WHEN badcats.id is null THEN c.published ELSE 0 END AS parents_published');
-		$subquery = 'SELECT cat.id AS id FROM `#__categories` AS cat JOIN `#__categories` AS parent ';
 		$query->select('c.published as cat_published, CASE WHEN badcats.id is null THEN c.published ELSE 0 END AS parents_published');
 		$subquery = 'SELECT cat.id AS id FROM `#__categories` AS cat JOIN `#__categories` AS parent ';
 		$subquery .= 'ON cat.lft BETWEEN parent.lft AND parent.rgt ';
@@ -343,7 +341,6 @@ class ChurchDirectoryModelReports extends JModelAdmin
 
 		$reportBuild = new ChurchDirectoryReportbuild;
 		$items  = $this->_db->setQuery($this->getListQuery())->loadObjectList();
-
 
 		// Prepare the data.
 		for ($i = 0, $n = count($items); $i < $n; $i++)
