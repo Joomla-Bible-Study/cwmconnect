@@ -50,11 +50,12 @@ JHtml::_('behavior.modal');
 		<p><?php echo JText::_('COM_CHURCHDIRECTORY_LBL_AUTOCLOSE_IN_3S'); ?></p>
 	</div>
     <script type="text/javascript">
-		window.setTimeout('closeme();', 300);
+		window.setTimeout('closeme();', 3000);
 		function closeme()
 		{
-			parent.SqueezeBox.close();
 			window.parent.document.location = 'index.php?option=com_churchdirectory&view=geostatus';
+			window.location.reload();
+			parent.SqueezeBox.close();
 		}
     </script>
 <?php endif; ?>
