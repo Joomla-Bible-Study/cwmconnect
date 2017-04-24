@@ -12,235 +12,210 @@ defined('_JEXEC') or die;
  *
  * @since  3.3
  */
-class ChurchDirectoryRouter extends JComponentRouterBase
+class ChurchDirectoryRouter extends JComponentRouterView
 {
+	protected $noIDs = false;
+
 	/**
-	 * Build the route for the ChurchDirectory component
+	 * Search Component router constructor
 	 *
-	 * @param   array  &$query  An array of URL arguments
+	 * @param   JApplicationCms  $app   The application object
+	 * @param   JMenu            $menu  The menu object to work with
 	 *
-	 * @return  array  The URL arguments to use to assemble the subsequent URL.
-	 *
-	 * @since    1.5
+	 * @since 1.8.4
 	 */
-	public function build(&$query)
+	public function __construct($app = null, $menu = null)
 	{
-		$segments = [];
+		$params = JComponentHelper::getParams('com_churchdirectory');
+		$this->noIDs = (bool) $params->get('sef_ids');
+		$categories = new JComponentRouterViewconfiguration('categories');
+		$categories->setKey('id');
+		$this->registerView($categories);
+		$category = new JComponentRouterViewconfiguration('category');
+		$category->setKey('id')->setParent($categories, 'catid')->setNestable();
+		$this->registerView($category);
+		$contact = new JComponentRouterViewconfiguration('member');
+		$contact->setKey('id')->setParent($category, 'catid');
+		$this->registerView($contact);
+		$this->registerView(new JComponentRouterViewconfiguration('featured'));
 
-		// Get a menu item based on Itemid or currently active
-		$params   = JComponentHelper::getParams('com_churchdirectory');
-		$advanced = $params->get('sef_advanced_link', 0);
+		parent::__construct($app, $menu);
 
-		if (empty($query['Itemid']))
+		$this->attachRule(new JComponentRouterRulesMenu($this));
+
+		if ($params->get('sef_advanced', 0))
 		{
-			$menuItem = $this->menu->getActive();
+			$this->attachRule(new JComponentRouterRulesStandard($this));
+			$this->attachRule(new JComponentRouterRulesNomenu($this));
 		}
 		else
 		{
-			$menuItem = $this->menu->getItem($query['Itemid']);
+			JLoader::register('ChurchDirectoryRouterRulesLegacy', __DIR__ . '/helpers/legacyrouter.php');
+			$this->attachRule(new ChurchDirectoryRouterRulesLegacy($this));
 		}
-
-		$mView = (empty($menuItem->query['view'])) ? null : $menuItem->query['view'];
-		$mId   = (empty($menuItem->query['id'])) ? null : $menuItem->query['id'];
-
-		if (isset($query['view']))
-		{
-			$view = $query['view'];
-
-			if (empty($query['Itemid']) || empty($menuItem) || $menuItem->component != 'com_churchdirectory')
-			{
-				$segments[] = $query['view'];
-			}
-
-			unset($query['view']);
-		}
-
-		// Are we dealing with a member that is attached to a menu item?
-		if (isset($view) && ($mView == $view) and (isset($query['id'])) and ($mId == (int) $query['id']))
-		{
-			unset($query['view']);
-			unset($query['catid']);
-			unset($query['id']);
-
-			return $segments;
-		}
-
-		if (isset($view) and ($view == 'category' or $view == 'member'))
-		{
-			if ($mId != (int) $query['id'] || $mView != $view)
-			{
-				if ($view == 'member' && isset($query['catid']))
-				{
-					$catid = $query['catid'];
-				}
-				elseif (isset($query['id']))
-				{
-					$catid = $query['id'];
-				}
-
-				$menuCatid  = $mId;
-				$categories = JCategories::getInstance('ChurchDirectory');
-				$category   = $categories->get($catid);
-
-				if ($category)
-				{
-					$path  = array_reverse($category->getPath());
-					$array = [];
-
-					foreach ($path as $id)
-					{
-						if ((int) $id == (int) $menuCatid)
-						{
-							break;
-						}
-
-						if ($advanced)
-						{
-							list($tmp, $id) = explode(':', $id, 2);
-						}
-
-						$array[] = $id;
-					}
-
-					$segments = array_merge($segments, array_reverse($array));
-				}
-
-				if ($view == 'member')
-				{
-					if ($advanced)
-					{
-						@list($tmp, $id) = explode(':', $query['id'], 2);
-					}
-					else
-					{
-						$id = $query['id'];
-					}
-
-					$segments[] = $id;
-				}
-			}
-
-			unset($query['id']);
-			unset($query['catid']);
-		}
-
-		if (isset($query['layout']))
-		{
-			if (!empty($query['Itemid']) && isset($menuItem->query['layout']))
-			{
-				if ($query['layout'] == $menuItem->query['layout'])
-				{
-					unset($query['layout']);
-				}
-			}
-			else
-			{
-				if ($query['layout'] == 'default')
-				{
-					unset($query['layout']);
-				}
-			}
-		}
-
-		$total = count($segments);
-
-		for ($i = 0; $i < $total; $i++)
-		{
-			$segments[$i] = str_replace(':', '-', $segments[$i]);
-		}
-
-		return $segments;
 	}
 
 	/**
-	 * Parse the segments of a URL.
+	 * Method to get the segment(s) for a category
 	 *
-	 * @param   array  &$segments  The segments of the URL to parse.
+	 * @param   string  $id     ID of the category to retrieve the segments for
+	 * @param   array   $query  The request that is built right now
 	 *
-	 * @return  array  The URL attributes to be used by the application.
+	 * @return  array|string  The segments of this item
 	 *
-	 * @since    1.5
+	 * @since 1.8.4
 	 */
-	public function parse(&$segments)
+	public function getCategorySegment($id, $query)
 	{
-		$total = count($segments);
-		$vars = [];
+		$category = JCategories::getInstance($this->getName())->get($id);
 
-		for ($i = 0; $i < $total; $i++)
+		if ($category)
 		{
-			$segments[$i] = preg_replace('/-/', ':', $segments[$i], 1);
-		}
+			$path = array_reverse($category->getPath(), true);
+			$path[0] = '1:root';
 
-		// Get the active menu item.
-		$item     = $this->menu->getActive();
-		$params   = JComponentHelper::getParams('com_churchdirectory');
-		$advanced = $params->get('sef_advanced_link', 0);
-
-		// Count route segments
-		$count = count($segments);
-
-		// Standard routing for newsfeeds.
-		if (!isset($item))
-		{
-			$vars['view'] = $segments[0];
-			$vars['id']   = $segments[$count - 1];
-
-			return $vars;
-		}
-
-		// From the categories view, we can only jump to a category.
-		$id = (isset($item->query['id']) && $item->query['id'] > 1) ? $item->query['id'] : 'root';
-
-		$contactCategory = JCategories::getInstance('ChurchDirectory')->get($id);
-
-		$categories    = ($contactCategory) ? $contactCategory->getChildren() : [];
-		$vars['catid'] = $id;
-		$vars['id']    = $id;
-		$found         = 0;
-
-		foreach ($segments as $segment)
-		{
-			$segment = $advanced ? str_replace(':', '-', $segment) : $segment;
-
-			foreach ($categories as $category)
+			if ($this->noIDs)
 			{
-				if ($category->slug == $segment || $category->alias == $segment)
+				foreach ($path as &$segment)
 				{
-					$vars['id']    = $category->id;
-					$vars['catid'] = $category->id;
-					$vars['view']  = 'category';
-					$categories    = $category->getChildren();
-					$found         = 1;
-					break;
+					list($id, $segment) = explode(':', $segment, 2);
 				}
 			}
 
-			if ($found == 0)
+			return $path;
+		}
+
+		return array();
+	}
+
+	/**
+	 * Method to get the segment(s) for a category
+	 *
+	 * @param   string  $id     ID of the category to retrieve the segments for
+	 * @param   array   $query  The request that is built right now
+	 *
+	 * @return  array|string  The segments of this item
+	 *
+	 * @since 1.8.4
+	 */
+	public function getCategoriesSegment($id, $query)
+	{
+		return $this->getCategorySegment($id, $query);
+	}
+
+	/**
+	 * Method to get the segment(s) for a contact
+	 *
+	 * @param   string  $id     ID of the contact to retrieve the segments for
+	 * @param   array   $query  The request that is built right now
+	 *
+	 * @return  array|string  The segments of this item
+	 *
+	 * @since 1.8.4
+	 */
+	public function getContactSegment($id, $query)
+	{
+		if (!strpos($id, ':'))
+		{
+			$db = JFactory::getDbo();
+			$dbquery = $db->getQuery(true);
+			$dbquery->select($dbquery->qn('alias'))
+				->from($dbquery->qn('#__contact_details'))
+				->where('id = ' . $dbquery->q((int) $id));
+			$db->setQuery($dbquery);
+
+			$id .= ':' . $db->loadResult();
+		}
+
+		if ($this->noIDs)
+		{
+			list($void, $segment) = explode(':', $id, 2);
+
+			return array($void => $segment);
+		}
+
+		return array((int) $id => $id);
+	}
+
+	/**
+	 * Method to get the id for a category
+	 *
+	 * @param   string  $segment  Segment to retrieve the ID for
+	 * @param   array   $query    The request that is parsed right now
+	 *
+	 * @return  mixed   The id of this item or false
+	 *
+	 * @since 1.8.4
+	 */
+	public function getCategoryId($segment, $query)
+	{
+		if (isset($query['id']))
+		{
+			$category = JCategories::getInstance($this->getName())->get($query['id']);
+
+			foreach ($category->getChildren() as $child)
 			{
-				if ($advanced)
+				if ($this->noIDs)
 				{
-					$db    = JFactory::getDbo();
-					$query = $db->getQuery(true);
-					$query->select($db->quoteName('id'))
-						->from('#__churchdirectory_details')
-						->where($db->quoteName('catid') . ' = ' . (int) $vars['catid'])
-						->where($db->quoteName('alias') . ' = ' . $db->quote($segment));
-					$db->setQuery($query);
-					$nid = $db->loadResult();
+					if ($child->alias == $segment)
+					{
+						return $child->id;
+					}
 				}
 				else
 				{
-					$nid = $segment;
+					if ($child->id == (int) $segment)
+					{
+						return $child->id;
+					}
 				}
-
-				$vars['id']   = $nid;
-				$vars['view'] = 'member';
 			}
-
-			$found = 0;
 		}
 
-		return $vars;
+		return false;
+	}
+
+	/**
+	 * Method to get the segment(s) for a category
+	 *
+	 * @param   string  $segment  Segment to retrieve the ID for
+	 * @param   array   $query    The request that is parsed right now
+	 *
+	 * @return  mixed   The id of this item or false
+	 *
+	 * @since 1.8.4
+	 */
+	public function getCategoriesId($segment, $query)
+	{
+		return $this->getCategoryId($segment, $query);
+	}
+
+	/**
+	 * Method to get the segment(s) for a contact
+	 *
+	 * @param   string  $segment  Segment of the contact to retrieve the ID for
+	 * @param   array   $query    The request that is parsed right now
+	 *
+	 * @return  mixed   The id of this item or false
+	 *
+	 * @since 1.8.4
+	 */
+	public function getContactId($segment, $query)
+	{
+		if ($this->noIDs)
+		{
+			$db = JFactory::getDbo();
+			$dbquery = $db->getQuery(true);
+			$dbquery->select($dbquery->qn('id'))
+				->from($dbquery->qn('#__contact_details'))
+				->where('alias = ' . $dbquery->q($segment))
+				->where('catid = ' . $dbquery->q($query['id']));
+			$db->setQuery($dbquery);
+
+			return (int) $db->loadResult();
+		}
+
+		return (int) $segment;
 	}
 }
 
@@ -254,11 +229,14 @@ class ChurchDirectoryRouter extends JComponentRouterBase
  *
  * @return  array  The URL arguments to use to assemble the subsequent URL.
  *
- * @deprecated  4.0  Use Class based routers instead
+ * @since 1.8.4
+ *
+ * @deprecated  1.8.4  Use Class based routers instead
  */
 function churchdirectoryBuildRoute(&$query)
 {
-	$router = new ChurchDirectoryRouter;
+	$app = JFactory::getApplication();
+	$router = new ChurchDirectoryRouter($app, $app->getMenu());
 
 	return $router->build($query);
 }
@@ -273,11 +251,14 @@ function churchdirectoryBuildRoute(&$query)
  *
  * @return  array  The URL attributes to be used by the application.
  *
- * @deprecated  4.0  Use Class based routers instead
+ * @since 1.8.4
+ *
+ * @deprecated  1.8.4  Use Class based routers instead
  */
 function churchdirectoryParseRoute($segments)
 {
-	$router = new ChurchDirectoryRouter;
+	$app = JFactory::getApplication();
+	$router = new ChurchDirectoryRouter($app, $app->getMenu());
 
 	return $router->parse($segments);
 }
