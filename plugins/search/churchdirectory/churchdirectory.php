@@ -16,6 +16,14 @@ defined('_JEXEC') or die;
 class PlgSearchChurchdirectory extends JPlugin
 {
 	/**
+	 * Load the language file on instantiation.
+	 *
+	 * @var    boolean
+	 * @since  3.1
+	 */
+	protected $autoloadLanguage = true;
+
+	/**
 	 * Constructor
 	 *
 	 * @param   object  &$subject  The object to observe
@@ -30,6 +38,14 @@ class PlgSearchChurchdirectory extends JPlugin
 		parent::__construct($subject, $config);
 		$this->loadLanguage();
 		$this->loadLanguage('com_churchdirectory', JPATH_ADMINISTRATOR);
+
+		// Always load JBSM API if it exists.
+		$api = JPATH_ADMINISTRATOR . '/components/com_churchdirectory/api.php';
+
+		if (file_exists($api))
+		{
+			require_once $api;
+		}
 	}
 
 	/**
@@ -149,32 +165,42 @@ class PlgSearchChurchdirectory extends JPlugin
 				. $query->concatenate(array("a.name", "a.misc"), ",") . ' AS text,'
 				. $query->concatenate(array($db->q($section), "c.title"), " / ") . ' AS section,'
 				. '\'2\' AS browsernav');
-			$query->from('#__churchdirectory_details AS a');
-			$query->innerJoin('#__categories AS c ON c.id = a.catid');
-			$query->where('(a.name LIKE ' . $text . 'OR a.misc LIKE ' . $text
-				. 'OR a.address LIKE ' . $text . 'OR a.suburb LIKE ' . $text . 'OR a.state LIKE ' . $text
-				. 'OR a.country LIKE ' . $text . 'OR a.postcode LIKE ' . $text . 'OR a.telephone LIKE ' . $text
-				. 'OR a.fax LIKE ' . $text . ') AND a.published IN (' . implode(',', $state) . ') AND c.published=1 '
-				. 'AND a.access IN (' . $groups . ') AND c.access IN (' . $groups . ')');
-			$query->group('a.id, a.misc');
-			$query->order($order);
+			$query->from('#__churchdirectory_details AS a')
+				->innerJoin('#__categories AS c ON c.id = a.catid')
+				->where(
+					'(a.name LIKE ' . $text . 'OR a.misc LIKE ' . $text
+						. 'OR a.address LIKE ' . $text . 'OR a.suburb LIKE ' . $text . 'OR a.state LIKE ' . $text
+						. 'OR a.country LIKE ' . $text . 'OR a.postcode LIKE ' . $text . 'OR a.telephone LIKE ' . $text
+						. 'OR a.fax LIKE ' . $text . ') AND a.published IN (' . implode(',', $state) . ') AND c.published=1 '
+						. 'AND a.access IN (' . $groups . ') AND c.access IN (' . $groups . ')'
+				)
+				->order($order);
 
 			// Filter by language
-			if ($app->isSite() && $app->getLanguageFilter())
+			if ($app->isClient('site') && JLanguageMultilang::isEnabled())
 			{
 				$tag = JFactory::getLanguage()->getTag();
-				$query->where('a.language in (' . $db->q($tag) . ',' . $db->q('*') . ')');
-				$query->where('c.language in (' . $db->q($tag) . ',' . $db->q('*') . ')');
+				$query->where('a.language in (' . $db->q($tag) . ',' . $db->q('*') . ')')
+					->where('c.language in (' . $db->q($tag) . ',' . $db->q('*') . ')');
 			}
 
 			$db->setQuery($query, 0, $limit);
-			$rows = $db->loadObjectList();
+
+			try
+			{
+				$rows = $db->loadObjectList();
+			}
+			catch (RuntimeException $e)
+			{
+				$rows = array();
+				JFactory::getApplication()->enqueueMessage(JText::_('JERROR_AN_ERROR_HAS_OCCURRED'), 'error');
+			}
 
 			if ($rows)
 			{
 				foreach ($rows as $key => $row)
 				{
-					$rows[$key]->href = 'index.php?option=com_churchdirectory&view=member&id=' . $row->slug . '&catid=' . $row->catslug;
+					$rows[$key]->href = ChurchDirectoryHelperRoute::getMemberRoute($row->slug, $row->catslug);
 					$rows[$key]->text = $row->title;
 					$rows[$key]->text .= ($row->misc) ? ', ' . $row->misc : '';
 				}

@@ -10,7 +10,7 @@ defined('JPATH_BASE') or die;
 use Joomla\Registry\Registry;
 
 // Load the base adapter.
-require_once JPATH_ADMINISTRATOR . '/components/com_finder/helpers/indexer/adapter.php';
+JLoader::register('FinderIndexerAdapter', JPATH_ADMINISTRATOR . '/components/com_finder/helpers/indexer/adapter.php');
 
 /**
  * Finder adapter for ChurchDirectory Members.
@@ -271,10 +271,10 @@ class PlgFinderChurchDirectory extends FinderIndexerAdapter
 			return;
 		}
 
+		$item->setLanguage();
+
 		// Initialize the item parameters.
-		$registry = new Registry;
-		$registry->loadString($item->params);
-		$item->params = $registry;
+		$item->params = new Registry($item->params);
 
 		// Build the necessary route and path information.
 		$item->url   = $this->getUrl($item->id, $this->extension, $this->layout);
@@ -294,10 +294,6 @@ class PlgFinderChurchDirectory extends FinderIndexerAdapter
 		 * Add the meta-data processing instructions based on the member
 		 * configuration parameters.
 		 */
-		/* Handle the member position.
-		 if ($item->params->get('show_position', true)) {
-		    $item->addInstruction(FinderIndexer::META_CONTEXT, 'position');
-		 } */
 		// Handle the member street address.
 		if ($item->params->get('show_street_address', true))
 		{
@@ -405,7 +401,7 @@ class PlgFinderChurchDirectory extends FinderIndexerAdapter
 	protected function setup ()
 	{
 		// Load dependent classes.
-		require_once JPATH_SITE . '/components/com_churchdirectory/helpers/route.php';
+		JLoader::register('ChurchDirectoryHelperRoute', JPATH_SITE . '/components/com_churchdirectory/helpers/route.php');
 
 		// This is a hack to get around the lack of a route helper.
 		FinderIndexerHelper::getContentPath('index.php?option=com_churchdirectory');
