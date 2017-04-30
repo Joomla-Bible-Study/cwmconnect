@@ -6,11 +6,10 @@
  * */
 defined('_JEXEC') or die;
 
+/** @var $this ChurchDirectoryViewDirectory */
 JHtml::_('bootstrap.framework');
 
-$heading            = null;
-$this->renderHelper = new ChurchDirectoryRenderHelper;
-
+$heading  = null;
 ?>
 <?php if (empty($this->items))
 {

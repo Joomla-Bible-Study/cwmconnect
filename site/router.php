@@ -187,7 +187,6 @@ class ChurchDirectoryRouter extends JComponentRouterBase
 			$vars['view'] = $segments[0];
 			$vars['id'] = $segments[$count - 1];
 
-
 			var_dump($segments[$count - 1]);
 			var_dump($vars);
 

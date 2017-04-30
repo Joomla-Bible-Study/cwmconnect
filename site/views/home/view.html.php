@@ -27,6 +27,10 @@ class ChurchDirectoryViewHome extends JViewLegacy
 	 */
 	protected $params;
 
+	/**
+	 * @var JUser
+	 * @since 1.7.3
+	 */
 	protected $user;
 
 	protected $return;

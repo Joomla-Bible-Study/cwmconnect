@@ -34,6 +34,64 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 	protected $params;
 
 	/**
+	 * Protected @var object
+	 *
+	 * @since       1.7.2
+	 */
+	protected $state = null;
+
+	/**
+	 * Protected @var array
+	 *
+	 * @since       1.7.2
+	 */
+	protected $items = null;
+
+	/**
+	 * Protected @var array
+	 *
+	 * @since       1.7.2
+	 */
+	protected $categories = null;
+
+	/**
+	 * Protected  @var array
+	 *
+	 * @since       1.7.2
+	 */
+	protected $pagination = null;
+
+	protected $span;
+
+	protected $maxLevel;
+
+	protected $children;
+
+	protected $parent;
+
+	protected $header;
+
+	protected $renderHelper;
+
+	protected $count;
+
+	/**
+	 * @var  TCPDF
+	 * @since version
+	 */
+	protected $pdf;
+
+	public $printed_items;
+
+	public $printed_rows;
+
+	public $subcount;
+
+	public $letter;
+
+	public $baseurl;
+
+	/**
 	 * Display the view
 	 *
 	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
@@ -48,6 +106,9 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 		$this->category = $this->get('Category');
 
 		$this->prepareDocument();
+
+		$this->setLayout('home');
+		parent::display();
 
 		return;
 	}

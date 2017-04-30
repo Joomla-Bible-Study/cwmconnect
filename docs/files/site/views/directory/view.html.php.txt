@@ -215,7 +215,7 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 
 				default :
 					// Icons
-					$image1 = JHtml::_('image', 'contacts/' . $params->get('icon_address', 'con_address.png'), JText::_('COM_CHURCHDIRECTORY_ADDRESS') .
+					$image1 = JHtml::_('image', 'contacts/' . $params->get('icon_address'), JText::_('COM_CHURCHDIRECTORY_ADDRESS') .
 						": ", null, true
 					);
 					$image2 = JHtml::_('image', 'contacts/' . $params->get('icon_email', 'emailButton.png'), JText::_('JGLOBAL_EMAIL') . ": ", null, true);

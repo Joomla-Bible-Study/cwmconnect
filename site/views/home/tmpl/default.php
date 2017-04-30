@@ -6,11 +6,12 @@
  */
 defined('_JEXEC') or die;
 
+/** @var $this ChurchDirectoryViewHome */
 $login = $this->user->get('guest') ? true : false;
 $check = in_array($this->params->get('accesslevel'), $this->user->get('_authLevels'));
 $count = count($this->items);
 ?>
-<div class="chhome" style="padding: 5px;">
+<div class="chdhome" style="padding: 5px;">
 	<h1 class="center"><?php if ($this->params->get('show_page_heading', 0))
 		{
 			echo $this->params->get('page_heading');
@@ -28,80 +29,83 @@ $count = count($this->items);
 	<div class="clearfix"></div>
 	<p class="center"><?php echo $this->params->get('home_intro', 'No Intro Text'); ?></p>
 
-	<div class="login">
-		<?php if ($login)
-		{
-			echo JText::_('COM_CHURCHDIRECTORY_HOME_INTRO');
-			if ($this->params->get('form'))
-			{
-				echo ' <a href="' . $this->params->get('form') . '">' . JText::_('COM_CHURCHDIRECTORY_AUTH_FORM') . '</a>';
-			}
-			?>
-			<br/><br/>
-			<?php
-		}
-		if (!$check)
-		{
-			?>
-			<span>Please register as a church member. This directory is for church members only</span>
-			<?php
-		}
-		elseif ($check)
-		{
-			?>
-			<div class="row-fluid">
-				<div class="span12">
-					<?php
-					$split = $count / 2;
-					foreach ($this->items as $i => $item)
-					{
-						if ($i < $split)
-						{
-							?>
-							<div class="span6 pull-left">
-								<div class="center">
-									<a href="<?php echo JRoute::_('index.php?option=com_churchdirectory&view=member&id=' . $item->id); ?>">
-										<?php if ($item->image && $item->image != '/')
-										{ ?>
-											<img src="<?php echo $item->image; ?>"
-											     alt="<?php echo $item->name; ?>"
-											     style="max-width:240px; border: none;"><br/>
-										<?php } ?>
-										<span class="large buld"><?php echo $item->name ?></span><br/>
-										<span class="small">
-											<?php echo $this->renderHelper->getPosition($item->con_position); ?>
-										</span>
-									</a>
-								</div>
-
-							</div>
-							<?php
-						}
-						else
-						{
-							?>
-							<div class="span6 pull-left">
-								<div class="center">
-									<a href="<?php echo JRoute::_('index.php?option=com_churchdirectory&view=member&id=' . $item->id); ?>">
-										<?php if ($item->image && $item->image != '/')
-										{ ?>
-											<img src="<?php echo $item->image; ?>"
-											     alt="<?php echo $item->name; ?>"
-											     style="max-width:240px; border: none;"><br/>
-										<?php } ?>
-										<span class="large buld"><?php echo $item->name ?></span><br/>
-										<span class="small">
-											<?php echo $this->renderHelper->getPosition($item->con_position); ?>
-										</span>
-									</a>
-								</div>
-
-							</div>
-							<?php
-						}
-					} ?>
-				</div>
+	<?php if ($login)
+	{ ?>
+		<div class="chdlogin" style="padding-bottom: 40px">
+			<div class="chdintro">
+				<?php
+				echo JText::_('COM_CHURCHDIRECTORY_HOME_INTRO');
+				if ($this->params->get('form'))
+				{
+					echo ' <a href="' . $this->params->get('form') . '">' . JText::_('COM_CHURCHDIRECTORY_AUTH_FORM') . '</a>';
+				}
+				?>
 			</div>
-		<?php } ?>
-	</div>
+		</div>
+		<?php
+	}
+
+	if (!$check)
+	{
+		?>
+		<span class="chdpleasereg">Please register as a church member. This directory is for church members only</span>
+		<?php
+	}
+	elseif ($check)
+	{
+		?>
+		<div class="row-fluid">
+			<div class="span12">
+				<?php
+				$split = $count / 2;
+				foreach ($this->items as $i => $item)
+				{
+					if ($i < $split)
+					{
+						?>
+						<div class="span6 pull-left">
+							<div class="center">
+								<a href="<?php echo JRoute::_('index.php?option=com_churchdirectory&view=member&id=' . $item->id); ?>">
+									<?php if ($item->image && $item->image != '/')
+									{ ?>
+										<img src="<?php echo $item->image; ?>"
+										     alt="<?php echo $item->name; ?>"
+										     style="max-width:240px; border: none;"><br/>
+									<?php } ?>
+									<span class="large buld"><?php echo $item->name ?></span><br/>
+									<span class="small">
+											<?php echo $this->renderHelper->getPosition($item->con_position); ?>
+										</span>
+								</a>
+							</div>
+
+						</div>
+						<?php
+					}
+					else
+					{
+						?>
+						<div class="span6 pull-left">
+							<div class="center">
+								<a href="<?php echo JRoute::_('index.php?option=com_churchdirectory&view=member&id=' . $item->id); ?>">
+									<?php if ($item->image && $item->image != '/')
+									{ ?>
+										<img src="<?php echo $item->image; ?>"
+										     alt="<?php echo $item->name; ?>"
+										     style="max-width:240px; border: none;"><br/>
+									<?php } ?>
+									<span class="large buld"><?php echo $item->name ?></span><br/>
+									<span class="small">
+											<?php echo $this->renderHelper->getPosition($item->con_position); ?>
+										</span>
+								</a>
+							</div>
+
+						</div>
+						<?php
+					}
+				} ?>
+			</div>
+		</div>
+	<?php } ?>
 </div>
