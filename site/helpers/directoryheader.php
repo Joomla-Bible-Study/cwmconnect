@@ -18,16 +18,16 @@ use Joomla\Registry\Registry;
 class DirectoryHeaderHelper
 {
 	/**
-	 * @var string  Headers
+	 * @var array  Headers
 	 * @since    1.5
 	 */
-	public $header = null;
+	public $header = [];
 
 	/**
 	 * @var string  Footers
 	 * @since    1.5
 	 */
-	public $footer = null;
+	public $footer = [];
 
 	/**
 	 * set Header or Footer html
@@ -54,7 +54,7 @@ class DirectoryHeaderHelper
 
 		foreach ($result as $b)
 		{
-			$header .= '<div class="headerpage">';
+			$header = '<div class="headerpage">';
 
 			if ($params->get('dr_show_debug'))
 			{
@@ -70,14 +70,16 @@ class DirectoryHeaderHelper
 
 			if ($b->section == '1')
 			{
-				$this->footer = $this->footer . $header;
+				$this->footer[$b->id] = $header;
 			}
 			else
 			{
-				$this->header = $this->header . $header;
+				$this->header[$b->id] = $header;
 			}
 
 			$header = null;
 		}
+
+		return null;
 	}
 }

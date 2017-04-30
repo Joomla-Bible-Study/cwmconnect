@@ -13,12 +13,13 @@ $this->rows_per_page = (int) $this->params->get('rows_per_page');
 $this->items_per_row = (int) $this->params->get('items_per_row');
 
 JHtml::addIncludePath(JPATH_COMPONENT . '/helpers');
+
+/** @var $this ChurchDirectoryViewDirectory */
 ?>
 <?php
 // Add a page
-$this->pdf->AddPage();
 $html = $this->loadTemplate('firstpages');
-$this->pdf->writeHTML($html, true, 0, true, true);
+$this->pdf->writeHTML($html, true, false, true, true);
 
 foreach ($this->items as $s1 => $sort1)
 {
@@ -26,10 +27,9 @@ foreach ($this->items as $s1 => $sort1)
 	$html        = $this->loadTemplate('items');
 
 	// Print a block of text using Write()
-	$this->pdf->writeHTML($html, true, 0, true, true);
+	$this->pdf->writeHTML($html, true, false, true, true);
 }
 
 $this->pdf->AddPage();
 $html = $this->loadTemplate('lastpage');
-$this->pdf->writeHTML($html, true, 0, true, true);
-
+$this->pdf->writeHTML($html, true, false, true, true);

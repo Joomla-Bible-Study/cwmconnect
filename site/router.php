@@ -55,7 +55,7 @@ class ChurchDirectoryRouter extends JComponentRouterBase
 			unset($query['view']);
 		}
 
-		// Are we dealing with a contact that is attached to a menu item?
+		// Are we dealing with a member that is attached to a menu item?
 		if (isset($view) && ($mView == $view) and (isset($query['id'])) and ($mId == (int) $query['id']))
 		{
 			unset($query['view']);

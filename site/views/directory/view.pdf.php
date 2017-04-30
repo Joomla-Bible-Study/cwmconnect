@@ -133,9 +133,6 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 		$this->loadHelper('render');
 		$renderHelper = new ChurchDirectoryRenderHelper;
 		$this->span   = $renderHelper->rowWidth($params->get('rows_per_page'));
-		JLoader::register('DirectoryHeaderHelper', JPATH_SITE . '/components/com_churchdirectory/helpers/directoryheader.php');
-		$this->header = new DirectoryHeaderHelper;
-		$this->header->setPages($params);
 
 		// Prepare the data.
 		// Compute the contact slug.
@@ -215,7 +212,7 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 					}
 					else
 					{
-						$image1 = JHtml::_('image', 'contacts/' . $params->get('icon_address', 'con_address.png'), JText::_('COM_CONTACT_ADDRESS') . ': ', null, true);
+						$image1 = JHtml::_('image', 'contacts/images/' . $params->get('icon_address', 'con_address.png'), JText::_('COM_CONTACT_ADDRESS') . ': ', null, true);
 					}
 
 					if ($params->get('icon_email'))
@@ -224,7 +221,7 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 					}
 					else
 					{
-						$image2 = JHtml::_('image', 'contacts/' . $params->get('icon_email', 'emailButton.png'), JText::_('JGLOBAL_EMAIL') . ': ', null, true);
+						$image2 = JHtml::_('image', 'contacts/images/' . $params->get('icon_email', 'emailButton.png'), JText::_('JGLOBAL_EMAIL') . ': ', null, true);
 					}
 
 					if ($params->get('icon_telephone'))
@@ -233,7 +230,7 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 					}
 					else
 					{
-						$image3 = JHtml::_('image', 'contacts/' . $params->get('icon_telephone', 'con_tel.png'), JText::_('COM_CONTACT_TELEPHONE') . ': ', null, true);
+						$image3 = JHtml::_('image', 'contacts/images/' . $params->get('icon_telephone', 'con_tel.png'), JText::_('COM_CONTACT_TELEPHONE') . ': ', null, true);
 					}
 
 					if ($params->get('icon_fax'))
@@ -242,7 +239,7 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 					}
 					else
 					{
-						$image4 = JHtml::_('image', 'contacts/' . $params->get('icon_fax', 'con_fax.png'), JText::_('COM_CONTACT_FAX') . ': ', null, true);
+						$image4 = JHtml::_('image', 'contacts/images/' . $params->get('icon_fax', 'con_fax.png'), JText::_('COM_CONTACT_FAX') . ': ', null, true);
 					}
 
 					if ($params->get('icon_misc'))
@@ -251,11 +248,7 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 					}
 					else
 					{
-						$image5 = JHtml::_(
-							'image',
-							'contacts/' . $params->get('icon_misc', 'con_info.png'),
-							JText::_('COM_CONTACT_OTHER_INFORMATION') . ': ', null, true
-						);
+						$image5 = JHtml::_('image', 'contacts/images/' . $params->get('icon_misc', 'con_info.png'), JText::_('COM_CONTACT_OTHER_INFORMATION') . ': ', null, true);
 					}
 
 					if ($params->get('icon_mobile'))
@@ -264,7 +257,7 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 					}
 					else
 					{
-						$image6 = JHtml::_('image', 'contacts/' . $params->get('icon_mobile', 'con_mobile.png'), JText::_('COM_CONTACT_MOBILE') . ': ', null, true);
+						$image6 = JHtml::_('image', 'contacts/images/' . $params->get('icon_mobile', 'con_mobile.png'), JText::_('COM_CONTACT_MOBILE') . ': ', null, true);
 					}
 
 					$params->set('marker_address',   $image1);
@@ -361,6 +354,12 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 		// Set font
 		$this->pdf->SetFont('times', 'BI', 8, '', 'false');
 
+		$this->pdf->AddPage();
+
+		JLoader::register('DirectoryHeaderHelper', JPATH_SITE . '/components/com_churchdirectory/helpers/directoryheader.php');
+		$this->header = new DirectoryHeaderHelper;
+		$this->header->setPages($params);
+
 		// Set some text to print
 		$this->loadTemplate($tpl);
 
@@ -368,7 +367,7 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 		$jweb->clearHeaders();
 
 		// Close and output PDF document
-		$this->pdf->Output($title . '.pdf', 'I');
+		$this->pdf->Output($title . date('Ymd') . '.pdf', 'I');
 
 		return null;
 	}

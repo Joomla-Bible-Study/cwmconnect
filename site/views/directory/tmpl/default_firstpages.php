@@ -5,10 +5,11 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * */
 defined('_JEXEC') or die;
+
 ?>
 <div class="directory<?php echo $this->pageclass_sfx; ?> container" style="width: 8.5in">
 	<?php echo $this->pageclass_sfx;
-	echo '<a name="top"></a>';
+
 	if ($this->params->get('dr_show_page_title', 1))
 	{
 		?>
@@ -17,6 +18,7 @@ defined('_JEXEC') or die;
 		</h1>
 		<?php
 	}
+
 	if ($this->params->get('dr_show_description'))
 	{
 		// If there is a description in the menu parameters use that;
@@ -29,9 +31,7 @@ defined('_JEXEC') or die;
 			<?php
 		}
 	}
-	echo $this->header->header;
-	echo '<div class="clearfix"></div>';
-	echo '<div class="center">' . $this->abclinks() . '</div>';
-	echo '<hr />';
+
+	var_dump($this->header->header); jexit();
 	?>
 </div>

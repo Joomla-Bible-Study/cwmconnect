@@ -21,9 +21,11 @@ $heading  = null;
 foreach ($this->items as $item)
 {
 	$this->item = $item;
+
 	if ($this->printed_items == 0 && $this->printed_rows == 0)
 	{
 		echo '<!-- new start ' . $item->name . '-->';
+
 		if (($item->funitid != '0' && $item->attribs->get('familypostion', '0') === '0')
 			|| ($item->funitid == '0' && $item->attribs->get('familypostion', '-1') === '-1' || $item->attribs->get('familypostion', '0') === '0')
 		)
@@ -37,21 +39,29 @@ foreach ($this->items as $item)
 						FamilyPosiion: ' . $item->attribs->get('familypostion') . ' ' . gettype($item->attribs->get('familypostion')) .
 					'" data-original-title="Tips" href="/my_link_goes_here">debug</a>';
 			}
+
 			echo '<div class="row-fled"><div class="span' . $this->span . '">';
 		}
 		// Add a page
 		$this->pdf->AddPage();
 	}
+
 	$this->subcount--;
 
 	if ($this->letter != ucfirst($this->items[0]->lname[0]))
 	{
 		$this->letter = ucfirst($this->items[0]->lname[0]);
-		echo '<a style="page-break-before:auto" name="' . $this->letter . '"></a><h4>' . $this->letter . '</h4><hr />';
+
+		// Set a bookmark for the current position
+		$this->pdf->Bookmark($this->letter, 0, 0, '', 'B', array(0,64,128));
+
+		// Print a line using Cell()
+		$this->pdf->Cell(0, 10, $this->letter, 0, 1, 'L');
 	}
+
 	if (!empty($item->funitid) && $item->funitid != '0' && $item->attribs->get('familypostion') === '0') :
 		?>
-		<div id="directory-items<?php echo $item->id + 1; ?>" style="page-break-before:auto; width:100px;" class="paddingitem">
+		<div id="directory-items<?php echo $item->id + 1; ?>" class="paddingitem">
 			<?php
 			if ($item->funit_image && $this->params->get('dr_show_image')) :
 				echo '<img src="' . $this->baseurl . DIRECTORY_SEPARATOR . $item->funit_image . '" align="center" hspace="6" alt="' .
