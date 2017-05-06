@@ -144,7 +144,7 @@ class ChurchDirectoryModelDirHeader extends JModelAdmin
 			{
 				$db = JFactory::getDbo();
 				$query = $db->getQuery(true);
-				$query->select('MAX(ordering)')->from($db->q('#__churchdirectory_dirheader'));
+				$query->select('MAX(ordering)')->from('#__churchdirectory_dirheader');
 				$db->setQuery($query);
 				$max = $db->loadResult();
 
