@@ -49,23 +49,21 @@ class DirectoryHeaderHelper
 		$db->setQuery($query);
 
 		$result = $db->loadObjectList();
-		$h      = 0;
-		$header = null;
+		$h = 0;
 
 		foreach ($result as $b)
 		{
-			$header = '<div class="headerpage">';
+			$header = new stdClass;
+			$header->html = '<div class="headerpage">';
 
 			if ($params->get('dr_show_debug'))
 			{
-				$header .= '<p>ID: ' . $b->id . '<br />';
-				$header .= 'Count: ' . $h . '</p>';
+				$header->html .= '<p>ID: ' . $b->id . '<br />';
+				$header->html .= 'Count: ' . $h . '</p>';
 			}
 
-			$header .= '<h2>' . $b->name . '</h2>';
-			$header .= $b->description;
-			$header .= '</div>';
-			$header .= '<div style="page-break-after:always"></div>';
+			$header->html .= $b->description;
+			$header->name = $b->name;
 			$h++;
 
 			if ($b->section == '1')

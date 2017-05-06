@@ -18,8 +18,7 @@ JHtml::addIncludePath(JPATH_COMPONENT . '/helpers');
 ?>
 <?php
 // Add a page
-$html = $this->loadTemplate('firstpages');
-$this->pdf->writeHTML($html, true, false, true, true);
+$this->loadTemplate('firstpages');
 
 foreach ($this->items as $s1 => $sort1)
 {

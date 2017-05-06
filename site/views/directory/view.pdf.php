@@ -352,7 +352,7 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 		// ---------------------------------------------------------
 
 		// Set font
-		$this->pdf->SetFont('times', 'BI', 8, '', 'false');
+		$this->pdf->SetFont('times', 'BI', 10, '', 'false');
 
 		$this->pdf->AddPage();
 
