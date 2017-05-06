@@ -151,8 +151,8 @@ class ChurchDirectoryTableDirHeader extends JTable
 		/** check for existing name */
 		$query = $this->_db->getQuery(true);
 		$query->select('*')
-			->from($this->_db->q('#__churchdirectory_dirheader'))
-			->where('name = ' . $this->_db->q($this->name));
+			->from('#__churchdirectory_dirheader')
+			->where($this->_db->qn('name') . ' = ' . $this->_db->q($this->name));
 		$this->_db->setQuery($query);
 		$xid = intval($this->_db->loadResult());
 
