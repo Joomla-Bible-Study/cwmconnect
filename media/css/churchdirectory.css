@@ -142,12 +142,10 @@ p {
   margin-left: 6px;
   margin-right: 6px;
   min-height: 250px;
-  background-color: #ffffaa;
 }
 .cd-content {
   padding: 10px;
   vertical-align: text-top;
-  background-color: #ccccff;
 }
 .familymembers-list {
   background: none repeat scroll 0 0 #f3f3f3;
