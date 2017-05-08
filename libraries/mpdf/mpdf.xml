@@ -11,7 +11,7 @@
   Please note that Joomla Bible Study has only created an installation package, all credit belongs to Ian N Back (mpdf.github.io)<br> This is a lite version, only most used fonts are included.]]>
   </description>
 
-  <files folder="tcpdf">
+  <files folder="mpdf">
     <folder>classes</folder>
     <folder>collations</folder>
     <folder>examples</folder>
