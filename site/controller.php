@@ -53,8 +53,9 @@ class ChurchDirectoryController extends JControllerLegacy
 
 		// Set the default view name and format from the Request.
 		$vName = $this->input->get('view', 'home');
+		$format = $this->input->get('format');
 
-		if ($vName == 'pdf')
+		if ($format == 'pdf')
 		{
 			$this->input->set('tmpl', 'component');
 

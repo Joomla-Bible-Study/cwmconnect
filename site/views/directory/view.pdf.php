@@ -10,7 +10,7 @@
 defined('_JEXEC') or die;
 
 require_once JPATH_COMPONENT . '/models/category.php';
-jimport('tcpdf.tcpdf');
+jimport('mpdf.mpdf');
 
 /**
  * HTML Member View class for the ChurchDirectory component
@@ -78,7 +78,7 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 	public $rows_per_page;
 
 	/**
-	 * @var  TCPDF
+	 * @var  mPDF
 	 * @since version
 	 */
 	protected $pdf;
@@ -212,7 +212,9 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 					}
 					else
 					{
-						$image1 = JHtml::_('image', 'contacts/images/' . $params->get('icon_address', 'con_address.png'), JText::_('COM_CONTACT_ADDRESS') . ': ', null, true);
+						$image1 = JHtml::_('image', JUri::base() . 'media/contacts/images/' .
+							$params->get('icon_address', 'con_address.png'), JText::_('COM_CONTACT_ADDRESS') . ': ', null, true
+						);
 					}
 
 					if ($params->get('icon_email'))
@@ -221,7 +223,9 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 					}
 					else
 					{
-						$image2 = JHtml::_('image', 'contacts/images/' . $params->get('icon_email', 'emailButton.png'), JText::_('JGLOBAL_EMAIL') . ': ', null, true);
+						$image2 = JHtml::_('image', JUri::base() . 'media/contacts/images/' .
+							$params->get('icon_email', 'emailButton.png'), JText::_('JGLOBAL_EMAIL') . ': ', null, true
+						);
 					}
 
 					if ($params->get('icon_telephone'))
@@ -230,7 +234,9 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 					}
 					else
 					{
-						$image3 = JHtml::_('image', 'contacts/images/' . $params->get('icon_telephone', 'con_tel.png'), JText::_('COM_CONTACT_TELEPHONE') . ': ', null, true);
+						$image3 = JHtml::_('image', JUri::base() . 'media/contacts/images/' .
+							$params->get('icon_telephone', 'con_tel.png'), JText::_('COM_CONTACT_TELEPHONE') . ': ', null, true
+						);
 					}
 
 					if ($params->get('icon_fax'))
@@ -239,7 +245,9 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 					}
 					else
 					{
-						$image4 = JHtml::_('image', 'contacts/images/' . $params->get('icon_fax', 'con_fax.png'), JText::_('COM_CONTACT_FAX') . ': ', null, true);
+						$image4 = JHtml::_('image', JUri::base() . 'media/contacts/images/' .
+							$params->get('icon_fax', 'con_fax.png'), JText::_('COM_CONTACT_FAX') . ': ', null, true
+						);
 					}
 
 					if ($params->get('icon_misc'))
@@ -248,7 +256,9 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 					}
 					else
 					{
-						$image5 = JHtml::_('image', 'contacts/images/' . $params->get('icon_misc', 'con_info.png'), JText::_('COM_CONTACT_OTHER_INFORMATION') . ': ', null, true);
+						$image5 = JHtml::_('image', JUri::base() . 'media/contacts/images/' .
+							$params->get('icon_misc', 'con_info.png'), JText::_('COM_CONTACT_OTHER_INFORMATION') . ': ', null, true
+						);
 					}
 
 					if ($params->get('icon_mobile'))
@@ -257,7 +267,9 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 					}
 					else
 					{
-						$image6 = JHtml::_('image', 'contacts/images/' . $params->get('icon_mobile', 'con_mobile.png'), JText::_('COM_CONTACT_MOBILE') . ': ', null, true);
+						$image6 = JHtml::_('image', JUri::base() . 'media/contacts/images/' .
+							$params->get('icon_mobile', 'con_mobile.png'), JText::_('COM_CONTACT_MOBILE') . ': ', null, true
+						);
 					}
 
 					$params->set('marker_address',   $image1);
@@ -302,59 +314,28 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 		$this->pageclass_sfx = htmlspecialchars($params->get('pageclass_sfx'));
 
 		$menus = $app->getMenu();
-		$title = 'directory_prent_out';
 
 		// Because the application sets a default page title,
 		// we need to get it from the menu item itself
 		$menu = $menus->getActive();
+		$title = $menu->title;
 
 		// Clean the output buffer
 		@ob_end_clean();
 
 		// Create new PDF document
-		$this->pdf = new TCPDF(PDF_PAGE_ORIENTATION, PDF_UNIT, PDF_PAGE_FORMAT, true, 'UTF-8', false);
+		$this->pdf = new mPDF('utf-8', 'Letter',  0, '', 30, 10);
+
+		// Double-side document - mirror margins
+		$this->pdf->mirrorMargins = true;
+		$this->pdf->setFooter('{DATE j-m-Y}| |{PAGENO}');
 
 		// Set document information
-		$this->pdf->SetCreator(PDF_CREATOR);
+		$this->pdf->SetCreator($app->getName());
 		$this->pdf->SetAuthor('Church Directory Creater');
 		$this->pdf->SetTitle($this->params->get('page_title', 'Printable Directory'));
 		$this->pdf->SetSubject('Church Directory');
 		$this->pdf->SetKeywords('Directory, PDF, Members');
-
-		// Set default header data
-		$this->pdf->setHeaderData(
-			$params->get('pdf_logo'),
-			$params->get('pdf_logo_width'),
-			$this->params->get('page_heading'),
-			$params->get('pdf_header_string')
-		);
-
-		// Remove default header/footer
-		$this->pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
-		$this->pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
-
-		// Set default monospaced font
-		$this->pdf->SetDefaultMonospacedFont(PDF_FONT_MONOSPACED);
-
-		// Set margins
-		$this->pdf->SetMargins(PDF_MARGIN_LEFT, PDF_MARGIN_TOP, PDF_MARGIN_RIGHT);
-		$this->pdf->setHeaderMargin(PDF_MARGIN_HEADER);
-		$this->pdf->setFooterMargin(PDF_MARGIN_FOOTER);
-
-		// Set auto page breaks
-		$this->pdf->SetAutoPageBreak(true, PDF_MARGIN_BOTTOM);
-
-		$this->pdf->setCellHeightRatio(1.25);
-
-		// Set image scale factor
-		$this->pdf->setImageScale(2.5);
-
-		// ---------------------------------------------------------
-
-		// Set font
-		$this->pdf->SetFont('times', 'BI', 10, '', 'false');
-
-		$this->pdf->AddPage();
 
 		JLoader::register('DirectoryHeaderHelper', JPATH_SITE . '/components/com_churchdirectory/helpers/directoryheader.php');
 		$this->header = new DirectoryHeaderHelper;
@@ -370,46 +351,5 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 		$this->pdf->Output($title . date('Ymd') . '.pdf', 'I');
 
 		return null;
-	}
-
-	/**
-	 * ABC Links for bottom of page
-	 *
-	 * @return string
-	 *
-	 * @since       1.7.2
-	 */
-	public function abclinks()
-	{
-		$links = '<a href="#top"> Top </a>';
-		$links .= '<a href="#A"> A </a>';
-		$links .= '<a href="#B"> B </a>';
-		$links .= '<a href="#C"> C </a>';
-		$links .= '<a href="#D"> D </a>';
-		$links .= '<a href="#E"> E </a>';
-		$links .= '<a href="#F"> F </a>';
-		$links .= '<a href="#G"> G </a>';
-		$links .= '<a href="#H"> H </a>';
-		$links .= '<a href="#I"> I </a>';
-		$links .= '<a href="#J"> J </a>';
-		$links .= '<a href="#K"> K </a>';
-		$links .= '<a href="#L"> L </a>';
-		$links .= '<a href="#M"> M </a>';
-		$links .= '<a href="#N"> N </a>';
-		$links .= '<a href="#O"> O </a>';
-		$links .= '<a href="#P"> P </a>';
-		$links .= '<a href="#Q"> Q </a>';
-		$links .= '<a href="#R"> R </a>';
-		$links .= '<a href="#S"> S </a>';
-		$links .= '<a href="#T"> T </a>';
-		$links .= '<a href="#U"> U </a>';
-		$links .= '<a href="#V"> V </a>';
-		$links .= '<a href="#W"> W </a>';
-		$links .= '<a href="#X"> X </a>';
-		$links .= '<a href="#Y"> Y </a>';
-		$links .= '<a href="#Z"> Z </a>';
-		$links .= '<a href="#bottom"> Bottom </a>';
-
-		return $links;
 	}
 }

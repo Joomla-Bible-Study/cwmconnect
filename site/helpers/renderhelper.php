@@ -611,53 +611,54 @@ class ChurchDirectoryRenderHelper
 		$html = '';
 
 		if (($params->get('address_check') > 0)
-			&& ($item->address || $item->suburb || $item->state || $item->country || $item->postcode))
+			&& ($item->address || $item->suburb || $item->state || $item->postcode))
 		{
+			$html .= '<div class="cd_address">';
 			$html .= '<span class="' . $params->get('marker_class') . '">' .
 				$params->get('marker_address') .
 				'</span>';
-			$html .= '<address class="pull-left">';
 		}
 
 		if ($item->address && $params->get('dr_show_street_address'))
 		{
-			$html .= '<span class="churchdirectory-street">' .
-				nl2br($item->address) .
-				'</span><br/>';
+			$html .= '<address><span class="street-address">' .
+				trim(nl2br($item->address)) .
+				'</span><br>';
 		}
 
 		if ($item->suburb && $params->get('dr_show_suburb'))
 		{
-			$html .= '<span class="churchdirectory-suburb">' .
+			$html .= '<span class="locality">' .
 				$item->suburb .
 				'</span>';
 		}
 
 		if ($item->state && $params->get('dr_show_state'))
 		{
-			$html .= ' <span class="churchdirectory-state">, ' .
+			$html .= ' <span class="region">, ' .
 				$item->state .
 				'</span>';
 		}
 
 		if ($item->postcode && $params->get('dr_show_postcode'))
 		{
-			$html .= '<span class="churchdirectory-postcode"> ' .
+			$html .= '<span class="postal-code"> ' .
 				$item->postcode .
 				'</span>';
 		}
 
-		if ($item->country && $params->get('dr_show_country'))
+		if ($item->country && $params->get('dr_show_country')
+			&& ($item->address || $item->suburb || $item->state || $item->postcode))
 		{
-			$html .= '<br/><span class="churchdirectory-country">' .
+			$html .= '<span class="country-name"> ' .
 				$item->country .
 				'</span>';
 		}
 
 		if ($params->get('address_check') > 0
-			&& ($item->address || $item->suburb || $item->state || $item->country || $item->postcode))
+			&& ($item->address || $item->suburb || $item->state || $item->postcode))
 		{
-			$html .= '</address><br/>';
+			$html .= '</address></div>';
 		}
 
 		return $html;
@@ -686,7 +687,7 @@ class ChurchDirectoryRenderHelper
 		if (($params->get('other_check') > 0)
 			&& ($item->email_to || $item->telephone || $item->fax || $item->mobile || $item->webpage || $item->spouse || $item->children))
 		{
-			$html .= '<div class="churchdirectory-churchdirectoryinfo inner">';
+			$html .= '<div class="cd-info">';
 		}
 
 		if ($item->email_to && $params->get('dr_show_email'))

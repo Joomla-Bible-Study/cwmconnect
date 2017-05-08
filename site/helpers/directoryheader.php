@@ -45,6 +45,7 @@ class DirectoryHeaderHelper
 
 		$query->select('a.*');
 		$query->from('#__churchdirectory_dirheader AS a');
+		$query->where('published = 1');
 		$query->order('a.ordering ASC');
 		$db->setQuery($query);
 
@@ -55,14 +56,9 @@ class DirectoryHeaderHelper
 		{
 			$header = new stdClass;
 			$header->html = '<div class="headerpage">';
-
-			if ($params->get('dr_show_debug'))
-			{
-				$header->html .= '<p>ID: ' . $b->id . '<br />';
-				$header->html .= 'Count: ' . $h . '</p>';
-			}
-
+			$header->html .= '<h2>' . $b->name . '</h2>';
 			$header->html .= $b->description;
+			$header->html .= '</div>';
 			$header->name = $b->name;
 			$h++;
 

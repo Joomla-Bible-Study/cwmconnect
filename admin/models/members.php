@@ -155,7 +155,7 @@ class ChurchDirectoryModelMembers extends JModelList
 					'list.select',
 					'a.id, a.name, a.lname, a.funitid, a.alias, a.checked_out, a.checked_out_time, a.catid, a.user_id' .
 					', a.published, a.access, a.created, a.created_by, a.ordering, a.featured, a.language, a.mstatus' .
-					', a.publish_up, a.publish_down'
+					', a.image, a.publish_up, a.publish_down'
 					)
 				)
 			)
@@ -166,7 +166,7 @@ class ChurchDirectoryModelMembers extends JModelList
 		$query->select($db->qn('ul.name', 'linked_user'));
 		$query->join('LEFT', $db->qn('#__users', 'ul') . ' ON ' . $db->qn('ul.id') . ' = ' . $db->qn('a.user_id'));
 
-		// Join over the Fiamily Units.
+		// Join over the Family Units.
 		$query->select($db->qn('fu.name', 'funitname'));
 		$query->join('LEFT', $db->qn('#__churchdirectory_familyunit', 'fu') . ' ON ' . $db->qn('fu.id') . ' = ' . $db->qn('a.funitid'));
 

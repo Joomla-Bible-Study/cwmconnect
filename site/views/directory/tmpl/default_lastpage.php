@@ -5,7 +5,15 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * */
 defined('_JEXEC') or die;
-?>
-<div class="directory<?php echo $this->pageclass_sfx; ?> container" style="width: 8.5in">
-	<?php echo $this->header->footer; ?>
-</div>
+
+/** @var mPDF $pdf */
+$pdf = $this->pdf;
+
+foreach ($this->header->footer as $footer)
+{
+	$pdf->AddPage();
+
+	// Set a bookmark for the current position
+	$pdf->Bookmark($footer->name, 0);
+	$pdf->WriteHTML($footer->html);
+}

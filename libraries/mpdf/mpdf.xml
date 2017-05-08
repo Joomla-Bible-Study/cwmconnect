@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<extension type="library" version="3.1" method="upgrade">
+  <name>MPDF</name>
+  <libraryname>mpdf</libraryname>
+  <version>6.1.1</version>
+  <creationDate>2017-04-224</creationDate>
+  <author>Ian N Back</author>
+  <authorUrl>https://mpdf.github.io</authorUrl>
+  <authorEmail>info@joomlabiblestudy.org</authorEmail>
+  <description><![CDATA[MPDF library for Joomla!. <br/>
+  Please note that Joomla Bible Study has only created an installation package, all credit belongs to Ian N Back (mpdf.github.io)<br> This is a lite version, only most used fonts are included.]]>
+  </description>
+
+  <files folder="tcpdf">
+    <folder>classes</folder>
+    <folder>collations</folder>
+    <folder>examples</folder>
+    <folder>font</folder>
+    <folder>graph_cache</folder>
+    <folder>iccprofiles</folder>
+    <folder>include</folder>
+    <folder>patterns</folder>
+    <folder>qrcode</folder>
+    <folder>tests</folder>
+    <folder>tmp</folder>
+    <folder>ttfontdata</folder>
+    <folder>ttfonts</folder>
+    <folder>utils</folder>
+    <folder>vendor</folder>
+    <file>CHANGELOG.txt</file>
+    <file>composer.json</file>
+    <file>config.php</file>
+    <file>config_fonts.php</file>
+    <file>config_fonts-distr-without-OTL.php</file>
+    <file>config_lang2fonts.php</file>
+    <file>config_script2lang.php</file>
+    <file>CREDITS.txt</file>
+    <file>graph.php</file>
+    <file>lang2fonts.php</file>
+    <file>LICENSE.TXT</file>
+    <file>mpdf.css</file>
+    <file>mpdf.php</file>
+    <file>MpdfException.php</file>
+    <file>phpunit.xml</file>
+    <file>progbar.css</file>
+    <file>README.md</file>
+    <file>Tag.php</file>
+  </files>
+</extension>

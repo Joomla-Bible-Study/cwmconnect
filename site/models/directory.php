@@ -289,6 +289,8 @@ class ChurchDirectoryModelDirectory extends JModelList
 			$query->where($publishedWhere . ' IN (' . $published . ')');
 		}
 
+		$query->where('a.published = 1');
+
 		// Define null and now dates
 		$nullDate = $db->quote($db->getNullDate());
 		$nowDate  = $db->quote(JFactory::getDate()->toSql());

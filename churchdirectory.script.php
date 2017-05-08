@@ -25,9 +25,9 @@ class Com_ChurchdirectoryInstallerScript
 
 	protected $srcxml;
 
-	protected $tcpdf_version;
+	protected $mpdf_version;
 
-	protected $tcpdf_result;
+	protected $mpdf_result;
 
 	protected $status;
 
@@ -227,8 +227,8 @@ class Com_ChurchdirectoryInstallerScript
 		// Install subextensions
 		$this->_installSubextensions($parent);
 
-		// Install TCPDF Libraries
-		$this->_installTCPDF($parent);
+		// Install mPDF Libraries
+		$this->_installmPDF($parent);
 
 		// Remove old stuff
 		$this->deleteUnexistingFiles();
@@ -280,7 +280,7 @@ class Com_ChurchdirectoryInstallerScript
 	public function uninstall($parent)
 	{
 		// Uninstall subextensions
-		$status = $this->_uninstallSubextensions($parent);
+		$this->_uninstallSubextensions($parent);
 
 		// Show the post-uninstalling page
 		$this->_renderPostUninstallation($status, $parent);
@@ -794,7 +794,7 @@ class Com_ChurchdirectoryInstallerScript
 	}
 
 	/**
-	 * Install TCPDF
+	 * Install mPDF
 	 *
 	 * @param   JInstallerAdapter  $parent  How this was tarted
 	 *
@@ -802,15 +802,15 @@ class Com_ChurchdirectoryInstallerScript
 	 *
 	 * @since 1.7.0
 	 */
-	private function _installTCPDF($parent)
+	private function _installmPDF($parent)
 	{
 		$src = $parent->getParent()->getPath('source');
 		$needUpgrade     = false;
 
-		// Install the TCPDF libraries
-		$source = $src . '/libraries/tcpdf';
+		// Install the mPDF libraries
+		$source = $src . '/libraries/mpdf';
 
-		$component = $source . '/tcpdf.xml';
+		$component = $source . '/mpdf.xml';
 
 		if (file_exists($component))
 		{
@@ -819,18 +819,18 @@ class Com_ChurchdirectoryInstallerScript
 
 		if (!defined('JPATH_LIBRARIES'))
 		{
-			$target = JPATH_ROOT . '/libraries/tcpdf';
+			$target = JPATH_ROOT . '/libraries/mpdf';
 		}
 		else
 		{
-			$target = JPATH_LIBRARIES . '/tcpdf';
+			$target = JPATH_LIBRARIES . '/mpdf';
 		}
 
-		$haveToInstallTCPDF = false;
+		$haveToInstallmPDF = false;
 
 		if (!JFolder::exists($target))
 		{
-			$component = $target . '/tcpdf.xml';
+			$component = $target . '/mpdf.xml';
 
 			if (file_exists($component))
 			{
@@ -841,11 +841,11 @@ class Com_ChurchdirectoryInstallerScript
 
 			$this->tcpdf_result = 'Installed';
 
-			$haveToInstallTCPDF = true;
+			$haveToInstallmPDF = true;
 		}
 		else
 		{
-			$component = $target . '/tcpdf.xml';
+			$component = $target . '/mpdf.xml';
 
 			if (file_exists($component))
 			{
@@ -864,16 +864,16 @@ class Com_ChurchdirectoryInstallerScript
 			}
 		}
 
-		if ($haveToInstallTCPDF || $needUpgrade)
+		if ($haveToInstallmPDF || $needUpgrade)
 		{
 			$installer      = new JInstaller;
 			$installer->install($source);
 		}
 
 		$this->status->libraries[] = [
-			'name'   => 'TCPDF',
-			'Version'  => $this->tcpdf_version,
-			'result' => $this->tcpdf_result
+			'name'   => 'mPDF',
+			'Version'  => $this->mpdf_version,
+			'result' => $this->mpdf_result
 		];
 
 		return;

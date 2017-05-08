@@ -20,15 +20,18 @@ JHtml::addIncludePath(JPATH_COMPONENT . '/helpers');
 // Add a page
 $this->loadTemplate('firstpages');
 
+// Add a page
+$this->pdf->AddPage();
+
 foreach ($this->items as $s1 => $sort1)
 {
 	$this->items = $sort1;
-	$html        = $this->loadTemplate('items');
+
+	$html = $this->loadTemplate('items');
 
 	// Print a block of text using Write()
-	$this->pdf->writeHTML($html, true, false, true, true);
+	$this->pdf->WriteHTML($html);
 }
 
-$this->pdf->AddPage();
-$html = $this->loadTemplate('lastpage');
-$this->pdf->writeHTML($html, true, false, true, true);
+$this->loadTemplate('lastpage');
+

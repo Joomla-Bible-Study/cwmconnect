@@ -76,7 +76,7 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 	protected $count;
 
 	/**
-	 * @var  TCPDF
+	 * @var  mPDF
 	 * @since version
 	 */
 	protected $pdf;
