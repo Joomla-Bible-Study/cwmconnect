@@ -7,8 +7,6 @@
 
 defined('_JEXEC') or die;
 
-use Joomla\Registry\Registry;
-
 /**
  * HTML Contact View class for the Contact component
  *
@@ -24,66 +22,6 @@ class ChurchDirectoryViewReports extends JViewLegacy
 	 * @since       1.7.2
 	 */
 	protected $state;
-
-	/**
-	 * Protected
-	 *
-	 * @var array
-	 * @since       1.7.2
-	 */
-	protected $items;
-
-	/**
-	 * Protected
-	 *
-	 * @var array
-	 * @since       1.7.2
-	 */
-	protected $params;
-
-	/**
-	 * Protected
-	 *
-	 * @var array
-	 * @since       1.7.2
-	 */
-	protected $kml_params;
-
-	/**
-	 * Protected
-	 *
-	 * @var array
-	 * @since       1.7.2
-	 */
-	protected $category_params;
-
-	/**
-	 * Protected
-	 *
-	 * @var array
-	 * @since       1.7.2
-	 */
-	protected $category;
-
-	/**
-	 * Protected
-	 *
-	 * @var array
-	 * @since       1.7.2
-	 */
-	protected $children;
-
-	/**
-	 * Protected
-	 *
-	 * @var array
-	 * @since       1.7.2
-	 */
-	protected $pagination;
-
-	protected $maxLevel;
-
-	protected $parent;
 
 	/**
 	 * Display function
@@ -113,6 +51,9 @@ class ChurchDirectoryViewReports extends JViewLegacy
 				break;
 			case 'pdf':
 				$module->getExport('pdf', $name);
+				break;
+			case 'missingphotos':
+				$module->getExport('missingphotos', $name);
 				break;
 		}
 

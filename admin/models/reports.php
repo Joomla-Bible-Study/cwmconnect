@@ -381,7 +381,10 @@ class ChurchDirectoryModelReports extends JModelAdmin
 				$reportBuild->getKML($items, $report);
 				break;
 			case 'pdf':
-				$reportBuild->getPDF($items, $report);
+				$reportBuild->getPDF();
+				break;
+			case 'missingphotos':
+				$reportBuild->getMissingPhotos($items, $report);
 				break;
 		}
 

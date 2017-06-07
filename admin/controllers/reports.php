@@ -28,7 +28,8 @@ class ChurchDirectoryControllerReports extends JControllerAdmin
 	public function display($cachable = false, $urlparams = [])
 	{
 		JFactory::getApplication()->input->set('view', 'reports');
-		parent::display();
+
+		return parent::display();
 	}
 
 	/**
@@ -44,6 +45,7 @@ class ChurchDirectoryControllerReports extends JControllerAdmin
 	 */
 	public function getModel($name = 'Reports', $prefix = 'ChurchDirectoryModel', $config = ['ignore_request' => true])
 	{
+		/** @var ChurchDirectoryModelReports $model */
 		$model = parent::getModel($name, $prefix, $config);
 
 		return $model;

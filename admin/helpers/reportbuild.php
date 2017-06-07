@@ -58,8 +58,8 @@ class ChurchDirectoryReportBuild
 		@ob_end_clean();
 		@ob_start();
 
-		header("Content-type: text/csv");
-		header("Content-Disposition: attachment; filename=report." . $report . '.' . $date->format('Y-m-d-His') . ".csv");
+		header("Content-type: text/csv; charset=UTF-8");
+		header("Content-Disposition: attachment; filename=report_" . $report . '_' . $date->format('Y-m-d-His') . ".csv");
 		header("Pragma: no-cache");
 		header("Expires: 0");
 		$count = 0;
@@ -186,19 +186,16 @@ class ChurchDirectoryReportBuild
 	/**
 	 * PDF export
 	 *
-	 * @param   object  $items   Items to pass through
-	 * @param   string  $report  Name of report to return.
-	 *
 	 * @return bool
 	 *
 	 * @since    1.7.0
 	 */
-	public function getPDF($items, $report = null)
+	public function getPDF()
 	{
 		// Hold
 		echo 'Coming Soon';
 
-		return false;
+		return null;
 	}
 
 	/**
@@ -498,5 +495,71 @@ class ChurchDirectoryReportBuild
 
 		// Hold
 		return true;
+	}
+
+	/**
+	 * Get Missing Photos of Members
+	 *
+	 * @param   object  $items   Items to pass through
+	 * @param   string  $report  Name of report to return.
+	 *
+	 * @return mixed
+	 *
+	 * @since 1.8.4
+	 */
+	public function getMissingPhotos($items, $report = null)
+	{
+		$date = new JDate('now');
+		$jWeb  = new JApplicationWeb;
+		$csv   = fopen('php://output', 'w');
+		$jWeb->clearHeaders();
+
+		// Clean the output buffer,
+		@ob_end_clean();
+		@ob_start();
+
+		header("Content-type: text/csv; charset=UTF-8");
+		header("Content-Disposition: attachment; filename=report_" . $report . '_' . $date->format('Y-m-d-His') . ".csv");
+		header("Pragma: no-cache");
+		header("Expires: 0");
+
+		fputcsv($csv, ['Missing Images - ' . JFactory::getApplication()->get('sitename')]);
+		fputcsv($csv, [' ']);
+		fputcsv($csv, ['ID', 'Name']);
+
+		foreach ($items as $member)
+		{
+			if (empty($member->image))
+			{
+				$array = [$member->id, $member->name];
+				fputcsv($csv, $array);
+			}
+		}
+
+		$query = $this->db->getQuery('true');
+		$query->select('id, name')
+			->from('#__churchdirectory_familyunit');
+		$this->db->setQuery($query);
+
+		fputcsv($csv, ['' , '']);
+		fputcsv($csv, ['ID', 'Family Name']);
+
+		if ($familys = $this->db->loadObjectList())
+		{
+			foreach ($familys as $family)
+			{
+				if (empty($family->image))
+				{
+					$array = [$family->id, $family->name];
+					fputcsv($csv, $array);
+				}
+			}
+		}
+
+		@ob_flush();
+		@flush();
+
+		fclose($csv);
+		exit;
 	}
 }
