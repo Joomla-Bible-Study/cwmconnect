@@ -187,6 +187,11 @@ $tmpl    = $isModal || $input->get('tmpl', '', 'cmd') === 'component' ? '&tmpl=c
 
 		<?php echo JLayoutHelper::render('joomla.edit.params', $this); ?>
 
+		<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'attribs', JText::_('Attribs')); ?>
+
+		<?php echo $this->loadTemplate('attribs'); ?>
+		<?php echo JHtml::_('bootstrap.endTab'); ?>
+
 		<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'publishing', JText::_('JGLOBAL_FIELDSET_PUBLISHING')); ?>
 		<div class="row-fluid form-horizontal-desktop">
 			<div class="span6">
