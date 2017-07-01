@@ -10,12 +10,13 @@ defined('_JEXEC') or die;
 $pdf = $this->pdf;
 
 $stylesheet = '<style>' . file_get_contents(JPATH_ROOT . '/media/com_churchdirectory/css/churchdirectory.css') . '</style>';
-$pdf->WriteHTML($stylesheet,1);
+$pdf->WriteHTML($stylesheet, 1);
 
 foreach ($this->header->header as $header)
 {
 	$pdf->AddPage();
-	//$pdf->SetFont('times', 'B', 20);
+
+	// $pdf->SetFont('times', 'B', 20);
 
 	// Set a bookmark for the current position
 	$pdf->Bookmark($header->name, 0);

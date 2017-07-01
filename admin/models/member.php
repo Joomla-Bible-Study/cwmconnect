@@ -435,7 +435,10 @@ class ChurchDirectoryModelMember extends JModelAdmin
 	 */
 	public function getTable($type = 'Member', $prefix = 'ChurchDirectoryTable', $config = [])
 	{
-		return JTable::getInstance($type, $prefix, $config);
+		/** @var ChurchDirectoryTableMember $table */
+		$table = JTable::getInstance($type, $prefix, $config);
+
+		return $table;
 	}
 
 	/**

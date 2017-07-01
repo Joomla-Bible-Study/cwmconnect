@@ -33,32 +33,6 @@ $birthdays = $render->getBirthdays($params);
 /* Return members that have Anniversary of this month. */
 $anniversary = $render->getAnniversary($params);
 
-// Get Groups for checking permissions
-$user   = JFactory::getUser();
-$groups = $user->getAuthorisedViewLevels();
-
-// Check permissions for Birthdays by running through the records and removing those the user doesn't have permission to see
-$count = count($birthdays);
-
-for ($i = 0; $i < $count; $i++)
-{
-	if ($birthdays[$i]['access'] > 1 && !in_array($birthdays[$i]['access'], $groups))
-	{
-		unset($birthdays[$i]);
-	}
-}
-
-// Check permissions for Anniversaries by running through the records and removing those the user doesn't have permission to see
-$count = count($anniversary);
-
-for ($i = 0; $i < $count; $i++)
-{
-	if ($anniversary[$i]['access'] > 1 && !in_array($anniversary[$i]['access'], $groups))
-	{
-		unset($anniversary[$i]);
-	}
-}
-
 /**
  * Global css
  *

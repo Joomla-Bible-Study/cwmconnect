@@ -521,7 +521,7 @@ class ChurchDirectoryRenderHelper
 		$groups = implode(',', $user->getAuthorisedViewLevels());
 
 		$db      = JFactory::getDbo();
-		$results = false;
+		$results = [];
 		$query   = $db->getQuery(true);
 
 		$query->select('a.*')
@@ -574,17 +574,17 @@ class ChurchDirectoryRenderHelper
 
 		foreach ($records as $i => $record)
 		{
-			list($get_date, $get_time) = explode(" ", $record->anniversary);
-			list($this->byear, $this->bmonth, $this->bday) = explode('-', $get_date);
+			$date = JHtml::_('date', $record->anniversary, JText::_('DATE_FORMAT_LC4'), false);
+			list($byear, $bmonth, $bday) = explode('-', $date);
 
 			if ($record->f_name && $record->f_id != $this->f_id)
 			{
 				$this->f_id = $record->f_id;
-				$results[]  = ['name' => $record->f_name, 'id' => $record->f_id, 'day' => $this->bday, 'access' => $record->access];
+				$results[]  = ['name' => $record->f_name, 'id' => $record->f_id, 'day' => $bday, 'access' => $record->access];
 			}
 			elseif (!$record->f_name)
 			{
-				$results[] = ['name' => $record->name, 'id' => $record->id, 'day' => $this->bday, 'access' => $record->access];
+				$results[] = ['name' => $record->name, 'id' => $record->id, 'day' => $bday, 'access' => $record->access];
 			}
 			else
 			{

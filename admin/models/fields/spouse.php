@@ -64,6 +64,11 @@ class JFormFieldSpouse extends JFormField
 		$db->setQuery($query);
 		$results = $db->loadObjectList();
 
+		// Load the modal behavior script.
+		JHtml::_('behavior.modal', 'a.modal_' . $memberId);
+
+		JHtml::script('jui/fielduser.min.js', false, true, false, false, true);
+
 		foreach ($results AS $item)
 		{
 			$registry = new Registry;
@@ -77,10 +82,11 @@ class JFormFieldSpouse extends JFormField
 			{
 				$link = 'index.php?option=com_churchdirectory&task=member.edit&id=' . (int) $item->id . '&tmpl=component&layout=modal';
 				$html = '<h4>
-						<a class="btn btn-primary" onclick="SqueezeBox.fromElement(this, {handler:\'iframe\', size: {x: 900, y: 550}, url:\'' . $link . '\'})"
+						<a class="btn btn-primary modal" rel="{handler: \'iframe\', size: {x: 800, y: 500}}"  href="' . $link . '" 
 			   title="' . $item->name . '">';
 
 				$html .= $db->escape($item->name);
+				$html .= '<span class="icon-user"></span>';
 				$html .= '</a>';
 			}
 			elseif ($item->funitid <= '0' && $item->id == $memberId)

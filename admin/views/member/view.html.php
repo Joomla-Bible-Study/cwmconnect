@@ -91,6 +91,13 @@ class ChurchDirectoryViewMember extends JViewLegacy
 		{
 			$this->access = false;
 		}
+
+		if ($this->getLayout() == 'modal')
+		{
+			$this->form->setFieldAttribute('language', 'readonly', 'true');
+			$this->form->setFieldAttribute('catid', 'readonly', 'true');
+		}
+
 		// Set the toolbar
 		$this->addToolbar();
 
@@ -131,14 +138,17 @@ class ChurchDirectoryViewMember extends JViewLegacy
 		}
 		else
 		{
+			// Since it's an existing record, check the edit permission, or fall back to edit own if the owner.
+			$itemEditable = $canDo->get('core.edit') || ($canDo->get('core.edit.own') && $this->item->created_by == $userId);
+
 			// Can't save the record if it's checked out.
 			if (!$checkedOut)
 			{
 				// Since it's an existing record, check the edit permission, or fall back to edit own if the owner.
 				if ($canDo->get('core.edit') || ($canDo->get('core.edit.own') && $this->item->created_by == $userId))
 				{
-					JToolbarHelper::apply('member.apply', 'JTOOLBAR_APPLY');
-					JToolbarHelper::save('member.save', 'JTOOLBAR_SAVE');
+					JToolbarHelper::apply('member.apply');
+					JToolbarHelper::save('member.save');
 
 					// We can save this record, but check the create permission to see if we can return to make a new one.
 					if ($canDo->get('core.create'))
@@ -152,6 +162,11 @@ class ChurchDirectoryViewMember extends JViewLegacy
 			if ($canDo->get('core.create'))
 			{
 				JToolbarHelper::save2copy('member.save2copy');
+			}
+
+			if ($this->state->params->get('save_history', 0) && $itemEditable)
+			{
+				JToolbarHelper::versions('com_churchdircetoyr.member', $this->item->id);
 			}
 
 			JToolbarHelper::cancel('member.cancel', 'JTOOLBAR_CLOSE');
