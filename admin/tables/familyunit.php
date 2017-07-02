@@ -29,6 +29,14 @@ class ChurchDirectoryTableFamilyUnit extends JTable
 	public $ordering;
 
 	/**
+	 * Ensure the params and metadata in json encoded in the bind method
+	 *
+	 * @var    array
+	 * @since  3.3
+	 */
+	protected $_jsonEncode = array('params');
+
+	/**
 	 * Constructor
 	 *
 	 * @param   JDatabaseDriver  &$db  DatabaseDriver object.
@@ -38,28 +46,6 @@ class ChurchDirectoryTableFamilyUnit extends JTable
 	public function __construct(& $db)
 	{
 		parent::__construct('#__churchdirectory_familyunit', 'id', $db);
-	}
-
-	/**
-	 * Overloaded bind function
-	 *
-	 * @param   mixed  $array   An associative array or object to bind to the JTable instance.
-	 * @param   mixed  $ignore  An optional array or space separated list of properties to ignore while binding.
-	 *
-	 * @return  boolean  True on success.
-	 *
-	 * @since    1.7.0
-	 */
-	public function bind($array, $ignore = '')
-	{
-		if (isset($array['params']) && is_array($array['params']))
-		{
-			$registry = new Registry;
-			$registry->loadArray($array['params']);
-			$array['params'] = (string) $registry;
-		}
-
-		return parent::bind($array, $ignore);
 	}
 
 	/**
@@ -76,19 +62,19 @@ class ChurchDirectoryTableFamilyUnit extends JTable
 		// Transform the params field
 		if (is_array($this->params))
 		{
-			$registry = new Registry;
-			$registry->loadArray($this->params);
+			$registry = new Registry($this->params);
 			$this->params = (string) $registry;
 		}
 
-		$date = JFactory::getDate();
-		$user = JFactory::getUser();
+		$date   = JFactory::getDate()->toSql();
+		$userId = JFactory::getUser()->id;
+
+		$this->modified = $date;
 
 		if ($this->id)
 		{
 			// Existing item
-			$this->modified    = $date->toSql();
-			$this->modified_by = $user->get('id');
+			$this->modified_by = $userId;
 		}
 		else
 		{
@@ -96,12 +82,12 @@ class ChurchDirectoryTableFamilyUnit extends JTable
 			// so we don't touch either of these if they are set.
 			if (!intval($this->created))
 			{
-				$this->created = $date->toSql();
+				$this->created = $date;
 			}
 
 			if (empty($this->created_by))
 			{
-				$this->created_by = $user->get('id');
+				$this->created_by = $userId;
 			}
 		}
 
@@ -156,27 +142,42 @@ class ChurchDirectoryTableFamilyUnit extends JTable
 			return false;
 		}
 
+		// Generate a valid alias
+		$this->generateAlias();
+
+		// Check the publish down date is not earlier than publish up.
+		if ((int) $this->publish_down > 0 && $this->publish_down < $this->publish_up)
+		{
+			$this->setError(JText::_('JGLOBAL_START_PUBLISH_AFTER_FINISH'));
+
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Generate a valid alias from title / date.
+	 * Remains public to be able to check for duplicated alias before saving
+	 *
+	 * @return  string
+	 *
+	 * @since 1.7.3
+	 */
+	public function generateAlias()
+	{
 		if (empty($this->alias))
 		{
 			$this->alias = $this->name;
 		}
 
-		$this->alias = JApplicationHelper::stringURLSafe($this->alias);
+		$this->alias = JApplicationHelper::stringURLSafe($this->alias, $this->language);
 
 		if (trim(str_replace('-', '', $this->alias)) == '')
 		{
-			$this->alias = JFactory::getDate()->format("Y-m-d-H-i-s");
+			$this->alias = JFactory::getDate()->format('Y-m-d-H-i-s');
 		}
 
-		// Check the publish down date is not earlier than publish up.
-		if (intval($this->publish_down) > 0 && $this->publish_down < $this->publish_up)
-		{
-			// Swap the dates.
-			$temp               = $this->publish_up;
-			$this->publish_up   = $this->publish_down;
-			$this->publish_down = $temp;
-		}
-
-		return true;
+		return $this->alias;
 	}
 }

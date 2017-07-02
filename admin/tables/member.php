@@ -137,6 +137,14 @@ class ChurchDirectoryTableMember extends JTable
 	public $mstatus;
 
 	/**
+	 * Ensure the params and metadata in json encoded in the bind method
+	 *
+	 * @var    array
+	 * @since  3.3
+	 */
+	protected $_jsonEncode = array('params', 'attribs', 'metadata');
+
+	/**
 	 * Constructor
 	 *
 	 * @param   JDatabaseDriver  &$db  Database connector object
@@ -146,6 +154,9 @@ class ChurchDirectoryTableMember extends JTable
 	public function __construct (& $db)
 	{
 		parent::__construct('#__churchdirectory_details', 'id', $db);
+
+		JTableObserverTags::createObserver($this, array('typeAlias' => 'com_churchdirectory.member'));
+		JTableObserverContenthistory::createObserver($this, array('typeAlias' => 'com_churchdirectory.member'));
 	}
 
 	/**
@@ -159,29 +170,8 @@ class ChurchDirectoryTableMember extends JTable
 	 * @link     http://docs.joomla.org/JTable/bind
 	 * @since    1.7.0
 	 */
-	public function bind ($array, $ignore = '')
+	public function bind($array, $ignore = '')
 	{
-		if (isset($array['params']) && is_array($array['params']))
-		{
-			$registry = new Registry;
-			$registry->loadArray($array['params']);
-			$array['params'] = (string) $registry;
-		}
-
-		if (isset($array['attribs']) && is_array($array['attribs']))
-		{
-			$registry = new Registry;
-			$registry->loadArray($array['attribs']);
-			$array['attribs'] = (string) $registry;
-		}
-
-		if (isset($array['metadata']) && is_array($array['metadata']))
-		{
-			$registry = new Registry;
-			$registry->loadArray($array['metadata']);
-			$array['metadata'] = (string) $registry;
-		}
-
 		if (array_key_exists('con_position', $array) && is_array($array['con_position']))
 		{
 			$array['con_position'] = implode(',', $array['con_position']);
@@ -199,39 +189,39 @@ class ChurchDirectoryTableMember extends JTable
 	 *
 	 * @since    1.7.0
 	 */
-	public function store ($updateNulls = false)
+	public function store($updateNulls = false)
 	{
 		// Transform the params field
 		if (is_array($this->params))
 		{
-			$registry = new Registry;
-			$registry->loadArray($this->params);
+			$registry = new Registry($this->params);
 			$this->params = (string) $registry;
 		}
+
 		// Transform the attribs field
 		if (is_array($this->attribs))
 		{
-			$registry = new Registry;
-			$registry->loadArray($this->attribs);
+			$registry = new Registry($this->attribs);
 			$this->attribs = (string) $registry;
 		}
+
 		// Force the Valu of FamilyPostion if Family unit = -1
 		if ($this->funitid == '-1')
 		{
-			$registry = new Registry;
-			$registry->loadString($this->attribs);
+			$registry = new Registry($this->attribs);
 			$registry->set('familypostion', '0');
 			$this->attribs = (string) $registry;
 		}
 
-		$date = JFactory::getDate();
-		$user = JFactory::getUser();
+		$date   = JFactory::getDate()->toSql();
+		$userId = JFactory::getUser()->id;
+
+		$this->modified = $date;
 
 		if ($this->id)
 		{
 			// Existing item
-			$this->modified    = $date->toSql();
-			$this->modified_by = $user->get('id');
+			$this->modified_by = $userId;
 		}
 		else
 		{
@@ -239,12 +229,12 @@ class ChurchDirectoryTableMember extends JTable
 			// so we don't touch either of these if they are set.
 			if (!intval($this->created))
 			{
-				$this->created = $date->toSql();
+				$this->created = $date;
 			}
 
 			if (empty($this->created_by))
 			{
-				$this->created_by = $user->get('id');
+				$this->created_by = $userId;
 			}
 		}
 
@@ -265,6 +255,12 @@ class ChurchDirectoryTableMember extends JTable
 		{
 			$this->xreference = '';
 		}
+
+		// Store utf8 email as punycode
+		$this->email_to = JStringPunycode::emailToPunycode($this->email_to);
+
+		// Convert IDN urls to punycode
+		$this->webpage = JStringPunycode::urlToPunycode($this->webpage);
 
 		// Verify that the alias is unique
 		$table = JTable::getInstance('Member', 'ChurchDirectoryTable');
@@ -288,7 +284,7 @@ class ChurchDirectoryTableMember extends JTable
 	 * @see   JTable::check
 	 * @since 1.7.0
 	 */
-	public function check ()
+	public function check()
 	{
 		$this->default_con = intval($this->default_con);
 
@@ -299,7 +295,7 @@ class ChurchDirectoryTableMember extends JTable
 			return false;
 		}
 
-		/** check for valid name */
+		/** Check for valid name */
 		if (trim($this->name) == '')
 		{
 			$this->setError(JText::_('COM_CHURCHDIRECTORY_WARNING_PROVIDE_VALID_NAME'));
@@ -307,31 +303,8 @@ class ChurchDirectoryTableMember extends JTable
 			return false;
 		}
 
-		/** check for existing name */
-		/* TF removed - if same first name exists it errors - this should not be.
-				 * $query = 'SELECT id FROM #__churchdirectory_details WHERE name = ' . $this->_db->Quote($this->name) . ' AND catid = ' . (int) $this->catid;
-				$this->_db->setQuery($query);
-
-				$xid = intval($this->_db->loadResult());
-
-				if ($xid && $xid != intval($this->id))
-				{
-					$this->setError(JText::_('COM_CHURCHDIRECTORY_WARNING_SAME_NAME'));
-
-					return false;
-				}
-		*/
-		if (empty($this->alias))
-		{
-			$this->alias = $this->name;
-		}
-
-		$this->alias = JApplicationHelper::stringURLSafe($this->alias);
-
-		if (trim(str_replace('-', '', $this->alias)) == '')
-		{
-			$this->alias = JFactory::getDate()->format("Y-m-d-H-i-s");
-		}
+		// Generate a valid alias
+		$this->generateAlias();
 
 		/** check for valid category */
 		if (trim($this->catid) == '')
@@ -339,6 +312,12 @@ class ChurchDirectoryTableMember extends JTable
 			$this->setError(JText::_('COM_CHURCHDIRECTORY_WARNING_CATEGORY'));
 
 			return false;
+		}
+
+		// Sanity check for user_id
+		if (!($this->user_id))
+		{
+			$this->user_id = 0;
 		}
 
 		// Check the publish down date is not earlier than publish up.
@@ -354,10 +333,14 @@ class ChurchDirectoryTableMember extends JTable
 		if (!empty($this->metakey))
 		{
 			// Only process if not empty
-			$bad_characters = ["\n", "\r", "\"", "<", ">"];
-			$after_clean    = \Joomla\String\StringHelper::str_ireplace($bad_characters, "", $this->metakey);
-			$keys           = explode(',', $after_clean);
-			$clean_keys     = [];
+			$badCharacters = ["\n", "\r", "\"", "<", ">"];
+
+			// Remove bad characters.
+			$afterClean = \Joomla\String\StringHelper::str_ireplace($badCharacters, '', $this->metakey);
+
+			// Create array using commas as delimiter.
+			$keys = explode(',', $afterClean);
+			$cleanKeys = array();
 
 			foreach ($keys as $key)
 			{
@@ -368,7 +351,7 @@ class ChurchDirectoryTableMember extends JTable
 				}
 			}
 
-			$this->metakey = implode(", ", $clean_keys);
+			$this->metakey = implode(", ", $cleanKeys);
 		}
 
 		// Clean up description -- eliminate quotes and <> brackets
@@ -383,57 +366,13 @@ class ChurchDirectoryTableMember extends JTable
 	}
 
 	/**
-	 * Pre load items
-	 *
-	 * @param   mixed    $pk     An optional primary key value to load the row by, or an array of fields to match.  If not
-	 *                           set the instance property value is used.
-	 * @param   boolean  $reset  True to reset the default values before loading the new row.
-	 *
-	 * @return  boolean  True if successful. False if row not found.
-	 *
-	 * @since    1.7.0
-	 */
-	public function load ($pk = null, $reset = true)
-	{
-		if (parent::load($pk, $reset))
-		{
-			// Convert the params field to a registry.
-			$params = new Registry;
-			$params->loadString($this->params);
-			$this->params = $params;
-
-			return true;
-		}
-		else
-		{
-			return false;
-		}
-	}
-
-	/**
-	 * Method to compute the default name of the asset.
-	 * The default name is in the form `table_name.id`
-	 * where id is the value of the primary key of the table.
-	 *
-	 * @return      string
-	 *
-	 * @since       1.6
-	 */
-	protected function _getAssetName ()
-	{
-		$k = $this->_tbl_key;
-
-		return 'com_churchdirectory.member.' . (int) $this->$k;
-	}
-
-	/**
 	 * Method to return the title to use for the asset table.
 	 *
 	 * @return      string
 	 *
 	 * @since       1.6
 	 */
-	protected function _getAssetTitle ()
+	protected function _getAssetTitle()
 	{
 		$title = $this->name;
 
@@ -450,8 +389,9 @@ class ChurchDirectoryTableMember extends JTable
 	 *
 	 * @since       1.6
 	 */
-	protected function _getAssetParentId (JTable $table = null, $id = null)
+	protected function _getAssetParentId(JTable $table = null, $id = null)
 	{
+		/** @var \JTableAsset $asset */
 		$asset = JTable::getInstance('Asset');
 		$asset->loadByName('com_churchdirectory');
 

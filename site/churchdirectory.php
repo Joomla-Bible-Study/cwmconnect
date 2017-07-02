@@ -20,9 +20,6 @@ if (file_exists($api))
 
 JLoader::register('ChurchDirectoryHelperRoute', JPATH_COMPONENT . '/helpers/route.php');
 
-// Load tcpdf
-include_once JPATH_SITE . '/libraries/tcpdf/tcpdf.php';
-
 JHtml::stylesheet('media/com_churchdirectory/css/churchdirectory.css');
 $controller = JControllerLegacy::getInstance('ChurchDirectory');
 $controller->execute(JFactory::getApplication()->input->get('task'));

@@ -41,7 +41,6 @@ $anniversary = $render->getAnniversary($params);
  */
 function addCSS ()
 {
-	JHtml::stylesheet('media/com_churchdirectory/css/general.css');
 	JHtml::stylesheet('media/com_churchdirectory/css/model.css');
 	JHtml::stylesheet('media/com_churchdirectory/css/icons.css');
 }

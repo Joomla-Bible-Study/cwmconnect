@@ -33,6 +33,16 @@ class ChurchDirectoryTableDirHeader extends JTable
 	public $publish_up;
 
 	/**
+	 * Ensure the params and metadata in json encoded in the bind method
+	 *
+	 * @var    array
+	 * @since  3.3
+	 */
+	protected $_jsonEncode = array('params');
+
+	public $catid;
+
+	/**
 	 * Constructor
 	 *
 	 * @param   JDatabaseDriver  &$db  Database connector object
@@ -42,29 +52,6 @@ class ChurchDirectoryTableDirHeader extends JTable
 	public function __construct(& $db)
 	{
 		parent::__construct('#__churchdirectory_dirheader', 'id', $db);
-	}
-
-	/**
-	 * Overloaded bind function
-	 *
-	 * @param   mixed  $array   An associative array or object to bind to the JTable instance.
-	 * @param   mixed  $ignore  An optional array or space separated list of properties to ignore while binding.
-	 *
-	 * @return  boolean  True on success.
-	 *
-	 * @link     http://docs.joomla.org/JTable/bind
-	 * @since    1.7.0
-	 */
-	public function bind($array, $ignore = '')
-	{
-		if (isset($array['params']) && is_array($array['params']))
-		{
-			$registry = new Registry;
-			$registry->loadArray($array['params']);
-			$array['params'] = (string) $registry;
-		}
-
-		return parent::bind($array, $ignore);
 	}
 
 	/**
@@ -81,19 +68,19 @@ class ChurchDirectoryTableDirHeader extends JTable
 		// Transform the params field
 		if (is_array($this->params))
 		{
-			$registry = new Registry;
-			$registry->loadArray($this->params);
+			$registry = new Registry($this->params);
 			$this->params = (string) $registry;
 		}
 
-		$date = JFactory::getDate();
-		$user = JFactory::getUser();
+		$date   = JFactory::getDate()->toSql();
+		$userId = JFactory::getUser()->id;
+
+		$this->modified = $date;
 
 		if ($this->id)
 		{
 			// Existing item
-			$this->modified    = $date->toSql();
-			$this->modified_by = $user->get('id');
+			$this->modified_by = $userId;
 		}
 		else
 		{
@@ -101,13 +88,36 @@ class ChurchDirectoryTableDirHeader extends JTable
 			// so we don't touch either of these if they are set.
 			if (!intval($this->created))
 			{
-				$this->created = $date->toSql();
+				$this->created = $date;
 			}
 
 			if (empty($this->created_by))
 			{
-				$this->created_by = $user->get('id');
+				$this->created_by = $userId;
 			}
+		}
+
+		// Set publish_up to null date if not set
+		if (!$this->publish_up)
+		{
+			$this->publish_up = $this->_db->getNullDate();
+		}
+
+		// Set publish_down to null date if not set
+		if (!$this->publish_down)
+		{
+			$this->publish_down = $this->_db->getNullDate();
+		}
+
+		// Verify that the alias is unique
+		/** @var \ChurchDirectoryTableDirHeader $table */
+		$table = JTable::getInstance('DirHeader', 'ChurchDirectoryTable');
+
+		if ($table->load(array('alias' => $this->alias, 'catid' => $this->catid)) && ($table->id != $this->id || $this->id == 0))
+		{
+			$this->setError(JText::_('COM_CONTACT_ERROR_UNIQUE_ALIAS'));
+
+			return false;
 		}
 
 		// Attempt to store the data.

@@ -18,7 +18,8 @@ defined('_JEXEC') or die;
 				<?php echo JText::_('MOD_BIRTHDAYANNIVERSARY_BIRTHDAY'); ?>
 			</h3>
 		<?php endif; ?>
-		<table style="width: 100%">
+		<table class="table table-striped table-bordered">
+			<tbody>
 			<tr>
 				<th class="churchdirectory_model_theder"><?php echo JText::_('MOD_BIRTHDAYANNIVERSARY_DAY') ?></th>
 				<th class="churchdirectory_model_theder"><?php echo JText::_('MOD_BIRTHDAYANNIVERSARY_MEMBER_NAME') ?></th>
@@ -29,6 +30,7 @@ defined('_JEXEC') or die;
 					<td class="churchdirectory_model_row"><?php echo $bday['name']; ?></td>
 				</tr>
 			<?php endforeach; ?>
+			</tbody>
 		</table>
 	<?php endif; ?>
 	<br/>
@@ -38,7 +40,8 @@ defined('_JEXEC') or die;
 				<?php echo JText::_('MOD_BIRTHDAYANNIVERSARY_ANNIVERSARY'); ?>
 			</h3>
 		<?php endif; ?>
-		<table style="width: 100%">
+		<table class="table table-striped table-bordered">
+			<tbody>
 			<tr>
 				<th class="churchdirectory_model_theder"><?php echo JText::_('MOD_BIRTHDAYANNIVERSARY_DAY') ?></th>
 				<th class="churchdirectory_model_theder"><?php echo JText::_('MOD_BIRTHDAYANNIVERSARY_MEMBER_NAME') ?></th>
@@ -49,6 +52,7 @@ defined('_JEXEC') or die;
 					<td class="churchdirectory_model_row"><?php echo $annday['name']; ?></td>
 				</tr>
 			<?php endforeach; ?>
+			</tbody>
 		</table>
 	<?php endif; ?>
 </div>

@@ -7,10 +7,6 @@
  */
 defined('_JEXEC') or die;
 
-require_once JPATH_SITE . '/components/com_churchdirectory/helpers/route.php';
-
-JModelLegacy::addIncludePath(JPATH_SITE . '/components/com_churchdirectory/models', 'ChurchDirectoryModel');
-
 /**
  * helper for Birthdy Anniversary Display
  *
