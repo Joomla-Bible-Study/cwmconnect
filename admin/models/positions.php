@@ -94,7 +94,6 @@ class ChurchDirectoryModelPositions extends JModelList
 		$this->setState('filter.search', $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search', '', 'string'));
 		$this->setState('filter.published', $this->getUserStateFromRequest($this->context . '.filter.published', 'filter_published', '', 'string'));
 		$this->setState('filter.language', $this->getUserStateFromRequest($this->context . '.filter.language', 'filter_language', '', 'string'));
-		$this->setState('filter.tag', $this->getUserStateFromRequest($this->context . '.filter.tag', 'filter_tag', '', 'string'));
 		$this->setState('filter.level', $this->getUserStateFromRequest($this->context . '.filter.level', 'filter_level', null, 'int'));
 
 		// List state information.
@@ -125,9 +124,7 @@ class ChurchDirectoryModelPositions extends JModelList
 		// Compile the store id.
 		$id .= ':' . $this->getState('filter.search');
 		$id .= ':' . $this->getState('filter.published');
-		$id .= ':' . $this->getState('filter.access');
 		$id .= ':' . $this->getState('filter.language');
-		$id .= ':' . $this->getState('filter.tag');
 		$id .= ':' . $this->getState('filter.level');
 
 		return parent::getStoreId($id);
@@ -180,23 +177,6 @@ class ChurchDirectoryModelPositions extends JModelList
 		$query->select($db->qn('uc.name', 'editor'));
 		$query->join('LEFT', $db->qn('#__users', 'uc') . ' ON ' . $db->qn('uc.id') . ' = ' . $db->qn('a.checked_out'));
 
-		// Join over the asset groups.
-		$query->select($db->qn('ag.title', 'access_level'));
-		$query->join('LEFT', $db->qn('#__viewlevels', 'ag') . ' ON ' . $db->qn('ag.id') . ' = ' . $db->qn('a.access'));
-
-		// Filter by access level.
-		if ($access = $this->getState('filter.access'))
-		{
-			$query->where($db->qn('a.access') . ' = ' . (int) $access);
-		}
-
-		// Implement View Level Access
-		if (!$user->authorise('core.admin'))
-		{
-			$groups = implode(',', $user->getAuthorisedViewLevels());
-			$query->where($db->qn('a.access') . ' IN (' . $groups . ')');
-		}
-
 		// Filter by published state
 		$published = $this->getState('filter.published');
 
@@ -234,20 +214,6 @@ class ChurchDirectoryModelPositions extends JModelList
 		if ($language = $this->getState('filter.language'))
 		{
 			$query->where('a.language = ' . $db->quote($language));
-		}
-
-		// Filter by a single tag.
-		$tagId = $this->getState('filter.tag');
-
-		if (is_numeric($tagId))
-		{
-			$query->where($db->qn('tagmap.tag_id') . ' = ' . (int) $tagId)
-				->join(
-					'LEFT',
-					$db->qn('#__contentitem_tag_map', 'tagmap')
-					. ' ON ' . $db->qn('tagmap.content_item_id') . ' = ' . $db->qn('a.id')
-					. ' AND ' . $db->qn('tagmap.type_alias') . ' = ' . $db->q('com_churchdirectory.position')
-				);
 		}
 
 		// Filter on the level.

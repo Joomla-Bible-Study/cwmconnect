@@ -41,6 +41,8 @@ JFactory::getDocument()->addScriptDeclaration('
 	});
 ');
 
+// Fieldsets to not automatically render by /layouts/joomla/edit/params.php
+$this->ignore_fieldsets = array('details', 'item_associations', 'jmetadata', 'protected');
 
 // In case of modal
 $isModal = $input->get('layout') == 'modal' ? true : false;
@@ -63,20 +65,27 @@ $tmpl    = $isModal || $input->get('tmpl', '', 'cmd') === 'component' ? '&tmpl=c
 						<?php echo $this->form->renderField('lname'); ?>
 						<?php echo $this->form->renderField('funitid'); ?>
 						<?php echo $this->form->renderField('familypostion', 'attribs'); ?>
-						<?php echo $this->form->renderField('alias'); ?>
+						<?php echo $this->form->renderField('lat'); ?>
+						<?php echo $this->form->renderField('mstatus'); ?>
 					</div>
 					<div class="span6">
 						<?php echo $this->form->renderField('surname'); ?>
 						<?php echo $this->form->renderField('sex', 'attribs'); ?>
 						<?php echo $this->form->renderField('user_id'); ?>
-						<?php echo $this->form->renderField('catid'); ?>
-						<?php echo $this->form->renderField('id'); ?>
+						<?php echo $this->form->renderField('lng'); ?>
 					</div>
 				</div>
-				<?php echo $this->form->renderField('misc'); ?>
 			</div>
 			<div class="span3">
 				<?php echo JLayoutHelper::render('joomla.edit.global', $this); ?>
+			</div>
+		</div>
+		<?php echo JHtml::_('bootstrap.endTab'); ?>
+
+		<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'misc', JText::_('COM_CHURCHDIRECTORY_FIELD_PARAMS_MISC_INFO_LABEL')); ?>
+		<div class="row-fluid form-horizontal-desktop">
+			<div class="form-vertical">
+				<?php echo $this->form->renderField('misc'); ?>
 			</div>
 		</div>
 		<?php echo JHtml::_('bootstrap.endTab'); ?>
@@ -187,10 +196,7 @@ $tmpl    = $isModal || $input->get('tmpl', '', 'cmd') === 'component' ? '&tmpl=c
 
 		<?php echo JLayoutHelper::render('joomla.edit.params', $this); ?>
 
-		<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'attribs', JText::_('Attribs')); ?>
-
 		<?php echo $this->loadTemplate('attribs'); ?>
-		<?php echo JHtml::_('bootstrap.endTab'); ?>
 
 		<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'publishing', JText::_('JGLOBAL_FIELDSET_PUBLISHING')); ?>
 		<div class="row-fluid form-horizontal-desktop">

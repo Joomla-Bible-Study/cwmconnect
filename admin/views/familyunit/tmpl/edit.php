@@ -11,6 +11,7 @@ defined('_JEXEC') or die;
 JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.formvalidation');
+JHtml::_('formbehavior.chosen', 'select');
 ?>
 <script type="text/javascript">
 	Joomla.submitbutton = function (task) {
@@ -23,11 +24,14 @@ JHtml::_('behavior.formvalidation');
 	}
 </script>
 
-<form
-		action="<?php echo JRoute::_('index.php?option=com_churchdirectory&view=familyunit&layout=edit&id=' . (int) $this->item->id); ?>"
-		method="post" name="adminForm" id="familyunit-form" class="form-validate form-horizontal">
+<form action="<?php echo JRoute::_('index.php?option=com_churchdirectory&view=familyunit&layout=edit&id=' . (int)
+	$this->item->id); ?>" method="post" name="adminForm" id="familyunit-form" class="form-validate">
+
+	<?php echo JLayoutHelper::render('joomla.edit.title_alias', $this); ?>
+
 	<div class="row-fluid">
-		<div class="span10  form-horizontal">
+		<div class="span9  form-horizontal">
+			<div class="clearfix"></div>
 			<ul class="nav nav-tabs">
 				<li class="active"><a href="#details"
 				                      data-toggle="tab"><?php echo empty($this->item->id) ? JText::_('COM_CHURCHDIRECTORY_NEW_FAMILYUNIT') : JText::sprintf('COM_CHURCHDIRECTORY_EDIT_FAMILYUNIT', $this->item->id); ?></a>
@@ -37,12 +41,6 @@ JHtml::_('behavior.formvalidation');
 			</ul>
 			<div class="tab-content">
 				<div class="tab-pane active" id="details">
-					<div class="control-group form-inline">
-						<?php echo $this->form->getLabel('name'); ?><?php echo $this->form->getInput('name'); ?>
-						<?php echo $this->form->getLabel('alias'); ?><?php echo $this->form->getInput('alias'); ?>
-						<?php echo $this->form->getLabel('id'); ?><?php echo $this->form->getInput('id'); ?>
-					</div>
-					<div class="clearfix"></div>
 					<div class="control-group">
 						<div class="control-label"><?php echo $this->form->getLabel('description'); ?></div>
 						<?php echo $this->form->getInput('description'); ?>
@@ -85,17 +83,20 @@ JHtml::_('behavior.formvalidation');
 			<input type="hidden" name="task" value=""/>
 			<?php echo JHtml::_('form.token'); ?>
 		</div>
-		<div class="span2 form-vertical">
+		<div class="span3 form-vertical">
 
 			<!-- Begin Sidebar -->
 			<h4><?php echo JText::_('JDETAILS'); ?></h4>
 			<hr/>
 			<div class="control-group">
-				<div class="control-group">
-					<div class="controls">
-						<?php echo $this->form->getValue('name'); ?>
-					</div>
+				<div class="control-label">
+					<?php echo $this->form->getLabel('id'); ?>
 				</div>
+				<div class="controls">
+					<?php echo $this->form->getInput('id'); ?>
+				</div>
+			</div>
+			<div class="control-group">
 				<div class="control-label">
 					<?php echo $this->form->getLabel('published'); ?>
 				</div>
@@ -124,28 +125,24 @@ JHtml::_('behavior.formvalidation');
 				<div class="controls"><?php echo $this->form->getInput('image'); ?></div>
 			</div>
 			<h4><?php echo JText::_('COM_CHURCHDIRECTORY_FAMILY_MEMBERS'); ?></h4>
-			<table class="table table-striped" style="width: 100%">
-				<thead>
+			<table class="table table-striped table-bordered">
+				<thead class="thead-default">
 				<tr>
-					<th align="center"><?php echo JText::_('COM_CHURCHDIRECTORY_FIELD_NAME_LABEL'); ?></th>
-					<th align="center"><?php echo JText::_('COM_CHURCHDIRECTORY_ID_LABEL'); ?></th>
+					<th width="2%"><?php echo JText::_('COM_CHURCHDIRECTORY_ID_LABEL'); ?></th>
+					<th><?php echo JText::_('COM_CHURCHDIRECTORY_FIELD_NAME_LABEL'); ?></th>
 
 				</tr>
 				</thead>
 				<tbody>
-
 				<?php
 				if (count($this->members) > 0 && $this->members) :
 					foreach ($this->members as $i => $item) :
 						?>
-						<tr class="row<?php echo $i % 2; ?>">
-							<td align="center">
+						<tr>
+							<th scope="row"><?php echo $item->id; ?></th>
+							<td>
 								<?php echo($this->escape($item->name) ? $this->escape($item->name) : 'ID: ' . $this->escape($item->id)); ?>
 							</td>
-							<td align="center">
-								<?php echo $item->id; ?>
-							</td>
-
 						</tr>
 						<?php
 					endforeach;

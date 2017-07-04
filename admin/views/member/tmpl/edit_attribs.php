@@ -12,166 +12,43 @@ defined('_JEXEC') or die;
 // Start of Form
 $fieldSets = $this->form->getFieldsets('attribs');
 ?>
-	<div class="accordion-group">
-		<div class="accordion-heading">
-			<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion6" href="#im">
-				<?php echo JText::_('COM_CHURCHDIRECTORY_IM_DETAILS');?>
-			</a>
-		</div>
-		<div id="im" class="accordion-body collapse">
-			<?php foreach ($fieldSets as $name => $fieldSet)
-			{
-				if ($name == 'msg')
-				{
-					?>
-					<div class="accordion-inner">
-						<?php if (isset($fieldSet->description) && trim($fieldSet->description))
-						{
-							?>
-							<p><?php echo $this->escape(JText::_($fieldSet->description)); ?></p>
-						<?php } ?>
-						<div class="control-group">
-							<div class="control-label"><?php echo $this->form->getLabel('skype'); ?></div>
-							<div class="controls"><?php echo $this->form->getInput('skype'); ?></div>
-						</div>
-
-						<div class="control-group">
-							<div class="control-label"><?php echo $this->form->getLabel('yahoo_msg'); ?></div>
-							<div class="controls"><?php echo $this->form->getInput('yahoo_msg'); ?></div>
-						</div>
-						<?php foreach ($this->form->getFieldset($name) as $field)
-						{
-							?>
-							<div class="control-group">
-								<div class="control-label"><?php echo $field->label; ?></div>
-								<div class="controls"><?php echo $field->input; ?></div>
-							</div>
-						<?php } ?>
-					</div>
-				<?php
-				}
-			} ?>
-		</div>
-	</div>
-	<div class="accordion-group">
-		<div class="accordion-heading">
-			<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion6" href="#kml">
-				<?php echo JText::_('COM_CHURCHDIRECTORY_KML_OPTIONS');?>
-			</a>
-		</div>
-		<div id="kml" class="accordion-body collapse">
-			<div class="accordion-inner">
-				<p><?php echo empty($this->item->id) ? JText::_('COM_CHURCHDIRECTORY_DETAILS') : JText::sprintf('COM_CHURCHDIRECTORY_EDIT_MEMBER_KML', $this->item->id); ?></p>
-
-				<div class="control-group">
-					<div class="control-label"><?php echo $this->form->getLabel('lat'); ?></div>
-					<div class="controls"><?php echo $this->form->getInput('lat'); ?></div>
-				</div>
-
-				<div class="control-group">
-					<div class="control-label"><?php echo $this->form->getLabel('lng'); ?>
-						<?php echo $this->form->getInput('lng'); ?></div>
-				</div>
-
-				<div class="control-group">
-					<div class="control-label"><?php echo $this->form->getLabel('visibility', 'params'); ?>
-						<?php echo $this->form->getInput('visibility', 'params'); ?></div>
-				</div>
-
-				<div class="control-group">
-					<div class="control-label"><?php echo $this->form->getLabel('open', 'params'); ?>
-						<?php echo $this->form->getInput('open', 'params'); ?></div>
-				</div>
-
-				<div class="control-group">
-					<div class="control-label"><?php echo $this->form->getLabel('gxballoonvisibility', 'params'); ?>
-						<?php echo $this->form->getInput('gxballoonvisibility', 'params'); ?></div>
-				</div>
-
-				<div class="control-group">
-					<div class="control-label"><?php echo $this->form->getLabel('scale', 'params'); ?>
-						<?php echo $this->form->getInput('scale', 'params'); ?></div>
-				</div>
-			</div>
-		</div>
-	</div>
-
-	<!-- Protected Access info -->
+<!-- Protected Access info -->
 <?php
 if ($this->access):
 	foreach ($fieldSets as $name => $fieldSet) :
 		if ($name === 'protected')
 		{
+			echo JHtml::_('bootstrap.addTab', 'myTab', 'protected', JText::_($fieldSet->label));
 			?>
-			<div class="accordion-group">
-				<div class="accordion-heading">
-					<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion6"
-					   href="#<?php echo $name . 'options'; ?>">
-						<?php echo JText::_($fieldSet->label);?>
-					</a>
-				</div>
-				<div id="<?php echo $name . 'options'; ?>" class="accordion-body collapse">
-					<div class="accordion-inner">
-						<?php if (isset($fieldSet->description) && trim($fieldSet->description))
-						{
-							?>
-							<p class="tip"><?php echo $this->escape(JText::_($fieldSet->description)); ?></p>
-						<?php } ?>
-						<div class="clearfix"></div>
-						<div class="control-group">
-							<div class="control-label">
-								<?php echo $this->form->getLabel('mstatus'); ?>
-							</div>
-							<div class="controls">
-								<?php echo $this->form->getInput('mstatus'); ?>
-							</div>
-						</div>
-						<?php foreach ($this->form->getFieldset($name) as $field) : ?>
-							<?php if ($field->name != 'jform[attribs][memberstatusother]')
-							{
-								?>
-								<div class="control-group">
-									<div class="control-label"><?php echo $field->label; ?></div>
-									<div class="controls"><?php echo $field->input; ?></div>
-								</div>
-							<?php } ?>
-						<?php endforeach; ?>
+			<div>
+				<?php if (isset($fieldSet->description) && trim($fieldSet->description))
+				{
+					?>
+					<p class="tip"><?php echo $this->escape(JText::_($fieldSet->description)); ?></p>
+				<?php } ?>
+				<div class="clearfix"></div>
+				<div class="control-group">
+					<div class="control-label">
+						<?php echo $this->form->getLabel('mstatus'); ?>
+					</div>
+					<div class="controls">
+						<?php echo $this->form->getInput('mstatus'); ?>
 					</div>
 				</div>
-			</div>
-		<?php
-		}
-	endforeach;
-endif;?>
-	<!-- End of Protected Access -->
-<?php foreach ($fieldSets as $name => $fieldSet) :
-	if ($name != 'protected' && $name != 'mstate' && $name != 'msg')
-	{
-		?>
-		<div class="accordion-group">
-			<div class="accordion-heading">
-				<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion6"
-				   href="#<?php echo $name . 'options'; ?>">
-					<?php echo JText::_($fieldSet->label);?>
-				</a>
-			</div>
-			<div id="<?php echo $name . 'options'; ?>" class="accordion-body collapse">
-				<div class="accordion-inner">
-					<?php if (isset($fieldSet->description) && trim($fieldSet->description))
+				<?php foreach ($this->form->getFieldset($name) as $field) : ?>
+					<?php if ($field->name != 'jform[attribs][memberstatusother]')
 					{
 						?>
-						<p><?php echo $this->escape(JText::_($fieldSet->description)); ?></p>
-					<?php } ?>
-					<div class="clearfix"></div>
-					<?php foreach ($this->form->getFieldset($name) as $field) : ?>
 						<div class="control-group">
 							<div class="control-label"><?php echo $field->label; ?></div>
 							<div class="controls"><?php echo $field->input; ?></div>
 						</div>
-					<?php endforeach; ?>
-				</div>
+					<?php } ?>
+				<?php endforeach; ?>
 			</div>
-		</div>
-	<?php
-	}
-endforeach;
+			<?php
+			echo JHtml::_('bootstrap.endTab');
+		}
+	endforeach;
+endif; ?>
+<!-- End of Protected Access -->

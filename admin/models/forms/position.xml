@@ -1,65 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
 <form>
-    <fields name="params">
+	<fields name="params">
 
-    </fields>
-    <fieldset>
-        <field name="language" type="contentlanguage" label="JFIELD_LANGUAGE_LABEL"
-               description="COM_CHURCHDIRECTORY_FIELD_LANGUAGE_DESC"
-               class="inputbox span12 small"
-        >
-            <option value="*">JALL</option>
-        </field>
-        <field name="alias"
-               type="text"
-               label="JFIELD_ALIAS_LABEL"
-               description="JFIELD_ALIAS_DESC"
-               class="inputbox"
-               size="30"
+	</fields>
+	<fieldset>
+		<field name="language" type="contentlanguage" label="JFIELD_LANGUAGE_LABEL"
+		       description="COM_CHURCHDIRECTORY_FIELD_LANGUAGE_DESC"
+		>
+			<option value="*">JALL</option>
+		</field>
+		<field name="alias"
+		       type="text"
+		       label="JFIELD_ALIAS_LABEL"
+		       description="JFIELD_ALIAS_DESC"
+		       size="45"
 		/>
-        <field name="access"
-               type="accesslevel"
-               label="JFIELD_ACCESS_LABEL"
-               description="JFIELD_ACCESS_DESC"
-               class="inputbox span12 small"
-               size="1"
+		<field name="access"
+		       type="accesslevel"
+		       label="JFIELD_ACCESS_LABEL"
+		       description="JFIELD_ACCESS_DESC"
+		       size="1"
 		/>
 
-        <field name="id"
-               type="text"
-               label="JGLOBAL_FIELD_ID_LABEL"
-               description="JGLOBAL_FIELD_ID_DESC"
-               size="10"
-               default="0"
-               readonly="true"
-               class="readonly"
+		<field name="id"
+		       type="text"
+		       label="JGLOBAL_FIELD_ID_LABEL"
+		       description="JGLOBAL_FIELD_ID_DESC"
+		       size="10"
+		       default="0"
+		       readonly="true"
+		       class="readonly"
 		/>
-        <field name="name"
-               type="text"
-               label="COM_CHURCHDIRECTORY_FIELD_POSITION_NAME_LABEL"
-               description="COM_CHURCHDIRECTORY_FIELD_POSITION_NAME_DESC"
-               class="inputbox"
-               size="30"
-               required="true"
-		 />
-        <field id="published" name="published" type="list" label="JSTATUS"
-               description="JFIELD_PUBLISHED_DESC"
-               class="inputbox span12 small"
-               size="1"
-               default="1">
-            <option value="1">
-                JPUBLISHED
-            </option>
-            <option value="0">
-                JUNPUBLISHED
-            </option>
-            <option value="2">
-                JARCHIVED
-            </option>
-            <option value="-2">
-                JTRASHED
-            </option>
+		<field name="name"
+		       type="text"
+		       label="COM_CHURCHDIRECTORY_FIELD_POSITION_NAME_LABEL"
+		       description="COM_CHURCHDIRECTORY_FIELD_POSITION_NAME_DESC"
+		       class="input-xxlarge input-large-text"
+		       size="40"
+		       required="true"
+		/>
+		<field id="published" name="published" type="list" label="JSTATUS"
+		       description="JFIELD_PUBLISHED_DESC"
+		       class="chzn-color-state"
+		       size="1"
+		       default="1">
+			<option value="1">
+				JPUBLISHED
+			</option>
+			<option value="0">
+				JUNPUBLISHED
+			</option>
+			<option value="2">
+				JARCHIVED
+			</option>
+			<option value="-2">
+				JTRASHED
+			</option>
 
-        </field>
-    </fieldset>
+		</field>
+	</fieldset>
 </form>

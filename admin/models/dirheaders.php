@@ -85,6 +85,9 @@ class ChurchDirectoryModelDirHeaders extends JModelList
 		$language = $this->getUserStateFromRequest($this->context . '.filter.language', 'filter_language', '');
 		$this->setState('filter.language', $language);
 
+		$language = $this->getUserStateFromRequest($this->context . '.filter.section', 'filter_section', '');
+		$this->setState('filter.section', $language);
+
 		// List state information.
 		parent::populateState('a.name', 'asc');
 	}
@@ -109,6 +112,7 @@ class ChurchDirectoryModelDirHeaders extends JModelList
 		$id .= ':' . $this->getState('filter.access');
 		$id .= ':' . $this->getState('filter.published');
 		$id .= ':' . $this->getState('filter.language');
+		$id .= ':' . $this->getState('filter.section');
 
 		return parent::getStoreId($id);
 	}
@@ -197,6 +201,12 @@ class ChurchDirectoryModelDirHeaders extends JModelList
 				$search = $db->q('%' . $db->escape($search, true) . '%');
 				$query->where('(a.name LIKE ' . $search . ' OR a.alias LIKE ' . $search . ')');
 			}
+		}
+
+		// Filter on the section.
+		if ($section = $this->getState('filter.section'))
+		{
+			$query->where('a.section = ' . $db->quote($section));
 		}
 
 		// Filter on the language.

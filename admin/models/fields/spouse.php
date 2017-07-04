@@ -10,6 +10,7 @@ jimport('joomla.html.html');
 jimport('joomla.form.formfield');
 
 use Joomla\Registry\Registry;
+use Joomla\Utilities\ArrayHelper;
 
 /**
  * Supports th look up of a Spouse
@@ -38,15 +39,6 @@ class JFormFieldSpouse extends JFormField
 	{
 		// Initialize variables.
 		$html = '';
-		$attr = '';
-
-		// Initialize some field attributes.
-		$attr .= $this->element['class'] ? ' class="' . (string) $this->element['class'] . '"' : '';
-		$attr .= ((string) $this->element['disabled'] == 'true') ? ' disabled="disabled"' : '';
-		$attr .= $this->element['size'] ? ' size="' . (int) $this->element['size'] . '"' : '';
-
-		// Initialize JavaScript field attributes.
-		$attr .= $this->element['onchange'] ? ' onchange="' . (string) $this->element['onchange'] . '"' : '';
 
 		// Get some field values from the form.
 		$memberId        = (int) $this->form->getValue('id');
@@ -64,14 +56,15 @@ class JFormFieldSpouse extends JFormField
 		$db->setQuery($query);
 		$results = $db->loadObjectList();
 
-		// Load the modal behavior script.
-		JHtml::_('behavior.modal', 'a.modal_' . (int) $memberId);
-
-		JHtml::script('jui/fielduser.min.js', false, true, false, false, true);
-
 		foreach ($results AS $item)
 		{
 			$registry = new Registry($item->attribs);
+
+			$inputAttributes = array(
+				'type' => 'text', 'id' => $item->id, 'value' => $db->escape($item->name)
+			);
+
+			$inputAttributes['size'] = (int) 500;
 
 			if ($item->id == $memberId && $registry->get('familypostion') == '2')
 			{
@@ -80,18 +73,12 @@ class JFormFieldSpouse extends JFormField
 
 			if ($item->funitid !== '0' && $item->id != $memberId && $registry->get('familypostion', 2) !== '2')
 			{
-				$link = JRoute::_('index.php?option=com_churchdirectory&task=member.edit&id=' . (int) $item->id . '&tmpl=component&layout=modal');
-				$html = '<h4>
-						<a class="btn btn-primary modal" rel="{handler: \'iframe\', size: {x: 800, y: 500}}"  href="' . $link . '" 
-			   title="' . $db->escape($item->name) . '">';
-
-				$html .= $db->escape($item->name);
-				$html .= '<span class="icon-user"></span>';
-				$html .= '</a>';
+				$html = '<input ' . ArrayHelper::toString($inputAttributes) . ' readonly />';
 			}
 			elseif ($item->funitid <= '0' && $item->id == $memberId)
 			{
-				$html = '<h4>Old Record: ' . $db->escape($item->spouse) . '</h4>';
+				$inputAttributes['value'] = 'Old Record: ' . $db->escape($item->spouse);
+				$html = '<input ' . ArrayHelper::toString($inputAttributes) . ' readonly />';
 			}
 		}
 

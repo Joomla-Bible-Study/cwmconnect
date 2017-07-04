@@ -11,6 +11,7 @@ defined('_JEXEC') or die;
 JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.formvalidation');
+JHtml::_('formbehavior.chosen', 'select');
 ?>
 <script type="text/javascript">
 	Joomla.submitbutton = function (task) {
@@ -25,6 +26,9 @@ JHtml::_('behavior.formvalidation');
 
 <form action="<?php echo JRoute::_('index.php?option=com_churchdirectory&view=dirheader&layout=edit&id=' . (int) $this->item->id); ?>"
       method="post" name="adminForm" id="dirheader-form" class="form-validate">
+
+	<?php echo JLayoutHelper::render('joomla.edit.title_alias', $this); ?>
+
 	<div class="row-fluid">
 		<div class="span10 form-horizontal">
 			<ul class="nav nav-tabs">
@@ -36,12 +40,6 @@ JHtml::_('behavior.formvalidation');
 			</ul>
 			<div class="tab-content">
 				<div class="tab-pane active" id="details">
-					<div class="control-group form-inline">
-						<?php echo $this->form->getLabel('name'); ?><?php echo $this->form->getInput('name'); ?>
-						<?php echo $this->form->getLabel('alias'); ?><?php echo $this->form->getInput('alias'); ?>
-						<?php echo $this->form->getLabel('id'); ?><?php echo $this->form->getInput('id'); ?>
-					</div>
-					<div class="clr"></div>
 					<?php echo $this->form->getLabel('description'); ?>
 					<div class="clr"></div>
 					<?php echo $this->form->getInput('description'); ?>
@@ -78,16 +76,6 @@ JHtml::_('behavior.formvalidation');
 						</div>
 					<?php endif; ?>
 				</div>
-				<div class="clearfix"></div>
-				<div class="row-fluid">
-					<div class="span6">
-						<div class="control-group churchdirectory_paddingtop20">
-							<div class="control-label"><?php echo $this->form->getLabel('image'); ?></div>
-							<div class="controls"><?php echo $this->form->getInput('image'); ?></div>
-						</div>
-					</div>
-				</div>
-
 				<input type="hidden" name="task" value=""/>
 				<?php echo JHtml::_('form.token'); ?>
 			</div>
@@ -98,11 +86,14 @@ JHtml::_('behavior.formvalidation');
 			<h4><?php echo JText::_('COM_CHURCHDIRECTORY_DIRHEADERE_DETAILS'); ?></h4>
 			<hr/>
 			<div class="control-group">
-				<div class="control-group">
-					<div class="controls">
-						<?php echo $this->form->getValue('name'); ?>
-					</div>
+				<div class="control-label">
+					<?php echo $this->form->getLabel('id'); ?>
 				</div>
+				<div class="controls">
+					<?php echo $this->form->getInput('id'); ?>
+				</div>
+			</div>
+			<div class="control-group">
 				<div class="control-label">
 					<?php echo $this->form->getLabel('published'); ?>
 				</div>
@@ -141,6 +132,10 @@ JHtml::_('behavior.formvalidation');
 				<div class="controls">
 					<?php echo $this->form->getInput('language'); ?>
 				</div>
+			</div>
+			<div class="control-group churchdirectory_paddingtop20">
+				<div class="control-label"><?php echo $this->form->getLabel('image'); ?></div>
+				<div class="controls"><?php echo $this->form->getInput('image'); ?></div>
 			</div>
 		</div>
 	</div>

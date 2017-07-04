@@ -75,9 +75,7 @@ class ChurchDirectoryViewMember extends JViewLegacy
 		// Check for errors.
 		if (count($errors = $this->get('Errors')))
 		{
-			JFactory::getApplication()->enqueueMessage(implode("\n", $errors), 'error');
-
-			return false;
+			throw new Exception(implode("\n", $errors), 500);
 		}
 
 		$itemacess = $this->state->params->get('protectedaccess');
@@ -92,10 +90,18 @@ class ChurchDirectoryViewMember extends JViewLegacy
 			$this->access = false;
 		}
 
-		if ($this->getLayout() == 'modal')
+		// If we are forcing a language in modal (used for associations).
+		if ($this->getLayout() === 'modal' && $forcedLanguage = JFactory::getApplication()->input->get('forcedLanguage', '', 'cmd'))
 		{
+			// Set the language field to the forcedLanguage and disable changing it.
+			$this->form->setValue('language', null, $forcedLanguage);
 			$this->form->setFieldAttribute('language', 'readonly', 'true');
-			$this->form->setFieldAttribute('catid', 'readonly', 'true');
+
+			// Only allow to select categories with All language or with the forced language.
+			$this->form->setFieldAttribute('catid', 'language', '*,' . $forcedLanguage);
+
+			// Only allow to select tags with All language or with the forced language.
+			$this->form->setFieldAttribute('tags', 'language', '*,' . $forcedLanguage);
 		}
 
 		// Set the toolbar
@@ -142,19 +148,15 @@ class ChurchDirectoryViewMember extends JViewLegacy
 			$itemEditable = $canDo->get('core.edit') || ($canDo->get('core.edit.own') && $this->item->created_by == $userId);
 
 			// Can't save the record if it's checked out.
-			if (!$checkedOut)
+			if (!$checkedOut && $itemEditable)
 			{
-				// Since it's an existing record, check the edit permission, or fall back to edit own if the owner.
-				if ($canDo->get('core.edit') || ($canDo->get('core.edit.own') && $this->item->created_by == $userId))
-				{
-					JToolbarHelper::apply('member.apply');
-					JToolbarHelper::save('member.save');
+				JToolbarHelper::apply('member.apply');
+				JToolbarHelper::save('member.save');
 
-					// We can save this record, but check the create permission to see if we can return to make a new one.
-					if ($canDo->get('core.create'))
-					{
-						JToolbarHelper::save2new('member.save2new');
-					}
+				// We can save this record, but check the create permission to see if we can return to make a new one.
+				if ($canDo->get('core.create'))
+				{
+					JToolbarHelper::save2new('member.save2new');
 				}
 			}
 
@@ -164,7 +166,9 @@ class ChurchDirectoryViewMember extends JViewLegacy
 				JToolbarHelper::save2copy('member.save2copy');
 			}
 
-			if ($this->state->params->get('save_history', 0) && $itemEditable)
+			if (JComponentHelper::isEnabled('com_contenthistory')
+				&& $this->state->params->get('save_history', 0)
+				&& $itemEditable)
 			{
 				JToolbarHelper::versions('com_churchdircetoyr.member', $this->item->id);
 			}
