@@ -28,14 +28,6 @@ use Joomla\Registry\Registry;
 class ChurchDirectoryTablePosition extends JTable
 {
 	/**
-	 * Ensure the params and metadata in json encoded in the bind method
-	 *
-	 * @var    array
-	 * @since  3.3
-	 */
-	protected $_jsonEncode = array('params');
-
-	/**
 	 * Constructor
 	 *
 	 * @param   JDatabaseDriver  &$db  Database connector object
@@ -44,6 +36,8 @@ class ChurchDirectoryTablePosition extends JTable
 	 */
 	public function __construct(& $db)
 	{
+		$this->_jsonEncode = ['params'];
+
 		parent::__construct('#__churchdirectory_position', 'id', $db);
 	}
 

@@ -137,14 +137,6 @@ class ChurchDirectoryTableMember extends JTable
 	public $mstatus;
 
 	/**
-	 * Ensure the params and metadata in json encoded in the bind method
-	 *
-	 * @var    array
-	 * @since  3.3
-	 */
-	protected $_jsonEncode = array('params', 'attribs', 'metadata');
-
-	/**
 	 * Constructor
 	 *
 	 * @param   JDatabaseDriver  &$db  Database connector object
@@ -153,6 +145,8 @@ class ChurchDirectoryTableMember extends JTable
 	 */
 	public function __construct (& $db)
 	{
+		$this->_jsonEncode = ['params', 'attribs', 'metadata'];
+
 		parent::__construct('#__churchdirectory_details', 'id', $db);
 
 		JTableObserverTags::createObserver($this, array('typeAlias' => 'com_churchdirectory.member'));
