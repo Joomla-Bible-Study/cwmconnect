@@ -48,6 +48,9 @@ else
 			<?php echo JHtml::_('content.prepare', $this->category->title); ?>
 		</h2>
 	<?php } ?>
+
+	<a href="<?php echo JRoute::_('index.php?option=com_churchdirectory&view=home'); ?>">Members Home -></a>
+	<?php echo JText::_($this->category->title); ?>
 	<div class="pull-right">
 		<a href=<?php echo $href; ?>>
 			<?php echo JHtml::image('media/com_churchdirectory/images/printButton.png', 'Print', ''); ?>

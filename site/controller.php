@@ -29,7 +29,7 @@ class ChurchDirectoryController extends JControllerLegacy
 		$this->input = JFactory::getApplication()->input;
 
 		// Contact frontpage Editor contacts proxying:
-		if ($this->input->get('view') === 'contacts' && $this->input->get('layout') === 'modal')
+		if ($this->input->get('view') === 'members' && $this->input->get('layout') === 'modal')
 		{
 			JHtml::_('stylesheet', 'system/adminlist.css', array(), true);
 			$config['base_path'] = JPATH_COMPONENT_ADMINISTRATOR;

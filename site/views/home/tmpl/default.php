@@ -65,7 +65,7 @@ $count = count($this->items);
 						?>
 						<div class="span6 pull-left">
 							<div class="center">
-								<a href="<?php echo JRoute::_('index.php?option=com_churchdirectory&view=member&id=' . $item->id); ?>">
+								<a href="<?php echo JRoute::_(ChurchDirectoryHelperRoute::getMemberRoute($item->slug, $item->catid)); ?>">
 									<?php if ($item->image && $item->image != '/')
 									{ ?>
 										<img src="<?php echo $item->image; ?>"
@@ -87,7 +87,7 @@ $count = count($this->items);
 						?>
 						<div class="span6 pull-left">
 							<div class="center">
-								<a href="<?php echo JRoute::_('index.php?option=com_churchdirectory&view=member&id=' . $item->id); ?>">
+								<a href="<?php echo JRoute::_(ChurchDirectoryHelperRoute::getMemberRoute($item->slug, $item->catid)); ?>">
 									<?php if ($item->image && $item->image != '/')
 									{ ?>
 										<img src="<?php echo $item->image; ?>"

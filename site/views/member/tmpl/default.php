@@ -10,9 +10,13 @@
 defined('_JEXEC') or die;
 
 $cparams = JComponentHelper::getParams('com_media');
+/** @var \Joomla\Registry\Registry $tparams */
+$tparams = $this->params;
+$app =JFactory::getApplication();
+$menu = $app->getMenu()->getActive()->id;
 $this->loadHelper('render');
 $renderHelper = new ChurchDirectoryRenderHelper;
-
+$presentation_style = $tparams->get('presentation_style');
 ?>
 <div class="contact<?php echo $this->pageclass_sfx ?>">
 	<?php if ($this->params->get('show_page_heading'))
@@ -37,9 +41,15 @@ $renderHelper = new ChurchDirectoryRenderHelper;
 				} ?>
 				<span class="contact-name"><?php echo $this->member->name; ?></span>
 			</h2>
+			<p><a href="<?php echo JRoute::_('index.php?option=com_churchdirectory&view=home'); ?>">Members Home -></a>
+				<a href="<?php echo JRoute::_(ChurchDirectoryHelperRoute::getCategoryRoute($this->item->catid));
+				?>"><?php echo JText::_($this->item->category_title); ?>
+					-></a>
+				<span class="contact-name"><?php echo $this->member->name; ?></span></p>
 		</div>
 		<?php
 	}
+
 	$spouse = $renderHelper->getSpouse((int) $this->member->fu_id, (int) $this->member->attribs->get('familypostion'));
 
 	if ($spouse && $this->member->attribs->get('familypostion') != '2')
@@ -88,7 +98,7 @@ $renderHelper = new ChurchDirectoryRenderHelper;
 		</form>
 	<?php } ?>
 
-	<?php if ($this->params->get('presentation_style') == 'tabs')
+	<?php if ($presentation_style == 'tabs')
 	{
 		?>
 		<ul class="nav nav-tabs" id="myTab">
@@ -138,28 +148,28 @@ $renderHelper = new ChurchDirectoryRenderHelper;
 		<?php
 	}
 	?>
-	<?php if ($this->params->get('presentation_style') == 'sliders')
+	<?php if ($presentation_style == 'sliders')
 	{
 		?>
 		<?php echo JHtml::_('bootstrap.startAccordion', 'slide-contact', ['active' => 'basic-details']); ?>
 	<?php } ?>
-	<?php if ($this->params->get('presentation_style') == 'tabs')
+	<?php if ($presentation_style == 'tabs')
 	{
 		?>
 		<?php echo JHtml::_('bootstrap.startPane', 'myTab', ['active' => 'basic-details']); ?>
 	<?php } ?>
 
-	<?php if ($this->params->get('presentation_style') == 'sliders')
+	<?php if ($presentation_style == 'sliders')
 	{
 		?>
 		<?php echo JHtml::_('bootstrap.addSlide', 'slide-contact', JText::_('COM_CHURCHDIRECTORY_DETAILS'), 'basic-details'); ?>
 	<?php } ?>
-	<?php if ($this->params->get('presentation_style') == 'tabs')
+	<?php if ($presentation_style == 'tabs')
 	{
 		?>
 		<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'basic-details', JText::_('COM_CHURCHDIRECTORY_DETAILS', true)); ?>
 	<?php } ?>
-	<?php if ($this->params->get('presentation_style') == 'plain')
+	<?php if ($presentation_style == 'plain')
 	{
 		?>
 		<?php echo '<h3>' . JText::_('COM_CHURCHDIRECTORY_DETAILS') . '</h3>'; ?>
@@ -188,7 +198,7 @@ $renderHelper = new ChurchDirectoryRenderHelper;
 		if (!empty($this->member->image) && $this->params->get('show_image'))
 		{
 			?>
-			<div class="span6">
+			<div class="thumbnail pull-right">
 				<?php echo JHtml::_('image', $this->member->image, JText::_('COM_CHURCHDIRECTORY_IMAGE_DETAILS'), ['align' => 'right', 'class' => 'thumbnail', 'style' => 'max-width: 250px;']); ?>
 			</div>
 			<?php
@@ -204,25 +214,25 @@ $renderHelper = new ChurchDirectoryRenderHelper;
 				<?php echo JText::_('COM_CHURCHDIRECTORY_VCARD'); ?></a>
 			<?php
 		}
-		if ($this->params->get('presentation_style') == 'sliders')
+		if ($presentation_style == 'sliders')
 		{
 			echo JHtml::_('bootstrap.endSlide');
 		}
-		if ($this->params->get('presentation_style') == 'tabs')
+		if ($presentation_style == 'tabs')
 		{
 			echo JHtml::_('bootstrap.endTab');
 		}
 		if ($this->params->get('show_email_form') && !empty($this->member->email_to))
 		{
-			if ($this->params->get('presentation_style') == 'sliders')
+			if ($presentation_style == 'sliders')
 			{
 				echo JHtml::_('bootstrap.addSlide', 'slide-contact', JText::_('COM_CHURCHDIRECTORY_EMAIL_FORM'), 'display-form');
 			}
-			if ($this->params->get('presentation_style') == 'tabs')
+			if ($presentation_style == 'tabs')
 			{
 				echo JHtml::_('bootstrap.addTab', 'myTab', 'display-form', JText::_('COM_CHURCHDIRECTORY_EMAIL_FORM', true));
 			}
-			if ($this->params->get('presentation_style') == 'plain')
+			if ($presentation_style == 'plain')
 			{
 				?>
 				<?php echo '<h3>' . JText::_('COM_CHURCHDIRECTORY_EMAIL_FORM') . '</h3>'; ?>
@@ -230,12 +240,12 @@ $renderHelper = new ChurchDirectoryRenderHelper;
 
 			<?php echo $this->loadTemplate('form'); ?>
 
-			<?php if ($this->params->get('presentation_style') == 'sliders')
+			<?php if ($presentation_style == 'sliders')
 		{
 			?>
 			<?php echo JHtml::_('bootstrap.endSlide'); ?>
 		<?php } ?>
-			<?php if ($this->params->get('presentation_style') == 'tabs')
+			<?php if ($presentation_style == 'tabs')
 		{
 			?>
 			<?php echo JHtml::_('bootstrap.endTab'); ?>
@@ -247,17 +257,17 @@ $renderHelper = new ChurchDirectoryRenderHelper;
 		{
 			?>
 
-			<?php if ($this->params->get('presentation_style') == 'sliders')
+			<?php if ($presentation_style == 'sliders')
 		{
 			?>
 			<?php echo JHtml::_('bootstrap.addSlide', 'slide-links', JText::_('COM_CHURCHDIRECTORY_LINKS'), 'display-form'); ?>
 		<?php } ?>
-			<?php if ($this->params->get('presentation_style') == 'tabs')
+			<?php if ($presentation_style == 'tabs')
 		{
 			?>
 			<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'display-links', JText::_('COM_CONTACT_LINKS', true)); ?>
 		<?php } ?>
-			<?php if ($this->params->get('presentation_style') == 'plain')
+			<?php if ($presentation_style == 'plain')
 		{
 			?>
 			<?php echo '<h3>' . JText::_('COM_CHURCHDIRECTORY_LINKS') . '</h3>'; ?>
@@ -265,12 +275,12 @@ $renderHelper = new ChurchDirectoryRenderHelper;
 
 			<?php echo $this->loadTemplate('links'); ?>
 
-			<?php if ($this->params->get('presentation_style') == 'sliders')
+			<?php if ($presentation_style == 'sliders')
 		{
 			?>
 			<?php echo JHtml::_('bootstrap.endSlide'); ?>
 		<?php } ?>
-			<?php if ($this->params->get('presentation_style') == 'tabs')
+			<?php if ($presentation_style == 'tabs')
 		{
 			?>
 			<?php echo JHtml::_('bootstrap.endTab'); ?>
@@ -281,17 +291,17 @@ $renderHelper = new ChurchDirectoryRenderHelper;
 		{
 			?>
 
-			<?php if ($this->params->get('presentation_style') == 'sliders')
+			<?php if ($presentation_style == 'sliders')
 		{
 			?>
 			<?php echo JHtml::_('bootstrap.addSlide', 'slide-contact', JText::_('JGLOBAL_ARTICLES'), 'display-articles'); ?>
 		<?php } ?>
-			<?php if ($this->params->get('presentation_style') == 'tabs')
+			<?php if ($presentation_style == 'tabs')
 		{
 			?>
 			<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'display-articles', JText::_('JGLOBAL_ARTICLES', true)); ?>
 		<?php } ?>
-			<?php if ($this->params->get('presentation_style') == 'plain')
+			<?php if ($presentation_style == 'plain')
 		{
 			?>
 			<?php echo '<h3>' . JText::_('JGLOBAL_ARTICLES') . '</h3>'; ?>
@@ -299,12 +309,12 @@ $renderHelper = new ChurchDirectoryRenderHelper;
 
 			<?php echo $this->loadTemplate('articles'); ?>
 
-			<?php if ($this->params->get('presentation_style') == 'sliders')
+			<?php if ($presentation_style == 'sliders')
 		{
 			?>
 			<?php echo JHtml::_('bootstrap.endSlide'); ?>
 		<?php } ?>
-			<?php if ($this->params->get('presentation_style') == 'tabs')
+			<?php if ($presentation_style == 'tabs')
 		{
 			?>
 			<?php echo JHtml::_('bootstrap.endTab'); ?>
@@ -315,17 +325,17 @@ $renderHelper = new ChurchDirectoryRenderHelper;
 		{
 			?>
 
-			<?php if ($this->params->get('presentation_style') == 'sliders')
+			<?php if ($presentation_style == 'sliders')
 		{
 			?>
 			<?php echo JHtml::_('bootstrap.addSlide', 'slide-contact', JText::_('COM_CHURCHDIRECTORY_PROFILE'), 'display-profile'); ?>
 		<?php } ?>
-			<?php if ($this->params->get('presentation_style') == 'tabs')
+			<?php if ($presentation_style == 'tabs')
 		{
 			?>
 			<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'display-profile', JText::_('COM_CHURCHDIRECTORY_PROFILE', true)); ?>
 		<?php } ?>
-			<?php if ($this->params->get('presentation_style') == 'plain')
+			<?php if ($presentation_style == 'plain')
 		{
 			?>
 			<?php echo '<h3>' . JText::_('COM_CHURCHDIRECTORY_PROFILE') . '</h3>'; ?>
@@ -333,12 +343,12 @@ $renderHelper = new ChurchDirectoryRenderHelper;
 
 			<?php echo $this->loadTemplate('profile'); ?>
 
-			<?php if ($this->params->get('presentation_style') == 'sliders')
+			<?php if ($presentation_style == 'sliders')
 		{
 			?>
 			<?php echo JHtml::_('bootstrap.endSlide'); ?>
 		<?php } ?>
-			<?php if ($this->params->get('presentation_style') == 'tabs')
+			<?php if ($presentation_style == 'tabs')
 		{
 			?>
 			<?php echo JHtml::_('bootstrap.endTab'); ?>
@@ -349,17 +359,17 @@ $renderHelper = new ChurchDirectoryRenderHelper;
 		{
 			?>
 
-			<?php if ($this->params->get('presentation_style') == 'sliders')
+			<?php if ($presentation_style == 'sliders')
 		{
 			?>
 			<?php echo JHtml::_('bootstrap.addSlide', 'slide-contact', JText::_('COM_CHURCHDIRECTORY_OTHER_INFORMATION'), 'display-misc'); ?>
 		<?php } ?>
-			<?php if ($this->params->get('presentation_style') == 'tabs')
+			<?php if ($presentation_style == 'tabs')
 		{
 			?>
 			<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'display-misc', JText::_('COM_CHURCHDIRECTORY_OTHER_INFORMATION')); ?>
 		<?php } ?>
-			<?php if ($this->params->get('presentation_style') == 'plain')
+			<?php if ($presentation_style == 'plain')
 		{
 			?>
 			<?php echo '<h3>' . JText::_('COM_CHURCHDIRECTORY_OTHER_INFORMATION') . '</h3>'; ?>
@@ -380,12 +390,12 @@ $renderHelper = new ChurchDirectoryRenderHelper;
 				</dl>
 			</div>
 
-			<?php if ($this->params->get('presentation_style') == 'sliders')
+			<?php if ($presentation_style == 'sliders')
 		{
 			?>
 			<?php echo JHtml::_('bootstrap.endSlide'); ?>
 		<?php } ?>
-			<?php if ($this->params->get('presentation_style') == 'tabs')
+			<?php if ($presentation_style == 'tabs')
 		{
 			?>
 			<?php echo JHtml::_('bootstrap.endTab'); ?>
@@ -393,12 +403,12 @@ $renderHelper = new ChurchDirectoryRenderHelper;
 
 		<?php } ?>
 
-		<?php if ($this->params->get('presentation_style') == 'sliders')
+		<?php if ($presentation_style == 'sliders')
 		{
 			?>
 			<?php echo JHtml::_('bootstrap.endAccordion'); ?>
 		<?php } ?>
-		<?php if ($this->params->get('presentation_style') == 'tabs')
+		<?php if ($presentation_style == 'tabs')
 		{
 			?>
 			<?php echo JHtml::_('bootstrap.endTabSet'); ?>

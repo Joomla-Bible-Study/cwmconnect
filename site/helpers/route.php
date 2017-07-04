@@ -74,7 +74,7 @@ abstract class ChurchDirectoryHelperRoute
 		else
 		{
 			// Create the link
-			$link = 'index.php?option=com_chruchdirectory&view=category&id=' . $id;
+			$link = 'index.php?option=com_churchdirectory&view=category&id=' . $id;
 
 			if ($language && $language !== '*' && JLanguageMultilang::isEnabled())
 			{
