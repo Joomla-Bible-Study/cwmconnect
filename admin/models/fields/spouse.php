@@ -65,25 +65,25 @@ class JFormFieldSpouse extends JFormField
 		$results = $db->loadObjectList();
 
 		// Load the modal behavior script.
-		JHtml::_('behavior.modal', 'a.modal_' . $memberId);
+		JHtml::_('behavior.modal', 'a.modal_' . (int) $memberId);
 
 		JHtml::script('jui/fielduser.min.js', false, true, false, false, true);
 
 		foreach ($results AS $item)
 		{
-			$registry = new Registry;
-			$registry->loadString($item->attribs);
+			$registry = new Registry($item->attribs);
 
-			// Todo Need to fix this. Bcc;
-			$family_position = $registry->get('familypostion');
-			$item            = (object) array_merge((array) $item, (array) $family_position);
-
-			if ($item->funitid != '0' && $item->id != $memberId)
+			if ($item->id == $memberId && $registry->get('familypostion') == '2')
 			{
-				$link = 'index.php?option=com_churchdirectory&task=member.edit&id=' . (int) $item->id . '&tmpl=component&layout=modal';
+				return null;
+			}
+
+			if ($item->funitid !== '0' && $item->id != $memberId && $registry->get('familypostion', 2) !== '2')
+			{
+				$link = JRoute::_('index.php?option=com_churchdirectory&task=member.edit&id=' . (int) $item->id . '&tmpl=component&layout=modal');
 				$html = '<h4>
 						<a class="btn btn-primary modal" rel="{handler: \'iframe\', size: {x: 800, y: 500}}"  href="' . $link . '" 
-			   title="' . $item->name . '">';
+			   title="' . $db->escape($item->name) . '">';
 
 				$html .= $db->escape($item->name);
 				$html .= '<span class="icon-user"></span>';
@@ -91,7 +91,7 @@ class JFormFieldSpouse extends JFormField
 			}
 			elseif ($item->funitid <= '0' && $item->id == $memberId)
 			{
-				$html = '<h4>Old Record: ' . $item->spouse . '</h4>';
+				$html = '<h4>Old Record: ' . $db->escape($item->spouse) . '</h4>';
 			}
 		}
 
