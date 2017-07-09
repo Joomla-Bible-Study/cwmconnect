@@ -351,6 +351,34 @@ class ChurchDirectoryModelDirectory extends JModelList
 			$query->order($db->escape($this->getState('list.ordering', 'a.ordering')) . ' ' . $db->escape($this->getState('list.direction', 'ASC')));
 		}
 
+		if ($search = $this->getState('filter.search'))
+		{
+			if (stripos($search, 'id:') === 0)
+			{
+				$query->where('a.id = ' . (int) substr($search, 3));
+			}
+			elseif (stripos($search, 'suburb:') === 0)
+			{
+				$search = $db->q('%' . str_replace(' ', '%', $db->escape(trim(substr($search, 7)), true) . '%'));
+				$query->where($db->qn('a.suburb') . ' LIKE ' . $search);
+			}
+			elseif (stripos($search, 'address:') === 0)
+			{
+				$search = $db->q('%' . str_replace(' ', '%', $db->escape(trim(substr($search, 8)), true) . '%'));
+				$query->where($db->qn('a.address') . ' LIKE ' . $search);
+			}
+			elseif (stripos($search, 'zip:') === 0)
+			{
+				$search = $db->q('%' . str_replace(' ', '%', $db->escape(trim(substr($search, 4)), true) . '%'));
+				$query->where('a.postcode LIKE ' . $search);
+			}
+			else
+			{
+				$search = $db->q('%' . $db->escape($search, true) . '%');
+				$query->where('(' . $db->qn('a.name') . ' LIKE ' . $search . ' OR ' . $db->qn('a.alias') . ' LIKE ' . $search . ')');
+			}
+		}
+
 		return $query;
 	}
 
@@ -432,6 +460,8 @@ class ChurchDirectoryModelDirectory extends JModelList
 		$mstatus = $app->input->get('filter_mstatus', $mergedParams->get('mstatus', '0'));
 		$this->setState('filter.mstatus', $mstatus);
 		$this->setState('filter.language', $app->getLanguageFilter());
+
+		$this->setState('filter.search', $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search', '', 'string'));
 
 		// Load the parameters.
 		$this->setState('params', $params);
@@ -552,5 +582,26 @@ class ChurchDirectoryModelDirectory extends JModelList
 		}
 
 		return $this->children;
+	}
+
+	/**
+	 * Get Search results
+	 *
+	 * @return bool|mixed
+	 *
+	 * @since 1.7.8
+	 */
+	public function getSearch()
+	{
+		$q = $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search', '', 'string');
+
+		if (!$q)
+		{
+			return false;
+		}
+
+		$items = $this->getItems();
+
+		return $items;
 	}
 }

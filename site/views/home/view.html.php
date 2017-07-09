@@ -78,23 +78,12 @@ class ChurchDirectoryViewHome extends JViewLegacy
 			return false;
 		}
 
-		$document   = JFactory::getDocument();
-		$renderer   = $document->loadRenderer('module');
-		$mod_params = ['style' => 'xhtml'];
-		$contents   = '';
-		$mod        = JModuleHelper::getModule('mod_finder');
 		$registry   = new Registry;
-		$registry->loadString($mod->params);
-		$registry->set('searchfilter', 'paramvalue');
-		$registry->set('show_advanced', '0');
 		$registry->set('opensearch', '1');
-		$registry->set('set_itemid', $app->input->getInt('Itemid'));
 		$registry->set('size-lbl', '12');
 		$registry->set('show_button', '1');
 		$registry->set('button_pos', 'right');
-		$mod->params = (string) $registry;
-		$contents .= $renderer->render($mod, $mod_params);
-		$this->search       = $contents;
+		$params->merge($registry);
 
 		$this->renderHelper = new ChurchDirectoryRenderHelper;
 		$this->params       = & $params;

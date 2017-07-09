@@ -728,4 +728,90 @@ class ChurchDirectoryRenderHelper
 
 		return $html;
 	}
+
+	/**
+	 * Get Search Field
+	 *
+	 * @param   \Joomla\Registry\Registry  $params  Joomla Page view Params
+	 *
+	 * @return string
+	 *
+	 * @since 1.7.8
+	 */
+	public function getSearchField($params)
+	{
+		$route = 'index.php?option=com_churchdirectory&view=directory&layout=search';
+		$params->def('field_size', 20);
+		$suffix = $params->get('moduleclass_sfx');
+		$output = '<input type="text" name="filter[search]" id="filter_search" size="'
+			. $params->get('field_size', 20) . '"'
+			. ' placeholder="' . JText::_('Search') . '" data-original-title=""/>';
+
+		$showLabel  = $params->get('show_label', 1);
+		$labelClass = (!$showLabel ? 'element-invisible ' : '') . 'finder' . $suffix;
+		$label      = '<label for="filter_search" class="' . $labelClass . '">' . $params->get('alt_label',
+				JText::_('JSEARCH_FILTER_SUBMIT')
+			) . '</label>';
+
+		switch ($params->get('label_pos', 'left'))
+		{
+			case 'top' :
+				$output = $label . '<br />' . $output;
+				break;
+
+			case 'bottom' :
+				$output .= '<br />' . $label;
+				break;
+
+			case 'right' :
+				$output .= $label;
+				break;
+
+			case 'left' :
+			default :
+				$output = $label . " " . $output;
+				break;
+		}
+
+		if ($params->get('show_button'))
+		{
+			$button = '<button class="btn btn-primary hasTooltip ' . $suffix . ' finder' . $suffix .
+				'" type="submit" title="' . JText::_('COM_CHURCHDIRECTORY_FILTER_SUBMIT') .
+				'"><span class="icon-search icon-white"></span>' . JText::_('JSEARCH_FILTER_SUBMIT') . '</button>';
+
+			switch ($params->get('button_pos', 'left'))
+			{
+				case 'top' :
+					$output = $button . '<br />' . $output;
+					break;
+
+				case 'bottom' :
+					$output .= '<br />' . $button;
+					break;
+
+				case 'right' :
+					$output .= $button;
+					break;
+
+				case 'left' :
+				default :
+					$output = $button . $output;
+					break;
+			}
+		}
+
+		$render = '<form id="com_churchdirectroy_search" action="' . JRoute::_($route) . '"
+		      method="get" class="form-search">
+			<div class="search' . $suffix . '">';
+		$render .= $output;
+		$render .= '<input type="hidden" name="option" value="com_churchdirectory">';
+		$render .= '<input type="hidden" name="view" value="directory">';
+		$render .= '<input type="hidden" name="layout" value="search">';
+		$render .= '<input type="hidden" name="Itemid" value="' . JFactory::getApplication()->input->get('Itemid',	'0',
+	'int') . '">';
+		$render .= '</div>';
+		$render .= '</form>';
+
+	return $render;
+	}
 }

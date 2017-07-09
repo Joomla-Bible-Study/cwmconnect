@@ -6,10 +6,15 @@
  */
 defined('_JEXEC') or die;
 
+JHtml::_('jquery.framework');
+JHtml::_('formbehavior.chosen');
+JHtml::_('bootstrap.tooltip');
+
 /** @var $this ChurchDirectoryViewHome */
 $login = $this->user->get('guest') ? true : false;
 $check = in_array($this->params->get('accesslevel'), $this->user->get('_authLevels'));
 $count = count($this->items);
+
 ?>
 <div class="chdhome" style="padding: 5px;">
 	<h1 class="center"><?php if ($this->params->get('show_page_heading', 0))
@@ -25,7 +30,9 @@ $count = count($this->items);
 			</button>
 		</a>
 	</div>
-	<div class="pull-right"><?php echo $this->search; ?></div>
+	<div class="pull-right">
+		<?php echo $this->renderHelper->getSearchField($this->params); ?>
+	</div>
 	<div class="clearfix"></div>
 	<p class="center"><?php echo $this->params->get('home_intro', 'No Intro Text'); ?></p>
 
@@ -63,20 +70,25 @@ $count = count($this->items);
 					if ($i < $split)
 					{
 						?>
-						<div class="span6 pull-left">
+						<div class="span6 pull-left" style="margin-left: 0">
 							<div class="center">
 								<a href="<?php echo JRoute::_(ChurchDirectoryHelperRoute::getMemberRoute($item->slug, $item->catid)); ?>">
 									<?php if ($item->image && $item->image != '/')
 									{ ?>
 										<img src="<?php echo $item->image; ?>"
 										     alt="<?php echo $item->name; ?>"
-										     style="max-width:240px; border: none;"><br/>
+										     style="max-width:240px;" class="img-polaroid"><br/>
 									<?php } ?>
-									<span class="large buld"><?php echo $item->name ?></span><br/>
+								</a>
+								<div class="cd-home-positions">
+									<a href="<?php echo JRoute::_(ChurchDirectoryHelperRoute::getMemberRoute($item->slug, $item->catid)); ?>">
+										<span class="buld" style="font-size: x-large;"><?php echo $item->name ?></span>
+									</a>
+									<br/>
 									<span class="small">
 											<?php echo $this->renderHelper->getPosition($item->con_position); ?>
 										</span>
-								</a>
+								</div>
 							</div>
 
 						</div>
@@ -85,20 +97,25 @@ $count = count($this->items);
 					else
 					{
 						?>
-						<div class="span6 pull-left">
+						<div class="span6 pull-left" style="margin-left: 0">
 							<div class="center">
 								<a href="<?php echo JRoute::_(ChurchDirectoryHelperRoute::getMemberRoute($item->slug, $item->catid)); ?>">
 									<?php if ($item->image && $item->image != '/')
 									{ ?>
 										<img src="<?php echo $item->image; ?>"
 										     alt="<?php echo $item->name; ?>"
-										     style="max-width:240px; border: none;"><br/>
+										     style="max-width:240px;" class="img-polaroid"><br/>
 									<?php } ?>
-									<span class="large buld"><?php echo $item->name ?></span><br/>
+								</a>
+								<div class="cd-home-positions">
+									<a href="<?php echo JRoute::_(ChurchDirectoryHelperRoute::getMemberRoute($item->slug, $item->catid)); ?>">
+										<span class="buld" style="font-size: x-large;"><?php echo $item->name ?></span>
+									</a>
+									<br/>
 									<span class="small">
 											<?php echo $this->renderHelper->getPosition($item->con_position); ?>
 										</span>
-								</a>
+								</div>
 							</div>
 
 						</div>

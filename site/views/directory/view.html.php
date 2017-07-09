@@ -107,10 +107,27 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 
 		$this->prepareDocument();
 
-		$this->setLayout('home');
-		parent::display();
+		$layout = JFactory::getApplication()->input->get('layout', 'home');
 
-		return;
+		if ($layout == 'search')
+		{
+			// Search Params
+			$registry   = new Registry;
+			$registry->set('opensearch', '1');
+			$registry->set('size-lbl', '12');
+			$registry->set('show_button', '1');
+			$registry->set('button_pos', 'right');
+			$this->params->merge($registry);
+
+			$this->renderHelper = new ChurchDirectoryRenderHelper;
+
+			// Get some data from the models
+			$this->items    = $this->get('Search');
+		}
+
+		$this->setLayout($layout);
+
+		return parent::display();
 	}
 
 	/**
