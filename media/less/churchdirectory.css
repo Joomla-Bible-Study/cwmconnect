@@ -248,3 +248,13 @@ p {
   clear: both;
   display: table;
   }
+
+.cd-home-positions {
+  text-align: left !important;
+  max-width: 240px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1;
+  padding-left: 10px;
+  padding-top: 5px;
+  }
