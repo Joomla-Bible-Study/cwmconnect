@@ -132,10 +132,11 @@ class ChurchDirectoryModelCategory extends JModelList
 
 			if (!isset($this->params))
 			{
-				$params = new Registry;
-				$params->loadString($item->params);
-				$item->params = $params;
+				$item->params = new Registry($item->params);
 			}
+
+			$this->tags = new JHelperTags;
+			$this->tags->getItemTags('com_churchdirectory.member', $item->id);
 		}
 
 		return $items;
@@ -263,7 +264,7 @@ class ChurchDirectoryModelCategory extends JModelList
 		$params = JComponentHelper::getParams('com_churchdirectory');
 
 		// List state information
-		$format = $app->input->getWord('format', 'default');
+		$format = $app->input->getWord('format');
 
 		if ($format == 'feed')
 		{
@@ -446,5 +447,31 @@ class ChurchDirectoryModelCategory extends JModelList
 		}
 
 		return $this->children;
+	}
+
+	/**
+	 * Increment the hit counter for the category.
+	 *
+	 * @param   integer  $pk  Optional primary key of the category to increment.
+	 *
+	 * @return  boolean  True if successful; false otherwise and internal error set.
+	 *
+	 * @since   3.2
+	 */
+	public function hit($pk = 0)
+	{
+		$input = JFactory::getApplication()->input;
+		$hitcount = $input->getInt('hitcount', 1);
+
+		if ($hitcount)
+		{
+			$pk = (!empty($pk)) ? $pk : (int) $this->getState('category.id');
+
+			$table = JTable::getInstance('Category', 'JTable');
+			$table->load($pk);
+			$table->hit($pk);
+		}
+
+		return true;
 	}
 }

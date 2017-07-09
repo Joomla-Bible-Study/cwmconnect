@@ -124,7 +124,7 @@ class ChurchDirectoryModelCategories extends JModelList
 
 			$options               = [];
 			$options['countItems'] = $params->get('show_cat_items_cat', 1) || !$params->get('show_empty_categories_cat', 0);
-			$categories            = JCategories::getInstance('Churchdirectory', $options);
+			$categories            = JCategories::getInstance('ChurchDirectory', $options);
 			$this->parent          = $categories->get($this->getState('filter.parentId', 'root'));
 
 			if (is_object($this->parent))

@@ -6,52 +6,58 @@
  */
 
 defined('_JEXEC') or die;
+
+JHtml::_('bootstrap.tooltip');
+
 $class = ' class="first"';
-if (count($this->items[$this->parent->id]) > 0 && $this->maxLevelcat != 0) :
+if ($this->maxLevelcat != 0 && count($this->items[$this->parent->id]) > 0) :
 	?>
-	<ul class="list-striped list-condensed">
-		<?php foreach ($this->items[$this->parent->id] as $id => $item) : ?>
-			<?php
-			if ($this->params->get('show_empty_categories_cat') || $item->numitems || count($item->getChildren())) :
-				if (!isset($this->items[$this->parent->id][$id + 1]))
-				{
-					$class = ' class="last"';
-				}
-				?>
-				<li<?php echo $class; ?>>
-					<?php $class = ''; ?>
-					<h4 class="item-title">
-						<a href="<?php echo JRoute::_(ChurchDirectoryHelperRoute::getCategoryRoute($item->id)); ?>">
-							<?php echo $this->escape($item->title); ?>
-						</a>
-
-						<?php if ($this->params->get('show_cat_items_cat') == 1) : ?>
-							<span class="badge badge-info pull-right"
-							      title="<?php echo JText::_('COM_CHURCHDIRECTORY_COUNT'); ?>"><?php echo $item->numitems; ?></span>
-						<?php endif; ?>
-					</h4>
-
-					<?php if ($this->params->get('show_subcat_desc_cat') == 1) : ?>
-						<?php if ($item->description) : ?>
-							<div class="category-desc">
-								<?php echo JHtml::_('content.prepare', $item->description); ?>
-							</div>
-						<?php endif; ?>
-					<?php endif; ?>
-
-					<?php
-					if (count($item->getChildren()) > 0) :
-						$this->items[$item->id] = $item->getChildren();
-						$this->parent           = $item;
-						$this->maxLevelcat--;
-						echo $this->loadTemplate('items');
-						$this->parent = $item->getParent();
-						$this->maxLevelcat++;
-					endif;
-					?>
-
-				</li>
+	<?php foreach ($this->items[$this->parent->id] as $id => $item) : ?>
+	<?php
+	if ($this->params->get('show_empty_categories_cat') || $item->numitems || count($item->getChildren())) :
+		if (!isset($this->items[$this->parent->id][$id + 1]))
+		{
+			$class = ' class="last"';
+		}
+		?>
+		<div <?php echo $class; ?> >
+			<?php $class = ''; ?>
+			<h3 class="page-header item-title">
+				<a href="<?php echo JRoute::_(ChurchDirectoryHelperRoute::getCategoryRoute($item->id,
+					$item->language)); ?>">
+					<?php echo $this->escape($item->title); ?></a>
+				<?php if ($this->params->get('show_cat_items_cat') == 1) :?>
+					<span class="badge badge-info tip hasTooltip" title="<?php echo JHtml::_('tooltipText', 'COM_CHURCHDIRECTORY_NUM_ITEMS'); ?>">
+							<?php echo JText::_('COM_CHURCHDIRECTORY_NUM_ITEMS'); ?>&nbsp;
+						<?php echo $item->numitems; ?>
+						</span>
+				<?php endif; ?>
+				<?php if ($this->maxLevelcat > 1 && count($item->getChildren()) > 0) : ?>
+					<a id="category-btn-<?php echo $item->id; ?>" href="#category-<?php echo $item->id; ?>"
+					   data-toggle="collapse" data-toggle="button" class="btn btn-mini pull-right"><span class="icon-plus"></span></a>
+				<?php endif; ?>
+			</h3>
+			<?php if ($this->params->get('show_subcat_desc_cat') == 1) : ?>
+				<?php if ($item->description) : ?>
+					<div class="category-desc">
+						<?php echo JHtml::_('content.prepare', $item->description, '', 'com_churchdirectory.categories'); ?>
+					</div>
+				<?php endif; ?>
 			<?php endif; ?>
-		<?php endforeach; ?>
-	</ul>
-<?php endif; ?>
+
+			<?php if ($this->maxLevelcat > 1 && count($item->getChildren()) > 0) : ?>
+				<div class="collapse fade" id="category-<?php echo $item->id; ?>">
+					<?php
+					$this->items[$item->id] = $item->getChildren();
+					$this->parent = $item;
+					$this->maxLevelcat--;
+					echo $this->loadTemplate('items');
+					$this->parent = $item->getParent();
+					$this->maxLevelcat++;
+					?>
+				</div>
+			<?php endif; ?>
+		</div>
+	<?php endif; ?>
+<?php endforeach; ?><?php endif; ?>
+

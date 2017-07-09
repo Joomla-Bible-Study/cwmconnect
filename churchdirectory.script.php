@@ -889,7 +889,8 @@ class Com_ChurchdirectoryInstallerScript
 	{
 		$files = ['/media/com_churchdirectory/startfile.php',];
 
-		$folders = ['/components/com_churchdirectory/views/churchdirectory',];
+		$folders = ['/components/com_churchdirectory/views/churchdirectory',
+			'/components/com_churchdirectory/language/'];
 
 		foreach ($files as $file)
 		{

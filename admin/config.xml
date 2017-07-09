@@ -408,19 +408,19 @@
 	>
 		<field name="show_base_description"
 		       type="radio"
-		       class="btn-group"
-		       default="1"
 		       label="JGLOBAL_FIELD_SHOW_BASE_DESCRIPTION_LABEL"
 		       description="JGLOBAL_FIELD_SHOW_BASE_DESCRIPTION_DESC"
+		       default="1"
+		       class="btn-group btn-group-yesno"
 		>
 			<option value="0">JHIDE</option>
 			<option value="1">JSHOW</option>
 		</field>
 		<field name="maxLevelcat"
 		       type="list"
-		       default="-1"
 		       description="JGLOBAL_MAXIMUM_CATEGORY_LEVELS_DESC"
 		       label="JGLOBAL_MAXIMUM_CATEGORY_LEVELS_LABEL"
+		       default="-1"
 		>
 			<option value="-1">JALL</option>
 			<option value="1">J1</option>
@@ -431,30 +431,32 @@
 		</field>
 		<field name="show_empty_categories_cat"
 		       type="radio"
-		       class="btn-group"
-		       default="0"
 		       label="JGLOBAL_SHOW_EMPTY_CATEGORIES_LABEL"
 		       description="COM_CHURCHDIRECTORY_SHOW_EMPTY_CATEGORIES_DESC"
+		       default="1"
+		       class="btn-group btn-group-yesno"
+		       showon="maxLevelcat:-1,1,2,3,4,5"
 		>
 			<option value="0">JHIDE</option>
 			<option value="1">JSHOW</option>
 		</field>
 		<field name="show_subcat_desc_cat"
 		       type="radio"
-		       class="btn-group"
-		       default="1"
 		       label="JGLOBAL_SHOW_SUBCATEGORIES_DESCRIPTION_LABEL"
 		       description="JGLOBAL_SHOW_SUBCATEGORIES_DESCRIPTION_DESC"
+		       default="0"
+		       class="btn-group btn-group-yesno"
+		       showon="maxLevelcat:-1,1,2,3,4,5"
 		>
 			<option value="0">JHIDE</option>
 			<option value="1">JSHOW</option>
 		</field>
 		<field name="show_cat_items_cat"
 		       type="radio"
-		       class="btn-group"
-		       default="1"
 		       label="COM_CHURCHDIRECTORY_FIELD_SHOW_CAT_ITEMS_LABEL"
 		       description="COM_CHURCHDIRECTORY_FIELD_SHOW_CAT_ITEMS_DESC"
+		       default="1"
+		       class="btn-group btn-group-yesno"
 		>
 			<option value="0">JHIDE</option>
 			<option value="1">JSHOW</option>
@@ -1026,15 +1028,29 @@
 	          label="JGLOBAL_INTEGRATION_LABEL"
 	          description="COM_CHURCHDIRECTORY_CONFIG_INTEGRATION_SETTINGS_DESC"
 	>
+
 		<field
 				name="show_feed_link"
 				type="radio"
-				class="btn-group"
-				default="1"
 				label="JGLOBAL_SHOW_FEED_LINK_LABEL"
-				description="JGLOBAL_SHOW_FEED_LINK_DESC">
-			<option value="0">JHIDE</option>
+				description="JGLOBAL_SHOW_FEED_LINK_DESC"
+				default="1"
+				class="btn-group btn-group-yesno"
+		>
 			<option value="1">JSHOW</option>
+			<option value="0">JHIDE</option>
+		</field>
+
+		<field
+				name="custom_fields_enable"
+				type="radio"
+				label="JGLOBAL_CUSTOM_FIELDS_ENABLE_LABEL"
+				description="JGLOBAL_CUSTOM_FIELDS_ENABLE_DESC"
+				default="1"
+				class="btn-group btn-group-yesno"
+		>
+			<option value="1">JYES</option>
+			<option value="0">JNO</option>
 		</field>
 	</fieldset>
 	<fieldset name="globle"

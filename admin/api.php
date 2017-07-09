@@ -28,6 +28,11 @@ JHtml::addIncludePath(JPATH_ADMINISTRATOR . '/components/com_churchdirectory/hel
 
 JHtml::stylesheet('media/com_churchdirectory/css/general.css');
 
+// If phrase is not found in specific language file, load english language file:
+$language = JFactory::getLanguage();
+$language->load('com_churchdirectory', JPATH_ADMINISTRATOR . '/components/com_churchdirectory', 'en-GB', true);
+$language->load('com_churchdirectory', JPATH_ADMINISTRATOR . '/components/com_churchdirectory', null, true);
+
 // Include the JLog class.
 jimport('joomla.log.log');
 JLog::addLogger(
