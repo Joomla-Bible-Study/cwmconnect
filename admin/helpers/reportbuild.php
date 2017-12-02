@@ -207,12 +207,19 @@ class ChurchDirectoryReportBuild
 	 * @return bool
 	 *
 	 * @since    1.7.0
+	 *
+	 * @throws  \Exception  If error
 	 */
 	public function getKML($items, $report = null)
 	{
 		$renderHelper = new ChurchDirectoryRenderHelper;
 		$dbhelp       = new ChurchDirectoryDB;
 		$kmlinfo      = $dbhelp->getKMLdb();
+
+		JFactory::getApplication()->clearHeaders();
+
+		// Stop output buffering or we will run out of memory with large tables.
+		ob_end_flush();
 
 		/** @var Joomla\Registry\Registry $ckml_params */
 		$ckml_params  = $kmlinfo->params;

@@ -55,7 +55,7 @@ class ChurchDirectoryController extends JControllerLegacy
 		$vName = $this->input->get('view', 'home');
 		$format = $this->input->get('format');
 
-		if ($format == 'pdf')
+		if ($format == 'pdf' || $format == 'kml')
 		{
 			$this->input->set('tmpl', 'component');
 
