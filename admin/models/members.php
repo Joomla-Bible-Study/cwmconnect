@@ -125,7 +125,7 @@ class ChurchDirectoryModelMembers extends JModelList
 		$id .= ':' . $this->getState('filter.search');
 		$id .= ':' . $this->getState('filter.published');
 		$id .= ':' . $this->getState('filter.category_id');
-		$id .= ':' . $this->getState('filter.access');
+		$id .= ':' . serialize($this->getState('filter.access'));
 		$id .= ':' . $this->getState('filter.language');
 		$id .= ':' . $this->getState('filter.mstatus');
 		$id .= ':' . $this->getState('filter.tag');
