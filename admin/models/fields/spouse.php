@@ -77,14 +77,10 @@ class JFormFieldSpouse extends JFormField
 
 				return '<input ' . ArrayHelper::toString($inputAttributes) . ' readonly />';
 			}
-			else
-			{
-				$inputAttributes['value'] = ' ';
-
-				return '<input ' . ArrayHelper::toString($inputAttributes) . ' readonly />';
-			}
 		}
 
-		return null;
+		$inputAttributes['value'] = ' ';
+
+		return '<input ' . ArrayHelper::toString($inputAttributes) . ' readonly />';
 	}
 }
