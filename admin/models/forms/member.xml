@@ -664,18 +664,14 @@
 			<option value="0">COM_CHURCHDIRECTORY_FEMALE</option>
 			<option value="1">COM_CHURCHDIRECTORY_MALE</option>
 		</field>
-		<fieldset name="protected"
-		          label="COM_CHURCHDIRECTORY_MEMBER_PROTECTED_INFO_FIELDSET_LABEL"
-		          description="COM_CHURCHDIRECTORY_MEMBER_PROTECTED_INFO_FIELDSET_DESC">
-			<field name="bpc_date" type="calendar"
-			       label="COM_CHURCHDIRECTORY_FIELD_BCP_DATE_LABEL"
-			       description="COM_CHURCHDIRECTORY_FIELD_BCP_DATE_DESC"
-			       format="%Y-%m-%d" size="22" filter="user_utc"/>
-			<field name="memberotherinfo" type="textarea"
-			       label="COM_CHURCHDIRECTORY_FIELD_MEMBER_OTHER_INFO_LABEL"
-			       description="COM_CHURCHDIRECTORY_FIELD_MEMBER_OTHER_INFO_DESC"
-			       class="inputbox small" rows="3" cols="30"/>
-		</fieldset>
+		<field name="bpc_date" type="calendar"
+		       label="COM_CHURCHDIRECTORY_FIELD_BCP_DATE_LABEL"
+		       description="COM_CHURCHDIRECTORY_FIELD_BCP_DATE_DESC"
+		       format="%Y-%m-%d" size="22" filter="user_utc"/>
+		<field name="memberotherinfo" type="textarea"
+		       label="COM_CHURCHDIRECTORY_FIELD_MEMBER_OTHER_INFO_LABEL"
+		       description="COM_CHURCHDIRECTORY_FIELD_MEMBER_OTHER_INFO_DESC"
+		       class="inputbox small" rows="3" cols="30"/>
 		<field name="familypostion" type="list"
 		       label="COM_CHURCHDIRECTORY_FAMILYPOSTION_LABEL"
 		       description="COM_CHURCHDIRECTORY_FAMILYPOSTION_DESC"
