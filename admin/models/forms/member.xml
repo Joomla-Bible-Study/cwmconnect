@@ -292,6 +292,7 @@
 			<option value="2">COM_CHURCHDIRECTORY_ACTIVE_ATTENDEE</option>
 			<option value="3">COM_CHURCHDIRECTORY_NONE_MEMBER</option>
 			<option value="4">COM_CHURCHDIRECTORY_TRANSFERRED</option>
+			<option value="5">COM_CHURCHDIRECTORY_OTHER</option>
 		</field>
 	</fieldset>
 
