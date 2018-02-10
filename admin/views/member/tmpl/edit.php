@@ -63,18 +63,30 @@ $tmpl    = $isModal || $input->get('tmpl', '', 'cmd') === 'component' ? '&tmpl=c
 				<div class="row-fluid form-horizontal-desktop">
 					<div class="span6">
 						<?php echo $this->form->renderField('lname'); ?>
+						<?php echo $this->form->renderField('lat'); ?>
 						<?php echo $this->form->renderField('funitid'); ?>
 						<?php echo $this->form->renderField('familypostion', 'attribs'); ?>
-						<?php echo $this->form->renderField('lat'); ?>
-						<?php echo $this->form->renderField('mstatus'); ?>
 					</div>
 					<div class="span6">
 						<?php echo $this->form->renderField('surname'); ?>
+						<?php echo $this->form->renderField('lng'); ?>
 						<?php echo $this->form->renderField('sex', 'attribs'); ?>
 						<?php echo $this->form->renderField('user_id'); ?>
-						<?php echo $this->form->renderField('lng'); ?>
 					</div>
 				</div>
+				<?php if ($this->access): ?>
+				<h2>Protected Content</h2>
+				<hr />
+				<div class="row-fluid form-horizontal-desktop">
+					<div class="span6">
+						<?php echo $this->form->renderField('mstatus'); ?>
+					</div>
+					<div class="span6">
+							<?php echo $this->form->renderField('bpc_date', 'attribs'); ?>
+							<?php echo $this->form->renderField('memberotherinfo', 'attribs'); ?>
+					</div>
+				</div>
+				<?php endif; ?>
 			</div>
 			<div class="span3">
 				<?php echo JLayoutHelper::render('joomla.edit.global', $this); ?>
@@ -195,8 +207,6 @@ $tmpl    = $isModal || $input->get('tmpl', '', 'cmd') === 'component' ? '&tmpl=c
 		<?php echo JHtml::_('bootstrap.endTab'); ?>
 
 		<?php echo JLayoutHelper::render('joomla.edit.params', $this); ?>
-
-		<?php echo $this->loadTemplate('attribs'); ?>
 
 		<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'publishing', JText::_('JGLOBAL_FIELDSET_PUBLISHING')); ?>
 		<div class="row-fluid form-horizontal-desktop">
