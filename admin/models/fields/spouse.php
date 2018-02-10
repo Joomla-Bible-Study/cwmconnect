@@ -75,9 +75,14 @@ class JFormFieldSpouse extends JFormField
 			{
 				$html = '<input ' . ArrayHelper::toString($inputAttributes) . ' readonly />';
 			}
-			elseif ($item->funitid <= '0' && $item->id == $memberId)
+			elseif ($item->funitid <= '0' && $item->id == $memberId && !empty($item->spouse))
 			{
 				$inputAttributes['value'] = 'Old Record: ' . $db->escape($item->spouse);
+				$html = '<input ' . ArrayHelper::toString($inputAttributes) . ' readonly />';
+			}
+			else
+			{
+				$inputAttributes['value'] = ' ';
 				$html = '<input ' . ArrayHelper::toString($inputAttributes) . ' readonly />';
 			}
 		}
