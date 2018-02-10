@@ -67,7 +67,9 @@ class JFormFieldSpouse extends JFormField
 
 			$inputAttributes['size'] = (int) 500;
 
-			if ($item->funitid !== '0' && $item->id != $memberId && $registry->get('familypostion', 2) !== $memberfustatus)
+			if ($item->funitid !== '0' && $item->id != $memberId
+				&& $registry->get('familypostion', 2) !== $memberfustatus
+				&& $registry->get('familypostion', 2) !== '2')
 			{
 				return '<input ' . ArrayHelper::toString($inputAttributes) . ' readonly />';
 			}
