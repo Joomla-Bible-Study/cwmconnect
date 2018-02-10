@@ -44,6 +44,7 @@ class JFormFieldSpouse extends JFormField
 		$memberId        = (int) $this->form->getValue('id');
 		$categoryId      = (int) $this->form->getValue('catid');
 		$funitid         = (int) $this->form->getValue('funitid');
+		$memberfustatus  = (int) $this->form->getValue('familypostion', 'attribs');
 
 		// Build the query for the ordering list.
 		$db    = JFactory::getDbo();
@@ -66,27 +67,24 @@ class JFormFieldSpouse extends JFormField
 
 			$inputAttributes['size'] = (int) 500;
 
-			if ($item->id == $memberId && $registry->get('familypostion') == '2')
+			if ($item->funitid !== '0' && $item->id != $memberId && $registry->get('familypostion', 2) !== $memberfustatus)
 			{
-				return null;
-			}
-
-			if ($item->funitid !== '0' && $item->id != $memberId && $registry->get('familypostion', 2) !== '2')
-			{
-				$html = '<input ' . ArrayHelper::toString($inputAttributes) . ' readonly />';
+				return '<input ' . ArrayHelper::toString($inputAttributes) . ' readonly />';
 			}
 			elseif ($item->funitid <= '0' && $item->id == $memberId && !empty($item->spouse))
 			{
 				$inputAttributes['value'] = 'Old Record: ' . $db->escape($item->spouse);
-				$html = '<input ' . ArrayHelper::toString($inputAttributes) . ' readonly />';
+
+				return '<input ' . ArrayHelper::toString($inputAttributes) . ' readonly />';
 			}
 			else
 			{
 				$inputAttributes['value'] = ' ';
-				$html = '<input ' . ArrayHelper::toString($inputAttributes) . ' readonly />';
+
+				return '<input ' . ArrayHelper::toString($inputAttributes) . ' readonly />';
 			}
 		}
 
-		return $html;
+		return null;
 	}
 }
