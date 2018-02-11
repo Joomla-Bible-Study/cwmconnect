@@ -37,9 +37,6 @@ class JFormFieldChildren extends JFormField
 	 */
 	protected function getInput ()
 	{
-		// Initialize variables.
-		$html = '';
-
 		// Get some field values from the form.
 		$memberId        = (int) $this->form->getValue('id');
 		$categoryId      = (int) $this->form->getValue('catid');
@@ -56,8 +53,7 @@ class JFormFieldChildren extends JFormField
 		$query = $db->getQuery(true);
 		$query->select('id, name, funitid, attribs, spouse, mstatus')
 			->from('#__churchdirectory_details')
-			->where('catid = ' . (int) $categoryId)
-			->where('funitid = ' . (int) $funitid);
+			->where('funitid = ' . $funitid);
 		$db->setQuery($query);
 		$results = $db->loadObjectList();
 
@@ -65,9 +61,8 @@ class JFormFieldChildren extends JFormField
 		{
 			$registry = new Registry($item->attribs);
 
-			if ($item->funitid !== '0' && $item->id != $memberId
-				&& (int) $registry->get('familypostion', 2) == 2
-				&& $memberfustatus !== 2)
+			if ((int) $registry->get('familypostion', 2) === 2
+				&& ($memberfustatus !== 2 || $memberfustatus === 0))
 			{
 				$chiledren[] = $db->escape($item->name) . " "
 					. ChurchDirectoryHelper::memberStatusShort($item->mstatus);

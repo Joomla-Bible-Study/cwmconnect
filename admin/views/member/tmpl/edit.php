@@ -42,7 +42,7 @@ JFactory::getDocument()->addScriptDeclaration('
 ');
 
 // Fieldsets to not automatically render by /layouts/joomla/edit/params.php
-$this->ignore_fieldsets = array('details', 'item_associations', 'jmetadata', 'protected');
+$this->ignore_fieldsets = ['details', 'item_associations', 'jmetadata', 'protected'];
 
 // In case of modal
 $isModal = $input->get('layout') == 'modal' ? true : false;
@@ -55,7 +55,7 @@ $tmpl    = $isModal || $input->get('tmpl', '', 'cmd') === 'component' ? '&tmpl=c
 	<?php echo JLayoutHelper::render('joomla.edit.title_alias', $this); ?>
 	<!-- Begin Member -->
 	<div class="form-horizontal">
-		<?php echo JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => 'details')); ?>
+		<?php echo JHtml::_('bootstrap.startTabSet', 'myTab', ['active' => 'details']); ?>
 
 		<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'details', empty($this->item->id) ? JText::_('COM_CHURCHDIRECTORY_NEW_MEMBER') : JText::sprintf('COM_CHURCHDIRECTORY_EDIT_MEMBER', $this->item->id)); ?>
 		<div class="row-fluid">
@@ -75,17 +75,17 @@ $tmpl    = $isModal || $input->get('tmpl', '', 'cmd') === 'component' ? '&tmpl=c
 					</div>
 				</div>
 				<?php if ($this->access): ?>
-				<h2>Protected Content</h2>
-				<hr />
-				<div class="row-fluid form-horizontal-desktop">
-					<div class="span6">
-						<?php echo $this->form->renderField('mstatus'); ?>
-					</div>
-					<div class="span6">
+					<h2>Protected Content</h2>
+					<hr/>
+					<div class="row-fluid form-horizontal-desktop">
+						<div class="span6">
+							<?php echo $this->form->renderField('mstatus'); ?>
+						</div>
+						<div class="span6">
 							<?php echo $this->form->renderField('bpc_date', 'attribs'); ?>
 							<?php echo $this->form->renderField('memberotherinfo', 'attribs'); ?>
+						</div>
 					</div>
-				</div>
 				<?php endif; ?>
 			</div>
 			<div class="span3">
@@ -155,11 +155,17 @@ $tmpl    = $isModal || $input->get('tmpl', '', 'cmd') === 'component' ? '&tmpl=c
 				<div class="control-label"><?php echo $this->form->getLabel('webpage'); ?></div>
 				<div class="controls"><?php echo $this->form->getInput('webpage'); ?></div>
 			</div>
-			<div class="control-group">
-				<div class="control-label"><?php echo $this->form->getLabel('spouse'); ?></div>
-				<div class="controls"><?php echo $this->form->getInput('spouse'); ?></div>
-			</div>
-			<?php if((int) $this->form->getValue('familypostion', 'attribs') !== 2 && $this->form->getValue('familypostion', 'attribs')): ?>
+			<?php if ((int)
+				$this->form->getValue
+				('familypostion', 'attribs') !== 2): ?>
+				<div class="control-group">
+					<div class="control-label"><?php echo $this->form->getLabel('spouse'); ?></div>
+					<div class="controls"><?php echo $this->form->getInput('spouse'); ?></div>
+				</div>
+			<?php endif; ?>
+			<?php if ((int)
+				$this->form->getValue
+				('familypostion', 'attribs') !== 2 || $this->form->getValue('familypostion', 'attribs') === "0"): ?>
 				<div class="control-group">
 					<div class="control-label"><?php echo $this->form->getLabel('children_listed'); ?></div>
 					<div class="controls"><?php echo $this->form->getInput('children_listed'); ?></div>
