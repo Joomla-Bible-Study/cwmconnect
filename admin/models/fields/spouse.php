@@ -37,9 +37,6 @@ class JFormFieldSpouse extends JFormField
 	 */
 	protected function getInput ()
 	{
-		// Initialize variables.
-		$html = '';
-
 		// Get some field values from the form.
 		$memberId        = (int) $this->form->getValue('id');
 		$categoryId      = (int) $this->form->getValue('catid');
@@ -51,9 +48,9 @@ class JFormFieldSpouse extends JFormField
 		$query = $db->getQuery(true);
 		$query->select('id, name, funitid, attribs, spouse, mstatus')
 				->from('#__churchdirectory_details')
-				->where('catid = ' . (int) $categoryId)
+				->where('catid = ' . $categoryId)
 				->where('published = 1')
-				->where('funitid = ' . (int) $funitid);
+				->where('funitid = ' . $funitid);
 		$db->setQuery($query);
 		$results = $db->loadObjectList();
 
@@ -67,7 +64,7 @@ class JFormFieldSpouse extends JFormField
 			);
 
 			if ($item->funitid !== '0' && $item->id != $memberId
-				&& $registry->get('familypostion', 2) !== (int) $memberfustatus
+				&& (int) $registry->get('familypostion', 2) !== $memberfustatus
 				&& $memberfustatus !== 2)
 			{
 				return '<input ' . ArrayHelper::toString($inputAttributes) . ' readonly />';
