@@ -557,7 +557,7 @@ class ChurchDirectoryRenderHelper
 		$query->select('f.name as f_name, f.id as f_id');
 		$query->join('LEFT OUTER', '#__churchdirectory_familyunit as f ON f.id = a.funitid');
 
-		// Filter of birthdates to show
+		// Filter of Anniversary to show
 		$date = $params->get('month', date('m'));
 
 		if ($date == '0')
