@@ -42,6 +42,31 @@ class ChurchDirectoryViewDirHeaders extends JViewLegacy
 	 */
 	protected $state;
 
+	/**
+	 * Form object for search filters
+	 *
+	 * @var  JForm
+	 *
+	 * @since 1.7.0
+	 */
+	public $filterForm;
+
+	/**
+	 * The active search filters
+	 *
+	 * @var  array
+	 *
+	 * @since 1.7.0
+	 */
+	public $activeFilters;
+
+	/**
+	 * The sidebar markup
+	 *
+	 * @var  string
+	 *
+	 * @since 1.7.0
+	 */
 	protected $sidebar;
 
 	/**
@@ -52,6 +77,8 @@ class ChurchDirectoryViewDirHeaders extends JViewLegacy
 	 * @since 1.7.0
 	 *
 	 * @return    mixed
+	 *
+	 * @throws    \Exception
 	 */
 	public function display($tpl = null)
 	{
@@ -71,11 +98,18 @@ class ChurchDirectoryViewDirHeaders extends JViewLegacy
 			return false;
 		}
 
-		// Set the toolbar
-		$this->addToolbar();
-
-		if (version_compare(JVERSION, '3.0', 'ge'))
+		// Preprocess the list of items to find ordering divisions.
+		// TODO: Complete the ordering stuff with nested sets
+		foreach ($this->items as &$item)
 		{
+			$item->order_up = true;
+			$item->order_dn = true;
+		}
+
+		// We don't need toolbar in the modal window.
+		if ($this->getLayout() !== 'modal')
+		{
+			$this->addToolbar();
 			$this->sidebar = JHtmlSidebar::render();
 		}
 
