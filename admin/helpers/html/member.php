@@ -90,16 +90,21 @@ abstract class JHtmlMember
 	{
 		// Array of image, task, title, action
 		$states = [
-			0 => ['disabled.png', 'members.featured', 'COM_CHURCHDIRECTORY_UNFEATURED', 'COM_CHURCHDIRECTORY_TOGGLE_TO_FEATURE'],
-			1 => ['featured.png', 'members.unfeatured', 'JFEATURED', 'COM_CHURCHDIRECTORY_TOGGLE_TO_UNFEATURE'],
+			0 => ['unfeatured', 'members.featured', 'COM_CHURCHDIRECTORY_UNFEATURED', 'COM_CHURCHDIRECTORY_TOGGLE_TO_FEATURE'],
+			1 => ['featured', 'members.unfeatured', 'JFEATURED', 'COM_CHURCHDIRECTORY_TOGGLE_TO_UNFEATURE'],
 		];
 		$state  = Joomla\Utilities\ArrayHelper::getValue($states, (int) $value, $states[1]);
-		$html   = JHtml::_('image', 'admin/' . $state[0], JText::_($state[2]), null, true);
+		$icon  = $state[0];
 
 		if ($canChange)
 		{
-			$html = '<a href="#" onclick="return listItemTask(\'cb' . $i . '\',\'' . $state[1] . '\')" title="' . JText::_($state[3]) . '">'
-				. $html . '</a>';
+			$html = '<a href="#" onclick="return listItemTask(\'cb' . $i . '\',\'' . $state[1] . '\')" class="btn btn-micro hasTooltip'
+				. ($value == 1 ? ' active' : '') . '" title="' . JHtml::_('tooltipText', $state[3]) . '"><span class="icon-' . $icon . '"></span></a>';
+		}
+		else
+		{
+			$html = '<a class="btn btn-micro hasTooltip disabled' . ($value == 1 ? ' active' : '') . '" title="' . JHtml::_('tooltipText', $state[2])
+				. '"><span class="icon-' . $icon . '"></span></a>';
 		}
 
 		return $html;

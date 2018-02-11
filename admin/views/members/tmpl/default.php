@@ -23,7 +23,7 @@ $assoc     = JLanguageAssociations::isEnabled();
 if ($saveOrder)
 {
 	$saveOrderingUrl = 'index.php?option=com_churchdirectroy&task=members.saveOrderAjax&tmpl=component';
-	JHtml::_('sortablelist.sortable', 'memberList', 'adminForm', strtolower($listDirn), $saveOrderingUrl);
+	JHtml::_('sortablelist.sortable', 'membersList', 'adminForm', strtolower($listDirn), $saveOrderingUrl);
 }
 ?>
 <form action="<?php echo JRoute::_('index.php?option=com_churchdirectory&view=members'); ?>" method="post"
@@ -37,42 +37,51 @@ if ($saveOrder)
 		<div id="j-main-container">
 			<?php endif; ?>
 			<?php echo JLayoutHelper::render('joomla.searchtools.default', array('view' => $this)); ?>
-			<div class="clr"></div>
-			<table class="table table-striped" id="articleList">
+			<div class="clearfix"></div>
+			<?php if (empty($this->items)) : ?>
+				<div class="alert alert-no-items">
+					<?php echo JText::_('JGLOBAL_NO_MATCHING_RESULTS'); ?>
+				</div>
+			<?php else : ?>
+			<table class="table table-striped" id="membersList">
 				<thead>
-				<tr>
-					<th width="1%" class="nowrap center hidden-phone">
-						<?php echo JHtml::_('searchtools.sort', '', 'a.ordering', $listDirn, $listOrder, null, 'asc', 'JGRID_HEADING_ORDERING', 'icon-menu-2'); ?>
-					</th>
-					<th width="1%" class="nowrap center">
-						<?php echo JHtml::_('grid.checkall'); ?>
-					</th>
-					<th width="1%" style="min-width:55px" class="nowrap center">
-						<?php echo JHtml::_('searchtools.sort', 'JSTATUS', 'a.published', $listDirn, $listOrder); ?>
-					</th>
-					<th>
-						<?php echo JHtml::_('searchtools.sort', 'JGLOBAL_TITLE', 'a.name', $listDirn, $listOrder); ?>
-					</th>
-					<th class="center">
-						<?php echo JHtml::_('searchtools.sort', 'COM_CHURCHDIRECTORY_FIELD_LASTNAME', 'a.lname', $listDirn, $listOrder); ?>
-					</th>
-					<th class="nowrap hidden-phone">
-						<?php echo JHtml::_('searchtools.sort', 'COM_CHURCHDIRECTORY_FIELD_LINKED_USER_LABEL', 'ul.name', $listDirn, $listOrder); ?>
-					</th>
-					<th width="5%" class="center nowrap hidden-phone">
-						<?php echo JHtml::_('searchtools.sort', 'COM_CHURCHDIRECTORY_FIELD_FEATURED_LABEL', 'a.featured', $listDirn, $listOrder); ?>
-					</th>
-					<th width="10%" class="nowrap hidden-phone">
-						<?php echo JHtml::_('searchtools.sort', 'JGRID_HEADING_ACCESS', 'access_level', $listDirn, $listOrder); ?>
-					</th>
-					<th width="5%" class="nowrap hidden-phone">
-						<?php echo JHtml::_('searchtools.sort', 'JGRID_HEADING_LANGUAGE', 'a.language', $listDirn, $listOrder); ?>
-					</th>
-					<th width="1%" class="nowrap center hidden-phone">
-						<?php echo JHtml::_('searchtools.sort', 'JGRID_HEADING_ID', 'a.id', $listDirn, $listOrder); ?>
-					</th>
-				</tr>
+					<tr>
+						<th width="1%" class="nowrap center hidden-phone">
+							<?php echo JHtml::_('searchtools.sort', '', 'a.ordering', $listDirn, $listOrder, null, 'asc', 'JGRID_HEADING_ORDERING', 'icon-menu-2'); ?>
+						</th>
+						<th width="1%" class="nowrap center">
+							<?php echo JHtml::_('grid.checkall'); ?>
+						</th>
+						<th width="1%" style="min-width:55px" class="nowrap center">
+							<?php echo JHtml::_('searchtools.sort', 'JSTATUS', 'a.published', $listDirn, $listOrder); ?>
+						</th>
+						<th class="nowrap">
+							<?php echo JHtml::_('searchtools.sort', 'JGLOBAL_TITLE', 'a.name', $listDirn, $listOrder); ?>
+						</th>
+						<th class="nowrap hidden-phone hidden-tablet">
+							<?php echo JHtml::_('searchtools.sort', 'COM_CHURCHDIRECTORY_FIELD_LASTNAME', 'a.lname', $listDirn, $listOrder); ?>
+						</th>
+						<th class="nowrap hidden-phone hidden-tablet">
+							<?php echo JHtml::_('searchtools.sort', 'COM_CHURCHDIRECTORY_FIELD_LINKED_USER_LABEL', 'ul.name', $listDirn, $listOrder); ?>
+						</th>
+						<th width="10%" class="nowrap hidden-phone">
+							<?php echo JHtml::_('searchtools.sort', 'JGRID_HEADING_ACCESS', 'access_level', $listDirn, $listOrder); ?>
+						</th>
+						<th width="5%" class="nowrap hidden-phone">
+							<?php echo JHtml::_('searchtools.sort', 'JGRID_HEADING_LANGUAGE', 'a.language', $listDirn, $listOrder); ?>
+						</th>
+						<th width="1%" class="nowrap hidden-phone">
+							<?php echo JHtml::_('searchtools.sort', 'JGRID_HEADING_ID', 'a.id', $listDirn, $listOrder); ?>
+						</th>
+					</tr>
 				</thead>
+				<tfoot>
+					<tr>
+						<td colspan="10">
+							<?php echo $this->pagination->getListFooter(); ?>
+						</td>
+					</tr>
+				</tfoot>
 				<tbody>
 				<?php
 				$n              = count($this->items);
@@ -107,17 +116,18 @@ if ($saveOrder)
 								       value="<?php echo $item->ordering; ?>" class="width-20 text-area-order "/>
 							<?php endif; ?>
 						</td>
-						<td class="center hidden-phone">
+						<td class="center">
 							<?php echo JHtml::_('grid.id', $i, $item->id); ?>
 						</td>
 						<td class="center">
 							<div class="btn-group">
 								<?php echo JHtml::_('jgrid.published', $item->published, $i, 'members.', $canChange, 'cb', $item->publish_up, $item->publish_down); ?>
+								<?php echo JHtml::_('member.featured', $item->featured, $i, $canChange); ?>
 								<?php // Create dropdown items and render the dropdown list.
 								if ($canChange)
 								{
-									JHtml::_('actionsdropdown.' . ((int) $item->published === 2 ? 'un' : '') . 'archive', 'cb' . $i, 'contacts');
-									JHtml::_('actionsdropdown.' . ((int) $item->published === -2 ? 'un' : '') . 'trash', 'cb' . $i, 'contacts');
+									JHtml::_('actionsdropdown.' . ((int) $item->published === 2 ? 'un' : '') . 'archive', 'cb' . $i, 'members');
+									JHtml::_('actionsdropdown.' . ((int) $item->published === -2 ? 'un' : '') . 'trash', 'cb' . $i, 'members');
 									echo JHtml::_('actionsdropdown.render', $this->escape($item->name));
 								}
 								?>
@@ -150,47 +160,45 @@ if ($saveOrder)
 								<?php endif; ?>
 							</div>
 						</td>
-						<td class="center hidden-phone">
+						<td class="hidden-phone">
 							<?php echo $item->lname; ?>
 						</td>
-						<td align="small hidden-phone">
+						<td align="small hidden-phone hidden-tablet">
 							<?php if (!empty($item->linked_user)) : ?>
 								<a href="<?php echo JRoute::_('index.php?option=com_users&task=user.edit&id=' . $item->user_id); ?>"><?php echo $item->linked_user; ?></a>
+								<div class="small"><?php echo $item->email; ?></div>
 							<?php endif; ?>
-						</td>
-						<td class="center hidden-phone">
-							<?php echo JHtml::_('member.featured', $item->featured, $i, $canChange); ?>
 						</td>
 						<td class="small hidden-phone">
 							<?php echo $item->access_level; ?>
 						</td>
 						<td class="small hidden-phone">
-							<?php if ($item->language == '*'): ?>
-								<?php echo JText::alt('JALL', 'language'); ?>
-							<?php else: ?>
-								<?php echo $item->language_title ? $this->escape($item->language_title) : JText::_('JUNDEFINED'); ?>
-							<?php endif; ?>
+							<?php echo JLayoutHelper::render('joomla.content.language', $item); ?>
 						</td>
-						<td class="center hidden-phone">
+						<td class="hidden-phone">
 							<?php echo $item->id; ?>
 						</td>
 					</tr>
 				<?php endforeach; ?>
 				</tbody>
-				<tfoot>
-				<tr>
-					<td colspan="10">
-						<?php echo $this->pagination->getListFooter(); ?>
-					</td>
-				</tr>
-				</tfoot>
 			</table>
-			<?php //Load the batch processing form. ?>
-			<?php echo $this->loadTemplate('batch'); ?>
+			<?php // Load the batch processing form. ?>
+			<?php if ($user->authorise('core.create', 'com_churchdirectory')
+				&& $user->authorise('core.edit', 'com_churchdirectory')
+				&& $user->authorise('core.edit.state', 'com_churchdirectory')) : ?>
+				<?php echo JHtml::_(
+					'bootstrap.renderModal',
+					'collapseModal',
+					array(
+						'title' => JText::_('COM_CHURCHDIRECTORY_BATCH_OPTIONS'),
+						'footer' => $this->loadTemplate('batch_footer')
+					),
+					$this->loadTemplate('batch_body')
+				); ?>
+			<?php endif; ?>
+			<?php endif; ?>
 			<input type="hidden" name="task" value=""/>
 			<input type="hidden" name="boxchecked" value="0"/>
-			<input type="hidden" name="filter_order" value="<?php echo $listOrder; ?>"/>
-			<input type="hidden" name="filter_order_Dir" value="<?php echo $listDirn; ?>"/>
 			<?php echo JHtml::_('form.token'); ?>
 		</div>
 </form>

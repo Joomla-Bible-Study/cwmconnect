@@ -49,7 +49,7 @@ class JFormFieldSpouse extends JFormField
 		// Build the query for the ordering list.
 		$db    = JFactory::getDbo();
 		$query = $db->getQuery(true);
-		$query->select('id, name, funitid, attribs, spouse')
+		$query->select('id, name, funitid, attribs, spouse, mstatus')
 				->from('#__churchdirectory_details')
 				->where('catid = ' . (int) $categoryId)
 				->where('published = 1')
@@ -62,10 +62,9 @@ class JFormFieldSpouse extends JFormField
 			$registry = new Registry($item->attribs);
 
 			$inputAttributes = array(
-				'type' => 'text', 'id' => $item->id, 'value' => $db->escape($item->name)
+				'type' => 'text', 'id' => $item->id, 'value' => $db->escape($item->name) . ' '
+					. ChurchDirectoryHelper::memberStatusShort($item->mstatus)
 			);
-
-			$inputAttributes['size'] = (int) 500;
 
 			if ($item->funitid !== '0' && $item->id != $memberId
 				&& $registry->get('familypostion', 2) !== (int) $memberfustatus
