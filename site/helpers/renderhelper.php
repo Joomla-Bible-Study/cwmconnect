@@ -40,7 +40,7 @@ class ChurchDirectoryRenderHelper
 	 *
 	 * @return string|bool
 	 *
-	 * @since    1.5
+	 * @since    1.7.5
 	 */
 	public function getPosition($con_position, $getint = false, $params = null)
 	{
@@ -129,7 +129,7 @@ class ChurchDirectoryRenderHelper
 	 *
 	 * @return array  Array of family members
 	 *
-	 * @since    1.5
+	 * @since    1.7.5
 	 */
 	public function getFamilyMembers($fu_id, $fm = '2', $children = false)
 	{
@@ -181,7 +181,7 @@ class ChurchDirectoryRenderHelper
 	 *
 	 * @return string HTML string
 	 *
-	 * @since    1.5
+	 * @since    1.7.5
 	 */
 	public function getChildren($families, $from = false, $oldchildren_rc = null)
 	{
@@ -237,7 +237,7 @@ class ChurchDirectoryRenderHelper
 	 *
 	 * @return string
 	 *
-	 * @since    1.5
+	 * @since    1.7.5
 	 */
 	public function getSpouse($fu_id, $family_position, $from = false)
 	{
@@ -269,7 +269,7 @@ class ChurchDirectoryRenderHelper
 	 *
 	 * @return string HTML string returned
 	 *
-	 * @since    1.5
+	 * @since    1.7.5
 	 */
 	public function getMemberStatus($member, $from = false)
 	{
@@ -331,7 +331,7 @@ class ChurchDirectoryRenderHelper
 	 *
 	 * @return int
 	 *
-	 * @since    1.5
+	 * @since    1.7.5
 	 */
 	public function rowWidth($rows_per_page)
 	{
@@ -345,7 +345,7 @@ class ChurchDirectoryRenderHelper
 	 *
 	 * @return array
 	 *
-	 * @since    1.5
+	 * @since    1.7.5
 	 */
 	public function groupit($args)
 	{
@@ -386,7 +386,7 @@ class ChurchDirectoryRenderHelper
 	 *
 	 * @return stdClass
 	 *
-	 * @since    1.5
+	 * @since    1.7.5
 	 */
 	public function getName($name)
 	{
@@ -441,7 +441,7 @@ class ChurchDirectoryRenderHelper
 	 *
 	 * @return array
 	 *
-	 * @since    1.5
+	 * @since    1.7.5
 	 */
 	public function getBirthdays($params)
 	{
@@ -513,7 +513,7 @@ class ChurchDirectoryRenderHelper
 	 *
 	 * @return array
 	 *
-	 * @since    1.5
+	 * @since    1.7.5
 	 */
 	public function getAnniversary($params)
 	{
@@ -604,7 +604,7 @@ class ChurchDirectoryRenderHelper
 	 *
 	 * @return string
 	 *
-	 * @since version
+	 * @since 1.7.5
 	 */
 	public function renderAddress($item, $params)
 	{
@@ -673,7 +673,7 @@ class ChurchDirectoryRenderHelper
 	 *
 	 * @return string
 	 *
-	 * @since version
+	 * @since 1.7.5
 	 */
 	public function renderPhonesNumbers($item, $params, $name = null)
 	{
@@ -737,6 +737,7 @@ class ChurchDirectoryRenderHelper
 	 * @return string
 	 *
 	 * @since 1.7.8
+	 * @throws \Exception
 	 */
 	public function getSearchField($params)
 	{
