@@ -159,6 +159,12 @@ $tmpl    = $isModal || $input->get('tmpl', '', 'cmd') === 'component' ? '&tmpl=c
 				<div class="control-label"><?php echo $this->form->getLabel('spouse'); ?></div>
 				<div class="controls"><?php echo $this->form->getInput('spouse'); ?></div>
 			</div>
+			<?php if((int) $this->form->getValue('familypostion', 'attribs') !== 2): ?>
+				<div class="control-group">
+					<div class="control-label"><?php echo $this->form->getLabel('children_listed'); ?></div>
+					<div class="controls"><?php echo $this->form->getInput('children_listed'); ?></div>
+				</div>
+			<?php endif; ?>
 			<div class="control-group">
 				<div class="control-label"><?php echo $this->form->getLabel('children'); ?></div>
 				<div class="controls"><?php echo $this->form->getInput('children'); ?></div>

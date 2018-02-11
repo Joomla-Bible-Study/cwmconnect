@@ -271,6 +271,9 @@
 		<field name="spouse" type="spouse"
 		       label="COM_CHURCHDIRECTORY_FIELD_SPOUSE_LABEL" description="COM_CHURCHDIRECTORY_FIELD_SPOUSE_DESC"
 		       class="readonly small" size="30" readonly="true"/>
+		<field name="children_listed" type="children"
+		       label="COM_CHURCHDIRECTORY_FIELD_CHILDREN_LABEL" description="COM_CHURCHDIRECTORY_FIELD_CHILDREN_DESC"
+		       class="readonly small" size="500" readonly="true"/>
 		<field name="children" type="textarea"
 		       label="COM_CHURCHDIRECTORY_FIELD_CHILDREN_LABEL" description="COM_CHURCHDIRECTORY_FIELD_CHILDREN_DESC"
 		       class="inputbox small" rows="3" cols="30"/>
