@@ -76,6 +76,7 @@ class ChurchDirectoryModelMember extends JModelAdmin
 	 * @return  boolean  Returns true on success, false on failure.
 	 *
 	 * @since   2.5
+	 * @throws  Exception
 	 */
 	public function batch($commands, $pks, $contexts)
 	{
@@ -176,6 +177,7 @@ class ChurchDirectoryModelMember extends JModelAdmin
 	 * @return  mixed  An array of new IDs on success, boolean false on failure.
 	 *
 	 * @since    11.1
+	 * @throws   Exception
 	 */
 	protected function batchCopy($value, $pks, $contexts)
 	{
@@ -312,6 +314,7 @@ class ChurchDirectoryModelMember extends JModelAdmin
 	 * @return  boolean  True if successful, false otherwise and internal error is set.
 	 *
 	 * @since   2.5
+	 * @throws  Exception
 	 */
 	protected function batchUser($value, $pks, $contexts)
 	{
@@ -407,6 +410,7 @@ class ChurchDirectoryModelMember extends JModelAdmin
 	 * @return  boolean  True on success, False on error.
 	 *
 	 * @since 1.7.2
+	 * @throws Exception
 	 */
 	public function save($data)
 	{
@@ -489,9 +493,11 @@ class ChurchDirectoryModelMember extends JModelAdmin
 	 * @return    mixed    Object on success, false on failure.
 	 *
 	 * @since    1.7.0
+	 * @throws Exception
 	 */
 	public function getItem($pk = null)
 	{
+		/** @var Object $item */
 		if ($item = parent::getItem($pk))
 		{
 			// Convert the params field to an array.
@@ -541,6 +547,7 @@ class ChurchDirectoryModelMember extends JModelAdmin
 	 * @return   mixed    The data for the form.
 	 *
 	 * @since    1.7.0
+	 * @throws   Exception
 	 */
 	protected function loadFormData()
 	{
@@ -669,6 +676,83 @@ class ChurchDirectoryModelMember extends JModelAdmin
 		$this->cleanCache();
 
 		return true;
+	}
+
+	/**
+	 * Preprocess the form.
+	 *
+	 * @param   JForm   $form   Form object.
+	 * @param   object  $data   Data object.
+	 * @param   string  $group  Group name.
+	 *
+	 * @return  void
+	 *
+	 * @since   3.0.3
+	 * @throws  Exception
+	 */
+	protected function preprocessForm(JForm $form, $data, $group = 'content')
+	{
+		// Determine correct permissions to check.
+		if ($this->getState('contact.id'))
+		{
+			// Existing record. Can only edit in selected categories.
+			$form->setFieldAttribute('catid', 'action', 'core.edit');
+		}
+		else
+		{
+			// New record. Can only create in selected categories.
+			$form->setFieldAttribute('catid', 'action', 'core.create');
+		}
+
+		if ($this->canCreateCategory())
+		{
+			$form->setFieldAttribute('catid', 'allowAdd', 'true');
+		}
+
+		// Association contact items
+		if (JLanguageAssociations::isEnabled())
+		{
+			$languages = JLanguageHelper::getContentLanguages(false, true, null, 'ordering', 'asc');
+
+			if (count($languages) > 1)
+			{
+				$addform = new SimpleXMLElement('<form />');
+				$fields = $addform->addChild('fields');
+				$fields->addAttribute('name', 'associations');
+				$fieldset = $fields->addChild('fieldset');
+				$fieldset->addAttribute('name', 'item_associations');
+
+				foreach ($languages as $language)
+				{
+					$field = $fieldset->addChild('field');
+					$field->addAttribute('name', $language->lang_code);
+					$field->addAttribute('type', 'modal_contact');
+					$field->addAttribute('language', $language->lang_code);
+					$field->addAttribute('label', $language->title);
+					$field->addAttribute('translate_label', 'false');
+					$field->addAttribute('select', 'true');
+					$field->addAttribute('new', 'true');
+					$field->addAttribute('edit', 'true');
+					$field->addAttribute('clear', 'true');
+				}
+
+				$form->load($addform, false);
+			}
+		}
+
+		parent::preprocessForm($form, $data, $group);
+	}
+
+	/**
+	 * Is the user allowed to create an on the fly category?
+	 *
+	 * @return  boolean
+	 *
+	 * @since   3.6.1
+	 */
+	private function canCreateCategory()
+	{
+		return JFactory::getUser()->authorise('core.create', 'com_churchdirectory');
 	}
 
 	/**

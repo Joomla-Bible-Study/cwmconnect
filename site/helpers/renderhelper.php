@@ -376,6 +376,8 @@ class ChurchDirectoryRenderHelper
 			}
 		}
 
+		ksort($result);
+
 		return $result;
 	}
 
