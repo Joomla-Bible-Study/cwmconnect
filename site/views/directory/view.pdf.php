@@ -10,7 +10,6 @@
 defined('_JEXEC') or die;
 
 require_once JPATH_COMPONENT . '/models/category.php';
-jimport('mpdf.mpdf');
 
 /**
  * HTML Member View class for the ChurchDirectory component
@@ -92,7 +91,8 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 	 *
 	 * @return  mixed  A string if successful, otherwise a Error object.
 	 *
-	 * @since       1.7.2
+	 * @since   1.7.2
+	 * @throws  Exception
 	 */
 	public function display($tpl = null)
 	{
@@ -105,6 +105,8 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 		$category = $this->get('Category');
 
 		$this->renderHelper = new ChurchDirectoryRenderHelper;
+
+		JFactory::getApplication()->clearHeaders();
 
 		$this->baseurl = JUri::base();
 
@@ -323,8 +325,10 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 		// Clean the output buffer
 		@ob_end_clean();
 
+		require_once JPATH_ROOT . '/libraries/mpdf/vendor/autoload.php';
+
 		// Create new PDF document
-		$this->pdf = new mPDF('utf-8', 'Letter',  0, '', 30, 10);
+		$this->pdf = new \Mpdf\Mpdf;
 
 		// Double-side document - mirror margins
 		$this->pdf->mirrorMargins = true;

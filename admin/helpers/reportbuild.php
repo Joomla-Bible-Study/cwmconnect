@@ -232,15 +232,15 @@ class ChurchDirectoryReportBuild
 		$kml[] = '	<name>' . $kmlinfo->name . '</name>';
 		$kml[] = '	<open>' . $kmlinfo->params->get('open') . '</open>';
 		$kml[] = '<description><![CDATA[' . $kmlinfo->description . ']]></description>';
-		$kml[] = '<LookAt>
-    		 <longitude>' . $kmlinfo->lng . '</longitude>
-    		 <latitude>' . $kmlinfo->lat . '</latitude>
-		 <altitude>' . $kmlinfo->params->get('altitude') . '</altitude>
-		 <range>' . $kmlinfo->params->get('range') . '</range>
-		 <tilt>' . $kmlinfo->params->get('tilt') . '</tilt>
-		 <heading>' . $kmlinfo->params->get('heading') . '</heading>
-		 <gx:altitudeMode>' . $kmlinfo->params->get('gxaltitudeMode') . '</gx:altitudeMode>
-  	     </LookAt>    <!-- Camera or LookAt -->';
+		$kml[] = '<LookAt>';
+		$kml[] = '	 <longitude>' . $kmlinfo->lng . '</longitude>';
+		$kml[] = '	 <latitude>' . $kmlinfo->lat . '</latitude>';
+		$kml[] = '	 <altitude>' . $kmlinfo->params->get('altitude') . '</altitude>';
+		$kml[] = '	 <range>' . $kmlinfo->params->get('range') . '</range>';
+		$kml[] = '	 <tilt>' . $kmlinfo->params->get('tilt') . '</tilt>';
+		$kml[] = '	 <heading>' . $kmlinfo->params->get('heading') . '</heading>';
+		$kml[] = '   <gx:altitudeMode>' . $kmlinfo->params->get('gxaltitudeMode') . '</gx:altitudeMode>';
+		$kml[] = '</LookAt>    <!-- Camera or LookAt -->';
 		$kml[] = $kmlinfo->style;
 		$kml = array_merge($kml, $this->KMLbuildCatagories());
 		$teams = $renderHelper->groupit(['items' => $items, 'field' => 'category_title']);
@@ -255,12 +255,18 @@ class ChurchDirectoryReportBuild
 
 		foreach ($new_rows as $c => $suburb)
 		{
-			$mycounter++;
 			$kml[] = '<Folder id="' . $mycounter . '"> ';
 			$kml[] = '<name>';
 			$kml[] = $c;
 			$kml[] = '</name>';
 			$kml[] = '<open>' . $ckml_params->get('mcropen') . '</open>           <!-- boolean -->';
+
+			if (isset($suburb[key($suburb)][0]->category_description))
+			{
+				$kml[] = '<description><![CDATA[' . $suburb[key($suburb)][0]->category_description . ']]></description>';
+			}
+
+			$mycounter++;
 
 			foreach ($suburb as $s => $rows)
 			{

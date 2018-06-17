@@ -190,6 +190,11 @@ class ChurchDirectoryRenderHelper
 			$families = self::getFamilyMembers($families, 2, true);
 		}
 
+		if (!is_array($families))
+		{
+			$families = ['0' => $families];
+		}
+
 		$n2   = count($families);
 		$i2   = $n2;
 		$name = '';
@@ -351,6 +356,7 @@ class ChurchDirectoryRenderHelper
 	{
 		$items = null;
 		$field = null;
+		$description = null;
 		extract($args);
 		$result = [];
 

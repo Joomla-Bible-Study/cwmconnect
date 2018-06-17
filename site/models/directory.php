@@ -223,7 +223,8 @@ class ChurchDirectoryModelDirectory extends JModelList
 		$query->join('LEFT', '#__churchdirectory_familyunit AS fu ON fu.id = a.funitid');
 
 		// Join over the categories.
-		$query->select('c.title AS category_title, c.params AS category_params, c.alias AS category_alias, c.access AS category_access');
+		$query->select('c.title AS category_title, c.params AS category_params, c.alias AS category_alias,' .
+			' c.description AS category_description, c.access AS category_access');
 		$query->join('INNER', '#__categories AS c ON c.id = a.catid');
 
 		// Join over the users for the author and modified_by names.
@@ -234,7 +235,8 @@ class ChurchDirectoryModelDirectory extends JModelList
 			->join('LEFT', '#__users AS uam ON uam.id = a.modified_by');
 
 		// Join over the categories to get parent category titles
-		$query->select('parent.title as parent_title, parent.id as parent_id, parent.path as parent_route, parent.alias as parent_alias')
+		$query->select('parent.title as parent_title, parent.id as parent_id, parent.path as parent_route,' .
+			' parent.alias as parent_alias')
 			->join('LEFT', '#__categories as parent ON parent.id = c.parent_id');
 
 		// Join to check for category published state in parent categories up the tree

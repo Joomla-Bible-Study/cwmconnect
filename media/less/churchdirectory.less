@@ -31,36 +31,36 @@
 #churchdirectory {
   margin: 10px 0;
   #contact-address p {
-	margin-left: 5px;
+    margin-left: 5px;
   }
   p {
-	line-height: 1em;
-	margin: 3px 0 3px 0;
-	padding: 0;
+    line-height: 1em;
+    margin: 3px 0 3px 0;
+    padding: 0;
   }
   label {
-	display: block;
+    display: block;
   }
   label.chkbox {
-	display: inline;
+    display: inline;
   }
   input.chkbox {
-	display: inline;
-	margin-bottom: 0;
+    display: inline;
+    margin-bottom: 0;
   }
   label.required {
-	color: @color-red;
+    color: @color-red;
   }
   select {
-	display: block;
+    display: block;
   }
   input.radio {
-	display: inline;
-	margin-bottom: 0;
+    display: inline;
+    margin-bottom: 0;
   }
   .contact-button {
-	display: block;
-	margin-top: 10px;
+    display: block;
+    margin-top: 10px;
   }
 }
 
@@ -160,19 +160,33 @@ p {
 }
 
 /* Directory Layout */
-.directory-img {
-  width: 200px;
-}
-
 .cd_items {
   border: 1px solid @color-black;
 }
 
+.cd-image-td {
+  max-height: 200px;
+  min-height: 100px;
+  width: 100px;
+}
+
 .cd-image {
-  width: 200px;
-  margin-left: 6px;
-  margin-right: 6px;
-  min-height: 250px;
+  width: 110px;
+  max-height: 110px;
+  padding: 4px;
+  line-height: 18px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.055);
+  -webkit-transition: all 0.2s ease-in-out;
+  -moz-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+}
+
+.directory-img {
+  width: 100px;
+  max-height: 100px;
+  display: block;
 }
 
 .cd-content {
@@ -218,8 +232,8 @@ p {
 .churchdirectory-container {
   overflow: hidden;
   hr {
-	margin: 0;
-	border: 1px solid @color-black;
+    margin: 0;
+    border: 1px solid @color-black;
   }
 }
 
