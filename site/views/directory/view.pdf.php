@@ -96,6 +96,7 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 	 */
 	public function display($tpl = null)
 	{
+		// @todo Move to Render Helper as much as possible. This will allow for backend creation. May look at extending a model and view from the back side.
 		$app    = JFactory::getApplication();
 		$params = JComponentHelper::getParams('com_churchdirectory');
 
@@ -350,6 +351,9 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 
 		$jweb  = new JApplicationWeb;
 		$jweb->clearHeaders();
+
+		// @todo need to look at moving the pramitoers to the componet config. This will allow for options.
+		$this->pdf->SetProtection(array('copy','print'), '', $this->renderHelper->random_password(24));
 
 		// Close and output PDF document
 		$this->pdf->Output($title . date('Ymd') . '.pdf', 'I');

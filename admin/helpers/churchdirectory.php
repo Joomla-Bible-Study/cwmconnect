@@ -294,6 +294,5 @@ class ChurchDirectoryHelper
 			default:
 				return "(O)";
 		}
-
 	}
 }
