@@ -42,7 +42,7 @@ class ChurchDirectoryReportBuild
 	 * @param   object  $items   Items to pass through
 	 * @param   string  $report  Name of report to return.
 	 *
-	 * @return bool
+	 * @return void;
 	 *
 	 * @since    1.7.0
 	 */
@@ -433,6 +433,7 @@ class ChurchDirectoryReportBuild
 	 * @return mixed
 	 *
 	 * @since 1.8.4
+	 * @throws Exception
 	 */
 	public function getMissingPhotos($items, $report = null)
 	{

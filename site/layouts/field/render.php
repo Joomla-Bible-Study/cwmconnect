@@ -27,6 +27,7 @@ if ($field->context == 'com_churchdirectory.mail')
 {
 	// Prepare the value for the contact form mail
 	echo $label . ': ' . $value . "\r\n";
+
 	return;
 }
 
