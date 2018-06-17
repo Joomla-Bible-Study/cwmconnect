@@ -131,17 +131,30 @@ p {
   width: 100%;
 }
 /* Directory Layout */
-.directory-img {
-  width: 200px;
-}
 .cd_items {
   border: 1px solid #000000;
 }
+.cd-image-td {
+  max-height: 200px;
+  min-height: 100px;
+  width: 100px;
+}
 .cd-image {
-  width: 200px;
-  margin-left: 6px;
-  margin-right: 6px;
-  min-height: 250px;
+  width: 110px;
+  max-height: 110px;
+  padding: 4px;
+  line-height: 18px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.055);
+  -webkit-transition: all 0.2s ease-in-out;
+  -moz-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
+}
+.directory-img {
+  width: 100px;
+  max-height: 100px;
+  display: block;
 }
 .cd-content {
   padding: 10px;
@@ -214,3 +227,4 @@ p {
   padding-left: 10px;
   padding-top: 5px;
 }
+/*# sourceMappingURL=churchdirectory.css.map */
