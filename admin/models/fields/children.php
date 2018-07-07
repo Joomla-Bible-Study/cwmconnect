@@ -61,7 +61,7 @@ class JFormFieldChildren extends JFormField
 		{
 			$registry = new Registry($item->attribs);
 
-			if ((int) $registry->get('familypostion', 2) === 2
+			if ((int) $registry->get('familypostion') === 2
 				&& ($memberfustatus !== 2 || $memberfustatus === 0))
 			{
 				$chiledren[] = $db->escape($item->name) . " "
