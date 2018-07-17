@@ -77,8 +77,8 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 	public $rows_per_page;
 
 	/**
-	 * @var  mPDF
-	 * @since version
+	 * @var  \Mpdf\Mpdf
+	 * @since 1.7.4
 	 */
 	protected $pdf;
 
@@ -329,7 +329,7 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 		require_once JPATH_ROOT . '/libraries/mpdf/vendor/autoload.php';
 
 		// Create new PDF document
-		$this->pdf = new \Mpdf\Mpdf;
+		$this->pdf = new \Mpdf\Mpdf(['tempDir' => JPATH_SITE . '/tmp']);
 
 		// Double-side document - mirror margins
 		$this->pdf->mirrorMargins = true;

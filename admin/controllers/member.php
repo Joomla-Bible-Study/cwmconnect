@@ -7,6 +7,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\Utilities\ArrayHelper;
+
 /**
  * class for Member
  *
@@ -23,12 +25,13 @@ class ChurchDirectoryControllerMember extends JControllerForm
 	 * @return    boolean
 	 *
 	 * @since    1.7.0
+	 * @throws   Exception
 	 */
 	protected function allowAdd($data = [])
 	{
 		// Initialise variables.
 		$user       = JFactory::getUser();
-		$categoryId = Joomla\Utilities\ArrayHelper::getValue($data, 'catid', JFactory::getApplication()->input->getInt('filter_category_id', 0), 'int');
+		$categoryId = ArrayHelper::getValue($data, 'catid', $this->input->getInt('filter_category_id'), 'int');
 		$allow      = null;
 
 		if ($categoryId)
@@ -40,12 +43,10 @@ class ChurchDirectoryControllerMember extends JControllerForm
 		if ($allow === null)
 		{
 			// In the absense of better information, revert to the component permissions.
-			return parent::allowAdd();
+			return parent::allowAdd($data);
 		}
-		else
-		{
-			return $allow;
-		}
+
+		return $allow;
 	}
 
 	/**
@@ -62,23 +63,29 @@ class ChurchDirectoryControllerMember extends JControllerForm
 	{
 		// Initialise variables.
 		$recordId   = (int) isset($data[$key]) ? $data[$key] : 0;
-		$categoryId = 0;
 
-		if ($recordId)
+		// Since there is no asset tracking, fallback to the component permissions.
+		if (!$recordId)
 		{
-			$categoryId = (int) $this->getModel()->getItem($recordId)->catid;
-		}
-
-		if ($categoryId)
-		{
-			// The category has been set. Check the category permissions.
-			return JFactory::getUser()->authorise('core.edit', $this->option . '.category.' . $categoryId);
-		}
-		else
-		{
-			// Since there is no asset tracking, revert to the component permissions.
 			return parent::allowEdit($data, $key);
 		}
+
+		// Get the item.
+		$item = $this->getModel()->getItem($recordId);
+
+		// Since there is no item, return false.
+		if (empty($item))
+		{
+			return false;
+		}
+
+		$user = JFactory::getUser();
+
+		// Check if can edit own core.edit.own.
+		$canEditOwn = $user->authorise('core.edit.own', $this->option . '.category.' . (int) $item->catid) && $item->created_by == $user->id;
+
+		// Check the category core.edit permissions.
+		return $canEditOwn || $user->authorise('core.edit', $this->option . '.category.' . (int) $item->catid);
 	}
 
 	/**

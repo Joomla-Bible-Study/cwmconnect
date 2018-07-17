@@ -9,7 +9,12 @@
  */
 // No direct access
 defined('_JEXEC') or die;
+
 use Joomla\Registry\Registry;
+use Joomla\String\StringHelper;
+use Joomla\Utilities\ArrayHelper;
+
+JLoader::register('ChurchDirectoryHelper', JPATH_ADMINISTRATOR . '/components/com_contact/helpers/contact.php');
 
 /**
  * Item Model for a Member.
@@ -369,12 +374,8 @@ class ChurchDirectoryModelMember extends JModelAdmin
 				return false;
 			}
 
-			$user = JFactory::getUser();
-
-			return $user->authorise('core.delete', 'com_churchdirectory.member.' . (int) $record->catid);
+			return JFactory::getUser()->authorise('core.delete', 'com_churchdirectory.category.' . (int) $record->catid);
 		}
-
-		return true;
 	}
 
 	/**
@@ -388,18 +389,14 @@ class ChurchDirectoryModelMember extends JModelAdmin
 	 */
 	protected function canEditState($record)
 	{
-		$user = JFactory::getUser();
-
 		// Check against the category.
 		if (!empty($record->catid))
 		{
-			return $user->authorise('core.edit.state', 'com_churchdirectory.category.' . (int) $record->catid);
+			return JFactory::getUser()->authorise('core.edit.state', 'com_churchdirectory.category.' . (int) $record->catid);
 		}
+
 		// Default to component settings if category not known.
-		else
-		{
-			return parent::canEditState($record);
-		}
+		return parent::canEditState($record);
 	}
 
 	/**
@@ -414,6 +411,66 @@ class ChurchDirectoryModelMember extends JModelAdmin
 	 */
 	public function save($data)
 	{
+		$input = JFactory::getApplication()->input;
+
+		JLoader::register('CategoriesHelper', JPATH_ADMINISTRATOR . '/components/com_categories/helpers/categories.php');
+
+		// Cast catid to integer for comparison
+		$catid = (int) $data['catid'];
+
+		// Check if New Category exists
+		if ($catid > 0)
+		{
+			$catid = CategoriesHelper::validateCategoryId($data['catid'], 'com_churchdirectory');
+		}
+
+		// Save New Category
+		if ($catid == 0 && $this->canCreateCategory())
+		{
+			$table = array();
+			$table['title'] = $data['catid'];
+			$table['parent_id'] = 1;
+			$table['extension'] = 'com_churchdirectory';
+			$table['language'] = $data['language'];
+			$table['published'] = 1;
+
+			// Create new category and get catid back
+			$data['catid'] = CategoriesHelper::createCategory($table);
+		}
+
+		// Alter the name for save as copy
+		if ($input->get('task') == 'save2copy')
+		{
+			$origTable = clone $this->getTable();
+			$origTable->load($input->getInt('id'));
+
+			if ($data['name'] == $origTable->name)
+			{
+				list($name, $alias) = $this->generateNewTitle($data['catid'], $data['alias'], $data['name']);
+				$data['name'] = $name;
+				$data['alias'] = $alias;
+			}
+			else
+			{
+				if ($data['alias'] == $origTable->alias)
+				{
+					$data['alias'] = '';
+				}
+			}
+
+			$data['published'] = 0;
+		}
+
+		$links = array('linka', 'linkb', 'linkc', 'linkd', 'linke');
+
+		foreach ($links as $link)
+		{
+			if ($data['params'][$link])
+			{
+				$data['params'][$link] = JStringPunycode::urlToPunycode($data['params'][$link]);
+			}
+		}
+
 		$save = parent::save($data);
 
 		if ($save !== false)
@@ -457,7 +514,7 @@ class ChurchDirectoryModelMember extends JModelAdmin
 	 */
 	public function getForm($data = [], $loadData = true)
 	{
-		JForm::addFieldPath(JPATH_ADMINISTRATOR . '/components/com_users/models/fields');
+		JForm::addFieldPath('JPATH_ADMINISTRATOR/components/com_users/models/fields');
 
 		// Get the form.
 		$form = $this->loadForm('com_churchdirectory.member', 'member', ['control' => 'jform', 'load_data' => $loadData]);
@@ -586,30 +643,40 @@ class ChurchDirectoryModelMember extends JModelAdmin
 	 */
 	protected function prepareTable($table)
 	{
-		$date = JFactory::getDate();
+		$date = JFactory::getDate()->toSql();
 
 		$table->name  = htmlspecialchars_decode($table->name, ENT_QUOTES);
 		$table->alias = JApplicationHelper::stringURLSafe($table->alias);
 
 		$table->generateAlias();
 
-		if (empty($table->alias))
-		{
-			$table->alias = JApplicationHelper::stringURLSafe($table->name);
-		}
-
 		if (empty($table->id))
 		{
+			// Set the values
+			$table->created = $date;
+
 			// Set ordering to the last item if not set
 			if (empty($table->ordering))
 			{
-				$db = JFactory::getDbo();
-				$db->setQuery('SELECT MAX(ordering) FROM `#__churchdirectory_details`');
+				$db = $this->getDbo();
+				$query = $db->getQuery(true)
+					->select('MAX(ordering)')
+					->from($db->quoteName('#__churchdirectory_details'));
+				$db->setQuery($query);
 				$max = $db->loadResult();
 
 				$table->ordering = $max + 1;
 			}
 		}
+		else
+		{
+			// Set the values
+			$table->modified = $date;
+			$table->modified_by = JFactory::getUser()->id;
+		}
+
+		// Increment the content version number.
+		$table->version++;
 	}
 
 	/**
@@ -623,10 +690,7 @@ class ChurchDirectoryModelMember extends JModelAdmin
 	 */
 	protected function getReorderConditions($table)
 	{
-		$condition   = array();
-		$condition[] = 'catid = ' . (int) $table->catid;
-
-		return $condition;
+		return array('catid = ' . (int) $table->catid);
 	}
 
 	/**
@@ -645,8 +709,7 @@ class ChurchDirectoryModelMember extends JModelAdmin
 	public function featured($pks, $value = 0)
 	{
 		// Sanitize the ids.
-		$pks = (array) $pks;
-		Joomla\Utilities\ArrayHelper::toInteger($pks);
+		$pks = ArrayHelper::toInteger((array) $pks);
 
 		if (empty($pks))
 		{
@@ -657,16 +720,22 @@ class ChurchDirectoryModelMember extends JModelAdmin
 
 		$table = $this->getTable();
 
-		$db = $this->getDbo();
-
-		$db->setQuery(
-			'UPDATE #__churchdirectory_details AS a' .
-				' SET a.featured = ' . (int) $value .
-				' WHERE a.id IN (' . implode(',', $pks) . ')'
-		);
-
-		if (!$db->execute())
+		try
 		{
+			$db = $this->getDbo();
+
+			$query = $db->getQuery(true);
+			$query->update('#__churchdirectory_details');
+			$query->set('featured = ' . (int) $value);
+			$query->where('id IN (' . implode(',', $pks) . ')');
+			$db->setQuery($query);
+
+			$db->execute();
+		}
+		catch (Exception $e)
+		{
+			$this->setError($e->getMessage());
+
 			return false;
 		}
 
@@ -693,7 +762,7 @@ class ChurchDirectoryModelMember extends JModelAdmin
 	protected function preprocessForm(JForm $form, $data, $group = 'content')
 	{
 		// Determine correct permissions to check.
-		if ($this->getState('contact.id'))
+		if ($this->getState('member.id'))
 		{
 			// Existing record. Can only edit in selected categories.
 			$form->setFieldAttribute('catid', 'action', 'core.edit');
@@ -741,6 +810,35 @@ class ChurchDirectoryModelMember extends JModelAdmin
 		}
 
 		parent::preprocessForm($form, $data, $group);
+	}
+
+	/**
+	 * Method to change the title & alias.
+	 *
+	 * @param   integer  $category_id  The id of the parent.
+	 * @param   string   $alias        The alias.
+	 * @param   string   $name         The title.
+	 *
+	 * @return  array  Contains the modified title and alias.
+	 *
+	 * @since   3.1
+	 */
+	protected function generateNewTitle($category_id, $alias, $name)
+	{
+		// Alter the title & alias
+		$table = $this->getTable();
+
+		while ($table->load(array('alias' => $alias, 'catid' => $category_id)))
+		{
+			if ($name == $table->name)
+			{
+				$name = StringHelper::increment($name);
+			}
+
+			$alias = StringHelper::increment($alias, 'dash');
+		}
+
+		return array($name, $alias);
 	}
 
 	/**

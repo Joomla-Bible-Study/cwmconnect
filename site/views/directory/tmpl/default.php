@@ -30,7 +30,7 @@ foreach ($this->items as $s1 => $sort1)
 	$html = $this->loadTemplate('items');
 
 	// Print a block of text using Write()
-	$this->pdf->WriteHTML($html);
+	$this->pdf->WriteHTML($html, 2);
 }
 
 $this->loadTemplate('lastpage');
