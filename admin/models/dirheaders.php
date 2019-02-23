@@ -62,17 +62,8 @@ class ChurchDirectoryModelDirHeaders extends JModelList
 	 *
 	 * @since    1.7.0
 	 */
-	protected function populateState($ordering = null, $direction = null)
+	protected function populateState($ordering = 'a.name', $direction = 'asc')
 	{
-		// Initialise variables.
-		$app = JFactory::getApplication();
-
-		// Adjust the context to support modal layouts.
-		if ($layout = $app->input->get('layout'))
-		{
-			$this->context .= '.' . $layout;
-		}
-
 		$search = $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search');
 		$this->setState('filter.search', $search);
 
@@ -88,8 +79,11 @@ class ChurchDirectoryModelDirHeaders extends JModelList
 		$language = $this->getUserStateFromRequest($this->context . '.filter.section', 'filter_section', '');
 		$this->setState('filter.section', $language);
 
+		// Load the parameters.
+		$this->setState('params', JComponentHelper::getParams('com_churchdirectory'));
+
 		// List state information.
-		parent::populateState('a.name', 'asc');
+		parent::populateState($ordering, $direction);
 	}
 
 	/**
@@ -133,41 +127,63 @@ class ChurchDirectoryModelDirHeaders extends JModelList
 
 		// Select the required fields from the table.
 		$query->select(
-			$this->getState(
-				'list.select', 'a.id, a.name, a.alias, a.checked_out, a.checked_out_time, a.user_id' .
-				', a.catid, a.section, a.published, a.access, a.created, a.created_by, a.ordering, a.language' .
-				', a.publish_up, a.publish_down'
+			$db->quoteName(
+				explode(', ', $this->getState(
+					'list.select',
+					'a.id, a.name, a.alias, a.checked_out, a.checked_out_time, a.user_id' .
+					', a.catid, a.section, a.published, a.access, a.created, a.created_by, a.ordering, a.language' .
+					', a.publish_up, a.publish_down'
+					)
+				)
 			)
 		);
-		$query->from('#__churchdirectory_dirheader AS a');
+		$query->from($db->quoteName('#__churchdirectory_dirheader', 'a'));
 
 		// Join over the users for the linked user.
-		$query->select('ul.name AS linked_user');
-		$query->join('LEFT', '#__users AS ul ON ul.id=a.user_id');
+		$query->select(
+			array(
+				$db->quoteName('ul.name', 'linked_user'),
+				$db->quoteName('ul.email')
+			)
+		)
+			->join(
+				'LEFT',
+				$db->quoteName('#__users', 'ul') . ' ON ' . $db->quoteName('ul.id') . ' = ' . $db->quoteName('a.user_id')
+			);
 
 		// Join over the language
-		$query->select('l.title AS language_title');
-		$query->join('LEFT', $db->quoteName('#__languages') . ' AS l ON l.lang_code = a.language');
+		$query->select($db->quoteName('l.title', 'language_title'))
+			->select($db->quoteName('l.image', 'language_image'))
+			->join(
+				'LEFT',
+				$db->quoteName('#__languages', 'l') . ' ON ' . $db->quoteName('l.lang_code') . ' = ' . $db->quoteName('a.language')
+			);
 
 		// Join over the users for the checked out user.
-		$query->select('uc.name AS editor');
-		$query->join('LEFT', '#__users AS uc ON uc.id=a.checked_out');
+		$query->select($db->quoteName('uc.name', 'editor'))
+			->join(
+				'LEFT',
+				$db->quoteName('#__users', 'uc') . ' ON ' . $db->quoteName('uc.id') . ' = ' . $db->quoteName('a.checked_out')
+			);
 
 		// Join over the asset groups.
-		$query->select('ag.title AS access_level');
-		$query->join('LEFT', '#__viewlevels AS ag ON ag.id = a.access');
+		$query->select($db->quoteName('ag.title', 'access_level'))
+			->join(
+				'LEFT',
+				$db->quoteName('#__viewlevels', 'ag') . ' ON ' . $db->quoteName('ag.id') . ' = ' . $db->quoteName('a.access')
+			);
 
 		// Filter by access level.
 		if ($access = $this->getState('filter.access'))
 		{
-			$query->where('a.access = ' . (int) $access);
+			$query->where($db->quoteName('a.access') . ' = ' . (int) $access);
 		}
 
 		// Implement View Level Access
 		if (!$user->authorise('core.admin'))
 		{
 			$groups = implode(',', $user->getAuthorisedViewLevels());
-			$query->where('a.access IN (' . $groups . ')');
+			$query->where($db->quoteName('a.access') . ' IN (' . $groups . ')');
 		}
 
 		// Filter by published state
@@ -175,11 +191,11 @@ class ChurchDirectoryModelDirHeaders extends JModelList
 
 		if (is_numeric($published))
 		{
-			$query->where('a.published = ' . (int) $published);
+			$query->where($db->quoteName('a.published') . ' = ' . (int) $published);
 		}
 		elseif ($published === '')
 		{
-			$query->where('(a.published = 0 OR a.published = 1)');
+			$query->where('(' . $db->quoteName('a.published') . ' = 0 OR ' . $db->quoteName('a.published') . ' = 1)');
 		}
 
 		// Filter by search in name.
@@ -189,7 +205,7 @@ class ChurchDirectoryModelDirHeaders extends JModelList
 		{
 			if (stripos($search, 'id:') === 0)
 			{
-				$query->where('a.id = ' . (int) substr($search, 3));
+				$query->where($db->quoteName('a.id') . ' = ' . (int) substr($search, 3));
 			}
 			elseif (stripos($search, 'author:') === 0)
 			{
@@ -198,9 +214,15 @@ class ChurchDirectoryModelDirHeaders extends JModelList
 			}
 			else
 			{
-				$search = $db->q('%' . $db->escape($search, true) . '%');
+				$search = $db->q('%' . str_replace(' ', '%', $db->escape(trim($search), true) . '%'));
 				$query->where('(a.name LIKE ' . $search . ' OR a.alias LIKE ' . $search . ')');
 			}
+		}
+
+		// Filter on the language.
+		if ($language = $this->getState('filter.language'))
+		{
+			$query->where($db->quoteName('a.language') . ' = ' . $db->quote($language));
 		}
 
 		// Filter on the section.
@@ -217,7 +239,8 @@ class ChurchDirectoryModelDirHeaders extends JModelList
 
 		// Add the list ordering clause.
 		$orderCol  = $this->state->get('list.ordering', 'a.name');
-		$orderDirn = $this->state->get('list.direction', 'acs');
+		$orderDirn = $this->state->get('list.direction', 'ASC');
+
 		$query->order($db->escape($orderCol . ' ' . $orderDirn));
 
 		return $query;

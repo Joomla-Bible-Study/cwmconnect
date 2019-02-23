@@ -22,7 +22,7 @@ class ChurchDirectoryControllerDirHeaders extends JControllerAdmin
 	 * @param   string  $prefix  The prefix for the PHP class name.
 	 * @param   array   $config  Ingnore info
 	 *
-	 * @return    JModel
+	 * @return  bool|JModelLegacy
 	 *
 	 * @since    1.7.0
 	 */
