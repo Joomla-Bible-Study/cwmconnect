@@ -39,6 +39,28 @@ class ChurchDirectoryViewMembers extends JViewLegacy
 	 */
 	protected $state;
 
+	/**
+	 * Form object for search filters
+	 *
+	 * @var  JForm
+	 * @since    1.7.0
+	 */
+	public $filterForm;
+
+	/**
+	 * The active search filters
+	 *
+	 * @var  array
+	 * @since    1.7.0
+	 */
+	public $activeFilters;
+
+	/**
+	 * The sidebar markup
+	 *
+	 * @var  string
+	 * @since    1.7.0
+	 */
 	protected $sidebar;
 
 	/**
@@ -49,6 +71,7 @@ class ChurchDirectoryViewMembers extends JViewLegacy
 	 * @return  mixed  A string if successful, otherwise a Error object.
 	 *
 	 * @since    1.7.0
+	 * @throws   \Exception
 	 */
 	public function display($tpl = null)
 	{
@@ -69,9 +92,21 @@ class ChurchDirectoryViewMembers extends JViewLegacy
 			return false;
 		}
 
-		// Set the toolbar
-		$this->addToolbar();
-		$this->sidebar = JHtmlSidebar::render();
+		// Preprocess the list of items to find ordering divisions.
+		// TODO: Complete the ordering stuff with nested sets
+		foreach ($this->items as &$item)
+		{
+			$item->order_up = true;
+			$item->order_dn = true;
+		}
+
+		// We don't need toolbar in the modal window.
+		if ($this->getLayout() !== 'modal')
+		{
+			// Set the toolbar
+			$this->addToolbar();
+			$this->sidebar = JHtmlSidebar::render();
+		}
 
 		// Display the template
 		return parent::display($tpl);
@@ -85,12 +120,9 @@ class ChurchDirectoryViewMembers extends JViewLegacy
 	 */
 	protected function addToolbar()
 	{
-		$canDo = ChurchDirectoryHelper::getActions('com_churchdirectory');
+		$canDo = ChurchDirectoryHelper::getActions('com_churchdirectory', 'category', $this->state->get('filter.category_id'));
 		JHtml::addIncludePath(JPATH_COMPONENT . '/helpers/html');
 		$user  = JFactory::getUser();
-
-		// Get the toolbar object instance
-		$bar = JToolbar::getInstance('toolbar');
 
 		JToolbarHelper::title(JText::_('COM_CHURCHDIRECTORY_MANAGER_MEMBERS'), 'address contact');
 
@@ -108,8 +140,24 @@ class ChurchDirectoryViewMembers extends JViewLegacy
 		{
 			JToolbarHelper::publish('members.publish', 'JTOOLBAR_PUBLISH', true);
 			JToolbarHelper::unpublish('members.unpublish', 'JTOOLBAR_UNPUBLISH', true);
+			JToolbarHelper::custom('members.featured', 'featured.png', 'featured_f2.png', 'JFEATURE', true);
+			JToolbarHelper::custom('members.unfeatured', 'unfeatured.png', 'featured_f2.png', 'JUNFEATURE', true);
 			JToolbarHelper::archiveList('members.archive');
 			JToolbarHelper::checkin('members.checkin');
+		}
+
+		// Add a batch button
+		if ($user->authorise('core.create', 'com_churchdirectory')
+			&& $user->authorise('core.edit', 'com_churchdirectory')
+			&& $user->authorise('core.edit.state', 'com_churchdirectory'))
+		{
+			$title = JText::_('JTOOLBAR_BATCH');
+
+			// Instantiate a new JLayoutFile instance and render the batch button
+			$layout = new JLayoutFile('joomla.toolbar.batch');
+
+			$dhtml = $layout->render(array('title' => $title));
+			JToolbar::getInstance('toolbar')->appendButton('Custom', $dhtml, 'batch');
 		}
 
 		if ($this->state->get('filter.published') == -2 && $canDo->get('core.delete'))
@@ -121,18 +169,7 @@ class ChurchDirectoryViewMembers extends JViewLegacy
 			JToolbarHelper::trash('members.trash');
 		}
 
-		// Add a batch button
-		if ($user->authorise('core.edit'))
-		{
-			JHtml::_('bootstrap.modal', 'collapseModal');
-			$title = JText::_('JTOOLBAR_BATCH');
-			$dhtml = "<button data-toggle=\"modal\" data-target=\"#collapseModal\" class=\"btn btn-small\">
-						<i class=\"icon-checkbox-partial\" title=\"$title\"></i>
-						$title</button>";
-			$bar->appendButton('Custom', $dhtml, 'batch');
-		}
-
-		if ($canDo->get('core.admin'))
+		if ($user->authorise('core.admin', 'com_churchdirectory') || $user->authorise('core.options', 'com_churchdirectory'))
 		{
 			JToolbarHelper::preferences('com_churchdirectory');
 		}

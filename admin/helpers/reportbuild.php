@@ -42,7 +42,7 @@ class ChurchDirectoryReportBuild
 	 * @param   object  $items   Items to pass through
 	 * @param   string  $report  Name of report to return.
 	 *
-	 * @return bool
+	 * @return void;
 	 *
 	 * @since    1.7.0
 	 */
@@ -207,12 +207,19 @@ class ChurchDirectoryReportBuild
 	 * @return bool
 	 *
 	 * @since    1.7.0
+	 *
+	 * @throws  \Exception  If error
 	 */
 	public function getKML($items, $report = null)
 	{
 		$renderHelper = new ChurchDirectoryRenderHelper;
 		$dbhelp       = new ChurchDirectoryDB;
 		$kmlinfo      = $dbhelp->getKMLdb();
+
+		JFactory::getApplication()->clearHeaders();
+
+		// Stop output buffering or we will run out of memory with large tables.
+		ob_end_flush();
 
 		/** @var Joomla\Registry\Registry $ckml_params */
 		$ckml_params  = $kmlinfo->params;
@@ -222,108 +229,20 @@ class ChurchDirectoryReportBuild
 		$kml[] = '<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2"'
 			. ' xmlns:atom="http://www.w3.org/2005/Atom">';
 		$kml[] = '<Document>';
-		$kml[] = '<name>' . $kmlinfo->name . '</name>';
-		$kml[] = '<open>' . $kmlinfo->params->get('open') . '</open>';
-		$kml[] = '<LookAt>
-    		 <longitude>' . $kmlinfo->lng . '</longitude>
-    		 <latitude>' . $kmlinfo->lat . '</latitude>
-		 <altitude>' . $kmlinfo->params->get('altitude') . '</altitude>
-		 <range>' . $kmlinfo->params->get('range') . '</range>
-		 <tilt>' . $kmlinfo->params->get('tilt') . '</tilt>
-		 <heading>' . $kmlinfo->params->get('heading') . '</heading>
-		 <gx:altitudeMode>' . $kmlinfo->params->get('gxaltitudeMode') . '</gx:altitudeMode>
-  	     </LookAt>    <!-- Camera or LookAt -->';
+		$kml[] = '	<name>' . $kmlinfo->name . '</name>';
+		$kml[] = '	<open>' . $kmlinfo->params->get('open') . '</open>';
+		$kml[] = '<description><![CDATA[' . $kmlinfo->description . ']]></description>';
+		$kml[] = '<LookAt>';
+		$kml[] = '	 <longitude>' . $kmlinfo->lng . '</longitude>';
+		$kml[] = '	 <latitude>' . $kmlinfo->lat . '</latitude>';
+		$kml[] = '	 <altitude>' . $kmlinfo->params->get('altitude') . '</altitude>';
+		$kml[] = '	 <range>' . $kmlinfo->params->get('range') . '</range>';
+		$kml[] = '	 <tilt>' . $kmlinfo->params->get('tilt') . '</tilt>';
+		$kml[] = '	 <heading>' . $kmlinfo->params->get('heading') . '</heading>';
+		$kml[] = '   <gx:altitudeMode>' . $kmlinfo->params->get('gxaltitudeMode') . '</gx:altitudeMode>';
+		$kml[] = '</LookAt>    <!-- Camera or LookAt -->';
 		$kml[] = $kmlinfo->style;
-		$kml[] = '<Style id="text_photo_banner">';
-		$kml[] = '<IconStyle>';
-		$kml[] = '<scale>';
-
-		if ($items[0]->params->get('icscale') == null)
-		{
-			$kml[] = '1.1';
-		}
-		else
-		{
-			$kml[] = $kmlinfo->params->get('icscale');
-		}
-
-		$kml[] = '</scale>';
-		$kml[] = '<Icon>';
-		$kml[] = '<href>';
-
-		if ($items[0]->category_params->get('image') === null)
-		{
-			$kml[] = JUri::base() . 'media/com_churchdirectory/images/kml_icons/iconb.png';
-		}
-		else
-		{
-			$kml[] = JUri::base() . $items[0]->category_params->get('image');
-		}
-
-		$kml[] = '</href>';
-		$kml[] = '</Icon>';
-		$kml[] = '<hotSpot x="0.5" y="0.5" xunits="fraction" yunits="fraction"/>';
-		$kml[] = '</IconStyle>';
-		$kml[] = '<LabelStyle>';
-		$kml[] = '<scale>';
-
-		if ($items[0]->params->get('lsscale') == null)
-		{
-			$kml[] = '.6';
-		}
-		else
-		{
-			$kml[] = $kmlinfo->params->get('lsscale');
-		}
-
-		$kml[] = '</scale>';
-		$kml[] = '</LabelStyle>';
-		$kml[] = '</Style> ';
-		$kml[] = '<Style id="text_photo_banner1">';
-		$kml[] = '<IconStyle>';
-		$kml[] = '<scale>';
-
-		if ($items[0]->params->get('icscale') == null)
-		{
-			$kml[] = '1.1';
-		}
-		else
-		{
-			$kml[] = $kmlinfo->params->get('icscale');
-		}
-
-		$kml[] = '</scale>';
-		$kml[] = '<Icon>';
-		$kml[] = '<href>';
-
-		if ($items[0]->category_params->get('image') === null)
-		{
-			$kml[] = JUri::base() . 'media/com_churchdirectory/images/kml_icons/iconb.png';
-		}
-		else
-		{
-			$kml[] = JUri::base() . $items[0]->category_params->get('image');
-		}
-
-		$kml[] = '</href>';
-		$kml[] = '</Icon>';
-		$kml[] = '<hotSpot x="0.5" y="0.5" xunits="fraction" yunits="fraction"/>';
-		$kml[] = '</IconStyle>';
-		$kml[] = '<LabelStyle>';
-		$kml[] = '<scale>';
-
-		if ($items[0]->params->get('lsscale') == null)
-		{
-			$kml[] = '.6';
-		}
-		else
-		{
-			$kml[] = $kmlinfo->params->get('lsscale');
-		}
-
-		$kml[] = '</scale>';
-		$kml[] = '</LabelStyle>';
-		$kml[] = '</Style> ';
+		$kml = array_merge($kml, $this->KMLbuildCatagories());
 		$teams = $renderHelper->groupit(['items' => $items, 'field' => 'category_title']);
 		$new_rows = [];
 
@@ -336,12 +255,18 @@ class ChurchDirectoryReportBuild
 
 		foreach ($new_rows as $c => $suburb)
 		{
-			$mycounter++;
 			$kml[] = '<Folder id="' . $mycounter . '"> ';
 			$kml[] = '<name>';
 			$kml[] = $c;
 			$kml[] = '</name>';
 			$kml[] = '<open>' . $ckml_params->get('mcropen') . '</open>           <!-- boolean -->';
+
+			if (isset($suburb[key($suburb)][0]->category_description))
+			{
+				$kml[] = '<description><![CDATA[' . $suburb[key($suburb)][0]->category_description . ']]></description>';
+			}
+
+			$mycounter++;
 
 			foreach ($suburb as $s => $rows)
 			{
@@ -355,6 +280,7 @@ class ChurchDirectoryReportBuild
 					$mycounter++;
 					$kml[] = '<Placemark id="placemark' . $mycounter . ' "> ';
 					$kml[] = '<name>' . $row->name . '</name>';
+					$kml[] = '<styleUrl>#stylemap' . $row->catid . '</styleUrl>';
 					$kml[] = '<visibility>';
 
 					if ($row->params->get('visibility') == null)
@@ -366,7 +292,8 @@ class ChurchDirectoryReportBuild
 						$kml[] = $row->params->get('visibility');
 					}
 
-					$kml[] = '</visibility><open>';
+					$kml[] = '</visibility>';
+					$kml[] = '<open>';
 
 					if ($row->params->get('open') == null)
 					{
@@ -412,7 +339,7 @@ class ChurchDirectoryReportBuild
 					}
 
 					$kml[] = '">More coming soon</Snippet>   <!-- string -->';
-					$kml[] = '<description>' . '<![CDATA[<div style="padding: 10px;">';
+					$kml[] = '<description><![CDATA[<div style="padding: 10px;">';
 
 					if (empty($row->image))
 					{
@@ -464,9 +391,9 @@ class ChurchDirectoryReportBuild
 					}
 
 					$kml[] = '</div>]]></description>';
-					$kml[] = '<Point>';
-					$kml[] = '<coordinates>' . $row->lng . ',' . $row->lat . ',0</coordinates>';
-					$kml[] = '</Point>';
+					$kml[] = '	<Point>';
+					$kml[] = '		<coordinates>' . $row->lng . ',' . $row->lat . ',0</coordinates>';
+					$kml[] = '	</Point>';
 					$kml[] = '</Placemark>';
 				} /* End the state folder */
 				$kml[] = '</Folder>';
@@ -506,6 +433,7 @@ class ChurchDirectoryReportBuild
 	 * @return mixed
 	 *
 	 * @since 1.8.4
+	 * @throws Exception
 	 */
 	public function getMissingPhotos($items, $report = null)
 	{
@@ -561,5 +489,58 @@ class ChurchDirectoryReportBuild
 
 		fclose($csv);
 		exit;
+	}
+
+	/**
+	 * Build KML Icons
+	 *
+	 * @return array
+	 *
+	 * @since  1
+	 */
+	public function KMLbuildCatagories()
+	{
+		$string = [];
+
+		$query = $this->db->getQuery(true);
+		$query->select('*')
+			->from('#__categories')
+			->where($this->db->qn('extension') . ' = ' . $this->db->q('com_churchdirectory'));
+		$this->db->setQuery($query);
+		$cats = $this->db->loadObjectList();
+
+		foreach ($cats as $cat)
+		{
+			$reg = new \Joomla\Registry\Registry;
+			$reg->loadString($cat->params);
+			$cat->params = $reg;
+
+			if ($cat->params->get('image'))
+			{
+				$string[] = '<Style id="style' . $cat->id . '">';
+				$string[] = '	<IconStyle>';
+				$string[] = '		<Icon>';
+				$string[] = '			<href>' . JUri::base() . $cat->params->get('image') . '</href>';
+				$string[] = '		</Icon>';
+				$string[] = '		<hotSpot x="0.5" y="0.5" xunits="fraction" yunits="fraction"/>';
+				$string[] = '	</IconStyle>';
+				$string[] = '	<ListStyle>';
+				$string[] = '	</ListStyle>';
+				$string[] = '</Style>';
+
+				$string[] = '<StyleMap id="stylemap' . $cat->id . '">';
+				$string[] = '	<Pair>';
+				$string[] = '		<key>normal</key>';
+				$string[] = '		<styleUrl>#style' . $cat->id . '</styleUrl>';
+				$string[] = '	</Pair>';
+				$string[] = '	<Pair>';
+				$string[] = '		<key>highlight</key>';
+				$string[] = '		<styleUrl>#style' . $cat->id . '</styleUrl>';
+				$string[] = '	</Pair>';
+				$string[] = '</StyleMap>';
+			}
+		}
+
+		return $string;
 	}
 }

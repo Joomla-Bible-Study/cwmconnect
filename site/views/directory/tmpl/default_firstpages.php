@@ -6,11 +6,11 @@
  * */
 defined('_JEXEC') or die;
 
-/** @var mPDF $pdf */
+/** @var \Mpdf\Mpdf $pdf */
 $pdf = $this->pdf;
 
 $stylesheet = '<style>' . file_get_contents(JPATH_ROOT . '/media/com_churchdirectory/css/churchdirectory.css') . '</style>';
-$pdf->WriteHTML($stylesheet, 1);
+//$pdf->WriteHTML($stylesheet, 1);
 
 foreach ($this->header->header as $header)
 {
@@ -24,5 +24,5 @@ foreach ($this->header->header as $header)
 	$html = $header->html;
 
 	// Print a line using Cell()
-	$pdf->WriteHTML($html);
+	$pdf->WriteHTML($html, 2);
 }

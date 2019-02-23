@@ -93,6 +93,7 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 	 * @return  mixed  A string if successful, otherwise a Error object.
 	 *
 	 * @since       1.7.2
+	 * @throws      Exception
 	 */
 	public function display ($tpl = null)
 	{

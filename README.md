@@ -1,8 +1,8 @@
-# New Connect - Church Photo Directory System
+# Connect a Church Photo Directory System
 [![Build Status](https://travis-ci.org/Joomla-Bible-Study/joomla_churchdirectory.svg?branch=master)](https://travis-ci.org/Joomla-Bible-Study/joomla_churchdirectory)
 
 ## About
-We are excited to announce the first release of Connect.
+We are excited to announce the release of Connect.
 
 ### Fetchers:
 <ol>
@@ -16,4 +16,4 @@ We are excited to announce the first release of Connect.
 ## Documentation
 I'm working on documentation on how this works and hope to have it done soon.
 
-### <a href="http://www.christianwebministries.org" target="_blank" type="html">Sponsored by Christian Web Ministries</a>
+### <a href="https://www.christianwebministries.org" target="_blank" type="html">Sponsored by Christian Web Ministries</a>
