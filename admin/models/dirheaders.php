@@ -45,6 +45,13 @@ class ChurchDirectoryModelDirHeaders extends JModelList
 				'publish_up', 'a.publish_up',
 				'publish_down', 'a.publish_down',
 			];
+
+			$assoc = JLanguageAssociations::isEnabled();
+
+			if ($assoc)
+			{
+				$config['filter_fields'][] = 'association';
+			}
 		}
 
 		parent::__construct($config);
@@ -64,6 +71,21 @@ class ChurchDirectoryModelDirHeaders extends JModelList
 	 */
 	protected function populateState($ordering = 'a.name', $direction = 'asc')
 	{
+		// Initialise variables.
+		$app = JFactory::getApplication();
+
+		// Adjust the context to support modal layouts.
+		if ($layout = $app->input->get('layout'))
+		{
+			$this->context .= '.' . $layout;
+		}
+
+		// Adjust the context to support forced languages.
+		if ($forcedLanguage)
+		{
+			$this->context .= '.' . $forcedLanguage;
+		}
+
 		$search = $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search');
 		$this->setState('filter.search', $search);
 
@@ -84,6 +106,12 @@ class ChurchDirectoryModelDirHeaders extends JModelList
 
 		// List state information.
 		parent::populateState($ordering, $direction);
+
+		// Force a language.
+		if (!empty($forcedLanguage))
+		{
+			$this->setState('filter.language', $forcedLanguage);
+		}
 	}
 
 	/**

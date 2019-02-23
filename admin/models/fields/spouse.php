@@ -37,22 +37,20 @@ class JFormFieldSpouse extends JFormField
 	 */
 	protected function getInput ()
 	{
-		// Initialize variables.
-		$html = '';
-
 		// Get some field values from the form.
 		$memberId        = (int) $this->form->getValue('id');
 		$categoryId      = (int) $this->form->getValue('catid');
 		$funitid         = (int) $this->form->getValue('funitid');
+		$memberfustatus  = (int) $this->form->getValue('familypostion', 'attribs');
 
 		// Build the query for the ordering list.
 		$db    = JFactory::getDbo();
 		$query = $db->getQuery(true);
-		$query->select('id, name, funitid, attribs, spouse')
+		$query->select('id, name, funitid, attribs, spouse, mstatus')
 				->from('#__churchdirectory_details')
-				->where('catid = ' . (int) $categoryId)
+				->where('catid = ' . $categoryId)
 				->where('published = 1')
-				->where('funitid = ' . (int) $funitid);
+				->where('funitid = ' . $funitid);
 		$db->setQuery($query);
 		$results = $db->loadObjectList();
 
@@ -61,27 +59,26 @@ class JFormFieldSpouse extends JFormField
 			$registry = new Registry($item->attribs);
 
 			$inputAttributes = array(
-				'type' => 'text', 'id' => $item->id, 'value' => $db->escape($item->name)
+				'type' => 'text', 'id' => $item->id, 'value' => $db->escape($item->name) . ' '
+					. ChurchDirectoryHelper::memberStatusShort($item->mstatus)
 			);
 
-			$inputAttributes['size'] = (int) 500;
-
-			if ($item->id == $memberId && $registry->get('familypostion') == '2')
+			if ($item->funitid !== '0' && $item->id != $memberId
+				&& (int) $registry->get('familypostion', 2) !== $memberfustatus
+				&& $memberfustatus !== 2)
 			{
-				return null;
+				return '<input ' . ArrayHelper::toString($inputAttributes) . ' readonly />';
 			}
-
-			if ($item->funitid !== '0' && $item->id != $memberId && $registry->get('familypostion', 2) !== '2')
-			{
-				$html = '<input ' . ArrayHelper::toString($inputAttributes) . ' readonly />';
-			}
-			elseif ($item->funitid <= '0' && $item->id == $memberId)
+			elseif ($item->funitid <= '0' && $item->id == $memberId && !empty($item->spouse))
 			{
 				$inputAttributes['value'] = 'Old Record: ' . $db->escape($item->spouse);
-				$html = '<input ' . ArrayHelper::toString($inputAttributes) . ' readonly />';
+
+				return '<input ' . ArrayHelper::toString($inputAttributes) . ' readonly />';
 			}
 		}
 
-		return $html;
+		$inputAttributes['value'] = ' ';
+
+		return '<input ' . ArrayHelper::toString($inputAttributes) . ' readonly />';
 	}
 }

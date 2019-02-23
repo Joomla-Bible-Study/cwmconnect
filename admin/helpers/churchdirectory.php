@@ -267,4 +267,32 @@ class ChurchDirectoryHelper
 
 		return $items;
 	}
+
+	/**
+	 * Adds Count Items for Category Manager.
+	 *
+	 * @param   int  $status  ID of the status from a member
+	 *
+	 * @return  string  Returns short version of the Member status
+	 *
+	 * @since   1.8.4
+	 */
+	public static function memberStatusShort($status)
+	{
+		switch ((int) $status)
+		{
+			case 0:
+				return "(A)";
+			case 1:
+				return "(I)";
+			case 2:
+				return "(A.AT.)";
+			case 3:
+				return "(NM)";
+			case 4:
+				return "(T)";
+			default:
+				return "(O)";
+		}
+	}
 }

@@ -1,1 +1,208 @@
-.directory{overflow:hidden}.cd-name{font-size:100%;font-weight:bold;padding-bottom:5px;margin-bottom:5px}.cd-position{font-size:95%;font-style:italic}.aright{float:right;margin-right:25%}.aleft{float:left;padding:5px 25px 25px 0}#churchdirectory{margin:10px 0}#churchdirectory #contact-address p{margin-left:5px}#churchdirectory p{line-height:1em;margin:3px 0 3px 0;padding:0}#churchdirectory label{display:block}#churchdirectory label.chkbox{display:inline}#churchdirectory input.chkbox{display:inline;margin-bottom:0}#churchdirectory label.required{color:#f00}#churchdirectory select{display:block}#churchdirectory input.radio{display:inline;margin-bottom:0}#churchdirectory .contact-button{display:block;margin-top:10px}#emailForm{margin-top:15px}.contact-other{margin-bottom:3px}span.marker{margin:0 10px 0 0}div.marker{float:left;padding-top:1px}.wtext{width:85px}.wicon{width:25px}#churchdirectory input,#churchdirectory textarea,#churchdirectory select,#churchdirectory .fld-wrap{margin-bottom:6px}label.textarea{margin:7px 0;display:block}#churchdirectory-error{border:1px solid #f00;margin-top:12px;width:300px;padding:3px;text-align:center;font-weight:bold}#captcha-img{margin-top:6px}div.separator{margin-bottom:6px}#churchdirectory-confirm .linkback{display:block;margin-top:15px}.directory-title{font-size:10pt;font-weight:bold}p{font-weight:normal}.jicons-text{font-weight:bold}.cd-suburb{display:inline}.cd-state{display:inline}.cd-postcode{display:inline}.inner{background:none repeat scroll 0 0 #f3f3f3;border:1px solid #fff;border-radius:11px 11px 11px 11px;box-shadow:0 0 5px #bed1d6;position:inherit;margin-top:5px;padding:0 20px 0;width:100%}.directory-img{width:200px}.cd_items{border:1px solid #000}.cd-image{width:200px;margin-left:6px;margin-right:6px;min-height:250px}.cd-content{padding:10px;vertical-align:text-top}.familymembers-list{background:none repeat scroll 0 0 #f3f3f3;border:1px solid #fff;border-radius:11px 11px 11px 11px;box-shadow:0 0 5px #bed1d6;position:relative;margin-top:5px;padding:5px}.directory-submemberinfo{margin-left:25px}.directory-familymembers-list{padding:5px 0 5px}#position-header{font-weight:bold}#position-name{width:70%}.headerpage{padding:5px;border:1px solid #000}.paddingitem{padding:5px}.churchdirectory-container{overflow:hidden}.churchdirectory-container hr{margin:0;border:1px solid #000}.cd_margin_top_20{margin-top:20px}.cd_children{clear:left;color:#00f}.cd_address{padding-top:5px;line-height:normal}.cd-name{font-weight:bold;font-size:large}.cd-miscinfo{width:100%}.clearfix::after{content:"";clear:both;display:table}.cd-home-positions{text-align:left!important;max-width:240px;margin-left:auto;margin-right:auto;line-height:1;padding-left:10px;padding-top:5px}
+.directory {
+  overflow: hidden;
+}
+.cd-name {
+  font-size: 100%;
+  font-weight: bold;
+  padding-bottom: 5px;
+  margin-bottom: 5px;
+}
+.cd-position {
+  font-size: 95%;
+  font-style: italic;
+}
+.aright {
+  float: right;
+  margin-right: 25%;
+}
+.aleft {
+  float: left;
+  padding: 5px 25px 25px 0;
+}
+#churchdirectory {
+  margin: 10px 0;
+}
+#churchdirectory #contact-address p {
+  margin-left: 5px;
+}
+#churchdirectory p {
+  line-height: 1em;
+  margin: 3px 0 3px 0;
+  padding: 0;
+}
+#churchdirectory label {
+  display: block;
+}
+#churchdirectory label.chkbox {
+  display: inline;
+}
+#churchdirectory input.chkbox {
+  display: inline;
+  margin-bottom: 0;
+}
+#churchdirectory label.required {
+  color: #ff0000;
+}
+#churchdirectory select {
+  display: block;
+}
+#churchdirectory input.radio {
+  display: inline;
+  margin-bottom: 0;
+}
+#churchdirectory .contact-button {
+  display: block;
+  margin-top: 10px;
+}
+#emailForm {
+  margin-top: 15px;
+}
+.contact-other {
+  margin-bottom: 3px;
+}
+span.marker {
+  margin: 0 10px 0 0;
+}
+div.marker {
+  float: left;
+  padding-top: 1px;
+}
+.wtext {
+  width: 85px;
+}
+.wicon {
+  width: 25px;
+}
+#churchdirectory input,
+#churchdirectory textarea,
+#churchdirectory select,
+#churchdirectory .fld-wrap {
+  margin-bottom: 6px;
+}
+label.textarea {
+  margin: 7px 0;
+  display: block;
+}
+#churchdirectory-error {
+  border: 1px solid #ff0000;
+  margin-top: 12px;
+  width: 300px;
+  padding: 3px;
+  text-align: center;
+  font-weight: bold;
+}
+#captcha-img {
+  margin-top: 6px;
+}
+div.separator {
+  margin-bottom: 6px;
+}
+#churchdirectory-confirm .linkback {
+  display: block;
+  margin-top: 15px;
+}
+.directory-title {
+  font-size: 10pt;
+  font-weight: bold;
+}
+p {
+  font-weight: normal;
+}
+.jicons-text {
+  font-weight: bold;
+}
+.cd-suburb {
+  display: inline;
+}
+.cd-state {
+  display: inline;
+}
+.cd-postcode {
+  display: inline;
+}
+.inner {
+  background: none repeat scroll 0 0 #f3f3f3;
+  border: 1px solid #ffffff;
+  border-radius: 11px 11px 11px 11px;
+  box-shadow: 0 0 5px #bed1d6;
+  position: inherit;
+  margin-top: 5px;
+  padding: 0 20px 0;
+  width: 100%;
+}
+/* Directory Layout */
+.cd_items {
+  border: 1px solid #000000;
+}
+.cd-content {
+  padding: 10px;
+  vertical-align: text-top;
+}
+.familymembers-list {
+  background: none repeat scroll 0 0 #f3f3f3;
+  border: 1px solid #ffffff;
+  border-radius: 11px 11px 11px 11px;
+  box-shadow: 0 0 5px #bed1d6;
+  position: relative;
+  margin-top: 5px;
+  padding: 5px;
+}
+.directory-submemberinfo {
+  margin-left: 25px;
+}
+.directory-familymembers-list {
+  padding: 5px 0 5px;
+}
+#position-header {
+  font-weight: bold;
+}
+#position-name {
+  width: 70%;
+}
+.headerpage {
+  padding: 5px;
+  border: 1px solid #000000;
+}
+.paddingitem {
+  padding: 5px;
+}
+.churchdirectory-container {
+  overflow: hidden;
+}
+.churchdirectory-container hr {
+  margin: 0;
+  border: 1px solid #000000;
+}
+.cd_margin_top_20 {
+  margin-top: 20px;
+}
+.cd_children {
+  clear: left;
+  color: #0000ff;
+}
+.cd_address {
+  padding-top: 5px;
+  line-height: normal;
+}
+.cd-name {
+  font-weight: bold;
+  font-size: large;
+}
+.cd-miscinfo {
+  width: 100%;
+}
+.clearfix::after {
+  content: "";
+  clear: both;
+  display: table;
+}
+.cd-home-positions {
+  text-align: left !important;
+  max-width: 240px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1;
+  padding-left: 10px;
+  padding-top: 5px;
+}
+/*# sourceMappingURL=churchdirectory.css.map */

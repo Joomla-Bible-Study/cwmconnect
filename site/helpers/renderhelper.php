@@ -40,7 +40,7 @@ class ChurchDirectoryRenderHelper
 	 *
 	 * @return string|bool
 	 *
-	 * @since    1.5
+	 * @since    1.7.5
 	 */
 	public function getPosition($con_position, $getint = false, $params = null)
 	{
@@ -129,7 +129,7 @@ class ChurchDirectoryRenderHelper
 	 *
 	 * @return array  Array of family members
 	 *
-	 * @since    1.5
+	 * @since    1.7.5
 	 */
 	public function getFamilyMembers($fu_id, $fm = '2', $children = false)
 	{
@@ -181,13 +181,18 @@ class ChurchDirectoryRenderHelper
 	 *
 	 * @return string HTML string
 	 *
-	 * @since    1.5
+	 * @since    1.7.5
 	 */
 	public function getChildren($families, $from = false, $oldchildren_rc = null)
 	{
 		if (is_int($families))
 		{
 			$families = self::getFamilyMembers($families, 2, true);
+		}
+
+		if (!is_array($families))
+		{
+			$families = ['0' => $families];
 		}
 
 		$n2   = count($families);
@@ -237,7 +242,7 @@ class ChurchDirectoryRenderHelper
 	 *
 	 * @return string
 	 *
-	 * @since    1.5
+	 * @since    1.7.5
 	 */
 	public function getSpouse($fu_id, $family_position, $from = false)
 	{
@@ -269,7 +274,7 @@ class ChurchDirectoryRenderHelper
 	 *
 	 * @return string HTML string returned
 	 *
-	 * @since    1.5
+	 * @since    1.7.5
 	 */
 	public function getMemberStatus($member, $from = false)
 	{
@@ -331,7 +336,7 @@ class ChurchDirectoryRenderHelper
 	 *
 	 * @return int
 	 *
-	 * @since    1.5
+	 * @since    1.7.5
 	 */
 	public function rowWidth($rows_per_page)
 	{
@@ -345,12 +350,13 @@ class ChurchDirectoryRenderHelper
 	 *
 	 * @return array
 	 *
-	 * @since    1.5
+	 * @since    1.7.5
 	 */
 	public function groupit($args)
 	{
 		$items = null;
 		$field = null;
+		$description = null;
 		extract($args);
 		$result = [];
 
@@ -376,6 +382,8 @@ class ChurchDirectoryRenderHelper
 			}
 		}
 
+		ksort($result);
+
 		return $result;
 	}
 
@@ -386,7 +394,7 @@ class ChurchDirectoryRenderHelper
 	 *
 	 * @return stdClass
 	 *
-	 * @since    1.5
+	 * @since    1.7.5
 	 */
 	public function getName($name)
 	{
@@ -441,7 +449,7 @@ class ChurchDirectoryRenderHelper
 	 *
 	 * @return array
 	 *
-	 * @since    1.5
+	 * @since    1.7.5
 	 */
 	public function getBirthdays($params)
 	{
@@ -513,7 +521,7 @@ class ChurchDirectoryRenderHelper
 	 *
 	 * @return array
 	 *
-	 * @since    1.5
+	 * @since    1.7.5
 	 */
 	public function getAnniversary($params)
 	{
@@ -557,7 +565,7 @@ class ChurchDirectoryRenderHelper
 		$query->select('f.name as f_name, f.id as f_id');
 		$query->join('LEFT OUTER', '#__churchdirectory_familyunit as f ON f.id = a.funitid');
 
-		// Filter of birthdates to show
+		// Filter of Anniversary to show
 		$date = $params->get('month', date('m'));
 
 		if ($date == '0')
@@ -604,7 +612,7 @@ class ChurchDirectoryRenderHelper
 	 *
 	 * @return string
 	 *
-	 * @since version
+	 * @since 1.7.5
 	 */
 	public function renderAddress($item, $params)
 	{
@@ -673,7 +681,7 @@ class ChurchDirectoryRenderHelper
 	 *
 	 * @return string
 	 *
-	 * @since version
+	 * @since 1.7.5
 	 */
 	public function renderPhonesNumbers($item, $params, $name = null)
 	{
@@ -737,6 +745,7 @@ class ChurchDirectoryRenderHelper
 	 * @return string
 	 *
 	 * @since 1.7.8
+	 * @throws \Exception
 	 */
 	public function getSearchField($params)
 	{
@@ -813,5 +822,22 @@ class ChurchDirectoryRenderHelper
 		$render .= '</form>';
 
 	return $render;
+	}
+
+	/**
+	 * Random Password Generator
+	 *
+	 * @param   int  $length  Lenght of password
+	 *
+	 * @return bool|string
+	 *
+	 * @since 1
+	 */
+	public function random_password($length = 8)
+	{
+		$chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_-=+;:,.?";
+		$password = substr(str_shuffle($chars), 0, $length);
+
+		return $password;
 	}
 }

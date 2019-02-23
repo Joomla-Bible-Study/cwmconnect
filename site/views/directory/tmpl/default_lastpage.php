@@ -15,5 +15,5 @@ foreach ($this->header->footer as $footer)
 
 	// Set a bookmark for the current position
 	$pdf->Bookmark($footer->name, 0);
-	$pdf->WriteHTML($footer->html);
+	$pdf->WriteHTML($footer->html, 2);
 }

@@ -7,6 +7,8 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\Utilities\ArrayHelper;
+
 /**
  * Member list controller class.
  *
@@ -47,7 +49,7 @@ class ChurchDirectoryControllerMembers extends JControllerAdmin
 		$ids    = $app->input->get('cid', [], 'array');
 		$values = ['featured' => 1, 'unfeatured' => 0];
 		$task   = $this->getTask();
-		$value  = Joomla\Utilities\ArrayHelper::getValue($values, $task, 0, 'int');
+		$value  = ArrayHelper::getValue($values, $task, 0, 'int');
 
 		// Get the model.
 		/** @type ChurchDirectoryModelMember $model */
@@ -89,7 +91,7 @@ class ChurchDirectoryControllerMembers extends JControllerAdmin
 	 * @param   string  $prefix  The prefix for the PHP class name.
 	 * @param   array   $config  Ingnore info
 	 *
-	 * @return    JModel
+	 * @return    \JModelLegacy
 	 *
 	 * @since    1.7.0
 	 */
@@ -98,38 +100,5 @@ class ChurchDirectoryControllerMembers extends JControllerAdmin
 		$model = parent::getModel($name, $prefix, $config);
 
 		return $model;
-	}
-
-	/**
-	 * Method to save the submitted ordering values for records via AJAX.
-	 *
-	 * @return    void
-	 *
-	 * @since   3.0
-	 */
-	public function saveOrderAjax()
-	{
-		// Get the input
-		$pks   = $this->input->post->get('cid', [], 'array');
-		$order = $this->input->post->get('order', [], 'array');
-
-		// Sanitize the input
-		Joomla\Utilities\ArrayHelper::toInteger($pks);
-		Joomla\Utilities\ArrayHelper::toInteger($order);
-
-		// Get the model
-		/** @type ChurchDirectoryModelMember $model */
-		$model = $this->getModel();
-
-		// Save the ordering
-		$return = $model->saveorder($pks, $order);
-
-		if ($return)
-		{
-			echo "1";
-		}
-
-		// Close the application
-		JFactory::getApplication()->close();
 	}
 }

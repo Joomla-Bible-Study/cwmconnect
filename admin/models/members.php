@@ -52,6 +52,13 @@ class ChurchDirectoryModelMembers extends JModelList
 				'ul.name', 'linked_user',
 				'mstatus', 'a.mstatus',
 			];
+
+			$assoc = JLanguageAssociations::isEnabled();
+
+			if ($assoc)
+			{
+				$config['filter_fields'][] = 'association';
+			}
 		}
 
 		parent::__construct($config);
@@ -125,7 +132,7 @@ class ChurchDirectoryModelMembers extends JModelList
 		$id .= ':' . $this->getState('filter.search');
 		$id .= ':' . $this->getState('filter.published');
 		$id .= ':' . $this->getState('filter.category_id');
-		$id .= ':' . $this->getState('filter.access');
+		$id .= ':' . serialize($this->getState('filter.access'));
 		$id .= ':' . $this->getState('filter.language');
 		$id .= ':' . $this->getState('filter.mstatus');
 		$id .= ':' . $this->getState('filter.tag');
@@ -163,7 +170,7 @@ class ChurchDirectoryModelMembers extends JModelList
 		$query->from($db->qn('#__churchdirectory_details', 'a'));
 
 		// Join over the users for the linked user.
-		$query->select($db->qn('ul.name', 'linked_user'));
+		$query->select([$db->qn('ul.name', 'linked_user'),$db->quoteName('ul.email')]);
 		$query->join('LEFT', $db->qn('#__users', 'ul') . ' ON ' . $db->qn('ul.id') . ' = ' . $db->qn('a.user_id'));
 
 		// Join over the Family Units.
@@ -185,6 +192,53 @@ class ChurchDirectoryModelMembers extends JModelList
 		// Join over the categories.
 		$query->select($db->qn('c.title', 'category_title'));
 		$query->join('LEFT', $db->qn('#__categories', 'c') . ' ON ' . $db->qn('c.id') . ' = ' . $db->qn('a.catid'));
+
+		// Join over the associations.
+		$assoc = JLanguageAssociations::isEnabled();
+
+		if ($assoc)
+		{
+			$query->select('COUNT(' . $db->quoteName('asso2.id') . ') > 1 as ' . $db->quoteName('association'))
+				->join(
+					'LEFT',
+					$db->quoteName('#__associations', 'asso') . ' ON ' . $db->quoteName('asso.id') . ' = ' . $db->quoteName('a.id')
+					. ' AND ' . $db->quoteName('asso.context') . ' = ' . $db->quote('com_contact.item')
+				)
+				->join(
+					'LEFT',
+					$db->quoteName('#__associations', 'asso2') . ' ON ' . $db->quoteName('asso2.key') . ' = ' . $db->quoteName('asso.key')
+				)
+				->group(
+					$db->quoteName(
+						array(
+							'a.id',
+							'a.name',
+							'a.alias',
+							'a.checked_out',
+							'a.checked_out_time',
+							'a.catid',
+							'a.user_id',
+							'a.published',
+							'a.access',
+							'a.created',
+							'a.created_by',
+							'a.ordering',
+							'a.featured',
+							'a.language',
+							'a.publish_up',
+							'a.publish_down',
+							'ul.name' ,
+							'ul.email',
+							'l.title' ,
+							'l.image' ,
+							'uc.name' ,
+							'ag.title' ,
+							'c.title',
+							'c.level'
+						)
+					)
+				);
+		}
 
 		// Filter by access level.
 		if ($access = $this->getState('filter.access'))

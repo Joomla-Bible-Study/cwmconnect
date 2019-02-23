@@ -271,6 +271,9 @@
 		<field name="spouse" type="spouse"
 		       label="COM_CHURCHDIRECTORY_FIELD_SPOUSE_LABEL" description="COM_CHURCHDIRECTORY_FIELD_SPOUSE_DESC"
 		       class="readonly small" size="30" readonly="true"/>
+		<field name="children_listed" type="children"
+		       label="COM_CHURCHDIRECTORY_FIELD_CHILDREN_LABEL" description="COM_CHURCHDIRECTORY_FIELD_CHILDREN_DESC"
+		       class="readonly small" size="500" readonly="true"/>
 		<field name="children" type="textarea"
 		       label="COM_CHURCHDIRECTORY_FIELD_CHILDREN_LABEL" description="COM_CHURCHDIRECTORY_FIELD_CHILDREN_DESC"
 		       class="inputbox small" rows="3" cols="30"/>
@@ -291,6 +294,8 @@
 			<option value="1">COM_CHURCHDIRECTORY_INACTIVE</option>
 			<option value="2">COM_CHURCHDIRECTORY_ACTIVE_ATTENDEE</option>
 			<option value="3">COM_CHURCHDIRECTORY_NONE_MEMBER</option>
+			<option value="4">COM_CHURCHDIRECTORY_TRANSFERRED</option>
+			<option value="5">COM_CHURCHDIRECTORY_OTHER</option>
 		</field>
 	</fieldset>
 
@@ -664,18 +669,14 @@
 			<option value="0">COM_CHURCHDIRECTORY_FEMALE</option>
 			<option value="1">COM_CHURCHDIRECTORY_MALE</option>
 		</field>
-		<fieldset name="protected"
-		          label="COM_CHURCHDIRECTORY_MEMBER_PROTECTED_INFO_FIELDSET_LABEL"
-		          description="COM_CHURCHDIRECTORY_MEMBER_PROTECTED_INFO_FIELDSET_DESC">
-			<field name="bpc_date" type="calendar"
-			       label="COM_CHURCHDIRECTORY_FIELD_BCP_DATE_LABEL"
-			       description="COM_CHURCHDIRECTORY_FIELD_BCP_DATE_DESC"
-			       format="%Y-%m-%d" size="22" filter="user_utc"/>
-			<field name="memberotherinfo" type="textarea"
-			       label="COM_CHURCHDIRECTORY_FIELD_MEMBER_OTHER_INFO_LABEL"
-			       description="COM_CHURCHDIRECTORY_FIELD_MEMBER_OTHER_INFO_DESC"
-			       class="inputbox small" rows="3" cols="30"/>
-		</fieldset>
+		<field name="bpc_date" type="calendar"
+		       label="COM_CHURCHDIRECTORY_FIELD_BCP_DATE_LABEL"
+		       description="COM_CHURCHDIRECTORY_FIELD_BCP_DATE_DESC"
+		       format="%Y-%m-%d" size="22" filter="user_utc"/>
+		<field name="memberotherinfo" type="textarea"
+		       label="COM_CHURCHDIRECTORY_FIELD_MEMBER_OTHER_INFO_LABEL"
+		       description="COM_CHURCHDIRECTORY_FIELD_MEMBER_OTHER_INFO_DESC"
+		       class="inputbox small" rows="3" cols="30"/>
 		<field name="familypostion" type="list"
 		       label="COM_CHURCHDIRECTORY_FAMILYPOSTION_LABEL"
 		       description="COM_CHURCHDIRECTORY_FAMILYPOSTION_DESC"
