@@ -1,5 +1,5 @@
 # CWM Connect a Church Photo Directory System
-[![Build Status](https://travis-ci.org/Joomla-Bible-Study/cwmconnect.svg?branch=master)](https://travis-ci.org/Joomla-Bible-Study/cwmconnect)
+[![Build Status](https://travis-ci.com/Joomla-Bible-Study/joomla_churchdirectory.svg?branch=master)](https://travis-ci.com/Joomla-Bible-Study/joomla_churchdirectory)
 
 ## About
 We are excited to announce the release of Connect.
