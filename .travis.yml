@@ -2,6 +2,10 @@
 sudo: false
 
 language: php
+php:
+  - '5.6'
+  - '7.0'
+  - '7.2'
 
 env:
   global:
@@ -12,13 +16,6 @@ env:
 
 matrix:
   fast_finish: true
-  include:
-    - php: 5.4
-
-services:
-  - memcache
-  - memcached
-  - redis-server
 
 before_script:
   - phpenv config-rm xdebug.ini
@@ -27,4 +24,4 @@ before_script:
 
 script:
   #- libraries/vendor/bin/phpunit --configuration travisci-phpunit.xml
-  - sh -c "if [ '$TRAVIS_PHP_VERSION' != '7.0' ]; then bin/phpcs --report=full --extensions=php -p --standard=build/phpcs/Joomla .; fi"
+  - sh -c "bin/phpcs --report=full --extensions=php -p --standard=build/phpcs/Joomla .;"
