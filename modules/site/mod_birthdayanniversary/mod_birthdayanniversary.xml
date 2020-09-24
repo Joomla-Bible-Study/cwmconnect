@@ -5,8 +5,8 @@
 	<creationDate>Oct 3, 2016</creationDate>
 	<copyright>(C) 2007-2012 Joomla Bible Study</copyright>
 	<license>GPL/GNU</license>
-	<authorEmail>info@joomlabiblestudy.org</authorEmail>
-	<authorUrl>http://www.joomlabiblestudy.org</authorUrl>
+	<authorEmail>info@christianwebministries.org</authorEmail>
+	<authorUrl>http://www.christianwebministries.org</authorUrl>
 	<version>1.8.0</version>
 	<description>MOD_BIRTHDAYANNIVERSARY_XML_DESCRIPTION</description>
 	<files>
@@ -100,14 +100,6 @@
 			</fieldset>
 		</fields>
 	</config>
-
-	<!-- UPDATESERVER DEFINITION -->
-	<updateservers>
-		<!-- Note: No spaces or linebreaks allowed between the server tags -->
-		<server type="extension" priority="1" name="Joomla Bible Study Module">
-			<![CDATA[http://www.joomlabiblestudy.org/index.php?option=com_ars&view=update&task=stream&format=xml&id=823&dummy=extension.xml]]>
-		</server>
-	</updateservers>
 
 	<!--  Dependencies -->
 	<dependencies>

@@ -47,15 +47,14 @@ class ChurchDirectoryController extends JControllerLegacy
 	 * @since    1.7.0
 	 * @return  JControllerLegacy  A JControllerLegacy object to support chaining.
 	 */
-	public function display ($cachable = false, $urlparams = [])
+	public function display ($cachable = true, $urlparams = [])
 	{
-		$cachable = true;
 
 		// Set the default view name and format from the Request.
 		$vName = $this->input->get('view', 'home');
 		$format = $this->input->get('format');
 
-		if ($format == 'pdf' || $format == 'kml')
+		if ($format === 'pdf' || $format === 'kml')
 		{
 			$this->input->set('tmpl', 'component');
 

@@ -7,8 +7,8 @@
 	<license>GNU General Public License version 3 or later; see LICENSE.txt</license>
 	<version>1.8.3</version>
 	<creationDate>March 4, 2017</creationDate>
-	<authorEmail>info@joomlabiblestudy.org</authorEmail>
-	<authorUrl>http://www.joomlabiblestudy.org</authorUrl>
+	<authorEmail>info@christianwebministries.org</authorEmail>
+	<authorUrl>http://www.christianwebministries.org</authorUrl>
 	<description>COM_CHURCHDIRECTORY_XML_DESCRIPTION</description>
 
 	<!-- Installer Hooks -->
@@ -118,8 +118,8 @@
 
 	<!-- Extension Update Specification -->
 	<updateservers>
-		<server type="extension" priority="1" name="Joomla Church Directory Package">
-			<![CDATA[https://www.christianwebministries.org/index.php?option=com_ars&view=update&task=stream&format=xml&id=1&dummy=extension.xml]]></server>
+		<server type="extension" priority="1" name="CWM Connect Package">
+			<![CDATA[https://www.christianwebministries.org/index.php?option=com_ars&view=update&task=stream&format=xml&id=3&dummy=extension.xml]]></server>
 	</updateservers>
 
 	<!-- Tables -->

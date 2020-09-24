@@ -17,7 +17,7 @@ defined('_JEXEC') or die;
 			if ($this->params->get('dr_allow_kml'))
 			{
 				?>
-				<div><a href="<?php echo JRoute::_("index.php?option=com_churchdirectory&view=directory&format=kml");
+				<div><a href="<?php echo JRoute::_("index.php?option=com_churchdirectory&amp;view=directory&amp;format=kml");
 					?>" class="btn">
 						KML
 					</a>
@@ -27,7 +27,7 @@ defined('_JEXEC') or die;
 			?>
 		</div>
 		<div class="directory-link pull-left">
-			<a href="<?php echo JRoute::_('index.php?option=com_churchdirectory&view=directory&format=pdf'); ?>"
+			<a href="<?php echo JRoute::_('index.php?option=com_churchdirectory&view=directory&amp;format=pdf'); ?>"
 			   class="btn">PDF</a>
 		</div>
 	</div>

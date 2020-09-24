@@ -109,7 +109,7 @@ class ChurchDirectoryViewDirectory extends JViewLegacy
 
 		$layout = JFactory::getApplication()->input->get('layout', 'home');
 
-		if ($layout == 'search')
+		if ($layout === 'search')
 		{
 			// Search Params
 			$registry   = new Registry;

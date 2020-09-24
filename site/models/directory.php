@@ -342,7 +342,7 @@ class ChurchDirectoryModelDirectory extends JModelList
 		}
 
 		// Set sortname ordering if selected
-		if ($this->getState('list.ordering') == 'sortname')
+		if ($this->getState('list.ordering') === 'sortname')
 		{
 			$query->order($db->escape('a.sortname1') . ' ' . $db->escape($this->getState('list.direction', 'ASC')));
 			$query->order($db->escape('a.sortname2') . ' ' . $db->escape($this->getState('list.direction', 'ASC')));
@@ -404,7 +404,7 @@ class ChurchDirectoryModelDirectory extends JModelList
 		// List state information
 		$format = $app->input->getWord('format', '');
 
-		if ($format == 'feed')
+		if ($format === 'feed')
 		{
 			$limit = $app->get('feed_limit');
 		}
@@ -602,8 +602,6 @@ class ChurchDirectoryModelDirectory extends JModelList
 			return false;
 		}
 
-		$items = $this->getItems();
-
-		return $items;
+		return $this->getItems();
 	}
 }
