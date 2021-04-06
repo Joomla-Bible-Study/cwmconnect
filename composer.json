@@ -1,42 +1,31 @@
 {
-  "name": "joomla-bible-study/joomla_churchdirectory",
+  "name": "joomla-bible-study/cwmconnect",
   "type": "project",
-  "description": "Joomla-Church-Directory",
+  "description": "CWM Connect a Church Photo Directory System",
   "keywords": [
 	"directory",
 	"churchdirectory",
 	"church"
   ],
-  "homepage": "https://github.com/Joomla-Bible-Study/joomla_churchdirectory",
-  "license": "GPL-3.0+",
+  "homepage": "https://github.com/Joomla-Bible-Study/cwmconnect",
+  "license": "GPL-2.0-or-later",
+  "minimum-stability": "dev",
+  "prefer-stable": true,
   "config": {
+	"optimize-autoloader": true,
 	"platform": {
-	  "php": "7.3"
+	  "php": "7.4.0"
 	},
-	"bin-dir": "bin",
-	"vendor-dir": "libraries/vendor"
+	"vendor-dir": "libraries/vendor",
+	"github-protocols": ["https"]
   },
   "support": {
-	"issues": "https://issues.joomla.org",
-	"irc": "http://irc.lc/freenode/joomla/",
-	"forum": "http://forum.joomla.org/",
-	"docs": "https://docs.joomla.org"
+	"issues": "https://www.christianwebministries.org/issues",
+	"forum": "https://www.christianwebministries.org/forum",
+	"docs": "https://www.christianwebministries.org/docs"
   },
   "require": {
 	"php": ">=7.3",
-	"joomla/application": "~1.9",
-	"joomla/archive": "^1.1.7",
-	"joomla/data": "~1.2",
-	"joomla/di": "~1.5",
-	"joomla/event": "~1.2",
-	"joomla/filter": "^1.4.3",
-	"joomla/image": "^1.5",
-	"joomla/input": "~1.3",
-	"joomla/registry": "^1.6",
-	"joomla/session": "^1.3.4",
-	"joomla/string": "^1.4",
-	"joomla/uri": "~1.2",
-	"joomla/utilities": "^1.6",
 	"ircmaxell/password-compat": "1.*",
 	"leafo/lessphp": "0.5.0",
 	"symfony/polyfill-php71": "~1.9",
@@ -52,11 +41,22 @@
   },
   "require-dev": {
 	"roave/security-advisories": "dev-latest",
-	"phing/phing": "@stable",
-	"phpunit/phpunit": "^4.8.35",
+	"phing/phing": "2.16.4",
+	"pdepend/pdepend": "^2.4",
+	"phpmd/phpmd": "^2.4",
+	"mayflower/php-codebrowser": "^1.1",
+	"sebastian/phpcpd": "^3.0",
+	"pear/versioncontrol_git": "dev-master",
+	"pear/pear_exception": "dev-master",
+	"phpunit/phpunit": "^4.8.36",
 	"phpunit/dbunit": "~1.3",
-	"friendsofphp/php-cs-fixer": "~1.11",
-	"squizlabs/php_codesniffer": "3.*",
-	"phploc/phploc": "2.0.4"
+	"squizlabs/php_codesniffer": "~3.5",
+	"phploc/phploc": "*",
+	"pear/cache_lite": "1.7.16"
+  },
+  "scripts": {
+	"phpcs": "phpcs --standard=CWM",
+	"post-install-cmd": "\"libraries/vendor/bin/phpcs\" --config-set installed_paths build/coding-standards/,libraries/vendor/joomla/coding-standards/,libraries/vendor/squizlabs/php_codesniffer/CodeSniffer/Standards",
+	"post-update-cmd": "\"libraries/vendor/bin/phpcs\" --config-set installed_paths build/coding-standards/,libraries/vendor/squizlabs/php_codesniffer/CodeSniffer/Standards"
   }
 }
