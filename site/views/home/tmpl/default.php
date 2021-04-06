@@ -12,7 +12,7 @@ JHtml::_('bootstrap.tooltip');
 
 /** @var $this ChurchDirectoryViewHome */
 $login = $this->user->get('guest') ? true : false;
-$check = in_array($this->params->get('accesslevel'), $this->user->get('_authLevels'));
+$check = in_array($this->params->get('accesslevel'), $this->user->get('_authLevels'), false);
 $count = count($this->items);
 
 ?>
@@ -73,7 +73,7 @@ $count = count($this->items);
 						<div class="span6 pull-left" style="margin-left: 0">
 							<div class="center">
 								<a href="<?php echo JRoute::_(ChurchDirectoryHelperRoute::getMemberRoute($item->slug, $item->catid)); ?>">
-									<?php if ($item->image && $item->image != '/')
+									<?php if ($item->image && $item->image !== '/')
 									{ ?>
 										<img src="<?php echo $item->image; ?>"
 										     alt="<?php echo $item->name; ?>"
@@ -100,7 +100,7 @@ $count = count($this->items);
 						<div class="span6 pull-left" style="margin-left: 0">
 							<div class="center">
 								<a href="<?php echo JRoute::_(ChurchDirectoryHelperRoute::getMemberRoute($item->slug, $item->catid)); ?>">
-									<?php if ($item->image && $item->image != '/')
+									<?php if ($item->image && $item->image !== '/')
 									{ ?>
 										<img src="<?php echo $item->image; ?>"
 										     alt="<?php echo $item->name; ?>"

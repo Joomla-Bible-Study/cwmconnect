@@ -6,7 +6,7 @@
  * @subpackage  Model.BirthdayAnniversary
  * @copyright   2007 - 2016 (C) Joomla Bible Study Team All rights reserved
  * @license     http://www.gnu.org/copyleft/gpl.html GNU/GPL
- * @link        http://www.christianwebministries.org
+ * @link        http://www.JoomlaBibleStudy.org
  * */
 defined('_JEXEC') or die;
 
@@ -41,6 +41,7 @@ $anniversary = $render->getAnniversary($params);
  */
 function addCSS ()
 {
+	JHtml::stylesheet('media/com_churchdirectory/css/general.css');
 	JHtml::stylesheet('media/com_churchdirectory/css/model.css');
 	JHtml::stylesheet('media/com_churchdirectory/css/icons.css');
 }

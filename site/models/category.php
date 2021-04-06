@@ -126,7 +126,7 @@ class ChurchDirectoryModelCategory extends JModelList
 		$items = parent::getItems();
 
 		// Convert the params field into an object, saving original in params
-		for ($i = 0, $n = count($items); $i < $n; $i++)
+		foreach ($items as $i => $iValue)
 		{
 			$item = & $items[$i];
 
@@ -233,7 +233,7 @@ class ChurchDirectoryModelCategory extends JModelList
 		}
 
 		// Set sortname ordering if selected
-		if ($this->getState('list.ordering') == 'sortname')
+		if ($this->getState('list.ordering') === 'sortname')
 		{
 			$query->order($db->escape('a.sortname1') . ' ' . $db->escape($this->getState('list.direction', 'ASC')));
 			$query->order($db->escape('a.sortname2') . ' ' . $db->escape($this->getState('list.direction', 'ASC')));
@@ -255,8 +255,9 @@ class ChurchDirectoryModelCategory extends JModelList
 	 * @param   string  $ordering   An optional ordering field.
 	 * @param   string  $direction  An optional direction (asc|desc).
 	 *
-	 * @since   1.6
 	 * @return  void
+	 * @throws \Exception
+	 * @since   1.6
 	 */
 	protected function populateState($ordering = null, $direction = null)
 	{
@@ -267,7 +268,7 @@ class ChurchDirectoryModelCategory extends JModelList
 		// List state information
 		$format = $app->input->getWord('format');
 
-		if ($format == 'feed')
+		if ($format === 'feed')
 		{
 			$limit = $app->get('feed_limit');
 		}

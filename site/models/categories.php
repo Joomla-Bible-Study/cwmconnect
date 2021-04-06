@@ -110,7 +110,7 @@ class ChurchDirectoryModelCategories extends JModelList
 	 */
 	public function getItems()
 	{
-		if (!count($this->items))
+		if (!($this->items))
 		{
 			$app    = JFactory::getApplication();
 			$menu   = $app->getMenu();

@@ -99,6 +99,8 @@ class ChurchDirectoryViewCategory extends JViewCategory
 	 */
 	public $pathway;
 
+	public $renderHelper;
+
 	/**
 	 * Display Function
 	 *
@@ -121,7 +123,7 @@ class ChurchDirectoryViewCategory extends JViewCategory
 			$item->params = clone $this->params;
 			$item->params->merge($temp);
 
-			if ($item->params->get('show_email_headings', 0) == 1)
+			if ($item->params->get('show_email_headings', 0) === '1')
 			{
 				$item->email_to = trim($item->email_to);
 
@@ -155,7 +157,7 @@ class ChurchDirectoryViewCategory extends JViewCategory
 		$menu = $this->menu;
 		$id = (int) @$menu->query['id'];
 
-		if ($menu && ($menu->query['option'] != $this->extension || $menu->query['view'] == $this->viewName || $id != $this->category->id))
+		if ($menu && ($menu->query['option'] !== $this->extension || $menu->query['view'] === $this->viewName || $id !== (int) $this->category->id))
 		{
 			$path = array(array('title' => $this->category->title, 'link' => ''));
 			$category = $this->category->getParent();

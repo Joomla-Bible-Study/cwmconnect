@@ -6,7 +6,7 @@
  * @subpackage  Model.BirthdayAnniversary
  * @copyright   2007 - 2016 (C) Joomla Bible Study Team All rights reserved
  * @license     http://www.gnu.org/copyleft/gpl.html GNU/GPL
- * @link        http://www.christianwebministries.org
+ * @link        http://www.JoomlaBibleStudy.org
  * */
 
 defined('_JEXEC') or die;
@@ -19,6 +19,7 @@ defined('_JEXEC') or die;
 			</h3>
 		<?php endif; ?>
 		<table class="table table-striped table-bordered">
+		<thead></thead>
 			<tbody>
 			<tr>
 				<th class="churchdirectory_model_theder"><?php echo JText::_('MOD_BIRTHDAYANNIVERSARY_DAY') ?></th>
@@ -41,7 +42,6 @@ defined('_JEXEC') or die;
 			</h3>
 		<?php endif; ?>
 		<table class="table table-striped table-bordered">
-			<tbody>
 			<tr>
 				<th class="churchdirectory_model_theder"><?php echo JText::_('MOD_BIRTHDAYANNIVERSARY_DAY') ?></th>
 				<th class="churchdirectory_model_theder"><?php echo JText::_('MOD_BIRTHDAYANNIVERSARY_MEMBER_NAME') ?></th>
@@ -52,7 +52,6 @@ defined('_JEXEC') or die;
 					<td class="churchdirectory_model_row"><?php echo $annday['name']; ?></td>
 				</tr>
 			<?php endforeach; ?>
-			</tbody>
 		</table>
 	<?php endif; ?>
 </div>
