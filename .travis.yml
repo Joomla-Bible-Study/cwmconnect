@@ -23,4 +23,4 @@ before_script:
 
 script:
   #- libraries/vendor/bin/phpunit --configuration travisci-phpunit.xml
-  - sh -c "bin/phpcs --report=full --extensions=php -p --standard=build/coding-standers/CWM .;"
+  - sh -c "libraries/vendor/bin/phpcs --report=full --extensions=php -p --standard=build/coding-standers/CWM .;"
