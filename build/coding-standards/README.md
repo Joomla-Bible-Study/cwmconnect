@@ -3,7 +3,7 @@ Joomla Coding Standards [![Build Status](https://travis-ci.org/joomla/coding-sta
 
 [![Latest Stable Version](https://poser.pugx.org/joomla/coding-standards/v/stable.svg)](https://packagist.org/packages/joomla/coding-standards) [![Latest Unstable Version](https://poser.pugx.org/joomla/coding-standards/v/unstable.svg)](https://packagist.org/packages/joomla/coding-standards) [![License](https://poser.pugx.org/joomla/coding-standards/license.svg)](https://packagist.org/packages/joomla/coding-standards)
 
-This repository includes the [Joomla](https://developer.joomla.org) coding standard definition for [PHP Codesniffer](https://github.com/squizlabs/PHP_CodeSniffer) along with a few other helpful resources.  The PHP_CodeSniffer standard will never be 100% accurate, but should be viewed as a strong set of guidelines while writing software for Joomla.
+This repository includes the [Joomla](https://developer.joomla.org) coding standard definition for [PHP Codesniffer](https://github.com/PHPCSStandards/PHP_CodeSniffer) along with a few other helpful resources.  The PHP_CodeSniffer standard will never be 100% accurate, but should be viewed as a strong set of guidelines while writing software for Joomla.
 
 See Joomla coding standards documentation at [https://developer.joomla.org/coding-standards.html](https://developer.joomla.org/coding-standards.html)
 
@@ -12,7 +12,7 @@ If you want to contribute and improve this documentation, you can find the sourc
 ## Requirements
 
 * PHP 5.4+
-* [PHP Codesniffer](https://github.com/squizlabs/PHP_CodeSniffer) 3.1.0+
+* [PHP Codesniffer](https://github.com/PHPCSStandards/PHP_CodeSniffer) 3.1.0+
 
 ## Installation via Composer
 
@@ -68,7 +68,7 @@ Alternatively if it isn't installed you can still reference it by path like:
 
 For consuming packages there are some items that will typically result in creating their own project ruleset.xml, rather than just directly using the Joomla ruleset.xml. A project ruleset.xml allows the coding standard to be selectively applied for excluding 3rd party libraries, for consideration of backwards compatibility in existing projects, or for adjustments necessary for projects that do not need PHP 5.3 compatibility (which will be removed in a future version of the Joomla Coding Standard in connection of the end of PHP 5.3 support in all active Joomla Projects).
 
-For information on [selectivly applying rules read details in the PHP CodeSniffer wiki](https://github.com/squizlabs/PHP_CodeSniffer/wiki/Annotated-ruleset.xml#selectively-applying-rules)
+For information on [selectivly applying rules read details in the PHP CodeSniffer wiki](https://github.com/PHPCSStandards/PHP_CodeSniffer/wiki/Annotated-Ruleset#selectively-applying-rules)
 
 #### Common Rule Set Adjustments
 
