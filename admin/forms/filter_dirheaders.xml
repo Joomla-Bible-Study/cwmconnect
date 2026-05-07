@@ -46,12 +46,8 @@
 		       description="COM_CHURCHDIRECTORY_FIELD_SECTION_DESC"
 		       onchange="this.form.submit();">
 			<option value="">COM_CHURCHDIRECTORY_SELECT_SECTION</option>
-			<option value="0">
-				COM_CHURCHDIRECTORY_HEADER
-			</option>
-			<option value="1">
-				COM_CHURCHDIRECTORY_FOOTER
-			</option>
+			<option value="0">COM_CHURCHDIRECTORY_HEADER</option>
+			<option value="1">COM_CHURCHDIRECTORY_FOOTER</option>
 		</field>
 
 		<field
