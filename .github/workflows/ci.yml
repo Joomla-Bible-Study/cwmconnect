@@ -1,0 +1,69 @@
+name: CI
+
+# Security note: this workflow uses no user-controlled GitHub event inputs
+# (no github.event.issue.*, pull_request.title/body, head_ref, etc.) inside
+# any run: block, so command-injection vectors are not applicable here. The
+# only ${{ ... }} expressions are runner/workflow-internal: runner.os,
+# steps.<id>.outputs.dir, hashFiles().
+
+on:
+  push:
+    branches: [ "main", "master", "development" ]
+    paths-ignore:
+      - '**.md'
+      - 'admin/language/**'
+      - 'site/language/**'
+      - 'modules/site/mod_birthdayanniversary/language/**'
+      - 'plugins/finder/churchdirectory/language/**'
+  pull_request:
+    branches: [ "main", "master", "development" ]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  php-checks:
+    name: PHP Lint & Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: mbstring, json, xml, zip, curl, gd, fileinfo
+          coverage: none
+          tools: composer:v2
+
+      - name: Get Composer cache directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v5
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('composer.json') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Install Composer dependencies
+        run: composer install --no-interaction --prefer-dist
+
+      - name: Check PHP syntax (admin/src + site/src + modules + plugins)
+        run: composer lint:syntax
+
+      - name: Build package (stub during phase 1)
+        run: composer build
+
+      - name: List package output
+        run: |
+          if compgen -G "build/dist/pkg_cwmconnect-*.zip" > /dev/null; then
+            echo "Package contents:"
+            unzip -l build/dist/pkg_cwmconnect-*.zip
+          else
+            echo "No package zip yet (expected during phase 1 — builder is a stub)."
+          fi
