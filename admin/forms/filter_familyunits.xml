@@ -74,8 +74,6 @@
 			<option value="a.published DESC">JSTATUS_DESC</option>
 			<option value="a.name ASC">JGLOBAL_TITLE_ASC</option>
 			<option value="a.name DESC">JGLOBAL_TITLE_DESC</option>
-			<option value="ul.name ASC">COM_CHURCHDIRECTORY_NAME_LABEL_ASC</option>
-			<option value="ul.name DESC">COM_CHURCHDIRECTORY_NAME_LABEL_DESC</option>
 			<option value="access_level ASC">JGRID_HEADING_ACCESS_ASC</option>
 			<option value="access_level DESC">JGRID_HEADING_ACCESS_DESC</option>
 		</field>
