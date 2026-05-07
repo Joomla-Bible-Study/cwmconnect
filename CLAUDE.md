@@ -89,6 +89,16 @@ composer ars-list                # discover ARS categoryId/updateStreamId for cw
 
 The legacy `composer phpcs` script and the Phing build under `build/build.xml` were removed in phase 1; PHPCS / Joomla coding standards have been replaced by `php-cs-fixer`, and Phing has been replaced by `cwm-build-tools` + project-local `build/build-package.php`.
 
+## Dev environment
+
+If you symlink the repo's `admin/` folder into a live Joomla install (`administrator/components/com_churchdirectory/`), Joomla expects to find the manifest at `admin/churchdirectory.xml`. The repo's source-of-truth manifest lives at the **root** ([churchdirectory.xml](churchdirectory.xml)); a matching `admin/churchdirectory.xml` is gitignored as a dev convenience. Create it once per clone:
+
+```bash
+ln -s ../churchdirectory.xml admin/churchdirectory.xml
+```
+
+Use a **relative** path (`../churchdirectory.xml`), not an absolute one — absolute symlinks travel as broken pointers if the repo path differs across machines or CI. The package builder reads the manifest from the root and writes it into the package zip's root, so this symlink is only for live-symlink dev workflows; it never ships in the install zip.
+
 ## Things to watch out for
 
 - **Mixed-era state.** Until phase 3 lands, the repo contains *both* the new toolchain and the legacy Joomla 3 source. Don't take the legacy `JControllerLegacy` / `JFactory` patterns under [admin/controllers/](admin/controllers/) and [site/controllers/](site/controllers/) as templates — they are migration source, scheduled for replacement, and won't run on Joomla 5/6 even if they look superficially similar to modern Joomla code.
