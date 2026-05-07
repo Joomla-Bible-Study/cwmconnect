@@ -1,0 +1,37 @@
+{
+    "_comment": "All three manifests bump in lockstep on a cwmconnect release: the component, the bundled site module, and the bundled finder plugin. The component is the primary surface; the module + finder plugin only ship from this repo and have no independent release cadence. ARS categoryId/updateStreamId are placeholders — populate before first release (run `cwm-ars-list` against the CWM ARS site to discover IDs).",
+    "extension": {
+        "type": "package",
+        "name": "pkg_cwmconnect"
+    },
+    "manifests": {
+        "package": "build/pkg_cwmconnect.xml",
+        "extensions": [
+            { "type": "component", "path": "churchdirectory.xml" },
+            { "type": "module",    "path": "modules/site/mod_birthdayanniversary/mod_birthdayanniversary.xml" },
+            { "type": "plugin",    "path": "plugins/finder/churchdirectory/churchdirectory.xml" }
+        ]
+    },
+    "build": {
+        "command": "php build/build-package.php build",
+        "outputGlob": "build/dist/pkg_cwmconnect-*.zip"
+    },
+    "ars": {
+        "endpoint": "https://www.christianwebministries.org",
+        "categoryId": 0,
+        "updateStreamId": 0,
+        "environments": ["50", "51", "60"],
+        "tokenItem": "CWM ARS API Token",
+        "tokenVault": "CWM",
+        "itemDescription": "CWM Connect — Church Photo Directory component for Joomla 5/6, with a birthday/anniversary site module and Smart Search adapter for directory entries."
+    },
+    "github": {
+        "owner": "Joomla-Bible-Study",
+        "repo": "cwmconnect",
+        "releaseBranch": "master"
+    },
+    "changelog": {
+        "file": "build/cwmconnect-changelog.xml",
+        "url":  "https://raw.githubusercontent.com/Joomla-Bible-Study/cwmconnect/master/build/cwmconnect-changelog.xml"
+    }
+}
