@@ -1,0 +1,33 @@
+# IDE & system
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.iml
+*.swp
+
+# AI tooling
+.ai/
+.claude/
+
+# Dependencies
+/libraries/vendor/
+/node_modules/
+composer.phar
+
+# Build outputs
+/build/dist/
+/build/reports/
+*.zip
+
+# Tool caches
+.php-cs-fixer.cache
+.phpunit.cache
+.phpunit.result.cache
+
+# Local env
+.env
+.env.local
+
+# Dev-only convenience symlinks (see CLAUDE.md "Dev environment" section)
+/admin/churchdirectory.xml
