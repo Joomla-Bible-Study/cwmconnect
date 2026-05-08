@@ -1,0 +1,42 @@
+; build.properties — local Joomla installs for cwm-build-tools dev commands.
+;
+; This file is the per-developer mate to cwm-build.config.json:
+;   - cwm-build.config.json (committed) — what the project IS:
+;       extension layout, manifest paths, optional dev.links[].
+;   - build.properties (gitignored) — where YOUR dev environment runs:
+;       paths to your Joomla installs, DB credentials, admin credentials.
+;
+; To set up the first time:
+;   cp build.properties.tmpl build.properties
+; Then either edit by hand or run the wizard:
+;   composer setup
+;
+; ALWAYS keep this gitignored. It contains DB and admin passwords.
+
+; Comma-separated list of install ids — must match the section names below.
+; Add or remove as needed (j5, j6, j7, ...).
+installs = j5, j6
+
+[j5]
+path = /path/to/joomla5
+url = https://j5-dev.local
+version = 5.4.2
+db_host = localhost
+db_user =
+db_pass =
+db_name =
+admin_user = admin
+admin_pass = admin
+admin_email = admin@example.com
+
+[j6]
+path = /path/to/joomla6
+url = https://j6-dev.local
+version = 6.0.0
+db_host = localhost
+db_user =
+db_pass =
+db_name =
+admin_user = admin
+admin_pass = admin
+admin_email = admin@example.com

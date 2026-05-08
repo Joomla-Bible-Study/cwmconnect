@@ -91,13 +91,19 @@ The legacy `composer phpcs` script and the Phing build under `build/build.xml` w
 
 ## Dev environment
 
-If you symlink the repo's `admin/` folder into a live Joomla install (`administrator/components/com_churchdirectory/`), Joomla expects to find the manifest at `admin/churchdirectory.xml`. The repo's source-of-truth manifest lives at the **root** ([churchdirectory.xml](churchdirectory.xml)); a matching `admin/churchdirectory.xml` is gitignored as a dev convenience. Create it once per clone:
+The full dev-environment surface is driven by [cwm-build-tools](../cwm-build-tools) v0.4+:
 
 ```bash
-ln -s ../churchdirectory.xml admin/churchdirectory.xml
+cp build.properties.tmpl build.properties     # one-time per clone
+composer setup                                  # interactive: install paths, DB creds
+composer joomla-install                         # optional: download Joomla into each path
+composer link                                   # symlink everything into each install
+composer verify                                 # confirm extensions registered, --fix to reconcile
+composer link-check                             # day-to-day: are the symlinks still healthy?
+composer clean                                  # remove all dev symlinks
 ```
 
-Use a **relative** path (`../churchdirectory.xml`), not an absolute one — absolute symlinks travel as broken pointers if the repo path differs across machines or CI. The package builder reads the manifest from the root and writes it into the package zip's root, so this symlink is only for live-symlink dev workflows; it never ships in the install zip.
+`composer link` reads [cwm-build.config.json](cwm-build.config.json) and creates **relative** symlinks for the component (`admin/`, `site/`, `media/`), the bundled module (`mod_birthdayanniversary`), the bundled finder plugin, and the internal `admin/churchdirectory.xml` mirror (the [churchdirectory.xml](churchdirectory.xml) source-of-truth lives at the root; Joomla expects it under `admin/` when the component is installed, so the linker mirrors it). `build.properties` is gitignored — secrets stay on your machine.
 
 ## Things to watch out for
 
