@@ -19,6 +19,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\GenericDataException;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Pagination\Pagination;
+use Joomla\CMS\Router\Route;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 
 /**
@@ -88,6 +89,14 @@ class HtmlView extends BaseHtmlView
     protected function addToolbar(): void
     {
         ToolbarHelper::title(Text::_('COM_CHURCHDIRECTORY_TITLE_GEOUPDATE_STATUS'), 'geo');
+
+        $toolbar = $this->getDocument()->getToolbar();
+
+        $toolbar->popupButton('geoupdate')
+            ->url(Route::_('index.php?option=com_churchdirectory&task=geoupdate.browse&tmpl=component'))
+            ->text('COM_CHURCHDIRECTORY_GEOUPDATE')
+            ->selector('geoupdateModal')
+            ->icon('icon-refresh');
 
         if ($this->canDo && $this->canDo->get('core.admin')) {
             ToolbarHelper::preferences('com_churchdirectory');
