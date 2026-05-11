@@ -411,8 +411,26 @@ class MemberModel extends AdminModel
 
         $save = parent::save($data);
 
-        // TODO Phase 3b-iii: re-trigger geocoding once the GeoUpdate model has been ported.
-        // Legacy code instantiated ChurchDirectoryModelGeoUpdate and called run(true, $data['id']) here.
+        if ($save) {
+            $memberId = (int) ($data['id'] ?? $this->getState($this->getName() . '.id'));
+
+            if ($memberId > 0) {
+                try {
+                    $factory = Factory::getApplication()
+                        ->bootComponent('com_churchdirectory')
+                        ->getMVCFactory();
+
+                    /** @var GeoupdateModel $geoupdate */
+                    $geoupdate = $factory->createModel('Geoupdate', 'Administrator', ['ignore_request' => true]);
+                    $geoupdate->run(true, $memberId);
+                } catch (\Throwable $e) {
+                    Factory::getApplication()->enqueueMessage(
+                        Text::sprintf('COM_CHURCHDIRECTORY_GEOCODE_FAILED', $e->getMessage()),
+                        'warning'
+                    );
+                }
+            }
+        }
 
         return $save;
     }
