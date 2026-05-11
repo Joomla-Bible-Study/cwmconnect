@@ -203,7 +203,8 @@ class DatabaseModel extends BaseDatabaseModel
     }
 
     /**
-     * Backfill the component params with com_content's filter defaults if blank.
+     * Backfill the #__extensions row's params from the component manifest's
+     * filter defaults if the stored params are blank.
      *
      * @return  bool
      *
@@ -223,11 +224,13 @@ class DatabaseModel extends BaseDatabaseModel
             return false;
         }
 
-        $contentParams = ComponentHelper::getParams('com_churchdirectory');
+        // With $table->params empty, ComponentHelper falls back to the
+        // manifest's <config> defaults — that's where the filter set lives.
+        $manifestParams = ComponentHelper::getParams('com_churchdirectory');
 
-        if ($contentParams->get('filters')) {
+        if ($manifestParams->get('filters')) {
             $newParams = new Registry();
-            $newParams->set('filters', $contentParams->get('filters'));
+            $newParams->set('filters', $manifestParams->get('filters'));
             $table->params = (string) $newParams;
 
             return (bool) $table->store();
