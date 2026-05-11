@@ -267,8 +267,11 @@ class ReportsModel extends ListModel
     {
         $params = ComponentHelper::getParams('com_churchdirectory');
 
+        // Prime state via the auto-populate guard, then force the export-only
+        // filter. Doing setState() before populateState() lets the request /
+        // session re-supply filter.published and bypass the safety net.
+        $this->getState();
         $this->setState('filter.published', 1);
-        $this->populateState();
 
         $reportBuild = new ReportbuildHelper();
         $items       = $this->getDatabase()->setQuery($this->getListQuery())->loadObjectList();
