@@ -13,6 +13,9 @@ namespace CWM\Component\Churchdirectory\Administrator\Extension;
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
+use CWM\Component\Churchdirectory\Administrator\Service\HTML\Colorpicker;
+use CWM\Component\Churchdirectory\Administrator\Service\HTML\Geoupdate;
+use CWM\Component\Churchdirectory\Administrator\Service\HTML\Member;
 use Joomla\CMS\Categories\CategoryServiceInterface;
 use Joomla\CMS\Categories\CategoryServiceTrait;
 use Joomla\CMS\Component\Router\RouterServiceInterface;
@@ -39,12 +42,23 @@ class ChurchdirectoryComponent extends MVCComponent implements
     public const string MIN_JOOMLA_VERSION = '5.0.0';
 
     /**
-     * Boot the extension. Registers HTML services or other initialization
-     * once the container is available.
+     * Boot the extension. Registers the component's HTMLHelper services so
+     * `HTMLHelper::_('churchdirectory.foo.bar', ...)` resolves to the
+     * matching method on the registered service object.
+     *
+     * @param   ContainerInterface  $container  The DI container.
+     *
+     * @return  void
+     *
+     * @throws  \Exception
+     * @since   2.0.0
      */
     public function boot(ContainerInterface $container): void
     {
-        // No boot-time initialization yet — admin HTML helpers register here
-        // once they're ported in phase 3b.
+        $registry = $this->getRegistry();
+
+        $registry->register('churchdirectory.colorpicker', new Colorpicker());
+        $registry->register('churchdirectory.geoupdate',   new Geoupdate());
+        $registry->register('churchdirectory.member',      new Member());
     }
 }
