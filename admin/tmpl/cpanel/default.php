@@ -11,10 +11,11 @@
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
+use CWM\Component\Churchdirectory\Administrator\View\Cpanel\HtmlView;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 
-/** @var \CWM\Component\Churchdirectory\Administrator\View\Cpanel\HtmlView $this */
+/** @var HtmlView $this */
 ?>
 <form action="<?php echo Route::_('index.php?option=com_churchdirectory'); ?>"
       method="post" name="adminForm" id="adminForm">
