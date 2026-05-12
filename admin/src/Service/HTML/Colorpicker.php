@@ -15,7 +15,7 @@ namespace CWM\Component\Churchdirectory\Administrator\Service\HTML;
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
-use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Factory;
 
 /**
  * Bootstrap-style helper to register the bundled jscolor library on demand.
@@ -48,7 +48,11 @@ class Colorpicker
             return;
         }
 
-        HTMLHelper::_('script', 'media/com_churchdirectory/js/jscolor.min.js', ['version' => 'auto']);
+        Factory::getApplication()
+            ->getDocument()
+            ->getWebAssetManager()
+            ->useScript('com_churchdirectory.jscolor');
+
         self::$loaded[__METHOD__] = true;
     }
 }
