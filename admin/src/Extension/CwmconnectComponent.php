@@ -16,7 +16,6 @@ namespace CWM\Component\Cwmconnect\Administrator\Extension;
 // phpcs:enable PSR1.Files.SideEffects
 
 use CWM\Component\Cwmconnect\Administrator\Service\HTML\Colorpicker;
-use CWM\Component\Cwmconnect\Administrator\Service\HTML\Geoupdate;
 use CWM\Component\Cwmconnect\Administrator\Service\HTML\Member;
 use Joomla\CMS\Categories\CategoryServiceInterface;
 use Joomla\CMS\Categories\CategoryServiceTrait;
@@ -62,7 +61,6 @@ class CwmconnectComponent extends MVCComponent implements
         $registry = $this->getRegistry();
 
         $registry->register('cwmconnect.colorpicker', new Colorpicker());
-        $registry->register('cwmconnect.geoupdate',   new Geoupdate());
         $registry->register('cwmconnect.member',      new Member());
     }
 }

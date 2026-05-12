@@ -80,9 +80,6 @@
             <menu link="option=com_cwmconnect&amp;view=kmls"
                   view="kmls"
                   alt="Cwmconnect/KML">COM_CWMCONNECT_KML</menu>
-            <menu link="option=com_cwmconnect&amp;view=geoupdate"
-                  view="geoupdate"
-                  alt="Cwmconnect/GeoUpdate">COM_CWMCONNECT_GEOUPDATE</menu>
             <menu link="option=com_cwmconnect&amp;view=reports"
                   view="reports"
                   alt="Cwmconnect/Reports">COM_CWMCONNECT_REPORTS</menu>

@@ -116,3 +116,35 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
         <?php echo HTMLHelper::_('form.token'); ?>
     </div>
 </form>
+
+<div class="modal fade" id="geoupdateModal" tabindex="-1" aria-labelledby="geoupdateHeading" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="geoupdateHeading"
+                    data-done-label="<?php echo $this->escape(Text::_('COM_CWMCONNECT_LBL_GEOUPDATEDONE')); ?>">
+                    <?php echo Text::_('COM_CWMCONNECT_LBL_GEOUPDATEINPROGRESS'); ?>
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                        aria-label="<?php echo $this->escape(Text::_('JCLOSE')); ?>"></button>
+            </div>
+            <div class="modal-body">
+                <div class="progress mb-3" role="progressbar"
+                     aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                    <div id="geoupdateBar"
+                         class="progress-bar progress-bar-striped progress-bar-animated"
+                         style="width: 0%">0%</div>
+                </div>
+                <p id="geoupdateStatus" class="mb-0">&mdash;</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-geoupdate-start>
+                    <?php echo Text::_('COM_CWMCONNECT_GEOUPDATE_RUN'); ?>
+                </button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <?php echo Text::_('JCLOSE'); ?>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
