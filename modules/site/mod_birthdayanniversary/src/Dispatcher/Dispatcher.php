@@ -18,7 +18,6 @@ namespace CWM\Module\Birthdayanniversary\Site\Dispatcher;
 use Joomla\CMS\Dispatcher\AbstractModuleDispatcher;
 use Joomla\CMS\Helper\HelperFactoryAwareInterface;
 use Joomla\CMS\Helper\HelperFactoryAwareTrait;
-use Joomla\CMS\HTML\HTMLHelper;
 
 /**
  * Dispatcher for mod_birthdayanniversary — runs the birthday + anniversary
@@ -32,7 +31,9 @@ class Dispatcher extends AbstractModuleDispatcher implements HelperFactoryAwareI
 
     /**
      * Resolve the data the layout needs (birthdays + anniversaries for the
-     * configured month) and ensure the component's stylesheet trio is loaded.
+     * configured month) and enqueue the component's shared stylesheets via
+     * the WebAssetManager (resolved through media/com_churchdirectory/
+     * joomla.asset.json).
      *
      * @return  array<string, mixed>
      *
@@ -42,11 +43,11 @@ class Dispatcher extends AbstractModuleDispatcher implements HelperFactoryAwareI
     {
         $data = parent::getLayoutData();
 
-        // Load the component's shared stylesheets — the legacy module did the
-        // same via addCSS(). Each call is no-op-safe if already enqueued.
-        HTMLHelper::_('stylesheet', 'media/com_churchdirectory/css/general.css');
-        HTMLHelper::_('stylesheet', 'media/com_churchdirectory/css/model.css');
-        HTMLHelper::_('stylesheet', 'media/com_churchdirectory/css/icons.css');
+        $this->getApplication()
+            ->getDocument()
+            ->getWebAssetManager()
+            ->useStyle('com_churchdirectory.general')
+            ->useStyle('com_churchdirectory.model');
 
         $helper = $this->getHelperFactory()->getHelper('BirthdayanniversaryHelper');
 
