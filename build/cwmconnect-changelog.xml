@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Joomla update changelog for pkg_cwmconnect.
+
+    New entries are inserted at the top by `composer changelog -- <version>`,
+    which fetches the GitHub release notes for the tag and converts headings
+    (### Fixes, ### Features, ### Changes, etc.) into Joomla changelog types.
+
+    Hosted at:
+    https://raw.githubusercontent.com/Joomla-Bible-Study/cwmconnect/master/build/cwmconnect-changelog.xml
+
+    Joomla reads this file via the `<changelogurl>` element in the
+    package manifest (build/pkg_cwmconnect.xml) when checking for
+    updates. The URL is also recorded in cwm-build.config.json under
+    `changelog.url` for tooling reference; modern Akeeba ARS does not
+    expose a changelog field on its update streams, so the manifest
+    element is the load-bearing wiring.
+-->
+<changelogs>
+
+    <!-- ============================================================ -->
+    <!-- 2.0.0-dev                                                    -->
+    <!-- ============================================================ -->
+    <changelog>
+        <element>pkg_cwmconnect</element>
+        <type>package</type>
+        <version>2.0.0-dev</version>
+        <date>2026-05-12</date>
+        <note>
+            <item>First Joomla 5/6 build of CWM Connect (formerly Church Directory for Joomla 3). Pre-release while ARS publish wiring and live-install verification are completed; not yet recommended for production.</item>
+        </note>
+        <addition>
+            <item>Joomla 5/6 + PHP 8.4 baseline: namespaced PSR-4 layout (CWM\Component\Churchdirectory\{Administrator,Site}), MVCFactory/ComponentDispatcherFactory provider, namespaced controllers/models/tables/views, typed properties and strict_types throughout admin/, site/, modules/, and plugins/.</item>
+            <item>Bundled site module mod_birthdayanniversary rewritten on the J5 Dispatcher + HelperFactory pattern.</item>
+            <item>Smart Search finder plugin rewritten as an event subscriber against Joomla\CMS\Event\Finder typed events.</item>
+            <item>Frontend assets registered through media/com_churchdirectory/joomla.asset.json (WebAssetManager); LESS pipeline retired.</item>
+            <item>Database schema migrated to utf8mb4 / utf8mb4_unicode_ci, with alias columns preserving utf8mb4_bin for case-sensitive slug uniqueness.</item>
+            <item>PHPUnit 12 test scaffolding with PSR-4 stubs for Joomla CMS classes; CI matrix on PHP 8.4.</item>
+            <item>Adopted cwm/build-tools release pipeline (composer release / bump / package / ars-publish / changelog); per-extension cwm-build.config.json describes the package layout, ARS endpoint, and changelog URL.</item>
+        </addition>
+        <change>
+            <item>Component renamed from Church Directory to CWM Connect at the package level; component element remains com_churchdirectory for upgrade continuity.</item>
+            <item>Phing build removed in favour of cwm-build-tools + build/build-package.php.</item>
+        </change>
+        <remove>
+            <item>Legacy Joomla 3 entry points (admin/churchdirectory.php, site/churchdirectory.php), JControllerLegacy / JFactory / JText / JTable call sites, JHtml service registrations, and the LESS source tree.</item>
+        </remove>
+    </changelog>
+
+</changelogs>
