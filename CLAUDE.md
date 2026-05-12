@@ -13,10 +13,14 @@ The legacy Joomla 3 source still lives under [admin/](admin/), [site/](site/), [
 | # | Phase | State |
 |---|---|---|
 | 0 | Decisions: package layout, naming, drop legacy search plugin | done |
-| 1 | Toolchain swap (composer / cwm-build-tools / CI / package wrapper) | **done** |
-| 2 | Manifests: `<namespace>` + `<compatibility>` + `<scriptfile>script.php</scriptfile>` for component, module, finder plugin | next |
-| 3 | PSR-4 layout: `admin/src/` + `site/src/` + `admin/services/provider.php` + dispatcher + extension class | pending |
-| 4 | API migration: `JFactory`/`JHtml`/`JText`/`JTable`/`JControllerLegacy` → namespaced `Joomla\CMS\*`; finder + module rewritten as subscribers | pending |
+| 1 | Toolchain swap (composer / cwm-build-tools / CI / package wrapper) | done |
+| 2 | Manifests: `<namespace>` + `<compatibility>` + `<scriptfile>script.php</scriptfile>` for component, module, finder plugin | done |
+| 3a | Dispatch infra: `admin/services/provider.php` + admin/site Dispatcher + Extension class | done |
+| 3b | Admin PSR-4 entities + singletons + helpers + HTML services + custom fields (all under `admin/src/`) | done |
+| 4a | Drop legacy admin entry stubs (`admin/api.php`, `admin/churchdirectory.php`, `admin/controller.php`) | **next** |
+| 4b | Port `site/` to PSR-4 under `site/src/` (Controller, Model, View, Helper, Router, Service) | pending |
+| 4c | Rewrite `mod_birthdayanniversary` with the J5 Dispatcher pattern (`modules/site/mod_birthdayanniversary/src/Dispatcher`) | pending |
+| 4d | Rewrite `plugins/finder/churchdirectory` as event subscriber (`SubscriberInterface`) | pending |
 | 5 | PHP 8.3 idioms (strict_types, type declarations, property promotion, readonly) | pending |
 | 6 | Frontend: drop LESS pipeline, register WebAssets via `joomla.asset.json` | pending |
 | 7 | SQL: utf8mb4 + J5/J6 update files | pending |
