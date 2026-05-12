@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @package    Churchdirectory.Admin
+ * @package    Cwmconnect.Admin
  * @copyright  (C) 2026 CWM Team All rights reserved
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * @link       https://www.christianwebministries.org
@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace CWM\Component\Churchdirectory\Administrator\Table;
+namespace CWM\Component\Cwmconnect\Administrator\Table;
 
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
@@ -24,7 +24,7 @@ use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
 
 /**
- * Dirheader table class for #__churchdirectory_dirheader.
+ * Dirheader table class for #__cwmconnect_dirheader.
  *
  * @since  2.0.0
  */
@@ -189,7 +189,7 @@ class DirheaderTable extends Table
     {
         $this->_jsonEncode = ['params'];
 
-        parent::__construct('#__churchdirectory_dirheader', 'id', $db);
+        parent::__construct('#__cwmconnect_dirheader', 'id', $db);
     }
 
     /**
@@ -234,7 +234,7 @@ class DirheaderTable extends Table
             $table->load(['alias' => $this->alias, 'catid' => $this->catid])
             && ((int) $table->id !== (int) $this->id || (int) $this->id === 0)
         ) {
-            $this->setError(Text::_('COM_CHURCHDIRECTORY_ERROR_UNIQUE_ALIAS'));
+            $this->setError(Text::_('COM_CWMCONNECT_ERROR_UNIQUE_ALIAS'));
 
             return false;
         }
@@ -253,7 +253,7 @@ class DirheaderTable extends Table
     public function check(): bool
     {
         if (InputFilter::checkAttribute(['href', $this->webpage ?? ''])) {
-            $this->setError(Text::_('COM_CHURCHDIRECTORY_WARNING_PROVIDE_VALID_URL'));
+            $this->setError(Text::_('COM_CWMCONNECT_WARNING_PROVIDE_VALID_URL'));
 
             return false;
         }
@@ -269,7 +269,7 @@ class DirheaderTable extends Table
         }
 
         if (trim((string) $this->name) === '') {
-            $this->setError(Text::_('COM_CHURCHDIRECTORY_WARNING_PROVIDE_VALID_NAME'));
+            $this->setError(Text::_('COM_CWMCONNECT_WARNING_PROVIDE_VALID_NAME'));
 
             return false;
         }
@@ -277,13 +277,13 @@ class DirheaderTable extends Table
         $db    = $this->getDbo();
         $query = $db->getQuery(true)
             ->select($db->quoteName('id'))
-            ->from($db->quoteName('#__churchdirectory_dirheader'))
+            ->from($db->quoteName('#__cwmconnect_dirheader'))
             ->where($db->quoteName('name') . ' = ' . $db->quote($this->name));
         $db->setQuery($query);
         $xid = (int) $db->loadResult();
 
         if ($xid && $xid !== (int) $this->id) {
-            $this->setError(Text::_('COM_CHURCHDIRECTORY_WARNING_SAME_NAME'));
+            $this->setError(Text::_('COM_CWMCONNECT_WARNING_SAME_NAME'));
 
             return false;
         }

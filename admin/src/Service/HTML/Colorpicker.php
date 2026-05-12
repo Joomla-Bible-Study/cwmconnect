@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @package    Churchdirectory.Admin
+ * @package    Cwmconnect.Admin
  * @copyright  (C) 2026 CWM Team All rights reserved
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * @link       https://www.christianwebministries.org
@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace CWM\Component\Churchdirectory\Administrator\Service\HTML;
+namespace CWM\Component\Cwmconnect\Administrator\Service\HTML;
 
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
@@ -20,7 +20,7 @@ use Joomla\CMS\Factory;
 /**
  * Bootstrap-style helper to register the bundled jscolor library on demand.
  *
- * Registered as `churchdirectory.colorpicker.framework`.
+ * Registered as `cwmconnect.colorpicker.framework`.
  *
  * @since  2.0.0
  */
@@ -51,7 +51,7 @@ class Colorpicker
         Factory::getApplication()
             ->getDocument()
             ->getWebAssetManager()
-            ->useScript('com_churchdirectory.jscolor');
+            ->useScript('com_cwmconnect.jscolor');
 
         self::$loaded[__METHOD__] = true;
     }

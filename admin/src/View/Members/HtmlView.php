@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @package    Churchdirectory.Admin
+ * @package    Cwmconnect.Admin
  * @copyright  (C) 2026 CWM Team All rights reserved
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * @link       https://www.christianwebministries.org
@@ -9,13 +9,13 @@
 
 declare(strict_types=1);
 
-namespace CWM\Component\Churchdirectory\Administrator\View\Members;
+namespace CWM\Component\Cwmconnect\Administrator\View\Members;
 
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
-use CWM\Component\Churchdirectory\Administrator\Model\MembersModel;
+use CWM\Component\Cwmconnect\Administrator\Model\MembersModel;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Helper\ContentHelper;
@@ -90,7 +90,7 @@ class HtmlView extends BaseHtmlView
         $this->filterForm    = $model->getFilterForm();
         $this->activeFilters = $model->getActiveFilters();
         $this->canDo         = ContentHelper::getActions(
-            'com_churchdirectory',
+            'com_cwmconnect',
             'category',
             (int) $this->state->get('filter.category_id', 0)
         );
@@ -141,9 +141,9 @@ class HtmlView extends BaseHtmlView
         $canDo   = $this->canDo;
         $toolbar = Toolbar::getInstance('toolbar');
 
-        ToolbarHelper::title(Text::_('COM_CHURCHDIRECTORY_MANAGER_MEMBERS'), 'address contact');
+        ToolbarHelper::title(Text::_('COM_CWMCONNECT_MANAGER_MEMBERS'), 'address contact');
 
-        if ($canDo->get('core.create') || \count($user->getAuthorisedCategories('com_churchdirectory', 'core.create')) > 0) {
+        if ($canDo->get('core.create') || \count($user->getAuthorisedCategories('com_cwmconnect', 'core.create')) > 0) {
             $toolbar->addNew('member.add');
         }
 
@@ -177,13 +177,13 @@ class HtmlView extends BaseHtmlView
         }
 
         if (
-            $user->authorise('core.create', 'com_churchdirectory')
-            && $user->authorise('core.edit', 'com_churchdirectory')
-            && $user->authorise('core.edit.state', 'com_churchdirectory')
+            $user->authorise('core.create', 'com_cwmconnect')
+            && $user->authorise('core.edit', 'com_cwmconnect')
+            && $user->authorise('core.edit.state', 'com_cwmconnect')
         ) {
             $toolbar->popupButton('batch', 'JTOOLBAR_BATCH')
                 ->popupType('inline')
-                ->textHeader(Text::_('COM_CHURCHDIRECTORY_BATCH_OPTIONS'))
+                ->textHeader(Text::_('COM_CWMCONNECT_BATCH_OPTIONS'))
                 ->url('#joomla-dialog-batch')
                 ->modalWidth('800px')
                 ->modalHeight('fit-content')
@@ -196,11 +196,11 @@ class HtmlView extends BaseHtmlView
                 ->listCheck(true);
         }
 
-        if ($canDo->get('core.admin', 'com_churchdirectory') || $user->authorise('core.options', 'com_churchdirectory')) {
-            ToolbarHelper::preferences('com_churchdirectory');
+        if ($canDo->get('core.admin', 'com_cwmconnect') || $user->authorise('core.options', 'com_cwmconnect')) {
+            ToolbarHelper::preferences('com_cwmconnect');
         }
 
-        ToolbarHelper::help('churchdirectory_members', true);
+        ToolbarHelper::help('cwmconnect_members', true);
     }
 
     /**
@@ -217,7 +217,7 @@ class HtmlView extends BaseHtmlView
             'a.state'        => Text::_('JSTATUS'),
             'a.name'         => Text::_('JGLOBAL_TITLE'),
             'category_title' => Text::_('JCATEGORY'),
-            'ul.name'        => Text::_('COM_CHURCHDIRECTORY_FIELD_LINKED_USER_LABEL'),
+            'ul.name'        => Text::_('COM_CWMCONNECT_FIELD_LINKED_USER_LABEL'),
             'a.featured'     => Text::_('JFEATURED'),
             'a.access'       => Text::_('JGRID_HEADING_ACCESS'),
             'a.language'     => Text::_('JGRID_HEADING_LANGUAGE'),

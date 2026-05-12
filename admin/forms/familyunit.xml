@@ -13,8 +13,8 @@
 
 		<field name="name"
 		       type="text"
-		       label="COM_CHURCHDIRECTORY_FIELD_FAMILYUNIT_NAME_LABEL"
-		       description="COM_CHURCHDIRECTORY_FIELD_FAMILYUNIT_NAME_DESC"
+		       label="COM_CWMCONNECT_FIELD_FAMILYUNIT_NAME_LABEL"
+		       description="COM_CWMCONNECT_FIELD_FAMILYUNIT_NAME_DESC"
 		       class="input-xxlarge input-large-text"
 		       size="40"
 		       required="true"
@@ -27,7 +27,7 @@
 		       class="inputbox" size="45"/>
 
 		<field name="language" type="contentlanguage" label="JFIELD_LANGUAGE_LABEL"
-		       description="COM_CHURCHDIRECTORY_FIELD_LANGUAGE_DESC"
+		       description="COM_CWMCONNECT_FIELD_LANGUAGE_DESC"
 		>
 			<option value="*">JALL</option>
 		</field>
@@ -38,8 +38,8 @@
 		       size="1"
 		/>
 		<field name="description" type="editor"
-		       label="COM_CHURCHDIRECTORY_FIELD_FAMILYUNIT_DESCRIPTION_LABEL"
-		       description="COM_CHURCHDIRECTORY_FIELD_FAMILYUNIT_DESCRIPTION_DESC"
+		       label="COM_CWMCONNECT_FIELD_FAMILYUNIT_DESCRIPTION_LABEL"
+		       description="COM_CWMCONNECT_FIELD_FAMILYUNIT_DESCRIPTION_DESC"
 		       class="inputbox"
 		       filter="JComponentHelper::filterText"
 		       buttons="true"
@@ -60,19 +60,19 @@
 			<option value="-2">JTRASHED</option>
 		</field>
 		<field name="created_by" type="user" label="JGLOBAL_FIELD_CREATED_BY_LABEL"
-		       description="COM_CHURCHDIRECTORY_FIELD_CREATED_BY_DESC"/>
+		       description="COM_CWMCONNECT_FIELD_CREATED_BY_DESC"/>
 
 		<field name="created_by_alias" type="text"
-		       label="COM_CHURCHDIRECTORY_FIELD_CREATED_BY_ALIAS_LABEL"
-		       description="COM_CHURCHDIRECTORY_FIELD_CREATED_BY_ALIAS_DESC"
+		       label="COM_CWMCONNECT_FIELD_CREATED_BY_ALIAS_LABEL"
+		       description="COM_CWMCONNECT_FIELD_CREATED_BY_ALIAS_DESC"
 		       class="inputbox" size="20"/>
 
 		<field name="created" type="calendar"
-		       label="COM_CHURCHDIRECTORY_FIELD_CREATED_LABEL" description="COM_CHURCHDIRECTORY_FIELD_CREATED_DESC"
+		       label="COM_CWMCONNECT_FIELD_CREATED_LABEL" description="COM_CWMCONNECT_FIELD_CREATED_DESC"
 		       class="inputbox" size="22" format="%Y-%m-%d %H:%M:%S" filter="user_utc"/>
 
 		<field name="modified" type="calendar" class="readonly"
-		       label="JGLOBAL_FIELD_MODIFIED_LABEL" description="COM_CHURCHDIRECTORY_FIELD_MODIFIED_DESC"
+		       label="JGLOBAL_FIELD_MODIFIED_LABEL" description="COM_CWMCONNECT_FIELD_MODIFIED_DESC"
 		       size="22" readonly="true" format="%Y-%m-%d %H:%M:%S" filter="user_utc"/>
 
 		<field name="modified_by" type="user" label="JGLOBAL_FIELD_MODIFIED_BY_LABEL"
@@ -84,16 +84,16 @@
 
 		<field name="ordering" type="ordering" class="inputbox"
 		       label="JFIELD_ORDERING_LABEL" description="JFIELD_ORDERING_DESC"
-		       content_type="com_churchdirectory.familyunit"/>
+		       content_type="com_cwmconnect.familyunit"/>
 
 		<field name="publish_up" type="calendar"
-		       label="COM_CHURCHDIRECTORY_FIELD_PUBLISH_UP_LABEL"
-		       description="COM_CHURCHDIRECTORY_FIELD_PUBLISH_UP_DESC"
+		       label="COM_CWMCONNECT_FIELD_PUBLISH_UP_LABEL"
+		       description="COM_CWMCONNECT_FIELD_PUBLISH_UP_DESC"
 		       class="inputbox" format="%Y-%m-%d %H:%M:%S" size="22" filter="user_utc"/>
 
 		<field name="publish_down" type="calendar"
-		       label="COM_CHURCHDIRECTORY_FIELD_PUBLISH_DOWN_LABEL"
-		       description="COM_CHURCHDIRECTORY_FIELD_PUBLISH_DOWN_DESC"
+		       label="COM_CWMCONNECT_FIELD_PUBLISH_DOWN_LABEL"
+		       description="COM_CWMCONNECT_FIELD_PUBLISH_DOWN_DESC"
 		       class="inputbox" format="%Y-%m-%d %H:%M:%S" size="22" filter="user_utc"/>
 
 		<field name="metakey" type="textarea" label="JFIELD_META_KEYWORDS_LABEL"
@@ -104,8 +104,8 @@
 		       description="JFIELD_META_DESCRIPTION_DESC" class="inputbox" rows="3"
 		       cols="30"/>
 		<field name="image" type="media" hide_none="1"
-		       label="COM_CHURCHDIRECTORY_FIELD_PARAMS_IMAGE_LABEL"
-		       description="COM_CHURCHDIRECTORY_FIELD_PARAMS_IMAGE_DESC"/>
+		       label="COM_CWMCONNECT_FIELD_PARAMS_IMAGE_LABEL"
+		       description="COM_CWMCONNECT_FIELD_PARAMS_IMAGE_DESC"/>
 	</fieldset>
 	<fields name="params">
 	</fields>

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @package    Churchdirectory.Admin
+ * @package    Cwmconnect.Admin
  * @copyright  (C) 2026 CWM Team All rights reserved
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * @link       https://www.christianwebministries.org
@@ -17,14 +17,14 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Router\Route;
 
-/** @var \CWM\Component\Churchdirectory\Administrator\View\Geostatus\HtmlView $this */
+/** @var \CWM\Component\Cwmconnect\Administrator\View\Geostatus\HtmlView $this */
 
 $user      = Factory::getApplication()->getIdentity();
 $userId    = (int) ($user?->id ?? 0);
 $listOrder = $this->escape($this->state->get('list.ordering'));
 $listDirn  = $this->escape($this->state->get('list.direction'));
 ?>
-<form action="<?php echo Route::_('index.php?option=com_churchdirectory&view=geostatus'); ?>"
+<form action="<?php echo Route::_('index.php?option=com_cwmconnect&view=geostatus'); ?>"
       method="post" name="adminForm" id="adminForm">
     <div id="j-main-container">
         <?php echo LayoutHelper::render('joomla.searchtools.default', ['view' => $this]); ?>
@@ -38,7 +38,7 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
         <?php else : ?>
             <table class="table" id="memberList">
                 <caption class="visually-hidden">
-                    <?php echo Text::_('COM_CHURCHDIRECTORY_TITLE_GEOUPDATE_STATUS'); ?>
+                    <?php echo Text::_('COM_CWMCONNECT_TITLE_GEOUPDATE_STATUS'); ?>
                 </caption>
                 <thead>
                     <tr>
@@ -49,19 +49,19 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
                             <?php echo HTMLHelper::_('searchtools.sort', 'JGLOBAL_TITLE', 'a.name', $listDirn, $listOrder); ?>
                         </th>
                         <th scope="col">
-                            <?php echo HTMLHelper::_('searchtools.sort', 'COM_CHURCHDIRECTORY_FIELD_ADDRESS', 'a.address', $listDirn, $listOrder); ?>
+                            <?php echo HTMLHelper::_('searchtools.sort', 'COM_CWMCONNECT_FIELD_ADDRESS', 'a.address', $listDirn, $listOrder); ?>
                         </th>
                         <th scope="col" class="d-none d-md-table-cell">
-                            <?php echo HTMLHelper::_('searchtools.sort', 'COM_CHURCHDIRECTORY_FIELD_STATE', 'a.state', $listDirn, $listOrder); ?>
+                            <?php echo HTMLHelper::_('searchtools.sort', 'COM_CWMCONNECT_FIELD_STATE', 'a.state', $listDirn, $listOrder); ?>
                         </th>
                         <th scope="col" class="d-none d-md-table-cell">
-                            <?php echo HTMLHelper::_('searchtools.sort', 'COM_CHURCHDIRECTORY_FIELD_SUBURB', 'a.suburb', $listDirn, $listOrder); ?>
+                            <?php echo HTMLHelper::_('searchtools.sort', 'COM_CWMCONNECT_FIELD_SUBURB', 'a.suburb', $listDirn, $listOrder); ?>
                         </th>
                         <th scope="col" class="d-none d-md-table-cell">
-                            <?php echo HTMLHelper::_('searchtools.sort', 'COM_CHURCHDIRECTORY_FIELD_ZIP', 'a.postcode', $listDirn, $listOrder); ?>
+                            <?php echo HTMLHelper::_('searchtools.sort', 'COM_CWMCONNECT_FIELD_ZIP', 'a.postcode', $listDirn, $listOrder); ?>
                         </th>
                         <th scope="col">
-                            <?php echo HTMLHelper::_('searchtools.sort', 'COM_CHURCHDIRECTORY_FIELD_STATUS', 'u.status', $listDirn, $listOrder); ?>
+                            <?php echo HTMLHelper::_('searchtools.sort', 'COM_CWMCONNECT_FIELD_STATUS', 'u.status', $listDirn, $listOrder); ?>
                         </th>
                         <th scope="col" style="width:1%">
                             <?php echo HTMLHelper::_('searchtools.sort', 'JGRID_HEADING_ID', 'a.id', $listDirn, $listOrder); ?>
@@ -70,7 +70,7 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
                 </thead>
                 <tbody>
                     <?php foreach ($this->items as $i => $item) :
-                        $editLink = Route::_('index.php?option=com_churchdirectory&task=member.edit&id=' . (int) $item->id);
+                        $editLink = Route::_('index.php?option=com_cwmconnect&task=member.edit&id=' . (int) $item->id);
                         ?>
                         <tr class="row<?php echo $i % 2; ?>">
                             <td class="text-center">
@@ -86,19 +86,19 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
                                 </div>
                             </td>
                             <td>
-                                <?php echo $this->escape((string) ($item->address ?? '')) ?: Text::_('COM_CHURCHDIRECTORY_LBL_EMPTY'); ?>
+                                <?php echo $this->escape((string) ($item->address ?? '')) ?: Text::_('COM_CWMCONNECT_LBL_EMPTY'); ?>
                             </td>
                             <td class="d-none d-md-table-cell">
-                                <?php echo $this->escape((string) ($item->state ?? '')) ?: Text::_('COM_CHURCHDIRECTORY_LBL_EMPTY'); ?>
+                                <?php echo $this->escape((string) ($item->state ?? '')) ?: Text::_('COM_CWMCONNECT_LBL_EMPTY'); ?>
                             </td>
                             <td class="d-none d-md-table-cell">
-                                <?php echo $this->escape((string) ($item->suburb ?? '')) ?: Text::_('COM_CHURCHDIRECTORY_LBL_EMPTY'); ?>
+                                <?php echo $this->escape((string) ($item->suburb ?? '')) ?: Text::_('COM_CWMCONNECT_LBL_EMPTY'); ?>
                             </td>
                             <td class="d-none d-md-table-cell">
-                                <?php echo $this->escape((string) ($item->postcode ?? '')) ?: Text::_('COM_CHURCHDIRECTORY_LBL_EMPTY'); ?>
+                                <?php echo $this->escape((string) ($item->postcode ?? '')) ?: Text::_('COM_CWMCONNECT_LBL_EMPTY'); ?>
                             </td>
                             <td>
-                                <?php echo isset($item->status) ? $item->status : Text::_('COM_CHURCHDIRECTORY_LBL_EMPTY'); ?>
+                                <?php echo isset($item->status) ? $item->status : Text::_('COM_CWMCONNECT_LBL_EMPTY'); ?>
                             </td>
                             <td class="text-center">
                                 <?php echo (int) $item->id; ?>
@@ -116,3 +116,35 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
         <?php echo HTMLHelper::_('form.token'); ?>
     </div>
 </form>
+
+<div class="modal fade" id="geoupdateModal" tabindex="-1" aria-labelledby="geoupdateHeading" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="geoupdateHeading"
+                    data-done-label="<?php echo $this->escape(Text::_('COM_CWMCONNECT_LBL_GEOUPDATEDONE')); ?>">
+                    <?php echo Text::_('COM_CWMCONNECT_LBL_GEOUPDATEINPROGRESS'); ?>
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                        aria-label="<?php echo $this->escape(Text::_('JCLOSE')); ?>"></button>
+            </div>
+            <div class="modal-body">
+                <div class="progress mb-3" role="progressbar"
+                     aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+                    <div id="geoupdateBar"
+                         class="progress-bar progress-bar-striped progress-bar-animated"
+                         style="width: 0%">0%</div>
+                </div>
+                <p id="geoupdateStatus" class="mb-0">&mdash;</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-geoupdate-start>
+                    <?php echo Text::_('COM_CWMCONNECT_GEOUPDATE_RUN'); ?>
+                </button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <?php echo Text::_('JCLOSE'); ?>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

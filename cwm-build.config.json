@@ -7,9 +7,9 @@
     "manifests": {
         "package": "build/pkg_cwmconnect.xml",
         "extensions": [
-            { "type": "component", "path": "churchdirectory.xml" },
+            { "type": "component", "path": "cwmconnect.xml" },
             { "type": "module",    "path": "modules/site/mod_birthdayanniversary/mod_birthdayanniversary.xml" },
-            { "type": "plugin",    "path": "plugins/finder/churchdirectory/churchdirectory.xml" }
+            { "type": "plugin",    "path": "plugins/finder/cwmconnect/cwmconnect.xml" }
         ]
     },
     "build": {
@@ -37,7 +37,7 @@
     "dev": {
         "_comment": "Drives cwm-link / cwm-link-check / cwm-clean / cwm-verify against the developer's local Joomla install(s). Component admin/site/media + the bundled module + finder plugin are auto-derived from manifests.extensions[]; the internalLinks entry replaces the manual `ln -s` step previously documented in CLAUDE.md.",
         "internalLinks": [
-            { "source": "churchdirectory.xml", "link": "admin/churchdirectory.xml" },
+            { "source": "cwmconnect.xml", "link": "admin/cwmconnect.xml" },
             { "source": "script.php",          "link": "admin/script.php" }
         ]
     }

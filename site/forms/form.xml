@@ -3,7 +3,7 @@
 	<fieldset>
 		<field name="id" type="hidden"
 			default="0"
-			label="COM_CHURCHDIRECTORY_ID_LABEL"
+			label="COM_CWMCONNECT_ID_LABEL"
 			readonly="true"
 			required="true"
 			size="10"
@@ -42,7 +42,7 @@
 
 		<field name="catid" type="category"
 			description="JFIELD_CATEGORY_DESC"
-			extension="com_churchdirectory"
+			extension="com_cwmconnect"
 			label="JCATEGORY"
 			required="true"
 		/>
@@ -182,7 +182,7 @@
 		</field>
 
 
-		<field name="churchdirectory_icons" type="list"
+		<field name="cwmconnect_icons" type="list"
 			default="0"
 			description="PARAMCONTACTICONS"
 			label="Icons/text"
@@ -554,8 +554,8 @@
 		</field>
 
 		<field name="redirect" type="text"
-			description="COM_CHURCHDIRECTORY_FIELD_CONFIG_REDIRECT_DESC"
-			label="COM_CHURCHDIRECTORY_FIELD_CONFIG_REDIRECT_LABEL"
+			description="COM_CWMCONNECT_FIELD_CONFIG_REDIRECT_DESC"
+			label="COM_CWMCONNECT_FIELD_CONFIG_REDIRECT_LABEL"
 			size="30"
 		/>
 

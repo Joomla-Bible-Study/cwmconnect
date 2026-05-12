@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @package    Churchdirectory.Site
+ * @package    Cwmconnect.Site
  * @copyright  (C) 2026 CWM Team All rights reserved
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
@@ -10,8 +10,8 @@
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
-use CWM\Component\Churchdirectory\Site\Helper\RenderHelper;
-use CWM\Component\Churchdirectory\Site\Helper\RouteHelper;
+use CWM\Component\Cwmconnect\Site\Helper\RenderHelper;
+use CWM\Component\Cwmconnect\Site\Helper\RouteHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -23,7 +23,7 @@ use Joomla\CMS\Uri\Uri;
 <?php if (JPluginHelper::isEnabled('user', 'profile')) :
 	$fields = $this->item->profile->getFieldset('profile');
 	?>
-	<div class="churchdirectory-profile" id="users-profile-custom">
+	<div class="cwmconnect-profile" id="users-profile-custom">
 		<dl class="dl-horizontal">
 			<?php
 			foreach ($fields as $profile) :

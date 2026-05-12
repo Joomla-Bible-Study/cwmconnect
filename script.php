@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @package    Churchdirectory
+ * @package    Cwmconnect
  * @copyright  (C) 2026 CWM Team All rights reserved
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * @link       https://www.christianwebministries.org
@@ -16,16 +16,16 @@ use Joomla\CMS\Installer\InstallerAdapter;
 use Joomla\CMS\Language\Text;
 
 /**
- * Script file for com_churchdirectory.
+ * Script file for com_cwmconnect.
  *
- * Companion extensions (mod_birthdayanniversary, plg_finder_churchdirectory) ship
+ * Companion extensions (mod_birthdayanniversary, plg_finder_cwmconnect) ship
  * via the pkg_cwmconnect package wrapper, so the legacy in-script
  * "installation_queue" sub-extension installer is gone. Schema lives in
  * sql/install.mysql.utf8.sql and per-version updates under sql/updates/mysql/.
  *
  * @since  2.0.0
  */
-class Com_churchdirectoryInstallerScript
+class Com_cwmconnectInstallerScript
 {
     /**
      * Minimum PHP version required.
@@ -82,7 +82,7 @@ class Com_churchdirectoryInstallerScript
     {
         if (version_compare(PHP_VERSION, $this->minimumPhp, '<')) {
             Factory::getApplication()->enqueueMessage(
-                Text::sprintf('COM_CHURCHDIRECTORY requires PHP %s or later. You are running PHP %s.', $this->minimumPhp, PHP_VERSION),
+                Text::sprintf('COM_CWMCONNECT requires PHP %s or later. You are running PHP %s.', $this->minimumPhp, PHP_VERSION),
                 'error'
             );
 
@@ -91,7 +91,7 @@ class Com_churchdirectoryInstallerScript
 
         if (version_compare(JVERSION, $this->minimumJoomla, '<')) {
             Factory::getApplication()->enqueueMessage(
-                Text::sprintf('COM_CHURCHDIRECTORY requires Joomla %s or later.', $this->minimumJoomla),
+                Text::sprintf('COM_CWMCONNECT requires Joomla %s or later.', $this->minimumJoomla),
                 'error'
             );
 

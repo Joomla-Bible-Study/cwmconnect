@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CWM\Component\Churchdirectory\Tests\Helper;
+namespace CWM\Component\Cwmconnect\Tests\Helper;
 
 use PHPUnit\Framework\Attributes\CoversNothing;
 use PHPUnit\Framework\TestCase;
@@ -30,8 +30,8 @@ final class SmokeTest extends TestCase
     public function testJoomlaTextStubResolves(): void
     {
         self::assertSame(
-            'COM_CHURCHDIRECTORY_DEMO_KEY',
-            \Joomla\CMS\Language\Text::_('COM_CHURCHDIRECTORY_DEMO_KEY'),
+            'COM_CWMCONNECT_DEMO_KEY',
+            \Joomla\CMS\Language\Text::_('COM_CWMCONNECT_DEMO_KEY'),
             'The stubbed Joomla\\CMS\\Language\\Text::_ should echo the key unchanged.',
         );
 

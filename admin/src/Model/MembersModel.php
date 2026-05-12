@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @package    Churchdirectory.Admin
+ * @package    Cwmconnect.Admin
  * @copyright  (C) 2026 CWM Team All rights reserved
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * @link       https://www.christianwebministries.org
@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace CWM\Component\Churchdirectory\Administrator\Model;
+namespace CWM\Component\Cwmconnect\Administrator\Model;
 
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
@@ -187,7 +187,7 @@ class MembersModel extends ListModel
                 )
             )
         );
-        $query->from($db->quoteName('#__churchdirectory_details', 'a'));
+        $query->from($db->quoteName('#__cwmconnect_details', 'a'));
 
         // Linked user.
         $query->select([
@@ -204,7 +204,7 @@ class MembersModel extends ListModel
         $query->select($db->quoteName('fu.name', 'funitname'))
             ->join(
                 'LEFT',
-                $db->quoteName('#__churchdirectory_familyunit', 'fu')
+                $db->quoteName('#__cwmconnect_familyunit', 'fu')
                 . ' ON ' . $db->quoteName('fu.id') . ' = ' . $db->quoteName('a.funitid')
             );
 
@@ -249,7 +249,7 @@ class MembersModel extends ListModel
                     'LEFT',
                     $db->quoteName('#__associations', 'asso')
                     . ' ON ' . $db->quoteName('asso.id') . ' = ' . $db->quoteName('a.id')
-                    . ' AND ' . $db->quoteName('asso.context') . ' = ' . $db->quote('com_churchdirectory.item')
+                    . ' AND ' . $db->quoteName('asso.context') . ' = ' . $db->quote('com_cwmconnect.item')
                 )
                 ->join(
                     'LEFT',
@@ -365,7 +365,7 @@ class MembersModel extends ListModel
                     'LEFT',
                     $db->quoteName('#__contentitem_tag_map', 'tagmap')
                     . ' ON ' . $db->quoteName('tagmap.content_item_id') . ' = ' . $db->quoteName('a.id')
-                    . ' AND ' . $db->quoteName('tagmap.type_alias') . ' = ' . $db->quote('com_churchdirectory.member')
+                    . ' AND ' . $db->quoteName('tagmap.type_alias') . ' = ' . $db->quote('com_cwmconnect.member')
                 );
         }
 

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @package    Churchdirectory.Site
+ * @package    Cwmconnect.Site
  * @copyright  (C) 2026 CWM Team All rights reserved
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * @link       https://www.christianwebministries.org
@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace CWM\Component\Churchdirectory\Site\View\Directory;
+namespace CWM\Component\Cwmconnect\Site\View\Directory;
 
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
@@ -40,6 +40,6 @@ class XmlView extends BaseHtmlView
     #[\Override]
     public function display($tpl = null): void
     {
-        throw new \Exception(Text::_('COM_CHURCHDIRECTORY_XML_EXPORT_NOT_IMPLEMENTED'), 503);
+        throw new \Exception(Text::_('COM_CWMCONNECT_XML_EXPORT_NOT_IMPLEMENTED'), 503);
     }
 }

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @package    Churchdirectory.Site
+ * @package    Cwmconnect.Site
  * @copyright  (C) 2026 CWM Team All rights reserved
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
@@ -16,7 +16,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
 
-/** @var \CWM\Component\Churchdirectory\Site\View\Category\HtmlView $this */
+/** @var \CWM\Component\Cwmconnect\Site\View\Category\HtmlView $this */
 
 $listOrder = $this->escape($this->state->get('list.ordering'));
 $listDirn  = $this->escape($this->state->get('list.direction'));
@@ -31,13 +31,13 @@ if ($isModal) {
 } else {
     $popup   = "window.open(this.href,'win2','status=no,toolbar=no,scrollbars=yes,titlebar=no,menubar=no,"
         . "resizable=yes,width=640,height=480,directories=no,location=no'); return false;";
-    $href    = '"index.php?option=com_churchdirectory&view=category&id=' . $this->category->id
+    $href    = '"index.php?option=com_cwmconnect&view=category&id=' . $this->category->id
         . '&Itemid=' . $itemId . '&tmpl=component&print=1" onclick="' . $popup . '"';
-    $kmlhref = '"index.php?option=com_churchdirectory&view=category&id=' . $this->category->id
+    $kmlhref = '"index.php?option=com_cwmconnect&view=category&id=' . $this->category->id
         . '&Itemid=' . $itemId . '&tmpl=component&format=kml"';
 }
 ?>
-<div class="churchdirectory-category<?php echo $this->pageclass_sfx; ?>">
+<div class="cwmconnect-category<?php echo $this->pageclass_sfx; ?>">
     <?php if ($this->params->def('show_page_heading', 1)) : ?>
         <div class="page-header">
             <h1><?php echo $this->escape($this->params->get('page_heading')); ?></h1>
@@ -48,16 +48,16 @@ if ($isModal) {
         <h2><?php echo HTMLHelper::_('content.prepare', $this->category->title); ?></h2>
     <?php endif; ?>
 
-    <a href="<?php echo Route::_('index.php?option=com_churchdirectory&view=home'); ?>">Members Home -&gt;</a>
+    <a href="<?php echo Route::_('index.php?option=com_cwmconnect&view=home'); ?>">Members Home -&gt;</a>
     <?php echo $this->escape($this->category->title); ?>
 
     <div class="float-end">
         <a href=<?php echo $href; ?>>
-            <?php echo HTMLHelper::image('media/com_churchdirectory/images/printButton.png', 'Print', ''); ?>
+            <?php echo HTMLHelper::image('media/com_cwmconnect/images/printButton.png', 'Print', ''); ?>
         </a>
         <?php if ($kmlhref) : ?>
             <a href=<?php echo $kmlhref; ?>>
-                <?php echo HTMLHelper::image('media/com_churchdirectory/images/kmlButton.png', 'KML', ''); ?>
+                <?php echo HTMLHelper::image('media/com_cwmconnect/images/kmlButton.png', 'KML', ''); ?>
             </a>
         <?php endif; ?>
     </div>
@@ -75,7 +75,7 @@ if ($isModal) {
     <?php endif; ?>
 
     <?php if (empty($this->items)) : ?>
-        <p><?php echo Text::_('COM_CHURCHDIRECTORY_NO_MEMBERS'); ?></p>
+        <p><?php echo Text::_('COM_CWMCONNECT_NO_MEMBERS'); ?></p>
     <?php else : ?>
         <form action="<?php echo htmlspecialchars(Uri::getInstance()->toString()); ?>" method="post"
               name="adminForm" id="adminForm">
@@ -85,14 +85,14 @@ if ($isModal) {
                         <div class="btn-group">
                             <label class="filter-search-lbl element-invisible" for="filter-search">
                                 <span class="badge bg-warning"><?php echo Text::_('JUNPUBLISHED'); ?></span>
-                                <?php echo Text::_('COM_CHURCHDIRECTORY_FILTER_LABEL'); ?>&#160;
+                                <?php echo Text::_('COM_CWMCONNECT_FILTER_LABEL'); ?>&#160;
                             </label>
                             <input type="text" name="filter-search" id="filter-search"
                                    value="<?php echo $this->escape($this->state->get('list.filter')); ?>"
                                    class="form-control"
                                    onchange="document.adminForm.submit();"
-                                   title="<?php echo Text::_('COM_CHURCHDIRECTORY_FILTER_SEARCH_DESC'); ?>"
-                                   placeholder="<?php echo Text::_('COM_CHURCHDIRECTORY_FILTER_SEARCH_DESC'); ?>"/>
+                                   title="<?php echo Text::_('COM_CWMCONNECT_FILTER_SEARCH_DESC'); ?>"
+                                   placeholder="<?php echo Text::_('COM_CWMCONNECT_FILTER_SEARCH_DESC'); ?>"/>
                         </div>
                     <?php endif; ?>
                     <div class="btn-group float-end">

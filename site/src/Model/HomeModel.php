@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @package    Churchdirectory.Site
+ * @package    Cwmconnect.Site
  * @copyright  (C) 2026 CWM Team All rights reserved
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * @link       https://www.christianwebministries.org
@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace CWM\Component\Churchdirectory\Site\Model;
+namespace CWM\Component\Cwmconnect\Site\Model;
 
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
@@ -29,7 +29,7 @@ use Joomla\Registry\Registry;
 class HomeModel extends ListModel
 {
     /** @var string Model context for state caching. */
-    protected $context = 'com_churchdirectory.home';
+    protected $context = 'com_cwmconnect.home';
 
     /**
      * Auto-populate state. Captures the return URL for post-login redirects
@@ -100,7 +100,7 @@ class HomeModel extends ListModel
         $query->select($this->getState('list.select', 'a.*') . ', ' . $caseSlug . ', ' . $caseCatslug)
             ->select("CASE WHEN a.created_by_alias > ' ' THEN a.created_by_alias ELSE ua.name END AS author")
             ->select('ua.email AS author_email')
-            ->from($db->quoteName('#__churchdirectory_details', 'a'))
+            ->from($db->quoteName('#__cwmconnect_details', 'a'))
             ->join('LEFT', $db->quoteName('#__categories', 'c') . ' ON c.id = a.catid')
             ->join('LEFT', $db->quoteName('#__users', 'ua') . ' ON ua.id = a.created_by')
             ->join('LEFT', $db->quoteName('#__users', 'uam') . ' ON uam.id = a.modified_by')

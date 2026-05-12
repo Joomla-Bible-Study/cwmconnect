@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @package    Churchdirectory.Site
+ * @package    Cwmconnect.Site
  * @copyright  (C) 2026 CWM Team All rights reserved
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * @link       https://www.christianwebministries.org
@@ -9,13 +9,13 @@
 
 declare(strict_types=1);
 
-namespace CWM\Component\Churchdirectory\Site\View\Directory;
+namespace CWM\Component\Cwmconnect\Site\View\Directory;
 
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
-use CWM\Component\Churchdirectory\Administrator\Helper\ReportbuildHelper;
+use CWM\Component\Cwmconnect\Administrator\Helper\ReportbuildHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Mail\MailHelper;
@@ -52,7 +52,7 @@ class KmlView extends BaseHtmlView
         }
 
         if (empty($items)) {
-            echo Text::_('COM_CHURCHDIRECTORY_ERROR_DIRECTORY_NOT_FOUND');
+            echo Text::_('COM_CWMCONNECT_ERROR_DIRECTORY_NOT_FOUND');
             return;
         }
 

@@ -18,7 +18,7 @@
             <directory>admin/src</directory>
             <directory>site/src</directory>
             <directory>modules/site/mod_birthdayanniversary/src</directory>
-            <directory>plugins/finder/churchdirectory/src</directory>
+            <directory>plugins/finder/cwmconnect/src</directory>
         </include>
     </source>
 </phpunit>

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @package    Churchdirectory.Admin
+ * @package    Cwmconnect.Admin
  * @copyright  (C) 2026 CWM Team All rights reserved
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * @link       https://www.christianwebministries.org
@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace CWM\Component\Churchdirectory\Administrator\Helper;
+namespace CWM\Component\Cwmconnect\Administrator\Helper;
 
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
@@ -231,7 +231,7 @@ class ReportbuildHelper
                     $kml[] = '<description><![CDATA[<div style="padding: 10px;">';
 
                     if (empty($row->image)) {
-                        $kml[] = '<img src="' . Uri::base() . 'media/com_churchdirectory/images/photo_not_available.jpg" alt="Photo" width="100" height="100" /><br />';
+                        $kml[] = '<img src="' . Uri::base() . 'media/com_cwmconnect/images/photo_not_available.jpg" alt="Photo" width="100" height="100" /><br />';
                     } else {
                         $kml[] = '<img src="' . Uri::base() . $row->image . '" alt="Photo" width="100" height="100" /><br />';
                     }
@@ -348,7 +348,7 @@ class ReportbuildHelper
 
         $query = $this->db->getQuery(true)
             ->select($this->db->quoteName(['id', 'name', 'image']))
-            ->from($this->db->quoteName('#__churchdirectory_familyunit'));
+            ->from($this->db->quoteName('#__cwmconnect_familyunit'));
         $this->db->setQuery($query);
         $families = $this->db->loadObjectList() ?: [];
 
@@ -369,7 +369,7 @@ class ReportbuildHelper
     }
 
     /**
-     * Build the KML <Style>/<StyleMap> blocks for every Churchdirectory
+     * Build the KML <Style>/<StyleMap> blocks for every Cwmconnect
      * category that has an icon configured.
      *
      * @return  array<int, string>
@@ -384,7 +384,7 @@ class ReportbuildHelper
         $query = $this->db->getQuery(true)
             ->select('*')
             ->from($this->db->quoteName('#__categories'))
-            ->where($this->db->quoteName('extension') . ' = ' . $this->db->quote('com_churchdirectory'));
+            ->where($this->db->quoteName('extension') . ' = ' . $this->db->quote('com_cwmconnect'));
         $this->db->setQuery($query);
         $cats = $this->db->loadObjectList() ?: [];
 
@@ -438,7 +438,7 @@ class ReportbuildHelper
 
         $query = $this->db->getQuery(true)
             ->select($this->db->quoteName('name'))
-            ->from($this->db->quoteName('#__churchdirectory_position'))
+            ->from($this->db->quoteName('#__cwmconnect_position'))
             ->whereIn($this->db->quoteName('id'), $ids);
         $this->db->setQuery($query);
 

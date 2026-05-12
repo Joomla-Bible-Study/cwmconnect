@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @package    Churchdirectory.Admin
+ * @package    Cwmconnect.Admin
  * @copyright  (C) 2026 CWM Team All rights reserved
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * @link       https://www.christianwebministries.org
@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace CWM\Component\Churchdirectory\Administrator\Helper;
+namespace CWM\Component\Cwmconnect\Administrator\Helper;
 
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
@@ -70,7 +70,7 @@ class DbHelper
         $db    = Factory::getContainer()->get(DatabaseInterface::class);
         $query = $db->getQuery(true)
             ->select('*')
-            ->from($db->quoteName('#__churchdirectory_kml'))
+            ->from($db->quoteName('#__cwmconnect_kml'))
             ->where($db->quoteName('id') . ' = 1');
         $db->setQuery($query);
 

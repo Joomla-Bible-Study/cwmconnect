@@ -9,15 +9,16 @@
 
 declare(strict_types=1);
 
-namespace CWM\Component\Churchdirectory\Administrator\View\Geostatus;
+namespace CWM\Component\Cwmconnect\Administrator\View\Geostatus;
 
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
-use CWM\Component\Churchdirectory\Administrator\Model\GeostatusModel;
+use CWM\Component\Cwmconnect\Administrator\Model\GeostatusModel;
 use Joomla\CMS\Helper\ContentHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\View\CanDo;
 use Joomla\CMS\MVC\View\GenericDataException;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Pagination\Pagination;
@@ -46,8 +47,8 @@ class HtmlView extends BaseHtmlView
     /** @var array<string, mixed> */
     public array $activeFilters = [];
 
-    /** @var \stdClass|null */
-    protected ?\stdClass $canDo = null;
+    /** @var CanDo|null */
+    protected ?CanDo $canDo = null;
 
     /**
      * Display the view.
@@ -69,11 +70,15 @@ class HtmlView extends BaseHtmlView
         $this->state         = $model->getState();
         $this->filterForm    = $model->getFilterForm();
         $this->activeFilters = $model->getActiveFilters();
-        $this->canDo         = ContentHelper::getActions('com_churchdirectory');
+        $this->canDo         = ContentHelper::getActions('com_cwmconnect');
 
         if (\count($errors = $model->getErrors())) {
             throw new GenericDataException(implode("\n", $errors), 500);
         }
+
+        $this->getDocument()
+            ->getWebAssetManager()
+            ->useScript('com_cwmconnect.geoupdate');
 
         $this->addToolbar();
 
@@ -90,21 +95,28 @@ class HtmlView extends BaseHtmlView
      */
     protected function addToolbar(): void
     {
-        ToolbarHelper::title(Text::_('COM_CHURCHDIRECTORY_TITLE_GEOUPDATE_STATUS'), 'geo');
+        ToolbarHelper::title(Text::_('COM_CWMCONNECT_TITLE_GEOUPDATE_STATUS'), 'geo');
 
         $toolbar = $this->getDocument()->getToolbar();
 
-        $toolbar->popupButton('geoupdate')
-            ->url(Route::_('index.php?option=com_churchdirectory&task=geoupdate.browse&tmpl=component'))
-            ->text('COM_CHURCHDIRECTORY_GEOUPDATE')
-            ->selector('geoupdateModal')
-            ->icon('icon-refresh');
+        // The worker runs entirely client-side via media/com_cwmconnect/js/geoupdate.js,
+        // which posts to task=geoupdate.start/slice. The button just opens the modal
+        // already rendered in tmpl/geostatus/default.php.
+        $toolbar->customButton('geoupdate')
+            ->buttonClass('btn btn-primary')
+            ->text('COM_CWMCONNECT_GEOUPDATE')
+            ->icon('icon-refresh')
+            ->attributes([
+                'type'           => 'button',
+                'data-bs-toggle' => 'modal',
+                'data-bs-target' => '#geoupdateModal',
+            ]);
 
         if ($this->canDo && $this->canDo->get('core.admin')) {
-            ToolbarHelper::preferences('com_churchdirectory');
+            ToolbarHelper::preferences('com_cwmconnect');
         }
 
-        ToolbarHelper::help('churchdirectory_geoupdate', true);
+        ToolbarHelper::help('cwmconnect_geoupdate', true);
     }
 
     /**
@@ -121,7 +133,7 @@ class HtmlView extends BaseHtmlView
             'a.published'    => Text::_('JSTATUS'),
             'a.name'         => Text::_('JGLOBAL_TITLE'),
             'category_title' => Text::_('JCATEGORY'),
-            'ul.name'        => Text::_('COM_CHURCHDIRECTORY_FIELD_LINKED_USER_LABEL'),
+            'ul.name'        => Text::_('COM_CWMCONNECT_FIELD_LINKED_USER_LABEL'),
             'a.featured'     => Text::_('JFEATURED'),
             'a.access'       => Text::_('JGRID_HEADING_ACCESS'),
             'a.language'     => Text::_('JGRID_HEADING_LANGUAGE'),

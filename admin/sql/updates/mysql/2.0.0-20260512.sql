@@ -10,22 +10,22 @@
 
 SET SQL_MODE = '';
 
-ALTER TABLE `#__churchdirectory_details`
+ALTER TABLE `#__cwmconnect_details`
     CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
-ALTER TABLE `#__churchdirectory_dirheader`
+ALTER TABLE `#__cwmconnect_dirheader`
     CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
-ALTER TABLE `#__churchdirectory_familyunit`
+ALTER TABLE `#__cwmconnect_familyunit`
     CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
-ALTER TABLE `#__churchdirectory_geoupdate`
+ALTER TABLE `#__cwmconnect_geoupdate`
     CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
-ALTER TABLE `#__churchdirectory_kml`
+ALTER TABLE `#__cwmconnect_kml`
     CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
-ALTER TABLE `#__churchdirectory_position`
+ALTER TABLE `#__cwmconnect_position`
     CONVERT TO CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 --
@@ -35,14 +35,14 @@ ALTER TABLE `#__churchdirectory_position`
 -- would otherwise reset them to utf8mb4_unicode_ci).
 --
 
-ALTER TABLE `#__churchdirectory_dirheader`
+ALTER TABLE `#__cwmconnect_dirheader`
     MODIFY `alias` VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL DEFAULT '';
 
-ALTER TABLE `#__churchdirectory_familyunit`
+ALTER TABLE `#__cwmconnect_familyunit`
     MODIFY `alias` VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL DEFAULT '';
 
-ALTER TABLE `#__churchdirectory_kml`
+ALTER TABLE `#__cwmconnect_kml`
     MODIFY `alias` VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL DEFAULT '';
 
-ALTER TABLE `#__churchdirectory_position`
+ALTER TABLE `#__cwmconnect_position`
     MODIFY `alias` VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL DEFAULT '';

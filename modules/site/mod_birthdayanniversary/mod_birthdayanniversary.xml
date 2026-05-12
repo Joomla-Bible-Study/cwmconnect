@@ -5,7 +5,7 @@
     <authorEmail>info@christianwebministries.org</authorEmail>
     <authorUrl>www.christianwebministries.org</authorUrl>
     <copyright>(C) 2026 CWM Team All rights reserved.</copyright>
-    <creationDate>2026-05-06</creationDate>
+    <creationDate>2026-05-12</creationDate>
     <version>2.0.0-dev</version>
     <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
     <description>MOD_BIRTHDAYANNIVERSARY_XML_DESCRIPTION</description>
@@ -31,7 +31,7 @@
     <config>
         <fields name="params">
             <fieldset name="basic">
-                <field name="catid" type="category" extension="com_churchdirectory"
+                <field name="catid" type="category" extension="com_cwmconnect"
                        label="JCATEGORY"
                        description="MOD_BIRTHDAYANNIVERSARY_FIELD_CATEGORY_DESC" default="0">
                     <option value="0">MOD_BIRTHDAYANNIVERSARY_FIELD_VALUE_CATEGORY</option>

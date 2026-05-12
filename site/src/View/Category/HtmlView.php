@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @package    Churchdirectory.Site
+ * @package    Cwmconnect.Site
  * @copyright  (C) 2026 CWM Team All rights reserved
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * @link       https://www.christianwebministries.org
@@ -9,14 +9,14 @@
 
 declare(strict_types=1);
 
-namespace CWM\Component\Churchdirectory\Site\View\Category;
+namespace CWM\Component\Cwmconnect\Site\View\Category;
 
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
-use CWM\Component\Churchdirectory\Site\Helper\RenderHelper;
-use CWM\Component\Churchdirectory\Site\Helper\RouteHelper;
+use CWM\Component\Cwmconnect\Site\Helper\RenderHelper;
+use CWM\Component\Cwmconnect\Site\Helper\RouteHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Mail\MailHelper;
 use Joomla\CMS\MVC\View\CategoryView;
@@ -30,10 +30,10 @@ use Joomla\CMS\Router\Route;
 class HtmlView extends CategoryView
 {
     /** @var string Component extension key. */
-    protected $extension = 'com_churchdirectory';
+    protected $extension = 'com_cwmconnect';
 
     /** @var string Default page-title language key. */
-    protected $defaultPageTitle = 'COM_CHURCHDIRECTORY_DEFAULT_PAGE_TITLE';
+    protected $defaultPageTitle = 'COM_CWMCONNECT_DEFAULT_PAGE_TITLE';
 
     /** @var string Link target view for individual list items. */
     protected $viewName = 'member';

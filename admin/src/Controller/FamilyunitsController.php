@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @package    Churchdirectory.Admin
+ * @package    Cwmconnect.Admin
  * @copyright  (C) 2026 CWM Team All rights reserved
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * @link       https://www.christianwebministries.org
@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace CWM\Component\Churchdirectory\Administrator\Controller;
+namespace CWM\Component\Cwmconnect\Administrator\Controller;
 
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
@@ -29,7 +29,7 @@ class FamilyunitsController extends AdminController
      * @var string
      * @since 2.0.0
      */
-    protected $text_prefix = 'COM_CHURCHDIRECTORY_FAMILYUNITS';
+    protected $text_prefix = 'COM_CWMCONNECT_FAMILYUNITS';
 
     /**
      * Proxy for getModel.

@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace CWM\Component\Churchdirectory\Administrator\View\Reports;
+namespace CWM\Component\Cwmconnect\Administrator\View\Reports;
 
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
@@ -17,6 +17,7 @@ namespace CWM\Component\Churchdirectory\Administrator\View\Reports;
 
 use Joomla\CMS\Helper\ContentHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\View\CanDo;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 
@@ -30,8 +31,8 @@ class HtmlView extends BaseHtmlView
     /** @var \Joomla\Registry\Registry|null */
     protected mixed $state = null;
 
-    /** @var \stdClass|null */
-    protected ?\stdClass $canDo = null;
+    /** @var CanDo|null */
+    protected ?CanDo $canDo = null;
 
     /**
      * Display the view.
@@ -47,7 +48,7 @@ class HtmlView extends BaseHtmlView
     public function display($tpl = null): void
     {
         $this->state = $this->getModel()->getState();
-        $this->canDo = ContentHelper::getActions('com_churchdirectory');
+        $this->canDo = ContentHelper::getActions('com_cwmconnect');
 
         $this->addToolbar();
 
@@ -64,11 +65,11 @@ class HtmlView extends BaseHtmlView
      */
     protected function addToolbar(): void
     {
-        ToolbarHelper::title(Text::_('COM_CHURCHDIRECTORY_MANAGER_REPORTS'), 'checkbox');
+        ToolbarHelper::title(Text::_('COM_CWMCONNECT_MANAGER_REPORTS'), 'checkbox');
 
         if ($this->canDo && $this->canDo->get('core.admin')) {
             ToolbarHelper::divider();
-            ToolbarHelper::preferences('com_churchdirectory');
+            ToolbarHelper::preferences('com_cwmconnect');
             ToolbarHelper::divider();
         }
 

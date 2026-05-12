@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @package    Churchdirectory.Site
+ * @package    Cwmconnect.Site
  * @copyright  (C) 2026 CWM Team All rights reserved
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * @link       https://www.christianwebministries.org
@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace CWM\Component\Churchdirectory\Site\Model;
+namespace CWM\Component\Cwmconnect\Site\Model;
 
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
@@ -30,10 +30,10 @@ use Joomla\Registry\Registry;
 class CategoriesModel extends ListModel
 {
     /** @var string Model context for state caching. */
-    public $context = 'com_churchdirectory.categories';
+    public $context = 'com_cwmconnect.categories';
 
     /** @var string Component extension scoped by this model. */
-    protected $extension = 'com_churchdirectory';
+    protected $extension = 'com_cwmconnect';
 
     /** @var CategoryNode|null Parent category of the current view. */
     private ?CategoryNode $parent = null;
@@ -95,7 +95,7 @@ class CategoriesModel extends ListModel
                 || !$params->get('show_empty_categories_cat', 0),
         ];
 
-        $categories   = Categories::getInstance('Churchdirectory', $options);
+        $categories   = Categories::getInstance('Cwmconnect', $options);
         $this->parent = $categories->get($this->getState('filter.parentId', 'root'));
 
         $this->items = \is_object($this->parent) ? $this->parent->getChildren() : false;

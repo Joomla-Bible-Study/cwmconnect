@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @package    Churchdirectory.Admin
+ * @package    Cwmconnect.Admin
  * @copyright  (C) 2026 CWM Team All rights reserved
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * @link       https://www.christianwebministries.org
@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace CWM\Component\Churchdirectory\Administrator\Table;
+namespace CWM\Component\Cwmconnect\Administrator\Table;
 
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
@@ -26,7 +26,7 @@ use Joomla\Registry\Registry;
 use Joomla\String\StringHelper;
 
 /**
- * Member table class for #__churchdirectory_details.
+ * Member table class for #__cwmconnect_details.
  *
  * @since  2.0.0
  */
@@ -162,7 +162,7 @@ class MemberTable extends Table
     {
         $this->_jsonEncode = ['params', 'attribs', 'metadata'];
 
-        parent::__construct('#__churchdirectory_details', 'id', $db);
+        parent::__construct('#__cwmconnect_details', 'id', $db);
     }
 
     /**
@@ -266,7 +266,7 @@ class MemberTable extends Table
             $table->load(['alias' => $this->alias, 'catid' => $this->catid])
             && ((int) $table->id !== (int) $this->id || (int) $this->id === 0)
         ) {
-            $this->setError(Text::_('COM_CHURCHDIRECTORY_ERROR_UNIQUE_ALIAS'));
+            $this->setError(Text::_('COM_CWMCONNECT_ERROR_UNIQUE_ALIAS'));
 
             return false;
         }
@@ -287,13 +287,13 @@ class MemberTable extends Table
         $this->default_con = (int) $this->default_con;
 
         if (InputFilter::checkAttribute(['href', $this->webpage ?? ''])) {
-            $this->setError(Text::_('COM_CHURCHDIRECTORY_WARNING_PROVIDE_VALID_URL'));
+            $this->setError(Text::_('COM_CWMCONNECT_WARNING_PROVIDE_VALID_URL'));
 
             return false;
         }
 
         if (trim((string) $this->name) === '') {
-            $this->setError(Text::_('COM_CHURCHDIRECTORY_WARNING_PROVIDE_VALID_NAME'));
+            $this->setError(Text::_('COM_CWMCONNECT_WARNING_PROVIDE_VALID_NAME'));
 
             return false;
         }
@@ -301,7 +301,7 @@ class MemberTable extends Table
         $this->generateAlias();
 
         if (trim((string) $this->catid) === '') {
-            $this->setError(Text::_('COM_CHURCHDIRECTORY_WARNING_CATEGORY'));
+            $this->setError(Text::_('COM_CWMCONNECT_WARNING_CATEGORY'));
 
             return false;
         }
@@ -364,7 +364,7 @@ class MemberTable extends Table
     protected function _getAssetParentId(?Table $table = null, $id = null): int
     {
         $asset = Table::getInstance('Asset');
-        $asset->loadByName('com_churchdirectory');
+        $asset->loadByName('com_cwmconnect');
 
         return (int) $asset->id;
     }

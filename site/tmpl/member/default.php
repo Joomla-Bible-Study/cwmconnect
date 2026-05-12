@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @package    Churchdirectory.Site
+ * @package    Cwmconnect.Site
  * @copyright  (C) 2026 CWM Team All rights reserved
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
@@ -10,8 +10,8 @@
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
-use CWM\Component\Churchdirectory\Site\Helper\RenderHelper;
-use CWM\Component\Churchdirectory\Site\Helper\RouteHelper;
+use CWM\Component\Cwmconnect\Site\Helper\RenderHelper;
+use CWM\Component\Cwmconnect\Site\Helper\RouteHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -50,7 +50,7 @@ $presentation_style = $tparams->get('presentation_style');
 				} ?>
 				<span class="contact-name"><?php echo $this->member->name; ?></span>
 			</h2>
-			<p><a href="<?php echo Route::_('index.php?option=com_churchdirectory&view=home'); ?>">Members Home -></a>
+			<p><a href="<?php echo Route::_('index.php?option=com_cwmconnect&view=home'); ?>">Members Home -></a>
 				<a href="<?php echo Route::_(RouteHelper::getCategoryRoute($this->item->catid));
 				?>"><?php echo Text::_($this->item->category_title); ?>
 					-></a>
@@ -65,7 +65,7 @@ $presentation_style = $tparams->get('presentation_style');
 	{
 		?>
 		<p>
-			<?php echo '<span class="jicons-text">' . Text::_('COM_CHURCHDIRECTORY_SPOUSE') . ': </span>' . $spouse; ?>
+			<?php echo '<span class="jicons-text">' . Text::_('COM_CWMCONNECT_SPOUSE') . ': </span>' . $spouse; ?>
 		</p>
 		<?php
 	} ?>
@@ -102,7 +102,7 @@ $presentation_style = $tparams->get('presentation_style');
 	{
 		?>
 		<form action="#" method="get" name="selectForm" id="selectForm">
-			<?php echo Text::_('COM_CHURCHDIRECTORY_SELECT_CHURCHDIRECTORY'); ?>
+			<?php echo Text::_('COM_CWMCONNECT_SELECT_CHURCHDIRECTORY'); ?>
 			<?php echo HTMLHelper::_('select.genericlist', $this->contacts, 'id', 'class="inputbox" onchange="document.location.href = this.value"', 'link', 'name', $this->member->link); ?>
 		</form>
 	<?php } ?>
@@ -111,21 +111,21 @@ $presentation_style = $tparams->get('presentation_style');
 	{
 		?>
 		<ul class="nav nav-tabs" id="myTab">
-			<li><a data-toggle="tab" href="#basic-details"><?php echo Text::_('COM_CHURCHDIRECTORY_DETAILS'); ?></a>
+			<li><a data-toggle="tab" href="#basic-details"><?php echo Text::_('COM_CWMCONNECT_DETAILS'); ?></a>
 			</li>
 
 			<?php if ($this->params->get('show_email_form') && ($this->member->email_to || $this->member->user_id))
 			{
 				?>
 				<li><a data-toggle="tab"
-				       href="#display-form"><?php echo Text::_('COM_CHURCHDIRECTORY_EMAIL_FORM'); ?></a>
+				       href="#display-form"><?php echo Text::_('COM_CWMCONNECT_EMAIL_FORM'); ?></a>
 				</li>
 				<?php
 			}
 			if ($this->params->get('show_links'))
 			{
 				?>
-				<li><a data-toggle="tab" href="#display-links"><?php echo Text::_('COM_CHURCHDIRECTORY_LINKS'); ?></a>
+				<li><a data-toggle="tab" href="#display-links"><?php echo Text::_('COM_CWMCONNECT_LINKS'); ?></a>
 				</li>
 				<?php
 			}
@@ -140,7 +140,7 @@ $presentation_style = $tparams->get('presentation_style');
 			{
 				?>
 				<li><a data-toggle="tab"
-				       href="#display-profile"><?php echo Text::_('COM_CHURCHDIRECTORY_PROFILE'); ?></a>
+				       href="#display-profile"><?php echo Text::_('COM_CWMCONNECT_PROFILE'); ?></a>
 				</li>
 				<?php
 			}
@@ -148,7 +148,7 @@ $presentation_style = $tparams->get('presentation_style');
 			{
 				?>
 				<li><a data-toggle="tab"
-				       href="#display-misc"><?php echo Text::_('COM_CHURCHDIRECTORY_OTHER_INFORMATION'); ?></a>
+				       href="#display-misc"><?php echo Text::_('COM_CWMCONNECT_OTHER_INFORMATION'); ?></a>
 				</li>
 				<?php
 			}
@@ -171,17 +171,17 @@ $presentation_style = $tparams->get('presentation_style');
 	<?php if ($presentation_style == 'sliders')
 	{
 		?>
-		<?php echo HTMLHelper::_('bootstrap.addSlide', 'slide-contact', Text::_('COM_CHURCHDIRECTORY_DETAILS'), 'basic-details'); ?>
+		<?php echo HTMLHelper::_('bootstrap.addSlide', 'slide-contact', Text::_('COM_CWMCONNECT_DETAILS'), 'basic-details'); ?>
 	<?php } ?>
 	<?php if ($presentation_style == 'tabs')
 	{
 		?>
-		<?php echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'basic-details', Text::_('COM_CHURCHDIRECTORY_DETAILS', true)); ?>
+		<?php echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'basic-details', Text::_('COM_CWMCONNECT_DETAILS', true)); ?>
 	<?php } ?>
 	<?php if ($presentation_style == 'plain')
 	{
 		?>
-		<?php echo '<h3>' . Text::_('COM_CHURCHDIRECTORY_DETAILS') . '</h3>'; ?>
+		<?php echo '<h3>' . Text::_('COM_CWMCONNECT_DETAILS') . '</h3>'; ?>
 	<?php } ?>
 
 	<div class="row" style="padding-left: 20px;">
@@ -193,7 +193,7 @@ $presentation_style = $tparams->get('presentation_style');
 				<span class="span4 jicons-text">
 						<?php if ($this->member->con_position != '-1')
 						{
-							echo Text::_('COM_CHURCHDIRECTORY_POSITIONS') . ':';
+							echo Text::_('COM_CWMCONNECT_POSITIONS') . ':';
 						}
 						?>
 				</span>
@@ -208,7 +208,7 @@ $presentation_style = $tparams->get('presentation_style');
 		{
 			?>
 			<div class="thumbnail pull-right">
-				<?php echo HTMLHelper::_('image', $this->member->image, Text::_('COM_CHURCHDIRECTORY_IMAGE_DETAILS'), ['align' => 'right', 'class' => 'thumbnail', 'style' => 'max-width: 250px;']); ?>
+				<?php echo HTMLHelper::_('image', $this->member->image, Text::_('COM_CWMCONNECT_IMAGE_DETAILS'), ['align' => 'right', 'class' => 'thumbnail', 'style' => 'max-width: 250px;']); ?>
 			</div>
 			<?php
 		}
@@ -218,9 +218,9 @@ $presentation_style = $tparams->get('presentation_style');
 
 		if ($this->params->get('allow_vcard'))
 		{
-			echo Text::_('COM_CHURCHDIRECTORY_DOWNLOAD_INFORMATION_AS'); ?>
-			<a href="<?php echo Route::_('index.php?option=com_churchdirectory&amp;view=member&amp;id=' . $this->member->id . '&amp;format=vcf'); ?>">
-				<?php echo Text::_('COM_CHURCHDIRECTORY_VCARD'); ?></a>
+			echo Text::_('COM_CWMCONNECT_DOWNLOAD_INFORMATION_AS'); ?>
+			<a href="<?php echo Route::_('index.php?option=com_cwmconnect&amp;view=member&amp;id=' . $this->member->id . '&amp;format=vcf'); ?>">
+				<?php echo Text::_('COM_CWMCONNECT_VCARD'); ?></a>
 			<?php
 		}
 		if ($presentation_style == 'sliders')
@@ -235,16 +235,16 @@ $presentation_style = $tparams->get('presentation_style');
 		{
 			if ($presentation_style == 'sliders')
 			{
-				echo HTMLHelper::_('bootstrap.addSlide', 'slide-contact', Text::_('COM_CHURCHDIRECTORY_EMAIL_FORM'), 'display-form');
+				echo HTMLHelper::_('bootstrap.addSlide', 'slide-contact', Text::_('COM_CWMCONNECT_EMAIL_FORM'), 'display-form');
 			}
 			if ($presentation_style == 'tabs')
 			{
-				echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'display-form', Text::_('COM_CHURCHDIRECTORY_EMAIL_FORM', true));
+				echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'display-form', Text::_('COM_CWMCONNECT_EMAIL_FORM', true));
 			}
 			if ($presentation_style == 'plain')
 			{
 				?>
-				<?php echo '<h3>' . Text::_('COM_CHURCHDIRECTORY_EMAIL_FORM') . '</h3>'; ?>
+				<?php echo '<h3>' . Text::_('COM_CWMCONNECT_EMAIL_FORM') . '</h3>'; ?>
 			<?php } ?>
 
 			<?php echo $this->loadTemplate('form'); ?>
@@ -269,7 +269,7 @@ $presentation_style = $tparams->get('presentation_style');
 			<?php if ($presentation_style == 'sliders')
 		{
 			?>
-			<?php echo HTMLHelper::_('bootstrap.addSlide', 'slide-links', Text::_('COM_CHURCHDIRECTORY_LINKS'), 'display-form'); ?>
+			<?php echo HTMLHelper::_('bootstrap.addSlide', 'slide-links', Text::_('COM_CWMCONNECT_LINKS'), 'display-form'); ?>
 		<?php } ?>
 			<?php if ($presentation_style == 'tabs')
 		{
@@ -279,7 +279,7 @@ $presentation_style = $tparams->get('presentation_style');
 			<?php if ($presentation_style == 'plain')
 		{
 			?>
-			<?php echo '<h3>' . Text::_('COM_CHURCHDIRECTORY_LINKS') . '</h3>'; ?>
+			<?php echo '<h3>' . Text::_('COM_CWMCONNECT_LINKS') . '</h3>'; ?>
 		<?php } ?>
 
 			<?php echo $this->loadTemplate('links'); ?>
@@ -337,17 +337,17 @@ $presentation_style = $tparams->get('presentation_style');
 			<?php if ($presentation_style == 'sliders')
 		{
 			?>
-			<?php echo HTMLHelper::_('bootstrap.addSlide', 'slide-contact', Text::_('COM_CHURCHDIRECTORY_PROFILE'), 'display-profile'); ?>
+			<?php echo HTMLHelper::_('bootstrap.addSlide', 'slide-contact', Text::_('COM_CWMCONNECT_PROFILE'), 'display-profile'); ?>
 		<?php } ?>
 			<?php if ($presentation_style == 'tabs')
 		{
 			?>
-			<?php echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'display-profile', Text::_('COM_CHURCHDIRECTORY_PROFILE', true)); ?>
+			<?php echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'display-profile', Text::_('COM_CWMCONNECT_PROFILE', true)); ?>
 		<?php } ?>
 			<?php if ($presentation_style == 'plain')
 		{
 			?>
-			<?php echo '<h3>' . Text::_('COM_CHURCHDIRECTORY_PROFILE') . '</h3>'; ?>
+			<?php echo '<h3>' . Text::_('COM_CWMCONNECT_PROFILE') . '</h3>'; ?>
 		<?php } ?>
 
 			<?php echo $this->loadTemplate('profile'); ?>
@@ -371,17 +371,17 @@ $presentation_style = $tparams->get('presentation_style');
 			<?php if ($presentation_style == 'sliders')
 		{
 			?>
-			<?php echo HTMLHelper::_('bootstrap.addSlide', 'slide-contact', Text::_('COM_CHURCHDIRECTORY_OTHER_INFORMATION'), 'display-misc'); ?>
+			<?php echo HTMLHelper::_('bootstrap.addSlide', 'slide-contact', Text::_('COM_CWMCONNECT_OTHER_INFORMATION'), 'display-misc'); ?>
 		<?php } ?>
 			<?php if ($presentation_style == 'tabs')
 		{
 			?>
-			<?php echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'display-misc', Text::_('COM_CHURCHDIRECTORY_OTHER_INFORMATION')); ?>
+			<?php echo HTMLHelper::_('bootstrap.addTab', 'myTab', 'display-misc', Text::_('COM_CWMCONNECT_OTHER_INFORMATION')); ?>
 		<?php } ?>
 			<?php if ($presentation_style == 'plain')
 		{
 			?>
-			<?php echo '<h3>' . Text::_('COM_CHURCHDIRECTORY_OTHER_INFORMATION') . '</h3>'; ?>
+			<?php echo '<h3>' . Text::_('COM_CWMCONNECT_OTHER_INFORMATION') . '</h3>'; ?>
 		<?php } ?>
 
 			<div class="contact-miscinfo">

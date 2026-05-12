@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @package    Churchdirectory.Admin
+ * @package    Cwmconnect.Admin
  * @copyright  (C) 2026 CWM Team All rights reserved
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * @link       https://www.christianwebministries.org
@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace CWM\Component\Churchdirectory\Administrator\Model;
+namespace CWM\Component\Cwmconnect\Administrator\Model;
 
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
@@ -46,7 +46,7 @@ class MemberModel extends AdminModel
      * @var    string
      * @since  2.0.0
      */
-    public $typeAlias = 'com_churchdirectory.member';
+    public $typeAlias = 'com_cwmconnect.member';
 
     /**
      * The context used for the associations table
@@ -54,7 +54,7 @@ class MemberModel extends AdminModel
      * @var    string
      * @since  2.0.0
      */
-    protected $associationsContext = 'com_churchdirectory.item';
+    protected $associationsContext = 'com_cwmconnect.item';
 
     /**
      * Batch copy/move command.
@@ -179,7 +179,7 @@ class MemberModel extends AdminModel
         $categoryId = (int) $value;
         $newIds     = [];
 
-        /** @var \CWM\Component\Churchdirectory\Administrator\Table\MemberTable $table */
+        /** @var \CWM\Component\Cwmconnect\Administrator\Table\MemberTable $table */
         $table = $this->getTable();
 
         if (!parent::checkCategoryId($categoryId)) {
@@ -210,7 +210,7 @@ class MemberModel extends AdminModel
 
         $user = Factory::getApplication()->getIdentity();
 
-        if (!$user || !$user->authorise('core.create', 'com_churchdirectory.category.' . $categoryId)) {
+        if (!$user || !$user->authorise('core.create', 'com_cwmconnect.category.' . $categoryId)) {
             $this->setError(Text::_('JLIB_APPLICATION_ERROR_BATCH_CANNOT_CREATE'));
 
             return false;
@@ -323,7 +323,7 @@ class MemberModel extends AdminModel
 
             return $this->getCurrentUser()->authorise(
                 'core.delete',
-                'com_churchdirectory.category.' . (int) $record->catid
+                'com_cwmconnect.category.' . (int) $record->catid
             );
         }
 
@@ -344,7 +344,7 @@ class MemberModel extends AdminModel
         if (!empty($record->catid)) {
             return $this->getCurrentUser()->authorise(
                 'core.edit.state',
-                'com_churchdirectory.category.' . (int) $record->catid
+                'com_cwmconnect.category.' . (int) $record->catid
             );
         }
 
@@ -368,14 +368,14 @@ class MemberModel extends AdminModel
         $catid = (int) ($data['catid'] ?? 0);
 
         if ($catid > 0) {
-            $catid = CategoriesHelper::validateCategoryId($data['catid'], 'com_churchdirectory');
+            $catid = CategoriesHelper::validateCategoryId($data['catid'], 'com_cwmconnect');
         }
 
         if ($catid === 0 && $this->canCreateCategory()) {
             $table = [
                 'title'     => $data['catid'],
                 'parent_id' => 1,
-                'extension' => 'com_churchdirectory',
+                'extension' => 'com_cwmconnect',
                 'language'  => $data['language'] ?? '*',
                 'published' => 1,
             ];
@@ -419,7 +419,7 @@ class MemberModel extends AdminModel
             if ($memberId > 0) {
                 try {
                     $factory = Factory::getApplication()
-                        ->bootComponent('com_churchdirectory')
+                        ->bootComponent('com_cwmconnect')
                         ->getMVCFactory();
 
                     /** @var GeoupdateModel $geoupdate */
@@ -427,7 +427,7 @@ class MemberModel extends AdminModel
                     $geoupdate->run(true, $memberId);
                 } catch (\Throwable $e) {
                     Factory::getApplication()->enqueueMessage(
-                        Text::sprintf('COM_CHURCHDIRECTORY_GEOCODE_FAILED', $e->getMessage()),
+                        Text::sprintf('COM_CWMCONNECT_GEOCODE_FAILED', $e->getMessage()),
                         'warning'
                     );
                 }
@@ -468,7 +468,7 @@ class MemberModel extends AdminModel
     public function getForm($data = [], $loadData = true): mixed
     {
         $form = $this->loadForm(
-            'com_churchdirectory.member',
+            'com_cwmconnect.member',
             'member',
             ['control' => 'jform', 'load_data' => $loadData]
         );
@@ -521,9 +521,9 @@ class MemberModel extends AdminModel
 
             if (!empty($item->id)) {
                 $associations = Associations::getAssociations(
-                    'com_churchdirectory',
-                    '#__churchdirectory_details',
-                    'com_churchdirectory.item',
+                    'com_cwmconnect',
+                    '#__cwmconnect_details',
+                    'com_cwmconnect.item',
                     (int) $item->id
                 );
 
@@ -535,7 +535,7 @@ class MemberModel extends AdminModel
 
         if (!empty($item->id)) {
             $item->tags = new TagsHelper();
-            $item->tags->getTagIds($item->id, 'com_churchdirectory.member');
+            $item->tags->getTagIds($item->id, 'com_cwmconnect.member');
         }
 
         return $item;
@@ -552,7 +552,7 @@ class MemberModel extends AdminModel
     protected function loadFormData(): mixed
     {
         $app  = Factory::getApplication();
-        $data = $app->getUserState('com_churchdirectory.edit.member.data', []);
+        $data = $app->getUserState('com_cwmconnect.edit.member.data', []);
 
         if (empty($data)) {
             $data = $this->getItem();
@@ -564,7 +564,7 @@ class MemberModel extends AdminModel
             if ($data && (int) $this->getState('member.id', 0) === 0) {
                 $catid = $app->getInput()->getInt(
                     'catid',
-                    (int) $app->getUserState('com_churchdirectory.members.filter.category_id', 0)
+                    (int) $app->getUserState('com_cwmconnect.members.filter.category_id', 0)
                 );
 
                 if ($catid && \is_object($data)) {
@@ -573,7 +573,7 @@ class MemberModel extends AdminModel
             }
         }
 
-        $this->preprocessData('com_churchdirectory.member', $data);
+        $this->preprocessData('com_cwmconnect.member', $data);
 
         return $data;
     }
@@ -603,7 +603,7 @@ class MemberModel extends AdminModel
                 $db    = $this->getDatabase();
                 $query = $db->getQuery(true)
                     ->select('MAX(' . $db->quoteName('ordering') . ')')
-                    ->from($db->quoteName('#__churchdirectory_details'));
+                    ->from($db->quoteName('#__cwmconnect_details'));
 
                 $db->setQuery($query);
                 $max = (int) $db->loadResult();
@@ -651,7 +651,7 @@ class MemberModel extends AdminModel
         $pks = ArrayHelper::toInteger((array) $pks);
 
         if (empty($pks)) {
-            $this->setError(Text::_('COM_CHURCHDIRECTORY_NO_ITEM_SELECTED'));
+            $this->setError(Text::_('COM_CWMCONNECT_NO_ITEM_SELECTED'));
 
             return false;
         }
@@ -661,7 +661,7 @@ class MemberModel extends AdminModel
         try {
             $db    = $this->getDatabase();
             $query = $db->getQuery(true)
-                ->update($db->quoteName('#__churchdirectory_details'))
+                ->update($db->quoteName('#__cwmconnect_details'))
                 ->set($db->quoteName('featured') . ' = ' . (int) $value)
                 ->whereIn($db->quoteName('id'), $pks);
             $db->setQuery($query);
@@ -770,11 +770,11 @@ class MemberModel extends AdminModel
     {
         $user = Factory::getApplication()->getIdentity();
 
-        return $user !== null && $user->authorise('core.create', 'com_churchdirectory');
+        return $user !== null && $user->authorise('core.create', 'com_cwmconnect');
     }
 
     /**
-     * Custom clean the cache of com_churchdirectory and the birthday/anniversary module.
+     * Custom clean the cache of com_cwmconnect and the birthday/anniversary module.
      *
      * @param   string|null  $group     Cache group.
      * @param   int          $clientId  Client id.
@@ -785,7 +785,7 @@ class MemberModel extends AdminModel
      */
     protected function cleanCache($group = null, $clientId = 0): void
     {
-        parent::cleanCache('com_churchdirectory');
+        parent::cleanCache('com_cwmconnect');
         parent::cleanCache('mod_birthdayanniversary');
     }
 }

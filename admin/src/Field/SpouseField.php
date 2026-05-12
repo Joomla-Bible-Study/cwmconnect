@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @package    Churchdirectory.Admin
+ * @package    Cwmconnect.Admin
  * @copyright  (C) 2026 CWM Team All rights reserved
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * @link       https://www.christianwebministries.org
@@ -9,13 +9,13 @@
 
 declare(strict_types=1);
 
-namespace CWM\Component\Churchdirectory\Administrator\Field;
+namespace CWM\Component\Cwmconnect\Administrator\Field;
 
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
-use CWM\Component\Churchdirectory\Administrator\Helper\ChurchdirectoryHelper;
+use CWM\Component\Cwmconnect\Administrator\Helper\CwmconnectHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\FormField;
 use Joomla\Database\DatabaseInterface;
@@ -59,7 +59,7 @@ class SpouseField extends FormField
         $db    = Factory::getContainer()->get(DatabaseInterface::class);
         $query = $db->getQuery(true)
             ->select($db->quoteName(['id', 'name', 'funitid', 'attribs', 'spouse', 'mstatus']))
-            ->from($db->quoteName('#__churchdirectory_details'))
+            ->from($db->quoteName('#__cwmconnect_details'))
             ->where($db->quoteName('catid') . ' = ' . (int) $categoryId)
             ->where($db->quoteName('published') . ' = 1')
             ->where($db->quoteName('funitid') . ' = ' . (int) $funitId);
@@ -69,7 +69,7 @@ class SpouseField extends FormField
         foreach ($rows as $item) {
             $registry = new Registry((string) ($item->attribs ?? ''));
             $value    = $db->escape((string) $item->name) . ' '
-                . ChurchdirectoryHelper::memberStatusShort((int) $item->mstatus);
+                . CwmconnectHelper::memberStatusShort((int) $item->mstatus);
 
             if (
                 (int) $item->funitid !== 0

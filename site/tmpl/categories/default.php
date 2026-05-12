@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @package    Churchdirectory.Site
+ * @package    Cwmconnect.Site
  * @copyright  (C) 2026 CWM Team All rights reserved
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
@@ -13,7 +13,7 @@
 use Joomla\CMS\Factory;
 use Joomla\CMS\Layout\LayoutHelper;
 
-/** @var \CWM\Component\Churchdirectory\Site\View\Categories\HtmlView $this */
+/** @var \CWM\Component\Cwmconnect\Site\View\Categories\HtmlView $this */
 
 Factory::getApplication()->getDocument()->getWebAssetManager()->useScript('bootstrap.collapse');
 ?>

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @package    Churchdirectory.Site
+ * @package    Cwmconnect.Site
  * @copyright  (C) 2026 CWM Team All rights reserved
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
@@ -10,12 +10,12 @@
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
-use CWM\Component\Churchdirectory\Site\Helper\RouteHelper;
+use CWM\Component\Cwmconnect\Site\Helper\RouteHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 
-/** @var \CWM\Component\Churchdirectory\Site\View\Category\HtmlView $this */
+/** @var \CWM\Component\Cwmconnect\Site\View\Category\HtmlView $this */
 
 $class = ' class="first"';
 ?>
@@ -38,14 +38,14 @@ $class = ' class="first"';
                         </a>
                         <?php if ($this->params->get('show_cat_items') == 1) : ?>
                             <span class="badge bg-info float-end"
-                                  title="<?php echo Text::_('COM_CHURCHDIRECTORY_CAT_NUM'); ?>">
+                                  title="<?php echo Text::_('COM_CWMCONNECT_CAT_NUM'); ?>">
                                 <?php echo $child->numitems; ?>
                             </span>
                         <?php endif; ?>
                     </h4>
                     <?php if ($this->params->get('show_subcat_desc') == 1 && $child->description) : ?>
                         <small class="category-desc">
-                            <?php echo HTMLHelper::_('content.prepare', $child->description, '', 'com_churchdirectory.category'); ?>
+                            <?php echo HTMLHelper::_('content.prepare', $child->description, '', 'com_cwmconnect.category'); ?>
                         </small>
                     <?php endif; ?>
                     <?php if (\count($child->getChildren()) > 0) :

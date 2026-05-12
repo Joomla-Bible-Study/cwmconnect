@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @package    Churchdirectory.Site
+ * @package    Cwmconnect.Site
  * @copyright  (C) 2026 CWM Team All rights reserved
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * @link       https://www.christianwebministries.org
@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace CWM\Component\Churchdirectory\Site\Helper;
+namespace CWM\Component\Cwmconnect\Site\Helper;
 
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
@@ -38,7 +38,7 @@ abstract class RouteHelper
      */
     public static function getMemberRoute(int|string $id, int $catid = 0, int|string|null $language = 0): string
     {
-        $link = 'index.php?option=com_churchdirectory&view=member&id=' . $id;
+        $link = 'index.php?option=com_cwmconnect&view=member&id=' . $id;
 
         if ($catid > 1) {
             $link .= '&catid=' . (int) $catid;
@@ -69,7 +69,7 @@ abstract class RouteHelper
             return '';
         }
 
-        $link = 'index.php?option=com_churchdirectory&view=category&id=' . $id;
+        $link = 'index.php?option=com_cwmconnect&view=category&id=' . $id;
 
         if ($language && $language !== '*' && Multilanguage::isEnabled()) {
             $link .= '&lang=' . $language;

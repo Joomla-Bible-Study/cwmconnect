@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @package    Churchdirectory.Admin
+ * @package    Cwmconnect.Admin
  * @copyright  (C) 2026 CWM Team All rights reserved
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * @link       https://www.christianwebministries.org
@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace CWM\Component\Churchdirectory\Administrator\Controller;
+namespace CWM\Component\Cwmconnect\Administrator\Controller;
 
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
@@ -114,7 +114,7 @@ class MemberController extends FormController
 
         $this->setRedirect(
             Route::_(
-                'index.php?option=com_churchdirectory&view=members' . $this->getRedirectToListAppend(),
+                'index.php?option=com_cwmconnect&view=members' . $this->getRedirectToListAppend(),
                 false
             )
         );

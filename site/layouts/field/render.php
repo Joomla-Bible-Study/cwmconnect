@@ -23,7 +23,7 @@ if (!$value)
 	return;
 }
 
-if ($field->context == 'com_churchdirectory.mail')
+if ($field->context == 'com_cwmconnect.mail')
 {
 	// Prepare the value for the contact form mail
 	echo $label . ': ' . $value . "\r\n";

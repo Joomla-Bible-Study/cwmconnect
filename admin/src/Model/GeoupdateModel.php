@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @package    Churchdirectory.Admin
+ * @package    Cwmconnect.Admin
  * @copyright  (C) 2026 CWM Team All rights reserved
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * @link       https://www.christianwebministries.org
@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace CWM\Component\Churchdirectory\Administrator\Model;
+namespace CWM\Component\Cwmconnect\Administrator\Model;
 
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
@@ -24,7 +24,7 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
  *
  * Walks every member row that has a postal address and asks the Google
  * geocoding API for lat/lng coordinates, persisting either the result on
- * the member row or the failure on `#__churchdirectory_geoupdate`. The
+ * the member row or the failure on `#__cwmconnect_geoupdate`. The
  * queue is paged through the user's session so the browser can drive
  * the pass forward in slices.
  *
@@ -45,7 +45,7 @@ class GeoupdateModel extends BaseDatabaseModel
      *
      * @since 2.0.0
      */
-    private const string SESSION_NAMESPACE = 'churchdirectory';
+    private const string SESSION_NAMESPACE = 'cwmconnect';
 
     /**
      * Session key for the serialized queue state.
@@ -195,7 +195,7 @@ class GeoupdateModel extends BaseDatabaseModel
         $db    = $this->getDatabase();
         $query = $db->getQuery(true)
             ->select($db->quoteName(['id', 'name', 'address', 'suburb', 'state', 'postcode', 'lat', 'lng', 'country']))
-            ->from($db->quoteName('#__churchdirectory_details'));
+            ->from($db->quoteName('#__cwmconnect_details'));
 
         if ($id) {
             $query->where($db->quoteName('id') . ' = ' . (int) $id);
@@ -226,13 +226,13 @@ class GeoupdateModel extends BaseDatabaseModel
         }
 
         $db  = $this->getDatabase();
-        $key = ComponentHelper::getParams('com_churchdirectory')->get('apikey');
+        $key = ComponentHelper::getParams('com_cwmconnect')->get('apikey');
 
         if ($id) {
             $memberId = $id;
             $query    = $db->getQuery(true)
                 ->select('*')
-                ->from($db->quoteName('#__churchdirectory_details'))
+                ->from($db->quoteName('#__cwmconnect_details'))
                 ->where($db->quoteName('id') . ' = ' . (int) $id);
             $db->setQuery($query);
             $row = $db->loadObject();
@@ -282,7 +282,7 @@ class GeoupdateModel extends BaseDatabaseModel
                     $ulng  = (string) $data->geometry->location->lng;
 
                     $update = $db->getQuery(true)
-                        ->update($db->quoteName('#__churchdirectory_details'))
+                        ->update($db->quoteName('#__cwmconnect_details'))
                         ->set($db->quoteName('lat') . ' = ' . $db->quote($ulat))
                         ->set($db->quoteName('lng') . ' = ' . $db->quote($ulng))
                         ->where($db->quoteName('id') . ' = ' . (int) $row->id);
@@ -291,13 +291,13 @@ class GeoupdateModel extends BaseDatabaseModel
                     // Drop any prior error row for this member.
                     $check = $db->getQuery(true)
                         ->select($db->quoteName('member_id'))
-                        ->from($db->quoteName('#__churchdirectory_geoupdate'))
+                        ->from($db->quoteName('#__cwmconnect_geoupdate'))
                         ->where($db->quoteName('member_id') . ' = ' . (int) $memberId);
                     $db->setQuery($check);
 
                     if ($db->loadResult()) {
                         $delete = $db->getQuery(true)
-                            ->delete($db->quoteName('#__churchdirectory_geoupdate'))
+                            ->delete($db->quoteName('#__cwmconnect_geoupdate'))
                             ->where($db->quoteName('member_id') . ' = ' . (int) $memberId);
                         $db->setQuery($delete)->execute();
                     }
@@ -319,19 +319,19 @@ class GeoupdateModel extends BaseDatabaseModel
 
                 $check = $db->getQuery(true)
                     ->select('*')
-                    ->from($db->quoteName('#__churchdirectory_geoupdate'))
+                    ->from($db->quoteName('#__cwmconnect_geoupdate'))
                     ->where($db->quoteName('member_id') . ' = ' . (int) $row->id);
                 $db->setQuery($check);
 
                 if ($db->loadResult()) {
                     $update = $db->getQuery(true)
-                        ->update($db->quoteName('#__churchdirectory_geoupdate'))
+                        ->update($db->quoteName('#__cwmconnect_geoupdate'))
                         ->set($db->quoteName('status') . ' = ' . $db->quote($info))
                         ->where($db->quoteName('member_id') . ' = ' . (int) $row->id);
                     $db->setQuery($update)->execute();
                 } else {
                     $insert = $db->getQuery(true)
-                        ->insert($db->quoteName('#__churchdirectory_geoupdate'))
+                        ->insert($db->quoteName('#__cwmconnect_geoupdate'))
                         ->set($db->quoteName('member_id') . ' = ' . (int) $row->id)
                         ->set($db->quoteName('status') . ' = ' . $db->quote($info));
                     $db->setQuery($insert)->execute();

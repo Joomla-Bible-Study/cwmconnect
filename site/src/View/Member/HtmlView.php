@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @package    Churchdirectory.Site
+ * @package    Cwmconnect.Site
  * @copyright  (C) 2026 CWM Team All rights reserved
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * @link       https://www.christianwebministries.org
@@ -9,15 +9,15 @@
 
 declare(strict_types=1);
 
-namespace CWM\Component\Churchdirectory\Site\View\Member;
+namespace CWM\Component\Cwmconnect\Site\View\Member;
 
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
-use CWM\Component\Churchdirectory\Site\Helper\RouteHelper;
-use CWM\Component\Churchdirectory\Site\Model\CategoryModel;
-use CWM\Component\Churchdirectory\Site\Model\MemberModel;
+use CWM\Component\Cwmconnect\Site\Helper\RouteHelper;
+use CWM\Component\Cwmconnect\Site\Model\CategoryModel;
+use CWM\Component\Cwmconnect\Site\Model\MemberModel;
 use Joomla\CMS\Categories\Categories;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
@@ -82,14 +82,14 @@ class HtmlView extends BaseHtmlView
         $this->form = $model->getForm();
 
         if (!$item) {
-            throw new GenericDataException(Text::_('COM_CHURCHDIRECTORY_ERROR_MEMBER_NOT_FOUND'), 404);
+            throw new GenericDataException(Text::_('COM_CWMCONNECT_ERROR_MEMBER_NOT_FOUND'), 404);
         }
 
         if (\count($errors = $model->getErrors())) {
             throw new GenericDataException(implode("\n", $errors), 500);
         }
 
-        $params = ComponentHelper::getParams('com_churchdirectory');
+        $params = ComponentHelper::getParams('com_cwmconnect');
         $params->merge($item->params);
 
         $groups = $user ? $user->getAuthorisedViewLevels() : [1];
@@ -101,7 +101,7 @@ class HtmlView extends BaseHtmlView
         }
 
         // Sibling list — same-category members for the "other members" widget.
-        $categoryModel = $app->bootComponent('com_churchdirectory')
+        $categoryModel = $app->bootComponent('com_cwmconnect')
             ->getMVCFactory()
             ->createModel('Category', 'Site', ['ignore_request' => true]);
 
@@ -133,7 +133,7 @@ class HtmlView extends BaseHtmlView
 
         $this->applyIconMarkers($params);
 
-        if ($params->get('show_churchdirectory_list') && \count($this->members) > 1) {
+        if ($params->get('show_cwmconnect_list') && \count($this->members) > 1) {
             foreach ($this->members as $contact) {
                 $contact->link = Route::_(RouteHelper::getMemberRoute($contact->slug, $contact->catid));
             }
@@ -145,12 +145,12 @@ class HtmlView extends BaseHtmlView
         $offset = $state->get('list.offset');
 
         $item->text = !empty($item->misc) ? $item->misc : null;
-        $app->triggerEvent('onContentPrepare', ['com_churchdirectory.member', &$item, &$params, $offset]);
+        $app->triggerEvent('onContentPrepare', ['com_cwmconnect.member', &$item, &$params, $offset]);
 
         $item->event                     = new \stdClass();
-        $item->event->afterDisplayTitle  = trim(implode("\n", $app->triggerEvent('onContentAfterTitle',  ['com_churchdirectory.member', &$item, &$params, $offset]) ?: []));
-        $item->event->beforeDisplayContent = trim(implode("\n", $app->triggerEvent('onContentBeforeDisplay', ['com_churchdirectory.member', &$item, &$params, $offset]) ?: []));
-        $item->event->afterDisplayContent  = trim(implode("\n", $app->triggerEvent('onContentAfterDisplay',  ['com_churchdirectory.member', &$item, &$params, $offset]) ?: []));
+        $item->event->afterDisplayTitle  = trim(implode("\n", $app->triggerEvent('onContentAfterTitle',  ['com_cwmconnect.member', &$item, &$params, $offset]) ?: []));
+        $item->event->beforeDisplayContent = trim(implode("\n", $app->triggerEvent('onContentBeforeDisplay', ['com_cwmconnect.member', &$item, &$params, $offset]) ?: []));
+        $item->event->afterDisplayContent  = trim(implode("\n", $app->triggerEvent('onContentAfterDisplay',  ['com_cwmconnect.member', &$item, &$params, $offset]) ?: []));
 
         if ($item->text) {
             $item->misc = $item->text;
@@ -164,7 +164,7 @@ class HtmlView extends BaseHtmlView
         $this->user          = $user;
 
         $item->tags = new TagsHelper();
-        $item->tags->getItemTags('com_churchdirectory.member', $this->item->id);
+        $item->tags->getItemTags('com_cwmconnect.member', $this->item->id);
 
         // Honor alternate menu-item layouts.
         $active = $app->getMenu()?->getActive();
@@ -174,7 +174,7 @@ class HtmlView extends BaseHtmlView
             || !str_contains((string) $active->link, 'view=member')
             || !str_contains((string) $active->link, '&id=' . (string) $this->item->id)
         ) {
-            if ($layout = $params->get('churchdirectory_layout')) {
+            if ($layout = $params->get('cwmconnect_layout')) {
                 $this->setLayout($layout);
             }
         } elseif (isset($active->query['layout'])) {
@@ -201,7 +201,7 @@ class HtmlView extends BaseHtmlView
         if ($menu) {
             $this->params->def('page_heading', $this->params->get('page_title', $menu->title));
         } else {
-            $this->params->def('page_heading', Text::_('COM_CHURCHDIRECTORY_DEFAULT_PAGE_TITLE'));
+            $this->params->def('page_heading', Text::_('COM_CWMCONNECT_DEFAULT_PAGE_TITLE'));
         }
 
         $title = (string) $this->params->get('page_title', '');
@@ -210,7 +210,7 @@ class HtmlView extends BaseHtmlView
         if (
             $menu
             && (
-                ($menu->query['option'] ?? '') !== 'com_churchdirectory'
+                ($menu->query['option'] ?? '') !== 'com_cwmconnect'
                 || ($menu->query['view']   ?? '') !== 'member'
                 || $id !== (int) $this->item->id
             )
@@ -220,12 +220,12 @@ class HtmlView extends BaseHtmlView
             }
 
             $path     = [['title' => $this->member->name, 'link' => '']];
-            $category = Categories::getInstance('Churchdirectory')->get($this->member->catid);
+            $category = Categories::getInstance('Cwmconnect')->get($this->member->catid);
 
             while (
                 $category
                 && (
-                    ($menu->query['option'] ?? '') !== 'com_churchdirectory'
+                    ($menu->query['option'] ?? '') !== 'com_cwmconnect'
                     || ($menu->query['view']   ?? '') === 'member'
                     || $id !== (int) $category->id
                 )
@@ -289,14 +289,14 @@ class HtmlView extends BaseHtmlView
      */
     private function applyIconMarkers(Registry $params): void
     {
-        switch ((int) $params->get('churchdirectory_icons')) {
+        switch ((int) $params->get('cwmconnect_icons')) {
             case 1:
-                $params->set('marker_address',   Text::_('COM_CHURCHDIRECTORY_ADDRESS') . ': ');
+                $params->set('marker_address',   Text::_('COM_CWMCONNECT_ADDRESS') . ': ');
                 $params->set('marker_email',     Text::_('JGLOBAL_EMAIL') . ': ');
-                $params->set('marker_telephone', Text::_('COM_CHURCHDIRECTORY_TELEPHONE') . ': ');
-                $params->set('marker_fax',       Text::_('COM_CHURCHDIRECTORY_FAX') . ': ');
-                $params->set('marker_mobile',    Text::_('COM_CHURCHDIRECTORY_MOBILE') . ': ');
-                $params->set('marker_misc',      Text::_('COM_CHURCHDIRECTORY_OTHER_INFORMATION') . ': ');
+                $params->set('marker_telephone', Text::_('COM_CWMCONNECT_TELEPHONE') . ': ');
+                $params->set('marker_fax',       Text::_('COM_CWMCONNECT_FAX') . ': ');
+                $params->set('marker_mobile',    Text::_('COM_CWMCONNECT_MOBILE') . ': ');
+                $params->set('marker_misc',      Text::_('COM_CWMCONNECT_OTHER_INFORMATION') . ': ');
                 $params->set('marker_class',     'jicons-text');
                 break;
 
@@ -319,12 +319,12 @@ class HtmlView extends BaseHtmlView
     private function applyIconMarkersImage(Registry $params): void
     {
         $icons = [
-            'marker_address'   => ['icon_address',   'con_address.png',  'COM_CHURCHDIRECTORY_ADDRESS'],
+            'marker_address'   => ['icon_address',   'con_address.png',  'COM_CWMCONNECT_ADDRESS'],
             'marker_email'     => ['icon_email',     'emailButton.png',  'JGLOBAL_EMAIL'],
-            'marker_telephone' => ['icon_telephone', 'con_tel.png',      'COM_CHURCHDIRECTORY_TELEPHONE'],
-            'marker_fax'       => ['icon_fax',       'con_fax.png',      'COM_CHURCHDIRECTORY_FAX'],
-            'marker_misc'      => ['icon_misc',      'con_info.png',     'COM_CHURCHDIRECTORY_OTHER_INFORMATION'],
-            'marker_mobile'    => ['icon_mobile',    'con_mobile.png',   'COM_CHURCHDIRECTORY_MOBILE'],
+            'marker_telephone' => ['icon_telephone', 'con_tel.png',      'COM_CWMCONNECT_TELEPHONE'],
+            'marker_fax'       => ['icon_fax',       'con_fax.png',      'COM_CWMCONNECT_FAX'],
+            'marker_misc'      => ['icon_misc',      'con_info.png',     'COM_CWMCONNECT_OTHER_INFORMATION'],
+            'marker_mobile'    => ['icon_mobile',    'con_mobile.png',   'COM_CWMCONNECT_MOBILE'],
         ];
 
         foreach ($icons as $marker => [$iconKey, $default, $alt]) {

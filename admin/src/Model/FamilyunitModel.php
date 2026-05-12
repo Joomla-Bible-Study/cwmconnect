@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @package    Churchdirectory.Admin
+ * @package    Cwmconnect.Admin
  * @copyright  (C) 2026 CWM Team All rights reserved
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * @link       https://www.christianwebministries.org
@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace CWM\Component\Churchdirectory\Administrator\Model;
+namespace CWM\Component\Cwmconnect\Administrator\Model;
 
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
@@ -43,7 +43,7 @@ class FamilyunitModel extends AdminModel
                 return false;
             }
 
-            return $this->getCurrentUser()->authorise('core.delete', 'com_churchdirectory');
+            return $this->getCurrentUser()->authorise('core.delete', 'com_cwmconnect');
         }
 
         return false;
@@ -80,7 +80,7 @@ class FamilyunitModel extends AdminModel
     public function getForm($data = [], $loadData = true): mixed
     {
         $form = $this->loadForm(
-            'com_churchdirectory.familyunit',
+            'com_cwmconnect.familyunit',
             'familyunit',
             ['control' => 'jform', 'load_data' => $loadData]
         );
@@ -110,7 +110,7 @@ class FamilyunitModel extends AdminModel
      */
     protected function loadFormData(): mixed
     {
-        $data = Factory::getApplication()->getUserState('com_churchdirectory.edit.familyunit.data', []);
+        $data = Factory::getApplication()->getUserState('com_cwmconnect.edit.familyunit.data', []);
 
         if (empty($data)) {
             $data = $this->getItem();
@@ -143,7 +143,7 @@ class FamilyunitModel extends AdminModel
                 $db    = $this->getDatabase();
                 $query = $db->getQuery(true)
                     ->select('MAX(' . $db->quoteName('ordering') . ')')
-                    ->from($db->quoteName('#__churchdirectory_familyunit'));
+                    ->from($db->quoteName('#__cwmconnect_familyunit'));
 
                 $db->setQuery($query);
                 $max = (int) $db->loadResult();
@@ -171,7 +171,7 @@ class FamilyunitModel extends AdminModel
         $db    = $this->getDatabase();
         $query = $db->getQuery(true)
             ->select($db->quoteName(['members.id', 'members.name']))
-            ->from($db->quoteName('#__churchdirectory_details', 'members'))
+            ->from($db->quoteName('#__cwmconnect_details', 'members'))
             ->where($db->quoteName('members.funitid') . ' = ' . (int) $item->id)
             ->order($db->quoteName('members.lname') . ' DESC');
 

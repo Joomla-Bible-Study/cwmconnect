@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="component" method="upgrade">
+    <name>com_cwmconnect</name>
+    <author>CWM Team</author>
+    <authorEmail>info@christianwebministries.org</authorEmail>
+    <authorUrl>www.christianwebministries.org</authorUrl>
+    <copyright>(C) 2026 CWM Team All rights reserved.</copyright>
+    <version>2.0.0-dev</version>
+    <creationDate>2026-05-12</creationDate>
+    <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+    <description>COM_CWMCONNECT_XML_DESCRIPTION</description>
+    <namespace path="src">CWM\Component\Cwmconnect</namespace>
+
+    <compatibility>
+        <cms>
+            <targetplatform name="joomla" version="5[.0-9]" />
+            <targetplatform name="joomla" version="6[.0-9]" />
+        </cms>
+        <php minimum="8.4.0" />
+    </compatibility>
+
+    <scriptfile>script.php</scriptfile>
+
+    <changelogurl>https://raw.githubusercontent.com/Joomla-Bible-Study/cwmconnect/master/build/cwmconnect-changelog.xml</changelogurl>
+
+    <languages folder="site/language">
+        <language tag="en-GB">en-GB/com_cwmconnect.ini</language>
+    </languages>
+
+    <install>
+        <sql>
+            <file driver="mysql" charset="utf8">sql/install.mysql.utf8.sql</file>
+        </sql>
+    </install>
+
+    <uninstall>
+        <sql>
+            <file driver="mysql" charset="utf8">sql/uninstall.mysql.utf8.sql</file>
+        </sql>
+    </uninstall>
+
+    <update>
+        <schemas>
+            <schemapath type="mysql">sql/updates/mysql</schemapath>
+        </schemas>
+    </update>
+
+    <media destination="com_cwmconnect" folder="media/com_cwmconnect">
+        <folder>css</folder>
+        <folder>js</folder>
+        <folder>images</folder>
+    </media>
+
+    <files folder="site">
+        <folder>src</folder>
+        <folder>tmpl</folder>
+    </files>
+
+    <administration>
+        <menu img="class:contact">COM_CWMCONNECT</menu>
+        <submenu>
+            <menu link="option=com_cwmconnect&amp;view=cpanel"
+                  view="cpanel"
+                  alt="Cwmconnect/Cpanel">COM_CWMCONNECT_CPANEL</menu>
+            <menu link="option=com_cwmconnect&amp;view=members"
+                  view="members"
+                  alt="Cwmconnect/Members">COM_CWMCONNECT_MEMBERS</menu>
+            <menu link="option=com_categories&amp;extension=com_cwmconnect"
+                  view="categories"
+                  alt="Cwmconnect/Categories">COM_CWMCONNECT_CATEGORIES</menu>
+            <menu link="option=com_cwmconnect&amp;view=familyunits"
+                  view="familyunits"
+                  alt="Cwmconnect/Family Units">COM_CWMCONNECT_FAMILYUNIT</menu>
+            <menu link="option=com_cwmconnect&amp;view=dirheaders"
+                  view="dirheaders"
+                  alt="Cwmconnect/Directory Headers">COM_CWMCONNECT_DIRHEADER</menu>
+            <menu link="option=com_cwmconnect&amp;view=positions"
+                  view="positions"
+                  alt="Cwmconnect/Positions">COM_CWMCONNECT_POSITIONS</menu>
+            <menu link="option=com_cwmconnect&amp;view=kmls"
+                  view="kmls"
+                  alt="Cwmconnect/KML">COM_CWMCONNECT_KML</menu>
+            <menu link="option=com_cwmconnect&amp;view=reports"
+                  view="reports"
+                  alt="Cwmconnect/Reports">COM_CWMCONNECT_REPORTS</menu>
+            <menu link="option=com_cwmconnect&amp;view=info"
+                  view="info"
+                  alt="Cwmconnect/Info">COM_CWMCONNECT_INFO</menu>
+        </submenu>
+
+        <files folder="admin">
+            <filename>access.xml</filename>
+            <filename>config.xml</filename>
+            <folder>forms</folder>
+            <folder>services</folder>
+            <folder>sql</folder>
+            <folder>src</folder>
+            <folder>tmpl</folder>
+        </files>
+
+        <languages folder="admin/language">
+            <language tag="en-GB">en-GB/com_cwmconnect.ini</language>
+            <language tag="en-GB">en-GB/com_cwmconnect.sys.ini</language>
+        </languages>
+    </administration>
+
+    <!-- Tables tracked by Joomla's update mechanism -->
+    <tables>
+        <table>#__cwmconnect_details</table>
+        <table>#__cwmconnect_dirheader</table>
+        <table>#__cwmconnect_familyunit</table>
+        <table>#__cwmconnect_kml</table>
+        <table>#__cwmconnect_position</table>
+        <table type="optional">#__cwmconnect_update</table>
+    </tables>
+</extension>

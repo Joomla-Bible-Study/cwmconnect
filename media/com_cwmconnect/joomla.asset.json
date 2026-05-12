@@ -1,0 +1,64 @@
+{
+  "$schema": "https://developer.joomla.org/schemas/json-schema/web_assets.json",
+  "name": "com_cwmconnect",
+  "version": "2.0.0-dev",
+  "description": "CWM Connect — Church Photo Directory front-end assets.",
+  "license": "GPL-2.0-or-later",
+  "assets": [
+    {
+      "name": "com_cwmconnect.general",
+      "type": "style",
+      "uri": "com_cwmconnect/css/general.css",
+      "dependencies": []
+    },
+    {
+      "name": "com_cwmconnect.directory",
+      "type": "style",
+      "uri": "com_cwmconnect/css/cwmconnect.css",
+      "dependencies": []
+    },
+    {
+      "name": "com_cwmconnect.model",
+      "type": "style",
+      "uri": "com_cwmconnect/css/model.css",
+      "dependencies": []
+    },
+    {
+      "name": "com_cwmconnect.ios",
+      "type": "style",
+      "uri": "com_cwmconnect/css/ios.css",
+      "dependencies": []
+    },
+    {
+      "name": "com_cwmconnect.scripts",
+      "type": "script",
+      "uri": "com_cwmconnect/js/cwmconnect.js",
+      "dependencies": [
+        "core"
+      ],
+      "attributes": {
+        "defer": true
+      }
+    },
+    {
+      "name": "com_cwmconnect.jscolor",
+      "type": "script",
+      "uri": "com_cwmconnect/js/jscolor.min.js",
+      "dependencies": [],
+      "attributes": {
+        "defer": true
+      }
+    },
+    {
+      "name": "com_cwmconnect.geoupdate",
+      "type": "script",
+      "uri": "com_cwmconnect/js/geoupdate.js",
+      "dependencies": [
+        "core"
+      ],
+      "attributes": {
+        "defer": true
+      }
+    }
+  ]
+}

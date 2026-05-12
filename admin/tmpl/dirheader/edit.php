@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @package    Churchdirectory.Admin
+ * @package    Cwmconnect.Admin
  * @copyright  (C) 2026 CWM Team All rights reserved
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * @link       https://www.christianwebministries.org
@@ -16,13 +16,13 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Router\Route;
 
-/** @var \CWM\Component\Churchdirectory\Administrator\View\Dirheader\HtmlView $this */
+/** @var \CWM\Component\Cwmconnect\Administrator\View\Dirheader\HtmlView $this */
 
 $this->getDocument()->getWebAssetManager()
     ->useScript('keepalive')
     ->useScript('form.validate');
 ?>
-<form action="<?php echo Route::_('index.php?option=com_churchdirectory&view=dirheader&layout=edit&id=' . (int) $this->item->id); ?>"
+<form action="<?php echo Route::_('index.php?option=com_cwmconnect&view=dirheader&layout=edit&id=' . (int) $this->item->id); ?>"
       method="post" name="adminForm" id="dirheader-form" class="form-validate">
 
     <?php echo LayoutHelper::render('joomla.edit.title_alias', $this); ?>
@@ -30,14 +30,14 @@ $this->getDocument()->getWebAssetManager()
     <div class="main-card">
         <?php echo HTMLHelper::_('uitab.startTabSet', 'dirheaderTab', ['active' => 'details', 'recall' => true, 'breakpoint' => 768]); ?>
 
-        <?php echo HTMLHelper::_('uitab.addTab', 'dirheaderTab', 'details', empty($this->item->id) ? Text::_('COM_CHURCHDIRECTORY_NEW_DIRHEADER') : Text::sprintf('COM_CHURCHDIRECTORY_EDIT_DIRHEADER', $this->item->id)); ?>
+        <?php echo HTMLHelper::_('uitab.addTab', 'dirheaderTab', 'details', empty($this->item->id) ? Text::_('COM_CWMCONNECT_NEW_DIRHEADER') : Text::sprintf('COM_CWMCONNECT_EDIT_DIRHEADER', $this->item->id)); ?>
         <div class="row">
             <div class="col-lg-9">
                 <?php echo $this->form->renderField('description'); ?>
             </div>
             <div class="col-lg-3">
                 <fieldset class="options-form">
-                    <legend><?php echo Text::_('COM_CHURCHDIRECTORY_DIRHEADERE_DETAILS'); ?></legend>
+                    <legend><?php echo Text::_('COM_CWMCONNECT_DIRHEADERE_DETAILS'); ?></legend>
                     <?php echo $this->form->renderField('id'); ?>
                     <?php echo $this->form->renderField('published'); ?>
                     <?php echo $this->form->renderField('section'); ?>

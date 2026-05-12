@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @package    Churchdirectory.Admin
+ * @package    Cwmconnect.Admin
  * @copyright  (C) 2026 CWM Team All rights reserved
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * @link       https://www.christianwebministries.org
@@ -9,13 +9,13 @@
 
 declare(strict_types=1);
 
-namespace CWM\Component\Churchdirectory\Administrator\View\Member;
+namespace CWM\Component\Cwmconnect\Administrator\View\Member;
 
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
-use CWM\Component\Churchdirectory\Administrator\Model\MemberModel;
+use CWM\Component\Cwmconnect\Administrator\Model\MemberModel;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
@@ -94,7 +94,7 @@ class HtmlView extends BaseHtmlView
         $this->item  = $model->getItem();
         $this->state = $model->getState();
         $this->canDo = ContentHelper::getActions(
-            'com_churchdirectory',
+            'com_cwmconnect',
             'category',
             (int) ($this->item->catid ?? 0)
         );
@@ -107,7 +107,7 @@ class HtmlView extends BaseHtmlView
             throw new GenericDataException(implode("\n", $errors), 500);
         }
 
-        $params         = ComponentHelper::getParams('com_churchdirectory');
+        $params         = ComponentHelper::getParams('com_cwmconnect');
         $protectedAccess = (string) $params->get('protectedaccess');
         $groups         = $this->groups;
         $this->access   = (
@@ -151,13 +151,13 @@ class HtmlView extends BaseHtmlView
 
         ToolbarHelper::title(
             $isNew
-                ? Text::_('COM_CHURCHDIRECTORY_MANAGER_MEMBER_NEW')
-                : Text::_('COM_CHURCHDIRECTORY_MANAGER_MEMBER_EDIT'),
+                ? Text::_('COM_CWMCONNECT_MANAGER_MEMBER_NEW')
+                : Text::_('COM_CWMCONNECT_MANAGER_MEMBER_EDIT'),
             'address contact'
         );
 
         if ($isNew) {
-            if (\count($user->getAuthorisedCategories('com_churchdirectory', 'core.create')) > 0) {
+            if (\count($user->getAuthorisedCategories('com_cwmconnect', 'core.create')) > 0) {
                 ToolbarHelper::apply('member.apply');
                 ToolbarHelper::save('member.save');
                 ToolbarHelper::save2new('member.save2new');
@@ -186,14 +186,14 @@ class HtmlView extends BaseHtmlView
                 && $this->state->params->get('save_history', 0)
                 && $itemEditable
             ) {
-                ToolbarHelper::versions('com_churchdirectory.member', $this->item->id);
+                ToolbarHelper::versions('com_cwmconnect.member', $this->item->id);
             }
 
             ToolbarHelper::cancel('member.cancel', 'JTOOLBAR_CLOSE');
         }
 
         ToolbarHelper::divider();
-        ToolbarHelper::help('churchdirectory_member', true);
+        ToolbarHelper::help('cwmconnect_member', true);
     }
 
     /**

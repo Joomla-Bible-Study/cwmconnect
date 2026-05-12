@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @package    Churchdirectory.Admin
+ * @package    Cwmconnect.Admin
  * @copyright  (C) 2026 CWM Team All rights reserved
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * @link       https://www.christianwebministries.org
@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace CWM\Component\Churchdirectory\Administrator\Model;
+namespace CWM\Component\Cwmconnect\Administrator\Model;
 
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
@@ -21,7 +21,7 @@ use Joomla\Database\QueryInterface;
 
 /**
  * Lists members that still need a geocode (lat=0, lng=0) joined to any
- * existing failure rows on `#__churchdirectory_geoupdate`.
+ * existing failure rows on `#__cwmconnect_geoupdate`.
  *
  * @since  2.0.0
  */
@@ -151,11 +151,11 @@ class GeostatusModel extends ListModel
                 . 'a.ordering, a.featured, a.language, a.publish_up, a.publish_down'
             )
         );
-        $query->from($db->quoteName('#__churchdirectory_details', 'a'));
+        $query->from($db->quoteName('#__cwmconnect_details', 'a'));
         $query->select($db->quoteName('u') . '.*');
         $query->join(
             'LEFT',
-            $db->quoteName('#__churchdirectory_geoupdate', 'u')
+            $db->quoteName('#__cwmconnect_geoupdate', 'u')
             . ' ON ' . $db->quoteName('a.id') . ' = ' . $db->quoteName('u.member_id')
         );
 

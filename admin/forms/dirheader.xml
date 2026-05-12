@@ -5,7 +5,7 @@
 	</fields>
 	<fieldset>
 		<field name="language" type="contentlanguage" label="JFIELD_LANGUAGE_LABEL"
-		       description="COM_CHURCHDIRECTORY_FIELD_LANGUAGE_DESC"
+		       description="COM_CWMCONNECT_FIELD_LANGUAGE_DESC"
 		>
 			<option value="*">JALL</option>
 		</field>
@@ -22,8 +22,8 @@
 		       size="1"
 		/>
 		<field name="description" type="editor"
-		       label="COM_CHURCHDIRECTORY_FIELD_DIRHEADER_DESCRIPTION_LABEL"
-		       description="COM_CHURCHDIRECTORY_FIELD_DIRHEADER_DESCRIPTION_DESC"
+		       label="COM_CWMCONNECT_FIELD_DIRHEADER_DESCRIPTION_LABEL"
+		       description="COM_CWMCONNECT_FIELD_DIRHEADER_DESCRIPTION_DESC"
 		       class="inputbox"
 		       filter="safehtml"
 		       buttons="true"
@@ -41,18 +41,18 @@
 		/>
 		<field name="name"
 		       type="text"
-		       label="COM_CHURCHDIRECTORY_FIELD_DIRHEADER_NAME_LABEL"
-		       description="COM_CHURCHDIRECTORY_FIELD_DIRHEADER_NAME_DESC"
+		       label="COM_CWMCONNECT_FIELD_DIRHEADER_NAME_LABEL"
+		       description="COM_CWMCONNECT_FIELD_DIRHEADER_NAME_DESC"
 		       class="input-xxlarge input-large-text"
 		       size="40"
 		       required="true"
 		/>
-		<field id="section" name="section" type="list" label="COM_CHURCHDIRECTORY_FIELD_SECTION_LABEL"
-		       description="COM_CHURCHDIRECTORY_FIELD_SECTION_DESC"
+		<field id="section" name="section" type="list" label="COM_CWMCONNECT_FIELD_SECTION_LABEL"
+		       description="COM_CWMCONNECT_FIELD_SECTION_DESC"
 		       size="1"
 		       default="0">
-			<option value="0">COM_CHURCHDIRECTORY_HEADER</option>
-			<option value="1">COM_CHURCHDIRECTORY_FOOTER</option>
+			<option value="0">COM_CWMCONNECT_HEADER</option>
+			<option value="1">COM_CWMCONNECT_FOOTER</option>
 		</field>
 		<field id="published" name="published" type="list" label="JSTATUS"
 		       description="JFIELD_PUBLISHED_DESC"
@@ -65,26 +65,26 @@
 			<option value="-2">JTRASHED</option>
 		</field>
 		<field name="featured" type="radio" label="JFEATURED"
-		       description="COM_CHURCHDIRECTORY_FIELD_FEATURED_DESC"
+		       description="COM_CWMCONNECT_FIELD_FEATURED_DESC"
 		       default="0"
 		       class="btn-group btn-group-yesno">
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
 		<field name="created_by" type="user" label="JGLOBAL_FIELD_CREATED_BY_LABEL"
-		       description="COM_CHURCHDIRECTORY_FIELD_CREATED_BY_DESC"/>
+		       description="COM_CWMCONNECT_FIELD_CREATED_BY_DESC"/>
 
 		<field name="created_by_alias" type="text"
-		       label="COM_CHURCHDIRECTORY_FIELD_CREATED_BY_ALIAS_LABEL"
-		       description="COM_CHURCHDIRECTORY_FIELD_CREATED_BY_ALIAS_DESC"
+		       label="COM_CWMCONNECT_FIELD_CREATED_BY_ALIAS_LABEL"
+		       description="COM_CWMCONNECT_FIELD_CREATED_BY_ALIAS_DESC"
 		       class="inputbox" size="20"/>
 
 		<field name="created" type="calendar"
-		       label="COM_CHURCHDIRECTORY_FIELD_CREATED_LABEL" description="COM_CHURCHDIRECTORY_FIELD_CREATED_DESC"
+		       label="COM_CWMCONNECT_FIELD_CREATED_LABEL" description="COM_CWMCONNECT_FIELD_CREATED_DESC"
 		       class="inputbox" size="22" format="%Y-%m-%d %H:%M:%S" filter="user_utc"/>
 
 		<field name="modified" type="calendar" class="readonly"
-		       label="JGLOBAL_FIELD_MODIFIED_LABEL" description="COM_CHURCHDIRECTORY_FIELD_MODIFIED_DESC"
+		       label="JGLOBAL_FIELD_MODIFIED_LABEL" description="COM_CWMCONNECT_FIELD_MODIFIED_DESC"
 		       size="22" readonly="true" format="%Y-%m-%d %H:%M:%S" filter="user_utc"/>
 
 		<field name="modified_by" type="user" label="JGLOBAL_FIELD_MODIFIED_BY_LABEL"
@@ -96,16 +96,16 @@
 
 		<field name="ordering" type="ordering" class="inputbox"
 		       label="JFIELD_ORDERING_LABEL" description="JFIELD_ORDERING_DESC"
-		       content_type="com_churchdirectory.dirheader"/>
+		       content_type="com_cwmconnect.dirheader"/>
 
 		<field name="publish_up" type="calendar"
-		       label="COM_CHURCHDIRECTORY_FIELD_PUBLISH_UP_LABEL"
-		       description="COM_CHURCHDIRECTORY_FIELD_PUBLISH_UP_DESC"
+		       label="COM_CWMCONNECT_FIELD_PUBLISH_UP_LABEL"
+		       description="COM_CWMCONNECT_FIELD_PUBLISH_UP_DESC"
 		       class="inputbox" format="%Y-%m-%d %H:%M:%S" size="22" filter="user_utc"/>
 
 		<field name="publish_down" type="calendar"
-		       label="COM_CHURCHDIRECTORY_FIELD_PUBLISH_DOWN_LABEL"
-		       description="COM_CHURCHDIRECTORY_FIELD_PUBLISH_DOWN_DESC"
+		       label="COM_CWMCONNECT_FIELD_PUBLISH_DOWN_LABEL"
+		       description="COM_CWMCONNECT_FIELD_PUBLISH_DOWN_DESC"
 		       class="inputbox" format="%Y-%m-%d %H:%M:%S" size="22" filter="user_utc"/>
 
 		<field name="metakey" type="textarea" label="JFIELD_META_KEYWORDS_LABEL"
@@ -116,7 +116,7 @@
 		       description="JFIELD_META_DESCRIPTION_DESC" class="inputbox" rows="3"
 		       cols="30"/>
 		<field name="image" type="media" hide_none="1"
-		       label="COM_CHURCHDIRECTORY_FIELD_PARAMS_IMAGE_LABEL"
-		       description="COM_CHURCHDIRECTORY_FIELD_PARAMS_IMAGE_DESC"/>
+		       label="COM_CWMCONNECT_FIELD_PARAMS_IMAGE_LABEL"
+		       description="COM_CWMCONNECT_FIELD_PARAMS_IMAGE_DESC"/>
 	</fieldset>
 </form>

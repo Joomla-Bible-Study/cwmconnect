@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @package    Churchdirectory.Site
+ * @package    Cwmconnect.Site
  * @copyright  (C) 2026 CWM Team All rights reserved
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * @link       https://www.christianwebministries.org
@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace CWM\Component\Churchdirectory\Site\Service;
+namespace CWM\Component\Cwmconnect\Site\Service;
 
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
@@ -28,7 +28,7 @@ use Joomla\Database\DatabaseInterface;
 use Joomla\Database\ParameterType;
 
 /**
- * Site router for com_churchdirectory.
+ * Site router for com_cwmconnect.
  *
  * View hierarchy (parent → child):
  *   categories → category → member
@@ -54,18 +54,18 @@ class Router extends RouterView
     ) {
         $this->categoryFactory = $categoryFactory;
         $this->db              = $db;
-        $this->noIDs           = (bool) ComponentHelper::getParams('com_churchdirectory')->get('sef_ids');
+        $this->noIDs           = (bool) ComponentHelper::getParams('com_cwmconnect')->get('sef_ids');
 
-        $categories = (new RouterViewConfiguration('categories'))->setKey('id');
+        $categories = new RouterViewConfiguration('categories')->setKey('id');
         $this->registerView($categories);
 
-        $category = (new RouterViewConfiguration('category'))
+        $category = new RouterViewConfiguration('category')
             ->setKey('id')
             ->setParent($categories, 'catid')
             ->setNestable();
         $this->registerView($category);
 
-        $member = (new RouterViewConfiguration('member'))
+        $member = new RouterViewConfiguration('member')
             ->setKey('id')
             ->setParent($category, 'catid');
         $this->registerView($member);
@@ -95,7 +95,7 @@ class Router extends RouterView
     public function getCategorySegment(int|string $id, array $query): array
     {
         $category = $this->categoryFactory
-            ->createCategory(['extension' => 'com_churchdirectory'])
+            ->createCategory(['extension' => 'com_cwmconnect'])
             ->get($id);
 
         if (!$category) {
@@ -132,7 +132,7 @@ class Router extends RouterView
         if (!str_contains((string) $id, ':')) {
             $dbquery = $this->db->getQuery(true)
                 ->select($this->db->quoteName('alias'))
-                ->from($this->db->quoteName('#__churchdirectory_details'))
+                ->from($this->db->quoteName('#__cwmconnect_details'))
                 ->where($this->db->quoteName('id') . ' = :id')
                 ->bind(':id', $id, ParameterType::INTEGER);
 
@@ -163,7 +163,7 @@ class Router extends RouterView
         }
 
         $category = $this->categoryFactory
-            ->createCategory(['extension' => 'com_churchdirectory'])
+            ->createCategory(['extension' => 'com_cwmconnect'])
             ->get($query['id']);
 
         if (!$category) {
@@ -202,7 +202,7 @@ class Router extends RouterView
         if ($this->noIDs) {
             $dbquery = $this->db->getQuery(true)
                 ->select($this->db->quoteName('id'))
-                ->from($this->db->quoteName('#__churchdirectory_details'))
+                ->from($this->db->quoteName('#__cwmconnect_details'))
                 ->where($this->db->quoteName('alias') . ' = :alias')
                 ->where($this->db->quoteName('catid') . ' = :catid')
                 ->bind(':alias', $segment)

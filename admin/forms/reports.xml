@@ -5,7 +5,7 @@
     </fields>
     <fieldset>
         <field name="language" type="contentlanguage" label="JFIELD_LANGUAGE_LABEL"
-               description="COM_CHURCHDIRECTORY_FIELD_LANGUAGE_DESC"
+               description="COM_CWMCONNECT_FIELD_LANGUAGE_DESC"
                class="inputbox small"
         >
             <option value="*">JALL</option>
@@ -17,11 +17,11 @@
                class="inputbox small"
                size="1"
 		/>
-        <field name="catid" type="categoryedit" extension="com_churchdirectory"
+        <field name="catid" type="categoryedit" extension="com_cwmconnect"
                label="JCATEGORY" description="JFIELD_CATEGORY_DESC"
                required="true" default="">
                 <option value="">
-                    COM_CHURCHDIRECTORY_CATEGORY_SELECT
+                    COM_CWMCONNECT_CATEGORY_SELECT
                 </option>
         </field>
         <field id="published" name="published" type="list" label="JSTATUS"
@@ -43,8 +43,8 @@
             </option>
 
         </field>
-        <field name="chtype" type="list" label="COM_CHURCHDIRECTORY_FIELD_CHTYPE_LABEL"
-               description="COM_CHURCHDIRECTORY_FIELD_CHTYPE_DESC"
+        <field name="chtype" type="list" label="COM_CWMCONNECT_FIELD_CHTYPE_LABEL"
+               description="COM_CWMCONNECT_FIELD_CHTYPE_DESC"
                class="inputbox small"
                size="1"
                default="">

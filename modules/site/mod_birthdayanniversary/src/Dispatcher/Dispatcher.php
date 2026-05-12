@@ -32,7 +32,7 @@ class Dispatcher extends AbstractModuleDispatcher implements HelperFactoryAwareI
     /**
      * Resolve the data the layout needs (birthdays + anniversaries for the
      * configured month) and enqueue the component's shared stylesheets via
-     * the WebAssetManager (resolved through media/com_churchdirectory/
+     * the WebAssetManager (resolved through media/com_cwmconnect/
      * joomla.asset.json).
      *
      * @return  array<string, mixed>
@@ -46,8 +46,8 @@ class Dispatcher extends AbstractModuleDispatcher implements HelperFactoryAwareI
         $this->getApplication()
             ->getDocument()
             ->getWebAssetManager()
-            ->useStyle('com_churchdirectory.general')
-            ->useStyle('com_churchdirectory.model');
+            ->useStyle('com_cwmconnect.general')
+            ->useStyle('com_cwmconnect.model');
 
         $helper = $this->getHelperFactory()->getHelper('BirthdayanniversaryHelper');
 

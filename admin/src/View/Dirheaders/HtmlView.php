@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @package    Churchdirectory.Admin
+ * @package    Cwmconnect.Admin
  * @copyright  (C) 2026 CWM Team All rights reserved
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * @link       https://www.christianwebministries.org
@@ -9,13 +9,13 @@
 
 declare(strict_types=1);
 
-namespace CWM\Component\Churchdirectory\Administrator\View\Dirheaders;
+namespace CWM\Component\Cwmconnect\Administrator\View\Dirheaders;
 
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
-use CWM\Component\Churchdirectory\Administrator\Model\DirheadersModel;
+use CWM\Component\Cwmconnect\Administrator\Model\DirheadersModel;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Helper\ContentHelper;
 use Joomla\CMS\Language\Text;
@@ -88,7 +88,7 @@ class HtmlView extends BaseHtmlView
         $this->state         = $model->getState();
         $this->filterForm    = $model->getFilterForm();
         $this->activeFilters = $model->getActiveFilters();
-        $this->canDo         = ContentHelper::getActions('com_churchdirectory');
+        $this->canDo         = ContentHelper::getActions('com_cwmconnect');
 
         if (\count($errors = $model->getErrors())) {
             throw new GenericDataException(implode("\n", $errors), 500);
@@ -121,9 +121,9 @@ class HtmlView extends BaseHtmlView
         $canDo   = $this->canDo;
         $toolbar = Toolbar::getInstance('toolbar');
 
-        ToolbarHelper::title(Text::_('COM_CHURCHDIRECTORY_MANAGER_DIRHEADERS'), 'churchdirectory');
+        ToolbarHelper::title(Text::_('COM_CWMCONNECT_MANAGER_DIRHEADERS'), 'cwmconnect');
 
-        if ($canDo->get('core.create') || \count($user->getAuthorisedCategories('com_churchdirectory', 'core.create')) > 0) {
+        if ($canDo->get('core.create') || \count($user->getAuthorisedCategories('com_cwmconnect', 'core.create')) > 0) {
             $toolbar->addNew('dirheader.add');
         }
 
@@ -151,13 +151,13 @@ class HtmlView extends BaseHtmlView
         }
 
         if (
-            $user->authorise('core.create', 'com_churchdirectory')
-            && $user->authorise('core.edit', 'com_churchdirectory')
-            && $user->authorise('core.edit.state', 'com_churchdirectory')
+            $user->authorise('core.create', 'com_cwmconnect')
+            && $user->authorise('core.edit', 'com_cwmconnect')
+            && $user->authorise('core.edit.state', 'com_cwmconnect')
         ) {
             $toolbar->popupButton('batch', 'JTOOLBAR_BATCH')
                 ->popupType('inline')
-                ->textHeader(Text::_('COM_CHURCHDIRECTORY_BATCH_OPTIONS_DIRHEADERS'))
+                ->textHeader(Text::_('COM_CWMCONNECT_BATCH_OPTIONS_DIRHEADERS'))
                 ->url('#joomla-dialog-batch')
                 ->modalWidth('800px')
                 ->modalHeight('fit-content')
@@ -170,11 +170,11 @@ class HtmlView extends BaseHtmlView
                 ->listCheck(true);
         }
 
-        if ($canDo->get('core.admin', 'com_churchdirectory') || $user->authorise('core.options', 'com_churchdirectory')) {
-            ToolbarHelper::preferences('com_churchdirectory');
+        if ($canDo->get('core.admin', 'com_cwmconnect') || $user->authorise('core.options', 'com_cwmconnect')) {
+            ToolbarHelper::preferences('com_cwmconnect');
         }
 
-        ToolbarHelper::help('churchdirectory_dirheader', true);
+        ToolbarHelper::help('cwmconnect_dirheader', true);
     }
 
     /**
@@ -190,7 +190,7 @@ class HtmlView extends BaseHtmlView
             'a.ordering'  => Text::_('JGRID_HEADING_ORDERING'),
             'a.published' => Text::_('JSTATUS'),
             'a.name'      => Text::_('JGLOBAL_TITLE'),
-            'a.section'   => Text::_('COM_CHURCHDIRECTORY_FIELD_SECTION_LABEL'),
+            'a.section'   => Text::_('COM_CWMCONNECT_FIELD_SECTION_LABEL'),
             'a.access'    => Text::_('JGRID_HEADING_ACCESS'),
             'a.language'  => Text::_('JGRID_HEADING_LANGUAGE'),
             'a.id'        => Text::_('JGRID_HEADING_ID'),
