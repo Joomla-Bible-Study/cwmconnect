@@ -1,3 +1,5 @@
+SET SQL_MODE = '';
+
 --
 -- Table structure for table `#__churchdirectory_details`
 --
@@ -78,7 +80,8 @@ CREATE TABLE IF NOT EXISTS `#__churchdirectory_details` (
   KEY `idx_funit` (`funitid`)
 )
   ENGINE =InnoDB
-  DEFAULT CHARSET =utf8
+  DEFAULT CHARSET = utf8mb4
+  DEFAULT COLLATE = utf8mb4_unicode_ci
   AUTO_INCREMENT =4;
 
 --
@@ -125,8 +128,8 @@ CREATE TABLE IF NOT EXISTS `#__churchdirectory_dirheader` (
   `id`               INT(11)             NOT NULL AUTO_INCREMENT,
   `name`             VARCHAR(255)        NOT NULL DEFAULT '',
   `alias`            VARCHAR(255)
-                     CHARACTER SET utf8
-                     COLLATE utf8_bin    NOT NULL DEFAULT '',
+                     CHARACTER SET utf8mb4
+                     COLLATE utf8mb4_bin    NOT NULL DEFAULT '',
   `description`      MEDIUMTEXT          NOT NULL,
   `image`            VARCHAR(255) DEFAULT NULL,
   `published`        TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
@@ -153,7 +156,8 @@ CREATE TABLE IF NOT EXISTS `#__churchdirectory_dirheader` (
   PRIMARY KEY (`id`)
 )
   ENGINE =InnoDB
-  DEFAULT CHARSET =utf8
+  DEFAULT CHARSET = utf8mb4
+  DEFAULT COLLATE = utf8mb4_unicode_ci
   AUTO_INCREMENT =3;
 
 --
@@ -179,8 +183,8 @@ CREATE TABLE IF NOT EXISTS `#__churchdirectory_familyunit` (
   `id`               INT(11)             NOT NULL AUTO_INCREMENT,
   `name`             VARCHAR(255)        NOT NULL DEFAULT '',
   `alias`            VARCHAR(255)
-                     CHARACTER SET utf8
-                     COLLATE utf8_bin    NOT NULL DEFAULT '',
+                     CHARACTER SET utf8mb4
+                     COLLATE utf8mb4_bin    NOT NULL DEFAULT '',
   `description`      MEDIUMTEXT          NOT NULL,
   `image`            VARCHAR(255) DEFAULT NULL,
   `published`        TINYINT(3)          NOT NULL DEFAULT '0',
@@ -204,7 +208,8 @@ CREATE TABLE IF NOT EXISTS `#__churchdirectory_familyunit` (
   PRIMARY KEY (`id`)
 )
   ENGINE =InnoDB
-  DEFAULT CHARSET =utf8
+  DEFAULT CHARSET = utf8mb4
+  DEFAULT COLLATE = utf8mb4_unicode_ci
   AUTO_INCREMENT =2;
 
 --
@@ -228,7 +233,8 @@ CREATE TABLE IF NOT EXISTS `#__churchdirectory_geoupdate` (
   PRIMARY KEY (`member_id`)
 )
   ENGINE =InnoDB
-  DEFAULT CHARSET =utf8;
+  DEFAULT CHARSET = utf8mb4
+  DEFAULT COLLATE = utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -240,8 +246,8 @@ CREATE TABLE IF NOT EXISTS `#__churchdirectory_kml` (
   `id`               INT(11)             NOT NULL AUTO_INCREMENT,
   `name`             VARCHAR(255)        NOT NULL DEFAULT '',
   `alias`            VARCHAR(255)
-                     CHARACTER SET utf8
-                     COLLATE utf8_bin    NOT NULL DEFAULT '',
+                     CHARACTER SET utf8mb4
+                     COLLATE utf8mb4_bin    NOT NULL DEFAULT '',
   `description`      MEDIUMTEXT,
   `published`        TINYINT(3)          NOT NULL DEFAULT '0',
   `checked_out`      INT(11) UNSIGNED    NOT NULL DEFAULT '0',
@@ -270,7 +276,8 @@ CREATE TABLE IF NOT EXISTS `#__churchdirectory_kml` (
   PRIMARY KEY (`id`)
 )
   ENGINE =InnoDB
-  DEFAULT CHARSET =utf8
+  DEFAULT CHARSET = utf8mb4
+  DEFAULT COLLATE = utf8mb4_unicode_ci
   AUTO_INCREMENT =2;
 
 --
@@ -295,8 +302,8 @@ CREATE TABLE IF NOT EXISTS `#__churchdirectory_position` (
   `id`               INT(11)             NOT NULL AUTO_INCREMENT,
   `name`             VARCHAR(255)        NOT NULL DEFAULT '',
   `alias`            VARCHAR(255)
-                     CHARACTER SET utf8
-                     COLLATE utf8_bin    NOT NULL DEFAULT '',
+                     CHARACTER SET utf8mb4
+                     COLLATE utf8mb4_bin    NOT NULL DEFAULT '',
   `published`        TINYINT(3)          NOT NULL DEFAULT '0',
   `checked_out`      INT(11) UNSIGNED    NOT NULL DEFAULT '0',
   `checked_out_time` DATETIME            NOT NULL DEFAULT '0000-00-00 00:00:00',
@@ -318,7 +325,8 @@ CREATE TABLE IF NOT EXISTS `#__churchdirectory_position` (
   PRIMARY KEY (`id`)
 )
   ENGINE =InnoDB
-  DEFAULT CHARSET =utf8
+  DEFAULT CHARSET = utf8mb4
+  DEFAULT COLLATE = utf8mb4_unicode_ci
   AUTO_INCREMENT =31;
 
 --
@@ -383,7 +391,8 @@ CREATE TABLE IF NOT EXISTS `#__churchdirectory_update` (
   PRIMARY KEY (`id`)
 )
   ENGINE =InnoDB
-  DEFAULT CHARSET =utf8
+  DEFAULT CHARSET = utf8mb4
+  DEFAULT COLLATE = utf8mb4_unicode_ci
   AUTO_INCREMENT =6;
 
 --
