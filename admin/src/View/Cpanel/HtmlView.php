@@ -15,6 +15,7 @@ namespace CWM\Component\Connect\Administrator\View\Cpanel;
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
+use CWM\Component\Connect\Administrator\Helper\SchemaCheck;
 use Joomla\CMS\Helper\ContentHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\CanDo;
@@ -42,6 +43,13 @@ class HtmlView extends BaseHtmlView
     protected ?CanDo $canDo = null;
 
     /**
+     * @var bool  Whether the component has a pending schema update; when true
+     *            the cpanel renders a banner linking to com_installer&view=database.
+     * @since 2.0.0
+     */
+    protected bool $schemaFindings = false;
+
+    /**
      * Display the view.
      *
      * @param   string|null  $tpl  The template file to parse.
@@ -64,7 +72,8 @@ class HtmlView extends BaseHtmlView
             }
         }
 
-        $this->canDo = ContentHelper::getActions('com_cwmconnect');
+        $this->canDo          = ContentHelper::getActions('com_cwmconnect');
+        $this->schemaFindings = SchemaCheck::hasFindings();
 
         $this->addToolbar();
 

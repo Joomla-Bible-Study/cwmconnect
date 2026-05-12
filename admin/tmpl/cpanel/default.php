@@ -20,6 +20,17 @@ use Joomla\CMS\Router\Route;
 <form action="<?php echo Route::_('index.php?option=com_cwmconnect'); ?>"
       method="post" name="adminForm" id="adminForm">
     <div id="j-main-container">
+        <?php if ($this->schemaFindings) : ?>
+            <div class="alert alert-warning" role="alert">
+                <h4 class="alert-heading"><?php echo Text::_('COM_CWMCONNECT_CPANEL_SCHEMA_FINDINGS_HEADING'); ?></h4>
+                <p class="mb-2"><?php echo Text::_('COM_CWMCONNECT_CPANEL_SCHEMA_FINDINGS_BODY'); ?></p>
+                <a class="btn btn-warning"
+                   href="<?php echo Route::_('index.php?option=com_installer&view=database'); ?>">
+                    <?php echo Text::_('COM_CWMCONNECT_CPANEL_SCHEMA_FINDINGS_LINK'); ?>
+                </a>
+            </div>
+        <?php endif; ?>
+
         <div class="row">
             <div class="col-md-9">
                 <p><?php echo Text::_('COM_CWMCONNECT_CPANEL_WELCOME'); ?></p>

@@ -86,9 +86,6 @@
             <menu link="option=com_cwmconnect&amp;view=reports"
                   view="reports"
                   alt="Cwmconnect/Reports">COM_CWMCONNECT_REPORTS</menu>
-            <menu link="option=com_cwmconnect&amp;view=database"
-                  view="database"
-                  alt="Cwmconnect/DataBase">COM_CWMCONNECT_DATABASE</menu>
             <menu link="option=com_cwmconnect&amp;view=info"
                   view="info"
                   alt="Cwmconnect/Info">COM_CWMCONNECT_INFO</menu>

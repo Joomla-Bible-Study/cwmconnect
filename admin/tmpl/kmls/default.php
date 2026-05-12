@@ -11,6 +11,7 @@
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
+use CWM\Component\Connect\Administrator\View\Kmls\HtmlView;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Multilanguage;
 use Joomla\CMS\Language\Text;
@@ -18,7 +19,7 @@ use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Session\Session;
 
-/** @var \CWM\Component\Connect\Administrator\View\Kmls\HtmlView $this */
+/** @var HtmlView $this */
 
 $user      = $this->getCurrentUser();
 $userId    = (int) $user->id;
