@@ -16,7 +16,7 @@
             <targetplatform name="joomla" version="5[.0-9]" />
             <targetplatform name="joomla" version="6[.0-9]" />
         </cms>
-        <php minimum="8.3.0" />
+        <php minimum="8.4.0" />
     </compatibility>
 
     <files>
