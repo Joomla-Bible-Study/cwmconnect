@@ -18,7 +18,7 @@ use Joomla\CMS\Router\Route;
 use Joomla\CMS\Session\Session;
 use Joomla\CMS\Uri\Uri;
 
-/** @var \CWM\Component\Connect\Administrator\View\Reports\HtmlView $this */
+/** @var \CWM\Component\Cwmconnect\Administrator\View\Reports\HtmlView $this */
 
 $user           = Factory::getApplication()->getIdentity();
 $userGroups     = $user ? (array) $user->groups : [];

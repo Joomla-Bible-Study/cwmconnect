@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <form>
-	<fieldset name="member" addruleprefix="CWM\Component\Connect\Site\Rule" label="COM_CWMCONNECT_FORM_LABEL">
+	<fieldset name="member" addruleprefix="CWM\Component\Cwmconnect\Site\Rule" label="COM_CWMCONNECT_FORM_LABEL">
 		<field name="cwmconnect_name"
 			type="text"
 			id="cwmconnect-name"

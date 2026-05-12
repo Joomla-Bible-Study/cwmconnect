@@ -9,13 +9,13 @@
 
 declare(strict_types=1);
 
-namespace CWM\Component\Connect\Administrator\Model;
+namespace CWM\Component\Cwmconnect\Administrator\Model;
 
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
-use CWM\Component\Connect\Administrator\Helper\ReportbuildHelper;
+use CWM\Component\Cwmconnect\Administrator\Helper\ReportbuildHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;

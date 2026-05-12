@@ -10,8 +10,8 @@
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
-use CWM\Component\Connect\Site\Helper\RenderHelper;
-use CWM\Component\Connect\Site\Helper\RouteHelper;
+use CWM\Component\Cwmconnect\Site\Helper\RenderHelper;
+use CWM\Component\Cwmconnect\Site\Helper\RouteHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;

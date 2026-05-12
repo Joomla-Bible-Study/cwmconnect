@@ -13,7 +13,7 @@
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 
-/** @var \CWM\Component\Connect\Site\View\Directory\HtmlView $this */
+/** @var \CWM\Component\Cwmconnect\Site\View\Directory\HtmlView $this */
 ?>
 <div class="directory container">
     <?php echo Text::_('COM_CWMCONNECT_DIRECTORY_LANDING'); ?>

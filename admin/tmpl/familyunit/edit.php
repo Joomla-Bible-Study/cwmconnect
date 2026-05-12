@@ -16,7 +16,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Router\Route;
 
-/** @var \CWM\Component\Connect\Administrator\View\Familyunit\HtmlView $this */
+/** @var \CWM\Component\Cwmconnect\Administrator\View\Familyunit\HtmlView $this */
 
 $this->getDocument()->getWebAssetManager()
     ->useScript('keepalive')

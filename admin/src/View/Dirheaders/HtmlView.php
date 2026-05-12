@@ -9,13 +9,13 @@
 
 declare(strict_types=1);
 
-namespace CWM\Component\Connect\Administrator\View\Dirheaders;
+namespace CWM\Component\Cwmconnect\Administrator\View\Dirheaders;
 
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
-use CWM\Component\Connect\Administrator\Model\DirheadersModel;
+use CWM\Component\Cwmconnect\Administrator\Model\DirheadersModel;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Helper\ContentHelper;
 use Joomla\CMS\Language\Text;

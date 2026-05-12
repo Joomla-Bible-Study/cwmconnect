@@ -9,13 +9,13 @@
 
 declare(strict_types=1);
 
-namespace CWM\Component\Connect\Administrator\Service\HTML;
+namespace CWM\Component\Cwmconnect\Administrator\Service\HTML;
 
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
-use CWM\Component\Connect\Administrator\Helper\CwmconnectHelper;
+use CWM\Component\Cwmconnect\Administrator\Helper\CwmconnectHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;

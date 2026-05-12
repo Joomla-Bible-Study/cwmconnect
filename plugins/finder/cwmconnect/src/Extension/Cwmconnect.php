@@ -15,7 +15,7 @@ namespace CWM\Plugin\Finder\Cwmconnect\Extension;
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
-use CWM\Component\Connect\Site\Helper\RouteHelper;
+use CWM\Component\Cwmconnect\Site\Helper\RouteHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Event\Finder as FinderEvent;
 use Joomla\Component\Finder\Administrator\Indexer\Adapter;

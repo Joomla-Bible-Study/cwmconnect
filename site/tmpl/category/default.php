@@ -16,7 +16,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
 
-/** @var \CWM\Component\Connect\Site\View\Category\HtmlView $this */
+/** @var \CWM\Component\Cwmconnect\Site\View\Category\HtmlView $this */
 
 $listOrder = $this->escape($this->state->get('list.ordering'));
 $listDirn  = $this->escape($this->state->get('list.direction'));

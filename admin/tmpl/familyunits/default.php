@@ -18,7 +18,7 @@ use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Session\Session;
 
-/** @var \CWM\Component\Connect\Administrator\View\Familyunits\HtmlView $this */
+/** @var \CWM\Component\Cwmconnect\Administrator\View\Familyunits\HtmlView $this */
 
 $user      = $this->getCurrentUser();
 $userId    = (int) $user->id;

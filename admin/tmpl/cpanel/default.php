@@ -11,7 +11,7 @@
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
-use CWM\Component\Connect\Administrator\View\Cpanel\HtmlView;
+use CWM\Component\Cwmconnect\Administrator\View\Cpanel\HtmlView;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 

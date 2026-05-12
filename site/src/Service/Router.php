@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace CWM\Component\Connect\Site\Service;
+namespace CWM\Component\Cwmconnect\Site\Service;
 
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
@@ -56,16 +56,16 @@ class Router extends RouterView
         $this->db              = $db;
         $this->noIDs           = (bool) ComponentHelper::getParams('com_cwmconnect')->get('sef_ids');
 
-        $categories = (new RouterViewConfiguration('categories'))->setKey('id');
+        $categories = new RouterViewConfiguration('categories')->setKey('id');
         $this->registerView($categories);
 
-        $category = (new RouterViewConfiguration('category'))
+        $category = new RouterViewConfiguration('category')
             ->setKey('id')
             ->setParent($categories, 'catid')
             ->setNestable();
         $this->registerView($category);
 
-        $member = (new RouterViewConfiguration('member'))
+        $member = new RouterViewConfiguration('member')
             ->setKey('id')
             ->setParent($category, 'catid');
         $this->registerView($member);

@@ -14,7 +14,7 @@
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 
-/** @var \CWM\Component\Connect\Administrator\View\Geoupdate\HtmlView $this */
+/** @var \CWM\Component\Cwmconnect\Administrator\View\Geoupdate\HtmlView $this */
 ?>
 <?php if ($this->more) : ?>
     <h1><?php echo Text::_('COM_CWMCONNECT_LBL_GEOUPDATEINPROGRESS'); ?></h1>

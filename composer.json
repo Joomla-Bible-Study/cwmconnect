@@ -31,13 +31,13 @@
     },
     "autoload": {
         "psr-4": {
-            "CWM\\Component\\Connect\\Administrator\\": "admin/src/",
-            "CWM\\Component\\Connect\\Site\\": "site/src/"
+            "CWM\\Component\\Cwmconnect\\Administrator\\": "admin/src/",
+            "CWM\\Component\\Cwmconnect\\Site\\": "site/src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "CWM\\Component\\Connect\\Tests\\": "tests/unit/"
+            "CWM\\Component\\Cwmconnect\\Tests\\": "tests/unit/"
         }
     },
     "require": {

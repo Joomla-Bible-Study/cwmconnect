@@ -30,7 +30,7 @@
             <item>First Joomla 5/6 build of CWM Connect (formerly Church Directory for Joomla 3). Pre-release while ARS publish wiring and live-install verification are completed; not yet recommended for production.</item>
         </note>
         <addition>
-            <item>Joomla 5/6 + PHP 8.4 baseline: namespaced PSR-4 layout (CWM\Component\Connect\{Administrator,Site}), MVCFactory/ComponentDispatcherFactory provider, namespaced controllers/models/tables/views, typed properties and strict_types throughout admin/, site/, modules/, and plugins/.</item>
+            <item>Joomla 5/6 + PHP 8.4 baseline: namespaced PSR-4 layout (CWM\Component\Cwmconnect\{Administrator,Site}), MVCFactory/ComponentDispatcherFactory provider, namespaced controllers/models/tables/views, typed properties and strict_types throughout admin/, site/, modules/, and plugins/.</item>
             <item>Bundled site module mod_birthdayanniversary rewritten on the J5 Dispatcher + HelperFactory pattern.</item>
             <item>Smart Search finder plugin rewritten as an event subscriber against Joomla\CMS\Event\Finder typed events.</item>
             <item>Frontend assets registered through media/com_cwmconnect/joomla.asset.json (WebAssetManager); LESS pipeline retired.</item>

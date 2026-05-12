@@ -19,7 +19,7 @@ use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Session\Session;
 
-/** @var \CWM\Component\Connect\Administrator\View\Positions\HtmlView $this */
+/** @var \CWM\Component\Cwmconnect\Administrator\View\Positions\HtmlView $this */
 
 $user      = $this->getCurrentUser();
 $userId    = (int) $user->id;

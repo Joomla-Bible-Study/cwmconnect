@@ -48,6 +48,17 @@
       "attributes": {
         "defer": true
       }
+    },
+    {
+      "name": "com_cwmconnect.geoupdate",
+      "type": "script",
+      "uri": "com_cwmconnect/js/geoupdate.js",
+      "dependencies": [
+        "core"
+      ],
+      "attributes": {
+        "defer": true
+      }
     }
   ]
 }

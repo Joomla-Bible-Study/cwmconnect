@@ -14,7 +14,7 @@
 use Joomla\CMS\Language\Multilanguage;
 use Joomla\CMS\Layout\LayoutHelper;
 
-/** @var \CWM\Component\Connect\Administrator\View\Dirheaders\HtmlView $this */
+/** @var \CWM\Component\Cwmconnect\Administrator\View\Dirheaders\HtmlView $this */
 
 $published = (int) $this->state->get('filter.published');
 ?>

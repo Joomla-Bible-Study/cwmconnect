@@ -15,7 +15,7 @@ namespace CWM\Module\Birthdayanniversary\Site\Helper;
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
-use CWM\Component\Connect\Site\Helper\RenderHelper;
+use CWM\Component\Cwmconnect\Site\Helper\RenderHelper;
 use Joomla\Registry\Registry;
 
 /**

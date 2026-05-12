@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace CWM\Component\Connect\Tests\Helper;
+namespace CWM\Component\Cwmconnect\Tests\Helper;
 
 use PHPUnit\Framework\Attributes\CoversNothing;
 use PHPUnit\Framework\TestCase;

@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace CWM\Component\Connect\Administrator\Model;
+namespace CWM\Component\Cwmconnect\Administrator\Model;
 
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
@@ -179,7 +179,7 @@ class MemberModel extends AdminModel
         $categoryId = (int) $value;
         $newIds     = [];
 
-        /** @var \CWM\Component\Connect\Administrator\Table\MemberTable $table */
+        /** @var \CWM\Component\Cwmconnect\Administrator\Table\MemberTable $table */
         $table = $this->getTable();
 
         if (!parent::checkCategoryId($categoryId)) {

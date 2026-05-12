@@ -13,7 +13,7 @@
 use Joomla\CMS\Factory;
 use Joomla\CMS\Layout\LayoutHelper;
 
-/** @var \CWM\Component\Connect\Site\View\Categories\HtmlView $this */
+/** @var \CWM\Component\Cwmconnect\Site\View\Categories\HtmlView $this */
 
 Factory::getApplication()->getDocument()->getWebAssetManager()->useScript('bootstrap.collapse');
 ?>

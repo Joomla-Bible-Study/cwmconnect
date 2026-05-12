@@ -15,7 +15,7 @@ use Joomla\CMS\Language\Multilanguage;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\LayoutHelper;
 
-/** @var \CWM\Component\Connect\Administrator\View\Members\HtmlView $this */
+/** @var \CWM\Component\Cwmconnect\Administrator\View\Members\HtmlView $this */
 
 $published = (int) $this->state->get('filter.published');
 ?>

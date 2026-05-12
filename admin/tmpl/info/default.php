@@ -13,7 +13,7 @@
 
 use Joomla\CMS\Router\Route;
 
-/** @var \CWM\Component\Connect\Administrator\View\Info\HtmlView $this */
+/** @var \CWM\Component\Cwmconnect\Administrator\View\Info\HtmlView $this */
 ?>
 <form action="<?php echo Route::_('index.php?option=com_cwmconnect&view=info'); ?>"
       method="post" name="adminForm" id="adminForm">

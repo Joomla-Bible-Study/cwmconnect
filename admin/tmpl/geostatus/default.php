@@ -17,7 +17,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Router\Route;
 
-/** @var \CWM\Component\Connect\Administrator\View\Geostatus\HtmlView $this */
+/** @var \CWM\Component\Cwmconnect\Administrator\View\Geostatus\HtmlView $this */
 
 $user      = Factory::getApplication()->getIdentity();
 $userId    = (int) ($user?->id ?? 0);

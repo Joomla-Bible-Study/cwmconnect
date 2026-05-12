@@ -9,98 +9,105 @@
 
 declare(strict_types=1);
 
-namespace CWM\Component\Connect\Administrator\Controller;
+namespace CWM\Component\Cwmconnect\Administrator\Controller;
 
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
-use CWM\Component\Connect\Administrator\Model\GeoupdateModel;
+use CWM\Component\Cwmconnect\Administrator\Model\GeoupdateModel;
 use Joomla\CMS\MVC\Controller\BaseController;
+use Joomla\CMS\Response\JsonResponse;
 
 /**
- * Controller for the geocoding batch worker.
+ * AJAX endpoints for the geocoding batch worker.
  *
- * The geocoding pass runs in repeated short slices so the browser can poll
- * progress without exhausting PHP's max_execution_time. The "browse" task
- * resets the work queue and runs the first slice; subsequent calls hit
- * "run" until the queue drains.
+ * The worker runs in repeated short slices (see GeoupdateModel::SLICE_BUDGET)
+ * so PHP's max_execution_time isn't a hard limit on the queue. The browser
+ * drives the polling via media/com_cwmconnect/js/geoupdate.js:
+ *
+ *   POST task=geoupdate.start  → reset queue, run first slice, return state
+ *   POST task=geoupdate.slice  → run next slice, return state
+ *
+ * Both endpoints return a JSON document of the form:
+ *
+ *   { "state": "running"|"done", "total": N, "done": M, "percent": 0-100 }
+ *
+ * The legacy popup-window-as-view approach (browse/run + auto-resubmitting
+ * form, requiring `tmpl=component`) was removed in 2.0.0-dev — no more
+ * View/Geoupdate, no more tmpl/geoupdate.
  *
  * @since  2.0.0
  */
 class GeoupdateController extends BaseController
 {
     /**
-     * Default view for the geocoding worker.
-     *
-     * @var string
-     * @since 2.0.0
-     */
-    protected $default_view = 'geoupdate';
-
-    /**
-     * Execute a task. Anything but "run" is normalized to "browse" so the
-     * legacy popup URL (no task) lands on the reset+display path.
-     *
-     * @param   string  $task  The task to execute.
-     *
-     * @return  mixed
-     *
-     * @since   2.0.0
-     */
-    public function execute($task): mixed
-    {
-        if ($task !== 'run') {
-            $task = 'browse';
-        }
-
-        return parent::execute($task);
-    }
-
-    /**
-     * Reset the queue and start scanning. First slice runs synchronously and
-     * the view template re-submits the form to "run" until empty.
+     * Reset the queue and run the first slice.
      *
      * @return  void
      *
      * @throws  \Exception
      * @since   2.0.0
      */
-    public function browse(): void
+    public function start(): void
     {
-        $input = $this->app->getInput();
-        $id    = (int) $input->getInt('id', 0);
-
-        $input->set('view', 'geoupdate');
+        $this->checkToken('post');
 
         /** @var GeoupdateModel $model */
         $model = $this->getModel('Geoupdate');
-        $state = $model->startScanning($id ?: null);
-        $input->set('scanstate', $state ? 'start' : 'done');
+        $id    = (int) $this->app->getInput()->getInt('id', 0);
 
-        $this->display(false);
+        $more = $model->startScanning($id ?: null);
+
+        $this->respond($more, $model);
     }
 
     /**
-     * Run a single slice through the queue.
+     * Advance the queue by one slice.
      *
      * @return  void
      *
      * @throws  \Exception
      * @since   2.0.0
      */
-    public function run(): void
+    public function slice(): void
     {
-        $input = $this->app->getInput();
-        $id    = (int) $input->getInt('id', 0);
-
-        $input->set('view', 'geoupdate');
+        $this->checkToken('post');
 
         /** @var GeoupdateModel $model */
         $model = $this->getModel('Geoupdate');
-        $state = $model->run(true, $id ?: null);
-        $input->set('scanstate', $state ? 'running' : 'done');
+        $id    = (int) $this->app->getInput()->getInt('id', 0);
 
-        $this->display(false);
+        $more = $model->run(true, $id ?: null);
+
+        $this->respond($more, $model);
+    }
+
+    /**
+     * Emit a JSON response and terminate.
+     *
+     * @return  never
+     *
+     * @since   2.0.0
+     */
+    private function respond(bool $more, GeoupdateModel $model): never
+    {
+        $total   = max(0, $model->totalMembers);
+        $done    = max(0, min($model->doneMembers, $total));
+        $percent = $total > 0
+            ? ($more ? (int) min(99, floor($done / $total * 100) + 1) : 100)
+            : ($more ? 0 : 100);
+
+        $this->app->setHeader('Content-Type', 'application/json');
+        $this->app->sendHeaders();
+
+        echo new JsonResponse([
+            'state'   => $more ? 'running' : 'done',
+            'total'   => $total,
+            'done'    => $done,
+            'percent' => $percent,
+        ]);
+
+        $this->app->close();
     }
 }

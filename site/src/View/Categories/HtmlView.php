@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace CWM\Component\Connect\Site\View\Categories;
+namespace CWM\Component\Cwmconnect\Site\View\Categories;
 
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;

@@ -9,13 +9,13 @@
 
 declare(strict_types=1);
 
-namespace CWM\Component\Connect\Site\View\Category;
+namespace CWM\Component\Cwmconnect\Site\View\Category;
 
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
-use CWM\Component\Connect\Site\Helper\RouteHelper;
+use CWM\Component\Cwmconnect\Site\Helper\RouteHelper;
 use Joomla\CMS\Document\Feed\FeedItem;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\View\GenericDataException;

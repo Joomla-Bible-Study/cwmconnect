@@ -10,7 +10,7 @@
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
-/** @var \CWM\Component\Connect\Site\View\Featured\HtmlView $this */
+/** @var \CWM\Component\Cwmconnect\Site\View\Featured\HtmlView $this */
 ?>
 <div class="blog-featured<?php echo $this->pageclass_sfx; ?>">
     <?php if ($this->params->get('show_page_heading') != 0) : ?>

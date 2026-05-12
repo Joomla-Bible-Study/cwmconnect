@@ -9,14 +9,14 @@
 
 declare(strict_types=1);
 
-namespace CWM\Component\Connect\Site\View\Featured;
+namespace CWM\Component\Cwmconnect\Site\View\Featured;
 
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
-use CWM\Component\Connect\Site\Helper\RenderHelper;
-use CWM\Component\Connect\Site\Model\FeaturedModel;
+use CWM\Component\Cwmconnect\Site\Helper\RenderHelper;
+use CWM\Component\Cwmconnect\Site\Model\FeaturedModel;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;

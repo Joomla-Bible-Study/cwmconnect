@@ -10,11 +10,11 @@
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
-use CWM\Component\Connect\Site\Helper\RouteHelper;
+use CWM\Component\Cwmconnect\Site\Helper\RouteHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 
-/** @var \CWM\Component\Connect\Site\View\Directory\HtmlView $this */
+/** @var \CWM\Component\Cwmconnect\Site\View\Directory\HtmlView $this */
 ?>
 <?php echo $this->renderHelper->getSearchField($this->params); ?>
 

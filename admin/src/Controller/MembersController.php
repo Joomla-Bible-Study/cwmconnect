@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace CWM\Component\Connect\Administrator\Controller;
+namespace CWM\Component\Cwmconnect\Administrator\Controller;
 
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
@@ -76,7 +76,7 @@ class MembersController extends AdminController
         $task   = $this->getTask();
         $value  = ArrayHelper::getValue($values, $task, 0, 'int');
 
-        /** @var \CWM\Component\Connect\Administrator\Model\MemberModel $model */
+        /** @var \CWM\Component\Cwmconnect\Administrator\Model\MemberModel $model */
         $model = $this->getModel();
 
         foreach ($ids as $i => $id) {

@@ -9,7 +9,7 @@
     <creationDate>2026-05-12</creationDate>
     <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
     <description>COM_CWMCONNECT_XML_DESCRIPTION</description>
-    <namespace path="src">CWM\Component\Connect</namespace>
+    <namespace path="src">CWM\Component\Cwmconnect</namespace>
 
     <compatibility>
         <cms>

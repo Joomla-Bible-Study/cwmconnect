@@ -9,7 +9,7 @@
 
 \defined('_JEXEC') or die;
 
-use CWM\Component\Connect\Administrator\Extension\CwmconnectComponent;
+use CWM\Component\Cwmconnect\Administrator\Extension\CwmconnectComponent;
 use Joomla\CMS\Categories\CategoryFactoryInterface;
 use Joomla\CMS\Component\Router\RouterFactoryInterface;
 use Joomla\CMS\Dispatcher\ComponentDispatcherFactoryInterface;
@@ -26,10 +26,10 @@ use Joomla\DI\ServiceProviderInterface;
 return new class () implements ServiceProviderInterface {
     public function register(Container $container): void
     {
-        $container->registerServiceProvider(new CategoryFactory('\\CWM\\Component\\Connect'));
-        $container->registerServiceProvider(new MVCFactory('\\CWM\\Component\\Connect'));
-        $container->registerServiceProvider(new ComponentDispatcherFactory('\\CWM\\Component\\Connect'));
-        $container->registerServiceProvider(new RouterFactory('\\CWM\\Component\\Connect'));
+        $container->registerServiceProvider(new CategoryFactory('\\CWM\\Component\\Cwmconnect'));
+        $container->registerServiceProvider(new MVCFactory('\\CWM\\Component\\Cwmconnect'));
+        $container->registerServiceProvider(new ComponentDispatcherFactory('\\CWM\\Component\\Cwmconnect'));
+        $container->registerServiceProvider(new RouterFactory('\\CWM\\Component\\Cwmconnect'));
 
         $container->set(
             ComponentInterface::class,

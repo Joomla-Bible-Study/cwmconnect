@@ -9,15 +9,15 @@
 
 declare(strict_types=1);
 
-namespace CWM\Component\Connect\Site\View\Member;
+namespace CWM\Component\Cwmconnect\Site\View\Member;
 
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
-use CWM\Component\Connect\Site\Helper\RouteHelper;
-use CWM\Component\Connect\Site\Model\CategoryModel;
-use CWM\Component\Connect\Site\Model\MemberModel;
+use CWM\Component\Cwmconnect\Site\Helper\RouteHelper;
+use CWM\Component\Cwmconnect\Site\Model\CategoryModel;
+use CWM\Component\Cwmconnect\Site\Model\MemberModel;
 use Joomla\CMS\Categories\Categories;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;

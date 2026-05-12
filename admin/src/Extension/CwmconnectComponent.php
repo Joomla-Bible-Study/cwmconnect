@@ -9,15 +9,15 @@
 
 declare(strict_types=1);
 
-namespace CWM\Component\Connect\Administrator\Extension;
+namespace CWM\Component\Cwmconnect\Administrator\Extension;
 
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
-use CWM\Component\Connect\Administrator\Service\HTML\Colorpicker;
-use CWM\Component\Connect\Administrator\Service\HTML\Geoupdate;
-use CWM\Component\Connect\Administrator\Service\HTML\Member;
+use CWM\Component\Cwmconnect\Administrator\Service\HTML\Colorpicker;
+use CWM\Component\Cwmconnect\Administrator\Service\HTML\Geoupdate;
+use CWM\Component\Cwmconnect\Administrator\Service\HTML\Member;
 use Joomla\CMS\Categories\CategoryServiceInterface;
 use Joomla\CMS\Categories\CategoryServiceTrait;
 use Joomla\CMS\Component\Router\RouterServiceInterface;
