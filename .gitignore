@@ -33,3 +33,4 @@ build.properties
 
 # Dev-only convenience symlinks (see CLAUDE.md "Dev environment" section)
 /admin/churchdirectory.xml
+/admin/script.php

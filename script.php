@@ -32,7 +32,7 @@ class Com_churchdirectoryInstallerScript
      *
      * @since  2.0.0
      */
-    protected string $minimumPhp = '8.3.0';
+    protected string $minimumPhp = '8.4.0';
 
     /**
      * Minimum Joomla version required.
