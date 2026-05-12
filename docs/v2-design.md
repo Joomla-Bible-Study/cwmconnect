@@ -42,12 +42,14 @@ Admin surface is the usual Joomla backend, gated by `core.manage` on
 | 9 | PC custom field mapping | Manual mapping screen (admin picks which PC FieldDefinitions to mirror). Type-mapped to `com_fields` rows in context `com_cwmconnect.member`. Drop PC `file` type from v1. Soft-orphan stale mappings (warn, don't delete). |
 | 10 | "Edit my record" affordance | Generic My PCO link (`https://my.planningcenteronline.com`) on front-end member profile. Admin "View in PC" link goes to staff profile. |
 | 11 | Joomla user ↔ PC person identity binding | Deferred to v2.x. v1 ships the generic My PCO link only. |
-| 12 | Privacy / opt-in | Local `display_in_directory` bool on each member. PC's `directory_status` drives the flag on sync. `plg_privacy_cwmconnect` handles GDPR export/delete requests. |
+| 12 | Privacy / opt-in | Three-tier model mirroring PC Church Center: (1) **master gate** `display_in_directory` bool — in directory at all? (2) **scope gate** `directory_scope` enum — `public` / `household` / `hidden`; viewers outside same household don't see `household`-scoped rows. (3) **per-field gate** `pc_shared_info` JSON — Church Center's per-field share preferences. Member-facing rendering hides fields where `pc_shared_info[key] === false`; absent key defaults to visible (opt-out model). PC sync drives all three; standalone installs use the master + scope only (per-field via portal is v2.x). `plg_privacy_cwmconnect` handles GDPR. |
 | 13 | Photo handling | Cache locally on sync at `media/com_cwmconnect/photos/`. Detect changes via the URL hash PC bakes into avatar paths. |
 | 14 | KML feed access | Signed token URL per user (`?token=<hmac>`), revocable from admin. Lives in `#__cwmconnect_feed_tokens`. |
 | 15 | Self-service PDF | "Download what I see" — frontend button on the member list view. Renders the current filter set through `mpdf`. |
 | 16 | Admin printable directory | Dedicated admin "Reports → Print Directory" workflow. v1 ships one template (alphabetical with photo + contact + household). Output stored at `media/com_cwmconnect/exports/`. |
 | 17 | Admin override of `display_in_directory` at print | Print form exposes "Include members marked hidden" toggle (default off). Override is gated by `core.admin` and logged to `com_actionlogs`. Rows printed under override flagged visually in the PDF ("Staff copy"). |
+| 18 | Children handling | Children become an automatic case of `display_in_directory = 0`. PC's `Person.child` boolean drives the flag on sync and locks it. Household view shows children's first name + age to viewers in the same household only; non-household viewers see a count ("…and 2 children"). Standalone installs use the manual flag; auto-detection from birthdate deferred to v2.x. |
+| 19 | Member self-service portal | Each logged-in member edits their own record at `view=myprofile`. **PC-synced records**: only local fields (`display_in_directory`, photo override) are editable; PC-sourced fields are read-only with a link to My PCO. **Local-only records**: full edit of name, contact info, custom fields. Identity binding via `user_id` FK on the member row — PC sync attempts email-match on insert; admin can manually pair from the admin edit screen. |
 
 ## 4. Data model changes (J3 → v2)
 
@@ -57,9 +59,32 @@ Admin surface is the usual Joomla backend, gated by `core.manage` on
         ;; FK to Planning Center person.id; null on local-only records.
     pc_last_synced_at         datetime  NULL
         ;; when sync last touched this row.
+    user_id                   int unsigned NULL  UNIQUE
+        ;; FK to #__users.id; null when the member has no Joomla account.
+        ;; Drives view=myprofile lookup. PC sync attempts email-match on
+        ;; insert; admin can manually pair from the edit screen.
     display_in_directory      tinyint(1) NOT NULL DEFAULT 1
-        ;; member-facing visibility. Synced from PC `directory_status` when linked.
+        ;; master visibility gate. Auto-set to 0 for PC.child=true OR for
+        ;; PC.directory_status='no' (flag locked in either case). Editable by
+        ;; admin and by the row's own user.
         ;; Admin print mode can override; member-facing views always honor it.
+    directory_scope           enum('public','household','hidden')
+                              NOT NULL DEFAULT 'public'
+        ;; second-tier gate. Mirrors PC.directory_status when synced:
+        ;;   'public'   → visible to all logged-in members
+        ;;   'household'→ visible only to viewers in the same household
+        ;;   'hidden'   → not in directory (equivalent to display_in_directory=0)
+        ;; Standalone installs: admin-controlled per-row.
+    pc_shared_info            json NULL
+        ;; Mirrors PC.directory_shared_info — per-field share preferences
+        ;; from PC Church Center. Example:
+        ;;   {"home_address": true, "primary_phone_number": false,
+        ;;    "primary_email_address": true, "birthdate": false}
+        ;; Rendering: for each PC-mapped field key, if pc_shared_info[key] is
+        ;; explicitly false, hide that field in member-facing views. Absent
+        ;; key defaults to visible (opt-out model — fits a church directory
+        ;; whose default mode is "share unless I said otherwise"). When the
+        ;; column is null (local record, or PC field not synced), render normally.
     image_filename            varchar(255) NULL
         ;; relative path under media/com_cwmconnect/photos/; null when no photo.
     image_hash                varchar(64)  NULL
@@ -97,6 +122,12 @@ and gain a `pc_*_id` column when they have a PC analog (Household for familyunit
 Campus for dirheader).
 
 ## 5. PC sync architecture
+
+> **API version pinned**: [`2025-11-10`](https://api.planningcenteronline.com/docs/apps/people/versions/2025-11-10).
+> PC People API versions are date-stamped and stable. All field names + URL
+> shapes in this section reference that spec. The PC client should pin via
+> the `X-PCO-API-Version` header so we don't get surprised by a future
+> default-version bump.
 
 ### 5.1 Trigger paths
 
@@ -136,6 +167,47 @@ Photo cache:
 
 Custom field mappings:  [Open mapping screen →]
 ```
+
+### 5.2.1 Person attributes we sync (and don't)
+
+The PC People `Person` resource exposes the attributes below. We mirror only
+those relevant to a directory, and explicitly skip ones that are sensitive,
+PC-internal, or out of scope.
+
+| Person attribute | Sync? | Notes |
+|---|---|---|
+| `first_name`, `last_name`, `middle_name`, `nickname`, `given_name`, `name` | yes | Core identity |
+| `birthdate`, `anniversary` | yes | Subject to per-field `pc_shared_info` gate |
+| `gender` | yes | Subject to per-field gate |
+| `avatar`, `demographic_avatar_url` | yes | Drives photo cache (§ photo handling) |
+| `child` | yes | Drives `display_in_directory = 0` + lock |
+| `membership` | yes | Filter input (Decision #4) |
+| `status` | yes | Filter input (active vs inactive) |
+| `inactivated_at` | yes | For audit / future filter rules |
+| `directory_status` | yes | Maps to `directory_scope` enum |
+| `directory_shared_info` | yes | Mirrored to `pc_shared_info` JSON |
+| `grade`, `graduation_year`, `school_type` | yes | Useful in household view for kids |
+| `primary_campus` (relationship) | yes | Maps to dirheader (Campus) |
+| Emails (separate resource) | yes | `?include=emails`, primary email mirrored to local |
+| Phone numbers (separate resource) | yes | `?include=phone_numbers` |
+| Addresses (separate resource) | yes | `?include=addresses` |
+| Households (separate resource) | yes | `?include=households` → familyunit mapping |
+| `mfa_configured`, `login_identifier`, `stripe_customer_identifier` | **no** | PC-internal |
+| `accounting_administrator`, `site_administrator`, `can_create_forms`, `can_email_lists`, `people_permissions`, `resource_permission_flags` | **no** | PC role assignments, not directory facts |
+| `created_at`, `updated_at`, `created_by` | observed only | Used to detect "what changed since last sync"; not stored in mirror |
+| `remote_id` | **no** | PC-internal ID for legacy import linkage |
+
+**Never synced, even if requested via `?include=` or a future config option:**
+
+| Attribute / resource | Why |
+|---|---|
+| `medical_notes` | Confidential pastoral / health information. Not directory data. The PC client should **never** request this field on Person fetches, and any future fetch helper that does \*get receive it should drop the field before storage. |
+| `passed_background_check` | Internal church compliance / volunteer screening state. Not directory information; misuse risk is real (visible "this person failed a background check"). Skip even on debug logging. |
+| Notes (separate resource: `?include=notes`) | Free-text pastoral notes attached to a person. Same reasoning as `medical_notes`. Never `?include=notes`. |
+| Background check details (separate resource: `?include=background_checks`) | Compliance / screening records. Never fetch. |
+| App permissions list (`?include=person_apps`) | Role assignments for PC apps; not relevant to a directory. |
+
+The "no" rows further up the table aren't security-critical (church staff with admin access to cwmconnect typically have access to PC anyway), but they're noise in a directory context. The "**Never synced**" rows in *this* sub-table are different — they're sensitive data the church staff specifically expect to live *only* in PC. Excluding them by design (not by config) keeps the trust boundary clean.
 
 ### 5.3 Per-person sync
 
@@ -223,7 +295,122 @@ and continue (one bad person doesn't abort the run).
 the PC `directory_status` sync** — same lock mechanism. Admin can unlink first
 if they want to override.
 
-## 7. Joomla 5/6 extension surface
+## 7. Children handling
+
+> Originating ask: issue #68 — kids exist in the data but shouldn't appear
+> in directory output or search; protect under-age members.
+
+Children are modelled as an **automatic case of `display_in_directory = 0`**,
+not as a parallel concept. The same flag that hides opted-out adults also hides
+kids; the difference is who sets it and whether it's lockable.
+
+### 7.1 Where the flag comes from
+
+| Source | Behaviour |
+|---|---|
+| PC sync | When `pc_person.child === true` (PC computes this from `birthdate` against the org's child-age threshold), set `display_in_directory = 0` on the local row **and** mark the flag locked (same lock machinery as PC-mapped fields). Admin cannot accidentally enable visibility on a minor while PC says they're under age. |
+| Manual admin | Standalone (non-PC) install or PC-unlinked record: admin sets the flag directly. v1 ships no birthdate-based auto-detection — admin owns the call. |
+
+### 7.2 Visibility surfaces
+
+| Surface | Rule |
+|---|---|
+| Front-end member browse | `WHERE display_in_directory = 1` (already in design — kids fall out for free). |
+| Front-end search | `plg_finder_cwmconnect` indexer skips rows where `display_in_directory = 0` so com_finder never returns kids. |
+| Household / familyunit view | Viewer's household membership decides. **In same household**: kids' first name + age (or birthday) visible. **Not in household**: aggregate only ("…and 2 children"); no names. |
+| Admin members list | Default filter hides children. Toolbar toggle "Show children" available, gated by `core.manage`. Same toggle the admin print uses for the "include hidden" override. |
+| Admin printable directory | Same `core.admin` override that includes opted-out adults also surfaces children. Override is logged to `com_actionlogs`; output marked "Staff copy" in the PDF. |
+
+### 7.3 Schema impact
+
+None new. The existing `display_in_directory` column on `#__cwmconnect_details` already covers it.
+
+The legacy `members.children` TEXT column (J3-era free-text list of kids' names per parent) becomes **deprecated** in v2:
+
+- PC-synced installs: don't write to it; don't display it. Kids are first-class rows with household links instead.
+- Standalone installs that filled it in: keep the column readable so the data isn't lost, but the new admin form doesn't expose it for editing.
+- Drop the column entirely in v3 once we're confident no one's relying on it.
+
+### 7.4 Implementation phases
+
+| Phase | What lands |
+|---|---|
+| C (sync core) | PC `child` boolean drives `display_in_directory = 0` + flag lock |
+| F (admin form lock) | Locked rendering of `display_in_directory` when PC says child |
+| G (front-end member views) | Browse + search already filter; household view branches on viewer-household membership |
+| K (admin print) | "Include children" toggle reuses the `core.admin` "include hidden" path |
+| M (polish) | Finder indexer skip rule |
+
+No new phase added — folds into the existing plan.
+
+### 7.5 Out of scope for v1 (children-specific)
+
+- **Birthdate-based auto-detection in standalone installs.** PC owns the threshold logic for PC installs; standalone admins set the flag manually for v1. Auto-detection (configurable threshold, age-based UI hint) deferred to v2.x.
+- **Per-child profile pages.** Kids appear in household context only; no `view=member&id=N` route renders for a record where `display_in_directory = 0` (returns 403).
+- **Child-specific custom field privacy rules.** Custom fields locked to PC's mapping; if PC chooses to expose a custom field on a child record, it goes through the same `display_in_directory` filter as everything else (i.e. invisible front-end, household view only to same-household viewers).
+
+## 8. Member self-service portal
+
+Every logged-in member visits `option=com_cwmconnect&view=myprofile` to view +
+edit their own record. The form's depth of control depends on where the data
+came from:
+
+| Field group | PC-synced record | Local-only record |
+|---|---|---|
+| Photo | Read-only; member may upload a local *override* photo that wins over PC's avatar in the directory | Editable directly |
+| Name, contact info, address, household | Read-only with "Update your info in Planning Center" link | Editable |
+| Custom fields | Read-only if PC-mapped | Editable |
+| `display_in_directory` flag | Editable, unless PC says `child=true` (locked) | Editable |
+| Sort name preferences | Editable | Editable |
+
+This view is the standalone-install equivalent of PC's Church Center directory
+preferences — when the church isn't running PC, members still need a way to
+manage their own visibility and basic info. When PC IS running, the same view
+gives members a single place to flip local-only knobs (photo override, opt-out
+toggle) without needing the admin to do it.
+
+### 8.1 Identity binding
+
+Each member row gets a nullable `user_id` FK to `#__users.id`. The portal looks
+up the current viewer's member record via `WHERE user_id = currentUserId`.
+
+| Scenario | Behaviour |
+|---|---|
+| User logs in, has a paired member row | `view=myprofile` renders the edit form |
+| User logs in, no paired member row | Render a placeholder: "You're not in the church directory. Please contact the office to be added." with admin email |
+| Multiple member rows somehow paired to same user | Impossible — `user_id` is `UNIQUE` |
+
+### 8.2 Pairing strategies
+
+| Trigger | How `user_id` gets populated |
+|---|---|
+| PC sync, email match | On insert/update, sync queries `#__users` for a matching email; if exactly one match, sets `user_id` |
+| Admin manual pair | Admin edit form has a "Linked Joomla user" select2 field — type a name to bind |
+| User registers, matching member exists | `onUserAfterSave` listener tries email match in reverse and pairs |
+| Member created locally with email | `onContentAfterSave` for `com_cwmconnect.member` tries email match |
+
+All four use the same email-match heuristic; the only difference is what event
+triggers the check. Conflict resolution: if there's already a `user_id` set on
+the row, the new pairing attempt is skipped (admin must unlink first).
+
+### 8.3 Edit conflict handling (PC mode)
+
+When a PC-synced member tries to edit a locked field (e.g. by URL-hacking past
+the read-only attributes), the controller short-circuits:
+
+- Save fails with a flash message: "This field is managed by Planning Center.
+  Update it at [my.planningcenteronline.com](https://my.planningcenteronline.com)."
+- No silent merge; no partial update.
+
+### 8.4 Out of scope (portal-specific)
+
+- **Per-field privacy toggles** (member-controlled "hide my phone" / "show my
+  email"). Members-only audience makes this lower-priority. v2.x polish.
+- **Account creation flow** for non-Joomla-user members. v1: admin or the
+  Joomla user registration plugin creates the account, then sync/admin pairs.
+- **Bulk pair-by-email tool** in admin. v1: per-row. v2.x: bulk reconcile.
+
+## 9. Joomla 5/6 extension surface
 
 Inventory of Joomla machinery the implementation will lean on (no decisions
 here, just what we'll touch so the rough cost is visible):
@@ -252,7 +439,7 @@ here, just what we'll touch so the rough cost is visible):
 - **mpdf/mpdf** (composer dep) — HTML/CSS → PDF for both self-service and
   admin print. ~15 MB vendor footprint.
 
-## 8. Out of scope for v1
+## 10. Out of scope for v1
 
 Capturing now so reviewers don't expect these:
 
@@ -267,11 +454,16 @@ Capturing now so reviewers don't expect these:
 - **Email blast integration** — outside scope; defer to existing
   Joomla mailing extensions or PC's own broadcast tools.
 
-## 9. Open questions (still need to decide before implementation)
+## 11. Open questions (still need to decide before implementation)
 
 These didn't come up in the framing pass but will need answers when we start
 building. None block the scope above; flagging so they're tracked:
 
+- ~~**PC `Person.directory_status` API availability**~~ — **resolved.** Both
+  `directory_status` and `directory_shared_info` are first-class Person
+  attributes in the PC People API (verified against the 2025-11-10 spec). The
+  three-tier privacy model in Decision #12 is the implementation; sync mirrors
+  both fields directly.
 - **PC auth model**: Personal Access Token (simpler, per-user) vs OAuth app
   (cleaner, per-install)? PC supports both. Default to PAT for v1 to avoid
   the OAuth callback dance.
@@ -288,7 +480,7 @@ building. None block the scope above; flagging so they're tracked:
   forever until revoked? Forever-until-revoked is simpler; auto-expiry is
   more security-conscious. Pick one before shipping.
 
-## 10. Sequencing (rough phase plan, not commitments)
+## 12. Sequencing (rough phase plan, not commitments)
 
 Implementation phases after this spec is locked, ordered to land working
 software early:
@@ -303,13 +495,16 @@ software early:
 5. **Phase E — photos.** Avatar download + cache.
 6. **Phase F — admin form lock.** Read-only rendering of PC-mapped fields.
 7. **Phase G — front-end member views.** Browse, profile, search.
-   Members-only access wall.
-8. **Phase H — self-service PDF.** mpdf integration, `format=pdf` view.
-9. **Phase I — KML feed.** Tokens table, signed-URL view, admin UI.
-10. **Phase J — admin print.** Reports → Print Directory workflow.
-11. **Phase K — privacy plugin.** GDPR export / forget.
-12. **Phase L — polish.** Action logs UI, sync error notifications, edge
-    cases surfaced by phases C–K.
+   Members-only access wall. Includes household-view children visibility rules.
+8. **Phase H — member self-service portal.** `view=myprofile`, user↔member
+   pairing (email match + admin pair UI + `onUserAfterSave` listener), local
+   editing in standalone mode, locked rendering + My PCO link in PC mode.
+9. **Phase I — self-service PDF.** mpdf integration, `format=pdf` view.
+10. **Phase J — KML feed.** Tokens table, signed-URL view, admin UI.
+11. **Phase K — admin print.** Reports → Print Directory workflow.
+12. **Phase L — privacy plugin.** GDPR export / forget.
+13. **Phase M — polish.** Action logs UI, sync error notifications, finder
+    indexer skip for hidden rows, edge cases surfaced by C–L.
 
 Each phase ships an independent PR. We don't need to do them in this exact
 order if priorities shift; A → B → C is the only hard prereq chain.
