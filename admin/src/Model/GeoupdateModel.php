@@ -301,7 +301,9 @@ class GeoupdateModel extends BaseDatabaseModel
                     }
                 }
             } elseif ($status === 'OVER_QUERY_LIMIT') {
-                $delay += 100000;
+                // Cap incremental backoff so a sustained rate-limit can't
+                // accumulate an unbounded usleep past the slice budget.
+                $delay = min($delay + 100000, (int) (self::SLICE_BUDGET * 1_000_000));
             } else {
                 $geocodePending = false;
                 $errorMessage   = isset($xml->result->error_message)
@@ -336,6 +338,14 @@ class GeoupdateModel extends BaseDatabaseModel
 
             if ($delay > 0) {
                 usleep($delay);
+            }
+
+            // Bubble back to the outer slice when over budget; the row
+            // stays pending and the next tick will retry it. Without this
+            // a sustained OVER_QUERY_LIMIT response would spin past
+            // SLICE_BUDGET because the inner loop never re-checks time.
+            if ($geocodePending && !$this->haveEnoughTime()) {
+                break;
             }
         }
 
