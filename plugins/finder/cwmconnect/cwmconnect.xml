@@ -8,7 +8,7 @@
     <creationDate>2026-05-12</creationDate>
     <version>2.0.0-dev</version>
     <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
-    <description>PLG_FINDER_CHURCHDIRECTORY_XML_DESCRIPTION</description>
+    <description>PLG_FINDER_CWMCONNECT_XML_DESCRIPTION</description>
     <namespace path="src">CWM\Plugin\Finder\Cwmconnect</namespace>
 
     <compatibility>

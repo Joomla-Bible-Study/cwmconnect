@@ -65,7 +65,7 @@ class HtmlView extends BaseHtmlView
      */
     protected function addToolbar(): void
     {
-        ToolbarHelper::title(Text::_('COM_CHURCHDIRECTORY_MANAGER_REPORTS'), 'checkbox');
+        ToolbarHelper::title(Text::_('COM_CWMCONNECT_MANAGER_REPORTS'), 'checkbox');
 
         if ($this->canDo && $this->canDo->get('core.admin')) {
             ToolbarHelper::divider();

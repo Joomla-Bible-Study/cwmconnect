@@ -133,7 +133,7 @@ class HtmlView extends BaseHtmlView
             'a.published'    => Text::_('JSTATUS'),
             'a.name'         => Text::_('JGLOBAL_TITLE'),
             'category_title' => Text::_('JCATEGORY'),
-            'ul.name'        => Text::_('COM_CHURCHDIRECTORY_FIELD_LINKED_USER_LABEL'),
+            'ul.name'        => Text::_('COM_CWMCONNECT_FIELD_LINKED_USER_LABEL'),
             'a.featured'     => Text::_('JFEATURED'),
             'a.access'       => Text::_('JGRID_HEADING_ACCESS'),
             'a.language'     => Text::_('JGRID_HEADING_LANGUAGE'),
