@@ -192,14 +192,22 @@ PC-internal, or out of scope.
 | Phone numbers (separate resource) | yes | `?include=phone_numbers` |
 | Addresses (separate resource) | yes | `?include=addresses` |
 | Households (separate resource) | yes | `?include=households` → familyunit mapping |
-| `medical_notes` | **no** | Sensitive pastoral data; not directory information |
-| `passed_background_check` | **no** | Internal PC state; not relevant to a member directory |
 | `mfa_configured`, `login_identifier`, `stripe_customer_identifier` | **no** | PC-internal |
 | `accounting_administrator`, `site_administrator`, `can_create_forms`, `can_email_lists`, `people_permissions`, `resource_permission_flags` | **no** | PC role assignments, not directory facts |
 | `created_at`, `updated_at`, `created_by` | observed only | Used to detect "what changed since last sync"; not stored in mirror |
 | `remote_id` | **no** | PC-internal ID for legacy import linkage |
 
-The "no" list isn't security-critical (church staff with admin access to cwmconnect already have access to PC anyway), but they're noise in a directory context. Excluding them keeps the mirror lean and the privacy story crisp.
+**Never synced, even if requested via `?include=` or a future config option:**
+
+| Attribute / resource | Why |
+|---|---|
+| `medical_notes` | Confidential pastoral / health information. Not directory data. The PC client should **never** request this field on Person fetches, and any future fetch helper that does \*get receive it should drop the field before storage. |
+| `passed_background_check` | Internal church compliance / volunteer screening state. Not directory information; misuse risk is real (visible "this person failed a background check"). Skip even on debug logging. |
+| Notes (separate resource: `?include=notes`) | Free-text pastoral notes attached to a person. Same reasoning as `medical_notes`. Never `?include=notes`. |
+| Background check details (separate resource: `?include=background_checks`) | Compliance / screening records. Never fetch. |
+| App permissions list (`?include=person_apps`) | Role assignments for PC apps; not relevant to a directory. |
+
+The "no" rows further up the table aren't security-critical (church staff with admin access to cwmconnect typically have access to PC anyway), but they're noise in a directory context. The "**Never synced**" rows in *this* sub-table are different — they're sensitive data the church staff specifically expect to live *only* in PC. Excluding them by design (not by config) keeps the trust boundary clean.
 
 ### 5.3 Per-person sync
 
