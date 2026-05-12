@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @package    Churchdirectory.Admin
+ * @package    Cwmconnect.Admin
  * @copyright  (C) 2026 CWM Team All rights reserved
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * @link       https://www.christianwebministries.org
@@ -9,13 +9,13 @@
 
 declare(strict_types=1);
 
-namespace CWM\Component\Churchdirectory\Administrator\Service\HTML;
+namespace CWM\Component\Connect\Administrator\Service\HTML;
 
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
-use CWM\Component\Churchdirectory\Administrator\Helper\ChurchdirectoryHelper;
+use CWM\Component\Connect\Administrator\Helper\CwmconnectHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
@@ -25,7 +25,7 @@ use Joomla\Database\DatabaseInterface;
  * Member-row HTML helpers — language-association tooltip, featured-toggle
  * link, and the member-status select source.
  *
- * Registered as `churchdirectory.member.<method>`.
+ * Registered as `cwmconnect.member.<method>`.
  *
  * @since  2.0.0
  */
@@ -44,7 +44,7 @@ class Member
      */
     public function association(int $memberId): string
     {
-        $associations = ChurchdirectoryHelper::getAssociations($memberId);
+        $associations = CwmconnectHelper::getAssociations($memberId);
 
         if ($associations === false || $associations === []) {
             return '';
@@ -68,7 +68,7 @@ class Member
             ->select($db->quoteName('cat.title', 'category_title'))
             ->select($db->quoteName('l.image'))
             ->select($db->quoteName('l.title', 'language_title'))
-            ->from($db->quoteName('#__churchdirectory_details', 'c'))
+            ->from($db->quoteName('#__cwmconnect_details', 'c'))
             ->join('LEFT', $db->quoteName('#__categories', 'cat') . ' ON ' . $db->quoteName('cat.id') . ' = ' . $db->quoteName('c.catid'))
             ->join('LEFT', $db->quoteName('#__languages', 'l') . ' ON ' . $db->quoteName('l.lang_code') . ' = ' . $db->quoteName('c.language'))
             ->whereIn($db->quoteName('c.id'), array_values($ids));
@@ -91,7 +91,7 @@ class Member
                 true
             );
             $text[] = Text::sprintf(
-                'COM_CHURCHDIRECTORY_TIP_ASSOCIATED_LANGUAGE',
+                'COM_CWMCONNECT_TIP_ASSOCIATED_LANGUAGE',
                 $image,
                 $row->name,
                 $row->category_title
@@ -105,7 +105,7 @@ class Member
         return HTMLHelper::_(
             'tooltip',
             implode('<br />', $text),
-            Text::_('COM_CHURCHDIRECTORY_TIP_ASSOCIATION'),
+            Text::_('COM_CWMCONNECT_TIP_ASSOCIATION'),
             'admin/icon-16-links.png'
         );
     }
@@ -125,8 +125,8 @@ class Member
     public function featured(int $value = 0, int $i = 0, bool $canChange = true): string
     {
         $states = [
-            0 => ['unfeatured', 'members.featured', 'COM_CHURCHDIRECTORY_UNFEATURED', 'COM_CHURCHDIRECTORY_TOGGLE_TO_FEATURE'],
-            1 => ['featured', 'members.unfeatured', 'JFEATURED', 'COM_CHURCHDIRECTORY_TOGGLE_TO_UNFEATURE'],
+            0 => ['unfeatured', 'members.featured', 'COM_CWMCONNECT_UNFEATURED', 'COM_CWMCONNECT_TOGGLE_TO_FEATURE'],
+            1 => ['featured', 'members.unfeatured', 'JFEATURED', 'COM_CWMCONNECT_TOGGLE_TO_UNFEATURE'],
         ];
         $state  = $states[$value] ?? $states[1];
         $icon   = $state[0];
@@ -161,10 +161,10 @@ class Member
     public function status(): array
     {
         return [
-            ['value' => 0, 'text' => Text::_('COM_CHURCHDIRECTORY_ACTIVE_MEMBER')],
-            ['value' => 1, 'text' => Text::_('COM_CHURCHDIRECTORY_INACTIVE')],
-            ['value' => 2, 'text' => Text::_('COM_CHURCHDIRECTORY_ACTIVE_ATTENDEE')],
-            ['value' => 3, 'text' => Text::_('COM_CHURCHDIRECTORY_NONE_MEMBER')],
+            ['value' => 0, 'text' => Text::_('COM_CWMCONNECT_ACTIVE_MEMBER')],
+            ['value' => 1, 'text' => Text::_('COM_CWMCONNECT_INACTIVE')],
+            ['value' => 2, 'text' => Text::_('COM_CWMCONNECT_ACTIVE_ATTENDEE')],
+            ['value' => 3, 'text' => Text::_('COM_CWMCONNECT_NONE_MEMBER')],
         ];
     }
 }

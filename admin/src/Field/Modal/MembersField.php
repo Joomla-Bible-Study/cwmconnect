@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @package    Churchdirectory.Admin
+ * @package    Cwmconnect.Admin
  * @copyright  (C) 2026 CWM Team All rights reserved
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * @link       https://www.christianwebministries.org
@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace CWM\Component\Churchdirectory\Administrator\Field\Modal;
+namespace CWM\Component\Connect\Administrator\Field\Modal;
 
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
@@ -26,7 +26,7 @@ use Joomla\Database\ParameterType;
 /**
  * Modal member picker.
  *
- * Mirrors com_contact's ContactField but pointed at the churchdirectory
+ * Mirrors com_contact's ContactField but pointed at the cwmconnect
  * members list. The form XML referenced the legacy `modal_members` type,
  * which Joomla 5 resolves to this class via the component namespace.
  *
@@ -68,11 +68,11 @@ class MembersField extends ModalSelectField
             return $result;
         }
 
-        Factory::getApplication()->getLanguage()->load('com_churchdirectory', JPATH_ADMINISTRATOR);
+        Factory::getApplication()->getLanguage()->load('com_cwmconnect', JPATH_ADMINISTRATOR);
 
         $linkItems = (new Uri())->setPath(Uri::base(true) . '/index.php');
         $linkItems->setQuery([
-            'option'                => 'com_churchdirectory',
+            'option'                => 'com_cwmconnect',
             'view'                  => 'members',
             'layout'                => 'modal',
             'tmpl'                  => 'component',
@@ -83,7 +83,7 @@ class MembersField extends ModalSelectField
 
         $linkCheckin = (new Uri())->setPath(Uri::base(true) . '/index.php');
         $linkCheckin->setQuery([
-            'option'                => 'com_churchdirectory',
+            'option'                => 'com_cwmconnect',
             'task'                  => 'members.checkin',
             'format'                => 'json',
             Session::getFormToken() => 1,
@@ -99,11 +99,11 @@ class MembersField extends ModalSelectField
         $this->urls['edit']    = (string) $urlEdit;
         $this->urls['checkin'] = (string) $linkCheckin;
 
-        $this->modalTitles['select'] = Text::_('COM_CHURCHDIRECTORY_SELECT_A_MEMBER');
-        $this->modalTitles['new']    = Text::_('COM_CHURCHDIRECTORY_NEW_MEMBER');
-        $this->modalTitles['edit']   = Text::_('COM_CHURCHDIRECTORY_EDIT_MEMBER');
+        $this->modalTitles['select'] = Text::_('COM_CWMCONNECT_SELECT_A_MEMBER');
+        $this->modalTitles['new']    = Text::_('COM_CWMCONNECT_NEW_MEMBER');
+        $this->modalTitles['edit']   = Text::_('COM_CWMCONNECT_EDIT_MEMBER');
 
-        $this->hint = $this->hint ?: Text::_('COM_CHURCHDIRECTORY_SELECT_A_MEMBER');
+        $this->hint = $this->hint ?: Text::_('COM_CWMCONNECT_SELECT_A_MEMBER');
 
         return $result;
     }
@@ -128,7 +128,7 @@ class MembersField extends ModalSelectField
             $db    = $this->getDatabase();
             $query = $db->createQuery()
                 ->select($db->quoteName('name'))
-                ->from($db->quoteName('#__churchdirectory_details'))
+                ->from($db->quoteName('#__cwmconnect_details'))
                 ->where($db->quoteName('id') . ' = :value')
                 ->bind(':value', $value, ParameterType::INTEGER);
             $db->setQuery($query);
@@ -153,7 +153,7 @@ class MembersField extends ModalSelectField
     protected function getRenderer($layoutId = 'default'): FileLayout
     {
         $layout = parent::getRenderer($layoutId);
-        $layout->setComponent('com_churchdirectory');
+        $layout->setComponent('com_cwmconnect');
         $layout->setClient(1);
 
         return $layout;

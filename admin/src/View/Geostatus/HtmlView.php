@@ -9,15 +9,16 @@
 
 declare(strict_types=1);
 
-namespace CWM\Component\Churchdirectory\Administrator\View\Geostatus;
+namespace CWM\Component\Connect\Administrator\View\Geostatus;
 
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
-use CWM\Component\Churchdirectory\Administrator\Model\GeostatusModel;
+use CWM\Component\Connect\Administrator\Model\GeostatusModel;
 use Joomla\CMS\Helper\ContentHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\View\CanDo;
 use Joomla\CMS\MVC\View\GenericDataException;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Pagination\Pagination;
@@ -46,8 +47,8 @@ class HtmlView extends BaseHtmlView
     /** @var array<string, mixed> */
     public array $activeFilters = [];
 
-    /** @var \stdClass|null */
-    protected ?\stdClass $canDo = null;
+    /** @var CanDo|null */
+    protected ?CanDo $canDo = null;
 
     /**
      * Display the view.
@@ -69,7 +70,7 @@ class HtmlView extends BaseHtmlView
         $this->state         = $model->getState();
         $this->filterForm    = $model->getFilterForm();
         $this->activeFilters = $model->getActiveFilters();
-        $this->canDo         = ContentHelper::getActions('com_churchdirectory');
+        $this->canDo         = ContentHelper::getActions('com_cwmconnect');
 
         if (\count($errors = $model->getErrors())) {
             throw new GenericDataException(implode("\n", $errors), 500);
@@ -95,13 +96,13 @@ class HtmlView extends BaseHtmlView
         $toolbar = $this->getDocument()->getToolbar();
 
         $toolbar->popupButton('geoupdate')
-            ->url(Route::_('index.php?option=com_churchdirectory&task=geoupdate.browse&tmpl=component'))
+            ->url(Route::_('index.php?option=com_cwmconnect&task=geoupdate.browse&tmpl=component'))
             ->text('COM_CHURCHDIRECTORY_GEOUPDATE')
             ->selector('geoupdateModal')
             ->icon('icon-refresh');
 
         if ($this->canDo && $this->canDo->get('core.admin')) {
-            ToolbarHelper::preferences('com_churchdirectory');
+            ToolbarHelper::preferences('com_cwmconnect');
         }
 
         ToolbarHelper::help('churchdirectory_geoupdate', true);

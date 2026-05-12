@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @package    Churchdirectory.Admin
+ * @package    Cwmconnect.Admin
  * @copyright  (C) 2026 CWM Team All rights reserved
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * @link       https://www.christianwebministries.org
@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace CWM\Component\Churchdirectory\Administrator\Model;
+namespace CWM\Component\Connect\Administrator\Model;
 
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
@@ -58,7 +58,7 @@ class DatabaseModel extends BaseDatabaseModel
      */
     public function getChangeSet(): ChangeSet
     {
-        $folder = JPATH_ADMINISTRATOR . '/components/com_churchdirectory/sql/updates/mysql';
+        $folder = JPATH_ADMINISTRATOR . '/components/com_cwmconnect/sql/updates/mysql';
 
         return ChangeSet::getInstance($this->getDatabase(), $folder);
     }
@@ -195,7 +195,7 @@ class DatabaseModel extends BaseDatabaseModel
     public function getDefaultTextFilters(): ?string
     {
         $table = Table::getInstance('Extension');
-        $extId = $table->find(['name' => 'com_churchdirectory']);
+        $extId = $table->find(['name' => 'com_cwmconnect']);
 
         if (!$extId || !$table->load($extId)) {
             return null;
@@ -216,7 +216,7 @@ class DatabaseModel extends BaseDatabaseModel
     public function fixDefaultTextFilters(): bool
     {
         $table = Table::getInstance('Extension');
-        $extId = $table->find(['name' => 'com_churchdirectory']);
+        $extId = $table->find(['name' => 'com_cwmconnect']);
 
         if (!$extId || !$table->load($extId)) {
             return false;
@@ -228,7 +228,7 @@ class DatabaseModel extends BaseDatabaseModel
 
         // With $table->params empty, ComponentHelper falls back to the
         // manifest's <config> defaults — that's where the filter set lives.
-        $manifestParams = ComponentHelper::getParams('com_churchdirectory');
+        $manifestParams = ComponentHelper::getParams('com_cwmconnect');
 
         if ($manifestParams->get('filters')) {
             $newParams = new Registry();
@@ -255,7 +255,7 @@ class DatabaseModel extends BaseDatabaseModel
         $query = $db->getQuery(true)
             ->select($db->quoteName('extension_id'))
             ->from($db->quoteName('#__extensions'))
-            ->where($db->quoteName('element') . ' = ' . $db->quote('com_churchdirectory'));
+            ->where($db->quoteName('element') . ' = ' . $db->quote('com_cwmconnect'));
         $db->setQuery($query);
 
         return (int) $db->loadResult();
@@ -270,7 +270,7 @@ class DatabaseModel extends BaseDatabaseModel
      */
     public function getCompVersion(): string
     {
-        $manifest = JPATH_ADMINISTRATOR . '/components/com_churchdirectory/churchdirectory.xml';
+        $manifest = JPATH_ADMINISTRATOR . '/components/com_cwmconnect/cwmconnect.xml';
 
         if (!is_file($manifest)) {
             return '';

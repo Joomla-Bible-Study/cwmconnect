@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 cwmconnect is in **active modernization**: a Joomla 3.x / PHP 7.x component is being rewritten as a Joomla 5/6 / PHP 8.4 package (`pkg_cwmconnect`) following the [Proclaim](../Proclaim) layout and the [cwm-build-tools](../cwm-build-tools) toolchain (with [CWMScriptureLinks](../CWMScriptureLinks) and [CWMLivingWord](../CWMLivingWord) as the wire-in references).
 
-The legacy Joomla 3 source tree has been deleted in phases 4a–4d. Every component / module / plugin runtime path now lives under `admin/src/`, `site/src/`, `modules/site/mod_birthdayanniversary/src/`, and `plugins/finder/churchdirectory/src/`.
+The legacy Joomla 3 source tree has been deleted in phases 4a–4d. Every component / module / plugin runtime path now lives under `admin/src/`, `site/src/`, `modules/site/mod_birthdayanniversary/src/`, and `plugins/finder/cwmconnect/src/`.
 
 ## Migration phases
 
@@ -17,10 +17,10 @@ The legacy Joomla 3 source tree has been deleted in phases 4a–4d. Every compon
 | 2 | Manifests: `<namespace>` + `<compatibility>` + `<scriptfile>script.php</scriptfile>` for component, module, finder plugin | done |
 | 3a | Dispatch infra: `admin/services/provider.php` + admin/site Dispatcher + Extension class | done |
 | 3b | Admin PSR-4 entities + singletons + helpers + HTML services + custom fields (all under `admin/src/`) | done |
-| 4a | Drop legacy admin entry stubs (`admin/api.php`, `admin/churchdirectory.php`, `admin/controller.php`) | done |
+| 4a | Drop legacy admin entry stubs (`admin/api.php`, `admin/cwmconnect.php`, `admin/controller.php`) | done |
 | 4b | Port `site/` to PSR-4 under `site/src/` (Controller, Model, View, Helper, Router, Service) | done |
 | 4c | Rewrite `mod_birthdayanniversary` with the J5 Dispatcher pattern | done |
-| 4d | Rewrite `plugins/finder/churchdirectory` as event subscriber (`SubscriberInterface`) | done |
+| 4d | Rewrite `plugins/finder/cwmconnect` as event subscriber (`SubscriberInterface`) | done |
 | 5a | PHP 8.4 minimum: composer.json + manifest `<php minimum>` + CI workflow | done |
 | 5b | `admin/src/` idioms: `declare(strict_types=1)`, tight type declarations, property promotion, `readonly`, PHP 8.4 features where they fit | done |
 | 5c | `site/src/` idioms | done |
@@ -35,8 +35,8 @@ Phases 0–9 cover the **port** from Joomla 3 to a Joomla 5/6 / PHP 8.4 package 
 ## Target shape (Proclaim-mirrored, unprefixed Joomla-standard naming)
 
 ```
-churchdirectory.xml                          # type=component, J5+J6, php 8.4
-churchdirectory.script.php                   # rewritten for namespaced base
+cwmconnect.xml                          # type=component, J5+J6, php 8.4
+cwmconnect.script.php                   # rewritten for namespaced base
 admin/
   services/provider.php                      # registers MVCFactory + ComponentDispatcherFactory
                                              # + RouterFactory + CategoryFactory; PHP_VERSION_ID gate
@@ -50,7 +50,7 @@ admin/
     Field/
     Helper/
     Dispatcher/Dispatcher.php
-    Extension/ChurchdirectoryComponent.php
+    Extension/CwmconnectComponent.php
   forms/                                     # XML form definitions
   language/
   sql/{install.mysql.utf8.sql, updates/mysql/}
@@ -59,8 +59,8 @@ site/
   src/{Controller,Model,View,Helper,Dispatcher,Service}/
   forms/  layouts/  tmpl/  language/
 modules/site/mod_birthdayanniversary/        # rewritten with Dispatcher pattern
-plugins/finder/churchdirectory/              # rewritten as event subscriber
-media/com_churchdirectory/{css,js,images}    # legacy LESS dropped; joomla.asset.json
+plugins/finder/cwmconnect/              # rewritten as event subscriber
+media/com_cwmconnect/{css,js,images}    # legacy LESS dropped; joomla.asset.json
 build/
   pkg_cwmconnect.xml                         # package wrapper manifest          ✅ phase 1
   build-package.php                          # zip builder                        ✅ phase 1 (stub)
@@ -70,9 +70,9 @@ composer.json                                # PHP 8.4 / PSR-4 / cwm/build-tools
 .github/workflows/ci.yml                     # GH Actions                         ✅ phase 1
 ```
 
-PSR-4 roots: `CWM\Component\Churchdirectory\Administrator\` → `admin/src/`, `CWM\Component\Churchdirectory\Site\` → `site/src/`.
+PSR-4 roots: `CWM\Component\Cwmconnect\Administrator\` → `admin/src/`, `CWM\Component\Cwmconnect\Site\` → `site/src/`.
 
-**Naming convention:** unprefixed, Joomla-standard. The component manifest's `<namespace path="src">CWM\Component\Churchdirectory</namespace>` plus PSR-4 in [composer.json](composer.json) provide full isolation — no need for the `Cwm` class-name prefix that Proclaim uses (we're skipping that historical workaround). Cross-reference `com_content` in [joomla-cms](../joomla-cms) for the canonical pattern.
+**Naming convention:** unprefixed, Joomla-standard. The component manifest's `<namespace path="src">CWM\Component\Cwmconnect</namespace>` plus PSR-4 in [composer.json](composer.json) provide full isolation — no need for the `Cwm` class-name prefix that Proclaim uses (we're skipping that historical workaround). Cross-reference `com_content` in [joomla-cms](../joomla-cms) for the canonical pattern.
 
 ## Sibling repos referenced during migration
 
@@ -103,7 +103,7 @@ The legacy `composer phpcs` script and the Phing build under `build/build.xml` w
 The full dev-environment surface is driven by [cwm-build-tools](../cwm-build-tools) v0.4+:
 
 ```bash
-cp build.properties.tmpl build.properties     # one-time per clone
+cp build.dist.properties build.properties     # one-time per clone
 composer setup                                  # interactive: install paths, DB creds
 composer joomla-install                         # optional: download Joomla into each path
 composer link                                   # symlink everything into each install
@@ -112,7 +112,7 @@ composer link-check                             # day-to-day: are the symlinks s
 composer clean                                  # remove all dev symlinks
 ```
 
-`composer link` reads [cwm-build.config.json](cwm-build.config.json) and creates **relative** symlinks for the component (`admin/`, `site/`, `media/`), the bundled module (`mod_birthdayanniversary`), the bundled finder plugin, and the internal `admin/churchdirectory.xml` mirror (the [churchdirectory.xml](churchdirectory.xml) source-of-truth lives at the root; Joomla expects it under `admin/` when the component is installed, so the linker mirrors it). `build.properties` is gitignored — secrets stay on your machine.
+`composer link` reads [cwm-build.config.json](cwm-build.config.json) and creates **relative** symlinks for the component (`admin/`, `site/`, `media/`), the bundled module (`mod_birthdayanniversary`), the bundled finder plugin, and the internal `admin/cwmconnect.xml` mirror (the [cwmconnect.xml](cwmconnect.xml) source-of-truth lives at the root; Joomla expects it under `admin/` when the component is installed, so the linker mirrors it). `build.properties` is gitignored — secrets stay on your machine.
 
 ## Things to watch out for
 
@@ -120,4 +120,4 @@ composer clean                                  # remove all dev symlinks
 - **Build is a stub.** [build/build-package.php](build/build-package.php) currently exits 0 without producing a zip. CI exercises it for shape only. The real fileset rules land at the end of phase 3 once `admin/src/` + `site/src/` exist.
 - **ARS IDs unset.** [cwm-build.config.json](cwm-build.config.json) has `categoryId: 0`, `updateStreamId: 0` placeholders. Run `composer ars-list` before the first real release to discover the right values.
 - **Manifest version is `2.0.0-dev`.** Pre-modernization the component shipped at 1.8.3; we're using 2.0.0-dev to flag the J3→J5/6 break. Adjust before first stable release if a different scheme is preferred.
-- **`<namespace>` is mandatory.** Joomla 5/6's MVCFactory class-name resolver only finds your unprefixed `MemberController` / `MemberModel` / `MemberTable` if the component manifest declares `<namespace path="src">CWM\Component\Churchdirectory</namespace>` and `services/provider.php` registers an `MVCFactory` provider. Both land in phase 2/3 — without them the legacy `Cwm`-prefix workaround would creep back in.
+- **`<namespace>` is mandatory.** Joomla 5/6's MVCFactory class-name resolver only finds your unprefixed `MemberController` / `MemberModel` / `MemberTable` if the component manifest declares `<namespace path="src">CWM\Component\Cwmconnect</namespace>` and `services/provider.php` registers an `MVCFactory` provider. Both land in phase 2/3 — without them the legacy `Cwm`-prefix workaround would creep back in.

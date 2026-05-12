@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @package    Churchdirectory.Admin
+ * @package    Cwmconnect.Admin
  * @copyright  (C) 2026 CWM Team All rights reserved
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * @link       https://www.christianwebministries.org
@@ -16,13 +16,13 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Router\Route;
 
-/** @var \CWM\Component\Churchdirectory\Administrator\View\Kml\HtmlView $this */
+/** @var \CWM\Component\Connect\Administrator\View\Kml\HtmlView $this */
 
 $this->getDocument()->getWebAssetManager()
     ->useScript('keepalive')
     ->useScript('form.validate');
 ?>
-<form action="<?php echo Route::_('index.php?option=com_churchdirectory&view=kml&layout=edit&id=' . (int) $this->item->id); ?>"
+<form action="<?php echo Route::_('index.php?option=com_cwmconnect&view=kml&layout=edit&id=' . (int) $this->item->id); ?>"
       method="post" name="adminForm" id="kml-form" class="form-validate">
 
     <?php echo LayoutHelper::render('joomla.edit.title_alias', $this); ?>
@@ -30,7 +30,7 @@ $this->getDocument()->getWebAssetManager()
     <div class="main-card">
         <?php echo HTMLHelper::_('uitab.startTabSet', 'kmlTab', ['active' => 'details', 'recall' => true, 'breakpoint' => 768]); ?>
 
-        <?php echo HTMLHelper::_('uitab.addTab', 'kmlTab', 'details', empty($this->item->id) ? Text::_('COM_CHURCHDIRECTORY_NEW_KML') : Text::sprintf('COM_CHURCHDIRECTORY_EDIT_KML', $this->item->id)); ?>
+        <?php echo HTMLHelper::_('uitab.addTab', 'kmlTab', 'details', empty($this->item->id) ? Text::_('COM_CWMCONNECT_NEW_KML') : Text::sprintf('COM_CWMCONNECT_EDIT_KML', $this->item->id)); ?>
         <div class="row">
             <div class="col-lg-8">
                 <?php echo $this->form->renderField('id'); ?>
@@ -42,30 +42,30 @@ $this->getDocument()->getWebAssetManager()
             </div>
             <div class="col-lg-4">
                 <fieldset class="options-form">
-                    <legend><?php echo Text::_('COM_CHURCHDIRECTORY_KML_RECORD_OPTIONS'); ?></legend>
+                    <legend><?php echo Text::_('COM_CWMCONNECT_KML_RECORD_OPTIONS'); ?></legend>
                     <?php echo $this->form->renderField('published'); ?>
                     <?php echo $this->form->renderField('mcropen', 'params'); ?>
                 </fieldset>
 
                 <fieldset class="options-form">
-                    <legend><?php echo Text::_('COM_CHURCHDIRECTORY_KML_SUBURB_OPTIONS'); ?></legend>
+                    <legend><?php echo Text::_('COM_CWMCONNECT_KML_SUBURB_OPTIONS'); ?></legend>
                     <?php echo $this->form->renderField('msropen', 'params'); ?>
                 </fieldset>
 
                 <fieldset class="options-form">
-                    <legend><?php echo Text::_('COM_CHURCHDIRECTORY_KML_ICONSTYLE_OPTIONS'); ?></legend>
+                    <legend><?php echo Text::_('COM_CWMCONNECT_KML_ICONSTYLE_OPTIONS'); ?></legend>
                     <?php echo $this->form->renderField('icscale', 'params'); ?>
                 </fieldset>
 
                 <fieldset class="options-form">
-                    <legend><?php echo Text::_('COM_CHURCHDIRECTORY_KML_LABELSTYLE_OPTOIONS'); ?></legend>
+                    <legend><?php echo Text::_('COM_CWMCONNECT_KML_LABELSTYLE_OPTOIONS'); ?></legend>
                     <?php echo $this->form->renderField('lscolor', 'params'); ?>
                     <?php echo $this->form->renderField('lscolormode', 'params'); ?>
                     <?php echo $this->form->renderField('lsscale', 'params'); ?>
                 </fieldset>
 
                 <fieldset class="options-form">
-                    <legend><?php echo Text::_('COM_CHURCHDIRECTORY_KML_LOOKAT_OPTIONS'); ?></legend>
+                    <legend><?php echo Text::_('COM_CWMCONNECT_KML_LOOKAT_OPTIONS'); ?></legend>
                     <?php echo $this->form->renderField('lng'); ?>
                     <?php echo $this->form->renderField('lat'); ?>
                     <?php echo $this->form->renderField('altitude', 'params'); ?>
@@ -77,7 +77,7 @@ $this->getDocument()->getWebAssetManager()
                 </fieldset>
 
                 <fieldset class="options-form">
-                    <legend><?php echo Text::_('COM_CHURCHDIRECTORY_KML_STYLE_OPTIONS'); ?></legend>
+                    <legend><?php echo Text::_('COM_CWMCONNECT_KML_STYLE_OPTIONS'); ?></legend>
                     <?php echo $this->form->renderField('style'); ?>
                 </fieldset>
             </div>

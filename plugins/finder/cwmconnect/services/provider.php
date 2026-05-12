@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @package    Plg_Finder_Churchdirectory
+ * @package    Plg_Finder_Cwmconnect
  * @copyright  (C) 2026 CWM Team All rights reserved
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * @link       https://www.christianwebministries.org
@@ -9,7 +9,7 @@
 
 \defined('_JEXEC') or die;
 
-use CWM\Plugin\Finder\Churchdirectory\Extension\Churchdirectory;
+use CWM\Plugin\Finder\Cwmconnect\Extension\Cwmconnect;
 use Joomla\CMS\Extension\PluginInterface;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Plugin\PluginHelper;
@@ -22,8 +22,8 @@ return new class () implements ServiceProviderInterface {
     {
         $container->set(
             PluginInterface::class,
-            $container->lazy(Churchdirectory::class, function (Container $container) {
-                $plugin = new Churchdirectory((array) PluginHelper::getPlugin('finder', 'churchdirectory'));
+            $container->lazy(Cwmconnect::class, function (Container $container) {
+                $plugin = new Cwmconnect((array) PluginHelper::getPlugin('finder', 'cwmconnect'));
                 $plugin->setApplication(Factory::getApplication());
                 $plugin->setDatabase($container->get(DatabaseInterface::class));
 

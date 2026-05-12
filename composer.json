@@ -4,7 +4,7 @@
     "description": "CWM Connect — Church Photo Directory component for Joomla 5/6",
     "keywords": [
         "directory",
-        "churchdirectory",
+        "cwmconnect",
         "church",
         "joomla",
         "cwm"
@@ -31,13 +31,13 @@
     },
     "autoload": {
         "psr-4": {
-            "CWM\\Component\\Churchdirectory\\Administrator\\": "admin/src/",
-            "CWM\\Component\\Churchdirectory\\Site\\": "site/src/"
+            "CWM\\Component\\Connect\\Administrator\\": "admin/src/",
+            "CWM\\Component\\Connect\\Site\\": "site/src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "CWM\\Component\\Churchdirectory\\Tests\\": "tests/unit/"
+            "CWM\\Component\\Connect\\Tests\\": "tests/unit/"
         }
     },
     "require": {
@@ -53,7 +53,7 @@
         "typo3/phar-stream-wrapper": "^3.1.7"
     },
     "require-dev": {
-        "cwm/build-tools": "^0.5@alpha",
+        "cwm/build-tools": "^0.5.5@alpha",
         "phpunit/phpunit": "^12.5",
         "friendsofphp/php-cs-fixer": "^3.0",
         "roave/security-advisories": "dev-latest"

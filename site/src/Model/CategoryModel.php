@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @package    Churchdirectory.Site
+ * @package    Cwmconnect.Site
  * @copyright  (C) 2026 CWM Team All rights reserved
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * @link       https://www.christianwebministries.org
@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace CWM\Component\Churchdirectory\Site\Model;
+namespace CWM\Component\Connect\Site\Model;
 
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
@@ -91,7 +91,7 @@ class CategoryModel extends ListModel
 
         foreach ($items as $item) {
             $item->params = new Registry($item->params);
-            $this->tags->getItemTags('com_churchdirectory.member', $item->id);
+            $this->tags->getItemTags('com_cwmconnect.member', $item->id);
         }
 
         return $items;
@@ -123,7 +123,7 @@ class CategoryModel extends ListModel
             ->select('ua.email AS author_email')
             ->select('ca.title AS category_title, ca.params AS category_params, ca.description AS category_description')
             ->select('ca.alias AS category_alias, ca.access AS category_access')
-            ->from($db->quoteName('#__churchdirectory_details', 'a'))
+            ->from($db->quoteName('#__cwmconnect_details', 'a'))
             ->join('LEFT', $db->quoteName('#__categories', 'c') . ' ON c.id = a.catid')
             ->join('LEFT', $db->quoteName('#__users', 'ua') . ' ON ua.id = a.created_by')
             ->join('LEFT', $db->quoteName('#__users', 'uam') . ' ON uam.id = a.modified_by')
@@ -182,7 +182,7 @@ class CategoryModel extends ListModel
     protected function populateState($ordering = null, $direction = null): void
     {
         $app    = Factory::getApplication();
-        $params = ComponentHelper::getParams('com_churchdirectory');
+        $params = ComponentHelper::getParams('com_cwmconnect');
         $format = $app->getInput()->getWord('format');
 
         if (!$app->getInput()->getInt('print')) {
@@ -222,7 +222,7 @@ class CategoryModel extends ListModel
 
         $user = $app->getIdentity();
 
-        if ($user && !$user->authorise('core.edit.state', 'com_churchdirectory') && !$user->authorise('core.edit', 'com_churchdirectory')) {
+        if ($user && !$user->authorise('core.edit.state', 'com_cwmconnect') && !$user->authorise('core.edit', 'com_cwmconnect')) {
             $this->setState('filter.published', 1);
             $this->setState('filter.publish_date', true);
         }
@@ -252,7 +252,7 @@ class CategoryModel extends ListModel
             'countItems' => $menuParams->get('show_cat_items', 1) || $menuParams->get('show_empty_categories', 0),
         ];
 
-        $categories = Categories::getInstance('Churchdirectory', $options);
+        $categories = Categories::getInstance('Cwmconnect', $options);
         $this->item = $categories->get($this->getState('category.id', 'root'));
 
         if (\is_object($this->item)) {

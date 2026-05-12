@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @package    Churchdirectory.Admin
+ * @package    Cwmconnect.Admin
  * @copyright  (C) 2026 CWM Team All rights reserved
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * @link       https://www.christianwebministries.org
@@ -17,7 +17,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Router\Route;
 
-/** @var \CWM\Component\Churchdirectory\Administrator\View\Member\HtmlView $this */
+/** @var \CWM\Component\Connect\Administrator\View\Member\HtmlView $this */
 
 $input   = Factory::getApplication()->getInput();
 $isModal = $input->get('layout') === 'modal';
@@ -53,7 +53,7 @@ JS);
 // Fieldsets that are rendered manually below.
 $this->ignore_fieldsets = ['details', 'item_associations', 'jmetadata'];
 ?>
-<form action="<?php echo Route::_('index.php?option=com_churchdirectory&layout=' . $layout . $tmpl . '&id=' . (int) $this->item->id); ?>"
+<form action="<?php echo Route::_('index.php?option=com_cwmconnect&layout=' . $layout . $tmpl . '&id=' . (int) $this->item->id); ?>"
       method="post" name="adminForm" id="member-form" class="form-validate">
 
     <?php echo LayoutHelper::render('joomla.edit.title_alias', $this); ?>
@@ -61,7 +61,7 @@ $this->ignore_fieldsets = ['details', 'item_associations', 'jmetadata'];
     <div class="main-card">
         <?php echo HTMLHelper::_('uitab.startTabSet', 'memberTab', ['active' => 'details', 'recall' => true, 'breakpoint' => 768]); ?>
 
-        <?php echo HTMLHelper::_('uitab.addTab', 'memberTab', 'details', empty($this->item->id) ? Text::_('COM_CHURCHDIRECTORY_NEW_MEMBER') : Text::sprintf('COM_CHURCHDIRECTORY_EDIT_MEMBER', $this->item->id)); ?>
+        <?php echo HTMLHelper::_('uitab.addTab', 'memberTab', 'details', empty($this->item->id) ? Text::_('COM_CWMCONNECT_NEW_MEMBER') : Text::sprintf('COM_CWMCONNECT_EDIT_MEMBER', $this->item->id)); ?>
         <div class="row">
             <div class="col-lg-9">
                 <div class="row">
@@ -80,7 +80,7 @@ $this->ignore_fieldsets = ['details', 'item_associations', 'jmetadata'];
                 </div>
 
                 <?php if ($this->access) : ?>
-                    <h2><?php echo Text::_('COM_CHURCHDIRECTORY_PROTECTED_CONTENT'); ?></h2>
+                    <h2><?php echo Text::_('COM_CWMCONNECT_PROTECTED_CONTENT'); ?></h2>
                     <hr>
                     <div class="row">
                         <div class="col-md-6">
@@ -99,12 +99,12 @@ $this->ignore_fieldsets = ['details', 'item_associations', 'jmetadata'];
         </div>
         <?php echo HTMLHelper::_('uitab.endTab'); ?>
 
-        <?php echo HTMLHelper::_('uitab.addTab', 'memberTab', 'misc', Text::_('COM_CHURCHDIRECTORY_FIELD_PARAMS_MISC_INFO_LABEL')); ?>
+        <?php echo HTMLHelper::_('uitab.addTab', 'memberTab', 'misc', Text::_('COM_CWMCONNECT_FIELD_PARAMS_MISC_INFO_LABEL')); ?>
         <?php echo $this->form->renderField('misc'); ?>
         <?php echo HTMLHelper::_('uitab.endTab'); ?>
 
-        <?php echo HTMLHelper::_('uitab.addTab', 'memberTab', 'basic', Text::_('COM_CHURCHDIRECTORY_MEMBER_DETAILS')); ?>
-        <p><?php echo empty($this->item->id) ? Text::_('COM_CHURCHDIRECTORY_DETAILS') : Text::sprintf('COM_CHURCHDIRECTORY_EDIT_DETAILS', $this->item->id); ?></p>
+        <?php echo HTMLHelper::_('uitab.addTab', 'memberTab', 'basic', Text::_('COM_CWMCONNECT_MEMBER_DETAILS')); ?>
+        <p><?php echo empty($this->item->id) ? Text::_('COM_CWMCONNECT_DETAILS') : Text::sprintf('COM_CWMCONNECT_EDIT_DETAILS', $this->item->id); ?></p>
 
         <div class="row">
             <div class="col-md-6">
@@ -141,12 +141,12 @@ $this->ignore_fieldsets = ['details', 'item_associations', 'jmetadata'];
                     <div class="control-group">
                         <div class="control-label">
                             <label for="jform_age" id="jform_age-lbl">
-                                <?php echo Text::_('COM_CHURCHDIRECTORY_AGE_LABEL'); ?>
+                                <?php echo Text::_('COM_CWMCONNECT_AGE_LABEL'); ?>
                             </label>
                         </div>
                         <div class="controls">
                             <input type="text" name="jform[age]" id="jform_age"
-                                   value="<?php echo (int) $this->age . ' ' . Text::_('COM_CHURCHDIRECTORY_YEARS_OLD'); ?>"
+                                   value="<?php echo (int) $this->age . ' ' . Text::_('COM_CWMCONNECT_YEARS_OLD'); ?>"
                                    class="readonly" size="10" readonly>
                         </div>
                     </div>

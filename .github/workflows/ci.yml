@@ -14,7 +14,7 @@ on:
       - 'admin/language/**'
       - 'site/language/**'
       - 'modules/site/mod_birthdayanniversary/language/**'
-      - 'plugins/finder/churchdirectory/language/**'
+      - 'plugins/finder/cwmconnect/language/**'
   pull_request:
     branches: [ "main", "master", "development" ]
 

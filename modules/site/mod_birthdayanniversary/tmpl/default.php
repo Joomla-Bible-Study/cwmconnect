@@ -18,7 +18,7 @@ use Joomla\CMS\Language\Text;
  * @var array<int, array{name: string, id: int, day: int, access: int}> $anniversary
  */
 ?>
-<div class="churchdirectory_model_wrapper">
+<div class="cwmconnect_model_wrapper">
     <?php if ($birthdays) : ?>
         <?php if ($params->get('show_page_heading', 1)) : ?>
             <h3><?php echo Text::_('MOD_BIRTHDAYANNIVERSARY_BIRTHDAY'); ?></h3>
@@ -26,15 +26,15 @@ use Joomla\CMS\Language\Text;
         <table class="table table-striped table-bordered">
             <thead>
                 <tr>
-                    <th class="churchdirectory_model_theder"><?php echo Text::_('MOD_BIRTHDAYANNIVERSARY_DAY'); ?></th>
-                    <th class="churchdirectory_model_theder"><?php echo Text::_('MOD_BIRTHDAYANNIVERSARY_MEMBER_NAME'); ?></th>
+                    <th class="cwmconnect_model_theder"><?php echo Text::_('MOD_BIRTHDAYANNIVERSARY_DAY'); ?></th>
+                    <th class="cwmconnect_model_theder"><?php echo Text::_('MOD_BIRTHDAYANNIVERSARY_MEMBER_NAME'); ?></th>
                 </tr>
             </thead>
             <tbody>
                 <?php foreach ($birthdays as $bday) : ?>
                     <tr>
-                        <td class="churchdirectory_model_row"><?php echo (int) $bday['day']; ?></td>
-                        <td class="churchdirectory_model_row"><?php echo htmlspecialchars($bday['name'], ENT_QUOTES, 'UTF-8'); ?></td>
+                        <td class="cwmconnect_model_row"><?php echo (int) $bday['day']; ?></td>
+                        <td class="cwmconnect_model_row"><?php echo htmlspecialchars($bday['name'], ENT_QUOTES, 'UTF-8'); ?></td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>
@@ -50,15 +50,15 @@ use Joomla\CMS\Language\Text;
         <table class="table table-striped table-bordered">
             <thead>
                 <tr>
-                    <th class="churchdirectory_model_theder"><?php echo Text::_('MOD_BIRTHDAYANNIVERSARY_DAY'); ?></th>
-                    <th class="churchdirectory_model_theder"><?php echo Text::_('MOD_BIRTHDAYANNIVERSARY_MEMBER_NAME'); ?></th>
+                    <th class="cwmconnect_model_theder"><?php echo Text::_('MOD_BIRTHDAYANNIVERSARY_DAY'); ?></th>
+                    <th class="cwmconnect_model_theder"><?php echo Text::_('MOD_BIRTHDAYANNIVERSARY_MEMBER_NAME'); ?></th>
                 </tr>
             </thead>
             <tbody>
                 <?php foreach ($anniversary as $annday) : ?>
                     <tr>
-                        <td class="churchdirectory_model_row"><?php echo (int) $annday['day']; ?></td>
-                        <td class="churchdirectory_model_row"><?php echo htmlspecialchars($annday['name'], ENT_QUOTES, 'UTF-8'); ?></td>
+                        <td class="cwmconnect_model_row"><?php echo (int) $annday['day']; ?></td>
+                        <td class="cwmconnect_model_row"><?php echo htmlspecialchars($annday['name'], ENT_QUOTES, 'UTF-8'); ?></td>
                     </tr>
                 <?php endforeach; ?>
             </tbody>

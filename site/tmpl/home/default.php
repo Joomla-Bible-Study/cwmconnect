@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @package    Churchdirectory.Site
+ * @package    Cwmconnect.Site
  * @copyright  (C) 2026 CWM Team All rights reserved
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
@@ -10,12 +10,12 @@
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
-use CWM\Component\Churchdirectory\Site\Helper\RouteHelper;
+use CWM\Component\Connect\Site\Helper\RouteHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 
-/** @var \CWM\Component\Churchdirectory\Site\View\Home\HtmlView $this */
+/** @var \CWM\Component\Connect\Site\View\Home\HtmlView $this */
 
 HTMLHelper::_('bootstrap.framework');
 HTMLHelper::_('bootstrap.tooltip');
@@ -48,10 +48,10 @@ $count = \count($this->items);
     <?php if ($login) : ?>
         <div class="chdlogin" style="padding-bottom: 40px">
             <div class="chdintro">
-                <?php echo Text::_('COM_CHURCHDIRECTORY_HOME_INTRO'); ?>
+                <?php echo Text::_('COM_CWMCONNECT_HOME_INTRO'); ?>
                 <?php if ($this->params->get('form')) : ?>
                     <a href="<?php echo $this->escape($this->params->get('form')); ?>">
-                        <?php echo Text::_('COM_CHURCHDIRECTORY_AUTH_FORM'); ?>
+                        <?php echo Text::_('COM_CWMCONNECT_AUTH_FORM'); ?>
                     </a>
                 <?php endif; ?>
             </div>

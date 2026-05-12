@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @package    Churchdirectory.Admin
+ * @package    Cwmconnect.Admin
  * @copyright  (C) 2026 CWM Team All rights reserved
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * @link       https://www.christianwebministries.org
@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace CWM\Component\Churchdirectory\Administrator\Service\HTML;
+namespace CWM\Component\Connect\Administrator\Service\HTML;
 
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
@@ -22,7 +22,7 @@ use Joomla\CMS\Router\Route;
  * HTML helper that builds the inline "Geo-update this row" link rendered
  * inside the geostatus list view's per-row dropdown.
  *
- * Registered as `churchdirectory.geoupdate.update`.
+ * Registered as `cwmconnect.geoupdate.update`.
  *
  * @since  2.0.0
  */
@@ -42,13 +42,13 @@ class Geoupdate
      */
     public function update(int $id, string $customLink = ''): string
     {
-        $base = $customLink !== '' ? $customLink : 'index.php?option=com_churchdirectory';
+        $base = $customLink !== '' ? $customLink : 'index.php?option=com_cwmconnect';
         $href = Route::_($base . '&task=geoupdate.browse&id=' . (int) $id . '&tmpl=component', false);
 
         return sprintf(
             '<a class="dropdown-item" href="%s" data-bs-toggle="modal" data-bs-target="#geoupdateModal">%s</a>',
             htmlspecialchars($href, ENT_QUOTES),
-            Text::_('COM_CHURCHDIRECTORY_GEOUPDATE')
+            Text::_('COM_CWMCONNECT_GEOUPDATE')
         );
     }
 }

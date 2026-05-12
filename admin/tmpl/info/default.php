@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @package    Churchdirectory.Admin
+ * @package    Cwmconnect.Admin
  * @copyright  (C) 2026 CWM Team All rights reserved
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * @link       https://www.christianwebministries.org
@@ -13,9 +13,9 @@
 
 use Joomla\CMS\Router\Route;
 
-/** @var \CWM\Component\Churchdirectory\Administrator\View\Info\HtmlView $this */
+/** @var \CWM\Component\Connect\Administrator\View\Info\HtmlView $this */
 ?>
-<form action="<?php echo Route::_('index.php?option=com_churchdirectory&view=info'); ?>"
+<form action="<?php echo Route::_('index.php?option=com_cwmconnect&view=info'); ?>"
       method="post" name="adminForm" id="adminForm">
     <div id="j-main-container">
         <p>A Church Directory manager component. Displays a list of members and member details pages with various

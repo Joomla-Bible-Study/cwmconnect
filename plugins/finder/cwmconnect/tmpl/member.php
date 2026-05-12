@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @package    Plg_Finder_Churchdirectory
+ * @package    Plg_Finder_Cwmconnect
  * @copyright  (C) 2026 CWM Team All rights reserved
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */

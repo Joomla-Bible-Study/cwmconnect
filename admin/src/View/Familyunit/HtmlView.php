@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @package    Churchdirectory.Admin
+ * @package    Cwmconnect.Admin
  * @copyright  (C) 2026 CWM Team All rights reserved
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * @link       https://www.christianwebministries.org
@@ -9,13 +9,13 @@
 
 declare(strict_types=1);
 
-namespace CWM\Component\Churchdirectory\Administrator\View\Familyunit;
+namespace CWM\Component\Connect\Administrator\View\Familyunit;
 
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
-use CWM\Component\Churchdirectory\Administrator\Model\FamilyunitModel;
+use CWM\Component\Connect\Administrator\Model\FamilyunitModel;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Helper\ContentHelper;
@@ -80,7 +80,7 @@ class HtmlView extends BaseHtmlView
         $this->form    = $model->getForm();
         $this->item    = $model->getItem();
         $this->state   = $model->getState();
-        $this->canDo   = ContentHelper::getActions('com_churchdirectory');
+        $this->canDo   = ContentHelper::getActions('com_cwmconnect');
         $this->members = $model->getMembers();
 
         if (\count($errors = $model->getErrors())) {
@@ -112,13 +112,13 @@ class HtmlView extends BaseHtmlView
 
         ToolbarHelper::title(
             $isNew
-                ? Text::_('COM_CHURCHDIRECTORY_MANAGER_FAMILYUNIT_NEW')
-                : Text::_('COM_CHURCHDIRECTORY_MANAGER_FAMILYUNIT_EDIT'),
-            'churchdirectory'
+                ? Text::_('COM_CWMCONNECT_MANAGER_FAMILYUNIT_NEW')
+                : Text::_('COM_CWMCONNECT_MANAGER_FAMILYUNIT_EDIT'),
+            'cwmconnect'
         );
 
         if ($isNew) {
-            if (\count($user->getAuthorisedCategories('com_churchdirectory', 'core.create')) > 0) {
+            if (\count($user->getAuthorisedCategories('com_cwmconnect', 'core.create')) > 0) {
                 ToolbarHelper::apply('familyunit.apply');
                 ToolbarHelper::save('familyunit.save');
                 ToolbarHelper::save2new('familyunit.save2new');
@@ -145,6 +145,6 @@ class HtmlView extends BaseHtmlView
         }
 
         ToolbarHelper::divider();
-        ToolbarHelper::help('churchdirectory_familyunit', true);
+        ToolbarHelper::help('cwmconnect_familyunit', true);
     }
 }

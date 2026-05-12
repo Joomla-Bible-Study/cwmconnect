@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @package    Churchdirectory.Site
+ * @package    Cwmconnect.Site
  * @copyright  (C) 2026 CWM Team All rights reserved
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * @link       https://www.christianwebministries.org
@@ -9,13 +9,13 @@
 
 declare(strict_types=1);
 
-namespace CWM\Component\Churchdirectory\Site\View\Directory;
+namespace CWM\Component\Connect\Site\View\Directory;
 
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
-use CWM\Component\Churchdirectory\Site\Helper\RenderHelper;
+use CWM\Component\Connect\Site\Helper\RenderHelper;
 use Joomla\CMS\Categories\CategoryNode;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
@@ -65,7 +65,7 @@ class HtmlView extends BaseHtmlView
             throw new GenericDataException(implode("\n", $errors), 500);
         }
 
-        $this->params   = ComponentHelper::getParams('com_churchdirectory');
+        $this->params   = ComponentHelper::getParams('com_cwmconnect');
         $this->category = $model->getCategory();
         $this->state    = $model->getState();
         $this->pagination = $model->getPagination();
@@ -108,7 +108,7 @@ class HtmlView extends BaseHtmlView
         if ($menu) {
             $this->params->def('page_heading', $this->params->get('page_title', $menu->title));
         } else {
-            $this->params->def('page_heading', Text::_('COM_CHURCHDIRECTORY_DEFAULT_PAGE_TITLE'));
+            $this->params->def('page_heading', Text::_('COM_CWMCONNECT_DEFAULT_PAGE_TITLE'));
         }
 
         $title = (string) $this->params->get('page_title', '');

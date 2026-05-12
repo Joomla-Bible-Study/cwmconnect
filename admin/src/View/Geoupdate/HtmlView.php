@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @package    Churchdirectory.Admin
+ * @package    Cwmconnect.Admin
  * @copyright  (C) 2026 CWM Team All rights reserved
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * @link       https://www.christianwebministries.org
@@ -9,13 +9,13 @@
 
 declare(strict_types=1);
 
-namespace CWM\Component\Churchdirectory\Administrator\View\Geoupdate;
+namespace CWM\Component\Connect\Administrator\View\Geoupdate;
 
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
-use CWM\Component\Churchdirectory\Administrator\Model\GeoupdateModel;
+use CWM\Component\Connect\Administrator\Model\GeoupdateModel;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
@@ -87,7 +87,7 @@ class HtmlView extends BaseHtmlView
         $this->more       = $more;
         $this->percentage = $percent;
 
-        ToolbarHelper::title(Text::_('COM_CHURCHDIRECTORY_TITLE_GEOUPDATE'), 'churchdirectory');
+        ToolbarHelper::title(Text::_('COM_CWMCONNECT_TITLE_GEOUPDATE'), 'cwmconnect');
 
         if ($more) {
             $app->getDocument()->addScriptDeclaration(

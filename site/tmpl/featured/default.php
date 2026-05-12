@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @package    Churchdirectory.Site
+ * @package    Cwmconnect.Site
  * @copyright  (C) 2026 CWM Team All rights reserved
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
@@ -10,7 +10,7 @@
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
-/** @var \CWM\Component\Churchdirectory\Site\View\Featured\HtmlView $this */
+/** @var \CWM\Component\Connect\Site\View\Featured\HtmlView $this */
 ?>
 <div class="blog-featured<?php echo $this->pageclass_sfx; ?>">
     <?php if ($this->params->get('show_page_heading') != 0) : ?>

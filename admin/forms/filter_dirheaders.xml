@@ -6,8 +6,8 @@
 		<field
 				name="search"
 				type="text"
-				label="COM_CHURCHDIRECTORY_FILTER_SEARCH_LABEL"
-				description="COM_CHURCHDIRECTORY_FILTER_SEARCH_DESC"
+				label="COM_CWMCONNECT_FILTER_SEARCH_LABEL"
+				description="COM_CWMCONNECT_FILTER_SEARCH_DESC"
 				hint="JSEARCH_FILTER"
 		/>
 
@@ -42,12 +42,12 @@
 			<option value="*">JALL</option>
 		</field>
 
-		<field id="section" name="section" type="list" label="COM_CHURCHDIRECTORY_FIELD_SECTION_LABEL"
-		       description="COM_CHURCHDIRECTORY_FIELD_SECTION_DESC"
+		<field id="section" name="section" type="list" label="COM_CWMCONNECT_FIELD_SECTION_LABEL"
+		       description="COM_CWMCONNECT_FIELD_SECTION_DESC"
 		       onchange="this.form.submit();">
-			<option value="">COM_CHURCHDIRECTORY_SELECT_SECTION</option>
-			<option value="0">COM_CHURCHDIRECTORY_HEADER</option>
-			<option value="1">COM_CHURCHDIRECTORY_FOOTER</option>
+			<option value="">COM_CWMCONNECT_SELECT_SECTION</option>
+			<option value="0">COM_CWMCONNECT_HEADER</option>
+			<option value="1">COM_CWMCONNECT_FOOTER</option>
 		</field>
 
 		<field
@@ -70,8 +70,8 @@
 		<field
 				name="fullordering"
 				type="list"
-				label="COM_CHURCHDIRECTORY_LIST_FULL_ORDERING"
-				description="COM_CHURCHDIRECTORY_LIST_FULL_ORDERING_DESC"
+				label="COM_CWMCONNECT_LIST_FULL_ORDERING"
+				description="COM_CWMCONNECT_LIST_FULL_ORDERING_DESC"
 				default="a.name ASC"
 				onchange="this.form.submit();"
 		>
@@ -89,8 +89,8 @@
 		<field
 				name="limit"
 				type="limitbox"
-				label="COM_CHURCHDIRECTORY_LIST_LIMIT"
-				description="COM_CHURCHDIRECTORY_LIST_LIMIT_DESC"
+				label="COM_CWMCONNECT_LIST_LIMIT"
+				description="COM_CWMCONNECT_LIST_LIMIT_DESC"
 				default="25"
 				class="input-mini"
 				onchange="this.form.submit();"

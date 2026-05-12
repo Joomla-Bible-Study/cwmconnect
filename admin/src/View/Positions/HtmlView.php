@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @package    Churchdirectory.Admin
+ * @package    Cwmconnect.Admin
  * @copyright  (C) 2026 CWM Team All rights reserved
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * @link       https://www.christianwebministries.org
@@ -9,13 +9,13 @@
 
 declare(strict_types=1);
 
-namespace CWM\Component\Churchdirectory\Administrator\View\Positions;
+namespace CWM\Component\Connect\Administrator\View\Positions;
 
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
-use CWM\Component\Churchdirectory\Administrator\Model\PositionsModel;
+use CWM\Component\Connect\Administrator\Model\PositionsModel;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Helper\ContentHelper;
@@ -89,7 +89,7 @@ class HtmlView extends BaseHtmlView
         $this->state         = $model->getState();
         $this->filterForm    = $model->getFilterForm();
         $this->activeFilters = $model->getActiveFilters();
-        $this->canDo         = ContentHelper::getActions('com_churchdirectory');
+        $this->canDo         = ContentHelper::getActions('com_cwmconnect');
 
         if (\count($errors = $model->getErrors())) {
             throw new GenericDataException(implode("\n", $errors), 500);
@@ -139,9 +139,9 @@ class HtmlView extends BaseHtmlView
         $canDo   = $this->canDo;
         $toolbar = Toolbar::getInstance('toolbar');
 
-        ToolbarHelper::title(Text::_('COM_CHURCHDIRECTORY_MANAGER_POSITIONS'), 'churchdirectory');
+        ToolbarHelper::title(Text::_('COM_CWMCONNECT_MANAGER_POSITIONS'), 'cwmconnect');
 
-        if ($canDo->get('core.create') || \count($user->getAuthorisedCategories('com_churchdirectory', 'core.create')) > 0) {
+        if ($canDo->get('core.create') || \count($user->getAuthorisedCategories('com_cwmconnect', 'core.create')) > 0) {
             $toolbar->addNew('position.add');
         }
 
@@ -170,13 +170,13 @@ class HtmlView extends BaseHtmlView
 
         // Batch button.
         if (
-            $user->authorise('core.create', 'com_churchdirectory')
-            && $user->authorise('core.edit', 'com_churchdirectory')
-            && $user->authorise('core.edit.state', 'com_churchdirectory')
+            $user->authorise('core.create', 'com_cwmconnect')
+            && $user->authorise('core.edit', 'com_cwmconnect')
+            && $user->authorise('core.edit.state', 'com_cwmconnect')
         ) {
             $toolbar->popupButton('batch', 'JTOOLBAR_BATCH')
                 ->popupType('inline')
-                ->textHeader(Text::_('COM_CHURCHDIRECTORY_BATCH_OPTIONS_POSITION'))
+                ->textHeader(Text::_('COM_CWMCONNECT_BATCH_OPTIONS_POSITION'))
                 ->url('#joomla-dialog-batch')
                 ->modalWidth('800px')
                 ->modalHeight('fit-content')
@@ -189,11 +189,11 @@ class HtmlView extends BaseHtmlView
                 ->listCheck(true);
         }
 
-        if ($canDo->get('core.admin', 'com_churchdirectory') || $user->authorise('core.options', 'com_churchdirectory')) {
-            ToolbarHelper::preferences('com_churchdirectory');
+        if ($canDo->get('core.admin', 'com_cwmconnect') || $user->authorise('core.options', 'com_cwmconnect')) {
+            ToolbarHelper::preferences('com_cwmconnect');
         }
 
-        ToolbarHelper::help('churchdirectory_position', true);
+        ToolbarHelper::help('cwmconnect_position', true);
     }
 
     /**

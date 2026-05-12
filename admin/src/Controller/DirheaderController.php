@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @package    Churchdirectory.Admin
+ * @package    Cwmconnect.Admin
  * @copyright  (C) 2026 CWM Team All rights reserved
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * @link       https://www.christianwebministries.org
@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace CWM\Component\Churchdirectory\Administrator\Controller;
+namespace CWM\Component\Connect\Administrator\Controller;
 
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
@@ -55,11 +55,11 @@ class DirheaderController extends FormController
         $user     = $this->app->getIdentity();
         $userId   = (int) ($user?->id ?? 0);
 
-        if ($user && $user->authorise('core.edit', 'com_churchdirectory')) {
+        if ($user && $user->authorise('core.edit', 'com_cwmconnect')) {
             return true;
         }
 
-        if ($user && $user->authorise('core.edit.own', 'com_churchdirectory')) {
+        if ($user && $user->authorise('core.edit.own', 'com_cwmconnect')) {
             $ownerId = isset($data['created_by']) ? (int) $data['created_by'] : 0;
 
             if (empty($ownerId) && $recordId) {
@@ -97,7 +97,7 @@ class DirheaderController extends FormController
 
         $this->setRedirect(
             Route::_(
-                'index.php?option=com_churchdirectory&view=dirheaders' . $this->getRedirectToListAppend(),
+                'index.php?option=com_cwmconnect&view=dirheaders' . $this->getRedirectToListAppend(),
                 false
             )
         );

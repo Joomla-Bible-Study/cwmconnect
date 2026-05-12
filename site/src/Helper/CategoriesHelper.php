@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @package    Churchdirectory.Site
+ * @package    Cwmconnect.Site
  * @copyright  (C) 2026 CWM Team All rights reserved
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * @link       https://www.christianwebministries.org
@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace CWM\Component\Churchdirectory\Site\Helper;
+namespace CWM\Component\Connect\Site\Helper;
 
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
@@ -33,8 +33,8 @@ class CategoriesHelper extends Categories
      */
     public function __construct(array $options = [])
     {
-        $options['table']      = '#__churchdirectory_details';
-        $options['extension']  = 'com_churchdirectory';
+        $options['table']      = '#__cwmconnect_details';
+        $options['extension']  = 'com_cwmconnect';
         $options['statefield'] = 'published';
 
         parent::__construct($options);

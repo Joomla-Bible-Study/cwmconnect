@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="plugin" group="finder" method="upgrade">
-    <name>plg_finder_churchdirectory</name>
+    <name>plg_finder_cwmconnect</name>
     <author>CWM Team</author>
     <authorEmail>info@christianwebministries.org</authorEmail>
     <authorUrl>www.christianwebministries.org</authorUrl>
     <copyright>(C) 2026 CWM Team All rights reserved.</copyright>
-    <creationDate>2026-05-06</creationDate>
+    <creationDate>2026-05-12</creationDate>
     <version>2.0.0-dev</version>
     <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
     <description>PLG_FINDER_CHURCHDIRECTORY_XML_DESCRIPTION</description>
-    <namespace path="src">CWM\Plugin\Finder\Churchdirectory</namespace>
+    <namespace path="src">CWM\Plugin\Finder\Cwmconnect</namespace>
 
     <compatibility>
         <cms>
@@ -20,13 +20,13 @@
     </compatibility>
 
     <files>
-        <folder plugin="churchdirectory">services</folder>
+        <folder plugin="cwmconnect">services</folder>
         <folder>src</folder>
         <folder>tmpl</folder>
     </files>
 
     <languages>
-        <language tag="en-GB">language/en-GB/plg_finder_churchdirectory.ini</language>
-        <language tag="en-GB">language/en-GB/plg_finder_churchdirectory.sys.ini</language>
+        <language tag="en-GB">language/en-GB/plg_finder_cwmconnect.ini</language>
+        <language tag="en-GB">language/en-GB/plg_finder_cwmconnect.sys.ini</language>
     </languages>
 </extension>

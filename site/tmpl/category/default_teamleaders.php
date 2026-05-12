@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @package    Churchdirectory.Site
+ * @package    Cwmconnect.Site
  * @copyright  (C) 2026 CWM Team All rights reserved
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
@@ -10,13 +10,13 @@
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
-use CWM\Component\Churchdirectory\Site\Helper\RouteHelper;
+use CWM\Component\Connect\Site\Helper\RouteHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 
-/** @var \CWM\Component\Churchdirectory\Site\View\Category\HtmlView $this */
+/** @var \CWM\Component\Connect\Site\View\Category\HtmlView $this */
 
 $user             = Factory::getApplication()->getIdentity();
 $authorisedLevels = $user ? $user->getAuthorisedViewLevels() : [1];
@@ -34,25 +34,25 @@ $teamleaders      = (string) $this->params->get('teamleaders', '1');
         }
         $stateClass = $item->state == 0 ? 'system-unpublished ' : '';
         ?>
-        <li class="churchdirectory-list <?php echo $stateClass; ?>cat-list-row<?php echo $i % 2; ?>">
+        <li class="cwmconnect-list <?php echo $stateClass; ?>cat-list-row<?php echo $i % 2; ?>">
             <span class="float-end">
                 <?php if ($this->params->get('show_telephone_headings') && !empty($item->telephone)) : ?>
-                    <?php echo Text::sprintf('COM_CHURCHDIRECTORY_TELEPHONE_NUMBER', $this->escape($item->telephone)); ?><br/>
+                    <?php echo Text::sprintf('COM_CWMCONNECT_TELEPHONE_NUMBER', $this->escape($item->telephone)); ?><br/>
                 <?php endif; ?>
                 <?php if ($this->params->get('show_mobile_headings') && !empty($item->mobile)) : ?>
-                    <?php echo Text::sprintf('COM_CHURCHDIRECTORY_MOBILE_NUMBER', $this->escape($item->mobile)); ?><br/>
+                    <?php echo Text::sprintf('COM_CWMCONNECT_MOBILE_NUMBER', $this->escape($item->mobile)); ?><br/>
                 <?php endif; ?>
                 <?php if ($this->params->get('show_fax_headings') && !empty($item->fax)) : ?>
-                    <?php echo Text::sprintf('COM_CHURCHDIRECTORY_FAX_NUMBER', $this->escape($item->fax)); ?><br/>
+                    <?php echo Text::sprintf('COM_CWMCONNECT_FAX_NUMBER', $this->escape($item->fax)); ?><br/>
                 <?php endif; ?>
             </span>
 
             <p>
                 <?php
-                $imgSrc = $item->image ?: 'media/com_churchdirectory/images/200-photo_not_available.jpg';
+                $imgSrc = $item->image ?: 'media/com_cwmconnect/images/200-photo_not_available.jpg';
                 echo HTMLHelper::image(
                     $imgSrc,
-                    Text::_('COM_CHURCHDIRECTORY_IMAGE_DETAILS'),
+                    Text::_('COM_CWMCONNECT_IMAGE_DETAILS'),
                     ['height' => '100', 'width' => '100']
                 );
                 ?>
@@ -71,7 +71,7 @@ $teamleaders      = (string) $this->params->get('teamleaders', '1');
                     <dl class="contact-position">
                         <dt>
                             <?php if ($item->con_position != '-1') : ?>
-                                <?php echo Text::_('COM_CHURCHDIRECTORY_POSITIONS'); ?>
+                                <?php echo Text::_('COM_CWMCONNECT_POSITIONS'); ?>
                             <?php endif; ?>
                         </dt>
                         <dd>

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @package    Churchdirectory.Site
+ * @package    Cwmconnect.Site
  * @copyright  (C) 2026 CWM Team All rights reserved
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
@@ -10,12 +10,12 @@
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
-use CWM\Component\Churchdirectory\Site\Helper\RouteHelper;
+use CWM\Component\Connect\Site\Helper\RouteHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 
-/** @var \CWM\Component\Churchdirectory\Site\View\Categories\HtmlView $this */
+/** @var \CWM\Component\Connect\Site\View\Categories\HtmlView $this */
 
 $class = ' class="first"';
 
@@ -38,8 +38,8 @@ if ($this->maxLevelcat != 0 && \count($this->items[$this->parent->id]) > 0) :
                     </a>
                     <?php if ($this->params->get('show_cat_items_cat') == 1) : ?>
                         <span class="badge bg-info"
-                              title="<?php echo HTMLHelper::_('tooltipText', 'COM_CHURCHDIRECTORY_NUM_ITEMS'); ?>">
-                            <?php echo Text::_('COM_CHURCHDIRECTORY_NUM_ITEMS'); ?>&nbsp;<?php echo $item->numitems; ?>
+                              title="<?php echo HTMLHelper::_('tooltipText', 'COM_CWMCONNECT_NUM_ITEMS'); ?>">
+                            <?php echo Text::_('COM_CWMCONNECT_NUM_ITEMS'); ?>&nbsp;<?php echo $item->numitems; ?>
                         </span>
                     <?php endif; ?>
                     <?php if ($this->maxLevelcat > 1 && \count($item->getChildren()) > 0) : ?>
@@ -52,7 +52,7 @@ if ($this->maxLevelcat != 0 && \count($this->items[$this->parent->id]) > 0) :
 
                 <?php if ($this->params->get('show_subcat_desc_cat') == 1 && $item->description) : ?>
                     <div class="category-desc">
-                        <?php echo HTMLHelper::_('content.prepare', $item->description, '', 'com_churchdirectory.categories'); ?>
+                        <?php echo HTMLHelper::_('content.prepare', $item->description, '', 'com_cwmconnect.categories'); ?>
                     </div>
                 <?php endif; ?>
 

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @package    Churchdirectory.Site
+ * @package    Cwmconnect.Site
  * @copyright  (C) 2026 CWM Team All rights reserved
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * @link       https://www.christianwebministries.org
@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace CWM\Component\Churchdirectory\Site\Model;
+namespace CWM\Component\Connect\Site\Model;
 
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
@@ -92,7 +92,7 @@ class FeaturedModel extends ListModel
         $query = $db->getQuery(true);
 
         $query->select($this->getState('list.select', 'a.*'))
-            ->from($db->quoteName('#__churchdirectory_details', 'a'))
+            ->from($db->quoteName('#__cwmconnect_details', 'a'))
             ->where('a.access IN (' . $groups . ')')
             ->where('a.featured = 1')
             ->join('INNER', $db->quoteName('#__categories', 'c') . ' ON c.id = a.catid')
@@ -109,7 +109,7 @@ class FeaturedModel extends ListModel
 
         $subquery  = 'SELECT cat.id as id FROM #__categories AS cat JOIN #__categories AS parent ';
         $subquery .= 'ON cat.lft BETWEEN parent.lft AND parent.rgt ';
-        $subquery .= 'WHERE parent.extension = ' . $db->quote('com_churchdirectory');
+        $subquery .= 'WHERE parent.extension = ' . $db->quote('com_cwmconnect');
         $subquery .= ' AND parent.published != 1 GROUP BY cat.id';
 
         $query->join('LEFT OUTER', '(' . $subquery . ') AS badcats ON badcats.id = c.id');
@@ -148,7 +148,7 @@ class FeaturedModel extends ListModel
     protected function populateState($ordering = null, $direction = null): void
     {
         $app    = Factory::getApplication();
-        $params = ComponentHelper::getParams('com_churchdirectory');
+        $params = ComponentHelper::getParams('com_cwmconnect');
 
         $limit = $app->getUserStateFromRequest('global.list.limit', 'limit', $app->get('list_limit'));
         $this->setState('list.limit', $limit);
@@ -174,7 +174,7 @@ class FeaturedModel extends ListModel
 
         $user = $app->getIdentity();
 
-        if ($user && !$user->authorise('core.edit.state', 'com_churchdirectory') && !$user->authorise('core.edit', 'com_churchdirectory')) {
+        if ($user && !$user->authorise('core.edit.state', 'com_cwmconnect') && !$user->authorise('core.edit', 'com_cwmconnect')) {
             $this->setState('filter.published', 1);
             $this->setState('filter.publish_date', true);
         }

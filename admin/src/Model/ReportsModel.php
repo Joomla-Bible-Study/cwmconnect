@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @package    Churchdirectory.Admin
+ * @package    Cwmconnect.Admin
  * @copyright  (C) 2026 CWM Team All rights reserved
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * @link       https://www.christianwebministries.org
@@ -9,13 +9,13 @@
 
 declare(strict_types=1);
 
-namespace CWM\Component\Churchdirectory\Administrator\Model;
+namespace CWM\Component\Connect\Administrator\Model;
 
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
-use CWM\Component\Churchdirectory\Administrator\Helper\ReportbuildHelper;
+use CWM\Component\Connect\Administrator\Helper\ReportbuildHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
@@ -36,7 +36,7 @@ class ReportsModel extends ListModel
      * @var string
      * @since 2.0.0
      */
-    public $typeAlias = 'com_churchdirectory.reports';
+    public $typeAlias = 'com_cwmconnect.reports';
 
     /**
      * Constructor.
@@ -78,7 +78,7 @@ class ReportsModel extends ListModel
     public function getForm(array $data = [], bool $loadData = true): Form|false
     {
         $form = $this->loadForm(
-            'com_churchdirectory.reports',
+            'com_cwmconnect.reports',
             'reports',
             ['control' => 'jform', 'load_data' => $loadData]
         );
@@ -100,7 +100,7 @@ class ReportsModel extends ListModel
     protected function populateState($ordering = 'a.id', $direction = 'asc'): void
     {
         $app    = Factory::getApplication();
-        $params = ComponentHelper::getParams('com_churchdirectory');
+        $params = ComponentHelper::getParams('com_cwmconnect');
 
         $format = (string) $app->getInput()->getWord('format', '');
         $limit  = $format === 'feed' ? (int) $app->get('feed_limit') : 0;
@@ -132,7 +132,7 @@ class ReportsModel extends ListModel
 
         $user = $app->getIdentity();
 
-        if ($user && !$user->authorise('core.edit.state', 'com_churchdirectory') && !$user->authorise('core.edit', 'com_churchdirectory')) {
+        if ($user && !$user->authorise('core.edit.state', 'com_cwmconnect') && !$user->authorise('core.edit', 'com_cwmconnect')) {
             $this->setState('filter.published', 1);
             $this->setState('filter.publish_date', true);
         }
@@ -157,7 +157,7 @@ class ReportsModel extends ListModel
         $query = $db->getQuery(true);
 
         $query->select($this->getState('item.select', 'a.*'))
-            ->from($db->quoteName('#__churchdirectory_details', 'a'));
+            ->from($db->quoteName('#__cwmconnect_details', 'a'));
 
         $query->select(
             $db->quoteName('k.name', 'kml_name')
@@ -170,7 +170,7 @@ class ReportsModel extends ListModel
         );
         $query->join(
             'LEFT',
-            $db->quoteName('#__churchdirectory_kml', 'k')
+            $db->quoteName('#__cwmconnect_kml', 'k')
             . ' ON ' . $db->quoteName('k.id') . ' = ' . $db->quoteName('a.kmlid')
         );
 
@@ -182,7 +182,7 @@ class ReportsModel extends ListModel
         );
         $query->join(
             'LEFT',
-            $db->quoteName('#__churchdirectory_familyunit', 'fu')
+            $db->quoteName('#__cwmconnect_familyunit', 'fu')
             . ' ON ' . $db->quoteName('fu.id') . ' = ' . $db->quoteName('a.funitid')
         );
 
@@ -267,7 +267,7 @@ class ReportsModel extends ListModel
      */
     public function getExport(string $type, string $report): void
     {
-        $params = ComponentHelper::getParams('com_churchdirectory');
+        $params = ComponentHelper::getParams('com_cwmconnect');
 
         // Prime state via the auto-populate guard, then force the export-only
         // filter. Doing setState() before populateState() lets the request /

@@ -19,38 +19,38 @@
   float: left;
   padding: 5px 25px 25px 0;
 }
-#churchdirectory {
+#cwmconnect {
   margin: 10px 0;
 }
-#churchdirectory #contact-address p {
+#cwmconnect #contact-address p {
   margin-left: 5px;
 }
-#churchdirectory p {
+#cwmconnect p {
   line-height: 1em;
   margin: 3px 0 3px 0;
   padding: 0;
 }
-#churchdirectory label {
+#cwmconnect label {
   display: block;
 }
-#churchdirectory label.chkbox {
+#cwmconnect label.chkbox {
   display: inline;
 }
-#churchdirectory input.chkbox {
+#cwmconnect input.chkbox {
   display: inline;
   margin-bottom: 0;
 }
-#churchdirectory label.required {
+#cwmconnect label.required {
   color: #ff0000;
 }
-#churchdirectory select {
+#cwmconnect select {
   display: block;
 }
-#churchdirectory input.radio {
+#cwmconnect input.radio {
   display: inline;
   margin-bottom: 0;
 }
-#churchdirectory .contact-button {
+#cwmconnect .contact-button {
   display: block;
   margin-top: 10px;
 }
@@ -73,17 +73,17 @@ div.marker {
 .wicon {
   width: 25px;
 }
-#churchdirectory input,
-#churchdirectory textarea,
-#churchdirectory select,
-#churchdirectory .fld-wrap {
+#cwmconnect input,
+#cwmconnect textarea,
+#cwmconnect select,
+#cwmconnect .fld-wrap {
   margin-bottom: 6px;
 }
 label.textarea {
   margin: 7px 0;
   display: block;
 }
-#churchdirectory-error {
+#cwmconnect-error {
   border: 1px solid #ff0000;
   margin-top: 12px;
   width: 300px;
@@ -97,7 +97,7 @@ label.textarea {
 div.separator {
   margin-bottom: 6px;
 }
-#churchdirectory-confirm .linkback {
+#cwmconnect-confirm .linkback {
   display: block;
   margin-top: 15px;
 }
@@ -166,10 +166,10 @@ p {
 .paddingitem {
   padding: 5px;
 }
-.churchdirectory-container {
+.cwmconnect-container {
   overflow: hidden;
 }
-.churchdirectory-container hr {
+.cwmconnect-container hr {
   margin: 0;
   border: 1px solid #000000;
 }
@@ -205,4 +205,4 @@ p {
   padding-left: 10px;
   padding-top: 5px;
 }
-/*# sourceMappingURL=churchdirectory.css.map */
+/*# sourceMappingURL=cwmconnect.css.map */

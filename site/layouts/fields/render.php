@@ -50,7 +50,7 @@ if (!$fields)
 }
 
 // Check if we have mail context in first element
-$isMail = (reset($fields)->context == 'com_churchdirectory.mail');
+$isMail = (reset($fields)->context == 'com_cwmconnect.mail');
 
 if (!$isMail)
 {

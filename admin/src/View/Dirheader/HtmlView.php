@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @package    Churchdirectory.Admin
+ * @package    Cwmconnect.Admin
  * @copyright  (C) 2026 CWM Team All rights reserved
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * @link       https://www.christianwebministries.org
@@ -9,13 +9,13 @@
 
 declare(strict_types=1);
 
-namespace CWM\Component\Churchdirectory\Administrator\View\Dirheader;
+namespace CWM\Component\Connect\Administrator\View\Dirheader;
 
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
-use CWM\Component\Churchdirectory\Administrator\Model\DirheaderModel;
+use CWM\Component\Connect\Administrator\Model\DirheaderModel;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Helper\ContentHelper;
@@ -74,7 +74,7 @@ class HtmlView extends BaseHtmlView
         $this->form  = $model->getForm();
         $this->item  = $model->getItem();
         $this->state = $model->getState();
-        $this->canDo = ContentHelper::getActions('com_churchdirectory');
+        $this->canDo = ContentHelper::getActions('com_cwmconnect');
 
         if (\count($errors = $model->getErrors())) {
             throw new GenericDataException(implode("\n", $errors), 500);
@@ -105,13 +105,13 @@ class HtmlView extends BaseHtmlView
 
         ToolbarHelper::title(
             $isNew
-                ? Text::_('COM_CHURCHDIRECTORY_MANAGER_DIRHEADER_NEW')
-                : Text::_('COM_CHURCHDIRECTORY_MANAGER_DIRHEADER_EDIT'),
-            'churchdirectory'
+                ? Text::_('COM_CWMCONNECT_MANAGER_DIRHEADER_NEW')
+                : Text::_('COM_CWMCONNECT_MANAGER_DIRHEADER_EDIT'),
+            'cwmconnect'
         );
 
         if ($isNew) {
-            if (\count($user->getAuthorisedCategories('com_churchdirectory', 'core.create')) > 0) {
+            if (\count($user->getAuthorisedCategories('com_cwmconnect', 'core.create')) > 0) {
                 ToolbarHelper::apply('dirheader.apply');
                 ToolbarHelper::save('dirheader.save');
                 ToolbarHelper::save2new('dirheader.save2new');
@@ -138,6 +138,6 @@ class HtmlView extends BaseHtmlView
         }
 
         ToolbarHelper::divider();
-        ToolbarHelper::help('churchdirectory_dirheader', true);
+        ToolbarHelper::help('cwmconnect_dirheader', true);
     }
 }

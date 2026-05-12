@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @package    Churchdirectory.Site
+ * @package    Cwmconnect.Site
  * @copyright  (C) 2026 CWM Team All rights reserved
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * @link       https://www.christianwebministries.org
@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace CWM\Component\Churchdirectory\Site\Helper;
+namespace CWM\Component\Connect\Site\Helper;
 
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
@@ -65,7 +65,7 @@ class RenderHelper
             foreach (explode(',', $conPosition) as $id) {
                 $query = $db->getQuery(true)
                     ->select($db->quoteName(['id', 'name']))
-                    ->from($db->quoteName('#__churchdirectory_position'))
+                    ->from($db->quoteName('#__cwmconnect_position'))
                     ->where($db->quoteName('id') . ' = ' . (int) $id);
 
                 $positions[] = $db->setQuery($query)->loadObject();
@@ -73,7 +73,7 @@ class RenderHelper
         } elseif ($conPosition !== '-1' && $conPosition !== '0' && $conPosition !== '') {
             $query = $db->getQuery(true)
                 ->select($db->quoteName(['id', 'name']))
-                ->from($db->quoteName('#__churchdirectory_position'))
+                ->from($db->quoteName('#__cwmconnect_position'))
                 ->where($db->quoteName('id') . ' = ' . (int) $conPosition);
 
             $positions[] = $db->setQuery($query)->loadObject();
@@ -124,7 +124,7 @@ class RenderHelper
         $db    = Factory::getContainer()->get(DatabaseInterface::class);
         $query = $db->getQuery(true)
             ->select('members.*')
-            ->from($db->quoteName('#__churchdirectory_details', 'members'))
+            ->from($db->quoteName('#__cwmconnect_details', 'members'))
             ->where($db->quoteName('members.funitid') . ' = ' . (int) $fuId)
             ->order($db->quoteName('members.name') . ' DESC');
 
@@ -193,7 +193,7 @@ class RenderHelper
             return '';
         }
 
-        return '<span class="jicons-text">' . Text::_('COM_CHURCHDIRECTORY_CHILDREN') . ': </span>'
+        return '<span class="jicons-text">' . Text::_('COM_CWMCONNECT_CHILDREN') . ': </span>'
             . ($name !== '' ? $name . ' ' : '') . ($oldChildrenRc ?? '');
     }
 
@@ -233,7 +233,7 @@ class RenderHelper
      */
     public function getMemberStatus(object $member, bool $from = false): string
     {
-        $href = 'index.php?option=com_churchdirectory&view=member&id=' . (int) $member->id;
+        $href = 'index.php?option=com_cwmconnect&view=member&id=' . (int) $member->id;
         $name = $member->name;
 
         return match ((string) $member->mstatus) {
@@ -345,7 +345,7 @@ class RenderHelper
 
         $query = $db->getQuery(true)
             ->select('a.*')
-            ->from($db->quoteName('#__churchdirectory_details', 'a'))
+            ->from($db->quoteName('#__cwmconnect_details', 'a'))
             ->where('a.access IN (' . $groups . ')')
             ->join('INNER', $db->quoteName('#__categories', 'c') . ' ON c.id = a.catid')
             ->where('c.access IN (' . $groups . ')')
@@ -408,12 +408,12 @@ class RenderHelper
         $query = $db->getQuery(true)
             ->select('a.*')
             ->select('f.name as f_name, f.id as f_id')
-            ->from($db->quoteName('#__churchdirectory_details', 'a'))
+            ->from($db->quoteName('#__cwmconnect_details', 'a'))
             ->where('a.access IN (' . $groups . ')')
             ->join('INNER', $db->quoteName('#__categories', 'c') . ' ON c.id = a.catid')
             ->where('c.access IN (' . $groups . ')')
             ->where('a.published = 1')
-            ->join('LEFT OUTER', $db->quoteName('#__churchdirectory_familyunit', 'f') . ' ON f.id = a.funitid');
+            ->join('LEFT OUTER', $db->quoteName('#__cwmconnect_familyunit', 'f') . ' ON f.id = a.funitid');
 
         $this->applyCategoryStateJoins($query, $db);
 
@@ -542,7 +542,7 @@ class RenderHelper
 
         if ($item->webpage && $params->get('dr_show_webpage')) {
             $html .= '<br/>' . $namePrefix . $marker . 'Site:&nbsp;&nbsp;<a href="'
-                . $item->webpage . '" target="_blank">' . Text::_('COM_CHURCHDIRECTORY_WEBPAGE') . '</a></span>';
+                . $item->webpage . '" target="_blank">' . Text::_('COM_CWMCONNECT_WEBPAGE') . '</a></span>';
         }
 
         return $html . '</div>';
@@ -555,7 +555,7 @@ class RenderHelper
      */
     public function getSearchField(Registry $params): string
     {
-        $route  = 'index.php?option=com_churchdirectory&view=directory&layout=search';
+        $route  = 'index.php?option=com_cwmconnect&view=directory&layout=search';
         $params->def('field_size', 20);
         $suffix = $params->get('moduleclass_sfx');
 
@@ -576,7 +576,7 @@ class RenderHelper
 
         if ($params->get('show_button')) {
             $button = '<button class="btn btn-primary hasTooltip ' . $suffix . ' finder' . $suffix
-                . '" type="submit" title="' . Text::_('COM_CHURCHDIRECTORY_FILTER_SUBMIT')
+                . '" type="submit" title="' . Text::_('COM_CWMCONNECT_FILTER_SUBMIT')
                 . '"><span class="icon-search icon-white"></span>' . Text::_('JSEARCH_FILTER_SUBMIT') . '</button>';
 
             $output = match ($params->get('button_pos', 'left')) {
@@ -589,10 +589,10 @@ class RenderHelper
 
         $itemid = Factory::getApplication()->getInput()->getInt('Itemid', 0);
 
-        $render  = '<form id="com_churchdirectory_search" action="' . Route::_($route)
+        $render  = '<form id="com_cwmconnect_search" action="' . Route::_($route)
             . '" method="get" class="form-search"><div class="search' . $suffix . '">';
         $render .= $output;
-        $render .= '<input type="hidden" name="option" value="com_churchdirectory">';
+        $render .= '<input type="hidden" name="option" value="com_cwmconnect">';
         $render .= '<input type="hidden" name="view" value="directory">';
         $render .= '<input type="hidden" name="layout" value="search">';
         $render .= '<input type="hidden" name="Itemid" value="' . $itemid . '">';
@@ -623,7 +623,7 @@ class RenderHelper
 
         $subquery  = 'SELECT cat.id as id FROM #__categories AS cat JOIN #__categories AS parent ';
         $subquery .= 'ON cat.lft BETWEEN parent.lft AND parent.rgt ';
-        $subquery .= 'WHERE parent.extension = ' . $db->quote('com_churchdirectory');
+        $subquery .= 'WHERE parent.extension = ' . $db->quote('com_cwmconnect');
         $subquery .= ' AND parent.published != 1 GROUP BY cat.id';
 
         $query->join('LEFT OUTER', '(' . $subquery . ') AS badcats ON badcats.id = c.id');

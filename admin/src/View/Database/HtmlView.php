@@ -9,16 +9,17 @@
 
 declare(strict_types=1);
 
-namespace CWM\Component\Churchdirectory\Administrator\View\Database;
+namespace CWM\Component\Connect\Administrator\View\Database;
 
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
-use CWM\Component\Churchdirectory\Administrator\Model\DatabaseModel;
+use CWM\Component\Connect\Administrator\Model\DatabaseModel;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\ContentHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\View\CanDo;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Schema\ChangeSet;
 use Joomla\CMS\Toolbar\ToolbarHelper;
@@ -54,8 +55,8 @@ class HtmlView extends BaseHtmlView
     /** @var string */
     protected string $manifestVersion = '';
 
-    /** @var \stdClass|null */
-    protected ?\stdClass $canDo = null;
+    /** @var CanDo|null */
+    protected ?CanDo $canDo = null;
 
     /**
      * Display the view.
@@ -81,7 +82,7 @@ class HtmlView extends BaseHtmlView
         $this->updateVersion   = (string) ($model->getUpdateVersion() ?? Text::_('JNONE'));
         $this->filterParams    = $model->getDefaultTextFilters();
         $this->manifestVersion = $model->getCompVersion();
-        $this->canDo           = ContentHelper::getActions('com_churchdirectory');
+        $this->canDo           = ContentHelper::getActions('com_cwmconnect');
 
         $this->errorCount = \count($this->errors);
 

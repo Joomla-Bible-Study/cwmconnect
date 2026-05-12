@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @package    Churchdirectory.Admin
+ * @package    Cwmconnect.Admin
  * @copyright  (C) 2026 CWM Team All rights reserved
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * @link       https://www.christianwebministries.org
@@ -16,13 +16,13 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Router\Route;
 
-/** @var \CWM\Component\Churchdirectory\Administrator\View\Familyunit\HtmlView $this */
+/** @var \CWM\Component\Connect\Administrator\View\Familyunit\HtmlView $this */
 
 $this->getDocument()->getWebAssetManager()
     ->useScript('keepalive')
     ->useScript('form.validate');
 ?>
-<form action="<?php echo Route::_('index.php?option=com_churchdirectory&view=familyunit&layout=edit&id=' . (int) $this->item->id); ?>"
+<form action="<?php echo Route::_('index.php?option=com_cwmconnect&view=familyunit&layout=edit&id=' . (int) $this->item->id); ?>"
       method="post" name="adminForm" id="familyunit-form" class="form-validate">
 
     <?php echo LayoutHelper::render('joomla.edit.title_alias', $this); ?>
@@ -30,7 +30,7 @@ $this->getDocument()->getWebAssetManager()
     <div class="main-card">
         <?php echo HTMLHelper::_('uitab.startTabSet', 'familyunitTab', ['active' => 'details', 'recall' => true, 'breakpoint' => 768]); ?>
 
-        <?php echo HTMLHelper::_('uitab.addTab', 'familyunitTab', 'details', empty($this->item->id) ? Text::_('COM_CHURCHDIRECTORY_NEW_FAMILYUNIT') : Text::sprintf('COM_CHURCHDIRECTORY_EDIT_FAMILYUNIT', $this->item->id)); ?>
+        <?php echo HTMLHelper::_('uitab.addTab', 'familyunitTab', 'details', empty($this->item->id) ? Text::_('COM_CWMCONNECT_NEW_FAMILYUNIT') : Text::sprintf('COM_CWMCONNECT_EDIT_FAMILYUNIT', $this->item->id)); ?>
         <div class="row">
             <div class="col-lg-9">
                 <?php echo $this->form->renderField('description'); ?>
@@ -46,12 +46,12 @@ $this->getDocument()->getWebAssetManager()
                 </fieldset>
 
                 <fieldset class="options-form">
-                    <legend><?php echo Text::_('COM_CHURCHDIRECTORY_FAMILY_MEMBERS'); ?></legend>
+                    <legend><?php echo Text::_('COM_CWMCONNECT_FAMILY_MEMBERS'); ?></legend>
                     <table class="table table-striped">
                         <thead>
                             <tr>
-                                <th scope="col"><?php echo Text::_('COM_CHURCHDIRECTORY_ID_LABEL'); ?></th>
-                                <th scope="col"><?php echo Text::_('COM_CHURCHDIRECTORY_FIELD_NAME_LABEL'); ?></th>
+                                <th scope="col"><?php echo Text::_('COM_CWMCONNECT_ID_LABEL'); ?></th>
+                                <th scope="col"><?php echo Text::_('COM_CWMCONNECT_FIELD_NAME_LABEL'); ?></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -67,7 +67,7 @@ $this->getDocument()->getWebAssetManager()
                         <?php else : ?>
                             <tr>
                                 <td colspan="2" class="text-center">
-                                    <?php echo Text::_('COM_CHURCHDIRECTORY_NO_MEMBERS'); ?>
+                                    <?php echo Text::_('COM_CWMCONNECT_NO_MEMBERS'); ?>
                                 </td>
                             </tr>
                         <?php endif; ?>

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @package    Churchdirectory.Site
+ * @package    Cwmconnect.Site
  * @copyright  (C) 2026 CWM Team All rights reserved
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * @link       https://www.christianwebministries.org
@@ -9,13 +9,13 @@
 
 declare(strict_types=1);
 
-namespace CWM\Component\Churchdirectory\Site\Controller;
+namespace CWM\Component\Connect\Site\Controller;
 
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
-use CWM\Component\Churchdirectory\Site\Model\MemberModel;
+use CWM\Component\Connect\Site\Model\MemberModel;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
@@ -63,7 +63,7 @@ class MemberController extends FormController
         }
 
         $app    = Factory::getApplication();
-        $params = ComponentHelper::getParams('com_churchdirectory');
+        $params = ComponentHelper::getParams('com_cwmconnect');
         $stub   = $app->getInput()->getString('id');
         $id     = (int) $stub;
 
@@ -75,14 +75,14 @@ class MemberController extends FormController
         $params->merge($member->params);
 
         if ($params->get('validate_session', 0) && $app->getSession()->getState() !== 'active') {
-            $app->enqueueMessage(Text::_('COM_CHURCHDIRECTORY_SESSION_INVALID'), 'warning');
-            $app->setUserState('com_churchdirectory.member.data', $data);
-            $this->setRedirect(Route::_('index.php?option=com_churchdirectory&view=member&id=' . $stub, false));
+            $app->enqueueMessage(Text::_('COM_CWMCONNECT_SESSION_INVALID'), 'warning');
+            $app->setUserState('com_cwmconnect.member.data', $data);
+            $this->setRedirect(Route::_('index.php?option=com_cwmconnect&view=member&id=' . $stub, false));
 
             return false;
         }
 
-        PluginHelper::importPlugin('churchdirectory');
+        PluginHelper::importPlugin('cwmconnect');
 
         $form = $model->getForm();
 
@@ -96,8 +96,8 @@ class MemberController extends FormController
                 $app->enqueueMessage($error instanceof \Exception ? $error->getMessage() : $error, 'warning');
             }
 
-            $app->setUserState('com_churchdirectory.member.data', $data);
-            $this->setRedirect(Route::_('index.php?option=com_churchdirectory&view=member&id=' . $stub, false));
+            $app->setUserState('com_cwmconnect.member.data', $data);
+            $this->setRedirect(Route::_('index.php?option=com_cwmconnect&view=member&id=' . $stub, false));
 
             return false;
         }
@@ -118,14 +118,14 @@ class MemberController extends FormController
             $sent = $this->sendEmail($data, $member, (bool) $params->get('show_email_copy'));
         }
 
-        $msg = !($sent instanceof \Exception) ? Text::_('COM_CHURCHDIRECTORY_EMAIL_THANKS') : '';
+        $msg = !($sent instanceof \Exception) ? Text::_('COM_CWMCONNECT_EMAIL_THANKS') : '';
 
-        $app->setUserState('com_churchdirectory.member.data', null);
+        $app->setUserState('com_cwmconnect.member.data', null);
 
         if ($member->params->get('redirect')) {
             $this->setRedirect($member->params->get('redirect'), $msg);
         } else {
-            $this->setRedirect(Route::_('index.php?option=com_churchdirectory&view=member&id=' . $stub, false), $msg);
+            $this->setRedirect(Route::_('index.php?option=com_cwmconnect&view=member&id=' . $stub, false), $msg);
         }
 
         return true;
@@ -152,12 +152,12 @@ class MemberController extends FormController
         $fromname = $app->get('fromname');
         $sitename = $app->get('sitename');
 
-        $name    = $data['churchdirectory_name'] ?? '';
-        $email   = PunycodeHelper::emailToPunycode($data['churchdirectory_email'] ?? '');
-        $subject = $data['churchdirectory_subject'] ?? '';
-        $body    = $data['churchdirectory_message'] ?? '';
+        $name    = $data['cwmconnect_name'] ?? '';
+        $email   = PunycodeHelper::emailToPunycode($data['cwmconnect_email'] ?? '');
+        $subject = $data['cwmconnect_subject'] ?? '';
+        $body    = $data['cwmconnect_message'] ?? '';
 
-        $prefix = Text::sprintf('COM_CHURCHDIRECTORY_ENQUIRY_TEXT', Uri::base());
+        $prefix = Text::sprintf('COM_CWMCONNECT_ENQUIRY_TEXT', Uri::base());
         $body   = $prefix . "\n" . $name . ' <' . $email . '>' . "\r\n\r\n" . stripslashes($body);
 
         try {
@@ -170,10 +170,10 @@ class MemberController extends FormController
             $mail->setBody($body);
             $sent = $mail->Send();
 
-            if ($copyEnabled && !empty($data['churchdirectory_email_copy'])) {
-                $copytext = Text::sprintf('COM_CHURCHDIRECTORY_COPYTEXT_OF', $member->name, $sitename);
+            if ($copyEnabled && !empty($data['cwmconnect_email_copy'])) {
+                $copytext = Text::sprintf('COM_CWMCONNECT_COPYTEXT_OF', $member->name, $sitename);
                 $copytext .= "\r\n\r\n" . $body;
-                $copysubject = Text::sprintf('COM_CHURCHDIRECTORY_COPYSUBJECT_OF', $subject);
+                $copysubject = Text::sprintf('COM_CWMCONNECT_COPYSUBJECT_OF', $subject);
 
                 $mail = Factory::getMailer();
                 $mail->addRecipient($email);

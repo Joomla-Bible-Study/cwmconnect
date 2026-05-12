@@ -2,86 +2,86 @@
 <form>
     <fields name="params">
         <field name="altitude" type="text"
-            label="COM_CHURCHDIRECTORY_FIELD_KML_ALTITUDE_LABEL"
-            description="COM_CHURCHDIRECTORY_FIELD_KML_ALTITUDE_DESC"
+            label="COM_CWMCONNECT_FIELD_KML_ALTITUDE_LABEL"
+            description="COM_CWMCONNECT_FIELD_KML_ALTITUDE_DESC"
             class="inputbox"
             size="10"
         />
         <field name="scale" type="text"
-            label="COM_CHURCHDIRECTORY_FIELD_KML_SCALE_LABEL"
-            description="COM_CHURCHDIRECTORY_FIELD_KML_SCALE_DESC"
+            label="COM_CWMCONNECT_FIELD_KML_SCALE_LABEL"
+            description="COM_CWMCONNECT_FIELD_KML_SCALE_DESC"
             class="inputbox"
             size="10"
             default="1.1"
         />
         <field name="range" type="text"
-            label="COM_CHURCHDIRECTORY_FIELD_KML_RANGE_LABEL"
-            description="COM_CHURCHDIRECTORY_FIELD_KML_RANGE_DESC"
+            label="COM_CWMCONNECT_FIELD_KML_RANGE_LABEL"
+            description="COM_CWMCONNECT_FIELD_KML_RANGE_DESC"
             class="inputbox"
             size="35"
         />
         <field name="rmaxlines" type="text"
-            label="COM_CHURCHDIRECTORY_FIELD_KML_RANGE_LABEL"
-            description="COM_CHURCHDIRECTORY_FIELD_KML_RANGE_DESC"
+            label="COM_CWMCONNECT_FIELD_KML_RANGE_LABEL"
+            description="COM_CWMCONNECT_FIELD_KML_RANGE_DESC"
             class="inputbox"
             size="35"
         />
         <field name="tilt" type="text"
-            label="COM_CHURCHDIRECTORY_FIELD_KML_TILT_LABEL"
-            description="COM_CHURCHDIRECTORY_FIELD_KML_TILT_DESC"
+            label="COM_CWMCONNECT_FIELD_KML_TILT_LABEL"
+            description="COM_CWMCONNECT_FIELD_KML_TILT_DESC"
             class="inputbox"
             size="1"
         />
         <field name="heading" type="text"
-            label="COM_CHURCHDIRECTORY_FIELD_KML_HEADING_LABEL"
-            description="COM_CHURCHDIRECTORY_FIELD_KML_HEADING_DESC"
+            label="COM_CWMCONNECT_FIELD_KML_HEADING_LABEL"
+            description="COM_CWMCONNECT_FIELD_KML_HEADING_DESC"
             class="inputbox"
             size="35"
         />
-        <field name="lscolormode" type="list" default="normal" label="COM_CHURCHDIRECTORY_FIELD_KML_COLORMODE" description="COM_CHURCHDIRECTORY_FIELD_KML_COLORMODE_DESC">
-            <option value="normal">COM_CHURCHDIRECTORY_KML_NORMAL</option>
-            <option value="random">COM_CHURCHDIRECTORY_KML_RANDOM</option>
+        <field name="lscolormode" type="list" default="normal" label="COM_CWMCONNECT_FIELD_KML_COLORMODE" description="COM_CWMCONNECT_FIELD_KML_COLORMODE_DESC">
+            <option value="normal">COM_CWMCONNECT_KML_NORMAL</option>
+            <option value="random">COM_CWMCONNECT_KML_RANDOM</option>
         </field>
         <field name="lsscale" type="text"
-            label="COM_CHURCHDIRECTORY_FIELD_KML_SCALE_LABEL"
-            description="COM_CHURCHDIRECTORY_FIELD_KML_SCALE_DESC"
+            label="COM_CWMCONNECT_FIELD_KML_SCALE_LABEL"
+            description="COM_CWMCONNECT_FIELD_KML_SCALE_DESC"
             class="inputbox"
             size="10"
             default=".6"
         />
         <field name="icscale" type="text"
-            label="COM_CHURCHDIRECTORY_FIELD_KML_SCALE_LABEL"
-            description="COM_CHURCHDIRECTORY_FIELD_KML_SCALE_DESC"
+            label="COM_CWMCONNECT_FIELD_KML_SCALE_LABEL"
+            description="COM_CWMCONNECT_FIELD_KML_SCALE_DESC"
             class="inputbox"
             size="10"
         />
-        <field name="open" type="list" default="1" label="COM_CHURCHDIRECTORY_FIELD_KML_OPEN_LABEL" description="COM_CHURCHDIRECTORY_FIELD_KML_OPEN_DESC">
+        <field name="open" type="list" default="1" label="COM_CWMCONNECT_FIELD_KML_OPEN_LABEL" description="COM_CWMCONNECT_FIELD_KML_OPEN_DESC">
             <option value="0">JHIDE</option>
             <option value="1">JSHOW</option>
         </field>
-        <field name="mcropen" type="list" default="0" label="COM_CHURCHDIRECTORY_FIELD_KML_OPEN_LABEL" description="COM_CHURCHDIRECTORY_FIELD_KML_OPEN_DESC">
+        <field name="mcropen" type="list" default="0" label="COM_CWMCONNECT_FIELD_KML_OPEN_LABEL" description="COM_CWMCONNECT_FIELD_KML_OPEN_DESC">
             <option value="0">JHIDE</option>
             <option value="1">JSHOW</option>
         </field>
-        <field name="msropen" type="list" default="0" label="COM_CHURCHDIRECTORY_FIELD_KML_OPEN_LABEL" description="COM_CHURCHDIRECTORY_FIELD_KML_OPEN_DESC">
+        <field name="msropen" type="list" default="0" label="COM_CWMCONNECT_FIELD_KML_OPEN_LABEL" description="COM_CWMCONNECT_FIELD_KML_OPEN_DESC">
             <option value="0">JHIDE</option>
             <option value="1">JSHOW</option>
         </field>
         <field name="lscolor" class="color {hash:true}" default="ffffffff" type="text"
-                description="COM_CHURCHDIRECTORY_FIELD_KML_COLOR_DESC"
-                label="COM_CHURCHDIRECTORY_FIELD_KML_COLOR"
+                description="COM_CWMCONNECT_FIELD_KML_COLOR_DESC"
+                label="COM_CWMCONNECT_FIELD_KML_COLOR"
         />
-        <field name="gxaltitudeMode" type="list" default="relativeToSeaFloor" label="COM_CHURCHDIRECTORY_FIELD_KML_GXALTITUDEMODE" description="COM_CHURCHDIRECTORY_FIELD_KML_GXALTITUDEMODE_DESC">
-            <option value="relativeToSeaFloor">COM_CHURCHDIRECTORY_KML_RELATIVETOSEAFLOOR</option>
-            <option value="clampToSeaFloor">COM_CHURCHDIRECTORY_KML_CLAMPTOSEAFLOOR</option>
-            <option value="relativeToGround">COM_CHURCHDIRECTORY_KML_RELATIVETOGROUND</option>
-            <option value="clampToGround">COM_CHURCHDIRECTORY_KML_CLAMPTOGROUND</option>
-            <option value="absolute">COM_CHURCHDIRECTORY_KML_ABSOLUTE</option>
+        <field name="gxaltitudeMode" type="list" default="relativeToSeaFloor" label="COM_CWMCONNECT_FIELD_KML_GXALTITUDEMODE" description="COM_CWMCONNECT_FIELD_KML_GXALTITUDEMODE_DESC">
+            <option value="relativeToSeaFloor">COM_CWMCONNECT_KML_RELATIVETOSEAFLOOR</option>
+            <option value="clampToSeaFloor">COM_CWMCONNECT_KML_CLAMPTOSEAFLOOR</option>
+            <option value="relativeToGround">COM_CWMCONNECT_KML_RELATIVETOGROUND</option>
+            <option value="clampToGround">COM_CWMCONNECT_KML_CLAMPTOGROUND</option>
+            <option value="absolute">COM_CWMCONNECT_KML_ABSOLUTE</option>
         </field>
     </fields>
     <fieldset>
         <field name="language" type="contentlanguage" label="JFIELD_LANGUAGE_LABEL"
-            description="COM_CHURCHDIRECTORY_FIELD_LANGUAGE_DESC" class="inputbox">
+            description="COM_CWMCONNECT_FIELD_LANGUAGE_DESC" class="inputbox">
             <option value="*">JALL</option>
         </field>
         <field name="alias"
@@ -99,8 +99,8 @@
             size="1"
         />
         <field name="description" type="editor"
-            label="COM_CHURCHDIRECTORY_FIELD_KML_DESCRIPTION_LABEL"
-            description="COM_CHURCHDIRECTORY_FIELD_KML_DESCRIPTION_DESC"
+            label="COM_CWMCONNECT_FIELD_KML_DESCRIPTION_LABEL"
+            description="COM_CWMCONNECT_FIELD_KML_DESCRIPTION_DESC"
             class="inputbox"
             filter="safehtml"
             buttons="true"
@@ -118,8 +118,8 @@
         />
         <field name="name"
             type="text"
-            label="COM_CHURCHDIRECTORY_FIELD_KML_NAME_LABEL"
-            description="COM_CHURCHDIRECTORY_FIELD_KML_NAME_DESC"
+            label="COM_CWMCONNECT_FIELD_KML_NAME_LABEL"
+            description="COM_CWMCONNECT_FIELD_KML_NAME_DESC"
             class="inputbox"
             size="100"
             required="true"
@@ -137,27 +137,27 @@
         </field>
 
         <field name="lat" type="text"
-            label="COM_CHURCHDIRECTORY_FIELD_KML_LAT_LABEL"
-            description="COM_CHURCHDIRECTORY_FIELD_KML_LAT_DESC"
+            label="COM_CWMCONNECT_FIELD_KML_LAT_LABEL"
+            description="COM_CWMCONNECT_FIELD_KML_LAT_DESC"
             class="inputbox"
             size="11"
         />
         <field name="lng" type="text"
-            label="COM_CHURCHDIRECTORY_FIELD_KML_LNG_LABEL"
-            description="COM_CHURCHDIRECTORY_FIELD_KML_LNG_DESC"
+            label="COM_CWMCONNECT_FIELD_KML_LNG_LABEL"
+            description="COM_CWMCONNECT_FIELD_KML_LNG_DESC"
             class="inputbox"
             size="11"
         />
         <field name="style"
             type="textarea"
-            label="COM_CHURCHDIRECTORY_FIELD_KML_STYLE_LABEL"
-            description="COM_CHURCHDIRECTORY_FIELD_KML_STYLE_DESC"
+            label="COM_CWMCONNECT_FIELD_KML_STYLE_LABEL"
+            description="COM_CWMCONNECT_FIELD_KML_STYLE_DESC"
             class="inputbox"
             rows="10"
             cols="30"
         />
         <field name="ordering" type="ordering" class="inputbox"
                label="JFIELD_ORDERING_LABEL" description="JFIELD_ORDERING_DESC"
-               content_type="com_churchdirectory.kml"/>
+               content_type="com_cwmconnect.kml"/>
     </fieldset>
 </form>

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @package    Churchdirectory.Site
+ * @package    Cwmconnect.Site
  * @copyright  (C) 2026 CWM Team All rights reserved
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
@@ -10,20 +10,20 @@
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
-use CWM\Component\Churchdirectory\Site\Helper\RouteHelper;
+use CWM\Component\Connect\Site\Helper\RouteHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
 
-/** @var \CWM\Component\Churchdirectory\Site\View\Featured\HtmlView $this */
+/** @var \CWM\Component\Connect\Site\View\Featured\HtmlView $this */
 
 $listOrder = $this->escape($this->state->get('list.ordering'));
 $listDirn  = $this->escape($this->state->get('list.direction'));
 ?>
 
 <?php if (empty($this->items)) : ?>
-    <p><?php echo Text::_('COM_CHURCHDIRECTORY_NO_MEMBERS'); ?></p>
+    <p><?php echo Text::_('COM_CWMCONNECT_NO_MEMBERS'); ?></p>
 <?php else : ?>
     <form action="<?php echo htmlspecialchars(Uri::getInstance()->toString()); ?>" method="post"
           name="adminForm" id="adminForm">
@@ -45,38 +45,38 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
                 <tr>
                     <th class="item-num"><?php echo Text::_('JGLOBAL_NUM'); ?></th>
                     <th class="item-title">
-                        <?php echo HTMLHelper::_('grid.sort', 'COM_CHURCHDIRECTORY_MEMBER_EMAIL_NAME_LABEL', 'a.name', $listDirn, $listOrder); ?>
+                        <?php echo HTMLHelper::_('grid.sort', 'COM_CWMCONNECT_MEMBER_EMAIL_NAME_LABEL', 'a.name', $listDirn, $listOrder); ?>
                     </th>
                     <?php if ($this->params->get('show_position_headings')) : ?>
                         <th class="item-position">
-                            <?php echo HTMLHelper::_('grid.sort', 'COM_CHURCHDIRECTORY_POSITIONS', 'a.con_position', $listDirn, $listOrder); ?>
+                            <?php echo HTMLHelper::_('grid.sort', 'COM_CWMCONNECT_POSITIONS', 'a.con_position', $listDirn, $listOrder); ?>
                         </th>
                     <?php endif; ?>
                     <?php if ($this->params->get('show_email_headings')) : ?>
                         <th class="item-email"><?php echo Text::_('JGLOBAL_EMAIL'); ?></th>
                     <?php endif; ?>
                     <?php if ($this->params->get('show_telephone_headings')) : ?>
-                        <th class="item-phone"><?php echo Text::_('COM_CHURCHDIRECTORY_TELEPHONE'); ?></th>
+                        <th class="item-phone"><?php echo Text::_('COM_CWMCONNECT_TELEPHONE'); ?></th>
                     <?php endif; ?>
                     <?php if ($this->params->get('show_mobile_headings')) : ?>
-                        <th class="item-phone"><?php echo Text::_('COM_CHURCHDIRECTORY_MOBILE'); ?></th>
+                        <th class="item-phone"><?php echo Text::_('COM_CWMCONNECT_MOBILE'); ?></th>
                     <?php endif; ?>
                     <?php if ($this->params->get('show_fax_headings')) : ?>
-                        <th class="item-phone"><?php echo Text::_('COM_CHURCHDIRECTORY_FAX'); ?></th>
+                        <th class="item-phone"><?php echo Text::_('COM_CWMCONNECT_FAX'); ?></th>
                     <?php endif; ?>
                     <?php if ($this->params->get('show_suburb_headings')) : ?>
                         <th class="item-suburb">
-                            <?php echo HTMLHelper::_('grid.sort', 'COM_CHURCHDIRECTORY_SUBURB', 'a.suburb', $listDirn, $listOrder); ?>
+                            <?php echo HTMLHelper::_('grid.sort', 'COM_CWMCONNECT_SUBURB', 'a.suburb', $listDirn, $listOrder); ?>
                         </th>
                     <?php endif; ?>
                     <?php if ($this->params->get('show_state_headings')) : ?>
                         <th class="item-state">
-                            <?php echo HTMLHelper::_('grid.sort', 'COM_CHURCHDIRECTORY_STATE', 'a.state', $listDirn, $listOrder); ?>
+                            <?php echo HTMLHelper::_('grid.sort', 'COM_CWMCONNECT_STATE', 'a.state', $listDirn, $listOrder); ?>
                         </th>
                     <?php endif; ?>
                     <?php if ($this->params->get('show_country_headings')) : ?>
                         <th class="item-state">
-                            <?php echo HTMLHelper::_('grid.sort', 'COM_CHURCHDIRECTORY_COUNTRY', 'a.country', $listDirn, $listOrder); ?>
+                            <?php echo HTMLHelper::_('grid.sort', 'COM_CWMCONNECT_COUNTRY', 'a.country', $listDirn, $listOrder); ?>
                         </th>
                     <?php endif; ?>
                 </tr>

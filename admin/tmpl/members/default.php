@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @package    Churchdirectory.Admin
+ * @package    Cwmconnect.Admin
  * @copyright  (C) 2026 CWM Team All rights reserved
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * @link       https://www.christianwebministries.org
@@ -19,7 +19,7 @@ use Joomla\CMS\Router\Route;
 use Joomla\CMS\Session\Session;
 use Joomla\CMS\Uri\Uri;
 
-/** @var \CWM\Component\Churchdirectory\Administrator\View\Members\HtmlView $this */
+/** @var \CWM\Component\Connect\Administrator\View\Members\HtmlView $this */
 
 $user      = $this->getCurrentUser();
 $userId    = (int) $user->id;
@@ -28,11 +28,11 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 $saveOrder = $listOrder === 'a.ordering';
 
 if ($saveOrder && !empty($this->items)) {
-    $saveOrderingUrl = 'index.php?option=com_churchdirectory&task=members.saveOrderAjax&tmpl=component&' . Session::getFormToken() . '=1';
+    $saveOrderingUrl = 'index.php?option=com_cwmconnect&task=members.saveOrderAjax&tmpl=component&' . Session::getFormToken() . '=1';
     HTMLHelper::_('draggablelist.draggable');
 }
 ?>
-<form action="<?php echo Route::_('index.php?option=com_churchdirectory&view=members'); ?>" method="post"
+<form action="<?php echo Route::_('index.php?option=com_cwmconnect&view=members'); ?>" method="post"
       name="adminForm" id="adminForm">
     <div class="row">
         <div class="col-md-12">
@@ -46,7 +46,7 @@ if ($saveOrder && !empty($this->items)) {
                     </div>
                 <?php else : ?>
                     <table class="table" id="membersList">
-                        <caption class="visually-hidden"><?php echo Text::_('COM_CHURCHDIRECTORY_MANAGER_MEMBERS'); ?></caption>
+                        <caption class="visually-hidden"><?php echo Text::_('COM_CWMCONNECT_MANAGER_MEMBERS'); ?></caption>
                         <thead>
                             <tr>
                                 <td class="w-1 text-center">
@@ -62,10 +62,10 @@ if ($saveOrder && !empty($this->items)) {
                                     <?php echo HTMLHelper::_('searchtools.sort', 'JGLOBAL_TITLE', 'a.name', $listDirn, $listOrder); ?>
                                 </th>
                                 <th scope="col" class="d-none d-md-table-cell">
-                                    <?php echo HTMLHelper::_('searchtools.sort', 'COM_CHURCHDIRECTORY_FIELD_LASTNAME', 'a.lname', $listDirn, $listOrder); ?>
+                                    <?php echo HTMLHelper::_('searchtools.sort', 'COM_CWMCONNECT_FIELD_LASTNAME', 'a.lname', $listDirn, $listOrder); ?>
                                 </th>
                                 <th scope="col" class="d-none d-md-table-cell">
-                                    <?php echo HTMLHelper::_('searchtools.sort', 'COM_CHURCHDIRECTORY_FIELD_LINKED_USER_LABEL', 'ul.name', $listDirn, $listOrder); ?>
+                                    <?php echo HTMLHelper::_('searchtools.sort', 'COM_CWMCONNECT_FIELD_LINKED_USER_LABEL', 'ul.name', $listDirn, $listOrder); ?>
                                 </th>
                                 <th scope="col" class="w-10 d-none d-md-table-cell">
                                     <?php echo HTMLHelper::_('searchtools.sort', 'JGRID_HEADING_ACCESS', 'access_level', $listDirn, $listOrder); ?>
@@ -82,11 +82,11 @@ if ($saveOrder && !empty($this->items)) {
                         </thead>
                         <tbody <?php if ($saveOrder) : ?>class="js-draggable" data-url="<?php echo $saveOrderingUrl; ?>" data-direction="<?php echo strtolower($listDirn); ?>" data-nested="true"<?php endif; ?>>
                         <?php foreach ($this->items as $i => $item) :
-                            $canCreate  = $user->authorise('core.create',     'com_churchdirectory.category.' . (int) $item->catid);
-                            $canEdit    = $user->authorise('core.edit',       'com_churchdirectory.category.' . (int) $item->catid);
+                            $canCreate  = $user->authorise('core.create',     'com_cwmconnect.category.' . (int) $item->catid);
+                            $canEdit    = $user->authorise('core.edit',       'com_cwmconnect.category.' . (int) $item->catid);
                             $canCheckin = $user->authorise('core.manage', 'com_checkin') || (int) $item->checked_out === $userId || (int) $item->checked_out === 0;
-                            $canEditOwn = $user->authorise('core.edit.own',   'com_churchdirectory.category.' . (int) $item->catid) && (int) $item->created_by === $userId;
-                            $canChange  = $user->authorise('core.edit.state', 'com_churchdirectory.category.' . (int) $item->catid) && $canCheckin;
+                            $canEditOwn = $user->authorise('core.edit.own',   'com_cwmconnect.category.' . (int) $item->catid) && (int) $item->created_by === $userId;
+                            $canChange  = $user->authorise('core.edit.state', 'com_cwmconnect.category.' . (int) $item->catid) && $canCheckin;
                             ?>
                             <tr class="row<?php echo $i % 2; ?>" data-draggable-group="<?php echo (int) $item->catid; ?>">
                                 <td class="text-center">
@@ -116,7 +116,7 @@ if ($saveOrder && !empty($this->items)) {
                                         <?php echo HTMLHelper::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, 'members.', $canCheckin); ?>
                                     <?php endif; ?>
                                     <?php if ($canEdit || $canEditOwn) : ?>
-                                        <a href="<?php echo Route::_('index.php?option=com_churchdirectory&task=member.edit&id=' . (int) $item->id); ?>">
+                                        <a href="<?php echo Route::_('index.php?option=com_cwmconnect&task=member.edit&id=' . (int) $item->id); ?>">
                                             <?php echo $this->escape($item->name); ?>
                                         </a>
                                     <?php else : ?>
@@ -133,7 +133,7 @@ if ($saveOrder && !empty($this->items)) {
                                     </div>
                                     <?php if (!empty($item->funitname)) : ?>
                                         <div class="small">
-                                            <?php echo Text::sprintf('COM_CHURCHDIRECTORY_FUNITNAME_SPRINTF', $this->escape($item->funitname)); ?>
+                                            <?php echo Text::sprintf('COM_CWMCONNECT_FUNITNAME_SPRINTF', $this->escape($item->funitname)); ?>
                                         </div>
                                     <?php endif; ?>
                                 </td>
@@ -167,9 +167,9 @@ if ($saveOrder && !empty($this->items)) {
                     <?php echo $this->pagination->getListFooter(); ?>
 
                     <?php if (
-                        $user->authorise('core.create', 'com_churchdirectory')
-                        && $user->authorise('core.edit', 'com_churchdirectory')
-                        && $user->authorise('core.edit.state', 'com_churchdirectory')
+                        $user->authorise('core.create', 'com_cwmconnect')
+                        && $user->authorise('core.edit', 'com_cwmconnect')
+                        && $user->authorise('core.edit.state', 'com_cwmconnect')
                     ) : ?>
                         <template id="joomla-dialog-batch">
                             <?php echo $this->loadTemplate('batch_body'); ?>

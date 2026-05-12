@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @package    Plg_Finder_Churchdirectory
+ * @package    Plg_Finder_Cwmconnect
  * @copyright  (C) 2026 CWM Team All rights reserved
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * @link       https://www.christianwebministries.org
@@ -9,13 +9,13 @@
 
 declare(strict_types=1);
 
-namespace CWM\Plugin\Finder\Churchdirectory\Extension;
+namespace CWM\Plugin\Finder\Cwmconnect\Extension;
 
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
-use CWM\Component\Churchdirectory\Site\Helper\RouteHelper;
+use CWM\Component\Connect\Site\Helper\RouteHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Event\Finder as FinderEvent;
 use Joomla\Component\Finder\Administrator\Indexer\Adapter;
@@ -28,23 +28,23 @@ use Joomla\Event\SubscriberInterface;
 use Joomla\Registry\Registry;
 
 /**
- * Smart Search adapter for com_churchdirectory members.
+ * Smart Search adapter for com_cwmconnect members.
  *
- * Indexes member rows from #__churchdirectory_details and wires their
+ * Indexes member rows from #__cwmconnect_details and wires their
  * contact-detail fields (address, telephone, etc.) into the Finder's
  * meta-context system so they're searchable as structured fields.
  *
  * @since  2.0.0
  */
-final class Churchdirectory extends Adapter implements SubscriberInterface
+final class Cwmconnect extends Adapter implements SubscriberInterface
 {
     use DatabaseAwareTrait;
 
     /** @var string Plugin identifier used to namespace Finder tables. */
-    protected $context = 'Churchdirectory';
+    protected $context = 'Cwmconnect';
 
     /** @var string Component name passed to ComponentHelper::isEnabled() and route building. */
-    protected $extension = 'com_churchdirectory';
+    protected $extension = 'com_cwmconnect';
 
     /** @var string Result-template sublayout (resolves to tmpl/member.php). */
     protected $layout = 'member';
@@ -53,7 +53,7 @@ final class Churchdirectory extends Adapter implements SubscriberInterface
     protected $type_title = 'Church Member';
 
     /** @var string Source table for the indexer query. */
-    protected $table = '#__churchdirectory_details';
+    protected $table = '#__cwmconnect_details';
 
     /** @var string Column the published state lives in (default `state` doesn't apply here). */
     protected $state_field = 'published';
@@ -98,7 +98,7 @@ final class Churchdirectory extends Adapter implements SubscriberInterface
      */
     public function onFinderCategoryChangeState(FinderEvent\AfterCategoryChangeStateEvent $event): void
     {
-        if ($event->getExtension() === 'com_churchdirectory') {
+        if ($event->getExtension() === 'com_cwmconnect') {
             $this->categoryStateChange($event->getPks(), $event->getValue());
         }
     }
@@ -115,7 +115,7 @@ final class Churchdirectory extends Adapter implements SubscriberInterface
         $table   = $event->getItem();
 
         $id = match ($context) {
-            'com_churchdirectory.member' => $table->id,
+            'com_cwmconnect.member' => $table->id,
             'com_finder.index'           => $table->link_id,
             default                      => null,
         };
@@ -137,7 +137,7 @@ final class Churchdirectory extends Adapter implements SubscriberInterface
         $row     = $event->getItem();
         $isNew   = $event->getIsNew();
 
-        if ($context === 'com_churchdirectory.member') {
+        if ($context === 'com_cwmconnect.member') {
             if (!$isNew && $this->old_access != $row->access) {
                 $this->itemAccessChange($row);
             }
@@ -165,7 +165,7 @@ final class Churchdirectory extends Adapter implements SubscriberInterface
             return;
         }
 
-        if ($context === 'com_churchdirectory.member') {
+        if ($context === 'com_cwmconnect.member') {
             $this->checkItemAccess($row);
         } elseif ($context === 'com_categories.category') {
             $this->checkCategoryAccess($row);
@@ -184,7 +184,7 @@ final class Churchdirectory extends Adapter implements SubscriberInterface
         $pks     = $event->getPks();
         $value   = $event->getValue();
 
-        if ($context === 'com_churchdirectory.member') {
+        if ($context === 'com_cwmconnect.member') {
             $this->itemStateChange($pks, $value);
         } elseif ($context === 'com_plugins.plugin' && (int) $value === 0) {
             $this->pluginDisable($pks);
@@ -204,7 +204,7 @@ final class Churchdirectory extends Adapter implements SubscriberInterface
         }
 
         $item->setLanguage();
-        $item->context = 'com_churchdirectory.member';
+        $item->context = 'com_cwmconnect.member';
         $item->params  = new Registry($item->params);
 
         $item->url   = $this->getUrl($item->id, $this->extension, $this->layout);
@@ -289,7 +289,7 @@ final class Churchdirectory extends Adapter implements SubscriberInterface
         $query->select($caseSlug)
             ->select($caseCatslug)
             ->select('u.name')
-            ->from($db->quoteName('#__churchdirectory_details', 'a'))
+            ->from($db->quoteName('#__cwmconnect_details', 'a'))
             ->join('LEFT', $db->quoteName('#__categories', 'c') . ' ON c.id = a.catid')
             ->join('LEFT', $db->quoteName('#__users', 'u') . ' ON u.id = a.user_id');
 

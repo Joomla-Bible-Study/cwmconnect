@@ -49,7 +49,7 @@ $typeOfSpacer  = (strpos($label, 'spacer-lbl') !== false);
 		<div class="control-label">
 			<?php echo $label; ?>
 			<?php if (!$required && !$typeOfSpacer) : ?>
-				<span class="optional"><?php echo JText::_('COM_CHURCHDIRECTORY_OPTIONAL'); ?></span>
+				<span class="optional"><?php echo JText::_('COM_CWMCONNECT_OPTIONAL'); ?></span>
 			<?php endif; ?>
 		</div>
 	<?php endif; ?>

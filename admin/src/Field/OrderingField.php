@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @package    Churchdirectory.Admin
+ * @package    Cwmconnect.Admin
  * @copyright  (C) 2026 CWM Team All rights reserved
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * @link       https://www.christianwebministries.org
@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace CWM\Component\Churchdirectory\Administrator\Field;
+namespace CWM\Component\Connect\Administrator\Field;
 
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
@@ -20,7 +20,7 @@ use Joomla\Database\ParameterType;
 use Joomla\Database\QueryInterface;
 
 /**
- * Ordering field for Churchdirectory rows.
+ * Ordering field for Cwmconnect rows.
  *
  * Overrides the base ordering field's UCM-driven query (which assumes a
  * `#__content_types` registration) with a direct query against the
@@ -57,7 +57,7 @@ class OrderingField extends BaseOrderingField
                 $db->quoteName('ordering', 'value'),
                 $db->quoteName('name', 'text'),
             ])
-            ->from($db->quoteName('#__churchdirectory_details'))
+            ->from($db->quoteName('#__cwmconnect_details'))
             ->where($db->quoteName('catid') . ' = :categoryId')
             ->order($db->quoteName('ordering'))
             ->bind(':categoryId', $categoryId, ParameterType::INTEGER);

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @package    Churchdirectory.Site
+ * @package    Cwmconnect.Site
  * @copyright  (C) 2026 CWM Team All rights reserved
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * @link       https://www.christianwebministries.org
@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace CWM\Component\Churchdirectory\Site\Rule;
+namespace CWM\Component\Connect\Site\Rule;
 
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
@@ -27,7 +27,7 @@ use Joomla\String\StringHelper;
  *
  * @since  2.0.0
  */
-class ChurchdirectoryEmailRule extends EmailRule
+class CwmconnectEmailRule extends EmailRule
 {
     public function test(\SimpleXMLElement $element, $value, $group = null, ?Registry $input = null, ?Form $form = null): bool
     {
@@ -35,7 +35,7 @@ class ChurchdirectoryEmailRule extends EmailRule
             return false;
         }
 
-        $banned = (string) ComponentHelper::getParams('com_churchdirectory')->get('banned_email', '');
+        $banned = (string) ComponentHelper::getParams('com_cwmconnect')->get('banned_email', '');
 
         foreach (explode(';', $banned) as $item) {
             if ($item !== '' && StringHelper::stristr($item, $value) !== false) {

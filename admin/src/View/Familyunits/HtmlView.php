@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @package    Churchdirectory.Admin
+ * @package    Cwmconnect.Admin
  * @copyright  (C) 2026 CWM Team All rights reserved
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * @link       https://www.christianwebministries.org
@@ -9,13 +9,13 @@
 
 declare(strict_types=1);
 
-namespace CWM\Component\Churchdirectory\Administrator\View\Familyunits;
+namespace CWM\Component\Connect\Administrator\View\Familyunits;
 
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
-use CWM\Component\Churchdirectory\Administrator\Model\FamilyunitsModel;
+use CWM\Component\Connect\Administrator\Model\FamilyunitsModel;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Helper\ContentHelper;
 use Joomla\CMS\Language\Text;
@@ -88,7 +88,7 @@ class HtmlView extends BaseHtmlView
         $this->state         = $model->getState();
         $this->filterForm    = $model->getFilterForm();
         $this->activeFilters = $model->getActiveFilters();
-        $this->canDo         = ContentHelper::getActions('com_churchdirectory');
+        $this->canDo         = ContentHelper::getActions('com_cwmconnect');
 
         if (\count($errors = $model->getErrors())) {
             throw new GenericDataException(implode("\n", $errors), 500);
@@ -121,9 +121,9 @@ class HtmlView extends BaseHtmlView
         $canDo   = $this->canDo;
         $toolbar = Toolbar::getInstance('toolbar');
 
-        ToolbarHelper::title(Text::_('COM_CHURCHDIRECTORY_MANAGER_FAMILYUNITS'), 'churchdirectory');
+        ToolbarHelper::title(Text::_('COM_CWMCONNECT_MANAGER_FAMILYUNITS'), 'cwmconnect');
 
-        if ($canDo->get('core.create') || \count($user->getAuthorisedCategories('com_churchdirectory', 'core.create')) > 0) {
+        if ($canDo->get('core.create') || \count($user->getAuthorisedCategories('com_cwmconnect', 'core.create')) > 0) {
             $toolbar->addNew('familyunit.add');
         }
 
@@ -156,11 +156,11 @@ class HtmlView extends BaseHtmlView
                 ->listCheck(true);
         }
 
-        if ($canDo->get('core.admin', 'com_churchdirectory') || $user->authorise('core.options', 'com_churchdirectory')) {
-            ToolbarHelper::preferences('com_churchdirectory');
+        if ($canDo->get('core.admin', 'com_cwmconnect') || $user->authorise('core.options', 'com_cwmconnect')) {
+            ToolbarHelper::preferences('com_cwmconnect');
         }
 
-        ToolbarHelper::help('churchdirectory_familyunit', true);
+        ToolbarHelper::help('cwmconnect_familyunit', true);
     }
 
     /**

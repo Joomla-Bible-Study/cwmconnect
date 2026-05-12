@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @package    Churchdirectory.Admin
+ * @package    Cwmconnect.Admin
  * @copyright  (C) 2026 CWM Team All rights reserved
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * @link       https://www.christianwebministries.org
@@ -14,7 +14,7 @@
 use Joomla\CMS\Language\Multilanguage;
 use Joomla\CMS\Layout\LayoutHelper;
 
-/** @var \CWM\Component\Churchdirectory\Administrator\View\Dirheaders\HtmlView $this */
+/** @var \CWM\Component\Connect\Administrator\View\Dirheaders\HtmlView $this */
 
 $published = (int) $this->state->get('filter.published');
 ?>
@@ -43,7 +43,7 @@ $published = (int) $this->state->get('filter.published');
         <?php if ($published >= 0) : ?>
             <div class="form-group col-md-6">
                 <div class="controls">
-                    <?php echo LayoutHelper::render('joomla.html.batch.item', ['extension' => 'com_churchdirectory']); ?>
+                    <?php echo LayoutHelper::render('joomla.html.batch.item', ['extension' => 'com_cwmconnect']); ?>
                 </div>
             </div>
         <?php endif; ?>

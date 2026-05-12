@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @package    Churchdirectory.Site
+ * @package    Cwmconnect.Site
  * @copyright  (C) 2026 CWM Team All rights reserved
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
@@ -10,8 +10,8 @@
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
-use CWM\Component\Churchdirectory\Site\Helper\RenderHelper;
-use CWM\Component\Churchdirectory\Site\Helper\RouteHelper;
+use CWM\Component\Connect\Site\Helper\RenderHelper;
+use CWM\Component\Connect\Site\Helper\RouteHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -21,7 +21,7 @@ use Joomla\CMS\Uri\Uri;
 
 ?>
 
-<div class="churchdirectory-links">
+<div class="cwmconnect-links">
 	<ul>
 		<?php
 		foreach (range('a', 'e') as $char) : // letters 'a' to 'e'

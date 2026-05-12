@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @package    Churchdirectory.Admin
+ * @package    Cwmconnect.Admin
  * @copyright  (C) 2026 CWM Team All rights reserved
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * @link       https://www.christianwebministries.org
@@ -16,11 +16,11 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 
-/** @var \CWM\Component\Churchdirectory\Administrator\View\Database\HtmlView $this */
+/** @var \CWM\Component\Connect\Administrator\View\Database\HtmlView $this */
 
 $activeTab = $this->errorCount === 0 ? 'other' : 'problems';
 ?>
-<form action="<?php echo Route::_('index.php?option=com_churchdirectory&view=database'); ?>"
+<form action="<?php echo Route::_('index.php?option=com_cwmconnect&view=database'); ?>"
       method="post" name="adminForm" id="adminForm">
     <div id="j-main-container">
         <?php if ($this->errorCount === 0) : ?>
@@ -49,7 +49,7 @@ $activeTab = $this->errorCount === 0 ? 'other' : 'problems';
                     <?php endif; ?>
 
                     <?php if (strncmp($this->schemaVersion, $this->manifestVersion, 5) !== 0) : ?>
-                        <li><?php echo Text::sprintf('COM_CHURCHDIRECTORY_DATABASE_SCHEMA_DOES_NOT_MATCH', $this->schemaVersion, $this->manifestVersion); ?></li>
+                        <li><?php echo Text::sprintf('COM_CWMCONNECT_DATABASE_SCHEMA_DOES_NOT_MATCH', $this->schemaVersion, $this->manifestVersion); ?></li>
                     <?php endif; ?>
 
                     <?php if ($this->updateVersion !== $this->manifestVersion) : ?>

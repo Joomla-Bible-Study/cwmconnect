@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @package    Churchdirectory.Site
+ * @package    Cwmconnect.Site
  * @copyright  (C) 2026 CWM Team All rights reserved
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * @link       https://www.christianwebministries.org
@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace CWM\Component\Churchdirectory\Site\Model;
+namespace CWM\Component\Connect\Site\Model;
 
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
@@ -118,12 +118,12 @@ class DirectoryModel extends ListModel
             . ' ELSE ' . $query->castAsChar('c.id') . ' END as catslug';
 
         $query->select($this->getState('item.select', 'a.*') . ', ' . $caseSlug . ', ' . $caseCatslug)
-            ->from($db->quoteName('#__churchdirectory_details', 'a'))
+            ->from($db->quoteName('#__cwmconnect_details', 'a'))
             ->select('k.name AS kml_name, k.style AS kml_style, k.params AS kml_params, k.alias AS kml_alias,'
                 . ' k.access AS kml_access, k.lat AS kml_lat, k.lng AS kml_lng')
-            ->join('LEFT', $db->quoteName('#__churchdirectory_kml', 'k') . ' ON k.id = a.kmlid')
+            ->join('LEFT', $db->quoteName('#__cwmconnect_kml', 'k') . ' ON k.id = a.kmlid')
             ->select('fu.id AS funit_id, fu.name AS funit_name, fu.image as funit_image, fu.access as funit_access')
-            ->join('LEFT', $db->quoteName('#__churchdirectory_familyunit', 'fu') . ' ON fu.id = a.funitid')
+            ->join('LEFT', $db->quoteName('#__cwmconnect_familyunit', 'fu') . ' ON fu.id = a.funitid')
             ->select('c.title AS category_title, c.params AS category_params, c.alias AS category_alias,'
                 . ' c.description AS category_description, c.access AS category_access')
             ->join('INNER', $db->quoteName('#__categories', 'c') . ' ON c.id = a.catid')
@@ -138,7 +138,7 @@ class DirectoryModel extends ListModel
 
         $subquery  = 'SELECT cat.id as id FROM #__categories AS cat JOIN #__categories AS parent ';
         $subquery .= 'ON cat.lft BETWEEN parent.lft AND parent.rgt ';
-        $subquery .= 'WHERE parent.extension = ' . $db->quote('com_churchdirectory');
+        $subquery .= 'WHERE parent.extension = ' . $db->quote('com_cwmconnect');
 
         if ($this->getState('filter.published') == 2) {
             $subquery       .= ' AND parent.published = 2 GROUP BY cat.id';
@@ -170,7 +170,7 @@ class DirectoryModel extends ListModel
         $nullDate = $db->quote($db->getNullDate());
         $nowDate  = $db->quote(Factory::getDate()->toSql());
 
-        if ($user && !$user->authorise('core.edit.state', 'com_churchdirectory') && !$user->authorise('core.edit', 'com_churchdirectory')) {
+        if ($user && !$user->authorise('core.edit.state', 'com_cwmconnect') && !$user->authorise('core.edit', 'com_cwmconnect')) {
             $query->where('(a.publish_up = ' . $nullDate . ' OR a.publish_up <= ' . $nowDate . ')')
                 ->where('(a.publish_down = ' . $nullDate . ' OR a.publish_down >= ' . $nowDate . ')');
         }
@@ -235,7 +235,7 @@ class DirectoryModel extends ListModel
     protected function populateState($ordering = null, $direction = null): void
     {
         $app    = Factory::getApplication();
-        $params = ComponentHelper::getParams('com_churchdirectory');
+        $params = ComponentHelper::getParams('com_cwmconnect');
         $format = $app->getInput()->getWord('format', '');
 
         $this->setState('list.limit', $format === 'feed' ? $app->get('feed_limit') : 0);
@@ -268,7 +268,7 @@ class DirectoryModel extends ListModel
 
         $user = $app->getIdentity();
 
-        if ($user && !$user->authorise('core.edit.state', 'com_churchdirectory') && !$user->authorise('core.edit', 'com_churchdirectory')) {
+        if ($user && !$user->authorise('core.edit.state', 'com_cwmconnect') && !$user->authorise('core.edit', 'com_cwmconnect')) {
             $this->setState('filter.published', 1);
             $this->setState('filter.publish_date', true);
         }
@@ -300,7 +300,7 @@ class DirectoryModel extends ListModel
             'countItems' => $menuParams->get('db_show_cat_items', 1) || $menuParams->get('db_show_empty_categories', 0),
         ];
 
-        $categories = Categories::getInstance('Churchdirectory', $options);
+        $categories = Categories::getInstance('Cwmconnect', $options);
         $this->item = $categories->get($this->getState('category.id', 'root'));
 
         if (\is_object($this->item)) {

@@ -5,27 +5,27 @@
 --
 -- Fix for Published Problmes to allow for trash
 --
-ALTER TABLE `#__churchdirectory_details` CHANGE `published` `published` TINYINT(3) NOT NULL DEFAULT '0';
-ALTER TABLE `#__churchdirectory_familyunit` CHANGE `published` `published` TINYINT(3) NOT NULL DEFAULT '0';
-ALTER TABLE `#__churchdirectory_kml` CHANGE `published` `published` TINYINT(3) NOT NULL DEFAULT '0';
-ALTER TABLE `#__churchdirectory_position` CHANGE `published` `published` TINYINT(3) NOT NULL DEFAULT '0';
+ALTER TABLE `#__cwmconnect_details` CHANGE `published` `published` TINYINT(3) NOT NULL DEFAULT '0';
+ALTER TABLE `#__cwmconnect_familyunit` CHANGE `published` `published` TINYINT(3) NOT NULL DEFAULT '0';
+ALTER TABLE `#__cwmconnect_kml` CHANGE `published` `published` TINYINT(3) NOT NULL DEFAULT '0';
+ALTER TABLE `#__cwmconnect_position` CHANGE `published` `published` TINYINT(3) NOT NULL DEFAULT '0';
 
-ALTER TABLE `#__churchdirectory_position` ADD `webpage` VARCHAR(255) NOT NULL DEFAULT '';
-ALTER TABLE `#__churchdirectory_familyunit` ADD `image` VARCHAR(255)
+ALTER TABLE `#__cwmconnect_position` ADD `webpage` VARCHAR(255) NOT NULL DEFAULT '';
+ALTER TABLE `#__cwmconnect_familyunit` ADD `image` VARCHAR(255)
 CHARACTER SET utf8
 COLLATE utf8_general_ci NULL DEFAULT NULL
 AFTER `description`;
-ALTER TABLE `#__churchdirectory_details` ADD INDEX `idx_funit` (`funitid`);
+ALTER TABLE `#__cwmconnect_details` ADD INDEX `idx_funit` (`funitid`);
 
 UPDATE `#__menu`
-SET `title` = 'COM_CHURCHDIRECTORY_MEMBERS',
-  `alias`   = 'com-churchdirectory-members',
-  `path`    = 'com-churchdirectory/com-churchdirectory-members',
-  `link`    = 'index.php?option=com_churchdirectory&view=members',
-  `img`     = '../media/com_churchdirectory/images/menu/icon-16-members.png'
-WHERE `#__menu`.`title` = 'COM_CHURCHDIRECTORY_MEMBERS';
+SET `title` = 'COM_CWMCONNECT_MEMBERS',
+  `alias`   = 'com-cwmconnect-members',
+  `path`    = 'com-cwmconnect/com-cwmconnect-members',
+  `link`    = 'index.php?option=com_cwmconnect&view=members',
+  `img`     = '../media/com_cwmconnect/images/menu/icon-16-members.png'
+WHERE `#__menu`.`title` = 'COM_CWMCONNECT_MEMBERS';
 
-CREATE TABLE IF NOT EXISTS `#__churchdirectory_dirheader` (
+CREATE TABLE IF NOT EXISTS `#__cwmconnect_dirheader` (
   `id`               INT(11)             NOT NULL AUTO_INCREMENT,
   `name`             VARCHAR(255)        NOT NULL DEFAULT '',
   `alias`            VARCHAR(255)
@@ -58,7 +58,7 @@ CREATE TABLE IF NOT EXISTS `#__churchdirectory_dirheader` (
   DEFAULT CHARSET =utf8
   AUTO_INCREMENT =3;
 
-CREATE TABLE IF NOT EXISTS `#__churchdirectory_dirheader` (
+CREATE TABLE IF NOT EXISTS `#__cwmconnect_dirheader` (
   `id`               INT(11)             NOT NULL AUTO_INCREMENT,
   `name`             VARCHAR(255)        NOT NULL DEFAULT '',
   `alias`            VARCHAR(255)

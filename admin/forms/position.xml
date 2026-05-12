@@ -5,7 +5,7 @@
 	</fields>
 	<fieldset>
 		<field name="language" type="contentlanguage" label="JFIELD_LANGUAGE_LABEL"
-		       description="COM_CHURCHDIRECTORY_FIELD_LANGUAGE_DESC"
+		       description="COM_CWMCONNECT_FIELD_LANGUAGE_DESC"
 		>
 			<option value="*">JALL</option>
 		</field>
@@ -33,8 +33,8 @@
 		/>
 		<field name="name"
 		       type="text"
-		       label="COM_CHURCHDIRECTORY_FIELD_POSITION_NAME_LABEL"
-		       description="COM_CHURCHDIRECTORY_FIELD_POSITION_NAME_DESC"
+		       label="COM_CWMCONNECT_FIELD_POSITION_NAME_LABEL"
+		       description="COM_CWMCONNECT_FIELD_POSITION_NAME_DESC"
 		       class="input-xxlarge input-large-text"
 		       size="40"
 		       required="true"

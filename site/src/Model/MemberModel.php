@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @package    Churchdirectory.Site
+ * @package    Cwmconnect.Site
  * @copyright  (C) 2026 CWM Team All rights reserved
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * @link       https://www.christianwebministries.org
@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace CWM\Component\Churchdirectory\Site\Model;
+namespace CWM\Component\Connect\Site\Model;
 
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
@@ -32,7 +32,7 @@ use Joomla\Registry\Registry;
 class MemberModel extends FormModel
 {
     /** @var string Model context for state caching. */
-    protected $context = 'com_churchdirectory.member';
+    protected $context = 'com_cwmconnect.member';
 
     /** @var array<int, object|false>|null Per-id item cache. */
     protected ?array $item = null;
@@ -54,7 +54,7 @@ class MemberModel extends FormModel
 
         $user = $app->getIdentity();
 
-        if ($user && !$user->authorise('core.edit.state', 'com_churchdirectory') && !$user->authorise('core.edit', 'com_churchdirectory')) {
+        if ($user && !$user->authorise('core.edit.state', 'com_cwmconnect') && !$user->authorise('core.edit', 'com_cwmconnect')) {
             $this->setState('filter.published', 1);
             $this->setState('filter.archived', 2);
         }
@@ -70,7 +70,7 @@ class MemberModel extends FormModel
      */
     public function getForm($data = [], $loadData = true): Form|false
     {
-        $form = $this->loadForm('com_churchdirectory.member', 'member', ['control' => 'jform', 'load_data' => true]);
+        $form = $this->loadForm('com_cwmconnect.member', 'member', ['control' => 'jform', 'load_data' => true]);
 
         if (empty($form)) {
             return false;
@@ -97,8 +97,8 @@ class MemberModel extends FormModel
      */
     protected function loadFormData(): array
     {
-        $data = (array) Factory::getApplication()->getUserState('com_churchdirectory.member.data', []);
-        $this->preprocessData('com_churchdirectory.member', $data);
+        $data = (array) Factory::getApplication()->getUserState('com_cwmconnect.member.data', []);
+        $this->preprocessData('com_cwmconnect.member', $data);
 
         return $data;
     }
@@ -130,13 +130,13 @@ class MemberModel extends FormModel
                     . ' ELSE ' . $query->castAsChar('c.id') . ' END as catslug';
 
                 $query->select($this->getState('item.select', 'a.*') . ', ' . $caseSlug . ', ' . $caseCatslug)
-                    ->from($db->quoteName('#__churchdirectory_details', 'a'))
+                    ->from($db->quoteName('#__cwmconnect_details', 'a'))
                     ->select('c.title AS category_title, c.alias AS category_alias, c.access AS category_access')
                     ->join('LEFT', $db->quoteName('#__categories', 'c') . ' ON c.id = a.catid')
                     ->select('parent.title as parent_title, parent.id as parent_id, parent.path as parent_route, parent.alias as parent_alias')
                     ->join('LEFT', $db->quoteName('#__categories', 'parent') . ' ON parent.id = c.parent_id')
                     ->select('fu.name as fu_name, fu.id as fu_id, fu.description as fu_description')
-                    ->join('LEFT', $db->quoteName('#__churchdirectory_familyunit', 'fu') . ' ON fu.id = a.funitid')
+                    ->join('LEFT', $db->quoteName('#__cwmconnect_familyunit', 'fu') . ' ON fu.id = a.funitid')
                     ->where('a.id = ' . (int) $pk);
 
                 $nullDate = $db->quote($db->getNullDate());
@@ -154,7 +154,7 @@ class MemberModel extends FormModel
                 $data = $db->setQuery($query)->loadObject();
 
                 if (empty($data)) {
-                    $app->enqueueMessage(Text::_('COM_CHURCHDIRECTORY_ERROR_MEMBER_NOT_FOUND'), 'error');
+                    $app->enqueueMessage(Text::_('COM_CWMCONNECT_ERROR_MEMBER_NOT_FOUND'), 'error');
                     $this->item[$pk] = false;
                     return $this->item[$pk];
                 }
@@ -164,7 +164,7 @@ class MemberModel extends FormModel
                     && (int) $data->published !== (int) $published
                     && (int) $data->published !== (int) $archived
                 ) {
-                    $app->enqueueMessage(Text::_('COM_CHURCHDIRECTORY_ERROR_MEMBER_NOT_FOUND'), 'error');
+                    $app->enqueueMessage(Text::_('COM_CWMCONNECT_ERROR_MEMBER_NOT_FOUND'), 'error');
                 }
 
                 foreach (['params', 'metadata', 'attribs'] as $col) {
@@ -226,7 +226,7 @@ class MemberModel extends FormModel
 
         $query = $db->getQuery(true)
             ->select('a.*, cc.access as category_access, cc.title as category_name')
-            ->from($db->quoteName('#__churchdirectory_details', 'a'))
+            ->from($db->quoteName('#__cwmconnect_details', 'a'))
             ->join('INNER', $db->quoteName('#__categories', 'cc') . ' ON cc.id = a.catid')
             ->where('a.id = ' . (int) $pk);
 
@@ -324,7 +324,7 @@ class MemberModel extends FormModel
         $db = $this->getDatabase();
 
         try {
-            $db->setQuery('UPDATE #__churchdirectory_details SET hits = hits + 1 WHERE id = ' . (int) $pk)
+            $db->setQuery('UPDATE #__cwmconnect_details SET hits = hits + 1 WHERE id = ' . (int) $pk)
                 ->execute();
         } catch (\RuntimeException $e) {
             $this->setError($e->getMessage());

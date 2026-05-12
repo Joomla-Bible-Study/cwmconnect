@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @package    Churchdirectory.Admin
+ * @package    Cwmconnect.Admin
  * @copyright  (C) 2026 CWM Team All rights reserved
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * @link       https://www.christianwebministries.org
@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace CWM\Component\Churchdirectory\Administrator\Model;
+namespace CWM\Component\Connect\Administrator\Model;
 
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
@@ -43,7 +43,7 @@ class KmlModel extends AdminModel
                 return false;
             }
 
-            return $this->getCurrentUser()->authorise('core.delete', 'com_churchdirectory');
+            return $this->getCurrentUser()->authorise('core.delete', 'com_cwmconnect');
         }
 
         return true;
@@ -80,7 +80,7 @@ class KmlModel extends AdminModel
     public function getForm($data = [], $loadData = true): mixed
     {
         $form = $this->loadForm(
-            'com_churchdirectory.kml',
+            'com_cwmconnect.kml',
             'kml',
             ['control' => 'jform', 'load_data' => $loadData]
         );
@@ -110,7 +110,7 @@ class KmlModel extends AdminModel
      */
     protected function loadFormData(): mixed
     {
-        $data = Factory::getApplication()->getUserState('com_churchdirectory.edit.kml.data', []);
+        $data = Factory::getApplication()->getUserState('com_cwmconnect.edit.kml.data', []);
 
         if (empty($data)) {
             $data = $this->getItem();
@@ -142,7 +142,7 @@ class KmlModel extends AdminModel
                 $db    = $this->getDatabase();
                 $query = $db->getQuery(true)
                     ->select('MAX(' . $db->quoteName('ordering') . ')')
-                    ->from($db->quoteName('#__churchdirectory_kml'));
+                    ->from($db->quoteName('#__cwmconnect_kml'));
 
                 $db->setQuery($query);
                 $max = (int) $db->loadResult();

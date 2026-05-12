@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @package    Churchdirectory.Admin
+ * @package    Cwmconnect.Admin
  * @copyright  (C) 2026 CWM Team All rights reserved
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * @link       https://www.christianwebministries.org
@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace CWM\Component\Churchdirectory\Administrator\View\Cpanel;
+namespace CWM\Component\Connect\Administrator\View\Cpanel;
 
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
@@ -17,6 +17,7 @@ namespace CWM\Component\Churchdirectory\Administrator\View\Cpanel;
 
 use Joomla\CMS\Helper\ContentHelper;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\View\CanDo;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 
@@ -34,10 +35,11 @@ class HtmlView extends BaseHtmlView
     protected ?\SimpleXMLElement $xml = null;
 
     /**
-     * @var \stdClass|null  Permission set for the current user.
+     * @var CanDo|null  Permission set for the current user, returned by
+     *                  ContentHelper::getActions() in J5/6 (was stdClass in J3/J4).
      * @since 2.0.0
      */
-    protected ?\stdClass $canDo = null;
+    protected ?CanDo $canDo = null;
 
     /**
      * Display the view.
@@ -52,7 +54,7 @@ class HtmlView extends BaseHtmlView
     #[\Override]
     public function display($tpl = null): void
     {
-        $manifest = JPATH_ADMINISTRATOR . '/components/com_churchdirectory/churchdirectory.xml';
+        $manifest = JPATH_ADMINISTRATOR . '/components/com_cwmconnect/cwmconnect.xml';
 
         if (is_file($manifest)) {
             $xml = simplexml_load_file($manifest);
@@ -62,7 +64,7 @@ class HtmlView extends BaseHtmlView
             }
         }
 
-        $this->canDo = ContentHelper::getActions('com_churchdirectory');
+        $this->canDo = ContentHelper::getActions('com_cwmconnect');
 
         $this->addToolbar();
 
@@ -79,14 +81,14 @@ class HtmlView extends BaseHtmlView
      */
     protected function addToolbar(): void
     {
-        ToolbarHelper::title(Text::_('COM_CHURCHDIRECTORY_MANAGER_CPANEL'), 'address contact');
+        ToolbarHelper::title(Text::_('COM_CWMCONNECT_MANAGER_CPANEL'), 'address contact');
 
         if ($this->canDo && $this->canDo->get('core.admin')) {
             ToolbarHelper::divider();
-            ToolbarHelper::preferences('com_churchdirectory');
+            ToolbarHelper::preferences('com_cwmconnect');
             ToolbarHelper::divider();
         }
 
-        ToolbarHelper::help('churchdirectory', true);
+        ToolbarHelper::help('cwmconnect', true);
     }
 }

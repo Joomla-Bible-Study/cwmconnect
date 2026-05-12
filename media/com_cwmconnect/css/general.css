@@ -1,4 +1,4 @@
-.churchdirectory-img {
+.cwmconnect-img {
   padding: 10px;
   width: 100px;
 }
@@ -35,8 +35,8 @@ div.current .panelform {
 select#jform_attribs_familypostion[style] {
   display: none !important;
 }
-.icon-48-churchdirectory {
-  background-image: url(../images/icons/icon-48-churchdirectory.png);
+.icon-48-cwmconnect {
+  background-image: url(../images/icons/icon-48-cwmconnect.png);
 }
 .icon-48-kml {
   background-image: url(../images/icons/icon-48-kml.png);

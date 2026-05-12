@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @package    Churchdirectory.Admin
+ * @package    Cwmconnect.Admin
  * @copyright  (C) 2026 CWM Team All rights reserved
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * @link       https://www.christianwebministries.org
@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace CWM\Component\Churchdirectory\Administrator\Controller;
+namespace CWM\Component\Connect\Administrator\Controller;
 
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
@@ -34,7 +34,7 @@ class MembersController extends AdminController
      * @var string
      * @since 2.0.0
      */
-    protected $text_prefix = 'COM_CHURCHDIRECTORY_MEMBERS';
+    protected $text_prefix = 'COM_CWMCONNECT_MEMBERS';
 
     /**
      * Constructor.
@@ -76,7 +76,7 @@ class MembersController extends AdminController
         $task   = $this->getTask();
         $value  = ArrayHelper::getValue($values, $task, 0, 'int');
 
-        /** @var \CWM\Component\Churchdirectory\Administrator\Model\MemberModel $model */
+        /** @var \CWM\Component\Connect\Administrator\Model\MemberModel $model */
         $model = $this->getModel();
 
         foreach ($ids as $i => $id) {
@@ -84,7 +84,7 @@ class MembersController extends AdminController
 
             if (
                 $user === null
-                || !$user->authorise('core.edit.state', 'com_churchdirectory.category.' . (int) $item->catid)
+                || !$user->authorise('core.edit.state', 'com_cwmconnect.category.' . (int) $item->catid)
             ) {
                 unset($ids[$i]);
                 $this->app->enqueueMessage(
@@ -95,12 +95,12 @@ class MembersController extends AdminController
         }
 
         if (empty($ids)) {
-            $this->app->enqueueMessage(Text::_('COM_CHURCHDIRECTORY_NO_ITEM_SELECTED'), 'error');
+            $this->app->enqueueMessage(Text::_('COM_CWMCONNECT_NO_ITEM_SELECTED'), 'error');
         } elseif (!$model->featured($ids, $value)) {
             $this->app->enqueueMessage($model->getError(), 'error');
         }
 
-        $this->setRedirect('index.php?option=com_churchdirectory&view=members');
+        $this->setRedirect('index.php?option=com_cwmconnect&view=members');
     }
 
     /**

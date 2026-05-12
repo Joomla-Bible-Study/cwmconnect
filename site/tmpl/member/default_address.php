@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @package    Churchdirectory.Site
+ * @package    Cwmconnect.Site
  * @copyright  (C) 2026 CWM Team All rights reserved
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  */
@@ -10,8 +10,8 @@
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
-use CWM\Component\Churchdirectory\Site\Helper\RenderHelper;
-use CWM\Component\Churchdirectory\Site\Helper\RouteHelper;
+use CWM\Component\Connect\Site\Helper\RenderHelper;
+use CWM\Component\Connect\Site\Helper\RouteHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
@@ -40,27 +40,27 @@ use Joomla\CMS\Uri\Uri;
 			<dd>
 				<?php if ($this->member->address && $this->params->get('show_street_address')) : ?>
 
-					<span class="churchdirectory-street" itemprop="streetAddress">
+					<span class="cwmconnect-street" itemprop="streetAddress">
                         <?php echo nl2br($this->member->attribs->get('mailingaddress')) . ', <br />'; ?>
                     </span>
 				<?php endif; ?>
 				<?php if ($this->member->suburb && $this->params->get('show_suburb')) : ?>
-					<span class="churchdirectory-suburb" itemprop="addressLocality">
+					<span class="cwmconnect-suburb" itemprop="addressLocality">
                         <?php echo $this->member->attribs->get('mailingsuburb') . ', '; ?>
                     </span>
 				<?php endif; ?>
 				<?php if ($this->member->state && $this->params->get('show_state')) : ?>
-					<span class="churchdirectory-state" itemprop="addressRegion">
+					<span class="cwmconnect-state" itemprop="addressRegion">
                         <?php echo $this->member->attribs->get('mailingstate'); ?>
                     </span>
 				<?php endif; ?>
 				<?php if ($this->member->postcode && $this->params->get('show_postcode')) : ?>
-					<span class="churchdirectory-postcode" itemprop="postalCode">
+					<span class="cwmconnect-postcode" itemprop="postalCode">
                         <?php echo $this->member->attribs->get('mailingpostcode'); ?>
                     </span>
 				<?php endif; ?>
 				<?php if ($this->member->country && $this->params->get('show_country')) : ?>
-					<span class="churchdirectory-country" itemprop="addressCountry">
+					<span class="cwmconnect-country" itemprop="addressCountry">
                         <?php echo $this->member->attribs->get('mailingcountry'); ?>
                     </span>
 				<?php endif; ?>
@@ -77,27 +77,27 @@ use Joomla\CMS\Uri\Uri;
 			<dd>
 				<?php if ($this->member->address && $this->params->get('show_street_address')) : ?>
 
-					<span class="churchdirectory-street" itemprop="streetAddress">
+					<span class="cwmconnect-street" itemprop="streetAddress">
                         <?php echo nl2br($this->member->address) . ', <br />'; ?>
                     </span>
 				<?php endif; ?>
 				<?php if ($this->member->suburb && $this->params->get('show_suburb')) : ?>
-					<span class="churchdirectory-suburb" itemprop="addressLocality">
+					<span class="cwmconnect-suburb" itemprop="addressLocality">
                         <?php echo $this->member->suburb . ', '; ?>
                     </span>
 				<?php endif; ?>
 				<?php if ($this->member->state && $this->params->get('show_state')) : ?>
-					<span class="churchdirectory-state" itemprop="addressRegion">
+					<span class="cwmconnect-state" itemprop="addressRegion">
                         <?php echo $this->member->state; ?>
                     </span>
 				<?php endif; ?>
 				<?php if ($this->member->postcode && $this->params->get('show_postcode')) : ?>
-					<span class="churchdirectory-postcode" itemprop="postalCode">
+					<span class="cwmconnect-postcode" itemprop="postalCode">
                         <?php echo $this->member->postcode; ?>
                     </span>
 				<?php endif; ?>
 				<?php if ($this->member->country && $this->params->get('show_country')) : ?>
-					<span class="churchdirectory-country" itemprop="addressCountry">
+					<span class="cwmconnect-country" itemprop="addressCountry">
                         <?php echo $this->member->country; ?>
                     </span>
 				<?php endif; ?>
@@ -115,27 +115,27 @@ use Joomla\CMS\Uri\Uri;
 			<dd>
 				<?php if ($this->member->address && $this->params->get('show_street_address')) : ?>
 
-					<span class="churchdirectory-street" itemprop="streetAddress">
+					<span class="cwmconnect-street" itemprop="streetAddress">
                         <?php echo nl2br($this->member->attribs->get('mailingaddress')) . ', <br />'; ?>
                     </span>
 				<?php endif; ?>
 				<?php if ($this->member->suburb && $this->params->get('show_suburb')) : ?>
-					<span class="churchdirectory-suburb" itemprop="addressLocality">
+					<span class="cwmconnect-suburb" itemprop="addressLocality">
                         <?php echo $this->member->attribs->get('mailingsuburb') . ', '; ?>
                     </span>
 				<?php endif; ?>
 				<?php if ($this->member->state && $this->params->get('show_state')) : ?>
-					<span class="churchdirectory-state" itemprop="addressRegion">
+					<span class="cwmconnect-state" itemprop="addressRegion">
                         <?php echo $this->member->attribs->get('mailingstate'); ?>
                     </span>
 				<?php endif; ?>
 				<?php if ($this->member->postcode && $this->params->get('show_postcode')) : ?>
-					<span class="churchdirectory-postcode" itemprop="postalCode">
+					<span class="cwmconnect-postcode" itemprop="postalCode">
                         <?php echo $this->member->attribs->get('mailingpostcode'); ?>
                     </span>
 				<?php endif; ?>
 				<?php if ($this->member->country && $this->params->get('show_country')) : ?>
-					<span class="churchdirectory-country" itemprop="addressCountry">
+					<span class="cwmconnect-country" itemprop="addressCountry">
                         <?php echo $this->member->attribs->get('mailingcountry'); ?>
                     </span>
 				<?php endif; ?>
@@ -151,27 +151,27 @@ use Joomla\CMS\Uri\Uri;
 				<?php endif; ?>
 				<dd>
 					<?php if ($this->member->address && $this->params->get('show_street_address')) : ?>
-						<span class="churchdirectory-street" itemprop="streetAddress">
+						<span class="cwmconnect-street" itemprop="streetAddress">
                         <?php echo nl2br($this->member->address) . ', <br />'; ?>
                     </span>
 					<?php endif; ?>
 					<?php if ($this->member->suburb && $this->params->get('show_suburb')) : ?>
-						<span class="churchdirectory-suburb" itemprop="addressLocality">
+						<span class="cwmconnect-suburb" itemprop="addressLocality">
                         <?php echo $this->member->suburb . ', '; ?>
                     </span>
 					<?php endif; ?>
 					<?php if ($this->member->state && $this->params->get('show_state')) : ?>
-						<span class="churchdirectory-state" itemprop="addressRegion">
+						<span class="cwmconnect-state" itemprop="addressRegion">
                         <?php echo $this->member->state; ?>
                     </span>
 					<?php endif; ?>
 					<?php if ($this->member->postcode && $this->params->get('show_postcode')) : ?>
-						<span class="churchdirectory-postcode" itemprop="postalCode">
+						<span class="cwmconnect-postcode" itemprop="postalCode">
                         <?php echo $this->member->postcode; ?>
                     </span>
 					<?php endif; ?>
 					<?php if ($this->member->country && $this->params->get('show_country')) : ?>
-						<span class="churchdirectory-country" itemprop="addressCountry">
+						<span class="cwmconnect-country" itemprop="addressCountry">
                         <?php echo $this->member->country; ?>
                     </span>
 					<?php endif; ?>
@@ -189,7 +189,7 @@ use Joomla\CMS\Uri\Uri;
             </span>
 		</dt>
 		<dd>
-            <span class="churchdirectory-emailto">
+            <span class="cwmconnect-emailto">
                 <?php echo $this->member->email_to; ?>
             </span>
 		</dd>
@@ -202,7 +202,7 @@ use Joomla\CMS\Uri\Uri;
             </span>
 		</dt>
 		<dd>
-            <span class="churchdirectory-telephone" itemprop="telephone">
+            <span class="cwmconnect-telephone" itemprop="telephone">
                 <?php echo nl2br($this->member->telephone); ?>
             </span>
 		</dd>
@@ -214,7 +214,7 @@ use Joomla\CMS\Uri\Uri;
             </span>
 		</dt>
 		<dd>
-            <span class="churchdirectory-fax" itemprop="faxNumber">
+            <span class="cwmconnect-fax" itemprop="faxNumber">
                 <?php echo nl2br($this->member->fax); ?>
             </span>
 		</dd>
@@ -226,7 +226,7 @@ use Joomla\CMS\Uri\Uri;
             </span>
 		</dt>
 		<dd>
-            <span class="churchdirectory-mobile" itemprop="telephone">
+            <span class="cwmconnect-mobile" itemprop="telephone">
                 <?php echo nl2br($this->member->mobile); ?>
             </span>
 		</dd>
@@ -237,7 +237,7 @@ use Joomla\CMS\Uri\Uri;
             </span>
 		</dt>
 		<dd>
-            <span class="churchdirectory-webpage">
+            <span class="cwmconnect-webpage">
                 <?php if (substr_count($this->member->webpage, 'http://', 0))
                 {
 	                $a = '';

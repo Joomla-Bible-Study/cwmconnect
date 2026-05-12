@@ -1,10 +1,10 @@
 SET SQL_MODE = '';
 
 --
--- Table structure for table `#__churchdirectory_details`
+-- Table structure for table `#__cwmconnect_details`
 --
 
-CREATE TABLE IF NOT EXISTS `#__churchdirectory_details` (
+CREATE TABLE IF NOT EXISTS `#__cwmconnect_details` (
   `id`               INT(11)             NOT NULL AUTO_INCREMENT,
   `name`             VARCHAR(255)        NOT NULL DEFAULT '',
   `lname`            VARCHAR(255)        NOT NULL DEFAULT '',
@@ -85,10 +85,10 @@ CREATE TABLE IF NOT EXISTS `#__churchdirectory_details` (
   AUTO_INCREMENT =4;
 
 --
--- Dumping data for table `#__churchdirectory_details`
+-- Dumping data for table `#__cwmconnect_details`
 --
 
-INSERT INTO `#__churchdirectory_details` (`id`, `name`, `lname`, `alias`, `con_position`, `contact_id`, `address`, `suburb`, `state`, `country`, `postcode`, `postcodeaddon`, `telephone`, `fax`, `misc`, `spouse`, `children`, `image`, `imagepos`, `email_to`, `default_con`, `published`, `checked_out`, `checked_out_time`, `ordering`, `params`, `user_id`, `catid`, `kmlid`, `funitid`, `access`, `mobile`, `webpage`, `sortname1`, `sortname2`, `sortname3`, `language`, `created`, `created_by`, `created_by_alias`, `modified`, `modified_by`, `metakey`, `metadesc`, `metadata`, `featured`, `xreference`, `publish_up`, `publish_down`, `skype`, `yahoo_msg`, `lat`, `lng`, `birthdate`, `anniversary`, `attribs`, `version`, `hits`, `surname`)
+INSERT INTO `#__cwmconnect_details` (`id`, `name`, `lname`, `alias`, `con_position`, `contact_id`, `address`, `suburb`, `state`, `country`, `postcode`, `postcodeaddon`, `telephone`, `fax`, `misc`, `spouse`, `children`, `image`, `imagepos`, `email_to`, `default_con`, `published`, `checked_out`, `checked_out_time`, `ordering`, `params`, `user_id`, `catid`, `kmlid`, `funitid`, `access`, `mobile`, `webpage`, `sortname1`, `sortname2`, `sortname3`, `language`, `created`, `created_by`, `created_by_alias`, `modified`, `modified_by`, `metakey`, `metadesc`, `metadata`, `featured`, `xreference`, `publish_up`, `publish_down`, `skype`, `yahoo_msg`, `lat`, `lng`, `birthdate`, `anniversary`, `attribs`, `version`, `hits`, `surname`)
 VALUES
   (1, 'Brent Cordis', 'Cordis', 'brent-cordis', '44,35', 0, '2800 Blair Blvd', 'Nashville', 'TN', 'USA', '37212', NULL,
    '(615) 657-9749', '(615) 657-9749', '', '', 'Child1, Child2', 'images/sampledata/fruitshop/apple.jpg', NULL,
@@ -121,10 +121,10 @@ VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__churchdirectory_dirheader`
+-- Table structure for table `#__cwmconnect_dirheader`
 --
 
-CREATE TABLE IF NOT EXISTS `#__churchdirectory_dirheader` (
+CREATE TABLE IF NOT EXISTS `#__cwmconnect_dirheader` (
   `id`               INT(11)             NOT NULL AUTO_INCREMENT,
   `name`             VARCHAR(255)        NOT NULL DEFAULT '',
   `alias`            VARCHAR(255)
@@ -161,10 +161,10 @@ CREATE TABLE IF NOT EXISTS `#__churchdirectory_dirheader` (
   AUTO_INCREMENT =3;
 
 --
--- Dumping data for table `#__churchdirectory_dirheader`
+-- Dumping data for table `#__cwmconnect_dirheader`
 --
 
-INSERT INTO `#__churchdirectory_dirheader` (`id`, `name`, `alias`, `description`, `image`, `published`, `checked_out`, `checked_out_time`, `modified`, `modified_by`, `metakey`, `metadesc`, `metadata`, `ordering`, `language`, `created`, `created_by`, `params`, `user_id`, `catid`, `access`, `asset_id`, `publish_up`, `publish_down`)
+INSERT INTO `#__cwmconnect_dirheader` (`id`, `name`, `alias`, `description`, `image`, `published`, `checked_out`, `checked_out_time`, `modified`, `modified_by`, `metakey`, `metadesc`, `metadata`, `ordering`, `language`, `created`, `created_by`, `params`, `user_id`, `catid`, `access`, `asset_id`, `publish_up`, `publish_down`)
 VALUES
   (1, 'Pastor', 'pastor', '<p>Pastor Info coming Soon</p>', 'images/powered_by.png', 1, 0, '0000-00-00 00:00:00',
    '0000-00-00 00:00:00', 0, '', '', '', 2, '*', '2012-12-05 21:59:23', 53, '', 0, 1, 1, 69, '0000-00-00 00:00:00',
@@ -176,10 +176,10 @@ VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__churchdirectory_familyunit`
+-- Table structure for table `#__cwmconnect_familyunit`
 --
 
-CREATE TABLE IF NOT EXISTS `#__churchdirectory_familyunit` (
+CREATE TABLE IF NOT EXISTS `#__cwmconnect_familyunit` (
   `id`               INT(11)             NOT NULL AUTO_INCREMENT,
   `name`             VARCHAR(255)        NOT NULL DEFAULT '',
   `alias`            VARCHAR(255)
@@ -213,10 +213,10 @@ CREATE TABLE IF NOT EXISTS `#__churchdirectory_familyunit` (
   AUTO_INCREMENT =2;
 
 --
--- Dumping data for table `#__churchdirectory_familyunit`
+-- Dumping data for table `#__cwmconnect_familyunit`
 --
 
-INSERT INTO `#__churchdirectory_familyunit` (`id`, `name`, `alias`, `description`, `image`, `published`, `checked_out`, `checked_out_time`, `modified`, `modified_by`, `metakey`, `metadesc`, `metadata`, `ordering`, `language`, `created`, `created_by`, `params`, `user_id`, `access`, `asset_id`, `publish_up`, `publish_down`)
+INSERT INTO `#__cwmconnect_familyunit` (`id`, `name`, `alias`, `description`, `image`, `published`, `checked_out`, `checked_out_time`, `modified`, `modified_by`, `metakey`, `metadesc`, `metadata`, `ordering`, `language`, `created`, `created_by`, `params`, `user_id`, `access`, `asset_id`, `publish_up`, `publish_down`)
 VALUES
   (1, 'Brent & Amy Cordis', 'brent-amy-cordis', '', '', 1, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 0, '', '',
    '', 1, '*', '2012-12-05 22:01:13', 53, '', 0, 1, 71, '0000-00-00 00:00:00', '0000-00-00 00:00:00');
@@ -224,10 +224,10 @@ VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__churchdirectory_geoupdate`
+-- Table structure for table `#__cwmconnect_geoupdate`
 --
 
-CREATE TABLE IF NOT EXISTS `#__churchdirectory_geoupdate` (
+CREATE TABLE IF NOT EXISTS `#__cwmconnect_geoupdate` (
   `member_id` INT(11)      NOT NULL,
   `status`    VARCHAR(255) NOT NULL,
   PRIMARY KEY (`member_id`)
@@ -239,10 +239,10 @@ CREATE TABLE IF NOT EXISTS `#__churchdirectory_geoupdate` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__churchdirectory_kml`
+-- Table structure for table `#__cwmconnect_kml`
 --
 
-CREATE TABLE IF NOT EXISTS `#__churchdirectory_kml` (
+CREATE TABLE IF NOT EXISTS `#__cwmconnect_kml` (
   `id`               INT(11)             NOT NULL AUTO_INCREMENT,
   `name`             VARCHAR(255)        NOT NULL DEFAULT '',
   `alias`            VARCHAR(255)
@@ -281,10 +281,10 @@ CREATE TABLE IF NOT EXISTS `#__churchdirectory_kml` (
   AUTO_INCREMENT =2;
 
 --
--- Dumping data for table `#__churchdirectory_kml`
+-- Dumping data for table `#__cwmconnect_kml`
 --
 
-INSERT INTO `#__churchdirectory_kml` (`id`, `name`, `alias`, `description`, `published`, `checked_out`, `checked_out_time`, `modified`, `modified_by`, `metakey`, `metadesc`, `metadata`, `ordering`, `language`, `created`, `created_by`, `params`, `linestyle`, `polystyle`, `user_id`, `access`, `asset_id`, `lat`, `lng`, `icon`, `style`, `publish_up`, `publish_down`)
+INSERT INTO `#__cwmconnect_kml` (`id`, `name`, `alias`, `description`, `published`, `checked_out`, `checked_out_time`, `modified`, `modified_by`, `metakey`, `metadesc`, `metadata`, `ordering`, `language`, `created`, `created_by`, `params`, `linestyle`, `polystyle`, `user_id`, `access`, `asset_id`, `lat`, `lng`, `icon`, `style`, `publish_up`, `publish_down`)
 VALUES
   (1, 'Nashville First SDA Church Members Directory', 'nashville-first-sda-church-members-directory',
    '<div>\r\n<p><strong>Confidentiality Notice</strong>: This KML file, including any attachments, is for the sole use of the <strong>Nasvhille First SDA Church Members</strong> and may contain confidential and/or privileged information. If you are not the intended recipient(s), you are hereby notified that any dissemination, unauthorized review, use, disclosure or distribution of this KML file and any materials contained in any attachments is prohibited. If you receive this KML file in error, or are not the intended recipient(s), please immediately notify the sender by email and destroy all copies of the original message, including attachments.Privicy Statment</p>\r\n<div style="text-align: center;">\r\n<p>615-297-1343 | 2800 Blair Blvd | Nashville, TN 37212 <br />webmaster@nfsda.org</p>\r\n</div>\r\n</div>',
@@ -295,10 +295,10 @@ VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__churchdirectory_position`
+-- Table structure for table `#__cwmconnect_position`
 --
 
-CREATE TABLE IF NOT EXISTS `#__churchdirectory_position` (
+CREATE TABLE IF NOT EXISTS `#__cwmconnect_position` (
   `id`               INT(11)             NOT NULL AUTO_INCREMENT,
   `name`             VARCHAR(255)        NOT NULL DEFAULT '',
   `alias`            VARCHAR(255)
@@ -330,10 +330,10 @@ CREATE TABLE IF NOT EXISTS `#__churchdirectory_position` (
   AUTO_INCREMENT =31;
 
 --
--- Dumping data for table `#__churchdirectory_position`
+-- Dumping data for table `#__cwmconnect_position`
 --
 
-INSERT INTO `#__churchdirectory_position` (`id`, `name`, `alias`, `published`, `checked_out`, `checked_out_time`, `modified`, `modified_by`, `metakey`, `metadesc`, `metadata`, `ordering`, `language`, `created`, `created_by`, `params`, `user_id`, `access`, `asset_id`, `publish_up`, `publish_down`)
+INSERT INTO `#__cwmconnect_position` (`id`, `name`, `alias`, `published`, `checked_out`, `checked_out_time`, `modified`, `modified_by`, `metakey`, `metadesc`, `metadata`, `ordering`, `language`, `created`, `created_by`, `params`, `user_id`, `access`, `asset_id`, `publish_up`, `publish_down`)
 VALUES
   (1, 'Pastor', 'pastor', 1, 0, '0000-00-00 00:00:00', '0000-00-00 00:00:00', 0, '', '', '', 1, '*',
    '2012-12-03 21:09:21', 53, '', 0, 1, 37, '0000-00-00 00:00:00', '0000-00-00 00:00:00'),
@@ -382,10 +382,10 @@ VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `#__churchdirectory_update`
+-- Table structure for table `#__cwmconnect_update`
 --
 
-CREATE TABLE IF NOT EXISTS `#__churchdirectory_update` (
+CREATE TABLE IF NOT EXISTS `#__cwmconnect_update` (
   `id`      INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `version` VARCHAR(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
@@ -396,8 +396,8 @@ CREATE TABLE IF NOT EXISTS `#__churchdirectory_update` (
   AUTO_INCREMENT =6;
 
 --
--- Dumping data for table `#__churchdirectory_update`
+-- Dumping data for table `#__cwmconnect_update`
 --
 
-INSERT INTO `#__churchdirectory_update` (`id`, `version`) VALUES
+INSERT INTO `#__cwmconnect_update` (`id`, `version`) VALUES
   (1, '1.8.2');

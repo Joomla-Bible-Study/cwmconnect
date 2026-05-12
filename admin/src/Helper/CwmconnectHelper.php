@@ -1,7 +1,7 @@
 <?php
 
 /**
- * @package    Churchdirectory.Admin
+ * @package    Cwmconnect.Admin
  * @copyright  (C) 2026 CWM Team All rights reserved
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * @link       https://www.christianwebministries.org
@@ -9,7 +9,7 @@
 
 declare(strict_types=1);
 
-namespace CWM\Component\Churchdirectory\Administrator\Helper;
+namespace CWM\Component\Connect\Administrator\Helper;
 
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
@@ -22,11 +22,11 @@ use Joomla\CMS\Object\CMSObject;
 use Joomla\Database\DatabaseInterface;
 
 /**
- * Churchdirectory administration helper.
+ * Cwmconnect administration helper.
  *
  * @since  2.0.0
  */
-class ChurchdirectoryHelper
+class CwmconnectHelper
 {
     /**
      * Component option.
@@ -34,7 +34,7 @@ class ChurchdirectoryHelper
      * @var string
      * @since 2.0.0
      */
-    public static string $extension = 'com_churchdirectory';
+    public static string $extension = 'com_cwmconnect';
 
     /**
      * Gets a list of the actions that can be performed.
@@ -130,12 +130,12 @@ class ChurchdirectoryHelper
         $db    = Factory::getContainer()->get(DatabaseInterface::class);
         $query = $db->getQuery(true);
 
-        $query->from($db->quoteName('#__churchdirectory_details', 'c'))
+        $query->from($db->quoteName('#__cwmconnect_details', 'c'))
             ->join(
                 'INNER',
                 $db->quoteName('#__associations', 'a')
                 . ' ON ' . $db->quoteName('a.id') . ' = ' . $db->quoteName('c.id')
-                . ' AND ' . $db->quoteName('a.context') . ' = ' . $db->quote('com_churchdirectory.item')
+                . ' AND ' . $db->quoteName('a.context') . ' = ' . $db->quote('com_cwmconnect.item')
             )
             ->join(
                 'INNER',
@@ -144,14 +144,14 @@ class ChurchdirectoryHelper
             )
             ->join(
                 'INNER',
-                $db->quoteName('#__churchdirectory_details', 'c2')
+                $db->quoteName('#__cwmconnect_details', 'c2')
                 . ' ON ' . $db->quoteName('a2.id') . ' = ' . $db->quoteName('c2.id')
             )
             ->join(
                 'INNER',
                 $db->quoteName('#__categories', 'ca')
                 . ' ON ' . $db->quoteName('c2.catid') . ' = ' . $db->quoteName('ca.id')
-                . ' AND ' . $db->quoteName('ca.extension') . ' = ' . $db->quote('com_churchdirectory')
+                . ' AND ' . $db->quoteName('ca.extension') . ' = ' . $db->quote('com_cwmconnect')
             )
             ->where($db->quoteName('c.id') . ' = ' . (int) $pk)
             ->select([
@@ -201,7 +201,7 @@ class ChurchdirectoryHelper
             $query = $db->getQuery(true)
                 ->select($db->quoteName('published', 'state'))
                 ->select('COUNT(*) AS ' . $db->quoteName('count'))
-                ->from($db->quoteName('#__churchdirectory_details'))
+                ->from($db->quoteName('#__cwmconnect_details'))
                 ->where($db->quoteName('catid') . ' = ' . (int) $item->id)
                 ->group($db->quoteName('published'));
 
