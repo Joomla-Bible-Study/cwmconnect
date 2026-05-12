@@ -4,9 +4,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project status
 
-cwmconnect is in **active modernization**: a Joomla 3.x / PHP 7.x component is being rewritten as a Joomla 5/6 / PHP 8.3 package (`pkg_cwmconnect`) following the [Proclaim](../Proclaim) layout and the [cwm-build-tools](../cwm-build-tools) toolchain (with [CWMScriptureLinks](../CWMScriptureLinks) and [CWMLivingWord](../CWMLivingWord) as the wire-in references).
+cwmconnect is in **active modernization**: a Joomla 3.x / PHP 7.x component is being rewritten as a Joomla 5/6 / PHP 8.4 package (`pkg_cwmconnect`) following the [Proclaim](../Proclaim) layout and the [cwm-build-tools](../cwm-build-tools) toolchain (with [CWMScriptureLinks](../CWMScriptureLinks) and [CWMLivingWord](../CWMLivingWord) as the wire-in references).
 
-The legacy Joomla 3 source still lives under [admin/](admin/), [site/](site/), [modules/site/mod_birthdayanniversary/](modules/site/mod_birthdayanniversary/), and [plugins/finder/churchdirectory/](plugins/finder/churchdirectory/) — that code does not run on Joomla 5/6 and will be migrated, not preserved, as the phases land. Treat existing classes as **migration source**, not as patterns to follow for new code.
+The legacy Joomla 3 source tree has been deleted in phases 4a–4d. Every component / module / plugin runtime path now lives under `admin/src/`, `site/src/`, `modules/site/mod_birthdayanniversary/src/`, and `plugins/finder/churchdirectory/src/`.
 
 ## Migration phases
 
@@ -17,20 +17,23 @@ The legacy Joomla 3 source still lives under [admin/](admin/), [site/](site/), [
 | 2 | Manifests: `<namespace>` + `<compatibility>` + `<scriptfile>script.php</scriptfile>` for component, module, finder plugin | done |
 | 3a | Dispatch infra: `admin/services/provider.php` + admin/site Dispatcher + Extension class | done |
 | 3b | Admin PSR-4 entities + singletons + helpers + HTML services + custom fields (all under `admin/src/`) | done |
-| 4a | Drop legacy admin entry stubs (`admin/api.php`, `admin/churchdirectory.php`, `admin/controller.php`) | **next** |
-| 4b | Port `site/` to PSR-4 under `site/src/` (Controller, Model, View, Helper, Router, Service) | pending |
-| 4c | Rewrite `mod_birthdayanniversary` with the J5 Dispatcher pattern (`modules/site/mod_birthdayanniversary/src/Dispatcher`) | pending |
-| 4d | Rewrite `plugins/finder/churchdirectory` as event subscriber (`SubscriberInterface`) | pending |
-| 5 | PHP 8.3 idioms (strict_types, type declarations, property promotion, readonly) | pending |
+| 4a | Drop legacy admin entry stubs (`admin/api.php`, `admin/churchdirectory.php`, `admin/controller.php`) | done |
+| 4b | Port `site/` to PSR-4 under `site/src/` (Controller, Model, View, Helper, Router, Service) | done |
+| 4c | Rewrite `mod_birthdayanniversary` with the J5 Dispatcher pattern | done |
+| 4d | Rewrite `plugins/finder/churchdirectory` as event subscriber (`SubscriberInterface`) | done |
+| 5a | PHP 8.4 minimum: composer.json + manifest `<php minimum>` + CI workflow | **next** |
+| 5b | `admin/src/` idioms: `declare(strict_types=1)`, tight type declarations, property promotion, `readonly`, PHP 8.4 features where they fit | pending |
+| 5c | `site/src/` idioms | pending |
+| 5d | Module + finder plugin idioms | pending |
 | 6 | Frontend: drop LESS pipeline, register WebAssets via `joomla.asset.json` | pending |
 | 7 | SQL: utf8mb4 + J5/J6 update files | pending |
-| 8 | Tests + CI parity (`tests/unit/`, J5×J6 × PHP 8.3×8.4 matrix) | pending |
+| 8 | Tests + CI parity (`tests/unit/`, J5×J6 × PHP 8.4 matrix) | pending |
 | 9 | Release plumbing: changelog XML, ARS category/stream IDs, updateservers | pending |
 
 ## Target shape (Proclaim-mirrored, unprefixed Joomla-standard naming)
 
 ```
-churchdirectory.xml                          # type=component, J5+J6, php 8.3
+churchdirectory.xml                          # type=component, J5+J6, php 8.4
 churchdirectory.script.php                   # rewritten for namespaced base
 admin/
   services/provider.php                      # registers MVCFactory + ComponentDispatcherFactory
@@ -61,7 +64,7 @@ build/
   build-package.php                          # zip builder                        ✅ phase 1 (stub)
   cwmconnect-changelog.xml                   # ← phase 9
 cwm-build.config.json                        # build-tools config                 ✅ phase 1
-composer.json                                # PHP 8.3 / PSR-4 / cwm/build-tools  ✅ phase 1
+composer.json                                # PHP 8.4 / PSR-4 / cwm/build-tools  ✅ phase 1
 .github/workflows/ci.yml                     # GH Actions                         ✅ phase 1
 ```
 
