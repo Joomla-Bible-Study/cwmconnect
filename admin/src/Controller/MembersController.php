@@ -7,15 +7,20 @@
  * @link       https://www.christianwebministries.org
  */
 
+declare(strict_types=1);
+
 namespace CWM\Component\Churchdirectory\Administrator\Controller;
 
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
+use Joomla\CMS\Application\CMSWebApplicationInterface;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Controller\AdminController;
+use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\Input\Input;
 use Joomla\Utilities\ArrayHelper;
 
 /**
@@ -34,16 +39,20 @@ class MembersController extends AdminController
     /**
      * Constructor.
      *
-     * @param   array                $config   An optional associative array of configuration settings.
-     * @param   mixed                $factory  The factory.
-     * @param   mixed                $app      The Application object.
-     * @param   mixed                $input    Input.
+     * @param   array                             $config   An optional associative array of configuration settings.
+     * @param   MVCFactoryInterface|null          $factory  The factory.
+     * @param   CMSWebApplicationInterface|null   $app      The Application object.
+     * @param   Input|null                        $input    Input.
      *
      * @throws  \Exception
      * @since   2.0.0
      */
-    public function __construct($config = [], $factory = null, $app = null, $input = null)
-    {
+    public function __construct(
+        $config = [],
+        ?MVCFactoryInterface $factory = null,
+        ?CMSWebApplicationInterface $app = null,
+        ?Input $input = null,
+    ) {
         parent::__construct($config, $factory, $app, $input);
 
         $this->registerTask('unfeatured', 'featured');

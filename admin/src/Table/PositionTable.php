@@ -7,6 +7,8 @@
  * @link       https://www.christianwebministries.org
  */
 
+declare(strict_types=1);
+
 namespace CWM\Component\Churchdirectory\Administrator\Table;
 
 // phpcs:disable PSR1.Files.SideEffects
