@@ -14,6 +14,7 @@ namespace CWM\Component\Churchdirectory\Administrator\Controller;
 // phpcs:enable PSR1.Files.SideEffects
 
 use CWM\Component\Churchdirectory\Administrator\Model\ReportsModel;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Controller\BaseController;
 use Joomla\CMS\Session\Session;
 
@@ -60,7 +61,9 @@ class ReportsController extends BaseController
      */
     public function export(): void
     {
-        Session::checkToken('get') || Session::checkToken();
+        if (!Session::checkToken('get') && !Session::checkToken()) {
+            throw new \Exception(Text::_('JINVALID_TOKEN_NOTICE'), 403);
+        }
 
         $report = (string) $this->input->get('report', 'directory', 'string');
         $type   = (string) $this->input->get('cdtype', 'csv', 'cmd');
