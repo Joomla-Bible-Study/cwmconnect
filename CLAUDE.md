@@ -21,14 +21,16 @@ The legacy Joomla 3 source tree has been deleted in phases 4a–4d. Every compon
 | 4b | Port `site/` to PSR-4 under `site/src/` (Controller, Model, View, Helper, Router, Service) | done |
 | 4c | Rewrite `mod_birthdayanniversary` with the J5 Dispatcher pattern | done |
 | 4d | Rewrite `plugins/finder/churchdirectory` as event subscriber (`SubscriberInterface`) | done |
-| 5a | PHP 8.4 minimum: composer.json + manifest `<php minimum>` + CI workflow | **next** |
-| 5b | `admin/src/` idioms: `declare(strict_types=1)`, tight type declarations, property promotion, `readonly`, PHP 8.4 features where they fit | pending |
-| 5c | `site/src/` idioms | pending |
-| 5d | Module + finder plugin idioms | pending |
-| 6 | Frontend: drop LESS pipeline, register WebAssets via `joomla.asset.json` | pending |
-| 7 | SQL: utf8mb4 + J5/J6 update files | pending |
-| 8 | Tests + CI parity (`tests/unit/`, J5×J6 × PHP 8.4 matrix) | pending |
-| 9 | Release plumbing: changelog XML, ARS category/stream IDs, updateservers | pending |
+| 5a | PHP 8.4 minimum: composer.json + manifest `<php minimum>` + CI workflow | done |
+| 5b | `admin/src/` idioms: `declare(strict_types=1)`, tight type declarations, property promotion, `readonly`, PHP 8.4 features where they fit | done |
+| 5c | `site/src/` idioms | done |
+| 5d | Module + finder plugin idioms | done |
+| 6 | Frontend: drop LESS pipeline, register WebAssets via `joomla.asset.json` | done |
+| 7 | SQL: utf8mb4 + J5/J6 update files | done |
+| 8 | Tests + CI parity (`tests/unit/`, J5×J6 × PHP 8.4 matrix) | done |
+| 9 | Release plumbing: changelog skeleton + `<changelogurl>` + ARS placeholders | **done (placeholders)** |
+
+Phases 0–9 cover the **port** from Joomla 3 to a Joomla 5/6 / PHP 8.4 package skeleton. After this point we'll be doing a lot of **rebuilding** against a live J5/J6 install — wiring up integrations, fixing what live testing surfaces, and populating real ARS category / stream IDs (currently `0` in [cwm-build.config.json](cwm-build.config.json)) before the first production release.
 
 ## Target shape (Proclaim-mirrored, unprefixed Joomla-standard naming)
 
