@@ -1102,6 +1102,77 @@
 		       label="Form URL"
 		       description="Request to Register as Member of the church form"/>
 	</fieldset>
+	<fieldset name="planningcenter"
+	          label="COM_CWMCONNECT_FIELDSET_PLANNING_CENTER_LABEL"
+	          description="COM_CWMCONNECT_FIELDSET_PLANNING_CENTER_DESC"
+	>
+		<field name="pc_enabled"
+		       type="radio"
+		       layout="joomla.form.field.radio.switcher"
+		       default="0"
+		       label="COM_CWMCONNECT_FIELD_PC_ENABLED_LABEL"
+		       description="COM_CWMCONNECT_FIELD_PC_ENABLED_DESC"
+		>
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+		<field name="pc_personal_access_token"
+		       type="password"
+		       autocomplete="off"
+		       size="60"
+		       label="COM_CWMCONNECT_FIELD_PC_PAT_LABEL"
+		       description="COM_CWMCONNECT_FIELD_PC_PAT_DESC"
+		       showon="pc_enabled:1"
+		/>
+
+		<field name="pc_application_id"
+		       type="text"
+		       size="60"
+		       label="COM_CWMCONNECT_FIELD_PC_APP_ID_LABEL"
+		       description="COM_CWMCONNECT_FIELD_PC_APP_ID_DESC"
+		       showon="pc_enabled:1"
+		/>
+
+		<field name="pc_api_base_url"
+		       type="url"
+		       size="60"
+		       default="https://api.planningcenteronline.com"
+		       label="COM_CWMCONNECT_FIELD_PC_BASE_URL_LABEL"
+		       description="COM_CWMCONNECT_FIELD_PC_BASE_URL_DESC"
+		       showon="pc_enabled:1"
+		/>
+
+		<field name="pc_membership_statuses"
+		       type="textarea"
+		       rows="4"
+		       cols="40"
+		       default="Member&#10;Regular Attender"
+		       label="COM_CWMCONNECT_FIELD_PC_STATUSES_LABEL"
+		       description="COM_CWMCONNECT_FIELD_PC_STATUSES_DESC"
+		       showon="pc_enabled:1"
+		/>
+
+		<field name="pc_list_id"
+		       type="text"
+		       size="20"
+		       label="COM_CWMCONNECT_FIELD_PC_LIST_ID_LABEL"
+		       description="COM_CWMCONNECT_FIELD_PC_LIST_ID_DESC"
+		       showon="pc_enabled:1"
+		/>
+
+		<field name="pc_archive_policy"
+		       type="radio"
+		       layout="joomla.form.field.radio.switcher"
+		       default="archive"
+		       label="COM_CWMCONNECT_FIELD_PC_ARCHIVE_POLICY_LABEL"
+		       description="COM_CWMCONNECT_FIELD_PC_ARCHIVE_POLICY_DESC"
+		       showon="pc_enabled:1"
+		>
+			<option value="archive">COM_CWMCONNECT_FIELD_PC_ARCHIVE_POLICY_ARCHIVE</option>
+			<option value="delete">COM_CWMCONNECT_FIELD_PC_ARCHIVE_POLICY_DELETE</option>
+		</field>
+	</fieldset>
 	<fieldset name="permissions"
 	          label="JCONFIG_PERMISSIONS_LABEL"
 	          description="JCONFIG_PERMISSIONS_DESC"
