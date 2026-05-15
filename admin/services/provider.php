@@ -10,7 +10,10 @@
 \defined('_JEXEC') or die;
 
 use CWM\Component\Cwmconnect\Administrator\Extension\CwmconnectComponent;
+use CWM\Component\Cwmconnect\Administrator\Service\Pc\Client as PcClient;
+use CWM\Component\Cwmconnect\Administrator\Service\Pc\Exception\ConfigurationException as PcConfigurationException;
 use Joomla\CMS\Categories\CategoryFactoryInterface;
+use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Component\Router\RouterFactoryInterface;
 use Joomla\CMS\Dispatcher\ComponentDispatcherFactoryInterface;
 use Joomla\CMS\Extension\ComponentInterface;
@@ -19,6 +22,7 @@ use Joomla\CMS\Extension\Service\Provider\ComponentDispatcherFactory;
 use Joomla\CMS\Extension\Service\Provider\MVCFactory;
 use Joomla\CMS\Extension\Service\Provider\RouterFactory;
 use Joomla\CMS\HTML\Registry;
+use Joomla\CMS\Http\HttpFactory;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\DI\Container;
 use Joomla\DI\ServiceProviderInterface;
@@ -42,6 +46,34 @@ return new class () implements ServiceProviderInterface {
 
                 return $component;
             }
+        );
+
+        // Planning Center client. Resolves lazily — reads component params at
+        // first request so config edits take effect without a service rebuild.
+        // Throws PcConfigurationException if the token is empty; callers
+        // (Phase C sync entry point) catch and surface a "not configured"
+        // state instead of letting the exception bubble.
+        $container->set(
+            PcClient::class,
+            static function (): PcClient {
+                $params  = ComponentHelper::getParams('com_cwmconnect');
+                $token   = (string) $params->get('pc_personal_access_token', '');
+                $appId   = (string) $params->get('pc_application_id', '');
+                $baseUrl = (string) $params->get('pc_api_base_url', PcClient::DEFAULT_BASE_URL);
+
+                if ($token === '') {
+                    throw new PcConfigurationException(
+                        'Planning Center is not configured: personal access token is empty.',
+                    );
+                }
+
+                return new PcClient(
+                    http: HttpFactory::getHttp(),
+                    personalAccessToken: $token,
+                    applicationId: $appId,
+                    baseUrl: $baseUrl !== '' ? $baseUrl : PcClient::DEFAULT_BASE_URL,
+                );
+            },
         );
     }
 };
