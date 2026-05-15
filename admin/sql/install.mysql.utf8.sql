@@ -5,7 +5,14 @@ SET SQL_MODE = '';
 --
 
 CREATE TABLE IF NOT EXISTS `#__cwmconnect_details` (
-  `id`               INT(11)             NOT NULL AUTO_INCREMENT,
+  `id`                   INT(11)                                NOT NULL AUTO_INCREMENT,
+  `pc_person_id`         BIGINT                                 NULL,
+  `pc_last_synced_at`    DATETIME                               NULL,
+  `display_in_directory` TINYINT(1)                             NOT NULL DEFAULT 1,
+  `directory_scope`      ENUM('public', 'household', 'hidden')  NOT NULL DEFAULT 'public',
+  `pc_shared_info`       JSON                                   NULL,
+  `image_filename`       VARCHAR(255)                           NULL,
+  `image_hash`           VARCHAR(64)                            NULL,
   `name`             VARCHAR(255)        NOT NULL DEFAULT '',
   `lname`            VARCHAR(255)        NOT NULL DEFAULT '',
   `alias`            VARCHAR(255)        NOT NULL DEFAULT '',
@@ -68,6 +75,7 @@ CREATE TABLE IF NOT EXISTS `#__cwmconnect_details` (
   `mstatus`          TINYINT(3)          NOT NULL DEFAULT '0'
   COMMENT 'Used to track Members Status',
   PRIMARY KEY (`id`),
+  UNIQUE KEY `uniq_pc_person_id` (`pc_person_id`),
   KEY `idx_catid` (`catid`),
   KEY `idx_access` (`access`),
   KEY `Idx_checkout` (`checked_out`),
@@ -77,7 +85,9 @@ CREATE TABLE IF NOT EXISTS `#__cwmconnect_details` (
   KEY `idx_language` (`language`),
   KEY `idx_xreference` (`xreference`),
   KEY `idx_kmlid` (`kmlid`),
-  KEY `idx_funit` (`funitid`)
+  KEY `idx_funit` (`funitid`),
+  KEY `idx_display_in_directory` (`display_in_directory`),
+  KEY `idx_directory_scope` (`directory_scope`)
 )
   ENGINE =InnoDB
   DEFAULT CHARSET = utf8mb4
@@ -401,3 +411,29 @@ CREATE TABLE IF NOT EXISTS `#__cwmconnect_update` (
 
 INSERT INTO `#__cwmconnect_update` (`id`, `version`) VALUES
   (1, '1.8.2');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `#__cwmconnect_feed_tokens`
+--
+-- Per-user revocable tokens for member self-service KML feed URLs
+-- (Phase I). One row per token; the secret is shown to the user once
+-- at issue and never stored — only its SHA-256 hash lives here.
+--
+
+CREATE TABLE IF NOT EXISTS `#__cwmconnect_feed_tokens` (
+  `id`           INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `user_id`      INT UNSIGNED NOT NULL,
+  `token_hash`   CHAR(64)     NOT NULL,
+  `label`        VARCHAR(120) NOT NULL,
+  `created_at`   DATETIME     NOT NULL,
+  `last_used_at` DATETIME     NULL,
+  `revoked_at`   DATETIME     NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uniq_token_hash` (`token_hash`),
+  KEY `idx_user_id` (`user_id`)
+)
+  ENGINE          = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  DEFAULT COLLATE = utf8mb4_unicode_ci;
