@@ -182,7 +182,7 @@
 
         try {
             return JSON.parse(text);
-        } catch (e) {
+        } catch {
             return {
                 success: false,
                 message: options.i18n.unknownError,
