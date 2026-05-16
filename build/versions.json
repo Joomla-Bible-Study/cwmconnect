@@ -1,0 +1,22 @@
+{
+    "_comment": "Development version state. Updated by cwm-release after each release. Source of truth for @since tags during active development.",
+    "_updated": "2026-05-15",
+    "current": {
+        "version": "1.8.3",
+        "description": "Last stable release (final Joomla 3 line before the J5/6 modernisation)"
+    },
+    "next": {
+        "patch": "2.0.1",
+        "minor": "2.1.0",
+        "major": "3.0.0"
+    },
+    "active_development": {
+        "version": "2.0.0",
+        "description": "Use this for @since tags and migrations during in-progress work"
+    },
+    "notes": {
+        "patch": "Bug fixes only, no new features",
+        "minor": "New features, backward compatible",
+        "major": "Breaking changes"
+    }
+}

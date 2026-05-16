@@ -4,7 +4,7 @@
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
  * @link       https://www.christianwebministries.org
  *
- * @since   __DEPLOY_VERSION__
+ * @since   2.0.0
  */
 
 /**
