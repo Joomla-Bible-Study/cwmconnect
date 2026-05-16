@@ -11,7 +11,11 @@
 
 use CWM\Component\Cwmconnect\Administrator\Extension\CwmconnectComponent;
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\Client as PcClient;
+use CWM\Component\Cwmconnect\Administrator\Service\Pc\DatabaseMemberRepository as PcDatabaseMemberRepository;
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\Exception\ConfigurationException as PcConfigurationException;
+use CWM\Component\Cwmconnect\Administrator\Service\Pc\MemberRepositoryInterface as PcMemberRepositoryInterface;
+use CWM\Component\Cwmconnect\Administrator\Service\Pc\PersonMapper as PcPersonMapper;
+use CWM\Component\Cwmconnect\Administrator\Service\Pc\SyncEngine as PcSyncEngine;
 use Joomla\CMS\Categories\CategoryFactoryInterface;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Component\Router\RouterFactoryInterface;
@@ -24,6 +28,7 @@ use Joomla\CMS\Extension\Service\Provider\RouterFactory;
 use Joomla\CMS\HTML\Registry;
 use Joomla\CMS\Http\HttpFactory;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
+use Joomla\Database\DatabaseInterface;
 use Joomla\DI\Container;
 use Joomla\DI\ServiceProviderInterface;
 
@@ -74,6 +79,29 @@ return new class () implements ServiceProviderInterface {
                     baseUrl: $baseUrl !== '' ? $baseUrl : PcClient::DEFAULT_BASE_URL,
                 );
             },
+        );
+
+        // PC sync support services: stateless mapper, DB-backed repository,
+        // and the engine that ties them together. Resolved per request so
+        // tests can override individual collaborators via the container.
+        $container->set(
+            PcPersonMapper::class,
+            static fn(): PcPersonMapper => new PcPersonMapper(),
+        );
+
+        $container->set(
+            PcMemberRepositoryInterface::class,
+            static fn(Container $c): PcMemberRepositoryInterface
+                => new PcDatabaseMemberRepository($c->get(DatabaseInterface::class)),
+        );
+
+        $container->set(
+            PcSyncEngine::class,
+            static fn(Container $c): PcSyncEngine => new PcSyncEngine(
+                client:     $c->get(PcClient::class),
+                repository: $c->get(PcMemberRepositoryInterface::class),
+                mapper:     $c->get(PcPersonMapper::class),
+            ),
         );
     }
 };

@@ -59,6 +59,17 @@
       "attributes": {
         "defer": true
       }
+    },
+    {
+      "name": "com_cwmconnect.admin-pc-sync",
+      "type": "script",
+      "uri": "com_cwmconnect/js/admin-pc-sync.js",
+      "dependencies": [
+        "core"
+      ],
+      "attributes": {
+        "defer": true
+      }
     }
   ]
 }

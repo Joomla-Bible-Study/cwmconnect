@@ -39,5 +39,40 @@ use Joomla\CMS\Router\Route;
                 <?php endif; ?>
             </div>
         </div>
+
+        <?php if ($this->pcEnabled) : ?>
+            <div class="row mt-4">
+                <div class="col-md-9">
+                    <div class="card" id="pc-sync-card">
+                        <div class="card-header">
+                            <h3 class="card-title mb-0"><?php echo Text::_('COM_CWMCONNECT_PC_CARD_TITLE'); ?></h3>
+                        </div>
+                        <div class="card-body">
+                            <p class="text-muted">
+                                <?php echo Text::_('COM_CWMCONNECT_PC_CARD_INTRO'); ?>
+                            </p>
+
+                            <div class="btn-group" role="group" aria-label="Planning Center actions">
+                                <button type="button"
+                                        class="btn btn-outline-secondary"
+                                        data-pc-action="test">
+                                    <span class="icon-link" aria-hidden="true"></span>
+                                    <?php echo Text::_('COM_CWMCONNECT_PC_BTN_TEST'); ?>
+                                </button>
+                                <button type="button"
+                                        class="btn btn-primary"
+                                        data-pc-action="sync">
+                                    <span class="icon-refresh" aria-hidden="true"></span>
+                                    <?php echo Text::_('COM_CWMCONNECT_PC_BTN_SYNC'); ?>
+                                </button>
+                            </div>
+
+                            <div class="mt-3" id="pc-sync-status" role="status" aria-live="polite"></div>
+                            <div class="mt-2" id="pc-sync-result"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <?php endif; ?>
     </div>
 </form>
