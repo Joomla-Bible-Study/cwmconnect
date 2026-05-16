@@ -1,0 +1,31 @@
+{
+    "name": "com_cwmconnect",
+    "version": "2.0.0-dev",
+    "description": "CWM Connect — Church Photo Directory component for Joomla 5/6. Frontend assets pipeline (rollup + eslint).",
+    "license": "GPL-2.0-or-later",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Joomla-Bible-Study/cwmconnect.git"
+    },
+    "private": true,
+    "engines": {
+        "node": ">=20.0.0",
+        "npm": ">=10.1.0"
+    },
+    "devDependencies": {
+        "@eslint/js": "^10.0.1",
+        "@rollup/plugin-node-resolve": "^16.0.3",
+        "@rollup/plugin-terser": "^1.0.0",
+        "eslint": "^10.0.1",
+        "globals": "^17.4.0",
+        "rollup": "^4.58.0",
+        "rollup-plugin-gzip": "^4.1.1"
+    },
+    "scripts": {
+        "build":      "npm run build:js",
+        "build:js":   "SOURCE_DIR=build/media_source/com_cwmconnect/js OUTPUT_DIR=media/com_cwmconnect/js rollup -c libraries/vendor/cwm/build-tools/templates/rollup.config.js",
+        "watch":      "SOURCE_DIR=build/media_source/com_cwmconnect/js OUTPUT_DIR=media/com_cwmconnect/js rollup -c libraries/vendor/cwm/build-tools/templates/rollup.config.js -w",
+        "lint":       "eslint .",
+        "lint:fix":   "eslint . --fix"
+    }
+}
