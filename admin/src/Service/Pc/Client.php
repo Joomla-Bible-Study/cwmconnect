@@ -93,7 +93,27 @@ class Client
      */
     public function getJson(string $path, array $query = []): array
     {
-        $url = $this->buildUrl($path, $query);
+        return $this->getJsonAbsolute($this->buildUrl($path, $query));
+    }
+
+    /**
+     * Issue a GET against a fully-qualified URL — used to follow `links.next`
+     * pagination URLs returned by PC, which arrive absolute. Validates that
+     * the URL targets the configured base host so a poisoned `next` value
+     * can't redirect us elsewhere.
+     *
+     * @param   string  $url  Fully-qualified URL (must share host with the
+     *                         configured base URL).
+     *
+     * @return  array<string, mixed>  Decoded JSON body.
+     *
+     * @throws  ApiException  When the host check fails or the call fails.
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    public function getJsonAbsolute(string $url): array
+    {
+        $this->assertSameHostAsBase($url);
 
         try {
             $response = $this->http->get($url, $this->buildHeaders(), $this->timeoutSeconds);
@@ -107,6 +127,30 @@ class Client
         }
 
         return $this->decode($response);
+    }
+
+    /**
+     * Guard against following a PC URL whose host differs from the configured
+     * base URL host. Defends against a malicious or buggy `links.next` value.
+     *
+     * @param   string  $url
+     *
+     * @return  void
+     *
+     * @throws  ApiException
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    private function assertSameHostAsBase(string $url): void
+    {
+        $baseHost = parse_url($this->baseUrl, \PHP_URL_HOST);
+        $urlHost  = parse_url($url, \PHP_URL_HOST);
+
+        if (!\is_string($baseHost) || !\is_string($urlHost) || strcasecmp($baseHost, $urlHost) !== 0) {
+            throw new ApiException(
+                \sprintf('Refusing to follow PC URL with foreign host: %s', (string) $urlHost),
+            );
+        }
     }
 
     private function buildUrl(string $path, array $query): string

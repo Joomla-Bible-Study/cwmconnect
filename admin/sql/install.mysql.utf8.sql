@@ -135,7 +135,9 @@ VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `#__cwmconnect_dirheader` (
-  `id`               INT(11)             NOT NULL AUTO_INCREMENT,
+  `id`                INT(11)             NOT NULL AUTO_INCREMENT,
+  `pc_campus_id`      BIGINT              NULL,
+  `pc_last_synced_at` DATETIME            NULL,
   `name`             VARCHAR(255)        NOT NULL DEFAULT '',
   `alias`            VARCHAR(255)
                      CHARACTER SET utf8mb4
@@ -163,7 +165,8 @@ CREATE TABLE IF NOT EXISTS `#__cwmconnect_dirheader` (
   `publish_down`     DATETIME            NOT NULL DEFAULT '0000-00-00 00:00:00',
   `section`          TINYINT(3)          NOT NULL DEFAULT '0'
   COMMENT 'Used to track position on page',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uniq_pc_campus_id` (`pc_campus_id`)
 )
   ENGINE =InnoDB
   DEFAULT CHARSET = utf8mb4
@@ -190,7 +193,9 @@ VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `#__cwmconnect_familyunit` (
-  `id`               INT(11)             NOT NULL AUTO_INCREMENT,
+  `id`                INT(11)             NOT NULL AUTO_INCREMENT,
+  `pc_household_id`   BIGINT              NULL,
+  `pc_last_synced_at` DATETIME            NULL,
   `name`             VARCHAR(255)        NOT NULL DEFAULT '',
   `alias`            VARCHAR(255)
                      CHARACTER SET utf8mb4
@@ -215,7 +220,8 @@ CREATE TABLE IF NOT EXISTS `#__cwmconnect_familyunit` (
   `asset_id`         INT(10) DEFAULT NULL,
   `publish_up`       DATETIME            NOT NULL DEFAULT '0000-00-00 00:00:00',
   `publish_down`     DATETIME            NOT NULL DEFAULT '0000-00-00 00:00:00',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uniq_pc_household_id` (`pc_household_id`)
 )
   ENGINE =InnoDB
   DEFAULT CHARSET = utf8mb4
