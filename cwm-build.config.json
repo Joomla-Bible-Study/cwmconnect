@@ -1,5 +1,12 @@
 {
     "_comment": "All three manifests bump in lockstep on a cwmconnect release: the component, the bundled site module, and the bundled finder plugin. The component is the primary surface; the module + finder plugin only ship from this repo and have no independent release cadence. ARS categoryId/updateStreamId are placeholders — populate before first release (run `cwm-ars-list` against the CWM ARS site to discover IDs).",
+    "_profile_comment": "Component-shaped versionTracking despite the package wrapper — cwmconnect owns its own versions.json + package.json on a single cadence. The substituteTokens.paths override drops 'language/' (cwmconnect has no top-level language/ dir; language files live under admin/language, site/language, modules/site/mod_birthdayanniversary/language, and plugins/finder/cwmconnect/language — all reached via the admin/, site/, modules/, plugins/ scan roots).",
+    "profile": "component",
+    "versionTracking": {
+        "substituteTokens": {
+            "paths": ["admin/", "site/", "modules/", "plugins/"]
+        }
+    },
     "extension": {
         "type": "package",
         "name": "pkg_cwmconnect"
