@@ -443,3 +443,39 @@ CREATE TABLE IF NOT EXISTS `#__cwmconnect_feed_tokens` (
   ENGINE          = InnoDB
   DEFAULT CHARSET = utf8mb4
   DEFAULT COLLATE = utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `#__cwmconnect_pc_field_map`
+--
+-- Phase D: maps a Planning Center custom-field definition to a Joomla
+-- custom field (#__fields row in context com_cwmconnect.member). The
+-- sync engine reads this table to translate each PC FieldDatum into a
+-- FieldsHelper::setFieldValue() call on the member row.
+--
+-- pc_field_id is the integer id from PC's FieldDefinition resource.
+-- pc_field_slug is a denormalised copy of the PC slug captured at map
+-- time, kept for admin display and rebuild-after-PC-rename diagnostics
+-- (never used to find the field — that's pc_field_id's job).
+--
+-- joomla_field_id is FK-shaped against #__fields.id but not declared
+-- as a real FK because #__fields belongs to com_fields and Joomla
+-- discourages cross-component FKs. The repository validates on save.
+--
+
+CREATE TABLE IF NOT EXISTS `#__cwmconnect_pc_field_map` (
+  `id`              INT UNSIGNED NOT NULL AUTO_INCREMENT,
+  `pc_field_id`     BIGINT       NOT NULL,
+  `pc_field_slug`   VARCHAR(120) NOT NULL DEFAULT '',
+  `pc_field_name`   VARCHAR(255) NOT NULL DEFAULT '',
+  `joomla_field_id` INT UNSIGNED NOT NULL,
+  `created_at`      DATETIME     NOT NULL,
+  `updated_at`      DATETIME     NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `uniq_pc_field_id`     (`pc_field_id`),
+  UNIQUE KEY `uniq_joomla_field_id` (`joomla_field_id`)
+)
+  ENGINE          = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  DEFAULT COLLATE = utf8mb4_unicode_ci;

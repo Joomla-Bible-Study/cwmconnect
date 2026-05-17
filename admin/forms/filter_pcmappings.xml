@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+    <fields name="filter">
+        <field
+            name="search"
+            type="text"
+            label="COM_CWMCONNECT_FILTER_SEARCH_LABEL"
+            description="COM_CWMCONNECT_FILTER_SEARCH_DESC"
+            hint="JSEARCH_FILTER"
+        />
+    </fields>
+
+    <fields name="list">
+        <field
+            name="fullordering"
+            type="list"
+            label="JGLOBAL_SORT_BY"
+            default="a.pc_field_name ASC"
+            onchange="this.form.submit();"
+        >
+            <option value="">JGLOBAL_SORT_BY</option>
+            <option value="a.pc_field_name ASC">COM_CWMCONNECT_PCMAPPINGS_HEADING_PC_FIELD ASC</option>
+            <option value="a.pc_field_name DESC">COM_CWMCONNECT_PCMAPPINGS_HEADING_PC_FIELD DESC</option>
+            <option value="a.pc_field_id ASC">COM_CWMCONNECT_PCMAPPINGS_HEADING_PC_FIELD_ID ASC</option>
+            <option value="a.pc_field_id DESC">COM_CWMCONNECT_PCMAPPINGS_HEADING_PC_FIELD_ID DESC</option>
+            <option value="a.id ASC">JGRID_HEADING_ID ASC</option>
+            <option value="a.id DESC">JGRID_HEADING_ID DESC</option>
+        </field>
+
+        <field
+            name="limit"
+            type="limitbox"
+            label="JGLOBAL_LIST_LIMIT"
+            default="25"
+            onchange="this.form.submit();"
+        />
+    </fields>
+</form>

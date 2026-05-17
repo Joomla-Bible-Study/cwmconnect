@@ -83,6 +83,124 @@ class Client
     }
 
     /**
+     * Fetch every Planning Center `FieldDefinition` resource, walking the
+     * paginated `/people/v2/field_definitions` index. Used by the admin
+     * Mapping screen (Phase D) so administrators can pick a real PC field
+     * to pair with a Joomla custom field — no need to type slugs or IDs
+     * by hand.
+     *
+     * Each returned row carries `id`, `slug`, `name`, `data_type` and the
+     * resolved tab name (best-effort; empty string when the field has no
+     * tab relationship or the included tab is missing).
+     *
+     * @return  list<array{id: int, slug: string, name: string, data_type: string, tab: string}>
+     *
+     * @throws  ApiException  On HTTP / transport / decoding failure.
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    public function listFieldDefinitions(): array
+    {
+        $url  = $this->buildUrl(
+            '/people/v2/field_definitions',
+            ['include' => 'tab', 'per_page' => '100'],
+        );
+        $rows = [];
+        $hops = 0;
+
+        do {
+            if (++$hops > 50) {
+                throw new ApiException('PC field_definitions pagination cap reached (50 pages).');
+            }
+
+            $page = $this->getJsonAbsolute($url);
+
+            $tabsByKey = $this->indexFieldDefinitionTabs(
+                \is_array($page['included'] ?? null) ? $page['included'] : [],
+            );
+
+            foreach ((array) ($page['data'] ?? []) as $row) {
+                if (!\is_array($row)) {
+                    continue;
+                }
+
+                $id    = (int) ($row['id'] ?? 0);
+                $attrs = \is_array($row['attributes'] ?? null) ? $row['attributes'] : [];
+
+                if ($id <= 0) {
+                    continue;
+                }
+
+                $rows[] = [
+                    'id'        => $id,
+                    'slug'      => (string) ($attrs['slug'] ?? ''),
+                    'name'      => (string) ($attrs['name'] ?? ''),
+                    'data_type' => (string) ($attrs['data_type'] ?? ''),
+                    'tab'       => $this->resolveTabName($row, $tabsByKey),
+                ];
+            }
+
+            $next = \is_array($page['links'] ?? null) ? ($page['links']['next'] ?? null) : null;
+            $url  = \is_string($next) && $next !== '' ? $next : null;
+        } while ($url !== null);
+
+        return $rows;
+    }
+
+    /**
+     * Build a `Tab:<id>` → name lookup from the `included` array on a
+     * paginated `/people/v2/field_definitions?include=tab` response.
+     *
+     * @param   array<int, array<string, mixed>>  $included
+     *
+     * @return  array<string, string>
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    private function indexFieldDefinitionTabs(array $included): array
+    {
+        $tabs = [];
+
+        foreach ($included as $resource) {
+            if (!\is_array($resource) || ($resource['type'] ?? null) !== 'Tab') {
+                continue;
+            }
+
+            $id    = $resource['id'] ?? null;
+            $attrs = \is_array($resource['attributes'] ?? null) ? $resource['attributes'] : [];
+
+            if (\is_string($id) || \is_int($id)) {
+                $tabs['Tab:' . $id] = (string) ($attrs['name'] ?? '');
+            }
+        }
+
+        return $tabs;
+    }
+
+    /**
+     * Read the `tab` relationship off a FieldDefinition row and resolve it
+     * against the included-tab index. Returns an empty string when the
+     * field has no tab or the tab resource wasn't included in the page.
+     *
+     * @param   array<string, mixed>  $row
+     * @param   array<string, string>  $tabsByKey
+     *
+     * @return  string
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    private function resolveTabName(array $row, array $tabsByKey): string
+    {
+        $tabRel = $row['relationships']['tab']['data'] ?? null;
+
+        if (!\is_array($tabRel) || !isset($tabRel['type'], $tabRel['id'])) {
+            return '';
+        }
+
+        return $tabsByKey[$tabRel['type'] . ':' . $tabRel['id']] ?? '';
+    }
+
+    /**
      * Issue a GET against a relative PC API path and decode the JSON body.
      *
      * @param  string                $path   Path relative to the base URL

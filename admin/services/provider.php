@@ -11,8 +11,12 @@
 
 use CWM\Component\Cwmconnect\Administrator\Extension\CwmconnectComponent;
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\Client as PcClient;
+use CWM\Component\Cwmconnect\Administrator\Service\Pc\CustomFieldWriterInterface as PcCustomFieldWriterInterface;
+use CWM\Component\Cwmconnect\Administrator\Service\Pc\DatabaseFieldMapRepository as PcDatabaseFieldMapRepository;
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\DatabaseMemberRepository as PcDatabaseMemberRepository;
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\Exception\ConfigurationException as PcConfigurationException;
+use CWM\Component\Cwmconnect\Administrator\Service\Pc\FieldMapRepositoryInterface as PcFieldMapRepositoryInterface;
+use CWM\Component\Cwmconnect\Administrator\Service\Pc\FieldsHelperWriter as PcFieldsHelperWriter;
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\MemberRepositoryInterface as PcMemberRepositoryInterface;
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\PersonMapper as PcPersonMapper;
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\SyncEngine as PcSyncEngine;
@@ -32,7 +36,7 @@ use Joomla\Database\DatabaseInterface;
 use Joomla\DI\Container;
 use Joomla\DI\ServiceProviderInterface;
 
-return new class () implements ServiceProviderInterface {
+return new class implements ServiceProviderInterface {
     public function register(Container $container): void
     {
         $container->registerServiceProvider(new CategoryFactory('\\CWM\\Component\\Cwmconnect'));
@@ -95,12 +99,28 @@ return new class () implements ServiceProviderInterface {
                 => new PcDatabaseMemberRepository($c->get(DatabaseInterface::class)),
         );
 
+        // Phase D: PC custom-field mapping repo + writer. Engine constructor
+        // accepts them as nullable (Phase C parity), but in production we
+        // always wire them so an admin who's saved mappings sees them used.
+        $container->set(
+            PcFieldMapRepositoryInterface::class,
+            static fn(Container $c): PcFieldMapRepositoryInterface
+                => new PcDatabaseFieldMapRepository($c->get(DatabaseInterface::class)),
+        );
+
+        $container->set(
+            PcCustomFieldWriterInterface::class,
+            static fn(): PcCustomFieldWriterInterface => new PcFieldsHelperWriter(),
+        );
+
         $container->set(
             PcSyncEngine::class,
             static fn(Container $c): PcSyncEngine => new PcSyncEngine(
-                client:     $c->get(PcClient::class),
+                client: $c->get(PcClient::class),
                 repository: $c->get(PcMemberRepositoryInterface::class),
-                mapper:     $c->get(PcPersonMapper::class),
+                mapper: $c->get(PcPersonMapper::class),
+                fieldMapRepo: $c->get(PcFieldMapRepositoryInterface::class),
+                fieldWriter: $c->get(PcCustomFieldWriterInterface::class),
             ),
         );
     }

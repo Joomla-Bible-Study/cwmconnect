@@ -21,11 +21,12 @@ use CWM\Component\Cwmconnect\Administrator\Service\Pc\Exception\ApiException;
  * Translates one Planning Center `Person` resource into the column → value
  * shape `MemberRepository::upsertByPcPersonId()` expects.
  *
- * Scope per Phase C: name / contact info / address / privacy gates.
- * Custom fields (`field_data`) defer to Phase D. Avatar / image cache defer
- * to Phase E. Household + campus relationship resolution defer to D (the
- * columns exist after Phase A's migration and this PR's companion migration,
- * but populating them with the right local FK is the next phase's job).
+ * Phase C scope: name / contact info / address / privacy gates.
+ * Phase D extends this with {@see extractFieldData()} for PC custom fields.
+ * Avatar / image cache defer to Phase E. Household + campus relationship
+ * resolution defer to a later phase (the columns exist after Phase A +
+ * Phase C's companion migration; populating them with the right local FK
+ * is still future work).
  *
  * The mapper is intentionally pure (no DB, no logger, no clock) — easy to
  * unit-test by feeding canned PC payloads.
@@ -75,7 +76,7 @@ final class PersonMapper
 
         return [
             'pc_person_id'         => $pcPersonId,
-            'pc_last_synced_at'    => (new \DateTimeImmutable())->format('Y-m-d H:i:s'),
+            'pc_last_synced_at'    => new \DateTimeImmutable()->format('Y-m-d H:i:s'),
             'name'                 => $fullName !== '' ? $fullName : $this->stringAttr($attrs, 'name'),
             'lname'                => $lastName,
             'surname'              => $lastName,
@@ -94,6 +95,71 @@ final class PersonMapper
             'pc_shared_info'       => $this->encodeSharedInfo($attrs['directory_shared_info'] ?? null),
             'display_in_directory' => ($isChild || $directoryStatus === 'no') ? 0 : 1,
         ];
+    }
+
+    /**
+     * Phase D: extract every `FieldDatum` related to a person via the
+     * `field_data` relationship, paired with the PC FieldDefinition id it
+     * targets. The sync engine resolves each `pc_field_id` against the
+     * admin-managed mapping table and writes the value through
+     * `FieldsHelper::setFieldValue('com_cwmconnect.member', ...)`.
+     *
+     * Sensitive PC resources (notes, medical, background checks) are never
+     * requested in the engine's `?include=` query, so this method only ever
+     * sees `FieldDatum` rows. Any non-FieldDatum entry in `$included` is
+     * skipped silently.
+     *
+     * @param   array<string, mixed>             $personData  PC Person row.
+     * @param   array<int, array<string, mixed>> $included    JSON:API
+     *                                                        `included` array.
+     *
+     * @return  list<array{pc_field_id: int, value: string}>
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    public function extractFieldData(array $personData, array $included): array
+    {
+        $byTypeId = $this->indexIncluded($included);
+        $refs     = $this->relationshipIds($personData)['field_data'] ?? [];
+        $out      = [];
+
+        foreach ($refs as $ref) {
+            if ($ref['type'] !== 'FieldDatum') {
+                continue;
+            }
+
+            $resource = $byTypeId['FieldDatum:' . $ref['id']] ?? null;
+
+            if ($resource === null) {
+                continue;
+            }
+
+            $attrs    = (array) ($resource['attributes'] ?? []);
+            $value    = $attrs['value'] ?? null;
+
+            if (!\is_scalar($value) || (string) $value === '') {
+                continue;
+            }
+
+            $fdRel = $resource['relationships']['field_definition']['data'] ?? null;
+
+            if (!\is_array($fdRel) || ($fdRel['type'] ?? null) !== 'FieldDefinition') {
+                continue;
+            }
+
+            $pcFieldId = (int) ($fdRel['id'] ?? 0);
+
+            if ($pcFieldId <= 0) {
+                continue;
+            }
+
+            $out[] = [
+                'pc_field_id' => $pcFieldId,
+                'value'       => (string) $value,
+            ];
+        }
+
+        return $out;
     }
 
     /**

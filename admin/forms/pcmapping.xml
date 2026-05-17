@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+    <field name="id" type="hidden" default="0" readonly="true"/>
+
+    <field name="pc_field_id"
+           type="number"
+           label="COM_CWMCONNECT_PCMAPPING_FIELD_PC_FIELD_ID_LABEL"
+           description="COM_CWMCONNECT_PCMAPPING_FIELD_PC_FIELD_ID_DESC"
+           required="true"
+           filter="integer"
+           min="1"
+    />
+
+    <field name="pc_field_slug"
+           type="text"
+           label="COM_CWMCONNECT_PCMAPPING_FIELD_PC_FIELD_SLUG_LABEL"
+           description="COM_CWMCONNECT_PCMAPPING_FIELD_PC_FIELD_SLUG_DESC"
+           maxlength="120"
+           filter="string"
+    />
+
+    <field name="pc_field_name"
+           type="text"
+           label="COM_CWMCONNECT_PCMAPPING_FIELD_PC_FIELD_NAME_LABEL"
+           description="COM_CWMCONNECT_PCMAPPING_FIELD_PC_FIELD_NAME_DESC"
+           maxlength="255"
+           filter="string"
+    />
+
+    <field name="joomla_field_id"
+           type="sql"
+           label="COM_CWMCONNECT_PCMAPPING_FIELD_JOOMLA_FIELD_ID_LABEL"
+           description="COM_CWMCONNECT_PCMAPPING_FIELD_JOOMLA_FIELD_ID_DESC"
+           required="true"
+           filter="integer"
+           query="SELECT id AS value, CONCAT(title, ' (', name, ')') AS text FROM #__fields WHERE context = 'com_cwmconnect.member' AND state = 1 ORDER BY title"
+           key_field="value"
+           value_field="text"
+    >
+        <option value="">COM_CWMCONNECT_PCMAPPING_FIELD_JOOMLA_FIELD_ID_PLACEHOLDER</option>
+    </field>
+</form>
