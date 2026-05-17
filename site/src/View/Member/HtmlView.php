@@ -148,9 +148,9 @@ class HtmlView extends BaseHtmlView
         $app->triggerEvent('onContentPrepare', ['com_cwmconnect.member', &$item, &$params, $offset]);
 
         $item->event                     = new \stdClass();
-        $item->event->afterDisplayTitle  = trim(implode("\n", $app->triggerEvent('onContentAfterTitle',  ['com_cwmconnect.member', &$item, &$params, $offset]) ?: []));
+        $item->event->afterDisplayTitle  = trim(implode("\n", $app->triggerEvent('onContentAfterTitle', ['com_cwmconnect.member', &$item, &$params, $offset]) ?: []));
         $item->event->beforeDisplayContent = trim(implode("\n", $app->triggerEvent('onContentBeforeDisplay', ['com_cwmconnect.member', &$item, &$params, $offset]) ?: []));
-        $item->event->afterDisplayContent  = trim(implode("\n", $app->triggerEvent('onContentAfterDisplay',  ['com_cwmconnect.member', &$item, &$params, $offset]) ?: []));
+        $item->event->afterDisplayContent  = trim(implode("\n", $app->triggerEvent('onContentAfterDisplay', ['com_cwmconnect.member', &$item, &$params, $offset]) ?: []));
 
         if ($item->text) {
             $item->misc = $item->text;
@@ -291,13 +291,13 @@ class HtmlView extends BaseHtmlView
     {
         switch ((int) $params->get('cwmconnect_icons')) {
             case 1:
-                $params->set('marker_address',   Text::_('COM_CWMCONNECT_ADDRESS') . ': ');
-                $params->set('marker_email',     Text::_('JGLOBAL_EMAIL') . ': ');
+                $params->set('marker_address', Text::_('COM_CWMCONNECT_ADDRESS') . ': ');
+                $params->set('marker_email', Text::_('JGLOBAL_EMAIL') . ': ');
                 $params->set('marker_telephone', Text::_('COM_CWMCONNECT_TELEPHONE') . ': ');
-                $params->set('marker_fax',       Text::_('COM_CWMCONNECT_FAX') . ': ');
-                $params->set('marker_mobile',    Text::_('COM_CWMCONNECT_MOBILE') . ': ');
-                $params->set('marker_misc',      Text::_('COM_CWMCONNECT_OTHER_INFORMATION') . ': ');
-                $params->set('marker_class',     'jicons-text');
+                $params->set('marker_fax', Text::_('COM_CWMCONNECT_FAX') . ': ');
+                $params->set('marker_mobile', Text::_('COM_CWMCONNECT_MOBILE') . ': ');
+                $params->set('marker_misc', Text::_('COM_CWMCONNECT_OTHER_INFORMATION') . ': ');
+                $params->set('marker_class', 'jicons-text');
                 break;
 
             case 2:

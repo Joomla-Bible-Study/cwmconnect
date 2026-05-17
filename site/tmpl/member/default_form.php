@@ -48,14 +48,13 @@ if (isset($this->error)) : ?>
                 <div class="control-label"><?php echo $this->form->getLabel('cwmconnect_message'); ?></div>
                 <div class="controls"><?php echo $this->form->getInput('cwmconnect_message'); ?></div>
             </div>
-			<?php if ($this->params->get('show_email_copy'))
-		{ ?>
+			<?php if ($this->params->get('show_email_copy')) { ?>
             <div class="control-group">
                 <div class="control-label"><?php echo $this->form->getLabel('cwmconnect_email_copy'); ?></div>
                 <div class="controls"><?php echo $this->form->getInput('cwmconnect_email_copy'); ?></div>
             </div>
 			<?php } ?>
-			<?php // Dynamically load any additional fields from plugins. ?>
+			<?php // Dynamically load any additional fields from plugins.?>
 			<?php foreach ($this->form->getFieldsets() as $fieldset): ?>
 			<?php if ($fieldset->name != 'member'): ?>
 				<?php $fields = $this->form->getFieldset($fieldset->name); ?>

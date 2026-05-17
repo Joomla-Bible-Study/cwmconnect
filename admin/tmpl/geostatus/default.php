@@ -98,7 +98,7 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
                                 <?php echo $this->escape((string) ($item->postcode ?? '')) ?: Text::_('COM_CWMCONNECT_LBL_EMPTY'); ?>
                             </td>
                             <td>
-                                <?php echo isset($item->status) ? $item->status : Text::_('COM_CWMCONNECT_LBL_EMPTY'); ?>
+                                <?php echo $item->status ?? Text::_('COM_CWMCONNECT_LBL_EMPTY'); ?>
                             </td>
                             <td class="text-center">
                                 <?php echo (int) $item->id; ?>

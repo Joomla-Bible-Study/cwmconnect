@@ -27,6 +27,4 @@ use Joomla\CMS\Dispatcher\ComponentDispatcher;
  *
  * @since  2.0.0
  */
-class Dispatcher extends ComponentDispatcher
-{
-}
+class Dispatcher extends ComponentDispatcher {}

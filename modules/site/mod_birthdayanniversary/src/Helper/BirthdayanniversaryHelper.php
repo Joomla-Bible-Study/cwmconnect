@@ -36,7 +36,7 @@ class BirthdayanniversaryHelper
      */
     public function getBirthdays(Registry $params): array
     {
-        return (new RenderHelper())->getBirthdays($params);
+        return new RenderHelper()->getBirthdays($params);
     }
 
     /**
@@ -49,6 +49,6 @@ class BirthdayanniversaryHelper
      */
     public function getAnniversary(Registry $params): array
     {
-        return (new RenderHelper())->getAnniversary($params);
+        return new RenderHelper()->getAnniversary($params);
     }
 }

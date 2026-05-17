@@ -70,7 +70,7 @@ class MembersField extends ModalSelectField
 
         Factory::getApplication()->getLanguage()->load('com_cwmconnect', JPATH_ADMINISTRATOR);
 
-        $linkItems = (new Uri())->setPath(Uri::base(true) . '/index.php');
+        $linkItems = new Uri()->setPath(Uri::base(true) . '/index.php');
         $linkItems->setQuery([
             'option'                => 'com_cwmconnect',
             'view'                  => 'members',
@@ -81,7 +81,7 @@ class MembersField extends ModalSelectField
         $linkItem = clone $linkItems;
         $linkItem->setVar('view', 'member');
 
-        $linkCheckin = (new Uri())->setPath(Uri::base(true) . '/index.php');
+        $linkCheckin = new Uri()->setPath(Uri::base(true) . '/index.php');
         $linkCheckin->setQuery([
             'option'                => 'com_cwmconnect',
             'task'                  => 'members.checkin',

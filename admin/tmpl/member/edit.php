@@ -30,25 +30,25 @@ $this->getDocument()->getWebAssetManager()
 
 // Hide the family-position attribute when the member has no family unit selected.
 $this->getDocument()->addScriptDeclaration(<<<JS
-document.addEventListener('DOMContentLoaded', function () {
-    var fu = document.getElementById('jform_funitid');
-    var lbl = document.getElementById('jform_attribs_familypostion-lbl');
-    var ctrl = document.getElementById('jform_attribs_familypostion');
+    document.addEventListener('DOMContentLoaded', function () {
+        var fu = document.getElementById('jform_funitid');
+        var lbl = document.getElementById('jform_attribs_familypostion-lbl');
+        var ctrl = document.getElementById('jform_attribs_familypostion');
 
-    if (!fu) {
-        return;
-    }
+        if (!fu) {
+            return;
+        }
 
-    var sync = function () {
-        var hidden = fu.value === '-1';
-        if (lbl)  { lbl.style.display  = hidden ? 'none' : ''; }
-        if (ctrl) { ctrl.style.display = hidden ? 'none' : ''; }
-    };
+        var sync = function () {
+            var hidden = fu.value === '-1';
+            if (lbl)  { lbl.style.display  = hidden ? 'none' : ''; }
+            if (ctrl) { ctrl.style.display = hidden ? 'none' : ''; }
+        };
 
-    fu.addEventListener('change', sync);
-    sync();
-});
-JS);
+        fu.addEventListener('change', sync);
+        sync();
+    });
+    JS);
 
 // Fieldsets that are rendered manually below.
 $this->ignore_fieldsets = ['details', 'item_associations', 'jmetadata'];
@@ -125,11 +125,11 @@ $this->ignore_fieldsets = ['details', 'item_associations', 'jmetadata'];
             <div class="col-md-6">
                 <?php
                 $familypos = (int) $this->form->getValue('familypostion', 'attribs', 0);
-                if ($familypos !== 2) :
-                    echo $this->form->renderField('spouse');
-                    echo $this->form->renderField('children_listed');
-                endif;
-                ?>
+if ($familypos !== 2) :
+    echo $this->form->renderField('spouse');
+    echo $this->form->renderField('children_listed');
+endif;
+?>
                 <?php echo $this->form->renderField('children'); ?>
                 <?php echo $this->form->renderField('sortname1'); ?>
                 <?php echo $this->form->renderField('sortname2'); ?>

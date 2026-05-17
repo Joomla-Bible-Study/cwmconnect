@@ -21,6 +21,4 @@ namespace CWM\Component\Cwmconnect\Administrator\Service\Pc\Exception;
  *
  * @since 2.0.0
  */
-class AuthenticationException extends PcException
-{
-}
+class AuthenticationException extends PcException {}

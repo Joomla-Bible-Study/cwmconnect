@@ -19,10 +19,9 @@ extract($displayData);
  * 	$input           : (string) The input field html code
  */
 
-if (!empty($options['showonEnabled']))
-{
-	JHtml::_('jquery.framework');
-	JHtml::_('script', 'jui/cms.js', array('version' => 'auto', 'relative' => true));
+if (!empty($options['showonEnabled'])) {
+    JHtml::_('jquery.framework');
+    JHtml::_('script', 'jui/cms.js', ['version' => 'auto', 'relative' => true]);
 }
 
 $class = empty($options['class']) ? '' : ' ' . $options['class'];

@@ -76,8 +76,8 @@ final class SyncReportTest extends TestCase
 
         $arr = $report->toArray();
 
-        self::assertSame(5,    $arr['seen']);
-        self::assertSame(2,    $arr['added']);
+        self::assertSame(5, $arr['seen']);
+        self::assertSame(2, $arr['added']);
         self::assertTrue($arr['success']);
         self::assertSame('2026-05-15T18:00:00+00:00', $arr['startedAt']);
         self::assertNotNull($arr['finishedAt']);

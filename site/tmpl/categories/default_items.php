@@ -60,12 +60,12 @@ if ($this->maxLevelcat != 0 && \count($this->items[$this->parent->id]) > 0) :
                     <div class="collapse" id="category-<?php echo $item->id; ?>">
                         <?php
                         $this->items[$item->id] = $item->getChildren();
-                        $this->parent           = $item;
-                        $this->maxLevelcat--;
-                        echo $this->loadTemplate('items');
-                        $this->parent       = $item->getParent();
-                        $this->maxLevelcat++;
-                        ?>
+                    $this->parent           = $item;
+                    $this->maxLevelcat--;
+                    echo $this->loadTemplate('items');
+                    $this->parent       = $item->getParent();
+                    $this->maxLevelcat++;
+                    ?>
                     </div>
                 <?php endif; ?>
             </div>

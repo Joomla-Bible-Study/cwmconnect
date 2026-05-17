@@ -8,9 +8,8 @@
  */
 defined('_JEXEC') or die;
 
-if (!key_exists('field', $displayData))
-{
-	return;
+if (!key_exists('field', $displayData)) {
+    return;
 }
 
 $field = $displayData['field'];
@@ -18,17 +17,15 @@ $label = $field->label;
 $value = $field->value;
 $class = $field->params->get('render_class');
 
-if (!$value)
-{
-	return;
+if (!$value) {
+    return;
 }
 
-if ($field->context == 'com_cwmconnect.mail')
-{
-	// Prepare the value for the contact form mail
-	echo $label . ': ' . $value . "\r\n";
+if ($field->context == 'com_cwmconnect.mail') {
+    // Prepare the value for the contact form mail
+    echo $label . ': ' . $value . "\r\n";
 
-	return;
+    return;
 }
 
 ?>

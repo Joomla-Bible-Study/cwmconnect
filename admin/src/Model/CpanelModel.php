@@ -25,6 +25,4 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
  *
  * @since  2.0.0
  */
-class CpanelModel extends BaseDatabaseModel
-{
-}
+class CpanelModel extends BaseDatabaseModel {}

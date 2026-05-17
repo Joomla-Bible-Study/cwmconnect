@@ -26,10 +26,10 @@ use Joomla\CMS\Uri\Uri;
 <dl class="contact-address dl-horizontal" itemprop="address" itemscope itemtype="https://schema.org/PostalAddress">
 	<?php if ($this->params->get('dr_show_address_full') === '1') : ?>
 		<?php if ($this->member->attribs->get('mailingaddress')
-			|| $this->member->attribs->get('mailingsuburb')
-			|| $this->member->attribs->get('mailingstate')
+            || $this->member->attribs->get('mailingsuburb')
+            || $this->member->attribs->get('mailingstate')
 		) :
-			?>
+		    ?>
 			<?php if ($this->params->get('address_check') > 0) : ?>
 			<dt>
             <span class="<?php echo $this->params->get('marker_class'); ?>">
@@ -238,13 +238,10 @@ use Joomla\CMS\Uri\Uri;
 		</dt>
 		<dd>
             <span class="cwmconnect-webpage">
-                <?php if (substr_count($this->member->webpage, 'http://', 0))
-                {
-	                $a = '';
-                }
-                else
-                {
-	                $a = 'http://';
+                <?php if (substr_count($this->member->webpage, 'http://', 0)) {
+                    $a = '';
+                } else {
+                    $a = 'http://';
                 } ?>
 	            <a href="<?php echo $a . $this->member->webpage; ?>" target="_blank">
 		            <?php echo JStringPunycode::urlToUTF8($this->member->webpage); ?></a>
