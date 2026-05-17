@@ -17,8 +17,10 @@ use CWM\Component\Cwmconnect\Administrator\Service\Pc\DatabaseMemberRepository a
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\Exception\ConfigurationException as PcConfigurationException;
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\FieldMapRepositoryInterface as PcFieldMapRepositoryInterface;
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\FieldsHelperWriter as PcFieldsHelperWriter;
+use CWM\Component\Cwmconnect\Administrator\Service\Pc\MediaPhotoCache as PcMediaPhotoCache;
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\MemberRepositoryInterface as PcMemberRepositoryInterface;
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\PersonMapper as PcPersonMapper;
+use CWM\Component\Cwmconnect\Administrator\Service\Pc\PhotoCacheInterface as PcPhotoCacheInterface;
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\SyncEngine as PcSyncEngine;
 use Joomla\CMS\Categories\CategoryFactoryInterface;
 use Joomla\CMS\Component\ComponentHelper;
@@ -113,6 +115,17 @@ return new class implements ServiceProviderInterface {
             static fn(): PcCustomFieldWriterInterface => new PcFieldsHelperWriter(),
         );
 
+        // Phase E: avatar cache. Resolves the cache root at request time so
+        // a relocated Joomla install (JPATH_ROOT change after a move) keeps
+        // pointing at the right photos directory.
+        $container->set(
+            PcPhotoCacheInterface::class,
+            static fn(): PcPhotoCacheInterface => new PcMediaPhotoCache(
+                http: HttpFactory::getHttp(),
+                cacheRoot: JPATH_ROOT . '/media/com_cwmconnect/photos',
+            ),
+        );
+
         $container->set(
             PcSyncEngine::class,
             static fn(Container $c): PcSyncEngine => new PcSyncEngine(
@@ -121,6 +134,7 @@ return new class implements ServiceProviderInterface {
                 mapper: $c->get(PcPersonMapper::class),
                 fieldMapRepo: $c->get(PcFieldMapRepositoryInterface::class),
                 fieldWriter: $c->get(PcCustomFieldWriterInterface::class),
+                photoCache: $c->get(PcPhotoCacheInterface::class),
             ),
         );
     }

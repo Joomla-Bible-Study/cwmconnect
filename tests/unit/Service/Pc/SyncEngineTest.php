@@ -274,6 +274,17 @@ final class SyncEngineTest extends TestCase
                 // which the Phase C-style tests never request.
                 return 1000 + $pcPersonId;
             }
+
+            public function updateImageByPcPersonId(int $pcPersonId, string $relativePath, string $hash): void
+            {
+                // No-op stub — Phase C-style tests run without a photo cache,
+                // so the engine never calls this method on them.
+            }
+
+            public function findImageHashByPcPersonId(int $pcPersonId): ?string
+            {
+                return null;
+            }
         };
     }
 

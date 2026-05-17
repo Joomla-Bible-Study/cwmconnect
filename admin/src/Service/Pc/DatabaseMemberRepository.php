@@ -156,6 +156,35 @@ final class DatabaseMemberRepository implements MemberRepositoryInterface
         return $existing === null ? null : $existing['id'];
     }
 
+    public function updateImageByPcPersonId(int $pcPersonId, string $relativePath, string $hash): void
+    {
+        $query = $this->db->getQuery(true)
+            ->update($this->db->quoteName(self::TABLE))
+            ->set([
+                $this->db->quoteName('image') . ' = :image',
+                $this->db->quoteName('image_hash') . ' = :hash',
+            ])
+            ->where($this->db->quoteName('pc_person_id') . ' = :pcPersonId')
+            ->bind(':image', $relativePath, ParameterType::STRING)
+            ->bind(':hash', $hash, ParameterType::STRING)
+            ->bind(':pcPersonId', $pcPersonId, ParameterType::INTEGER);
+
+        $this->db->setQuery($query)->execute();
+    }
+
+    public function findImageHashByPcPersonId(int $pcPersonId): ?string
+    {
+        $query = $this->db->getQuery(true)
+            ->select($this->db->quoteName('image_hash'))
+            ->from($this->db->quoteName(self::TABLE))
+            ->where($this->db->quoteName('pc_person_id') . ' = :pcPersonId')
+            ->bind(':pcPersonId', $pcPersonId, ParameterType::INTEGER);
+
+        $hash = $this->db->setQuery($query)->loadResult();
+
+        return \is_string($hash) && $hash !== '' ? $hash : null;
+    }
+
     /**
      * Look up the id + archive state of an existing row by PC person id.
      *
