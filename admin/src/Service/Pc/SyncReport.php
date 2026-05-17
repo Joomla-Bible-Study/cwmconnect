@@ -81,6 +81,25 @@ final class SyncReport
     public int $customFieldsWritten = 0;
 
     /**
+     * Phase E: avatars actually downloaded this run (URL hash differed
+     * from the stored value, or no hash was stored yet).
+     *
+     * @var    int
+     * @since  __DEPLOY_VERSION__
+     */
+    public int $photosDownloaded = 0;
+
+    /**
+     * Phase E: avatars whose URL hash matched the stored value, so the
+     * existing cache file was kept. Tracked separately so the run
+     * summary distinguishes "we saved bandwidth" from "we wrote bytes."
+     *
+     * @var    int
+     * @since  __DEPLOY_VERSION__
+     */
+    public int $photosUnchanged = 0;
+
+    /**
      * Per-person error list, one entry per failure.
      *
      * @var    list<array{pcPersonId: int|null, message: string}>
@@ -201,6 +220,8 @@ final class SyncReport
             'archived'         => $this->archived,
             'unarchived'       => $this->unarchived,
             'customFieldsWritten' => $this->customFieldsWritten,
+            'photosDownloaded'    => $this->photosDownloaded,
+            'photosUnchanged'     => $this->photosUnchanged,
             'errorCount'       => $this->errorCount(),
             'errors'           => $this->errors,
             'startedAt'        => $this->startedAt->format(\DateTimeImmutable::ATOM),

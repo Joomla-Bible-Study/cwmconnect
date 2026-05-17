@@ -126,6 +126,16 @@ final class SyncEnginePhaseDTest extends TestCase
             {
                 return 1000 + $pcPersonId;
             }
+
+            public function updateImageByPcPersonId(int $pcPersonId, string $relativePath, string $hash): void
+            {
+                // Phase D tests don't wire a photo cache; this is unreachable.
+            }
+
+            public function findImageHashByPcPersonId(int $pcPersonId): ?string
+            {
+                return null;
+            }
         };
     }
 

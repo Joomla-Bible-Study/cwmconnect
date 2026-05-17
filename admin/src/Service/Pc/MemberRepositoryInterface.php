@@ -74,4 +74,34 @@ interface MemberRepositoryInterface
      * @since   __DEPLOY_VERSION__
      */
     public function findIdByPcPersonId(int $pcPersonId): ?int;
+
+    /**
+     * Phase E: persist the cached photo's relative path + URL hash for a
+     * PC-synced member row. Called by the sync engine after
+     * {@see PhotoCacheInterface::cache()} returns a downloaded result.
+     *
+     * @param   int     $pcPersonId    PC person id (row lookup key).
+     * @param   string  $relativePath  Path under `media/com_cwmconnect/photos/`
+     *                                  to store in `image`.
+     * @param   string  $hash          SHA-256 of the source URL to store in
+     *                                  `image_hash`.
+     *
+     * @return  void
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    public function updateImageByPcPersonId(int $pcPersonId, string $relativePath, string $hash): void;
+
+    /**
+     * Phase E: return the current `image_hash` so the engine can let
+     * {@see PhotoCacheInterface::cache()} short-circuit when the PC URL
+     * hasn't changed since last sync. Null when no hash is stored yet.
+     *
+     * @param   int  $pcPersonId
+     *
+     * @return  string|null
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    public function findImageHashByPcPersonId(int $pcPersonId): ?string;
 }

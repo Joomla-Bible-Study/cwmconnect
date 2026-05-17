@@ -41,7 +41,15 @@ use Psr\Log\NullLogger;
  *    Joomla custom-field id (admin-managed mapping table)
  *  - {@see CustomFieldWriterInterface} performs the actual write
  *
- * Photos / household + campus FK resolution remain deferred to E / later.
+ * Phase E adds avatar caching:
+ *  - {@see PersonMapper::extractAvatarUrl()} pulls the `avatar` URL
+ *  - {@see PhotoCacheInterface} downloads + caches under
+ *    `media/com_cwmconnect/photos/{pc_person_id}.<ext>` when the URL hash
+ *    differs from the stored `image_hash`
+ *  - The new (relative path, hash) is written back via
+ *    {@see MemberRepositoryInterface::updateImageByPcPersonId()}.
+ *
+ * Household + campus FK resolution remain deferred to later phases.
  *
  * @since  __DEPLOY_VERSION__
  */
@@ -104,6 +112,7 @@ final class SyncEngine
         private readonly PersonMapper $mapper,
         private readonly ?FieldMapRepositoryInterface $fieldMapRepo = null,
         private readonly ?CustomFieldWriterInterface $fieldWriter = null,
+        private readonly ?PhotoCacheInterface $photoCache = null,
         private readonly LoggerInterface $logger = new NullLogger(),
     ) {}
 
@@ -177,6 +186,7 @@ final class SyncEngine
                     if ($pcPersonId !== null && $pcPersonId > 0) {
                         $seenIds[] = $pcPersonId;
                         $this->writeCustomFields($pcPersonId, $person, $included, $report);
+                        $this->cacheAvatar($pcPersonId, $person, $report);
                     }
                 } catch (\Throwable $e) {
                     $report->recordError($pcPersonId, $e->getMessage());
@@ -269,6 +279,62 @@ final class SyncEngine
                     $e->getMessage(),
                 ));
             }
+        }
+    }
+
+    /**
+     * Phase E: per-person avatar cache step. No-op when the engine was
+     * constructed without a photo cache (Phase C/D parity).
+     *
+     * Decision matrix lives in {@see PhotoCacheInterface::cache()}; this
+     * method just plumbs the URL + stored hash through and persists the
+     * cache's return value. Cache exceptions are captured per-person so
+     * a single bad URL doesn't abort the run.
+     *
+     * @param   int                              $pcPersonId
+     * @param   array<string, mixed>             $person
+     * @param   SyncReport                       $report
+     *
+     * @return  void
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    private function cacheAvatar(int $pcPersonId, array $person, SyncReport $report): void
+    {
+        if ($this->photoCache === null) {
+            return;
+        }
+
+        $avatarUrl = $this->mapper->extractAvatarUrl($person);
+
+        if ($avatarUrl === null) {
+            return;
+        }
+
+        try {
+            $currentHash = $this->repository->findImageHashByPcPersonId($pcPersonId);
+            $result      = $this->photoCache->cache($pcPersonId, $avatarUrl, $currentHash);
+
+            if ($result === null) {
+                return;
+            }
+
+            if ($result->downloaded) {
+                $this->repository->updateImageByPcPersonId(
+                    $pcPersonId,
+                    $result->relativePath,
+                    $result->hash,
+                );
+                $report->photosDownloaded++;
+            } else {
+                $report->photosUnchanged++;
+            }
+        } catch (\Throwable $e) {
+            $report->recordError($pcPersonId, 'Photo cache failed: ' . $e->getMessage());
+            $this->logger->error('PC sync photo cache error.', [
+                'pcPersonId' => $pcPersonId,
+                'error'      => $e->getMessage(),
+            ]);
         }
     }
 

@@ -14,6 +14,9 @@ composer.phar
 /media/com_cwmconnect/css/
 /media/com_cwmconnect/js/
 
+# Phase E: PC avatar cache (runtime artifacts, re-downloaded by sync)
+/media/com_cwmconnect/photos/
+
 *.zip
 
 # Dev-only convenience symlinks (see CLAUDE.md "Dev environment" section)

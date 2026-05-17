@@ -98,6 +98,34 @@ final class PersonMapper
     }
 
     /**
+     * Phase E: pull the PC `avatar` URL off a person. Returns the value of
+     * the `avatar` attribute (the URL of an actually-uploaded photo), or
+     * null when the person has no avatar. We deliberately do NOT fall
+     * back to `demographic_avatar_url` here — that's PC's auto-generated
+     * initials placeholder, which the cache decides to skip downstream.
+     * Centralising the source-of-truth pick at the mapper level keeps the
+     * cache's placeholder detection a defence-in-depth check rather than
+     * the only filter.
+     *
+     * @param   array<string, mixed>  $personData
+     *
+     * @return  string|null
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    public function extractAvatarUrl(array $personData): ?string
+    {
+        $attrs  = $this->personAttributes($personData);
+        $avatar = $attrs['avatar'] ?? null;
+
+        if (!\is_string($avatar) || $avatar === '') {
+            return null;
+        }
+
+        return $avatar;
+    }
+
+    /**
      * Phase D: extract every `FieldDatum` related to a person via the
      * `field_data` relationship, paired with the PC FieldDefinition id it
      * targets. The sync engine resolves each `pc_field_id` against the
