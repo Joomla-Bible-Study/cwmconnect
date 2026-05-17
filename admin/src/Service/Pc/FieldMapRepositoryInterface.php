@@ -41,4 +41,22 @@ interface FieldMapRepositoryInterface
      * @since   __DEPLOY_VERSION__
      */
     public function allKeyedByPcFieldId(): array;
+
+    /**
+     * Phase F: list the Joomla custom-field NAMES (column from
+     * `#__fields.name`, not `title`) that should render read-only on
+     * any `com_cwmconnect.member` form because their value is owned
+     * by Planning Center.
+     *
+     * Returned as names (not ids) because `Form::setFieldAttribute()`
+     * keys off the field's name. Custom-field rows whose
+     * `joomla_field_id` no longer resolves to an existing `#__fields`
+     * row are silently skipped — the mapping list view already
+     * surfaces the broken pairing.
+     *
+     * @return  list<string>
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    public function lockedJoomlaFieldNames(): array;
 }

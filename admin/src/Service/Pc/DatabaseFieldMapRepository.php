@@ -63,4 +63,24 @@ final class DatabaseFieldMapRepository implements FieldMapRepositoryInterface
 
         return $out;
     }
+
+    public function lockedJoomlaFieldNames(): array
+    {
+        $query = $this->db->getQuery(true)
+            ->select($this->db->quoteName('f.name'))
+            ->from($this->db->quoteName(self::TABLE, 'm'))
+            ->join(
+                'INNER',
+                $this->db->quoteName('#__fields', 'f') . ' ON '
+                    . $this->db->quoteName('f.id') . ' = ' . $this->db->quoteName('m.joomla_field_id'),
+            )
+            ->where($this->db->quoteName('f.state') . ' = 1');
+
+        $names = $this->db->setQuery($query)->loadColumn() ?: [];
+
+        return array_values(array_filter(
+            array_map('strval', $names),
+            static fn(string $name): bool => $name !== '',
+        ));
+    }
 }
