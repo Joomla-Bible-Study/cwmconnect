@@ -24,20 +24,20 @@ use Joomla\CMS\Uri\Uri;
 <div class="cwmconnect-links">
 	<ul>
 		<?php
-		foreach (range('a', 'e') as $char) : // letters 'a' to 'e'
-			$link  = $this->member->params->get('link' . $char);
-			$label = $this->member->params->get('link' . $char . '_name');
+        foreach (range('a', 'e') as $char) : // letters 'a' to 'e'
+            $link  = $this->member->params->get('link' . $char);
+            $label = $this->member->params->get('link' . $char . '_name');
 
-			if (!$link) :
-				continue;
-			endif;
+            if (!$link) :
+                continue;
+            endif;
 
-			// Add 'http://' if not present
-			$link = (0 === strpos($link, 'http')) ? $link : 'http://' . $link;
+            // Add 'http://' if not present
+            $link = (0 === strpos($link, 'http')) ? $link : 'http://' . $link;
 
-			// If no label is present, take the link
-			$label = ($label) ? $label : $link;
-			?>
+            // If no label is present, take the link
+            $label = ($label) ? $label : $link;
+            ?>
 			<li>
 				<a href="<?php echo $link; ?>">
 					<?php echo $label; ?>

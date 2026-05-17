@@ -20,6 +20,6 @@ Factory::getApplication()->getDocument()->getWebAssetManager()->useScript('boots
 <div class="categories-list<?php echo $this->pageclass_sfx; ?>">
     <?php
     echo LayoutHelper::render('joomla.content.categories_default', $this);
-    echo $this->loadTemplate('items');
-    ?>
+echo $this->loadTemplate('items');
+?>
 </div>

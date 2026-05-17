@@ -71,6 +71,16 @@ final class SyncReport
     public int $unarchived = 0;
 
     /**
+     * Phase D: count of `FieldsHelper::setFieldValue()` calls completed this
+     * run. Includes both "value changed" and "value rewritten to same" — we
+     * don't currently diff before writing.
+     *
+     * @var    int
+     * @since  __DEPLOY_VERSION__
+     */
+    public int $customFieldsWritten = 0;
+
+    /**
      * Per-person error list, one entry per failure.
      *
      * @var    list<array{pcPersonId: int|null, message: string}>
@@ -190,6 +200,7 @@ final class SyncReport
             'updated'          => $this->updated,
             'archived'         => $this->archived,
             'unarchived'       => $this->unarchived,
+            'customFieldsWritten' => $this->customFieldsWritten,
             'errorCount'       => $this->errorCount(),
             'errors'           => $this->errors,
             'startedAt'        => $this->startedAt->format(\DateTimeImmutable::ATOM),

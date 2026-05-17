@@ -65,6 +65,11 @@ use Joomla\CMS\Router\Route;
                                     <span class="icon-refresh" aria-hidden="true"></span>
                                     <?php echo Text::_('COM_CWMCONNECT_PC_BTN_SYNC'); ?>
                                 </button>
+                                <a class="btn btn-outline-secondary"
+                                   href="<?php echo \Joomla\CMS\Router\Route::_('index.php?option=com_cwmconnect&view=pcmappings'); ?>">
+                                    <span class="icon-list" aria-hidden="true"></span>
+                                    <?php echo Text::_('COM_CWMCONNECT_PC_BTN_MAPPINGS'); ?>
+                                </a>
                             </div>
 
                             <div class="mt-3" id="pc-sync-status" role="status" aria-live="polite"></div>

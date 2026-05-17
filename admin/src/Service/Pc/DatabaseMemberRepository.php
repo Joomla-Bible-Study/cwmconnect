@@ -75,9 +75,7 @@ final class DatabaseMemberRepository implements MemberRepositoryInterface
      *
      * @since   __DEPLOY_VERSION__
      */
-    public function __construct(private readonly DatabaseInterface $db)
-    {
-    }
+    public function __construct(private readonly DatabaseInterface $db) {}
 
     /**
      * Insert or update a member row keyed on `pc_person_id`. Returns whether
@@ -151,6 +149,13 @@ final class DatabaseMemberRepository implements MemberRepositoryInterface
         return (int) $this->db->getAffectedRows();
     }
 
+    public function findIdByPcPersonId(int $pcPersonId): ?int
+    {
+        $existing = $this->findExistingByPcPersonId($pcPersonId);
+
+        return $existing === null ? null : $existing['id'];
+    }
+
     /**
      * Look up the id + archive state of an existing row by PC person id.
      *
@@ -195,7 +200,7 @@ final class DatabaseMemberRepository implements MemberRepositoryInterface
      */
     private function insert(array $attrs): void
     {
-        $now = (new \DateTimeImmutable())->format('Y-m-d H:i:s');
+        $now = new \DateTimeImmutable()->format('Y-m-d H:i:s');
 
         $row = (object) array_merge(self::INSERT_DEFAULTS, [
             'created'  => $now,
@@ -220,7 +225,7 @@ final class DatabaseMemberRepository implements MemberRepositoryInterface
     private function update(int $id, array $attrs): void
     {
         $attrs['id']                   = $id;
-        $attrs['modified']              = (new \DateTimeImmutable())->format('Y-m-d H:i:s');
+        $attrs['modified']              = new \DateTimeImmutable()->format('Y-m-d H:i:s');
         $attrs['display_in_directory'] ??= 1;
         $attrs['published']             ??= 1;
 

@@ -64,7 +64,7 @@ final class SyncEngineTest extends TestCase
 
         $repo = $this->fakeRepo(existingPcIds: [1], outcome: UpsertOutcome::Updated);
 
-        $report = (new SyncEngine($client, $repo, new PersonMapper()))->run([]);
+        $report = new SyncEngine($client, $repo, new PersonMapper())->run([]);
 
         self::assertSame(0, $report->added);
         self::assertSame(1, $report->updated);
@@ -79,7 +79,7 @@ final class SyncEngineTest extends TestCase
 
         $repo = $this->fakeRepo(outcome: UpsertOutcome::Unarchived);
 
-        $report = (new SyncEngine($client, $repo, new PersonMapper()))->run([]);
+        $report = new SyncEngine($client, $repo, new PersonMapper())->run([]);
 
         self::assertSame(0, $report->added);
         self::assertSame(0, $report->updated);
@@ -96,7 +96,7 @@ final class SyncEngineTest extends TestCase
         $repo                 = $this->fakeRepo(outcome: UpsertOutcome::Updated);
         $repo->archiveResult  = 3;
 
-        $report = (new SyncEngine($client, $repo, new PersonMapper()))->run([]);
+        $report = new SyncEngine($client, $repo, new PersonMapper())->run([]);
 
         self::assertSame(3, $report->archived);
         self::assertSame([1], $repo->capturedSeenIds);
@@ -112,7 +112,7 @@ final class SyncEngineTest extends TestCase
 
         $repo = $this->fakeRepo(outcome: UpsertOutcome::Added);
 
-        $report = (new SyncEngine($client, $repo, new PersonMapper()))->run([]);
+        $report = new SyncEngine($client, $repo, new PersonMapper())->run([]);
 
         self::assertSame(2, $report->seen);
         self::assertSame(1, $report->added);
@@ -123,7 +123,7 @@ final class SyncEngineTest extends TestCase
     #[Test]
     public function startupFailureBubblesUp(): void
     {
-        $client = new class () extends Client {
+        $client = new class extends Client {
             public function __construct()
             {
                 // bypass parent constructor — never used in this test
@@ -144,7 +144,7 @@ final class SyncEngineTest extends TestCase
 
         $this->expectException(ApiException::class);
 
-        (new SyncEngine($client, $repo, new PersonMapper()))->run([]);
+        new SyncEngine($client, $repo, new PersonMapper())->run([]);
     }
 
     #[Test]
@@ -156,7 +156,7 @@ final class SyncEngineTest extends TestCase
 
         $repo = $this->fakeRepo();
 
-        (new SyncEngine($client, $repo, new PersonMapper()))->run(['Member', 'Regular Attender']);
+        new SyncEngine($client, $repo, new PersonMapper())->run(['Member', 'Regular Attender']);
 
         self::assertSame('Member,Regular Attender', $client->capturedQueries[0]['where[membership]'] ?? null);
     }
@@ -173,7 +173,7 @@ final class SyncEngineTest extends TestCase
 
         $repo = $this->fakeRepo();
 
-        (new SyncEngine($client, $repo, new PersonMapper()))->run([]);
+        new SyncEngine($client, $repo, new PersonMapper())->run([]);
 
         self::assertSame(1, $repo->archiveCalls);
         self::assertSame([], $repo->capturedSeenIds);
@@ -253,9 +253,7 @@ final class SyncEngineTest extends TestCase
             /** @var list<int> */
             public array $capturedSeenIds = [];
 
-            public function __construct(private UpsertOutcome $outcome)
-            {
-            }
+            public function __construct(private UpsertOutcome $outcome) {}
 
             public function upsertByPcPersonId(array $attrs): UpsertOutcome
             {
@@ -268,6 +266,13 @@ final class SyncEngineTest extends TestCase
                 $this->capturedSeenIds = $seenPcPersonIds;
 
                 return $this->archiveResult;
+            }
+
+            public function findIdByPcPersonId(int $pcPersonId): ?int
+            {
+                // Deterministic test id; engine only uses this for field writes,
+                // which the Phase C-style tests never request.
+                return 1000 + $pcPersonId;
             }
         };
     }

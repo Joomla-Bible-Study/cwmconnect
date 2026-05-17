@@ -72,8 +72,8 @@ final class PersonMapperTest extends TestCase
         $householdRow = $this->mapper->map($this->person(['directory_status' => 'household_only']));
         $limitedRow   = $this->mapper->map($this->person(['directory_status' => 'limited_access']));
 
-        self::assertSame('public',    $publicRow['directory_scope']);
-        self::assertSame('hidden',    $hiddenRow['directory_scope']);
+        self::assertSame('public', $publicRow['directory_scope']);
+        self::assertSame('hidden', $hiddenRow['directory_scope']);
         self::assertSame('household', $householdRow['directory_scope']);
         self::assertSame('household', $limitedRow['directory_scope']);
     }
@@ -190,10 +190,10 @@ final class PersonMapperTest extends TestCase
         $row = $this->mapper->map($person, $included);
 
         self::assertSame('2800 Blair Blvd', $row['address']);
-        self::assertSame('Nashville',       $row['suburb']);
-        self::assertSame('TN',              $row['state']);
-        self::assertSame('US',              $row['country']);
-        self::assertSame('37212',           $row['postcode']);
+        self::assertSame('Nashville', $row['suburb']);
+        self::assertSame('TN', $row['state']);
+        self::assertSame('US', $row['country']);
+        self::assertSame('37212', $row['postcode']);
     }
 
     #[Test]

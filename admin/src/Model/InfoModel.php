@@ -22,6 +22,4 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
  *
  * @since  2.0.0
  */
-class InfoModel extends BaseDatabaseModel
-{
-}
+class InfoModel extends BaseDatabaseModel {}

@@ -78,10 +78,10 @@ if ($saveOrder && !empty($this->items)) {
                         </thead>
                         <tbody <?php if ($saveOrder) : ?>class="js-draggable" data-url="<?php echo $saveOrderingUrl; ?>" data-direction="<?php echo strtolower($listDirn); ?>" data-nested="true"<?php endif; ?>>
                         <?php foreach ($this->items as $i => $item) :
-                            $canCreate  = $user->authorise('core.create',     'com_cwmconnect');
-                            $canEdit    = $user->authorise('core.edit',       'com_cwmconnect');
+                            $canCreate  = $user->authorise('core.create', 'com_cwmconnect');
+                            $canEdit    = $user->authorise('core.edit', 'com_cwmconnect');
                             $canCheckin = $user->authorise('core.manage', 'com_checkin') || (int) $item->checked_out === $userId || (int) $item->checked_out === 0;
-                            $canEditOwn = $user->authorise('core.edit.own',   'com_cwmconnect') && (int) $item->created_by === $userId;
+                            $canEditOwn = $user->authorise('core.edit.own', 'com_cwmconnect') && (int) $item->created_by === $userId;
                             $canChange  = $user->authorise('core.edit.state', 'com_cwmconnect') && $canCheckin;
                             ?>
                             <tr class="row<?php echo $i % 2; ?>" data-draggable-group="<?php echo (int) $item->section; ?>">
@@ -91,12 +91,12 @@ if ($saveOrder && !empty($this->items)) {
                                 <td class="text-center d-none d-md-table-cell">
                                     <?php
                                     $iconClass = '';
-                                    if (!$canChange) {
-                                        $iconClass = ' inactive';
-                                    } elseif (!$saveOrder) {
-                                        $iconClass = ' inactive" title="' . Text::_('JORDERINGDISABLED');
-                                    }
-                                    ?>
+                            if (!$canChange) {
+                                $iconClass = ' inactive';
+                            } elseif (!$saveOrder) {
+                                $iconClass = ' inactive" title="' . Text::_('JORDERINGDISABLED');
+                            }
+                            ?>
                                     <span class="sortable-handler<?php echo $iconClass; ?>">
                                         <span class="icon-ellipsis-v" aria-hidden="true"></span>
                                     </span>
@@ -124,8 +124,8 @@ if ($saveOrder && !empty($this->items)) {
                                 </td>
                                 <td class="text-center">
                                     <?php echo (int) $item->section === 0
-                                        ? Text::_('COM_CWMCONNECT_HEADER')
-                                        : Text::_('COM_CWMCONNECT_FOOTER'); ?>
+                                ? Text::_('COM_CWMCONNECT_HEADER')
+                                : Text::_('COM_CWMCONNECT_FOOTER'); ?>
                                 </td>
                                 <td class="small d-none d-md-table-cell">
                                     <?php echo $this->escape($item->access_level); ?>

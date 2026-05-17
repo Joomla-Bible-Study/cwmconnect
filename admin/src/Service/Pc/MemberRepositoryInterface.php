@@ -60,4 +60,18 @@ interface MemberRepositoryInterface
      * @since   __DEPLOY_VERSION__
      */
     public function archiveMissingPcPersonIds(array $seenPcPersonIds): int;
+
+    /**
+     * Phase D: look up a local member row id by PC person id. Used after
+     * `upsertByPcPersonId()` so the engine can hand the local id to
+     * {@see CustomFieldWriterInterface::setFieldValue()}.
+     *
+     * @param   int  $pcPersonId
+     *
+     * @return  int|null  Local row id, or null when no row exists for that
+     *                    PC person id.
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    public function findIdByPcPersonId(int $pcPersonId): ?int;
 }

@@ -78,6 +78,6 @@ class KmlView extends BaseHtmlView
             }
         }
 
-        (new ReportbuildHelper())->getKML($items);
+        new ReportbuildHelper()->getKML($items);
     }
 }

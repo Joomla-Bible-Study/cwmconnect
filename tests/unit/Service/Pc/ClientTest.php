@@ -154,7 +154,7 @@ final class ClientTest extends TestCase
     #[Test]
     public function transportFailureWrapsAsApiException(): void
     {
-        $http = new class () extends Http {
+        $http = new class extends Http {
             public function get(string $url, array $headers = [], ?int $timeout = null): mixed
             {
                 throw new \RuntimeException('connection refused');
@@ -195,9 +195,7 @@ final class ClientTest extends TestCase
             /** @var array<string, string> */
             public array $capturedHeaders = [];
 
-            public function __construct(private readonly int $code, private readonly string $body)
-            {
-            }
+            public function __construct(private readonly int $code, private readonly string $body) {}
 
             public function get(string $url, array $headers = [], ?int $timeout = null): object
             {
@@ -208,9 +206,7 @@ final class ClientTest extends TestCase
                 $body = $this->body;
 
                 return new class ($code, $body) {
-                    public function __construct(public readonly int $code, public readonly string $body)
-                    {
-                    }
+                    public function __construct(public readonly int $code, public readonly string $body) {}
                 };
             }
         };

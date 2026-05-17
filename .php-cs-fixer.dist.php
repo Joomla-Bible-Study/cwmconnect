@@ -10,19 +10,18 @@ return (new Config())
     ->setRules([
         '@auto' => true
     ])
-    // 💡 by default, Fixer looks for `*.php` files excluding `./vendor/` - here, you can groom this config
+    // Mirror lint:syntax: only the package's own source trees. Avoids
+    // touching node_modules, libraries/ (MAMP-style local Joomla), media
+    // build outputs, and anything else that drifts into the repo root.
     ->setFinder(
         (new Finder())
-            // 💡 root folder to check
-            ->in(__DIR__)
-            // 💡 additional files, eg bin entry file
-            // ->append([__DIR__.'/bin-entry-file'])
-            // 💡 folders to exclude, if any
-            // ->exclude([/* ... */])
-            // 💡 path patterns to exclude, if any
-            // ->notPath([/* ... */])
-            // 💡 extra configs
-            // ->ignoreDotFiles(false) // true by default in v3, false in v4 or future mode
-            // ->ignoreVCS(true) // true by default
+            ->in([
+                __DIR__ . '/admin',
+                __DIR__ . '/site',
+                __DIR__ . '/modules',
+                __DIR__ . '/plugins',
+                __DIR__ . '/tests',
+                __DIR__ . '/build',
+            ])
     )
 ;

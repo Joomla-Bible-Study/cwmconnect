@@ -65,9 +65,9 @@ $count = \count($this->items);
             <div class="span12">
                 <?php
                 $split = $count / 2;
-                foreach ($this->items as $i => $item) :
-                    $route = Route::_(RouteHelper::getMemberRoute($item->slug, $item->catid));
-                    ?>
+        foreach ($this->items as $i => $item) :
+            $route = Route::_(RouteHelper::getMemberRoute($item->slug, $item->catid));
+            ?>
                     <div class="span6 pull-left" style="margin-left: 0">
                         <div class="center">
                             <a href="<?php echo $route; ?>">

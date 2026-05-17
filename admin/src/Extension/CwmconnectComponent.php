@@ -61,6 +61,6 @@ class CwmconnectComponent extends MVCComponent implements
         $registry = $this->getRegistry();
 
         $registry->register('cwmconnect.colorpicker', new Colorpicker());
-        $registry->register('cwmconnect.member',      new Member());
+        $registry->register('cwmconnect.member', new Member());
     }
 }

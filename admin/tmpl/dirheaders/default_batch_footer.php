@@ -12,6 +12,7 @@
 // phpcs:enable PSR1.Files.SideEffects
 
 use Joomla\CMS\Language\Text;
+
 ?>
 <div class="btn-toolbar p-3">
     <joomla-toolbar-button task="dirheader.batch" class="ms-auto">
