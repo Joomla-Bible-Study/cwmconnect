@@ -152,6 +152,13 @@ final class SyncEnginePhaseDTest extends TestCase
             {
                 return $this->rows;
             }
+
+            public function lockedJoomlaFieldNames(): array
+            {
+                // Phase D tests don't exercise the form-lock path; return
+                // an empty list so the engine never tries to apply a lock.
+                return [];
+            }
         };
     }
 

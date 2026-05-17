@@ -15,6 +15,8 @@ namespace CWM\Component\Cwmconnect\Administrator\Model;
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
+use CWM\Component\Cwmconnect\Administrator\Helper\PcLockedFields;
+use CWM\Component\Cwmconnect\Administrator\Service\Pc\FieldMapRepositoryInterface;
 use Joomla\CMS\Application\ApplicationHelper;
 use Joomla\CMS\Categories\CategoriesHelper;
 use Joomla\CMS\Factory;
@@ -487,7 +489,62 @@ class MemberModel extends AdminModel
             $form->setFieldAttribute('published', 'filter', 'unset');
         }
 
+        $this->applyPcFieldLocks($form);
+
         return $form;
+    }
+
+    /**
+     * Phase F: render PC-owned fields as read-only and `filter=unset` so
+     * the model never accepts a value for them from the admin form. The
+     * lock covers two surfaces:
+     *
+     *  - Local columns (name, contact, address, dates, image) via
+     *    {@see PcLockedFields::forItem()}.
+     *  - Joomla custom fields whose ids appear in the PC mapping table,
+     *    via {@see FieldMapRepositoryInterface::lockedJoomlaFieldNames()}.
+     *
+     * No-op for new records (id=0) and standalone members (no
+     * `pc_person_id`). `filter=unset` is the load-bearing part: even if a
+     * malicious POST bypasses the disabled UI, the model drops the value
+     * before save.
+     *
+     * @param   Form  $form
+     *
+     * @return  void
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    private function applyPcFieldLocks(Form $form): void
+    {
+        $item = $this->getItem((int) $this->getState($this->getName() . '.id', 0));
+
+        if (!\is_object($item) || (int) ($item->pc_person_id ?? 0) <= 0) {
+            return;
+        }
+
+        foreach (PcLockedFields::forItem($item) as $fieldName) {
+            $form->setFieldAttribute($fieldName, 'readonly', 'true');
+            $form->setFieldAttribute($fieldName, 'disabled', 'true');
+            $form->setFieldAttribute($fieldName, 'filter', 'unset');
+        }
+
+        try {
+            $repo = Factory::getContainer()->get(FieldMapRepositoryInterface::class);
+        } catch (\Throwable) {
+            // DI container unreachable in unusual contexts (e.g. CLI
+            // form discovery). Local-column lock above is already in
+            // place; we just skip the custom-field layer.
+            return;
+        }
+
+        foreach ($repo->lockedJoomlaFieldNames() as $fieldName) {
+            // com_fields adds custom fields under the `com_fields` form
+            // path; the fourth setFieldAttribute() arg targets that path.
+            $form->setFieldAttribute($fieldName, 'readonly', 'true', 'com_fields');
+            $form->setFieldAttribute($fieldName, 'disabled', 'true', 'com_fields');
+            $form->setFieldAttribute($fieldName, 'filter', 'unset', 'com_fields');
+        }
     }
 
     /**

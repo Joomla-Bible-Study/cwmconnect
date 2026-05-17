@@ -52,9 +52,34 @@ $this->getDocument()->addScriptDeclaration(<<<JS
 
 // Fieldsets that are rendered manually below.
 $this->ignore_fieldsets = ['details', 'item_associations', 'jmetadata'];
+
+// Phase F: "Synced from PC" banner data. Locks themselves are applied in MemberModel.
+$pcPersonId   = (int) ($this->item->pc_person_id ?? 0);
+$pcLastSynced = (string) ($this->item->pc_last_synced_at ?? '');
+$pcProfileUrl = $pcPersonId > 0
+    ? 'https://people.planningcenteronline.com/people/' . $pcPersonId
+    : '';
 ?>
 <form action="<?php echo Route::_('index.php?option=com_cwmconnect&layout=' . $layout . $tmpl . '&id=' . (int) $this->item->id); ?>"
       method="post" name="adminForm" id="member-form" class="form-validate">
+
+    <?php if ($pcPersonId > 0) : ?>
+        <div class="alert alert-info d-flex align-items-center" role="status">
+            <span class="icon-link me-2" aria-hidden="true"></span>
+            <div class="flex-grow-1">
+                <strong><?php echo Text::_('COM_CWMCONNECT_PC_LOCK_BANNER_TITLE'); ?></strong>
+                <?php echo Text::sprintf(
+                    'COM_CWMCONNECT_PC_LOCK_BANNER_BODY',
+                    $pcPersonId,
+                    $this->escape($pcLastSynced !== '' ? $pcLastSynced : Text::_('JNEVER')),
+                ); ?>
+            </div>
+            <a class="btn btn-sm btn-outline-secondary" href="<?php echo $this->escape($pcProfileUrl); ?>" target="_blank" rel="noopener noreferrer">
+                <?php echo Text::_('COM_CWMCONNECT_PC_LOCK_BANNER_VIEW_IN_PC'); ?>
+                <span class="icon-out-2" aria-hidden="true"></span>
+            </a>
+        </div>
+    <?php endif; ?>
 
     <?php echo LayoutHelper::render('joomla.edit.title_alias', $this); ?>
 
