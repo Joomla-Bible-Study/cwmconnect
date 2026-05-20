@@ -151,6 +151,9 @@ class MemberModel extends FormModel
                         ->where('(a.publish_down = ' . $nullDate . ' OR a.publish_down >= ' . $nowDate . ')');
                 }
 
+                // Phase G §7.2: hide opted-out / child rows from the profile view.
+                $query->where('a.display_in_directory = 1');
+
                 $data = $db->setQuery($query)->loadObject();
 
                 if (empty($data)) {
@@ -234,6 +237,9 @@ class MemberModel extends FormModel
             $query->where('a.published IN (1, 2)')
                 ->where('cc.published IN (1, 2)');
         }
+
+        // Phase G §7.2: hide opted-out / child rows from front-end queries.
+        $query->where('a.display_in_directory = 1');
 
         $groups = implode(',', $user ? $user->getAuthorisedViewLevels() : [1]);
         $query->where('a.access IN (' . $groups . ')');

@@ -106,6 +106,7 @@ class HomeModel extends ListModel
             ->join('LEFT', $db->quoteName('#__users', 'uam') . ' ON uam.id = a.modified_by')
             ->where('a.access IN (' . $groups . ')')
             ->where('a.published = 1')
+            ->where('a.display_in_directory = 1')
             ->where('a.featured = 1')
             ->order($db->escape('a.ordering') . ' ASC');
 
