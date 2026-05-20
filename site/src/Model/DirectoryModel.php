@@ -165,7 +165,8 @@ class DirectoryModel extends ListModel
             $query->where($publishedWhere . ' IN (' . implode(',', $published) . ')');
         }
 
-        $query->where('a.published = 1');
+        $query->where('a.published = 1')
+            ->where('a.display_in_directory = 1');
 
         $nullDate = $db->quote($db->getNullDate());
         $nowDate  = $db->quote(Factory::getDate()->toSql());

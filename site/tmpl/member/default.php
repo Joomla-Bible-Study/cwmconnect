@@ -192,6 +192,7 @@ if (!empty($this->member->image) && $this->params->get('show_image')) {
 echo "</div>";
 echo '<div class="clearfix"></div>';
 echo $this->loadTemplate('address');
+echo $this->loadTemplate('household');
 
 if ($this->params->get('allow_vcard')) {
     echo Text::_('COM_CWMCONNECT_DOWNLOAD_INFORMATION_AS'); ?>

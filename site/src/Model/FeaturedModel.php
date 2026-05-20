@@ -126,6 +126,9 @@ class FeaturedModel extends ListModel
                 ->where('(CASE WHEN badcats.id is null THEN a.published ELSE 0 END) = ' . (int) $state);
         }
 
+        // Phase G §7.2: front-end never surfaces opted-out / child rows.
+        $query->where('a.display_in_directory = 1');
+
         if ($this->getState('filter.language')) {
             $query->where('a.language IN ('
                 . $db->quote(Factory::getApplication()->getLanguage()->getTag()) . ', '

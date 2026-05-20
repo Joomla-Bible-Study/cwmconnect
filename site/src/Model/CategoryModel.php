@@ -141,6 +141,9 @@ class CategoryModel extends ListModel
             $query->where('a.published = ' . (int) $state);
         }
 
+        // Phase G §7.2: front-end never surfaces opted-out / child rows.
+        $query->where('a.display_in_directory = 1');
+
         if ($this->getState('filter.publish_date')) {
             $nullDate = $db->quote($db->getNullDate());
             $nowDate  = $db->quote(Factory::getDate()->toSql());

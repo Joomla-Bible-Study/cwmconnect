@@ -15,6 +15,7 @@ namespace CWM\Component\Cwmconnect\Site\View\Member;
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
+use CWM\Component\Cwmconnect\Site\Helper\HouseholdVisibility;
 use CWM\Component\Cwmconnect\Site\Helper\RouteHelper;
 use CWM\Component\Cwmconnect\Site\Model\CategoryModel;
 use CWM\Component\Cwmconnect\Site\Model\MemberModel;
@@ -67,6 +68,37 @@ class HtmlView extends BaseHtmlView
     protected string $return = '';
 
     /**
+     * Phase G + spec §7.2: scope of the current viewer relative to the
+     * target member's household. Drives whether children's names render
+     * (same household) or only an aggregate count (everyone else).
+     *
+     * @var    string
+     * @since  __DEPLOY_VERSION__
+     */
+    public string $householdScope = HouseholdVisibility::OTHER_HOUSEHOLD;
+
+    /**
+     * Phase G: members sharing the target's household. Includes hidden /
+     * child rows ONLY when the viewer is in the same household; for all
+     * other viewers we list adult members and surface a count for the
+     * hidden ones via {@see $hiddenHouseholdCount}.
+     *
+     * @var    list<object>
+     * @since  __DEPLOY_VERSION__
+     */
+    public array $householdMembers = [];
+
+    /**
+     * Phase G: count of hidden household members the current viewer
+     * isn't allowed to see by name. Used for the "…and N children"
+     * aggregate per spec §7.2.
+     *
+     * @var    int
+     * @since  __DEPLOY_VERSION__
+     */
+    public int $hiddenHouseholdCount = 0;
+
+    /**
      * @throws \Exception
      * @since  2.0.0
      */
@@ -116,6 +148,8 @@ class HtmlView extends BaseHtmlView
         if ($item->email_to && $params->get('show_email')) {
             $item->email_to = HTMLHelper::_('email.cloak', $item->email_to);
         }
+
+        $this->loadHouseholdContext($item, $user);
 
         $hasAddress = !empty($item->address) || !empty($item->suburb) || !empty($item->state)
             || !empty($item->country) || !empty($item->postcode);
@@ -338,5 +372,89 @@ class HtmlView extends BaseHtmlView
         }
 
         $params->set('marker_class', 'jicons-icons');
+    }
+
+    /**
+     * Phase G + spec §7.2: load the household block for the profile view.
+     *
+     * Resolves the viewer's `funitid` from their `user_id` link (if any),
+     * compares it against the target's household, and populates
+     *  - `$householdScope` — for templates that want the raw enum
+     *  - `$householdMembers` — siblings to render by name. Includes
+     *    hidden / child rows ONLY when the viewer is in the same
+     *    household per spec §7.2.
+     *  - `$hiddenHouseholdCount` — aggregate count for "…and N children"
+     *    when the viewer is NOT in the same household.
+     *
+     * @param   object               $item  The loaded target member.
+     * @param   \Joomla\CMS\User\User|null  $user  The current viewer (may be null).
+     *
+     * @return  void
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    private function loadHouseholdContext(object $item, ?User $user): void
+    {
+        $targetHouseholdId = (int) ($item->funitid ?? 0);
+        $viewerHouseholdId = null;
+
+        $viewerUserId = (int) ($user?->id ?? 0);
+
+        $db = Factory::getContainer()->get(\Joomla\Database\DatabaseInterface::class);
+
+        if ($viewerUserId > 0) {
+            $query = $db->getQuery(true)
+                ->select($db->quoteName('funitid'))
+                ->from($db->quoteName('#__cwmconnect_details'))
+                ->where($db->quoteName('user_id') . ' = ' . $viewerUserId);
+
+            $viewerHouseholdId = (int) ($db->setQuery($query)->loadResult() ?? 0) ?: null;
+        }
+
+        $this->householdScope = HouseholdVisibility::scope($viewerHouseholdId, $targetHouseholdId ?: null);
+
+        if ($targetHouseholdId === 0) {
+            return;
+        }
+
+        $sameHousehold = $this->householdScope === HouseholdVisibility::SAME_HOUSEHOLD;
+
+        $query = $db->getQuery(true)
+            ->select([
+                $db->quoteName('id'),
+                $db->quoteName('name'),
+                $db->quoteName('lname'),
+                $db->quoteName('surname'),
+                $db->quoteName('alias'),
+                $db->quoteName('image'),
+                $db->quoteName('display_in_directory'),
+            ])
+            ->from($db->quoteName('#__cwmconnect_details'))
+            ->where($db->quoteName('funitid') . ' = ' . $targetHouseholdId)
+            ->where($db->quoteName('published') . ' IN (1, 2)')
+            ->where($db->quoteName('id') . ' <> ' . (int) $item->id);
+
+        if (!$sameHousehold) {
+            // Out-of-household viewers don't see hidden rows by name.
+            $query->where($db->quoteName('display_in_directory') . ' = 1');
+        }
+
+        $query->order($db->quoteName('surname') . ' ASC, ' . $db->quoteName('name') . ' ASC');
+
+        $rows = $db->setQuery($query)->loadObjectList() ?: [];
+
+        $this->householdMembers = $rows;
+
+        if (!$sameHousehold) {
+            $hiddenQuery = $db->getQuery(true)
+                ->select('COUNT(*)')
+                ->from($db->quoteName('#__cwmconnect_details'))
+                ->where($db->quoteName('funitid') . ' = ' . $targetHouseholdId)
+                ->where($db->quoteName('published') . ' IN (1, 2)')
+                ->where($db->quoteName('display_in_directory') . ' = 0')
+                ->where($db->quoteName('id') . ' <> ' . (int) $item->id);
+
+            $this->hiddenHouseholdCount = (int) ($db->setQuery($hiddenQuery)->loadResult() ?? 0);
+        }
     }
 }
