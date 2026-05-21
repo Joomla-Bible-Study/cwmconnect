@@ -10,6 +10,8 @@
 \defined('_JEXEC') or die;
 
 use CWM\Component\Cwmconnect\Administrator\Extension\CwmconnectComponent;
+use CWM\Component\Cwmconnect\Administrator\Service\Pairing\DatabaseMemberPairing;
+use CWM\Component\Cwmconnect\Administrator\Service\Pairing\MemberPairingInterface;
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\Client as PcClient;
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\CustomFieldWriterInterface as PcCustomFieldWriterInterface;
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\DatabaseFieldMapRepository as PcDatabaseFieldMapRepository;
@@ -126,6 +128,13 @@ return new class implements ServiceProviderInterface {
             ),
         );
 
+        // Phase H: identity-binding pair service shared with plg_user_cwmconnect.
+        $container->set(
+            MemberPairingInterface::class,
+            static fn(Container $c): MemberPairingInterface
+                => new DatabaseMemberPairing($c->get(DatabaseInterface::class)),
+        );
+
         $container->set(
             PcSyncEngine::class,
             static fn(Container $c): PcSyncEngine => new PcSyncEngine(
@@ -135,6 +144,7 @@ return new class implements ServiceProviderInterface {
                 fieldMapRepo: $c->get(PcFieldMapRepositoryInterface::class),
                 fieldWriter: $c->get(PcCustomFieldWriterInterface::class),
                 photoCache: $c->get(PcPhotoCacheInterface::class),
+                pairing: $c->get(MemberPairingInterface::class),
             ),
         );
     }

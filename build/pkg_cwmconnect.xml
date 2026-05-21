@@ -17,6 +17,7 @@
         <file type="component" id="com_cwmconnect">com_cwmconnect.zip</file>
         <file type="module" client="site" id="mod_birthdayanniversary">mod_birthdayanniversary.zip</file>
         <file type="plugin" group="finder" id="cwmconnect">plg_finder_cwmconnect.zip</file>
+        <file type="plugin" group="user" id="cwmconnect">plg_user_cwmconnect.zip</file>
     </files>
 
     <updateservers>

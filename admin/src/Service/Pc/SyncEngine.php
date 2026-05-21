@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace CWM\Component\Cwmconnect\Administrator\Service\Pc;
 
+use CWM\Component\Cwmconnect\Administrator\Service\Pairing\MemberPairingInterface;
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\Exception\PcException;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
@@ -48,6 +49,12 @@ use Psr\Log\NullLogger;
  *    differs from the stored `image_hash`
  *  - The new (relative path, hash) is written back via
  *    {@see MemberRepositoryInterface::updateImageByPcPersonId()}.
+ *
+ * Phase H adds identity-binding pair attempts (spec §8.2 trigger #1):
+ *  - After each per-person upsert, when the row is unpaired and the PC
+ *    person has an email, {@see MemberPairingInterface} looks up the
+ *    matching unblocked Joomla user and binds `user_id`. Ambiguous and
+ *    no-match emails are silently skipped — there's no error to log.
  *
  * Household + campus FK resolution remain deferred to later phases.
  *
@@ -113,6 +120,7 @@ final class SyncEngine
         private readonly ?FieldMapRepositoryInterface $fieldMapRepo = null,
         private readonly ?CustomFieldWriterInterface $fieldWriter = null,
         private readonly ?PhotoCacheInterface $photoCache = null,
+        private readonly ?MemberPairingInterface $pairing = null,
         private readonly LoggerInterface $logger = new NullLogger(),
     ) {}
 
@@ -187,6 +195,7 @@ final class SyncEngine
                         $seenIds[] = $pcPersonId;
                         $this->writeCustomFields($pcPersonId, $person, $included, $report);
                         $this->cacheAvatar($pcPersonId, $person, $report);
+                        $this->tryPairByEmail($pcPersonId, $attrs, $report);
                     }
                 } catch (\Throwable $e) {
                     $report->recordError($pcPersonId, $e->getMessage());
@@ -332,6 +341,63 @@ final class SyncEngine
         } catch (\Throwable $e) {
             $report->recordError($pcPersonId, 'Photo cache failed: ' . $e->getMessage());
             $this->logger->error('PC sync photo cache error.', [
+                'pcPersonId' => $pcPersonId,
+                'error'      => $e->getMessage(),
+            ]);
+        }
+    }
+
+    /**
+     * Phase H: per-person identity-bind step (spec §8.2 trigger #1). No-op
+     * when the engine was constructed without a pairing service (Phase
+     * C/D/E parity), when the PC person has no email, or when no
+     * unblocked Joomla user matches that email.
+     *
+     * The pair call is a guarded UPDATE — already-paired rows are left
+     * alone, so this runs idempotently on every sync without ever
+     * overwriting an admin's manual binding.
+     *
+     * @param   int                   $pcPersonId
+     * @param   array<string, mixed>  $attrs   Mapped attrs returned by
+     *                                          PersonMapper::map(); read for
+     *                                          `email_to`.
+     * @param   SyncReport            $report  Mutated in-place.
+     *
+     * @return  void
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    private function tryPairByEmail(int $pcPersonId, array $attrs, SyncReport $report): void
+    {
+        if ($this->pairing === null) {
+            return;
+        }
+
+        $email = isset($attrs['email_to']) && \is_string($attrs['email_to']) ? trim($attrs['email_to']) : '';
+
+        if ($email === '') {
+            return;
+        }
+
+        try {
+            $memberId = $this->repository->findIdByPcPersonId($pcPersonId);
+
+            if ($memberId === null) {
+                return;
+            }
+
+            $userId = $this->pairing->findJoomlaUserIdByEmail($email);
+
+            if ($userId === null) {
+                return;
+            }
+
+            if ($this->pairing->pairMemberToUser($memberId, $userId)) {
+                $report->paired++;
+            }
+        } catch (\Throwable $e) {
+            $report->recordError($pcPersonId, 'Pair-by-email failed: ' . $e->getMessage());
+            $this->logger->error('PC sync pair-by-email error.', [
                 'pcPersonId' => $pcPersonId,
                 'error'      => $e->getMessage(),
             ]);

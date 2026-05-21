@@ -32,7 +32,8 @@
     "autoload": {
         "psr-4": {
             "CWM\\Component\\Cwmconnect\\Administrator\\": "admin/src/",
-            "CWM\\Component\\Cwmconnect\\Site\\": "site/src/"
+            "CWM\\Component\\Cwmconnect\\Site\\": "site/src/",
+            "CWM\\Plugin\\User\\Cwmconnect\\": "plugins/user/cwmconnect/src/"
         }
     },
     "autoload-dev": {

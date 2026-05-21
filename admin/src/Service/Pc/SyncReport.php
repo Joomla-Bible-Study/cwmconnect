@@ -100,6 +100,17 @@ final class SyncReport
     public int $photosUnchanged = 0;
 
     /**
+     * Phase H: member rows newly paired to a Joomla user this run via the
+     * email-match heuristic (spec §8.2 trigger #1). Members already paired,
+     * unmatched emails, and ambiguous matches do NOT increment this — only
+     * successful state changes from unpaired → paired count.
+     *
+     * @var    int
+     * @since  __DEPLOY_VERSION__
+     */
+    public int $paired = 0;
+
+    /**
      * Per-person error list, one entry per failure.
      *
      * @var    list<array{pcPersonId: int|null, message: string}>
@@ -222,6 +233,7 @@ final class SyncReport
             'customFieldsWritten' => $this->customFieldsWritten,
             'photosDownloaded'    => $this->photosDownloaded,
             'photosUnchanged'     => $this->photosUnchanged,
+            'paired'              => $this->paired,
             'errorCount'       => $this->errorCount(),
             'errors'           => $this->errors,
             'startedAt'        => $this->startedAt->format(\DateTimeImmutable::ATOM),
