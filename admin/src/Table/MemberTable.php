@@ -85,7 +85,7 @@ class MemberTable extends Table
     /** @since 2.0.0 */
     public ?string $params = null;
     /** @since 2.0.0 */
-    public ?int $user_id = 0;
+    public ?int $user_id = null;
     /** @since 2.0.0 */
     public ?int $catid = 0;
     /** @since 2.0.0 */
@@ -306,8 +306,8 @@ class MemberTable extends Table
             return false;
         }
 
-        if (!$this->user_id) {
-            $this->user_id = 0;
+        if (empty($this->user_id)) {
+            $this->user_id = null;
         }
 
         if ((int) $this->publish_down > 0 && $this->publish_down < $this->publish_up) {
