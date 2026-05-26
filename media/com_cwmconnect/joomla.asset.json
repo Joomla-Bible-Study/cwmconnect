@@ -8,31 +8,31 @@
     {
       "name": "com_cwmconnect.general",
       "type": "style",
-      "uri": "com_cwmconnect/css/general.css",
+      "uri": "com_cwmconnect/general.css",
       "dependencies": []
     },
     {
       "name": "com_cwmconnect.directory",
       "type": "style",
-      "uri": "com_cwmconnect/css/cwmconnect.css",
+      "uri": "com_cwmconnect/cwmconnect.css",
       "dependencies": []
     },
     {
       "name": "com_cwmconnect.model",
       "type": "style",
-      "uri": "com_cwmconnect/css/model.css",
+      "uri": "com_cwmconnect/model.css",
       "dependencies": []
     },
     {
       "name": "com_cwmconnect.ios",
       "type": "style",
-      "uri": "com_cwmconnect/css/ios.css",
+      "uri": "com_cwmconnect/ios.css",
       "dependencies": []
     },
     {
       "name": "com_cwmconnect.scripts",
       "type": "script",
-      "uri": "com_cwmconnect/js/cwmconnect.js",
+      "uri": "com_cwmconnect/cwmconnect.js",
       "dependencies": [
         "core"
       ],
@@ -43,7 +43,7 @@
     {
       "name": "com_cwmconnect.jscolor",
       "type": "script",
-      "uri": "com_cwmconnect/js/jscolor.min.js",
+      "uri": "com_cwmconnect/jscolor.min.js",
       "dependencies": [],
       "attributes": {
         "defer": true
@@ -52,7 +52,7 @@
     {
       "name": "com_cwmconnect.geoupdate",
       "type": "script",
-      "uri": "com_cwmconnect/js/geoupdate.js",
+      "uri": "com_cwmconnect/geoupdate.js",
       "dependencies": [
         "core"
       ],
@@ -63,7 +63,7 @@
     {
       "name": "com_cwmconnect.admin-pc-sync",
       "type": "script",
-      "uri": "com_cwmconnect/js/admin-pc-sync.js",
+      "uri": "com_cwmconnect/admin-pc-sync.js",
       "dependencies": [
         "core"
       ],
