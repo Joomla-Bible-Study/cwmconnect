@@ -137,26 +137,15 @@ class CpanelController extends BaseController
                 ? array_values(array_filter($rawStatuses))
                 : $this->parseStatusList((string) $rawStatuses);
 
-            // DEBUG: test the raw API call first
-            $client = $this->createPcClient();
-            $testPage = $client->getJson('/people/v2/people', ['per_page' => '2', 'where[membership]' => 'Member']);
-            $debugTotal = $testPage['meta']['total_count'] ?? '?';
-            $debugCount = \count($testPage['data'] ?? []);
-
             /** @var PcSyncEngine $engine */
             $engine = $this->createSyncEngine();
             $report = $engine->run($statuses);
 
             $this->logSyncResult($report->toArray(), $report->success());
 
-            $resultData = $report->toArray();
-            $resultData['_debug_api_total'] = $debugTotal;
-            $resultData['_debug_api_page_count'] = $debugCount;
-            $resultData['_debug_statuses'] = $statuses;
-
             $this->sendJsonAndClose(
                 new JsonResponse(
-                    $resultData,
+                    $report->toArray(),
                     Text::_($report->success() ? 'COM_CWMCONNECT_PC_SYNC_OK' : 'COM_CWMCONNECT_PC_SYNC_PARTIAL'),
                     !$report->success(),
                 ),
