@@ -171,10 +171,20 @@ final class SyncEngine
             $data     = \is_array($page['data'] ?? null) ? $page['data'] : [];
             $included = \is_array($page['included'] ?? null) ? $page['included'] : [];
 
+            $filterLocally = \count($membershipStatuses) > 1;
+
             foreach ($data as $person) {
                 if (!\is_array($person)) {
                     $report->recordError(null, 'Skipping non-array entry in PC response data.');
                     continue;
+                }
+
+                if ($filterLocally) {
+                    $personMembership = (string) ($person['attributes']['membership'] ?? '');
+
+                    if (!\in_array($personMembership, $membershipStatuses, true)) {
+                        continue;
+                    }
                 }
 
                 $report->seen++;
@@ -420,8 +430,8 @@ final class SyncEngine
             'per_page' => '100',
         ];
 
-        if ($membershipStatuses !== []) {
-            $query['where[membership]'] = implode(',', $membershipStatuses);
+        if (\count($membershipStatuses) === 1) {
+            $query['where[membership]'] = $membershipStatuses[0];
         }
 
         return $this->client->getJson('/people/v2/people', $query);
