@@ -11,17 +11,25 @@ declare(strict_types=1);
 
 namespace CWM\Component\Cwmconnect\Administrator\Controller;
 
+use CWM\Component\Cwmconnect\Administrator\Service\Pairing\DatabaseMemberPairing;
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\Client as PcClient;
+use CWM\Component\Cwmconnect\Administrator\Service\Pc\DatabaseFieldMapRepository;
+use CWM\Component\Cwmconnect\Administrator\Service\Pc\DatabaseMemberRepository;
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\Exception\AuthenticationException;
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\Exception\ConfigurationException as PcConfigurationException;
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\Exception\PcException;
+use CWM\Component\Cwmconnect\Administrator\Service\Pc\FieldsHelperWriter;
+use CWM\Component\Cwmconnect\Administrator\Service\Pc\MediaPhotoCache;
+use CWM\Component\Cwmconnect\Administrator\Service\Pc\PersonMapper;
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\SyncEngine as PcSyncEngine;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Http\HttpFactory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Controller\BaseController;
 use Joomla\CMS\Response\JsonResponse;
 use Joomla\Component\Actionlogs\Administrator\Model\ActionlogModel;
+use Joomla\Database\DatabaseInterface;
 
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
@@ -86,7 +94,7 @@ class CpanelController extends BaseController
 
         try {
             /** @var PcClient $client */
-            $client = Factory::getContainer()->get(PcClient::class);
+            $client = $this->createPcClient();
             $me     = $client->me();
 
             $this->sendJsonAndClose(
@@ -127,7 +135,7 @@ class CpanelController extends BaseController
             $statuses = $this->parseStatusList((string) $params->get('pc_membership_statuses', ''));
 
             /** @var PcSyncEngine $engine */
-            $engine = Factory::getContainer()->get(PcSyncEngine::class);
+            $engine = $this->createSyncEngine();
             $report = $engine->run($statuses);
 
             $this->logSyncResult($report->toArray(), $report->success());
@@ -237,6 +245,53 @@ class CpanelController extends BaseController
             );
         } catch (\Throwable) {
         }
+    }
+
+    /**
+     * @return  PcClient
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    private function createPcClient(): PcClient
+    {
+        $params  = ComponentHelper::getParams('com_cwmconnect');
+        $token   = (string) $params->get('pc_personal_access_token', '');
+        $appId   = (string) $params->get('pc_application_id', '');
+        $baseUrl = (string) $params->get('pc_api_base_url', PcClient::DEFAULT_BASE_URL);
+
+        if ($token === '') {
+            throw new PcConfigurationException('Planning Center is not configured: personal access token is empty.');
+        }
+
+        return new PcClient(
+            http: HttpFactory::getHttp(),
+            personalAccessToken: $token,
+            applicationId: $appId,
+            baseUrl: $baseUrl !== '' ? $baseUrl : PcClient::DEFAULT_BASE_URL,
+        );
+    }
+
+    /**
+     * @return  PcSyncEngine
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    private function createSyncEngine(): PcSyncEngine
+    {
+        $db = Factory::getContainer()->get(DatabaseInterface::class);
+
+        return new PcSyncEngine(
+            client: $this->createPcClient(),
+            repository: new DatabaseMemberRepository($db),
+            mapper: new PersonMapper(),
+            fieldMapRepo: new DatabaseFieldMapRepository($db),
+            fieldWriter: new FieldsHelperWriter(),
+            photoCache: new MediaPhotoCache(
+                http: HttpFactory::getHttp(),
+                cacheRoot: JPATH_ROOT . '/media/com_cwmconnect/photos',
+            ),
+            pairing: new DatabaseMemberPairing($db),
+        );
     }
 
     private function sendJsonAndClose(JsonResponse $response, int $httpStatus = 200): void
