@@ -18,6 +18,7 @@ namespace CWM\Component\Cwmconnect\Administrator\Controller;
 use CWM\Component\Cwmconnect\Administrator\Model\ReportsModel;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Controller\BaseController;
+use Joomla\CMS\Router\Route;
 use Joomla\CMS\Session\Session;
 
 /**
@@ -73,5 +74,18 @@ class ReportsController extends BaseController
         /** @var ReportsModel $model */
         $model = $this->getModel('Reports');
         $model->getExport($type, $report);
+
+        if ($type === 'pdf') {
+            $pdfPath = $this->app->getUserState('com_cwmconnect.reports.pdf_path', '');
+            $this->app->setUserState('com_cwmconnect.reports.pdf_path', null);
+
+            if ($pdfPath !== '') {
+                $this->app->enqueueMessage(Text::_('COM_CWMCONNECT_REPORTS_PDF_GENERATED'));
+            } else {
+                $this->app->enqueueMessage(Text::_('COM_CWMCONNECT_REPORTS_PDF_FAILED'), 'error');
+            }
+
+            $this->setRedirect(Route::_('index.php?option=com_cwmconnect&view=reports', false));
+        }
     }
 }

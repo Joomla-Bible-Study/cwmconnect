@@ -296,15 +296,139 @@ class ReportbuildHelper
     }
 
     /**
-     * Stub — PDF export not yet implemented.
+     * Generate a print directory PDF via mpdf and save to the exports
+     * directory. Returns the relative path to the generated file so the
+     * caller can redirect to a download link.
      *
-     * @return  void
+     * @param   array<int, object>  $items          Member rows.
+     * @param   string|null         $report         Optional file-name stem.
+     * @param   bool                $includeHidden  Include display_in_directory=0 rows (admin override, spec §17).
      *
-     * @since   2.0.0
+     * @return  string  Relative path under JPATH_ROOT to the generated PDF.
+     *
+     * @throws  \RuntimeException
+     * @since   __DEPLOY_VERSION__
      */
-    public function getPdf(): void
+    public function getPdf(array $items = [], ?string $report = null, bool $includeHidden = false): string
     {
-        echo 'Coming Soon';
+        $autoload = JPATH_LIBRARIES . '/mpdf/vendor/autoload.php';
+
+        if (!is_file($autoload)) {
+            throw new \RuntimeException('The mPDF library (lib_mpdf) is not installed.');
+        }
+
+        require_once $autoload;
+
+        $exportsDir = JPATH_ROOT . '/media/com_cwmconnect/exports';
+
+        if (!is_dir($exportsDir)) {
+            mkdir($exportsDir, 0o755, true);
+        }
+
+        $app = Factory::getApplication();
+
+        try {
+            $mpdf = new \Mpdf\Mpdf([
+                'mode'          => 'utf-8',
+                'format'        => 'Letter',
+                'margin_left'   => 12,
+                'margin_right'  => 12,
+                'margin_top'    => 16,
+                'margin_bottom' => 14,
+                'margin_header' => 6,
+                'margin_footer' => 6,
+                'tempDir'       => $app->get('tmp_path', sys_get_temp_dir()),
+            ]);
+
+            $title = 'Church Member Directory';
+            $mpdf->SetTitle($title);
+            $mpdf->SetAuthor('CWM Connect');
+            $mpdf->SetHeader($title . '|' . ($includeHidden ? '{STAFF COPY}' : '') . '|Page {PAGENO}');
+            $mpdf->SetFooter('Generated ' . date('F j, Y') . '||' . \count($items) . ' members');
+
+            $html = $this->buildPrintHtml($items, $includeHidden);
+            $mpdf->WriteHTML($html);
+        } catch (\Mpdf\MpdfException $e) {
+            throw new \RuntimeException('PDF rendering failed: ' . $e->getMessage());
+        }
+
+        $stem     = preg_replace('/[^A-Za-z0-9._-]/', '_', $report ?: 'directory') ?: 'directory';
+        $filename = $stem . '-' . date('Y-m-d-His') . '.pdf';
+        $fullPath = $exportsDir . '/' . $filename;
+
+        $mpdf->Output($fullPath, \Mpdf\Output\Destination::FILE);
+
+        return 'media/com_cwmconnect/exports/' . $filename;
+    }
+
+    /**
+     * Build the HTML for the print directory PDF.
+     *
+     * @param   array<int, object>  $items          Member rows.
+     * @param   bool                $includeHidden  Whether hidden members are included.
+     *
+     * @return  string
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    private function buildPrintHtml(array $items, bool $includeHidden): string
+    {
+        $photosBase = Uri::root() . 'media/com_cwmconnect/photos/';
+        $html       = '<style>'
+            . 'body { font-family: DejaVu Sans, sans-serif; font-size: 9pt; color: #333; }'
+            . 'table { width: 100%; border-collapse: collapse; }'
+            . 'th { background: #e8e8e8; text-align: left; padding: 2mm 3mm; font-size: 8pt; border-bottom: 0.5pt solid #999; }'
+            . 'td { padding: 2mm 3mm; font-size: 8pt; border-bottom: 0.25pt solid #ddd; vertical-align: top; }'
+            . 'tr:nth-child(even) td { background: #f8f8f8; }'
+            . '.hidden-badge { background: #dc3545; color: #fff; font-size: 7pt; padding: 1px 4px; border-radius: 3px; }'
+            . '.photo { width: 28px; height: 28px; object-fit: cover; border-radius: 3px; }'
+            . '</style>';
+
+        $html .= '<table><thead><tr>'
+            . '<th></th>'
+            . '<th>Name</th>'
+            . '<th>Email</th>'
+            . '<th>Phone</th>'
+            . '<th>Mobile</th>'
+            . '<th>Address</th>'
+            . '<th>Household</th>'
+            . '</tr></thead><tbody>';
+
+        foreach ($items as $item) {
+            $name    = trim(($item->name ?? '') . ' ' . ($item->lname ?? ''));
+            $address = implode(', ', array_filter([
+                (string) ($item->address ?? ''),
+                (string) ($item->suburb ?? ''),
+                (string) ($item->state ?? ''),
+                (string) ($item->postcode ?? ''),
+            ]));
+
+            $imgTag = '';
+
+            if (!empty($item->image)) {
+                $imgTag = '<img class="photo" src="' . htmlspecialchars($photosBase . $item->image, ENT_QUOTES, 'UTF-8') . '" alt="" />';
+            }
+
+            $hiddenBadge = '';
+
+            if ($includeHidden && (int) ($item->display_in_directory ?? 1) === 0) {
+                $hiddenBadge = ' <span class="hidden-badge">hidden</span>';
+            }
+
+            $html .= '<tr>'
+                . '<td>' . $imgTag . '</td>'
+                . '<td>' . htmlspecialchars($name, ENT_QUOTES, 'UTF-8') . $hiddenBadge . '</td>'
+                . '<td>' . htmlspecialchars((string) ($item->email_to ?? ''), ENT_QUOTES, 'UTF-8') . '</td>'
+                . '<td>' . htmlspecialchars((string) ($item->telephone ?? ''), ENT_QUOTES, 'UTF-8') . '</td>'
+                . '<td>' . htmlspecialchars((string) ($item->mobile ?? ''), ENT_QUOTES, 'UTF-8') . '</td>'
+                . '<td>' . htmlspecialchars($address, ENT_QUOTES, 'UTF-8') . '</td>'
+                . '<td>' . htmlspecialchars((string) ($item->funit_name ?? ''), ENT_QUOTES, 'UTF-8') . '</td>'
+                . '</tr>';
+        }
+
+        $html .= '</tbody></table>';
+
+        return $html;
     }
 
     /**

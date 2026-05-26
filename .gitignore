@@ -19,6 +19,9 @@ composer.phar
 # Phase E: PC avatar cache (runtime artifacts, re-downloaded by sync)
 /media/com_cwmconnect/photos/
 
+# Phase K: generated PDF exports (runtime artifacts)
+/media/com_cwmconnect/exports/
+
 *.zip
 
 # Dev-only convenience symlinks (see CLAUDE.md "Dev environment" section)
