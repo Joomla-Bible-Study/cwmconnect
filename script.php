@@ -110,6 +110,10 @@ class Com_cwmconnectInstallerScript
      */
     public function postflight(string $route, InstallerAdapter $adapter): bool
     {
+        if ($route === 'install' || $route === 'update') {
+            $this->ensureHiddenMenu();
+        }
+
         if ($route === 'install') {
             Factory::getApplication()->enqueueMessage(
                 'CWM Connect 2.0.0 has been installed successfully.',
@@ -125,5 +129,106 @@ class Com_cwmconnectInstallerScript
         }
 
         return true;
+    }
+
+    /**
+     * Create a hidden menu type with frontend menu items for the component's
+     * site views. Admins can alias or link to these from their main menu.
+     * The router needs at least one menu item per view to build SEF URLs.
+     *
+     * @return  void
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    private function ensureHiddenMenu(): void
+    {
+        $db = Factory::getContainer()->get('DatabaseDriver');
+
+        $menuType = 'cwmconnect-hidden';
+
+        $query = $db->createQuery()
+            ->select('COUNT(*)')
+            ->from($db->quoteName('#__menu_types'))
+            ->where($db->quoteName('menutype') . ' = ' . $db->quote($menuType));
+
+        if ((int) $db->setQuery($query)->loadResult() === 0) {
+            $row = (object) [
+                'asset_id'    => 0,
+                'menutype'    => $menuType,
+                'title'       => 'Church Directory (hidden)',
+                'description' => 'Auto-created menu items for Church Directory SEF routing. Do not delete — alias these items from your main menu.',
+                'client_id'   => 0,
+            ];
+            $db->insertObject('#__menu_types', $row);
+        }
+
+        $views = [
+            'members'    => ['title' => 'Member Directory',     'access' => 2],
+            'member'     => ['title' => 'Member Profile',       'access' => 2],
+            'myprofile'  => ['title' => 'My Profile',           'access' => 2],
+            'categories' => ['title' => 'Directory Categories', 'access' => 2],
+            'directory'  => ['title' => 'Directory',            'access' => 2],
+        ];
+
+        $componentId = $this->getComponentId($db);
+
+        if ($componentId <= 0) {
+            return;
+        }
+
+        foreach ($views as $view => $meta) {
+            $link = 'index.php?option=com_cwmconnect&view=' . $view;
+
+            $exists = $db->createQuery()
+                ->select('COUNT(*)')
+                ->from($db->quoteName('#__menu'))
+                ->where($db->quoteName('menutype') . ' = ' . $db->quote($menuType))
+                ->where($db->quoteName('link') . ' = ' . $db->quote($link))
+                ->where($db->quoteName('client_id') . ' = 0');
+
+            if ((int) $db->setQuery($exists)->loadResult() > 0) {
+                continue;
+            }
+
+            $alias = 'cwmconnect-' . $view;
+
+            $item = (object) [
+                'menutype'     => $menuType,
+                'title'        => $meta['title'],
+                'alias'        => $alias,
+                'link'         => $link,
+                'type'         => 'component',
+                'published'    => 1,
+                'parent_id'    => 1,
+                'level'        => 1,
+                'component_id' => $componentId,
+                'access'       => $meta['access'],
+                'language'     => '*',
+                'client_id'    => 0,
+                'path'         => $alias,
+                'img'          => '',
+                'params'       => '{}',
+            ];
+
+            $db->insertObject('#__menu', $item);
+        }
+    }
+
+    /**
+     * @param   object  $db  Database driver.
+     *
+     * @return  int
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    private function getComponentId(object $db): int
+    {
+        $query = $db->createQuery()
+            ->select($db->quoteName('extension_id'))
+            ->from($db->quoteName('#__extensions'))
+            ->where($db->quoteName('element') . ' = ' . $db->quote('com_cwmconnect'))
+            ->where($db->quoteName('type') . ' = ' . $db->quote('component'));
+
+        return (int) $db->setQuery($query)->loadResult();
     }
 }
