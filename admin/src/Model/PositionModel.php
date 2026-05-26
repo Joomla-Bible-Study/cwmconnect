@@ -141,7 +141,7 @@ class PositionModel extends AdminModel
             // Set ordering to the last item if not set
             if (empty($table->ordering)) {
                 $db    = $this->getDatabase();
-                $query = $db->getQuery(true)
+                $query = $db->createQuery()
                     ->select('MAX(' . $db->quoteName('ordering') . ')')
                     ->from($db->quoteName('#__cwmconnect_position'));
 
@@ -165,7 +165,7 @@ class PositionModel extends AdminModel
     public function getMembers(int $id): ?array
     {
         $db    = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName(['members.con_position', 'members.name', 'members.id']))
             ->from($db->quoteName('#__cwmconnect_details', 'members'))
             ->order($db->quoteName('members.lname') . ' DESC');

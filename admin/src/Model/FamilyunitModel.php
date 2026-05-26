@@ -141,7 +141,7 @@ class FamilyunitModel extends AdminModel
             // Set ordering to the last item if not set
             if (empty($table->ordering)) {
                 $db    = $this->getDatabase();
-                $query = $db->getQuery(true)
+                $query = $db->createQuery()
                     ->select('MAX(' . $db->quoteName('ordering') . ')')
                     ->from($db->quoteName('#__cwmconnect_familyunit'));
 
@@ -169,7 +169,7 @@ class FamilyunitModel extends AdminModel
         }
 
         $db    = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName(['members.id', 'members.name']))
             ->from($db->quoteName('#__cwmconnect_details', 'members'))
             ->where($db->quoteName('members.funitid') . ' = ' . (int) $item->id)

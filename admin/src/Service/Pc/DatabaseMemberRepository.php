@@ -133,7 +133,7 @@ final class DatabaseMemberRepository implements MemberRepositoryInterface
             return 0;
         }
 
-        $query = $this->db->getQuery(true);
+        $query = $this->db->createQuery();
 
         $query->update($this->db->quoteName(self::TABLE))
             ->set([
@@ -158,7 +158,7 @@ final class DatabaseMemberRepository implements MemberRepositoryInterface
 
     public function updateImageByPcPersonId(int $pcPersonId, string $relativePath, string $hash): void
     {
-        $query = $this->db->getQuery(true)
+        $query = $this->db->createQuery()
             ->update($this->db->quoteName(self::TABLE))
             ->set([
                 $this->db->quoteName('image') . ' = :image',
@@ -174,7 +174,7 @@ final class DatabaseMemberRepository implements MemberRepositoryInterface
 
     public function findImageHashByPcPersonId(int $pcPersonId): ?string
     {
-        $query = $this->db->getQuery(true)
+        $query = $this->db->createQuery()
             ->select($this->db->quoteName('image_hash'))
             ->from($this->db->quoteName(self::TABLE))
             ->where($this->db->quoteName('pc_person_id') . ' = :pcPersonId')
@@ -196,7 +196,7 @@ final class DatabaseMemberRepository implements MemberRepositoryInterface
      */
     private function findExistingByPcPersonId(int $pcPersonId): ?array
     {
-        $query = $this->db->getQuery(true)
+        $query = $this->db->createQuery()
             ->select([
                 $this->db->quoteName('id'),
                 $this->db->quoteName('display_in_directory'),

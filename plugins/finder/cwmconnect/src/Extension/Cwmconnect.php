@@ -268,7 +268,7 @@ final class Cwmconnect extends Adapter implements SubscriberInterface
     {
         $db = $this->getDatabase();
 
-        $query = $query instanceof QueryInterface ? $query : $db->getQuery(true)
+        $query = $query instanceof QueryInterface ? $query : $db->createQuery()
             ->select('a.id, a.name AS title, a.alias, a.address, a.created AS start_date')
             ->select('a.created_by_alias, a.modified, a.modified_by')
             ->select('a.metakey, a.metadesc, a.metadata, a.language')
@@ -291,7 +291,8 @@ final class Cwmconnect extends Adapter implements SubscriberInterface
             ->select('u.name')
             ->from($db->quoteName('#__cwmconnect_details', 'a'))
             ->join('LEFT', $db->quoteName('#__categories', 'c') . ' ON c.id = a.catid')
-            ->join('LEFT', $db->quoteName('#__users', 'u') . ' ON u.id = a.user_id');
+            ->join('LEFT', $db->quoteName('#__users', 'u') . ' ON u.id = a.user_id')
+            ->where($db->quoteName('a.display_in_directory') . ' = 1');
 
         return $query;
     }

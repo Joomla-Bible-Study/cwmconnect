@@ -130,7 +130,7 @@ class Router extends RouterView
     public function getMemberSegment(int|string $id, array $query): array
     {
         if (!str_contains((string) $id, ':')) {
-            $dbquery = $this->db->getQuery(true)
+            $dbquery = $this->db->createQuery()
                 ->select($this->db->quoteName('alias'))
                 ->from($this->db->quoteName('#__cwmconnect_details'))
                 ->where($this->db->quoteName('id') . ' = :id')
@@ -200,7 +200,7 @@ class Router extends RouterView
     public function getMemberId(string $segment, array $query): int
     {
         if ($this->noIDs) {
-            $dbquery = $this->db->getQuery(true)
+            $dbquery = $this->db->createQuery()
                 ->select($this->db->quoteName('id'))
                 ->from($this->db->quoteName('#__cwmconnect_details'))
                 ->where($this->db->quoteName('alias') . ' = :alias')

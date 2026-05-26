@@ -250,7 +250,7 @@ class FamilyunitTable extends Table
         }
 
         $db    = $this->getDbo();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('id'))
             ->from($db->quoteName('#__cwmconnect_familyunit'))
             ->where($db->quoteName('name') . ' = ' . $db->quote($this->name));

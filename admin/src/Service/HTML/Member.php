@@ -63,7 +63,7 @@ class Member
         }
 
         $db    = Factory::getContainer()->get(DatabaseInterface::class);
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName(['c.id', 'c.name', 'c.alias', 'c.catid', 'c.language']))
             ->select($db->quoteName('cat.title', 'category_title'))
             ->select($db->quoteName('l.image'))

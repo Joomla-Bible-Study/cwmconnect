@@ -109,7 +109,7 @@ class CategoryModel extends ListModel
         $groups = implode(',', $user ? $user->getAuthorisedViewLevels() : [1]);
 
         $db    = $this->getDatabase();
-        $query = $db->getQuery(true);
+        $query = $db->createQuery();
 
         $caseSlug    = ' CASE WHEN ' . $query->charLength('a.alias', '!=', '0')
             . ' THEN ' . $query->concatenate([$query->castAsChar('a.id'), 'a.alias'], ':')

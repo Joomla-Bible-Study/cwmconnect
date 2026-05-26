@@ -193,7 +193,7 @@ class GeoupdateModel extends BaseDatabaseModel
     private function loadMembers(?int $id = null): void
     {
         $db    = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName(['id', 'name', 'address', 'suburb', 'state', 'postcode', 'lat', 'lng', 'country']))
             ->from($db->quoteName('#__cwmconnect_details'));
 
@@ -230,7 +230,7 @@ class GeoupdateModel extends BaseDatabaseModel
 
         if ($id) {
             $memberId = $id;
-            $query    = $db->getQuery(true)
+            $query    = $db->createQuery()
                 ->select('*')
                 ->from($db->quoteName('#__cwmconnect_details'))
                 ->where($db->quoteName('id') . ' = ' . (int) $id);
@@ -281,7 +281,7 @@ class GeoupdateModel extends BaseDatabaseModel
                     $ulat  = (string) $data->geometry->location->lat;
                     $ulng  = (string) $data->geometry->location->lng;
 
-                    $update = $db->getQuery(true)
+                    $update = $db->createQuery()
                         ->update($db->quoteName('#__cwmconnect_details'))
                         ->set($db->quoteName('lat') . ' = ' . $db->quote($ulat))
                         ->set($db->quoteName('lng') . ' = ' . $db->quote($ulng))
@@ -289,14 +289,14 @@ class GeoupdateModel extends BaseDatabaseModel
                     $db->setQuery($update)->execute();
 
                     // Drop any prior error row for this member.
-                    $check = $db->getQuery(true)
+                    $check = $db->createQuery()
                         ->select($db->quoteName('member_id'))
                         ->from($db->quoteName('#__cwmconnect_geoupdate'))
                         ->where($db->quoteName('member_id') . ' = ' . (int) $memberId);
                     $db->setQuery($check);
 
                     if ($db->loadResult()) {
-                        $delete = $db->getQuery(true)
+                        $delete = $db->createQuery()
                             ->delete($db->quoteName('#__cwmconnect_geoupdate'))
                             ->where($db->quoteName('member_id') . ' = ' . (int) $memberId);
                         $db->setQuery($delete)->execute();
@@ -317,20 +317,20 @@ class GeoupdateModel extends BaseDatabaseModel
                     $errorMessage
                 );
 
-                $check = $db->getQuery(true)
+                $check = $db->createQuery()
                     ->select('*')
                     ->from($db->quoteName('#__cwmconnect_geoupdate'))
                     ->where($db->quoteName('member_id') . ' = ' . (int) $row->id);
                 $db->setQuery($check);
 
                 if ($db->loadResult()) {
-                    $update = $db->getQuery(true)
+                    $update = $db->createQuery()
                         ->update($db->quoteName('#__cwmconnect_geoupdate'))
                         ->set($db->quoteName('status') . ' = ' . $db->quote($info))
                         ->where($db->quoteName('member_id') . ' = ' . (int) $row->id);
                     $db->setQuery($update)->execute();
                 } else {
-                    $insert = $db->getQuery(true)
+                    $insert = $db->createQuery()
                         ->insert($db->quoteName('#__cwmconnect_geoupdate'))
                         ->set($db->quoteName('member_id') . ' = ' . (int) $row->id)
                         ->set($db->quoteName('status') . ' = ' . $db->quote($info));

@@ -72,7 +72,7 @@ class PcFieldMapTable extends Table
         }
 
         $db    = $this->getDbo();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('id'))
             ->from($db->quoteName('#__cwmconnect_pc_field_map'))
             ->where($db->quoteName('pc_field_id') . ' = ' . (int) $this->pc_field_id);
@@ -85,7 +85,7 @@ class PcFieldMapTable extends Table
             return false;
         }
 
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('id'))
             ->from($db->quoteName('#__cwmconnect_pc_field_map'))
             ->where($db->quoteName('joomla_field_id') . ' = ' . (int) $this->joomla_field_id);

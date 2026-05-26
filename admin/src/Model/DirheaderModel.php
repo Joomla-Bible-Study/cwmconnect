@@ -140,7 +140,7 @@ class DirheaderModel extends AdminModel
         if (empty($table->id)) {
             if (empty($table->ordering)) {
                 $db    = $this->getDatabase();
-                $query = $db->getQuery(true)
+                $query = $db->createQuery()
                     ->select('MAX(' . $db->quoteName('ordering') . ')')
                     ->from($db->quoteName('#__cwmconnect_dirheader'));
 
