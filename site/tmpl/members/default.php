@@ -55,9 +55,12 @@ $tableActive = $layoutMode === 'table' ? ' active' : '';
         </div>
     </form>
 
-    <div class="d-flex justify-content-end mb-3">
+    <div class="d-flex justify-content-end gap-2 mb-3">
         <a href="<?php echo Route::_('index.php?option=com_cwmconnect&view=members&format=pdf'); ?>" class="btn btn-outline-secondary btn-sm">
             <span class="icon-download" aria-hidden="true"></span> <?php echo Text::_('COM_CWMCONNECT_PDF_DOWNLOAD_BUTTON'); ?>
+        </a>
+        <a href="<?php echo Route::_('index.php?option=com_cwmconnect&view=members&format=kml'); ?>" class="btn btn-outline-secondary btn-sm">
+            <span class="icon-location" aria-hidden="true"></span> <?php echo Text::_('COM_CWMCONNECT_KML_DOWNLOAD_BUTTON'); ?>
         </a>
     </div>
 

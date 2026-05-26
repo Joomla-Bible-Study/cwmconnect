@@ -96,6 +96,13 @@ class MembersModel extends ListModel
             $db->quoteName('a.funitid'),
             $db->quoteName('a.sortname1'),
             $db->quoteName('a.published'),
+            $db->quoteName('a.lat'),
+            $db->quoteName('a.lng'),
+            $db->quoteName('a.address'),
+            $db->quoteName('a.suburb'),
+            $db->quoteName('a.state'),
+            $db->quoteName('a.postcode'),
+            $db->quoteName('a.country'),
         ])
         ->select($db->quoteName('c.title', 'category_title'))
         ->select($db->quoteName('d.name', 'dirheader_name'))
