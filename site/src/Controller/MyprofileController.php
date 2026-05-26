@@ -15,12 +15,14 @@ namespace CWM\Component\Cwmconnect\Site\Controller;
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
+use CWM\Component\Cwmconnect\Administrator\Service\FeedToken\FeedTokenService;
 use CWM\Component\Cwmconnect\Site\Model\MyprofileModel;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Controller\BaseController;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Session\Session;
+use Joomla\Database\DatabaseInterface;
 
 /**
  * Phase H: self-service portal controller. Renders `view=myprofile` and
@@ -80,6 +82,46 @@ class MyprofileController extends BaseController
 
         $app->setUserState('com_cwmconnect.myprofile.data', null);
         $app->enqueueMessage(Text::_('COM_CWMCONNECT_MYPROFILE_SAVE_SUCCESS'), 'message');
+        $this->setRedirect($redirect);
+    }
+
+    /**
+     * Revoke all active KML feed tokens for the current user.
+     *
+     * @return  void
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    public function revokeKml(): void
+    {
+        Session::checkToken();
+
+        $userId   = (int) ($this->app->getIdentity()?->id ?? 0);
+        $redirect = Route::_('index.php?option=com_cwmconnect&view=myprofile', false);
+
+        if ($userId <= 0) {
+            $this->setRedirect($redirect);
+
+            return;
+        }
+
+        $db      = $this->app->getContainer()->get(DatabaseInterface::class);
+        $service = new FeedTokenService($db);
+
+        $query = $db->createQuery()
+            ->select($db->quoteName('id'))
+            ->from($db->quoteName('#__cwmconnect_feed_tokens'))
+            ->where($db->quoteName('user_id') . ' = :uid')
+            ->where($db->quoteName('revoked_at') . ' IS NULL')
+            ->bind(':uid', $userId, \Joomla\Database\ParameterType::INTEGER);
+
+        $ids = array_map('intval', $db->setQuery($query)->loadColumn() ?: []);
+
+        if ($ids !== []) {
+            $service->revoke($ids);
+        }
+
+        $this->app->enqueueMessage(Text::_('COM_CWMCONNECT_MYPROFILE_KML_REVOKED'));
         $this->setRedirect($redirect);
     }
 }

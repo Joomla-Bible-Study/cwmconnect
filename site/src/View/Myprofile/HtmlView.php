@@ -22,6 +22,8 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
+use Joomla\Database\DatabaseInterface;
+use Joomla\Database\ParameterType;
 
 /**
  * Phase H: self-service portal HTML view.
@@ -53,6 +55,12 @@ class HtmlView extends BaseHtmlView
     protected string $adminEmail = '';
 
     /**
+     * @var    bool
+     * @since  __DEPLOY_VERSION__
+     */
+    protected bool $hasActiveToken = false;
+
+    /**
      * @since  2.0.0
      */
     #[\Override]
@@ -74,10 +82,37 @@ class HtmlView extends BaseHtmlView
             return;
         }
 
-        $this->form         = $model->getForm() ?: null;
-        $this->lockedFields = PcLockedFields::forItem($this->item);
-        $this->isPcLinked   = (int) ($this->item->pc_person_id ?? 0) > 0;
+        $this->form            = $model->getForm() ?: null;
+        $this->lockedFields    = PcLockedFields::forItem($this->item);
+        $this->isPcLinked      = (int) ($this->item->pc_person_id ?? 0) > 0;
+        $this->hasActiveToken  = $this->checkActiveToken();
 
         parent::display($tpl);
+    }
+
+    /**
+     * Check whether the current user has an active (non-revoked) feed token.
+     *
+     * @return  bool
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    private function checkActiveToken(): bool
+    {
+        $userId = (int) (Factory::getApplication()->getIdentity()?->id ?? 0);
+
+        if ($userId <= 0) {
+            return false;
+        }
+
+        $db    = Factory::getContainer()->get(DatabaseInterface::class);
+        $query = $db->createQuery()
+            ->select('COUNT(*)')
+            ->from($db->quoteName('#__cwmconnect_feed_tokens'))
+            ->where($db->quoteName('user_id') . ' = :uid')
+            ->where($db->quoteName('revoked_at') . ' IS NULL')
+            ->bind(':uid', $userId, ParameterType::INTEGER);
+
+        return (int) $db->setQuery($query)->loadResult() > 0;
     }
 }

@@ -33,6 +33,36 @@ $saveAction = Route::_('index.php?option=com_cwmconnect&task=myprofile.save');
 		</div>
 	<?php endif; ?>
 
+	<div class="card mb-4">
+		<div class="card-header">
+			<h3 class="card-title mb-0"><?php echo Text::_('COM_CWMCONNECT_MYPROFILE_KML_HEADING'); ?></h3>
+		</div>
+		<div class="card-body">
+			<?php if ($this->hasActiveToken) : ?>
+				<p class="text-success">
+					<span class="icon-checkmark" aria-hidden="true"></span>
+					<?php echo Text::_('COM_CWMCONNECT_MYPROFILE_KML_ACTIVE'); ?>
+				</p>
+				<div class="d-flex gap-2">
+					<a href="<?php echo Route::_('index.php?option=com_cwmconnect&task=members.kmlFeed'); ?>" class="btn btn-outline-primary btn-sm">
+						<span class="icon-download" aria-hidden="true"></span> <?php echo Text::_('COM_CWMCONNECT_MYPROFILE_KML_DOWNLOAD'); ?>
+					</a>
+					<form action="<?php echo Route::_('index.php?option=com_cwmconnect&task=myprofile.revokeKml'); ?>" method="post" class="d-inline">
+						<button type="submit" class="btn btn-outline-danger btn-sm">
+							<span class="icon-ban-circle" aria-hidden="true"></span> <?php echo Text::_('COM_CWMCONNECT_MYPROFILE_KML_REVOKE'); ?>
+						</button>
+						<?php echo HTMLHelper::_('form.token'); ?>
+					</form>
+				</div>
+			<?php else : ?>
+				<p><?php echo Text::_('COM_CWMCONNECT_MYPROFILE_KML_NONE'); ?></p>
+				<a href="<?php echo Route::_('index.php?option=com_cwmconnect&task=members.kmlFeed'); ?>" class="btn btn-primary btn-sm">
+					<span class="icon-location" aria-hidden="true"></span> <?php echo Text::_('COM_CWMCONNECT_MYPROFILE_KML_CONNECT'); ?>
+				</a>
+			<?php endif; ?>
+		</div>
+	</div>
+
 	<?php if ($this->form !== null) : ?>
 		<form action="<?php echo $saveAction; ?>" method="post" class="form-validate">
 			<?php foreach ($this->form->getFieldsets() as $fieldset) : ?>
