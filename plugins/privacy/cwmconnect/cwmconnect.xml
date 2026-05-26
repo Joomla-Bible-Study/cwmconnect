@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="plugin" group="privacy" method="upgrade">
+    <name>plg_privacy_cwmconnect</name>
+    <author>CWM Team</author>
+    <authorEmail>info@christianwebministries.org</authorEmail>
+    <authorUrl>https://www.christianwebministries.org</authorUrl>
+    <copyright>(C) 2026 CWM Team All rights reserved.</copyright>
+    <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+    <version>2.0.0-dev</version>
+    <creationDate>2026-05-26</creationDate>
+    <description>PLG_PRIVACY_CWMCONNECT_XML_DESCRIPTION</description>
+    <namespace path="src">CWM\Plugin\Privacy\Cwmconnect</namespace>
+
+    <files>
+        <folder>services</folder>
+        <folder>src</folder>
+        <folder>language</folder>
+    </files>
+
+    <languages folder="language">
+        <language tag="en-GB">en-GB/plg_privacy_cwmconnect.ini</language>
+        <language tag="en-GB">en-GB/plg_privacy_cwmconnect.sys.ini</language>
+    </languages>
+</extension>

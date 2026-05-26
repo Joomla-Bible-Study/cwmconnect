@@ -34,7 +34,8 @@
             "CWM\\Component\\Cwmconnect\\Administrator\\": "admin/src/",
             "CWM\\Component\\Cwmconnect\\Site\\": "site/src/",
             "CWM\\Plugin\\User\\Cwmconnect\\": "plugins/user/cwmconnect/src/",
-            "CWM\\Plugin\\Content\\Cwmconnect\\": "plugins/content/cwmconnect/src/"
+            "CWM\\Plugin\\Content\\Cwmconnect\\": "plugins/content/cwmconnect/src/",
+            "CWM\\Plugin\\Privacy\\Cwmconnect\\": "plugins/privacy/cwmconnect/src/"
         }
     },
     "autoload-dev": {
