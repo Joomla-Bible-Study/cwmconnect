@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form>
+	<fieldset name="identity" label="COM_CWMCONNECT_MYPROFILE_FIELDSET_IDENTITY">
+		<field name="id" type="hidden" default="0" />
+
+		<field name="name"
+			type="text"
+			label="COM_CWMCONNECT_FIELD_NAME_LABEL"
+			description="COM_CWMCONNECT_FIELD_NAME_DESC"
+			size="40"
+			filter="string"
+			required="true"
+		/>
+
+		<field name="surname"
+			type="text"
+			label="COM_CWMCONNECT_FIELD_SURNAME_LABEL"
+			size="40"
+			filter="string"
+		/>
+
+		<field name="lname"
+			type="text"
+			label="COM_CWMCONNECT_FIELD_LNAME_LABEL"
+			size="40"
+			filter="string"
+		/>
+	</fieldset>
+
+	<fieldset name="contact" label="COM_CWMCONNECT_MYPROFILE_FIELDSET_CONTACT">
+		<field name="email_to"
+			type="email"
+			label="COM_CWMCONNECT_FIELD_EMAIL_TO_LABEL"
+			size="40"
+			filter="string"
+		/>
+
+		<field name="telephone"
+			type="tel"
+			label="COM_CWMCONNECT_FIELD_TELEPHONE_LABEL"
+			size="30"
+			filter="string"
+		/>
+
+		<field name="mobile"
+			type="tel"
+			label="COM_CWMCONNECT_FIELD_MOBILE_LABEL"
+			size="30"
+			filter="string"
+		/>
+	</fieldset>
+
+	<fieldset name="address" label="COM_CWMCONNECT_MYPROFILE_FIELDSET_ADDRESS">
+		<field name="address"
+			type="text"
+			label="COM_CWMCONNECT_FIELD_ADDRESS_LABEL"
+			size="40"
+			filter="string"
+		/>
+
+		<field name="suburb"
+			type="text"
+			label="COM_CWMCONNECT_FIELD_SUBURB_LABEL"
+			size="30"
+			filter="string"
+		/>
+
+		<field name="state"
+			type="text"
+			label="COM_CWMCONNECT_FIELD_STATE_LABEL"
+			size="30"
+			filter="string"
+		/>
+
+		<field name="postcode"
+			type="text"
+			label="COM_CWMCONNECT_FIELD_POSTCODE_LABEL"
+			size="10"
+			filter="string"
+		/>
+
+		<field name="country"
+			type="text"
+			label="COM_CWMCONNECT_FIELD_COUNTRY_LABEL"
+			size="30"
+			filter="string"
+		/>
+	</fieldset>
+
+	<fieldset name="dates" label="COM_CWMCONNECT_MYPROFILE_FIELDSET_DATES">
+		<field name="birthdate"
+			type="calendar"
+			label="COM_CWMCONNECT_FIELD_BIRTHDATE_LABEL"
+			format="%Y-%m-%d"
+			filter="user_utc"
+		/>
+
+		<field name="anniversary"
+			type="calendar"
+			label="COM_CWMCONNECT_FIELD_ANNIVERSARY_LABEL"
+			format="%Y-%m-%d"
+			filter="user_utc"
+		/>
+	</fieldset>
+
+	<fieldset name="directory" label="COM_CWMCONNECT_MYPROFILE_FIELDSET_DIRECTORY">
+		<field name="display_in_directory"
+			type="radio"
+			label="COM_CWMCONNECT_FIELD_DISPLAY_IN_DIRECTORY_LABEL"
+			description="COM_CWMCONNECT_FIELD_DISPLAY_IN_DIRECTORY_DESC"
+			default="1"
+			layout="joomla.form.field.radio.switcher"
+		>
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+		<field name="sortname1"
+			type="text"
+			label="COM_CWMCONNECT_FIELD_SORTNAME1_LABEL"
+			size="30"
+			filter="string"
+		/>
+
+		<field name="sortname2"
+			type="text"
+			label="COM_CWMCONNECT_FIELD_SORTNAME2_LABEL"
+			size="30"
+			filter="string"
+		/>
+
+		<field name="sortname3"
+			type="text"
+			label="COM_CWMCONNECT_FIELD_SORTNAME3_LABEL"
+			size="30"
+			filter="string"
+		/>
+	</fieldset>
+</form>

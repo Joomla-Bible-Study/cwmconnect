@@ -17,7 +17,8 @@
             { "type": "component", "path": "cwmconnect.xml" },
             { "type": "module",    "path": "modules/site/mod_birthdayanniversary/mod_birthdayanniversary.xml" },
             { "type": "plugin",    "path": "plugins/finder/cwmconnect/cwmconnect.xml" },
-            { "type": "plugin",    "path": "plugins/user/cwmconnect/cwmconnect.xml" }
+            { "type": "plugin",    "path": "plugins/user/cwmconnect/cwmconnect.xml" },
+            { "type": "plugin",    "path": "plugins/content/cwmconnect/cwmconnect.xml" }
         ]
     },
     "build": {

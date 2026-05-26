@@ -20,6 +20,7 @@
             <directory>modules/site/mod_birthdayanniversary/src</directory>
             <directory>plugins/finder/cwmconnect/src</directory>
             <directory>plugins/user/cwmconnect/src</directory>
+            <directory>plugins/content/cwmconnect/src</directory>
         </include>
     </source>
 </phpunit>
