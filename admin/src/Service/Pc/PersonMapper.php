@@ -69,6 +69,7 @@ final class PersonMapper
 
         $directoryStatus = (string) ($attrs['directory_status'] ?? 'everyone');
         $isChild         = (bool) ($attrs['child'] ?? false);
+        $pcStatus        = (string) ($attrs['status'] ?? 'active');
 
         $firstName = $this->stringAttr($attrs, 'first_name');
         $lastName  = $this->stringAttr($attrs, 'last_name');
@@ -94,6 +95,7 @@ final class PersonMapper
             'directory_scope'      => $this->mapDirectoryScope($directoryStatus),
             'pc_shared_info'       => $this->encodeSharedInfo($attrs['directory_shared_info'] ?? null),
             'display_in_directory' => ($isChild || $directoryStatus === 'no') ? 0 : 1,
+            'published'            => $pcStatus === 'active' ? 1 : 0,
         ];
     }
 
