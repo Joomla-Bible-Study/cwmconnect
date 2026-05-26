@@ -15,23 +15,26 @@ namespace CWM\Component\Cwmconnect\Site\View\Members;
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
+use CWM\Component\Cwmconnect\Administrator\Helper\DbHelper;
 use CWM\Component\Cwmconnect\Administrator\Service\FeedToken\FeedTokenService;
 use CWM\Component\Cwmconnect\Site\Model\MembersModel;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Uri\Uri;
+use Joomla\Registry\Registry;
 
 /**
- * Phase J: KML 2.2 feed for the member directory.
+ * KML 2.2 feed for the member directory.
  *
- * Modern features beyond the legacy ReportbuildHelper::getKml():
+ * Modern features:
  *  - ExtendedData with typed fields (searchable in Google Earth)
  *  - BalloonStyle template with $[field] substitution
  *  - Category → suburb folder hierarchy
  *  - Per-category pin icons from Joomla category params
+ *  - LookAt camera from #__cwmconnect_kml settings
  *  - Rich HTML balloon with photo, position, household, contact
- *  - NetworkLink wrapper option for auto-refreshing feeds
+ *  - NetworkLink wrapper for auto-refreshing feeds
  *
  * Dual auth: session for logged-in users, `?token=` for external clients.
  *
@@ -40,6 +43,15 @@ use Joomla\CMS\Uri\Uri;
  */
 class KmlView extends BaseHtmlView
 {
+    /**
+     * Category IDs that have a custom icon — built during style generation,
+     * read during placemark generation.
+     *
+     * @var    array<int, true>
+     * @since  __DEPLOY_VERSION__
+     */
+    private array $categoryIconMap = [];
+
     /**
      * @param   string|null  $tpl  Unused.
      *
@@ -71,9 +83,7 @@ class KmlView extends BaseHtmlView
             $service->touchLastUsed((int) $tokenRow->id);
         }
 
-        $networkLink = (bool) $app->getInput()->getInt('networklink', 0);
-
-        if ($networkLink) {
+        if ((bool) $app->getInput()->getInt('networklink', 0)) {
             $this->streamNetworkLink($app, $token);
 
             return;
@@ -84,9 +94,9 @@ class KmlView extends BaseHtmlView
         $model->setState('list.start', 0);
         $model->setState('list.limit', 0);
 
-        $items = $model->getItems() ?: [];
-
-        $kml = $this->buildKml($items);
+        $items      = $model->getItems() ?: [];
+        $kmlSettings = new DbHelper()->getKmlSettings();
+        $kml        = $this->buildKml($items, $kmlSettings);
 
         $app->setHeader('Content-Type', 'application/vnd.google-earth.kml+xml; charset=UTF-8', true);
         $app->setHeader('Content-Disposition', 'attachment; filename="church-directory.kml"', true);
@@ -98,8 +108,7 @@ class KmlView extends BaseHtmlView
     }
 
     /**
-     * Stream a NetworkLink wrapper KML that tells Google Earth to
-     * auto-refresh the actual data feed every 15 minutes.
+     * Stream a NetworkLink wrapper that auto-refreshes every 15 minutes.
      *
      * @param   object  $app    Application.
      * @param   string  $token  Cleartext token for the data URL.
@@ -142,29 +151,44 @@ class KmlView extends BaseHtmlView
     }
 
     /**
-     * Build the full KML 2.2 document with modern features.
+     * Build the full KML document.
      *
-     * @param   list<object>  $items  Member rows.
+     * @param   list<object>  $items        Member rows.
+     * @param   object|null   $kmlSettings  Row from #__cwmconnect_kml, or null.
      *
      * @return  string
      *
      * @since   __DEPLOY_VERSION__
      */
-    private function buildKml(array $items): string
+    private function buildKml(array $items, ?object $kmlSettings): string
     {
         $lines   = [];
         $lines[] = '<?xml version="1.0" encoding="UTF-8"?>';
-        $lines[] = '<kml xmlns="http://www.opengis.net/kml/2.2">';
+        $lines[] = '<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2">';
         $lines[] = '<Document>';
-        $lines[] = '<name>' . $this->esc(Text::_('COM_CWMCONNECT_KML_DOCUMENT_NAME')) . '</name>';
-        $lines[] = '<description>' . $this->esc(Text::_('COM_CWMCONNECT_KML_DOCUMENT_DESC')) . '</description>';
+
+        $docName = $kmlSettings !== null && !empty($kmlSettings->name)
+            ? (string) $kmlSettings->name
+            : Text::_('COM_CWMCONNECT_KML_DOCUMENT_NAME');
+        $lines[] = '<name>' . $this->esc($docName) . '</name>';
+
+        $docDesc = $kmlSettings !== null && !empty($kmlSettings->description)
+            ? (string) $kmlSettings->description
+            : Text::_('COM_CWMCONNECT_KML_DOCUMENT_DESC');
+        $lines[] = '<description><![CDATA[' . $docDesc . ']]></description>';
         $lines[] = '<open>1</open>';
 
-        $lines[] = $this->buildBalloonStyleTemplate();
+        $lookAt = $this->buildLookAt($kmlSettings);
+
+        if ($lookAt !== '') {
+            $lines[] = $lookAt;
+        }
+
+        $balloonFragment = $this->buildBalloonFragment();
+        $lines[]         = $this->buildDefaultStyle($balloonFragment);
+        $lines[]         = $this->buildCategoryStyles($items, $balloonFragment);
 
         $categories = $this->groupBy($items, 'category_title');
-
-        $lines[] = $this->buildDefaultStyle();
 
         foreach ($categories as $catName => $catItems) {
             $lines[] = '<Folder>';
@@ -199,17 +223,61 @@ class KmlView extends BaseHtmlView
     }
 
     /**
-     * Build the shared BalloonStyle template using ExtendedData substitution.
+     * Build the LookAt camera element from KML settings.
+     *
+     * @param   object|null  $kmlSettings  Row from #__cwmconnect_kml.
+     *
+     * @return  string  Empty string if no settings available.
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    private function buildLookAt(?object $kmlSettings): string
+    {
+        if ($kmlSettings === null) {
+            return '';
+        }
+
+        $lat = (float) ($kmlSettings->lat ?? 0);
+        $lng = (float) ($kmlSettings->lng ?? 0);
+
+        if ($lat === 0.0 && $lng === 0.0) {
+            return '';
+        }
+
+        /** @var Registry $params */
+        $params = $kmlSettings->params;
+
+        $lines   = [];
+        $lines[] = '<LookAt>';
+        $lines[] = '  <longitude>' . $lng . '</longitude>';
+        $lines[] = '  <latitude>' . $lat . '</latitude>';
+        $lines[] = '  <altitude>' . (float) $params->get('altitude', 0) . '</altitude>';
+        $lines[] = '  <range>' . (float) $params->get('range', 5000) . '</range>';
+        $lines[] = '  <tilt>' . (float) $params->get('tilt', 0) . '</tilt>';
+        $lines[] = '  <heading>' . (float) $params->get('heading', 0) . '</heading>';
+
+        $altMode = (string) $params->get('gxaltitudeMode', '');
+
+        if ($altMode !== '') {
+            $lines[] = '  <gx:altitudeMode>' . $this->esc($altMode) . '</gx:altitudeMode>';
+        }
+
+        $lines[] = '</LookAt>';
+
+        return implode("\n", $lines);
+    }
+
+    /**
+     * Return the BalloonStyle XML fragment (without wrapping Style element)
+     * so it can be composed into both the default and per-category styles.
      *
      * @return  string
      *
      * @since   __DEPLOY_VERSION__
      */
-    private function buildBalloonStyleTemplate(): string
+    private function buildBalloonFragment(): string
     {
-        $photosBase = Uri::root() . 'media/com_cwmconnect/photos/';
-
-        $balloon = '<![CDATA['
+        return '<BalloonStyle><text><![CDATA['
             . '<div style="font-family:sans-serif;font-size:13px;min-width:280px;padding:10px;">'
             . '<div style="display:flex;gap:10px;align-items:flex-start;">'
             . '<div style="flex-shrink:0;">$[cwm_photo]</div>'
@@ -225,30 +293,80 @@ class KmlView extends BaseHtmlView
             . '</table>'
             . '$[cwm_address_html]'
             . '</div>'
-            . ']]>';
-
-        return '<Style id="memberBalloon">'
-            . '<BalloonStyle><text>' . $balloon . '</text></BalloonStyle>'
-            . '</Style>';
+            . ']]></text></BalloonStyle>';
     }
 
     /**
+     * Build the default pin style (used when a category has no custom icon).
+     *
+     * @param   string  $balloonFragment  BalloonStyle XML fragment.
+     *
      * @return  string
      *
      * @since   __DEPLOY_VERSION__
      */
-    private function buildDefaultStyle(): string
+    private function buildDefaultStyle(string $balloonFragment): string
     {
         return '<Style id="memberPin">'
-            . '<IconStyle>'
-            . '<scale>1.0</scale>'
+            . '<IconStyle><scale>1.0</scale>'
             . '<Icon><href>https://maps.google.com/mapfiles/kml/paddle/red-circle.png</href></Icon>'
             . '</IconStyle>'
+            . $balloonFragment
             . '</Style>';
     }
 
     /**
-     * Build a single Placemark with ExtendedData for balloon template substitution.
+     * Generate per-category Style/StyleMap elements from category images.
+     *
+     * @param   list<object>  $items            Member rows with category_params.
+     * @param   string        $balloonFragment  BalloonStyle XML fragment.
+     *
+     * @return  string
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    private function buildCategoryStyles(array $items, string $balloonFragment): string
+    {
+        $seen  = [];
+        $lines = [];
+
+        foreach ($items as $item) {
+            $catId = (int) ($item->catid ?? 0);
+
+            if ($catId <= 0 || isset($seen[$catId])) {
+                continue;
+            }
+
+            $seen[$catId] = true;
+            $params       = new Registry((string) ($item->category_params ?? ''));
+            $image        = (string) $params->get('image', '');
+
+            if ($image === '') {
+                continue;
+            }
+
+            $imageUrl = Uri::root() . $image;
+
+            $lines[] = '<Style id="style' . $catId . '">'
+                . '<IconStyle>'
+                . '<Icon><href>' . $this->esc($imageUrl) . '</href></Icon>'
+                . '<hotSpot x="0.5" y="0.5" xunits="fraction" yunits="fraction"/>'
+                . '</IconStyle>'
+                . $balloonFragment
+                . '</Style>';
+            $lines[] = '<StyleMap id="stylemap' . $catId . '">'
+                . '<Pair><key>normal</key><styleUrl>#style' . $catId . '</styleUrl></Pair>'
+                . '<Pair><key>highlight</key><styleUrl>#style' . $catId . '</styleUrl></Pair>'
+                . '</StyleMap>';
+
+            $this->categoryIconMap[$catId] = true;
+        }
+
+        return implode("\n", $lines);
+    }
+
+    /**
+     * Build a single Placemark with ExtendedData.
      *
      * @param   object  $item  Member row.
      *
@@ -278,13 +396,15 @@ class KmlView extends BaseHtmlView
         $posHtml = '';
 
         if (!empty($item->con_position) && $item->con_position !== '-1') {
-            $posHtml = '<div style="color:#666;font-size:12px;">' . htmlspecialchars((string) $item->con_position, ENT_QUOTES, 'UTF-8') . '</div>';
+            $posHtml = '<div style="color:#666;font-size:12px;">'
+                . htmlspecialchars((string) $item->con_position, ENT_QUOTES, 'UTF-8') . '</div>';
         }
 
         $householdHtml = '';
 
         if (!empty($item->household_name)) {
-            $householdHtml = '<div style="color:#888;font-size:11px;">' . htmlspecialchars((string) $item->household_name, ENT_QUOTES, 'UTF-8') . ' household</div>';
+            $householdHtml = '<div style="color:#888;font-size:11px;">'
+                . htmlspecialchars((string) $item->household_name, ENT_QUOTES, 'UTF-8') . ' household</div>';
         }
 
         $contactRows = '';
@@ -301,15 +421,21 @@ class KmlView extends BaseHtmlView
             $contactRows .= $this->contactRow('Children', (string) $item->children);
         }
 
-        $address    = $this->buildAddress($item);
+        $address     = $this->buildAddress($item);
         $addressHtml = $address !== ''
-            ? '<div style="margin-top:6px;font-size:11px;color:#555;">' . htmlspecialchars($address, ENT_QUOTES, 'UTF-8') . '</div>'
+            ? '<div style="margin-top:6px;font-size:11px;color:#555;">'
+                . htmlspecialchars($address, ENT_QUOTES, 'UTF-8') . '</div>'
             : '';
+
+        $catId    = (int) ($item->catid ?? 0);
+        $styleUrl = isset($this->categoryIconMap[$catId])
+            ? '#stylemap' . $catId
+            : '#memberPin';
 
         $lines   = [];
         $lines[] = '<Placemark>';
         $lines[] = '  <name>' . $this->esc($fullName) . '</name>';
-        $lines[] = '  <styleUrl>#memberBalloon</styleUrl>';
+        $lines[] = '  <styleUrl>' . $styleUrl . '</styleUrl>';
 
         if ($address !== '') {
             $lines[] = '  <address>' . $this->esc($address) . '</address>';
@@ -334,6 +460,10 @@ class KmlView extends BaseHtmlView
             $lines[] = '    <Data name="phone"><value>' . $this->esc((string) $item->telephone) . '</value></Data>';
         }
 
+        if (!empty($item->household_name)) {
+            $lines[] = '    <Data name="household"><value>' . $this->esc((string) $item->household_name) . '</value></Data>';
+        }
+
         $lines[] = '  </ExtendedData>';
         $lines[] = '  <Point>';
         $lines[] = '    <coordinates>' . $lng . ',' . $lat . ',0</coordinates>';
@@ -344,10 +474,8 @@ class KmlView extends BaseHtmlView
     }
 
     /**
-     * Build a single contact table row for the balloon.
-     *
      * @param   string  $label    Row label.
-     * @param   string  $value    Value text.
+     * @param   string  $value    Value.
      * @param   bool    $isEmail  Wrap in mailto link.
      *
      * @return  string
@@ -378,20 +506,16 @@ class KmlView extends BaseHtmlView
      */
     private function buildAddress(object $item): string
     {
-        $parts = array_filter([
+        return implode(', ', array_filter([
             (string) ($item->address ?? ''),
             (string) ($item->suburb ?? ''),
             (string) ($item->state ?? ''),
             (string) ($item->postcode ?? ''),
             (string) ($item->country ?? ''),
-        ]);
-
-        return implode(', ', $parts);
+        ]));
     }
 
     /**
-     * Group items by a field value.
-     *
      * @param   list<object>  $items  Items to group.
      * @param   string        $field  Field name.
      *
@@ -416,7 +540,7 @@ class KmlView extends BaseHtmlView
     /**
      * @param   string  $text  Raw text.
      *
-     * @return  string  XML-escaped text.
+     * @return  string  XML-escaped.
      *
      * @since   __DEPLOY_VERSION__
      */

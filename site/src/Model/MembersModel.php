@@ -110,6 +110,7 @@ class MembersModel extends ListModel
             $db->quoteName('a.misc'),
         ])
         ->select($db->quoteName('c.title', 'category_title'))
+        ->select($db->quoteName('c.params', 'category_params'))
         ->select($db->quoteName('d.name', 'dirheader_name'))
         ->select($db->quoteName('fu.name', 'household_name'))
         ->from($db->quoteName('#__cwmconnect_details', 'a'))
