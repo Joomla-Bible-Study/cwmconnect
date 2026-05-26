@@ -16,10 +16,12 @@ namespace CWM\Component\Cwmconnect\Administrator\Controller;
 // phpcs:enable PSR1.Files.SideEffects
 
 use CWM\Component\Cwmconnect\Administrator\Model\ReportsModel;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Controller\BaseController;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Session\Session;
+use Joomla\Component\Actionlogs\Administrator\Model\ActionlogModel;
 
 /**
  * Reports controller — generates CSV/KML/PDF exports of the directory.
@@ -76,6 +78,12 @@ class ReportsController extends BaseController
         $model->getExport($type, $report);
 
         if ($type === 'pdf') {
+            $includeHidden = (bool) $this->input->getInt('include_hidden', 0);
+
+            if ($includeHidden) {
+                $this->logHiddenPrintOverride();
+            }
+
             $pdfPath = $this->app->getUserState('com_cwmconnect.reports.pdf_path', '');
             $this->app->setUserState('com_cwmconnect.reports.pdf_path', null);
 
@@ -86,6 +94,30 @@ class ReportsController extends BaseController
             }
 
             $this->setRedirect(Route::_('index.php?option=com_cwmconnect&view=reports', false));
+        }
+    }
+
+    /**
+     * Log to com_actionlogs when an admin generates a PDF that includes
+     * hidden members (spec decision #17).
+     *
+     * @return  void
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    private function logHiddenPrintOverride(): void
+    {
+        try {
+            $factory = Factory::getApplication()->bootComponent('com_actionlogs')->getMVCFactory();
+
+            /** @var ActionlogModel $model */
+            $model = $factory->createModel('Actionlog', 'Administrator');
+            $model->addLog(
+                [['action' => 'print_with_hidden_members']],
+                'COM_CWMCONNECT_ACTIONLOG_PRINT_HIDDEN',
+                'com_cwmconnect.reports',
+            );
+        } catch (\Throwable) {
         }
     }
 }

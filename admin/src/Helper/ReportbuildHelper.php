@@ -470,7 +470,7 @@ class ReportbuildHelper
             }
         }
 
-        $query = $this->db->getQuery(true)
+        $query = $this->db->createQuery()
             ->select($this->db->quoteName(['id', 'name', 'image']))
             ->from($this->db->quoteName('#__cwmconnect_familyunit'));
         $this->db->setQuery($query);
@@ -505,7 +505,7 @@ class ReportbuildHelper
     {
         $string = [];
 
-        $query = $this->db->getQuery(true)
+        $query = $this->db->createQuery()
             ->select('*')
             ->from($this->db->quoteName('#__categories'))
             ->where($this->db->quoteName('extension') . ' = ' . $this->db->quote('com_cwmconnect'));
@@ -560,7 +560,7 @@ class ReportbuildHelper
             return '';
         }
 
-        $query = $this->db->getQuery(true)
+        $query = $this->db->createQuery()
             ->select($this->db->quoteName('name'))
             ->from($this->db->quoteName('#__cwmconnect_position'))
             ->whereIn($this->db->quoteName('id'), $ids);

@@ -146,7 +146,7 @@ class DirheadersModel extends ListModel
     protected function getListQuery(): QueryInterface
     {
         $db    = $this->getDatabase();
-        $query = $db->getQuery(true);
+        $query = $db->createQuery();
         $user  = Factory::getApplication()->getIdentity();
 
         $query->select(

@@ -44,7 +44,7 @@ class DirectoryHeaderHelper
     public function setPages(): void
     {
         $db    = Factory::getContainer()->get(DatabaseInterface::class);
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('a.*')
             ->from($db->quoteName('#__cwmconnect_dirheader', 'a'))
             ->where($db->quoteName('published') . ' = 1')

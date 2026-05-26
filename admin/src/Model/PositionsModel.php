@@ -146,7 +146,7 @@ class PositionsModel extends ListModel
     protected function getListQuery(): QueryInterface
     {
         $db    = $this->getDatabase();
-        $query = $db->getQuery(true);
+        $query = $db->createQuery();
 
         // Select the required fields from the table.
         $query->select(

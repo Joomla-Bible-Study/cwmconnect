@@ -57,7 +57,7 @@ class SpouseField extends FormField
         }
 
         $db    = Factory::getContainer()->get(DatabaseInterface::class);
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName(['id', 'name', 'funitid', 'attribs', 'spouse', 'mstatus']))
             ->from($db->quoteName('#__cwmconnect_details'))
             ->where($db->quoteName('catid') . ' = ' . (int) $categoryId)

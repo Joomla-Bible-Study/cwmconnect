@@ -21,6 +21,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Controller\BaseController;
 use Joomla\CMS\Response\JsonResponse;
+use Joomla\Component\Actionlogs\Administrator\Model\ActionlogModel;
 
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
@@ -129,6 +130,8 @@ class CpanelController extends BaseController
             $engine = Factory::getContainer()->get(PcSyncEngine::class);
             $report = $engine->run($statuses);
 
+            $this->logSyncResult($report->toArray(), $report->success());
+
             $this->sendJsonAndClose(
                 new JsonResponse(
                     $report->toArray(),
@@ -210,6 +213,32 @@ class CpanelController extends BaseController
      *
      * @since   __DEPLOY_VERSION__
      */
+    /**
+     * Write a sync result to com_actionlogs.
+     *
+     * @param   array<string, mixed>  $data     SyncReport data array.
+     * @param   bool                  $success  Whether the sync fully succeeded.
+     *
+     * @return  void
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    private function logSyncResult(array $data, bool $success): void
+    {
+        try {
+            $factory = Factory::getApplication()->bootComponent('com_actionlogs')->getMVCFactory();
+
+            /** @var ActionlogModel $model */
+            $model = $factory->createModel('Actionlog', 'Administrator');
+            $model->addLog(
+                [$data],
+                $success ? 'COM_CWMCONNECT_ACTIONLOG_SYNC_OK' : 'COM_CWMCONNECT_ACTIONLOG_SYNC_PARTIAL',
+                'com_cwmconnect.sync',
+            );
+        } catch (\Throwable) {
+        }
+    }
+
     private function sendJsonAndClose(JsonResponse $response, int $httpStatus = 200): void
     {
         $this->app->setHeader('Content-Type', 'application/json; charset=utf-8', true);

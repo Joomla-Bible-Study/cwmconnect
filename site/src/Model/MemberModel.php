@@ -120,7 +120,7 @@ class MemberModel extends FormModel
             try {
                 $app   = Factory::getApplication();
                 $db    = $this->getDatabase();
-                $query = $db->getQuery(true);
+                $query = $db->createQuery();
 
                 $caseSlug    = ' CASE WHEN ' . $query->charLength('a.alias', '!=', '0')
                     . ' THEN ' . $query->concatenate([$query->castAsChar('a.id'), 'a.alias'], ':')
@@ -227,7 +227,7 @@ class MemberModel extends FormModel
             return false;
         }
 
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('a.*, cc.access as category_access, cc.title as category_name')
             ->from($db->quoteName('#__cwmconnect_details', 'a'))
             ->join('INNER', $db->quoteName('#__categories', 'cc') . ' ON cc.id = a.catid')
@@ -262,7 +262,7 @@ class MemberModel extends FormModel
         }
 
         // Articles authored by the linked user.
-        $articleQuery = $db->getQuery(true)
+        $articleQuery = $db->createQuery()
             ->select(['a.id', 'a.title', 'a.state', 'a.access', 'a.created'])
             ->from($db->quoteName('#__content', 'a'))
             ->join('LEFT', $db->quoteName('#__categories', 'c') . ' ON a.catid = c.id')

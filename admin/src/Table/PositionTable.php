@@ -216,7 +216,7 @@ class PositionTable extends Table
 
         // Check for an existing record with the same name.
         $db    = $this->getDbo();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select($db->quoteName('id'))
             ->from($db->quoteName('#__cwmconnect_position'))
             ->where($db->quoteName('name') . ' = ' . $db->quote($this->name));

@@ -403,7 +403,7 @@ class HtmlView extends BaseHtmlView
         $db = Factory::getContainer()->get(\Joomla\Database\DatabaseInterface::class);
 
         if ($viewerUserId > 0) {
-            $query = $db->getQuery(true)
+            $query = $db->createQuery()
                 ->select($db->quoteName('funitid'))
                 ->from($db->quoteName('#__cwmconnect_details'))
                 ->where($db->quoteName('user_id') . ' = ' . $viewerUserId);
@@ -419,7 +419,7 @@ class HtmlView extends BaseHtmlView
 
         $sameHousehold = $this->householdScope === HouseholdVisibility::SAME_HOUSEHOLD;
 
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select([
                 $db->quoteName('id'),
                 $db->quoteName('name'),
@@ -446,7 +446,7 @@ class HtmlView extends BaseHtmlView
         $this->householdMembers = $rows;
 
         if (!$sameHousehold) {
-            $hiddenQuery = $db->getQuery(true)
+            $hiddenQuery = $db->createQuery()
                 ->select('COUNT(*)')
                 ->from($db->quoteName('#__cwmconnect_details'))
                 ->where($db->quoteName('funitid') . ' = ' . $targetHouseholdId)

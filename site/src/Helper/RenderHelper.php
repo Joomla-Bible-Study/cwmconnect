@@ -63,7 +63,7 @@ class RenderHelper
 
         if (str_contains($conPosition, ',')) {
             foreach (explode(',', $conPosition) as $id) {
-                $query = $db->getQuery(true)
+                $query = $db->createQuery()
                     ->select($db->quoteName(['id', 'name']))
                     ->from($db->quoteName('#__cwmconnect_position'))
                     ->where($db->quoteName('id') . ' = ' . (int) $id);
@@ -71,7 +71,7 @@ class RenderHelper
                 $positions[] = $db->setQuery($query)->loadObject();
             }
         } elseif ($conPosition !== '-1' && $conPosition !== '0' && $conPosition !== '') {
-            $query = $db->getQuery(true)
+            $query = $db->createQuery()
                 ->select($db->quoteName(['id', 'name']))
                 ->from($db->quoteName('#__cwmconnect_position'))
                 ->where($db->quoteName('id') . ' = ' . (int) $conPosition);
@@ -122,7 +122,7 @@ class RenderHelper
     public function getFamilyMembers(int $fuId, string $fm = '2', bool $children = false): array
     {
         $db    = Factory::getContainer()->get(DatabaseInterface::class);
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('members.*')
             ->from($db->quoteName('#__cwmconnect_details', 'members'))
             ->where($db->quoteName('members.funitid') . ' = ' . (int) $fuId)
@@ -343,7 +343,7 @@ class RenderHelper
         $groups = implode(',', $user ? $user->getAuthorisedViewLevels() : [1]);
         $db     = Factory::getContainer()->get(DatabaseInterface::class);
 
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('a.*')
             ->from($db->quoteName('#__cwmconnect_details', 'a'))
             ->where('a.access IN (' . $groups . ')')
@@ -405,7 +405,7 @@ class RenderHelper
         $groups = implode(',', $user ? $user->getAuthorisedViewLevels() : [1]);
         $db     = Factory::getContainer()->get(DatabaseInterface::class);
 
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('a.*')
             ->select('f.name as f_name, f.id as f_id')
             ->from($db->quoteName('#__cwmconnect_details', 'a'))

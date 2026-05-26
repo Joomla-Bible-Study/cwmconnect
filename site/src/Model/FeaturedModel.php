@@ -89,7 +89,7 @@ class FeaturedModel extends ListModel
         $groups = implode(',', $user ? $user->getAuthorisedViewLevels() : [1]);
 
         $db    = $this->getDatabase();
-        $query = $db->getQuery(true);
+        $query = $db->createQuery();
 
         $query->select($this->getState('list.select', 'a.*'))
             ->from($db->quoteName('#__cwmconnect_details', 'a'))

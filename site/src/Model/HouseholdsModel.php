@@ -63,7 +63,7 @@ class HouseholdsModel extends ListModel
     protected function getListQuery(): QueryInterface
     {
         $db    = $this->getDatabase();
-        $query = $db->getQuery(true);
+        $query = $db->createQuery();
 
         $query->select([
             $db->quoteName('a.id'),

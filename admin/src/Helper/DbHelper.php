@@ -68,7 +68,7 @@ class DbHelper
     public function getKmlSettings(): ?object
     {
         $db    = Factory::getContainer()->get(DatabaseInterface::class);
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('*')
             ->from($db->quoteName('#__cwmconnect_kml'))
             ->where($db->quoteName('id') . ' = 1');

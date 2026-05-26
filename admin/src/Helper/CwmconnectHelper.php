@@ -128,7 +128,7 @@ class CwmconnectHelper
         }
 
         $db    = Factory::getContainer()->get(DatabaseInterface::class);
-        $query = $db->getQuery(true);
+        $query = $db->createQuery();
 
         $query->from($db->quoteName('#__cwmconnect_details', 'c'))
             ->join(
@@ -198,7 +198,7 @@ class CwmconnectHelper
             $item->count_unpublished = 0;
             $item->count_published   = 0;
 
-            $query = $db->getQuery(true)
+            $query = $db->createQuery()
                 ->select($db->quoteName('published', 'state'))
                 ->select('COUNT(*) AS ' . $db->quoteName('count'))
                 ->from($db->quoteName('#__cwmconnect_details'))

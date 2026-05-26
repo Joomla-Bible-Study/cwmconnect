@@ -32,7 +32,7 @@ final class DatabaseFieldMapRepository implements FieldMapRepositoryInterface
 
     public function allKeyedByPcFieldId(): array
     {
-        $query = $this->db->getQuery(true)
+        $query = $this->db->createQuery()
             ->select([
                 $this->db->quoteName('id'),
                 $this->db->quoteName('pc_field_id'),
@@ -66,7 +66,7 @@ final class DatabaseFieldMapRepository implements FieldMapRepositoryInterface
 
     public function lockedJoomlaFieldNames(): array
     {
-        $query = $this->db->getQuery(true)
+        $query = $this->db->createQuery()
             ->select($this->db->quoteName('f.name'))
             ->from($this->db->quoteName(self::TABLE, 'm'))
             ->join(

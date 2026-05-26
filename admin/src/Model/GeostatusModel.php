@@ -141,7 +141,7 @@ class GeostatusModel extends ListModel
     {
         $db    = $this->getDatabase();
         $user  = Factory::getApplication()->getIdentity();
-        $query = $db->getQuery(true);
+        $query = $db->createQuery();
 
         $query->select(
             $this->getState(
