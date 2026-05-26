@@ -173,9 +173,9 @@ class KmlView extends BaseHtmlView
         $lines[] = '<name>' . $this->esc($docName) . '</name>';
 
         $docDesc = $kmlSettings !== null && !empty($kmlSettings->description)
-            ? (string) $kmlSettings->description
+            ? strip_tags((string) $kmlSettings->description)
             : Text::_('COM_CWMCONNECT_KML_DOCUMENT_DESC');
-        $lines[] = '<description><![CDATA[' . $docDesc . ']]></description>';
+        $lines[] = '<description>' . $this->esc(trim($docDesc)) . '</description>';
         $lines[] = '<open>1</open>';
 
         $lookAt = $this->buildLookAt($kmlSettings);
