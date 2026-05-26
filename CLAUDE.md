@@ -8,7 +8,9 @@ cwmconnect is in **active modernization**: a Joomla 3.x / PHP 7.x component is b
 
 The legacy Joomla 3 source tree has been deleted in phases 4a–4d. Every component / module / plugin runtime path now lives under `admin/src/`, `site/src/`, `modules/site/mod_birthdayanniversary/src/`, and `plugins/finder/cwmconnect/src/`.
 
-## Migration phases
+## Implementation phases
+
+### Port (phases 0–9): Joomla 3 → Joomla 5/6 / PHP 8.4
 
 | # | Phase | State |
 |---|---|---|
@@ -28,9 +30,27 @@ The legacy Joomla 3 source tree has been deleted in phases 4a–4d. Every compon
 | 6 | Frontend: drop LESS pipeline, register WebAssets via `joomla.asset.json` | done |
 | 7 | SQL: utf8mb4 + J5/J6 update files | done |
 | 8 | Tests + CI parity (`tests/unit/`, J5×J6 × PHP 8.4 matrix) | done |
-| 9 | Release plumbing: changelog skeleton + `<changelogurl>` + ARS placeholders | **done (placeholders)** |
+| 9 | Release plumbing: changelog skeleton + `<changelogurl>` + ARS placeholders | done (placeholders) |
 
-Phases 0–9 cover the **port** from Joomla 3 to a Joomla 5/6 / PHP 8.4 package skeleton. After this point we'll be doing a lot of **rebuilding** against a live J5/J6 install — wiring up integrations, fixing what live testing surfaces, and populating real ARS category / stream IDs (currently `0` in [cwm-build.config.json](cwm-build.config.json)) before the first production release.
+### Feature build (phases A–M): v2 design spec implementation
+
+| # | Phase | PRs | State |
+|---|---|---|---|
+| A | Data model — new columns + `feed_tokens` table, migration SQL | #115 | done |
+| B | PC client + config screen — token storage, API helpers | #116 | done |
+| C | Sync core — People + filter, first end-to-end sync | #117 | done |
+| D | Custom fields — mapping screen + field-data writes | #120–#121 | done |
+| E | Photos — avatar download + cache | #121 | done |
+| F | Admin form lock — read-only rendering of PC-mapped fields | #122 | done |
+| G | Front-end member views — browse, profile, search, login wall | #123 | done |
+| H | Member self-service portal — myprofile view, 4 pairing triggers, admin pair UI, J6 audit | #124–#128 | done |
+| I | Self-service PDF — mpdf as `lib_mpdf` Joomla library, `format=pdf` view | #129 | done |
+| J | KML feed — signed token auth, admin token CRUD, `format=kml` view | #130 | done |
+| K | Admin print directory — PDF via mpdf, hidden-member override | #131 | done |
+| L | Privacy plugin — GDPR export + pseudonymisation (`plg_privacy_cwmconnect`) | #132 | done |
+| M | Polish — finder hidden-row fix, `createQuery()` sweep (62→0), action logs | #133 | done |
+
+**All spec phases complete.** The next milestone is **live testing** against a J5/J6 install — wiring up integrations, fixing what live testing surfaces, and populating real ARS category / stream IDs (currently `0` in [cwm-build.config.json](cwm-build.config.json)) before the first production release.
 
 ## Target shape (Proclaim-mirrored, unprefixed Joomla-standard naming)
 
