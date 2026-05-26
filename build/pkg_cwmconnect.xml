@@ -20,6 +20,7 @@
         <file type="plugin" group="finder" id="cwmconnect">plg_finder_cwmconnect.zip</file>
         <file type="plugin" group="user" id="cwmconnect">plg_user_cwmconnect.zip</file>
         <file type="plugin" group="content" id="cwmconnect">plg_content_cwmconnect.zip</file>
+        <file type="plugin" group="privacy" id="cwmconnect">plg_privacy_cwmconnect.zip</file>
     </files>
 
     <updateservers>
