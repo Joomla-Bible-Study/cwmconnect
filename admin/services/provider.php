@@ -10,6 +10,7 @@
 \defined('_JEXEC') or die;
 
 use CWM\Component\Cwmconnect\Administrator\Extension\CwmconnectComponent;
+use CWM\Component\Cwmconnect\Administrator\Service\FeedToken\FeedTokenService;
 use CWM\Component\Cwmconnect\Administrator\Service\Pairing\DatabaseMemberPairing;
 use CWM\Component\Cwmconnect\Administrator\Service\Pairing\MemberPairingInterface;
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\Client as PcClient;
@@ -126,6 +127,13 @@ return new class implements ServiceProviderInterface {
                 http: HttpFactory::getHttp(),
                 cacheRoot: JPATH_ROOT . '/media/com_cwmconnect/photos',
             ),
+        );
+
+        // Phase J: KML feed token service shared with site KmlView.
+        $container->set(
+            FeedTokenService::class,
+            static fn(Container $c): FeedTokenService
+                => new FeedTokenService($c->get(DatabaseInterface::class)),
         );
 
         // Phase H: identity-binding pair service shared with plg_user_cwmconnect.

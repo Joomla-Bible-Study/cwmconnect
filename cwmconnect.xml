@@ -83,6 +83,9 @@
             <menu link="option=com_cwmconnect&amp;view=reports"
                   view="reports"
                   alt="Cwmconnect/Reports">COM_CWMCONNECT_REPORTS</menu>
+            <menu link="option=com_cwmconnect&amp;view=feedtokens"
+                  view="feedtokens"
+                  alt="Cwmconnect/Feed Tokens">COM_CWMCONNECT_FEEDTOKENS</menu>
             <menu link="option=com_cwmconnect&amp;view=info"
                   view="info"
                   alt="Cwmconnect/Info">COM_CWMCONNECT_INFO</menu>
