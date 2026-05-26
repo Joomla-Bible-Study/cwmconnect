@@ -11,6 +11,7 @@
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
+use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
@@ -23,6 +24,12 @@ $search      = (string) $this->state->get('filter.search', '');
 $layoutMode  = $this->layoutMode === 'table' ? 'table' : 'grid';
 $gridActive  = $layoutMode === 'grid' ? ' active' : '';
 $tableActive = $layoutMode === 'table' ? ' active' : '';
+
+$memberItemId = 0;
+$menuItems = Factory::getApplication()->getMenu()->getItems('link', 'index.php?option=com_cwmconnect&view=member');
+if ($menuItems) {
+    $memberItemId = (int) $menuItems[0]->id;
+}
 ?>
 <div class="cwmconnect-members">
     <form action="<?php echo Route::_('index.php?option=com_cwmconnect&view=members'); ?>" method="get" class="row g-2 align-items-end mb-3">
@@ -71,7 +78,7 @@ $tableActive = $layoutMode === 'table' ? ' active' : '';
     <?php elseif ($layoutMode === 'grid') : ?>
         <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-3 cwmconnect-photo-grid">
             <?php foreach ($this->items as $item) :
-                $profileUrl = Route::_('index.php?option=com_cwmconnect&view=member&id=' . (int) $item->id);
+                $profileUrl = Route::_('index.php?option=com_cwmconnect&view=member&id=' . (int) $item->id . '&Itemid=' . $memberItemId);
                 $imgPath    = (string) ($item->image ?? '');
                 $imgUrl     = $imgPath !== '' ? $photosBase . rawurlencode($imgPath) : '';
                 $name       = trim(($item->name ?: '') ?: ($item->lname ?: ''));
@@ -109,7 +116,7 @@ $tableActive = $layoutMode === 'table' ? ' active' : '';
             </thead>
             <tbody>
             <?php foreach ($this->items as $item) :
-                $profileUrl = Route::_('index.php?option=com_cwmconnect&view=member&id=' . (int) $item->id);
+                $profileUrl = Route::_('index.php?option=com_cwmconnect&view=member&id=' . (int) $item->id . '&Itemid=' . $memberItemId);
                 ?>
                 <tr>
                     <td>
