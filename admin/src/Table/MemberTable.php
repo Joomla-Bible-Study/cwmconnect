@@ -22,6 +22,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\String\PunycodeHelper;
 use Joomla\CMS\Table\Table;
 use Joomla\Database\DatabaseInterface;
+use Joomla\Database\ParameterType;
 use Joomla\Registry\Registry;
 use Joomla\String\StringHelper;
 
@@ -235,7 +236,7 @@ class MemberTable extends Table
             }
         }
 
-        $nullDate = $this->_db->getNullDate();
+        $nullDate = $this->getDatabase()->getNullDate();
 
         if (!$this->publish_up) {
             $this->publish_up = $nullDate;
@@ -308,6 +309,28 @@ class MemberTable extends Table
 
         if (empty($this->user_id)) {
             $this->user_id = null;
+        }
+
+        if ($this->user_id !== null) {
+            $db    = $this->getDatabase();
+            $query = $db->createQuery()
+                ->select($db->quoteName('id'))
+                ->from($db->quoteName('#__cwmconnect_details'))
+                ->where($db->quoteName('user_id') . ' = :userId')
+                ->bind(':userId', $this->user_id, ParameterType::INTEGER);
+
+            if ((int) $this->id > 0) {
+                $query->where($db->quoteName('id') . ' != :selfId')
+                    ->bind(':selfId', $this->id, ParameterType::INTEGER);
+            }
+
+            $db->setQuery($query);
+
+            if ($db->loadResult()) {
+                $this->setError(Text::_('COM_CWMCONNECT_ERROR_USER_ALREADY_LINKED'));
+
+                return false;
+            }
         }
 
         if ((int) $this->publish_down > 0 && $this->publish_down < $this->publish_up) {
