@@ -1,0 +1,14 @@
+{
+    "name": "cwm/lib-mpdf",
+    "description": "mPDF vendor wrapper for the lib_mpdf Joomla library extension",
+    "type": "project",
+    "license": "GPL-2.0-or-later",
+    "config": {
+        "optimize-autoloader": true,
+        "sort-packages": true
+    },
+    "require": {
+        "php": "^8.4.0",
+        "mpdf/mpdf": "^8.2"
+    }
+}

@@ -14,6 +14,7 @@
     <scriptfile>script.php</scriptfile>
 
     <files>
+        <file type="library" id="lib_mpdf">lib_mpdf.zip</file>
         <file type="component" id="com_cwmconnect">com_cwmconnect.zip</file>
         <file type="module" client="site" id="mod_birthdayanniversary">mod_birthdayanniversary.zip</file>
         <file type="plugin" group="finder" id="cwmconnect">plg_finder_cwmconnect.zip</file>
