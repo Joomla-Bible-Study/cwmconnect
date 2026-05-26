@@ -55,6 +55,12 @@ $tableActive = $layoutMode === 'table' ? ' active' : '';
         </div>
     </form>
 
+    <div class="d-flex justify-content-end mb-3">
+        <a href="<?php echo Route::_('index.php?option=com_cwmconnect&view=members&format=pdf'); ?>" class="btn btn-outline-secondary btn-sm">
+            <span class="icon-download" aria-hidden="true"></span> <?php echo Text::_('COM_CWMCONNECT_PDF_DOWNLOAD_BUTTON'); ?>
+        </a>
+    </div>
+
     <?php if ($this->items === []) : ?>
         <div class="alert alert-info">
             <?php echo Text::_('COM_CWMCONNECT_MEMBERS_EMPTY'); ?>
