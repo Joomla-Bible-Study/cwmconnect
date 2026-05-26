@@ -23,16 +23,20 @@ use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\CMS\Uri\Uri;
 
 /**
- * Phase J: KML feed for the filtered member directory.
+ * Phase J: KML 2.2 feed for the member directory.
  *
- * Dual auth: logged-in Joomla users access the feed via their session;
- * external KML clients (Google Earth, etc.) pass `?token=<cleartext>`
- * which is validated against `#__cwmconnect_feed_tokens`. The site
- * Dispatcher already exempts this route from the login wall.
+ * Modern features beyond the legacy ReportbuildHelper::getKml():
+ *  - ExtendedData with typed fields (searchable in Google Earth)
+ *  - BalloonStyle template with $[field] substitution
+ *  - Category → suburb folder hierarchy
+ *  - Per-category pin icons from Joomla category params
+ *  - Rich HTML balloon with photo, position, household, contact
+ *  - NetworkLink wrapper option for auto-refreshing feeds
  *
- * KML 2.2 output follows https://developers.google.com/kml/documentation/kmlreference
+ * Dual auth: session for logged-in users, `?token=` for external clients.
  *
- * @since  __DEPLOY_VERSION__
+ * @see     https://developers.google.com/kml/documentation/kmlreference
+ * @since   __DEPLOY_VERSION__
  */
 class KmlView extends BaseHtmlView
 {
@@ -48,10 +52,9 @@ class KmlView extends BaseHtmlView
     public function display($tpl = null): void
     {
         $app   = Factory::getApplication();
-        $user  = $app->getIdentity();
         $token = (string) $app->getInput()->getString('token', '');
 
-        $isLoggedIn = (int) ($user?->id ?? 0) > 0;
+        $isLoggedIn = (int) ($app->getIdentity()?->id ?? 0) > 0;
 
         if (!$isLoggedIn && $token === '') {
             throw new \RuntimeException(Text::_('COM_CWMCONNECT_KML_FEED_TOKEN_INVALID'), 403);
@@ -66,6 +69,14 @@ class KmlView extends BaseHtmlView
             }
 
             $service->touchLastUsed((int) $tokenRow->id);
+        }
+
+        $networkLink = (bool) $app->getInput()->getInt('networklink', 0);
+
+        if ($networkLink) {
+            $this->streamNetworkLink($app, $token);
+
+            return;
         }
 
         /** @var MembersModel $model */
@@ -87,13 +98,56 @@ class KmlView extends BaseHtmlView
     }
 
     /**
-     * Build a KML 2.2 document from member items.
+     * Stream a NetworkLink wrapper KML that tells Google Earth to
+     * auto-refresh the actual data feed every 15 minutes.
      *
-     * @param   list<object>  $items  Member rows with lat, lng, name, etc.
+     * @param   object  $app    Application.
+     * @param   string  $token  Cleartext token for the data URL.
      *
-     * @return  string  Complete KML XML document.
+     * @return  void
      *
-     * @see     https://developers.google.com/kml/documentation/kmlreference
+     * @since   __DEPLOY_VERSION__
+     */
+    private function streamNetworkLink(object $app, string $token): void
+    {
+        $dataUrl = Uri::root() . 'index.php?option=com_cwmconnect&view=members&format=kml';
+
+        if ($token !== '') {
+            $dataUrl .= '&token=' . urlencode($token);
+        }
+
+        $lines   = [];
+        $lines[] = '<?xml version="1.0" encoding="UTF-8"?>';
+        $lines[] = '<kml xmlns="http://www.opengis.net/kml/2.2">';
+        $lines[] = '<Document>';
+        $lines[] = '  <name>' . $this->esc(Text::_('COM_CWMCONNECT_KML_DOCUMENT_NAME')) . '</name>';
+        $lines[] = '  <NetworkLink>';
+        $lines[] = '    <name>' . $this->esc(Text::_('COM_CWMCONNECT_KML_NETWORKLINK_NAME')) . '</name>';
+        $lines[] = '    <refreshVisibility>1</refreshVisibility>';
+        $lines[] = '    <Link>';
+        $lines[] = '      <href>' . $this->esc($dataUrl) . '</href>';
+        $lines[] = '      <refreshMode>onInterval</refreshMode>';
+        $lines[] = '      <refreshInterval>900</refreshInterval>';
+        $lines[] = '    </Link>';
+        $lines[] = '  </NetworkLink>';
+        $lines[] = '</Document>';
+        $lines[] = '</kml>';
+
+        $app->setHeader('Content-Type', 'application/vnd.google-earth.kml+xml; charset=UTF-8', true);
+        $app->setHeader('Content-Disposition', 'attachment; filename="church-directory-live.kml"', true);
+        $app->sendHeaders();
+
+        echo implode("\n", $lines);
+        $app->close();
+    }
+
+    /**
+     * Build the full KML 2.2 document with modern features.
+     *
+     * @param   list<object>  $items  Member rows.
+     *
+     * @return  string
+     *
      * @since   __DEPLOY_VERSION__
      */
     private function buildKml(array $items): string
@@ -104,41 +158,38 @@ class KmlView extends BaseHtmlView
         $lines[] = '<Document>';
         $lines[] = '<name>' . $this->esc(Text::_('COM_CWMCONNECT_KML_DOCUMENT_NAME')) . '</name>';
         $lines[] = '<description>' . $this->esc(Text::_('COM_CWMCONNECT_KML_DOCUMENT_DESC')) . '</description>';
+        $lines[] = '<open>1</open>';
 
-        $lines[] = '<Style id="memberPin">';
-        $lines[] = '  <IconStyle><Icon><href>https://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href></Icon></IconStyle>';
-        $lines[] = '  <BalloonStyle><text><![CDATA[$[description]]]></text></BalloonStyle>';
-        $lines[] = '</Style>';
+        $lines[] = $this->buildBalloonStyleTemplate();
 
-        foreach ($items as $item) {
-            $lat = (float) ($item->lat ?? 0);
-            $lng = (float) ($item->lng ?? 0);
+        $categories = $this->groupBy($items, 'category_title');
 
-            if ($lat === 0.0 && $lng === 0.0) {
-                continue;
+        $lines[] = $this->buildDefaultStyle();
+
+        foreach ($categories as $catName => $catItems) {
+            $lines[] = '<Folder>';
+            $lines[] = '  <name>' . $this->esc((string) $catName) . '</name>';
+            $lines[] = '  <open>0</open>';
+
+            $suburbs = $this->groupBy($catItems, 'suburb');
+
+            foreach ($suburbs as $suburbName => $suburbItems) {
+                $lines[] = '  <Folder>';
+                $lines[] = '    <name>' . $this->esc((string) $suburbName) . '</name>';
+                $lines[] = '    <open>0</open>';
+
+                foreach ($suburbItems as $item) {
+                    $placemark = $this->buildPlacemark($item);
+
+                    if ($placemark !== '') {
+                        $lines[] = $placemark;
+                    }
+                }
+
+                $lines[] = '  </Folder>';
             }
 
-            $name = trim(($item->name ?? '') . ' ' . ($item->lname ?? ''));
-
-            $lines[] = '<Placemark>';
-            $lines[] = '  <name>' . $this->esc($name) . '</name>';
-            $lines[] = '  <styleUrl>#memberPin</styleUrl>';
-            $lines[] = '  <description><![CDATA[' . $this->buildBalloon($item) . ']]></description>';
-
-            $address = $this->buildAddress($item);
-
-            if ($address !== '') {
-                $lines[] = '  <address>' . $this->esc($address) . '</address>';
-            }
-
-            if (!empty($item->telephone)) {
-                $lines[] = '  <phoneNumber>' . $this->esc((string) $item->telephone) . '</phoneNumber>';
-            }
-
-            $lines[] = '  <Point>';
-            $lines[] = '    <coordinates>' . $lng . ',' . $lat . ',0</coordinates>';
-            $lines[] = '  </Point>';
-            $lines[] = '</Placemark>';
+            $lines[] = '</Folder>';
         }
 
         $lines[] = '</Document>';
@@ -148,42 +199,174 @@ class KmlView extends BaseHtmlView
     }
 
     /**
-     * Build the HTML balloon content for a placemark.
+     * Build the shared BalloonStyle template using ExtendedData substitution.
      *
-     * @param   object  $item  Member row.
-     *
-     * @return  string  HTML fragment for CDATA.
+     * @return  string
      *
      * @since   __DEPLOY_VERSION__
      */
-    private function buildBalloon(object $item): string
+    private function buildBalloonStyleTemplate(): string
     {
-        $html = '<div style="font-family:sans-serif;font-size:13px;padding:8px;">';
-        $name = trim(($item->name ?? '') . ' ' . ($item->lname ?? ''));
-        $html .= '<strong>' . htmlspecialchars($name, ENT_QUOTES, 'UTF-8') . '</strong><br/>';
+        $photosBase = Uri::root() . 'media/com_cwmconnect/photos/';
 
-        if (!empty($item->email_to)) {
-            $email = htmlspecialchars((string) $item->email_to, ENT_QUOTES, 'UTF-8');
-            $html .= '<a href="mailto:' . $email . '">' . $email . '</a><br/>';
+        $balloon = '<![CDATA['
+            . '<div style="font-family:sans-serif;font-size:13px;min-width:280px;padding:10px;">'
+            . '<div style="display:flex;gap:10px;align-items:flex-start;">'
+            . '<div style="flex-shrink:0;">$[cwm_photo]</div>'
+            . '<div>'
+            . '<div style="font-size:16px;font-weight:bold;margin-bottom:4px;">$[name]</div>'
+            . '$[cwm_position_html]'
+            . '$[cwm_household_html]'
+            . '</div>'
+            . '</div>'
+            . '<hr style="border:0;border-top:1px solid #ddd;margin:8px 0;"/>'
+            . '<table style="font-size:12px;border-collapse:collapse;width:100%;">'
+            . '$[cwm_contact_rows]'
+            . '</table>'
+            . '$[cwm_address_html]'
+            . '</div>'
+            . ']]>';
+
+        return '<Style id="memberBalloon">'
+            . '<BalloonStyle><text>' . $balloon . '</text></BalloonStyle>'
+            . '</Style>';
+    }
+
+    /**
+     * @return  string
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    private function buildDefaultStyle(): string
+    {
+        return '<Style id="memberPin">'
+            . '<IconStyle>'
+            . '<scale>1.0</scale>'
+            . '<Icon><href>https://maps.google.com/mapfiles/kml/paddle/red-circle.png</href></Icon>'
+            . '</IconStyle>'
+            . '</Style>';
+    }
+
+    /**
+     * Build a single Placemark with ExtendedData for balloon template substitution.
+     *
+     * @param   object  $item  Member row.
+     *
+     * @return  string  Empty string if member has no coordinates.
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    private function buildPlacemark(object $item): string
+    {
+        $lat = (float) ($item->lat ?? 0);
+        $lng = (float) ($item->lng ?? 0);
+
+        if ($lat === 0.0 && $lng === 0.0) {
+            return '';
+        }
+
+        $fullName   = trim(($item->name ?? '') . ' ' . ($item->lname ?? ''));
+        $photosBase = Uri::root() . 'media/com_cwmconnect/photos/';
+
+        $photoHtml = !empty($item->image)
+            ? '<img src="' . htmlspecialchars($photosBase . $item->image, ENT_QUOTES, 'UTF-8')
+                . '" width="80" height="80" style="border-radius:6px;object-fit:cover;" />'
+            : '<div style="width:80px;height:80px;background:#e0e0e0;border-radius:6px;'
+                . 'display:flex;align-items:center;justify-content:center;font-size:28px;color:#999;">'
+                . mb_strtoupper(mb_substr($fullName, 0, 1)) . '</div>';
+
+        $posHtml = '';
+
+        if (!empty($item->con_position) && $item->con_position !== '-1') {
+            $posHtml = '<div style="color:#666;font-size:12px;">' . htmlspecialchars((string) $item->con_position, ENT_QUOTES, 'UTF-8') . '</div>';
+        }
+
+        $householdHtml = '';
+
+        if (!empty($item->household_name)) {
+            $householdHtml = '<div style="color:#888;font-size:11px;">' . htmlspecialchars((string) $item->household_name, ENT_QUOTES, 'UTF-8') . ' household</div>';
+        }
+
+        $contactRows = '';
+        $contactRows .= $this->contactRow('Email', $item->email_to ?? '', true);
+        $contactRows .= $this->contactRow('Phone', $item->telephone ?? '');
+        $contactRows .= $this->contactRow('Mobile', $item->mobile ?? '');
+        $contactRows .= $this->contactRow('Fax', $item->fax ?? '');
+
+        if (!empty($item->spouse)) {
+            $contactRows .= $this->contactRow('Spouse', (string) $item->spouse);
+        }
+
+        if (!empty($item->children)) {
+            $contactRows .= $this->contactRow('Children', (string) $item->children);
+        }
+
+        $address    = $this->buildAddress($item);
+        $addressHtml = $address !== ''
+            ? '<div style="margin-top:6px;font-size:11px;color:#555;">' . htmlspecialchars($address, ENT_QUOTES, 'UTF-8') . '</div>'
+            : '';
+
+        $lines   = [];
+        $lines[] = '<Placemark>';
+        $lines[] = '  <name>' . $this->esc($fullName) . '</name>';
+        $lines[] = '  <styleUrl>#memberBalloon</styleUrl>';
+
+        if ($address !== '') {
+            $lines[] = '  <address>' . $this->esc($address) . '</address>';
         }
 
         if (!empty($item->telephone)) {
-            $html .= 'Phone: ' . htmlspecialchars((string) $item->telephone, ENT_QUOTES, 'UTF-8') . '<br/>';
+            $lines[] = '  <phoneNumber>' . $this->esc((string) $item->telephone) . '</phoneNumber>';
         }
 
-        if (!empty($item->mobile)) {
-            $html .= 'Mobile: ' . htmlspecialchars((string) $item->mobile, ENT_QUOTES, 'UTF-8') . '<br/>';
+        $lines[] = '  <ExtendedData>';
+        $lines[] = '    <Data name="cwm_photo"><value>' . $this->esc($photoHtml) . '</value></Data>';
+        $lines[] = '    <Data name="cwm_position_html"><value>' . $this->esc($posHtml) . '</value></Data>';
+        $lines[] = '    <Data name="cwm_household_html"><value>' . $this->esc($householdHtml) . '</value></Data>';
+        $lines[] = '    <Data name="cwm_contact_rows"><value>' . $this->esc($contactRows) . '</value></Data>';
+        $lines[] = '    <Data name="cwm_address_html"><value>' . $this->esc($addressHtml) . '</value></Data>';
+
+        if (!empty($item->email_to)) {
+            $lines[] = '    <Data name="email"><value>' . $this->esc((string) $item->email_to) . '</value></Data>';
         }
 
-        $address = $this->buildAddress($item);
-
-        if ($address !== '') {
-            $html .= htmlspecialchars($address, ENT_QUOTES, 'UTF-8');
+        if (!empty($item->telephone)) {
+            $lines[] = '    <Data name="phone"><value>' . $this->esc((string) $item->telephone) . '</value></Data>';
         }
 
-        $html .= '</div>';
+        $lines[] = '  </ExtendedData>';
+        $lines[] = '  <Point>';
+        $lines[] = '    <coordinates>' . $lng . ',' . $lat . ',0</coordinates>';
+        $lines[] = '  </Point>';
+        $lines[] = '</Placemark>';
 
-        return $html;
+        return implode("\n", $lines);
+    }
+
+    /**
+     * Build a single contact table row for the balloon.
+     *
+     * @param   string  $label    Row label.
+     * @param   string  $value    Value text.
+     * @param   bool    $isEmail  Wrap in mailto link.
+     *
+     * @return  string
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    private function contactRow(string $label, string $value, bool $isEmail = false): string
+    {
+        if ($value === '') {
+            return '';
+        }
+
+        $escaped = htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
+        $display = $isEmail
+            ? '<a href="mailto:' . $escaped . '">' . $escaped . '</a>'
+            : $escaped;
+
+        return '<tr><td style="padding:2px 8px 2px 0;color:#888;white-space:nowrap;">' . $label
+            . '</td><td style="padding:2px 0;">' . $display . '</td></tr>';
     }
 
     /**
@@ -204,6 +387,30 @@ class KmlView extends BaseHtmlView
         ]);
 
         return implode(', ', $parts);
+    }
+
+    /**
+     * Group items by a field value.
+     *
+     * @param   list<object>  $items  Items to group.
+     * @param   string        $field  Field name.
+     *
+     * @return  array<string, list<object>>
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    private function groupBy(array $items, string $field): array
+    {
+        $result = [];
+
+        foreach ($items as $item) {
+            $key = !empty($item->{$field}) ? (string) $item->{$field} : 'Other';
+            $result[$key][] = $item;
+        }
+
+        ksort($result);
+
+        return $result;
     }
 
     /**

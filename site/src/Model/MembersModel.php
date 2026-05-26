@@ -103,6 +103,11 @@ class MembersModel extends ListModel
             $db->quoteName('a.state'),
             $db->quoteName('a.postcode'),
             $db->quoteName('a.country'),
+            $db->quoteName('a.con_position'),
+            $db->quoteName('a.spouse'),
+            $db->quoteName('a.children'),
+            $db->quoteName('a.fax'),
+            $db->quoteName('a.misc'),
         ])
         ->select($db->quoteName('c.title', 'category_title'))
         ->select($db->quoteName('d.name', 'dirheader_name'))
