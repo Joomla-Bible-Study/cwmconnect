@@ -288,15 +288,11 @@ class Client
     private function buildHeaders(): array
     {
         $headers = [
-            'Authorization'    => 'Bearer ' . $this->personalAccessToken,
-            'Accept'           => 'application/json',
+            'Authorization'     => 'Basic ' . base64_encode($this->applicationId . ':' . $this->personalAccessToken),
+            'Accept'            => 'application/json',
             'X-PCO-API-Version' => self::API_VERSION,
-            'User-Agent'       => 'cwmconnect/2.0 (Joomla)',
+            'User-Agent'        => 'cwmconnect/2.0 (Joomla)',
         ];
-
-        if ($this->applicationId !== '') {
-            $headers['X-PCO-Application-Id'] = $this->applicationId;
-        }
 
         return $headers;
     }
