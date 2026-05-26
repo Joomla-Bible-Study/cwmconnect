@@ -24,12 +24,12 @@ $isModal = $input->get('layout') === 'modal';
 $layout  = $isModal ? 'modal' : 'edit';
 $tmpl    = ($isModal || $input->get('tmpl', '', 'cmd') === 'component') ? '&tmpl=component' : '';
 
-$this->getDocument()->getWebAssetManager()
-    ->useScript('keepalive')
+$wa = $this->getDocument()->getWebAssetManager();
+$wa->useScript('keepalive')
     ->useScript('form.validate');
 
 // Hide the family-position attribute when the member has no family unit selected.
-$this->getDocument()->addScriptDeclaration(<<<JS
+$wa->addInlineScript(<<<JS
     document.addEventListener('DOMContentLoaded', function () {
         var fu = document.getElementById('jform_funitid');
         var lbl = document.getElementById('jform_attribs_familypostion-lbl');

@@ -256,7 +256,7 @@ class MemberModel extends AdminModel
                 return false;
             }
 
-            $newIds[$i++] = (int) $table->get('id');
+            $newIds[$i++] = (int) $table->id;
         }
 
         $this->cleanCache();
@@ -658,7 +658,7 @@ class MemberModel extends AdminModel
 
             if (empty($table->ordering)) {
                 $db    = $this->getDatabase();
-                $query = $db->getQuery(true)
+                $query = $db->createQuery()
                     ->select('MAX(' . $db->quoteName('ordering') . ')')
                     ->from($db->quoteName('#__cwmconnect_details'));
 
@@ -717,7 +717,7 @@ class MemberModel extends AdminModel
 
         try {
             $db    = $this->getDatabase();
-            $query = $db->getQuery(true)
+            $query = $db->createQuery()
                 ->update($db->quoteName('#__cwmconnect_details'))
                 ->set($db->quoteName('featured') . ' = ' . (int) $value)
                 ->whereIn($db->quoteName('id'), $pks);
