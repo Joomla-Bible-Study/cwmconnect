@@ -140,9 +140,9 @@ final class DatabaseMemberRepository implements MemberRepositoryInterface
                 $this->db->quoteName('display_in_directory') . ' = 0',
                 $this->db->quoteName('published') . ' = 0',
             ])
-            ->whereNotNull($this->db->quoteName('pc_person_id'))
+            ->where($this->db->quoteName('pc_person_id') . ' IS NOT NULL')
             ->where($this->db->quoteName('display_in_directory') . ' = 1')
-            ->whereNotIn($this->db->quoteName('pc_person_id'), $seenPcPersonIds);
+            ->where($this->db->quoteName('pc_person_id') . ' NOT IN (' . implode(',', array_map('intval', $seenPcPersonIds)) . ')');
 
         $this->db->setQuery($query)->execute();
 
@@ -258,6 +258,7 @@ final class DatabaseMemberRepository implements MemberRepositoryInterface
         $attrs['display_in_directory'] ??= 1;
         $attrs['published']             ??= 1;
 
-        $this->db->updateObject(self::TABLE, (object) $attrs, 'id');
+        $row = (object) $attrs;
+        $this->db->updateObject(self::TABLE, $row, 'id');
     }
 }
