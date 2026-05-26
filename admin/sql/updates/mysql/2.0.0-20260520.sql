@@ -8,6 +8,6 @@
 
 UPDATE `#__cwmconnect_details` SET `user_id` = NULL WHERE `user_id` = 0;
 
-ALTER TABLE `#__cwmconnect_details`
-    MODIFY COLUMN `user_id` int unsigned DEFAULT NULL,
-    ADD UNIQUE INDEX `uniq_user_id` (`user_id`);
+ALTER TABLE `#__cwmconnect_details` MODIFY `user_id` int unsigned DEFAULT NULL;
+
+ALTER TABLE `#__cwmconnect_details` ADD UNIQUE INDEX `uniq_user_id` (`user_id`);
