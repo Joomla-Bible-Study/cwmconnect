@@ -12,7 +12,7 @@
 --
 
 ALTER TABLE `#__cwmconnect_details`
-    MODIFY COLUMN `user_id` INT UNSIGNED NULL DEFAULT NULL;
+    MODIFY COLUMN `user_id` int unsigned DEFAULT NULL;
 
 UPDATE `#__cwmconnect_details` SET `user_id` = NULL WHERE `user_id` = 0;
 

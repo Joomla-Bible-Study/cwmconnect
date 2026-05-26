@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS `#__cwmconnect_details` (
   `checked_out_time` DATETIME            NOT NULL DEFAULT '0000-00-00 00:00:00',
   `ordering`         INT(11)             NOT NULL DEFAULT '0',
   `params`           TEXT                NOT NULL,
-  `user_id`          INT UNSIGNED        NULL DEFAULT NULL,
+  `user_id`          int unsigned        DEFAULT NULL,
   `catid`            INT(10) UNSIGNED    NOT NULL DEFAULT '0',
   `kmlid`            INT(10) UNSIGNED    NOT NULL DEFAULT '1',
   `funitid`          INT(10) UNSIGNED    NOT NULL DEFAULT '0',
