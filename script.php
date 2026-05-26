@@ -14,6 +14,7 @@
 use Joomla\CMS\Factory;
 use Joomla\CMS\Installer\InstallerAdapter;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Table\Table;
 
 /**
  * Script file for com_cwmconnect.
@@ -190,27 +191,23 @@ class Com_cwmconnectInstallerScript
                 continue;
             }
 
-            $alias = 'cwmconnect-' . $view;
-
-            $item = (object) [
-                'menutype'     => $menuType,
-                'title'        => $meta['title'],
-                'alias'        => $alias,
-                'link'         => $link,
-                'type'         => 'component',
-                'published'    => 1,
-                'parent_id'    => 1,
-                'level'        => 1,
-                'component_id' => $componentId,
-                'access'       => $meta['access'],
-                'language'     => '*',
-                'client_id'    => 0,
-                'path'         => $alias,
-                'img'          => '',
-                'params'       => '{}',
-            ];
-
-            $db->insertObject('#__menu', $item);
+            $table = Table::getInstance('Menu');
+            $table->menutype     = $menuType;
+            $table->title        = $meta['title'];
+            $table->alias        = 'cwmconnect-' . $view;
+            $table->link         = $link;
+            $table->type         = 'component';
+            $table->published    = 1;
+            $table->parent_id    = 1;
+            $table->component_id = $componentId;
+            $table->access       = $meta['access'];
+            $table->language     = '*';
+            $table->client_id    = 0;
+            $table->img          = '';
+            $table->params       = '{}';
+            $table->setLocation(1, 'last-child');
+            $table->check();
+            $table->store();
         }
     }
 
