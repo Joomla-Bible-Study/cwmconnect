@@ -26,15 +26,26 @@ $cleartext = (string) $app->getUserState('com_cwmconnect.feedtoken.cleartext', '
 if ($cleartext !== '') {
     $app->setUserState('com_cwmconnect.feedtoken.cleartext', null);
     $feedUrl = Uri::root() . 'index.php?option=com_cwmconnect&view=members&format=kml&token=' . urlencode($cleartext);
+    $networkLinkUrl = $feedUrl . '&networklink=1';
 }
 ?>
 
 <?php if (!empty($cleartext)) : ?>
     <div class="alert alert-success">
         <h4 class="alert-heading"><?php echo Text::_('COM_CWMCONNECT_FEEDTOKEN_CREATED_HEADING'); ?></h4>
-        <p><?php echo Text::_('COM_CWMCONNECT_FEEDTOKEN_CREATED_CLEARTEXT'); ?></p>
+
+        <p><strong><?php echo Text::_('COM_CWMCONNECT_FEEDTOKEN_DOWNLOAD_KML'); ?></strong></p>
+        <p>
+            <a href="<?php echo $this->escape($networkLinkUrl); ?>" class="btn btn-success btn-lg" download="church-directory-feed.kml">
+                <span class="icon-download" aria-hidden="true"></span> <?php echo Text::_('COM_CWMCONNECT_FEEDTOKEN_DOWNLOAD_BTN'); ?>
+            </a>
+        </p>
+        <p class="small text-muted"><?php echo Text::_('COM_CWMCONNECT_FEEDTOKEN_DOWNLOAD_HINT'); ?></p>
+
+        <hr>
+        <p class="small"><?php echo Text::_('COM_CWMCONNECT_FEEDTOKEN_CREATED_CLEARTEXT'); ?></p>
         <div class="input-group mb-2">
-            <input type="text" class="form-control font-monospace" value="<?php echo $this->escape($feedUrl); ?>" readonly onclick="this.select();">
+            <input type="text" class="form-control font-monospace small" value="<?php echo $this->escape($feedUrl); ?>" readonly onclick="this.select();">
         </div>
         <p class="mb-0 small text-muted"><?php echo Text::_('COM_CWMCONNECT_FEEDTOKEN_CREATED_WARNING'); ?></p>
     </div>
