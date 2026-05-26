@@ -66,7 +66,8 @@ class FeedtokensController extends AdminController
             return;
         }
 
-        $service = Factory::getContainer()->get(FeedTokenService::class);
+        $db      = Factory::getContainer()->get(\Joomla\Database\DatabaseInterface::class);
+        $service = new FeedTokenService($db);
         $count   = $service->revoke($ids);
 
         $this->app->enqueueMessage(Text::plural('COM_CWMCONNECT_FEEDTOKEN_REVOKED_N', $count));

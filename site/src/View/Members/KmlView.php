@@ -73,7 +73,8 @@ class KmlView extends BaseHtmlView
         }
 
         if ($token !== '') {
-            $service  = Factory::getContainer()->get(FeedTokenService::class);
+            $db       = Factory::getContainer()->get(\Joomla\Database\DatabaseInterface::class);
+            $service  = new FeedTokenService($db);
             $tokenRow = $service->validate($token);
 
             if ($tokenRow === null) {

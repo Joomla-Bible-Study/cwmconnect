@@ -96,7 +96,7 @@ class FeedtokenModel extends AdminModel
         $isNew = empty($data['id']);
 
         if ($isNew) {
-            $service             = Factory::getContainer()->get(FeedTokenService::class);
+            $service             = new FeedTokenService($this->getDatabase());
             $pair                = $service->generate();
             $data['token_hash']  = $pair['hash'];
 
