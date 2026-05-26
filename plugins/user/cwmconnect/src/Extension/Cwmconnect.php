@@ -16,8 +16,8 @@ namespace CWM\Plugin\User\Cwmconnect\Extension;
 // phpcs:enable PSR1.Files.SideEffects
 
 use CWM\Component\Cwmconnect\Administrator\Service\Pairing\MemberPairingInterface;
-use Joomla\CMS\Event\User\AfterSaveEvent;
 use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\Event\EventInterface;
 use Joomla\Event\SubscriberInterface;
 
 /**
@@ -73,13 +73,24 @@ final class Cwmconnect extends CMSPlugin implements SubscriberInterface
      *
      * @since  2.0.0
      */
-    public function onUserAfterSave(AfterSaveEvent $event): void
+    public function onUserAfterSave(EventInterface $event): void
     {
-        if (!$event->getSavingResult()) {
+        $success = method_exists($event, 'getSavingResult')
+            ? $event->getSavingResult()
+            : (bool) ($event->getArgument('result', true));
+
+        if (!$success) {
             return;
         }
 
-        $user   = $event->getUser();
+        $user = method_exists($event, 'getUser')
+            ? $event->getUser()
+            : $event->getArgument('subject', []);
+
+        if (!\is_array($user)) {
+            $user = (array) $user;
+        }
+
         $userId = (int) ($user['id'] ?? 0);
         $email  = isset($user['email']) && \is_string($user['email']) ? trim($user['email']) : '';
         $block  = (int) ($user['block'] ?? 1);

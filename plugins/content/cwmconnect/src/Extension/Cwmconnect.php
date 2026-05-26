@@ -16,8 +16,8 @@ namespace CWM\Plugin\Content\Cwmconnect\Extension;
 // phpcs:enable PSR1.Files.SideEffects
 
 use CWM\Component\Cwmconnect\Administrator\Service\Pairing\MemberPairingInterface;
-use Joomla\CMS\Event\Content\AfterSaveEvent;
 use Joomla\CMS\Plugin\CMSPlugin;
+use Joomla\Event\EventInterface;
 use Joomla\Event\SubscriberInterface;
 
 /**
@@ -80,13 +80,28 @@ final class Cwmconnect extends CMSPlugin implements SubscriberInterface
      *
      * @since  2.0.0
      */
-    public function onContentAfterSave(AfterSaveEvent $event): void
+    public function onContentAfterSave(EventInterface $event): void
     {
-        if ($event->getContext() !== self::TARGET_CONTEXT || !$event->getSavingResult()) {
+        $context = method_exists($event, 'getContext')
+            ? $event->getContext()
+            : ($event->getArgument('context', '') ?: '');
+
+        $success = method_exists($event, 'getSavingResult')
+            ? $event->getSavingResult()
+            : (bool) ($event->getArgument('result', true));
+
+        if ($context !== self::TARGET_CONTEXT || !$success) {
             return;
         }
 
-        $item     = $event->getItem();
+        $item = method_exists($event, 'getItem')
+            ? $event->getItem()
+            : $event->getArgument('subject', null);
+
+        if (!\is_object($item)) {
+            return;
+        }
+
         $memberId = (int) ($item->id ?? 0);
         $email    = isset($item->email_to) && \is_string($item->email_to) ? trim($item->email_to) : '';
         $current  = (int) ($item->user_id ?? 0);
