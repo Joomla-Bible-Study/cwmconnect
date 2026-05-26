@@ -100,7 +100,7 @@ class MyprofileModel extends FormModel
             return $this->item;
         }
 
-        $userId = (int) (Factory::getApplication()->getIdentity()?->id ?? 0);
+        $userId = (int) ($this->getCurrentUser()->id ?? 0);
 
         if ($userId <= 0) {
             return $this->item = false;
@@ -118,7 +118,7 @@ class MyprofileModel extends FormModel
     protected function loadItemByUserId(int $userId): object|false
     {
         $db    = $this->getDatabase();
-        $query = $db->getQuery(true)
+        $query = $db->createQuery()
             ->select('*')
             ->from($db->quoteName('#__cwmconnect_details'))
             ->where($db->quoteName('user_id') . ' = :userId')

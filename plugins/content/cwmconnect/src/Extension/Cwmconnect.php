@@ -49,11 +49,17 @@ final class Cwmconnect extends CMSPlugin implements SubscriberInterface
     /** @var bool */
     protected $autoloadLanguage = true;
 
+    /**
+     * @param   array<string, mixed>          $config   Plugin config row.
+     * @param   MemberPairingInterface        $pairing  Identity-binding service.
+     *
+     * @since   __DEPLOY_VERSION__
+     */
     public function __construct(
         array $config,
         private readonly MemberPairingInterface $pairing,
     ) {
-        parent::__construct(null, $config);
+        parent::__construct($config);
     }
 
     /**

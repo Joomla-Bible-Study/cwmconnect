@@ -30,8 +30,10 @@ use Joomla\Database\ParameterType;
  */
 final readonly class DatabaseMemberPairing implements MemberPairingInterface
 {
+    /** @since __DEPLOY_VERSION__ */
     public function __construct(private DatabaseInterface $db) {}
 
+    /** @inheritDoc @since __DEPLOY_VERSION__ */
     public function findUnpairedMemberIdByEmail(string $email): ?int
     {
         $email = trim($email);
@@ -55,6 +57,7 @@ final readonly class DatabaseMemberPairing implements MemberPairingInterface
         return \count($ids) === 1 ? (int) $ids[0] : null;
     }
 
+    /** @inheritDoc @since __DEPLOY_VERSION__ */
     public function findJoomlaUserIdByEmail(string $email): ?int
     {
         $email = trim($email);
@@ -76,6 +79,7 @@ final readonly class DatabaseMemberPairing implements MemberPairingInterface
         return \count($ids) === 1 ? (int) $ids[0] : null;
     }
 
+    /** @inheritDoc @since __DEPLOY_VERSION__ */
     public function pairMemberToUser(int $memberId, int $userId): bool
     {
         if ($memberId <= 0 || $userId <= 0) {

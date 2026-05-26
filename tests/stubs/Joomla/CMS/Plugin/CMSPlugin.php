@@ -18,13 +18,14 @@ abstract class CMSPlugin
     protected $autoloadLanguage = false;
 
     /**
-     * @param  mixed                 $subject  Production passes a Dispatcher; tests pass null.
-     * @param  array<string, mixed>  $config   The plugin's config row.
+     * J6.1+ single-arg constructor. The legacy 2-arg form (dispatcher,
+     * config) is deprecated in J6.1 and removed in J7.
+     *
+     * @param  array<string, mixed>  $config  The plugin's config row.
      */
-    public function __construct($subject = null, array $config = [])
+    public function __construct(array $config = [])
     {
-        // No-op for test purposes. Production stores the dispatcher
-        // and reads `params` from $config.
+        // No-op for test purposes.
     }
 
     /**
