@@ -1144,10 +1144,9 @@
 		/>
 
 		<field name="pc_membership_statuses"
-		       type="textarea"
-		       rows="4"
-		       cols="40"
-		       default="Member&#10;Regular Attender"
+		       type="PcMembershipStatus"
+		       addfieldprefix="CWM\Component\Cwmconnect\Administrator\Field"
+		       multiple="true"
 		       label="COM_CWMCONNECT_FIELD_PC_STATUSES_LABEL"
 		       description="COM_CWMCONNECT_FIELD_PC_STATUSES_DESC"
 		       showon="pc_enabled:1"
