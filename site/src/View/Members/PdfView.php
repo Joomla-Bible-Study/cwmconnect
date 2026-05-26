@@ -19,8 +19,6 @@ use CWM\Component\Cwmconnect\Site\Model\MembersModel;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
-use Mpdf\Mpdf;
-use Mpdf\MpdfException;
 
 /**
  * Phase I: PDF export of the filtered member directory.
@@ -72,21 +70,29 @@ class PdfView extends BaseHtmlView
 
         $app = Factory::getApplication();
 
+        $autoload = JPATH_LIBRARIES . '/mpdf/vendor/autoload.php';
+
+        if (!is_file($autoload)) {
+            throw new \RuntimeException(Text::_('COM_CWMCONNECT_PDF_ERROR_LIB_MISSING'), 500);
+        }
+
+        require_once $autoload;
+
         try {
-            $mpdf = new Mpdf([
-                'mode'        => 'utf-8',
-                'format'      => 'Letter',
-                'margin_left' => 15,
-                'margin_right' => 15,
-                'margin_top'   => 16,
+            $mpdf = new \Mpdf\Mpdf([
+                'mode'          => 'utf-8',
+                'format'        => 'Letter',
+                'margin_left'   => 15,
+                'margin_right'  => 15,
+                'margin_top'    => 16,
                 'margin_bottom' => 16,
-                'tempDir'     => $app->get('tmp_path', sys_get_temp_dir()),
+                'tempDir'       => $app->get('tmp_path', sys_get_temp_dir()),
             ]);
 
             $mpdf->SetTitle(Text::_('COM_CWMCONNECT_PDF_TITLE'));
             $mpdf->SetAuthor(Text::_('COM_CWMCONNECT'));
             $mpdf->WriteHTML($html);
-        } catch (MpdfException $e) {
+        } catch (\Mpdf\MpdfException $e) {
             throw new \RuntimeException(Text::sprintf('COM_CWMCONNECT_PDF_ERROR_RENDER', $e->getMessage()), 500);
         }
 

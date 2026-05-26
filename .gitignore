@@ -7,6 +7,8 @@
 
 # Dependencies
 /libraries/vendor/
+/libraries/mpdf/vendor/
+/libraries/mpdf/composer.lock
 composer.phar
 
 # Build outputs

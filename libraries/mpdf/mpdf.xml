@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="library" method="upgrade">
+    <name>lib_mpdf</name>
+    <libraryname>mpdf</libraryname>
+    <version>8.3.1</version>
+    <creationDate>2026-05-26</creationDate>
+    <author>CWM Team</author>
+    <authorEmail>info@christianwebministries.org</authorEmail>
+    <authorUrl>https://www.christianwebministries.org</authorUrl>
+    <copyright>(C) 2026 CWM Team All rights reserved.</copyright>
+    <license>GPL-2.0-or-later</license>
+    <description>LIB_MPDF_XML_DESCRIPTION</description>
+
+    <files folder="libraries/mpdf">
+        <folder>vendor</folder>
+        <folder>language</folder>
+    </files>
+
+    <languages folder="libraries/mpdf/language">
+        <language tag="en-GB">en-GB/lib_mpdf.sys.ini</language>
+    </languages>
+</extension>
