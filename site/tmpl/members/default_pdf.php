@@ -34,11 +34,11 @@ use Joomla\CMS\Language\Text;
 <table>
     <thead>
         <tr>
-            <th><?php echo Text::_('COM_CWMCONNECT_FIELD_NAME_LABEL'); ?></th>
-            <th><?php echo Text::_('COM_CWMCONNECT_FIELD_LNAME_LABEL'); ?></th>
-            <th><?php echo Text::_('JGLOBAL_EMAIL'); ?></th>
-            <th><?php echo Text::_('COM_CWMCONNECT_FIELD_INFORMATION_TELEPHONE_LABEL'); ?></th>
-            <th><?php echo Text::_('COM_CWMCONNECT_FIELD_INFORMATION_MOBILE_LABEL'); ?></th>
+            <th><?php echo Text::_('COM_CWMCONNECT_PDF_COL_NAME'); ?></th>
+            <th><?php echo Text::_('COM_CWMCONNECT_PDF_COL_LASTNAME'); ?></th>
+            <th><?php echo Text::_('COM_CWMCONNECT_PDF_COL_EMAIL'); ?></th>
+            <th><?php echo Text::_('COM_CWMCONNECT_PDF_COL_PHONE'); ?></th>
+            <th><?php echo Text::_('COM_CWMCONNECT_PDF_COL_MOBILE'); ?></th>
         </tr>
     </thead>
     <tbody>
