@@ -16,6 +16,7 @@ namespace CWM\Component\Cwmconnect\Site\Controller;
 // phpcs:enable PSR1.Files.SideEffects
 
 use CWM\Component\Cwmconnect\Administrator\Service\FeedToken\FeedTokenService;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Controller\BaseController;
 use Joomla\CMS\Uri\Uri;
@@ -48,9 +49,7 @@ class MembersController extends BaseController
             throw new \RuntimeException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
         }
 
-        $db      = $this->app->bootComponent('com_cwmconnect')
-            ->getMVCFactory()->createModel('Members', 'Site')
-            ->getDatabase();
+        $db      = Factory::getContainer()->get(DatabaseInterface::class);
         $service = new FeedTokenService($db);
 
         $cleartext = $this->getOrCreateToken($db, $service, $userId);
