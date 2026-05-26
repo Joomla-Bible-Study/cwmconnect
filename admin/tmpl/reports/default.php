@@ -20,11 +20,18 @@ use Joomla\CMS\Uri\Uri;
 
 /** @var \CWM\Component\Cwmconnect\Administrator\View\Reports\HtmlView $this */
 
-$user           = Factory::getApplication()->getIdentity();
+$app            = Factory::getApplication();
+$user           = $app->getIdentity();
 $userGroups     = $user ? (array) $user->groups : [];
 $reportsLevel   = (int) ($this->state?->get('reportslevel', 8) ?? 8);
 $canRunReports  = \in_array($reportsLevel, $userGroups, true) || ($user && $user->authorise('core.admin'));
+$isAdmin        = $user && $user->authorise('core.admin');
 $token          = Session::getFormToken();
+$pdfPath        = (string) $app->getUserState('com_cwmconnect.reports.pdf_path', '');
+
+if ($pdfPath !== '') {
+    $app->setUserState('com_cwmconnect.reports.pdf_path', null);
+}
 ?>
 <form action="<?php echo Route::_('index.php?option=com_cwmconnect&view=reports'); ?>"
       method="post" name="adminForm" id="adminForm">
@@ -54,10 +61,27 @@ $token          = Session::getFormToken();
                        href="<?php echo Route::_('index.php?option=com_cwmconnect&task=reports.export&report=directory&cdtype=kml&' . $token . '=1'); ?>">KML</a>
                 </div>
                 <div class="col-md-3">
-                    <h2>PDF</h2>
-                    <p>Download every member as a PDF file.</p>
-                    <a class="btn btn-primary"
-                       href="<?php echo Route::_('index.php?option=com_cwmconnect&task=reports.export&report=directory&cdtype=pdf&' . $token . '=1'); ?>">PDF</a>
+                    <h2><?php echo Text::_('COM_CWMCONNECT_REPORTS_PRINT_DIRECTORY'); ?></h2>
+                    <p><?php echo Text::_('COM_CWMCONNECT_REPORTS_PRINT_DIRECTORY_DESC'); ?></p>
+                    <?php if ($isAdmin) : ?>
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="checkbox" id="includeHidden" name="include_hidden" value="1">
+                            <label class="form-check-label" for="includeHidden">
+                                <?php echo Text::_('COM_CWMCONNECT_REPORTS_INCLUDE_HIDDEN'); ?>
+                            </label>
+                        </div>
+                    <?php endif; ?>
+                    <a class="btn btn-primary" id="pdfExportBtn"
+                       href="<?php echo Route::_('index.php?option=com_cwmconnect&task=reports.export&report=directory&cdtype=pdf&' . $token . '=1'); ?>">
+                        <span class="icon-file-pdf" aria-hidden="true"></span> <?php echo Text::_('COM_CWMCONNECT_REPORTS_GENERATE_PDF'); ?>
+                    </a>
+                    <?php if ($pdfPath !== '') : ?>
+                        <div class="alert alert-success mt-2">
+                            <a href="<?php echo Uri::root() . $this->escape($pdfPath); ?>" target="_blank" rel="noopener">
+                                <span class="icon-download" aria-hidden="true"></span> <?php echo Text::_('COM_CWMCONNECT_REPORTS_DOWNLOAD_PDF'); ?>
+                            </a>
+                        </div>
+                    <?php endif; ?>
                 </div>
                 <div class="col-md-3">
                     <h2>Missing Photos</h2>
@@ -72,3 +96,16 @@ $token          = Session::getFormToken();
         <?php echo HTMLHelper::_('form.token'); ?>
     </div>
 </form>
+<?php if ($isAdmin) : ?>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    var btn = document.getElementById('pdfExportBtn');
+    var cb  = document.getElementById('includeHidden');
+    if (!btn || !cb) return;
+    var base = btn.href;
+    cb.addEventListener('change', function () {
+        btn.href = cb.checked ? base + '&include_hidden=1' : base;
+    });
+});
+</script>
+<?php endif; ?>

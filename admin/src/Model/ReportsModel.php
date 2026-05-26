@@ -154,7 +154,7 @@ class ReportsModel extends ListModel
         $app   = Factory::getApplication();
         $user  = $app->getIdentity();
         $db    = $this->getDatabase();
-        $query = $db->getQuery(true);
+        $query = $db->createQuery();
 
         $query->select($this->getState('item.select', 'a.*'))
             ->from($db->quoteName('#__cwmconnect_details', 'a'));
@@ -300,10 +300,21 @@ class ReportsModel extends ListModel
             }
         }
 
+        if ($type === 'pdf') {
+            $includeHidden = (bool) Factory::getApplication()->getInput()->getInt('include_hidden', 0);
+            $relativePath  = $reportBuild->getPdf($items, $report, $includeHidden);
+
+            Factory::getApplication()->setUserState(
+                'com_cwmconnect.reports.pdf_path',
+                $relativePath,
+            );
+
+            return;
+        }
+
         match ($type) {
             'csv'           => $reportBuild->getCsv($items, $report),
             'kml'           => $reportBuild->getKml($items, $report),
-            'pdf'           => $reportBuild->getPdf(),
             'missingphotos' => $reportBuild->getMissingPhotos($items, $report),
             default         => null,
         };
