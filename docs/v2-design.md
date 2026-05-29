@@ -597,10 +597,18 @@ no photo still renders a clean cell.
    section (driven by `con_position`), alphabetical (A/B/C…) dividers — each a
    component option (default on). Cover fields ARE the manual/override layer
    (see K.6). `MembersModel` now selects `anniversary`.
-3. **K.3 — Appearance options.** `config.xml`: layout style, color/B&W,
-   page size (Letter / booklet), font size, photo corners. Wire into PdfView's
-   mpdf config + the template.
-4. **K.4 — Additional layout styles.** Photo-grid (names only) + roster-only,
+3. **K.3 — Appearance options. ✅ DONE.** `config.xml`: page size (Letter /
+   booklet), colour/B&W (mpdf `restrictColorSpace`), font size (em-relative
+   scale for large print). Rounded photo corners were dropped — mpdf honours
+   `border-radius` on standalone blocks but not on images or inside table
+   cells, and the entry layout must be a table.
+4. **K.7 — Pre-built photo thumbnails. ✅ DONE.** `PhotoThumbnailer` (GD)
+   centre-crops every photo to a uniform 3:4 box + builds matching initials
+   placeholders; built at sync (MediaPhotoCache) and on-demand in PdfView. Keeps
+   cells uniform and the PDF small. Decided 2026-05-29: 3:4 portrait, sync +
+   on-demand. (Image processing is external to mpdf by necessity — mpdf can't
+   crop/resize.) Tested incl. an end-to-end mpdf render smoke test.
+5. **K.4 — Additional layout styles.** Photo-grid (names only) + roster-only,
    selectable via the layout option; optional photos-front/roster-back ordering.
 5. **K.5 — Admin print parity.** Point the admin Reports → Print Directory path
    (`ReportbuildHelper::getPdf()`, currently deferred) at the same renderer, with
@@ -644,3 +652,36 @@ Mirrors how PC-mapped member fields already work, so the cover behaves
 consistently with the rest of the PC integration. **Needs live verification**
 on a J5/J6 install with PC connected (the campus fetch + DB write can't run in
 the local harness).
+
+### 13.6 Photo storage & privacy (SVG / DB question)
+
+Q (2026-05-29): should photos be converted to SVG and/or stored in the DB for
+protection?
+
+- **SVG: no.** SVG is a vector format; member photos are raster (JPEG/PNG).
+  "Converting" a photo to SVG only base64-embeds the raster in an XML wrapper
+  (~33% larger, zero benefit) — vector tracing would destroy a photograph. Not
+  the right tool.
+- **DB BLOB storage: not recommended here.** mpdf needs a filesystem path, so
+  DB-stored bytes would be written to a temp file at render time anyway. DB
+  image storage also bloats the database + backups and loses filesystem
+  caching. It's an anti-pattern for this use case.
+- **The real concern is access control.** Cached photos live under
+  `media/com_cwmconnect/photos/` at guessable URLs (sequential PC ids), so a
+  members-only directory's photos are fetchable without logging in — and a
+  hidden member's photo is still reachable. The PDF itself is fine (photos are
+  embedded, not linked). **Recommended hardening (future phase):** keep files
+  on disk but move the cache outside the web root (or add a deny rule) and
+  serve photos through a controller that enforces the login wall + hidden-member
+  rules. Filesystem + gated delivery, not DB/SVG. Not yet scheduled.
+
+### 13.7 Testing
+
+- Pure logic is unit-tested: `CampusMapper` (K.6), `PhotoThumbnailer` crop +
+  placeholder + filename (K.7).
+- `MembersPdfViewTest` instantiates the real `PdfView` (via a small
+  `Joomla\CMS\MVC\View\HtmlView` test stub) and covers the presentation helpers
+  (name/initials/anniversary/locality), plus an **end-to-end render smoke test**
+  that runs the real `default_pdf.php` template through the bundled mpdf and
+  asserts a valid multi-page `%PDF` — catching template / mpdf regressions in CI
+  without needing poppler. Suite at 134 passing.
