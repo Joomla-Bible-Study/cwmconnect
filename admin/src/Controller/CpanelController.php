@@ -122,6 +122,10 @@ class CpanelController extends BaseController
      * AJAX endpoint: run one `SyncEngine` pass against PC, using the configured
      * membership-status filter. Returns the `SyncReport::toArray()` payload.
      *
+     * While the sync runs, a progress callback writes intermediate state to a
+     * cache file so the `pcSyncProgress` endpoint can serve it to the polling
+     * JS client.
+     *
      * @return  void
      *
      * @since   __DEPLOY_VERSION__
@@ -130,6 +134,8 @@ class CpanelController extends BaseController
     {
         $this->assertAdminAjax();
 
+        $progressFile = $this->progressFilePath();
+
         try {
             $params      = ComponentHelper::getParams('com_cwmconnect');
             $rawStatuses = $params->get('pc_membership_statuses', []);
@@ -137,9 +143,17 @@ class CpanelController extends BaseController
                 ? array_values(array_filter($rawStatuses))
                 : $this->parseStatusList((string) $rawStatuses);
 
+            $this->writeProgress($progressFile, 'starting', 0, 0);
+
             /** @var PcSyncEngine $engine */
-            $engine = $this->createSyncEngine();
-            $report = $engine->run($statuses);
+            $engine     = $this->createSyncEngine();
+            $onProgress = function (int $pagesCompleted, int $totalSeen, string $phase) use ($progressFile): void {
+                $this->writeProgress($progressFile, $phase, $pagesCompleted, $totalSeen);
+            };
+
+            $report = $engine->run($statuses, $onProgress);
+
+            @unlink($progressFile);
 
             $this->logSyncResult($report->toArray(), $report->success());
 
@@ -151,14 +165,63 @@ class CpanelController extends BaseController
                 ),
             );
         } catch (PcConfigurationException $e) {
+            @unlink($progressFile);
             $this->sendJsonAndClose(
                 new JsonResponse(Text::_('COM_CWMCONNECT_PC_NOT_CONFIGURED'), 'warning', true),
             );
         } catch (\Throwable $e) {
+            @unlink($progressFile);
             $this->sendJsonAndClose(
                 new JsonResponse($e->getMessage(), 'error', true),
             );
         }
+    }
+
+    /**
+     * AJAX endpoint: return the current sync progress from the cache file.
+     * Called by the JS client on a ~1 s poll while `pcSync` is running.
+     *
+     * @return  void
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    public function pcSyncProgress(): void
+    {
+        $this->assertAdminAjax();
+
+        $file = $this->progressFilePath();
+
+        if (!is_file($file)) {
+            $this->sendJsonAndClose(
+                new JsonResponse(['running' => false], '', false),
+            );
+
+            return;
+        }
+
+        $raw = @file_get_contents($file);
+
+        if ($raw === false) {
+            $this->sendJsonAndClose(
+                new JsonResponse(['running' => false], '', false),
+            );
+
+            return;
+        }
+
+        $data = @json_decode($raw, true);
+
+        if (!\is_array($data)) {
+            $this->sendJsonAndClose(
+                new JsonResponse(['running' => false], '', false),
+            );
+
+            return;
+        }
+
+        $data['running'] = true;
+
+        $this->sendJsonAndClose(new JsonResponse($data, '', false));
     }
 
     /**
@@ -295,6 +358,43 @@ class CpanelController extends BaseController
             ),
             pairing: new DatabaseMemberPairing($db),
         );
+    }
+
+    /**
+     * Cache-file path for the current user's sync progress.
+     *
+     * @return  string
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    private function progressFilePath(): string
+    {
+        $userId = (int) $this->app->getIdentity()?->id;
+
+        return JPATH_ADMINISTRATOR . '/cache/com_cwmconnect_sync_' . $userId . '.json';
+    }
+
+    /**
+     * Write a progress snapshot to the cache file.
+     *
+     * @param   string  $file            Absolute path.
+     * @param   string  $phase           'starting', 'fetching', or 'sweeping'.
+     * @param   int     $pagesCompleted  Pages processed so far.
+     * @param   int     $totalSeen       People seen so far.
+     *
+     * @return  void
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    private function writeProgress(string $file, string $phase, int $pagesCompleted, int $totalSeen): void
+    {
+        $payload = json_encode([
+            'phase'          => $phase,
+            'pagesCompleted' => $pagesCompleted,
+            'totalSeen'      => $totalSeen,
+        ], \JSON_THROW_ON_ERROR);
+
+        @file_put_contents($file, $payload, \LOCK_EX);
     }
 
     private function sendJsonAndClose(JsonResponse $response, int $httpStatus = 200): void

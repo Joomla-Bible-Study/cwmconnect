@@ -24,12 +24,12 @@
 		       default="a.created_at DESC"
 		       onchange="this.form.submit();">
 			<option value="">JGLOBAL_SORT_BY</option>
-			<option value="a.label ASC">COM_CWMCONNECT_FEEDTOKEN_HEADING_LABEL ASC</option>
-			<option value="a.label DESC">COM_CWMCONNECT_FEEDTOKEN_HEADING_LABEL DESC</option>
-			<option value="a.created_at ASC">COM_CWMCONNECT_FEEDTOKEN_HEADING_CREATED ASC</option>
-			<option value="a.created_at DESC">COM_CWMCONNECT_FEEDTOKEN_HEADING_CREATED DESC</option>
-			<option value="a.id ASC">JGRID_HEADING_ID ASC</option>
-			<option value="a.id DESC">JGRID_HEADING_ID DESC</option>
+			<option value="a.label ASC">COM_CWMCONNECT_FEEDTOKEN_SORT_LABEL_ASC</option>
+			<option value="a.label DESC">COM_CWMCONNECT_FEEDTOKEN_SORT_LABEL_DESC</option>
+			<option value="a.created_at ASC">COM_CWMCONNECT_FEEDTOKEN_SORT_CREATED_ASC</option>
+			<option value="a.created_at DESC">COM_CWMCONNECT_FEEDTOKEN_SORT_CREATED_DESC</option>
+			<option value="a.id ASC">JGRID_HEADING_ID_ASC</option>
+			<option value="a.id DESC">JGRID_HEADING_ID_DESC</option>
 		</field>
 
 		<field name="limit"

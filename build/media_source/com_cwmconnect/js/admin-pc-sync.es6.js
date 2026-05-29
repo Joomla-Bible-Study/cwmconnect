@@ -13,6 +13,10 @@
  * SyncEngine pass. Both call the same admin controller via fetch() and
  * render the JsonResponse envelope into the status / result panels.
  *
+ * While a sync is running, a polling loop hits the pcSyncProgress endpoint
+ * every second and updates the status area with real page/member counts so
+ * the user sees intermediate feedback instead of a frozen spinner.
+ *
  * All DOM construction uses createElement + textContent so untrusted strings
  * (message bodies, error text) never reach the HTML parser.
  */
@@ -23,14 +27,17 @@
      * Script options block published by CpanelHtmlView::registerPcAssets().
      *
      * @typedef {object} PcOptions
-     * @property {string} csrfToken      Joomla session form token.
-     * @property {string} syncUrl        Route to task=cpanel.pcSync.
-     * @property {string} testUrl        Route to task=cpanel.pcTestConnection.
-     * @property {object} i18n           Pre-translated UI strings.
-     * @property {string} i18n.syncing   Status text while a sync is running.
-     * @property {string} i18n.testing   Status text while a test is running.
+     * @property {string} csrfToken        Joomla session form token.
+     * @property {string} syncUrl          Route to task=cpanel.pcSync.
+     * @property {string} testUrl          Route to task=cpanel.pcTestConnection.
+     * @property {string} progressUrl      Route to task=cpanel.pcSyncProgress.
+     * @property {object} i18n             Pre-translated UI strings.
+     * @property {string} i18n.syncing     Status text while a sync is running.
+     * @property {string} i18n.testing     Status text while a test is running.
      * @property {string} i18n.unknownError  Fallback when fetch itself fails.
-     * @property {string} i18n.summary   Heading prefix for the result panel.
+     * @property {string} i18n.summary     Heading prefix for the result panel.
+     * @property {string} i18n.progressPage   "Processing page %s… %s members so far"
+     * @property {string} i18n.progressSweep  "Archiving removed members…"
      */
 
     /** @type {PcOptions} */
@@ -47,6 +54,9 @@
     if (!card || !status || !result) {
         return;
     }
+
+    /** @type {number|null} */
+    let pollTimer = null;
 
     /**
      * Replace a container's children. Pure-DOM helper used everywhere we'd
@@ -98,7 +108,7 @@
     };
 
     /**
-     * Show a transient "working…" message while a request is in flight.
+     * Show a spinner + message in the status area.
      *
      * @param {string} message
      */
@@ -113,6 +123,45 @@
 
         replaceChildren(status, [wrap]);
         replaceChildren(result, []);
+    };
+
+    /**
+     * Update the spinner label text in-place without rebuilding the DOM.
+     * Falls back to showSpinner() if the expected structure isn't present.
+     *
+     * @param {string} message
+     */
+    const updateSpinnerText = (message) => {
+        const label = status.querySelector('span:not(.spinner-border)');
+
+        if (label) {
+            label.textContent = message;
+        } else {
+            showSpinner(message);
+        }
+    };
+
+    /**
+     * Simple sprintf-style replacer for Joomla language strings that use
+     * %s placeholders (positional, left-to-right).
+     *
+     * @param {string}    template
+     * @param {...string} args
+     * @returns {string}
+     */
+    const sprintf = (template, ...args) => {
+        let i = 0;
+
+        return template.replace(/%s/g, () => {
+            if (i < args.length) {
+                const val = args[i];
+                i += 1;
+
+                return val;
+            }
+
+            return '%s';
+        });
     };
 
     /**
@@ -192,6 +241,46 @@
     };
 
     /**
+     * Stop the progress polling loop.
+     */
+    const stopPolling = () => {
+        if (pollTimer !== null) {
+            clearInterval(pollTimer);
+            pollTimer = null;
+        }
+    };
+
+    /**
+     * Start polling the progress endpoint. Updates the spinner text with
+     * real page/member counts from the server.
+     */
+    const startPolling = () => {
+        stopPolling();
+
+        pollTimer = setInterval(async () => {
+            try {
+                const json = await callEndpoint(options.progressUrl);
+
+                if (!json || !json.success || !json.data || !json.data.running) {
+                    return;
+                }
+
+                const d = json.data;
+
+                if (d.phase === 'sweeping') {
+                    updateSpinnerText(options.i18n.progressSweep);
+                } else if (d.phase === 'fetching' && d.pagesCompleted > 0) {
+                    updateSpinnerText(
+                        sprintf(options.i18n.progressPage, String(d.pagesCompleted), String(d.totalSeen)),
+                    );
+                }
+            } catch {
+                // Polling failure is non-fatal — the sync POST still completes.
+            }
+        }, 1000);
+    };
+
+    /**
      * Handle a click on a `[data-pc-action]` button. Dispatches to the
      * right endpoint and manages the spinner / status / result panels.
      *
@@ -202,7 +291,13 @@
 
         showSpinner(action === 'sync' ? options.i18n.syncing : options.i18n.testing);
 
+        if (action === 'sync') {
+            startPolling();
+        }
+
         const json = await callEndpoint(url);
+
+        stopPolling();
 
         if (!json) {
             showStatus('danger', options.i18n.unknownError);

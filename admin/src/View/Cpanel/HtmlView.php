@@ -148,11 +148,14 @@ class HtmlView extends BaseHtmlView
             'csrfToken'      => Session::getFormToken(),
             'syncUrl'        => Route::_('index.php?option=com_cwmconnect&task=cpanel.pcSync', false),
             'testUrl'        => Route::_('index.php?option=com_cwmconnect&task=cpanel.pcTestConnection', false),
+            'progressUrl'    => Route::_('index.php?option=com_cwmconnect&task=cpanel.pcSyncProgress', false),
             'i18n'           => [
-                'syncing'      => Text::_('COM_CWMCONNECT_PC_SYNCING'),
-                'testing'      => Text::_('COM_CWMCONNECT_PC_TESTING'),
-                'unknownError' => Text::_('COM_CWMCONNECT_PC_UNKNOWN_ERROR'),
-                'summary'      => Text::_('COM_CWMCONNECT_PC_SUMMARY'),
+                'syncing'        => Text::_('COM_CWMCONNECT_PC_SYNCING'),
+                'testing'        => Text::_('COM_CWMCONNECT_PC_TESTING'),
+                'unknownError'   => Text::_('COM_CWMCONNECT_PC_UNKNOWN_ERROR'),
+                'summary'        => Text::_('COM_CWMCONNECT_PC_SUMMARY'),
+                'progressPage'   => Text::_('COM_CWMCONNECT_PC_PROGRESS_PAGE'),
+                'progressSweep'  => Text::_('COM_CWMCONNECT_PC_PROGRESS_SWEEP'),
             ],
         ]);
     }

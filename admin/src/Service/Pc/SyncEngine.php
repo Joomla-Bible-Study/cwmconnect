@@ -133,11 +133,16 @@ final class SyncEngine
      * walk (e.g. token rejected before the first page lands) do throw,
      * because they mean "the run never began."
      *
-     * @param   list<string>  $membershipStatuses  Values to pass to PC via
-     *                                              `where[membership]`. Empty
-     *                                              list = no filter (include
-     *                                              all statuses; not
-     *                                              recommended).
+     * @param   list<string>   $membershipStatuses  Values to pass to PC via
+     *                                               `where[membership]`. Empty
+     *                                               list = no filter (include
+     *                                               all statuses; not
+     *                                               recommended).
+     * @param   \Closure|null  $onProgress          Called after each PC page
+     *                                               with (int $pagesCompleted,
+     *                                               int $totalSeen, string
+     *                                               $phase). Null = no
+     *                                               progress reporting.
      *
      * @return  SyncReport
      *
@@ -146,7 +151,7 @@ final class SyncEngine
      *
      * @since   __DEPLOY_VERSION__
      */
-    public function run(array $membershipStatuses = []): SyncReport
+    public function run(array $membershipStatuses = [], ?\Closure $onProgress = null): SyncReport
     {
         $report      = new SyncReport();
         $seenIds     = [];
@@ -216,8 +221,16 @@ final class SyncEngine
                 }
             }
 
+            if ($onProgress !== null) {
+                $onProgress($pagesWalked, $report->seen, 'fetching');
+            }
+
             $nextUrl = $this->extractNextLink($page);
         } while ($nextUrl !== null);
+
+        if ($onProgress !== null) {
+            $onProgress($pagesWalked, $report->seen, 'sweeping');
+        }
 
         try {
             $report->archived = $this->repository->archiveMissingPcPersonIds(
