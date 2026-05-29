@@ -672,14 +672,22 @@ protection?
   DB-stored bytes would be written to a temp file at render time anyway. DB
   image storage also bloats the database + backups and loses filesystem
   caching. It's an anti-pattern for this use case.
-- **The real concern is access control.** Cached photos live under
-  `media/com_cwmconnect/photos/` at guessable URLs (sequential PC ids), so a
-  members-only directory's photos are fetchable without logging in — and a
-  hidden member's photo is still reachable. The PDF itself is fine (photos are
-  embedded, not linked). **Recommended hardening (future phase):** keep files
-  on disk but move the cache outside the web root (or add a deny rule) and
-  serve photos through a controller that enforces the login wall + hidden-member
-  rules. Filesystem + gated delivery, not DB/SVG. Not yet scheduled.
+- **The real concern is access control. ✅ DONE.** Cached photos lived under
+  `media/com_cwmconnect/photos/` at guessable URLs, so a members-only — or
+  hidden — member's photo was fetchable without logging in. Hardened: direct
+  web access is blocked (`.htaccess` Apache 2.2/2.4 + `web.config` IIS,
+  tracked via a `.gitignore` exception so they ship); photos now serve only
+  through a gated proxy (`PhotoController::serve`, `task=photo.serve&id=N`)
+  that enforces the login wall + per-member visibility (`PhotoAccess::canView`
+  — manager sees all; members held to published + display_in_directory +
+  household scope). The admin list uses a `core.manage`-gated admin proxy
+  (separate session). External KML clients (Google Earth) authenticate the
+  photo fetch with the same signed **feed token** the live feed already uses;
+  KML placemark photo URLs carry it. mpdf is unaffected (filesystem reads).
+  Filesystem + gated delivery — not DB/SVG.
+  **Follow-up:** the admin static KML *export* (`ReportbuildHelper::getKml`)
+  still emits direct photo URLs; opened externally those won't load. The live
+  token feed is the supported path. Address if the static export matters.
 
 ### 13.7 Testing
 
