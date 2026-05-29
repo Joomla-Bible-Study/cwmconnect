@@ -15,11 +15,13 @@ namespace CWM\Component\Cwmconnect\Site\View\Members;
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
+use CWM\Component\Cwmconnect\Administrator\Service\Pc\DatabaseCampusRepository;
 use CWM\Component\Cwmconnect\Site\Model\MembersModel;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
+use Joomla\Database\DatabaseInterface;
 
 /**
  * Phase I: PDF export of the filtered member directory.
@@ -105,14 +107,26 @@ class PdfView extends BaseHtmlView
         $this->showSectionHeaders = (bool) $params->get('pdf_section_headers', 1);
 
         if ((bool) $params->get('pdf_cover', 1)) {
+            $usePc  = (bool) $params->get('pc_enabled', 0) && (bool) $params->get('pdf_cover_use_pc', 1);
+            $campus = $usePc ? $this->getCoverCampus() : null;
+
+            // Per field: a non-empty manual value overrides the synced PC value;
+            // otherwise the PC campus value is used.
+            $pick = static fn(string $manual, ?string $pc): string => $manual !== ''
+                ? $manual
+                : trim((string) ($pc ?? ''));
+
+            $manualAddress = trim((string) $params->get('pdf_church_address', ''));
+
             $this->cover = [
                 'enabled' => true,
                 'image'   => $this->resolvePdfImage((string) $params->get('pdf_cover_image', '')),
-                'name'    => trim((string) $params->get('pdf_church_name', '')) ?: (string) $app->get('sitename'),
-                'address' => trim((string) $params->get('pdf_church_address', '')),
-                'phone'   => trim((string) $params->get('pdf_church_phone', '')),
-                'email'   => trim((string) $params->get('pdf_church_email', '')),
-                'website' => trim((string) $params->get('pdf_church_website', '')),
+                'name'    => $pick(trim((string) $params->get('pdf_church_name', '')), $campus->name ?? null)
+                    ?: (string) $app->get('sitename'),
+                'address' => $manualAddress !== '' ? $manualAddress : $this->campusAddress($campus),
+                'phone'   => $pick(trim((string) $params->get('pdf_church_phone', '')), $campus->pc_phone ?? null),
+                'email'   => $pick(trim((string) $params->get('pdf_church_email', '')), $campus->pc_email ?? null),
+                'website' => $pick(trim((string) $params->get('pdf_church_website', '')), $campus->pc_website ?? null),
             ];
         }
 
@@ -220,6 +234,53 @@ class PdfView extends BaseHtmlView
         $candidate = JPATH_ROOT . '/' . ltrim($image, '/');
 
         return is_file($candidate) ? $candidate : null;
+    }
+
+    /**
+     * The primary Planning Center campus row (K.6), or null when none is
+     * synced or the lookup fails. Used to fill blank cover fields.
+     *
+     * @return  object|null
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    private function getCoverCampus(): ?object
+    {
+        try {
+            $db = Factory::getContainer()->get(DatabaseInterface::class);
+
+            return new DatabaseCampusRepository($db)->findPrimary();
+        } catch (\Throwable) {
+            return null;
+        }
+    }
+
+    /**
+     * Build a multi-line postal address from a synced campus row, skipping
+     * blank parts. Empty string when there is no campus.
+     *
+     * @param   object|null  $campus
+     *
+     * @return  string
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    private function campusAddress(?object $campus): string
+    {
+        if ($campus === null) {
+            return '';
+        }
+
+        $street  = trim((string) ($campus->pc_street ?? ''));
+        $city    = trim((string) ($campus->pc_city ?? ''));
+        $state   = trim((string) ($campus->pc_state ?? ''));
+        $zip     = trim((string) ($campus->pc_zip ?? ''));
+        $country = trim((string) ($campus->pc_country ?? ''));
+
+        $cityState = $city !== '' && $state !== '' ? $city . ', ' . $state : $city . $state;
+        $cityLine  = trim($cityState . ' ' . $zip);
+
+        return implode("\n", array_filter([$street, $cityLine, $country]));
     }
 
     /**

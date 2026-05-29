@@ -139,6 +139,14 @@ CREATE TABLE IF NOT EXISTS `#__cwmconnect_dirheader` (
   `id`                INT(11)             NOT NULL AUTO_INCREMENT,
   `pc_campus_id`      BIGINT              NULL,
   `pc_last_synced_at` DATETIME            NULL,
+  `pc_street`         VARCHAR(255)        NULL,
+  `pc_city`          VARCHAR(255)        NULL,
+  `pc_state`         VARCHAR(100)        NULL,
+  `pc_zip`           VARCHAR(20)         NULL,
+  `pc_country`       VARCHAR(100)        NULL,
+  `pc_phone`         VARCHAR(50)         NULL,
+  `pc_email`         VARCHAR(255)        NULL,
+  `pc_website`       VARCHAR(255)        NULL,
   `name`             VARCHAR(255)        NOT NULL DEFAULT '',
   `alias`            VARCHAR(255)
                      CHARACTER SET utf8mb4

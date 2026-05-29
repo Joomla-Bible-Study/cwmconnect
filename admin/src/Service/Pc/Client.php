@@ -148,6 +148,44 @@ class Client
     }
 
     /**
+     * Fetch `GET /people/v2/campuses` and return the raw campus resources
+     * (each a `data` element with `id` + `attributes`). Follows the
+     * `links.next` pagination chain. Used by the campus sync (K.6) to
+     * populate the directory cover's church name + address from PC.
+     *
+     * @return  list<array<string, mixed>>
+     *
+     * @throws  ApiException  On HTTP / decoding failure or pagination runaway.
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    public function listCampuses(): array
+    {
+        $url  = $this->buildUrl('/people/v2/campuses', ['per_page' => '100']);
+        $rows = [];
+        $hops = 0;
+
+        do {
+            if (++$hops > 50) {
+                throw new ApiException('PC campuses pagination cap reached (50 pages).');
+            }
+
+            $page = $this->getJsonAbsolute($url);
+
+            foreach ((array) ($page['data'] ?? []) as $row) {
+                if (\is_array($row)) {
+                    $rows[] = $row;
+                }
+            }
+
+            $next = \is_array($page['links'] ?? null) ? ($page['links']['next'] ?? null) : null;
+            $url  = \is_string($next) && $next !== '' ? $next : null;
+        } while ($url !== null);
+
+        return $rows;
+    }
+
+    /**
      * Build a `Tab:<id>` → name lookup from the `included` array on a
      * paginated `/people/v2/field_definitions?include=tab` response.
      *

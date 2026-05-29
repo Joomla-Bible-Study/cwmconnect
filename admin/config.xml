@@ -1209,6 +1209,17 @@
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
+		<field name="pdf_cover_use_pc"
+		       type="radio"
+		       class="btn-group"
+		       default="1"
+		       label="COM_CWMCONNECT_FIELD_PDF_COVER_USE_PC_LABEL"
+		       description="COM_CWMCONNECT_FIELD_PDF_COVER_USE_PC_DESC"
+		       showon="pdf_cover:1[AND]pc_enabled:1"
+		>
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
 		<field name="pdf_cover_image"
 		       type="media"
 		       label="COM_CWMCONNECT_FIELD_PDF_COVER_IMAGE_LABEL"

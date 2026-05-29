@@ -12,7 +12,10 @@ declare(strict_types=1);
 namespace CWM\Component\Cwmconnect\Administrator\Controller;
 
 use CWM\Component\Cwmconnect\Administrator\Service\Pairing\DatabaseMemberPairing;
+use CWM\Component\Cwmconnect\Administrator\Service\Pc\CampusMapper;
+use CWM\Component\Cwmconnect\Administrator\Service\Pc\CampusSync;
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\Client as PcClient;
+use CWM\Component\Cwmconnect\Administrator\Service\Pc\DatabaseCampusRepository;
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\DatabaseFieldMapRepository;
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\DatabaseMemberRepository;
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\Exception\AuthenticationException;
@@ -144,6 +147,14 @@ class CpanelController extends BaseController
                 : $this->parseStatusList((string) $rawStatuses);
 
             $this->writeProgress($progressFile, 'starting', 0, 0);
+
+            // Auxiliary: refresh campus data (cover church name/address) from
+            // PC. Failures here must not abort the people sync.
+            try {
+                $this->createCampusSync()->run();
+            } catch (\Throwable) {
+                // Campus sync is best-effort; the people sync is the point.
+            }
 
             /** @var PcSyncEngine $engine */
             $engine     = $this->createSyncEngine();
@@ -357,6 +368,24 @@ class CpanelController extends BaseController
                 cacheRoot: JPATH_ROOT . '/media/com_cwmconnect/photos',
             ),
             pairing: new DatabaseMemberPairing($db),
+        );
+    }
+
+    /**
+     * Build a campus sync (K.6) wired to the PC client + dirheader repository.
+     *
+     * @return  CampusSync
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    private function createCampusSync(): CampusSync
+    {
+        $db = Factory::getContainer()->get(DatabaseInterface::class);
+
+        return new CampusSync(
+            client: $this->createPcClient(),
+            mapper: new CampusMapper(),
+            repository: new DatabaseCampusRepository($db),
         );
     }
 
