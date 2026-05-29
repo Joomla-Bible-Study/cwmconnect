@@ -23,7 +23,7 @@ $currentLetter = null;
  * the main listing share identical markup.
  */
 $renderEntry = function (object $item, bool $isStaff): void {
-    $photo    = $this->memberPhotoPath($item);
+    $photo    = $this->memberPhotoSrc($item);
     $position = trim((string) ($item->con_position ?? ''));
     $locality = $this->memberLocality($item);
     ?>
@@ -108,7 +108,7 @@ $fontBase = $this->appearance['fontBasePt'] ?? 10.0;
        width is set inline on the <img> below; this just styles the border. */
     .entry img.photo { border: 0.5pt solid #ccc; }
     .no-photo {
-        width: 30mm; height: 36mm;
+        width: 28mm; height: 37mm;
         background: #eef0f2; border: 0.5pt solid #ccc;
         color: #9aa0a6; font-size: 1.8em; font-weight: bold;
         text-align: center;

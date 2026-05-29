@@ -16,6 +16,7 @@ namespace CWM\Component\Cwmconnect\Site\View\Members;
 // phpcs:enable PSR1.Files.SideEffects
 
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\DatabaseCampusRepository;
+use CWM\Component\Cwmconnect\Administrator\Service\Pc\PhotoThumbnailer;
 use CWM\Component\Cwmconnect\Site\Model\MembersModel;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
@@ -235,11 +236,64 @@ class PdfView extends BaseHtmlView
             return null;
         }
 
-        $candidate = str_contains($image, '/')
+        $source = str_contains($image, '/')
             ? JPATH_ROOT . '/' . ltrim($image, '/')
             : JPATH_ROOT . '/media/com_cwmconnect/photos/' . $image;
 
-        return is_file($candidate) ? $candidate : null;
+        if (!is_file($source)) {
+            return null;
+        }
+
+        // Prefer the normalized 3:4 thumbnail (K.7) so directory cells are
+        // uniform and the PDF stays small. Built at sync time; generated on
+        // demand here for legacy/standalone photos or any missing thumbnail.
+        $thumb = JPATH_ROOT . '/media/com_cwmconnect/photos/thumb/' . PhotoThumbnailer::thumbFilename($image);
+
+        if (is_file($thumb)) {
+            return $thumb;
+        }
+
+        if (new PhotoThumbnailer()->generate($source, $thumb)) {
+            return $thumb;
+        }
+
+        // Thumbnailing unavailable (e.g. no GD) — fall back to the original.
+        return $source;
+    }
+
+    /**
+     * The image src for a member's directory cell: the real photo thumbnail
+     * when available, otherwise a generated 3:4 initials placeholder so every
+     * cell is the same size. Returns null only if even the placeholder can't
+     * be produced (no GD), letting the template fall back to a CSS box.
+     *
+     * @param   object  $item  A member row from MembersModel.
+     *
+     * @return  string|null
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    public function memberPhotoSrc(object $item): ?string
+    {
+        $photo = $this->memberPhotoPath($item);
+
+        if ($photo !== null) {
+            return $photo;
+        }
+
+        $initials = $this->memberInitials($item);
+        $safe     = preg_replace('/[^A-Z0-9]/', '', strtoupper($initials)) ?: substr(sha1($initials), 0, 8);
+        $file     = JPATH_ROOT . '/media/com_cwmconnect/photos/thumb/ph/' . $safe . '.jpg';
+
+        if (is_file($file)) {
+            return $file;
+        }
+
+        $font = JPATH_LIBRARIES . '/mpdf/vendor/mpdf/mpdf/ttfonts/DejaVuSans.ttf';
+
+        return new PhotoThumbnailer()->placeholder($initials, $file, is_file($font) ? $font : null)
+            ? $file
+            : null;
     }
 
     /**

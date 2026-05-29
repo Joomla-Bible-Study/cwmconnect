@@ -73,6 +73,7 @@ final class MediaPhotoCache implements PhotoCacheInterface
         private readonly Http $http,
         private readonly string $cacheRoot,
         private readonly int $timeoutSeconds = 30,
+        private readonly ?PhotoThumbnailer $thumbnailer = null,
     ) {}
 
     public function cache(int $pcPersonId, ?string $avatarUrl, ?string $currentHash): ?PhotoCacheResult
@@ -104,8 +105,34 @@ final class MediaPhotoCache implements PhotoCacheInterface
 
         $relativePath = $this->relativePathFor($pcPersonId, $avatarUrl);
         $this->writeBytes($relativePath, $bytes);
+        $this->writeThumbnail($relativePath);
 
         return new PhotoCacheResult($relativePath, $hash, true);
+    }
+
+    /**
+     * K.7: build the print-ready directory thumbnail for a freshly cached
+     * photo. Best-effort — a thumbnail failure must not abort the sync; the
+     * PDF builder regenerates missing thumbnails on demand.
+     *
+     * @param   string  $relativePath  Original photo path relative to cacheRoot.
+     *
+     * @return  void
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    private function writeThumbnail(string $relativePath): void
+    {
+        $thumbName = PhotoThumbnailer::thumbFilename($relativePath);
+
+        if ($thumbName === '') {
+            return;
+        }
+
+        $root        = rtrim($this->cacheRoot, '/');
+        $thumbnailer = $this->thumbnailer ?? new PhotoThumbnailer();
+
+        $thumbnailer->generate($root . '/' . $relativePath, $root . '/thumb/' . $thumbName);
     }
 
     /**
