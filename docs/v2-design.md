@@ -685,9 +685,13 @@ protection?
   photo fetch with the same signed **feed token** the live feed already uses;
   KML placemark photo URLs carry it. mpdf is unaffected (filesystem reads).
   Filesystem + gated delivery — not DB/SVG.
-  **Follow-up:** the admin static KML *export* (`ReportbuildHelper::getKml`)
-  still emits direct photo URLs; opened externally those won't load. The live
-  token feed is the supported path. Address if the static export matters.
+  The admin static KML *export* (`ReportbuildHelper::getKml`) now emits a
+  self-contained **KMZ** — a zip with `doc.kml` + each photo under `files/`
+  (3:4 thumbnail, generated on demand; placeholder fallback) referenced by
+  relative path, so Google Earth renders photos offline with no server/token
+  round-trip and nothing leaks publicly. `resolvePath` is also hardened with an
+  image-extension allowlist + realpath docroot containment (defense-in-depth;
+  `image` is not member-editable).
 
 ### 13.7 Testing
 
