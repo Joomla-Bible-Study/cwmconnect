@@ -16,98 +16,32 @@ namespace CWM\Component\Cwmconnect\Site\View\Members;
 // phpcs:enable PSR1.Files.SideEffects
 
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\DatabaseCampusRepository;
-use CWM\Component\Cwmconnect\Administrator\Service\Pc\PhotoThumbnailer;
 use CWM\Component\Cwmconnect\Site\Model\MembersModel;
+use CWM\Component\Cwmconnect\Site\Service\DirectoryPdfPresenter;
+use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 use Joomla\Database\DatabaseInterface;
+use Joomla\Registry\Registry;
 
 /**
  * Phase I: PDF export of the filtered member directory.
  *
- * Loads the same data as the HTML list view (via MembersModel), renders a
- * print-oriented HTML template, passes it through mpdf, and streams the
- * result as a downloadable PDF. Pagination is removed so the PDF contains
- * every matching row.
+ * Loads the same data as the HTML list view (via MembersModel), builds a
+ * {@see DirectoryPdfPresenter} (the shared view-model used by the admin print
+ * report too), renders the print template, and streams the result through mpdf.
+ * Pagination is removed so the PDF contains every matching row.
  *
  * @since  __DEPLOY_VERSION__
  */
 class PdfView extends BaseHtmlView
 {
     /**
-     * @var    list<object>
-     * @since  __DEPLOY_VERSION__
-     */
-    public array $items = [];
-
-    /**
-     * Members holding a position (`con_position`), for the staff section.
+     * Build the directory PDF and stream it to the browser.
      *
-     * @var    list<object>
-     * @since  __DEPLOY_VERSION__
-     */
-    public array $staff = [];
-
-    /**
-     * Cover-page content resolved from the component options. Keys:
-     * `enabled`, `image` (absolute path or null), `name`, `address`,
-     * `phone`, `email`, `website`.
-     *
-     * @var    array<string, mixed>
-     * @since  __DEPLOY_VERSION__
-     */
-    public array $cover = ['enabled' => false];
-
-    /**
-     * Whether to render a "Staff" section ahead of the member listing.
-     *
-     * @var    bool
-     * @since  __DEPLOY_VERSION__
-     */
-    public bool $showStaff = true;
-
-    /**
-     * Whether to render alphabetical (A, B, C…) surname dividers.
-     *
-     * @var    bool
-     * @since  __DEPLOY_VERSION__
-     */
-    public bool $showSectionHeaders = true;
-
-    /**
-     * Appearance options resolved from the component config. Key: `fontBasePt`
-     * (float — base body size that drives the em-relative type scale). Page
-     * size + colour are applied to the mpdf instance directly, not here.
-     *
-     * @var    array<string, mixed>
-     * @since  __DEPLOY_VERSION__
-     */
-    public array $appearance = ['fontBasePt' => 10.0];
-
-    /**
-     * Member-entry layout: `photo_detail` (photo left + details right),
-     * `photo_grid` (compact photo cards), or `roster` (text only).
-     *
-     * @var    string
-     * @since  __DEPLOY_VERSION__
-     */
-    public string $pdfLayout = 'photo_detail';
-
-    /**
-     * Whether to append a text roster section after the photo pages
-     * (photos-front / roster-back). Ignored when the layout is already roster.
-     *
-     * @var    bool
-     * @since  __DEPLOY_VERSION__
-     */
-    public bool $appendRoster = false;
-
-    /**
-     * Render the PDF and stream it to the browser.
-     *
-     * @param   string|null  $tpl  Template name (unused — always renders default_pdf).
+     * @param   string|null  $tpl  Unused — rendering goes through the presenter.
      *
      * @return  void
      *
@@ -123,19 +57,21 @@ class PdfView extends BaseHtmlView
         $model->setState('list.start', 0);
         $model->setState('list.limit', 0);
 
-        $this->items = $model->getItems() ?: [];
+        $items = $model->getItems() ?: [];
 
-        if ($this->items === []) {
+        if ($items === []) {
             throw new \RuntimeException(Text::_('COM_CWMCONNECT_PDF_ERROR_NO_MEMBERS'), 404);
         }
 
         $app    = Factory::getApplication();
         $params = ComponentHelper::getParams('com_cwmconnect');
 
-        $this->showStaff          = (bool) $params->get('pdf_staff', 1);
-        $this->showSectionHeaders = (bool) $params->get('pdf_section_headers', 1);
-
-        $this->appearance = [
+        $presenter                     = new DirectoryPdfPresenter();
+        $presenter->items              = $items;
+        $presenter->showSectionHeaders = (bool) $params->get('pdf_section_headers', 1);
+        $presenter->pdfLayout          = (string) $params->get('pdf_layout', 'photo_detail');
+        $presenter->appendRoster       = (bool) $params->get('pdf_append_roster', 0);
+        $presenter->appearance         = [
             'fontBasePt' => match ((string) $params->get('pdf_font_size', 'normal')) {
                 'large'  => 12.0,
                 'xlarge' => 14.0,
@@ -143,46 +79,20 @@ class PdfView extends BaseHtmlView
             },
         ];
 
-        $this->pdfLayout    = (string) $params->get('pdf_layout', 'photo_detail');
-        $this->appendRoster = (bool) $params->get('pdf_append_roster', 0);
-
         if ((bool) $params->get('pdf_cover', 1)) {
-            $usePc  = (bool) $params->get('pc_enabled', 0) && (bool) $params->get('pdf_cover_use_pc', 1);
-            $campus = $usePc ? $this->getCoverCampus() : null;
-
-            // Per field: a non-empty manual value overrides the synced PC value;
-            // otherwise the PC campus value is used.
-            $pick = static fn(string $manual, ?string $pc): string => $manual !== ''
-                ? $manual
-                : trim((string) ($pc ?? ''));
-
-            $manualAddress = trim((string) $params->get('pdf_church_address', ''));
-
-            $this->cover = [
-                'enabled' => true,
-                'image'   => $this->resolvePdfImage((string) $params->get('pdf_cover_image', '')),
-                'name'    => $pick(trim((string) $params->get('pdf_church_name', '')), $campus->name ?? null)
-                    ?: (string) $app->get('sitename'),
-                'address' => $manualAddress !== '' ? $manualAddress : $this->campusAddress($campus),
-                'phone'   => $pick(trim((string) $params->get('pdf_church_phone', '')), $campus->pc_phone ?? null),
-                'email'   => $pick(trim((string) $params->get('pdf_church_email', '')), $campus->pc_email ?? null),
-                'website' => $pick(trim((string) $params->get('pdf_church_website', '')), $campus->pc_website ?? null),
-            ];
+            $presenter->cover = $this->resolveCover($params, $app);
         }
 
-        if ($this->showStaff) {
-            $this->staff = array_values(
+        if ((bool) $params->get('pdf_staff', 1)) {
+            $presenter->staff = array_values(
                 array_filter(
-                    $this->items,
+                    $items,
                     static fn(object $item): bool => trim((string) ($item->con_position ?? '')) !== '',
                 ),
             );
         }
 
-        ob_start();
-        $this->setLayout('default_pdf');
-        parent::display();
-        $html = ob_get_clean();
+        $html = $presenter->renderHtml();
 
         $autoload = JPATH_LIBRARIES . '/mpdf/vendor/autoload.php';
 
@@ -193,13 +103,9 @@ class PdfView extends BaseHtmlView
         require_once $autoload;
 
         // Booklet = US half-letter (5.5 × 8.5 in) in mm; otherwise US Letter.
-        $pageFormat = $params->get('pdf_page_size', 'letter') === 'booklet'
-            ? [139.7, 215.9]
-            : 'Letter';
-
         $config = [
             'mode'          => 'utf-8',
-            'format'        => $pageFormat,
+            'format'        => $params->get('pdf_page_size', 'letter') === 'booklet' ? [139.7, 215.9] : 'Letter',
             'margin_left'   => 15,
             'margin_right'  => 15,
             'margin_top'    => 16,
@@ -235,100 +141,51 @@ class PdfView extends BaseHtmlView
     }
 
     /**
-     * Resolve a member's photo to an absolute filesystem path mpdf can read,
-     * or null when there is no usable local image.
+     * Resolve the cover-page content from the component options, filling blank
+     * fields from the synced Planning Center campus when "use PC data" is on
+     * (K.6). A non-empty manual value overrides the PC value.
      *
-     * The `image` column carries two shapes: a root-relative path (legacy /
-     * standalone records, e.g. `images/members/foo.jpg`) or a bare filename
-     * for a PC-synced avatar cached under `media/com_cwmconnect/photos/`.
-     * Remote URLs are skipped — mpdf cannot reliably fetch them.
+     * @param   Registry                  $params
+     * @param   CMSApplicationInterface   $app
      *
-     * @param   object  $item  A member row from MembersModel.
-     *
-     * @return  string|null
+     * @return  array<string, mixed>
      *
      * @since   __DEPLOY_VERSION__
      */
-    public function memberPhotoPath(object $item): ?string
+    private function resolveCover(Registry $params, CMSApplicationInterface $app): array
     {
-        $image = trim((string) ($item->image ?? ''));
+        $usePc  = (bool) $params->get('pc_enabled', 0) && (bool) $params->get('pdf_cover_use_pc', 1);
+        $campus = $usePc ? $this->getCoverCampus() : null;
 
-        if ($image === '' || preg_match('~^https?://~i', $image) === 1) {
-            return null;
-        }
+        $pick = static fn(string $manual, ?string $pc): string => $manual !== ''
+            ? $manual
+            : trim((string) ($pc ?? ''));
 
-        $source = str_contains($image, '/')
-            ? JPATH_ROOT . '/' . ltrim($image, '/')
-            : JPATH_ROOT . '/media/com_cwmconnect/photos/' . $image;
+        $manualAddress = trim((string) $params->get('pdf_church_address', ''));
 
-        if (!is_file($source)) {
-            return null;
-        }
-
-        // Prefer the normalized 3:4 thumbnail (K.7) so directory cells are
-        // uniform and the PDF stays small. Built at sync time; generated on
-        // demand here for legacy/standalone photos or any missing thumbnail.
-        $thumb = JPATH_ROOT . '/media/com_cwmconnect/photos/thumb/' . PhotoThumbnailer::thumbFilename($image);
-
-        if (is_file($thumb)) {
-            return $thumb;
-        }
-
-        if (new PhotoThumbnailer()->generate($source, $thumb)) {
-            return $thumb;
-        }
-
-        // Thumbnailing unavailable (e.g. no GD) — fall back to the original.
-        return $source;
+        return [
+            'enabled' => true,
+            'image'   => $this->resolvePdfImage((string) $params->get('pdf_cover_image', '')),
+            'name'    => $pick(trim((string) $params->get('pdf_church_name', '')), $campus->name ?? null)
+                ?: (string) $app->get('sitename'),
+            'address' => $manualAddress !== '' ? $manualAddress : $this->campusAddress($campus),
+            'phone'   => $pick(trim((string) $params->get('pdf_church_phone', '')), $campus->pc_phone ?? null),
+            'email'   => $pick(trim((string) $params->get('pdf_church_email', '')), $campus->pc_email ?? null),
+            'website' => $pick(trim((string) $params->get('pdf_church_website', '')), $campus->pc_website ?? null),
+        ];
     }
 
     /**
-     * The image src for a member's directory cell: the real photo thumbnail
-     * when available, otherwise a generated 3:4 initials placeholder so every
-     * cell is the same size. Returns null only if even the placeholder can't
-     * be produced (no GD), letting the template fall back to a CSS box.
+     * Resolve a root-relative image path (the cover image) to an absolute
+     * filesystem path mpdf can read, or null when blank / remote / missing.
      *
-     * @param   object  $item  A member row from MembersModel.
+     * @param   string  $image
      *
      * @return  string|null
      *
      * @since   __DEPLOY_VERSION__
      */
-    public function memberPhotoSrc(object $item): ?string
-    {
-        $photo = $this->memberPhotoPath($item);
-
-        if ($photo !== null) {
-            return $photo;
-        }
-
-        $initials = $this->memberInitials($item);
-        $safe     = preg_replace('/[^A-Z0-9]/', '', strtoupper($initials)) ?: substr(sha1($initials), 0, 8);
-        $file     = JPATH_ROOT . '/media/com_cwmconnect/photos/thumb/ph/' . $safe . '.jpg';
-
-        if (is_file($file)) {
-            return $file;
-        }
-
-        $font = JPATH_LIBRARIES . '/mpdf/vendor/mpdf/mpdf/ttfonts/DejaVuSans.ttf';
-
-        return new PhotoThumbnailer()->placeholder($initials, $file, is_file($font) ? $font : null)
-            ? $file
-            : null;
-    }
-
-    /**
-     * Resolve an arbitrary root-relative image path (e.g. a media-field value
-     * such as the cover image) to an absolute filesystem path mpdf can read,
-     * or null when blank / remote / missing.
-     *
-     * @param   string  $image  Root-relative path, or empty.
-     *
-     * @return  string|null
-     *
-     * @since   __DEPLOY_VERSION__
-     */
-    public function resolvePdfImage(string $image): ?string
+    private function resolvePdfImage(string $image): ?string
     {
         $image = trim($image);
 
@@ -343,7 +200,7 @@ class PdfView extends BaseHtmlView
 
     /**
      * The primary Planning Center campus row (K.6), or null when none is
-     * synced or the lookup fails. Used to fill blank cover fields.
+     * synced or the lookup fails.
      *
      * @return  object|null
      *
@@ -361,8 +218,7 @@ class PdfView extends BaseHtmlView
     }
 
     /**
-     * Build a multi-line postal address from a synced campus row, skipping
-     * blank parts. Empty string when there is no campus.
+     * Build a multi-line postal address from a synced campus row.
      *
      * @param   object|null  $campus
      *
@@ -376,7 +232,6 @@ class PdfView extends BaseHtmlView
             return '';
         }
 
-        $street  = trim((string) ($campus->pc_street ?? ''));
         $city    = trim((string) ($campus->pc_city ?? ''));
         $state   = trim((string) ($campus->pc_state ?? ''));
         $zip     = trim((string) ($campus->pc_zip ?? ''));
@@ -385,97 +240,6 @@ class PdfView extends BaseHtmlView
         $cityState = $city !== '' && $state !== '' ? $city . ', ' . $state : $city . $state;
         $cityLine  = trim($cityState . ' ' . $zip);
 
-        return implode("\n", array_filter([$street, $cityLine, $country]));
-    }
-
-    /**
-     * Directory display name: "Surname, First [and Spouse]".
-     *
-     * @param   object  $item  A member row from MembersModel.
-     *
-     * @return  string
-     *
-     * @since   __DEPLOY_VERSION__
-     */
-    public function memberName(object $item): string
-    {
-        $surname = trim((string) ($item->surname ?? '')) ?: trim((string) ($item->lname ?? ''));
-        $given   = trim((string) ($item->name ?? ''));
-        $spouse  = trim((string) ($item->spouse ?? ''));
-
-        $label = $given;
-
-        if ($spouse !== '') {
-            $label = $given !== ''
-                ? Text::sprintf('COM_CWMCONNECT_PDF_NAME_COUPLE', $given, $spouse)
-                : $spouse;
-        }
-
-        if ($surname !== '' && $label !== '') {
-            return $surname . ', ' . $label;
-        }
-
-        return $surname !== '' ? $surname : $label;
-    }
-
-    /**
-     * Up-to-two-letter initials for the no-photo placeholder.
-     *
-     * @param   object  $item  A member row from MembersModel.
-     *
-     * @return  string
-     *
-     * @since   __DEPLOY_VERSION__
-     */
-    public function memberInitials(object $item): string
-    {
-        $given   = trim((string) ($item->name ?? ''));
-        $surname = trim((string) ($item->surname ?? '')) ?: trim((string) ($item->lname ?? ''));
-
-        $initials = mb_substr($given, 0, 1) . mb_substr($surname, 0, 1);
-
-        return mb_strtoupper($initials !== '' ? $initials : '?');
-    }
-
-    /**
-     * Anniversary formatted as "June 12", or null when unset / zero-date.
-     *
-     * @param   object  $item  A member row from MembersModel.
-     *
-     * @return  string|null
-     *
-     * @since   __DEPLOY_VERSION__
-     */
-    public function memberAnniversary(object $item): ?string
-    {
-        $raw = trim((string) ($item->anniversary ?? ''));
-
-        if ($raw === '' || str_starts_with($raw, '0000')) {
-            return null;
-        }
-
-        $timestamp = strtotime($raw);
-
-        return $timestamp !== false ? date('F j', $timestamp) : null;
-    }
-
-    /**
-     * City/State ZIP line assembled from the address parts, skipping blanks.
-     *
-     * @param   object  $item  A member row from MembersModel.
-     *
-     * @return  string
-     *
-     * @since   __DEPLOY_VERSION__
-     */
-    public function memberLocality(object $item): string
-    {
-        $city  = trim((string) ($item->suburb ?? ''));
-        $state = trim((string) ($item->state ?? ''));
-        $zip   = trim((string) ($item->postcode ?? ''));
-
-        $cityState = $city !== '' && $state !== '' ? $city . ', ' . $state : $city . $state;
-
-        return trim($cityState . ' ' . $zip);
+        return implode("\n", array_filter([trim((string) ($campus->pc_street ?? '')), $cityLine, $country]));
     }
 }

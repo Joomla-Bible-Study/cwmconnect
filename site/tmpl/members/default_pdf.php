@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 use Joomla\CMS\Language\Text;
 
-/** @var \CWM\Component\Cwmconnect\Site\View\Members\PdfView $this */
+/** @var \CWM\Component\Cwmconnect\Site\Service\DirectoryPdfPresenter $this */
 
 $currentLetter = null;
 
@@ -54,7 +54,7 @@ $renderEntry = function (object $item, bool $isStaff): void {
                 <?php endif; ?>
             </td>
             <td class="details">
-                <div class="name"><?php echo $this->escape($this->memberName($item)); ?></div>
+                <div class="name"><?php echo $this->escape($this->memberName($item)); ?><?php if ($this->isHidden($item)) : ?> <span class="hidden-badge">hidden</span><?php endif; ?></div>
 
                 <?php if ($isStaff && $position !== '') : ?>
                     <div class="line position"><?php echo $this->escape($position); ?></div>
@@ -109,7 +109,7 @@ $renderGrid = function (array $items): void {
                             <?php else : ?>
                                 <div class="grid-nophoto"><span><?php echo $this->escape($this->memberInitials($item)); ?></span></div>
                             <?php endif; ?>
-                            <div class="grid-name"><?php echo $this->escape($this->memberName($item)); ?></div>
+                            <div class="grid-name"><?php echo $this->escape($this->memberName($item)); ?><?php if ($this->isHidden($item)) : ?> <span class="hidden-badge">hidden</span><?php endif; ?></div>
                             <?php $phone = trim((string) ($item->telephone ?? '')) ?: trim((string) ($item->mobile ?? '')); ?>
                             <?php if ($phone !== '') : ?>
                                 <div class="grid-line"><?php echo $this->escape($phone); ?></div>
@@ -144,7 +144,7 @@ $renderRoster = function (array $items, bool $dividers) use (&$currentLetter, $e
         ]);
         ?>
         <div class="roster-row">
-            <span class="roster-name"><?php echo $this->escape($this->memberName($item)); ?></span>
+            <span class="roster-name"><?php echo $this->escape($this->memberName($item)); ?></span><?php if ($this->isHidden($item)) : ?> <span class="hidden-badge">hidden</span><?php endif; ?>
             <?php if ($bits !== []) : ?>
                 <span class="roster-info"><?php echo $this->escape(' — ' . implode(' · ', $bits)); ?></span>
             <?php endif; ?>
@@ -219,6 +219,8 @@ $renderRoster = function (array $items, bool $dividers) use (&$currentLetter, $e
     .roster-row { font-size: 0.95em; line-height: 1.4; margin-bottom: 1.5mm; padding-bottom: 1mm; border-bottom: 0.25pt solid #eee; }
     .roster-row .roster-name { font-weight: bold; color: #1a1a1a; }
     .roster-row .roster-info { color: #555; }
+
+    .hidden-badge { background: #dc3545; color: #fff; font-size: 0.7em; padding: 0 1mm; border-radius: 1mm; }
 
     .pagebreak { page-break-after: always; }
 </style>

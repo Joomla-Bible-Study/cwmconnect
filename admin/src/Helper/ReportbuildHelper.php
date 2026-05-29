@@ -15,6 +15,8 @@ namespace CWM\Component\Cwmconnect\Administrator\Helper;
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
+use CWM\Component\Cwmconnect\Site\Service\DirectoryPdfPresenter;
+use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Date\Date;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
@@ -325,20 +327,45 @@ class ReportbuildHelper
             mkdir($exportsDir, 0o755, true);
         }
 
-        $app = Factory::getApplication();
+        $app    = Factory::getApplication();
+        $params = ComponentHelper::getParams('com_cwmconnect');
+
+        // Same shared view-model + template as the front-end self-service PDF,
+        // so the admin print uses the configured layout and normalized photos.
+        // Admin print is a working document: no cover/staff section, and it can
+        // flag hidden rows (spec §17 override).
+        $presenter                     = new DirectoryPdfPresenter();
+        $presenter->items              = array_values($items);
+        $presenter->showSectionHeaders = (bool) $params->get('pdf_section_headers', 1);
+        $presenter->pdfLayout          = (string) $params->get('pdf_layout', 'photo_detail');
+        $presenter->appendRoster       = (bool) $params->get('pdf_append_roster', 0);
+        $presenter->showHiddenBadges   = $includeHidden;
+        $presenter->appearance         = [
+            'fontBasePt' => match ((string) $params->get('pdf_font_size', 'normal')) {
+                'large'  => 12.0,
+                'xlarge' => 14.0,
+                default  => 10.0,
+            },
+        ];
+
+        $config = [
+            'mode'          => 'utf-8',
+            'format'        => $params->get('pdf_page_size', 'letter') === 'booklet' ? [139.7, 215.9] : 'Letter',
+            'margin_left'   => 12,
+            'margin_right'  => 12,
+            'margin_top'    => 16,
+            'margin_bottom' => 14,
+            'margin_header' => 6,
+            'margin_footer' => 6,
+            'tempDir'       => $app->get('tmp_path', sys_get_temp_dir()),
+        ];
+
+        if ($params->get('pdf_color', 'color') === 'bw') {
+            $config['restrictColorSpace'] = 1;
+        }
 
         try {
-            $mpdf = new \Mpdf\Mpdf([
-                'mode'          => 'utf-8',
-                'format'        => 'Letter',
-                'margin_left'   => 12,
-                'margin_right'  => 12,
-                'margin_top'    => 16,
-                'margin_bottom' => 14,
-                'margin_header' => 6,
-                'margin_footer' => 6,
-                'tempDir'       => $app->get('tmp_path', sys_get_temp_dir()),
-            ]);
+            $mpdf = new \Mpdf\Mpdf($config);
 
             $title = 'Church Member Directory';
             $mpdf->SetTitle($title);
@@ -346,8 +373,7 @@ class ReportbuildHelper
             $mpdf->SetHeader($title . '|' . ($includeHidden ? '{STAFF COPY}' : '') . '|Page {PAGENO}');
             $mpdf->SetFooter('Generated ' . date('F j, Y') . '||' . \count($items) . ' members');
 
-            $html = $this->buildPrintHtml($items, $includeHidden);
-            $mpdf->WriteHTML($html);
+            $mpdf->WriteHTML($presenter->renderHtml());
         } catch (\Mpdf\MpdfException $e) {
             throw new \RuntimeException('PDF rendering failed: ' . $e->getMessage());
         }
@@ -359,76 +385,6 @@ class ReportbuildHelper
         $mpdf->Output($fullPath, \Mpdf\Output\Destination::FILE);
 
         return 'media/com_cwmconnect/exports/' . $filename;
-    }
-
-    /**
-     * Build the HTML for the print directory PDF.
-     *
-     * @param   array<int, object>  $items          Member rows.
-     * @param   bool                $includeHidden  Whether hidden members are included.
-     *
-     * @return  string
-     *
-     * @since   __DEPLOY_VERSION__
-     */
-    private function buildPrintHtml(array $items, bool $includeHidden): string
-    {
-        $photosBase = Uri::root() . 'media/com_cwmconnect/photos/';
-        $html       = '<style>'
-            . 'body { font-family: DejaVu Sans, sans-serif; font-size: 9pt; color: #333; }'
-            . 'table { width: 100%; border-collapse: collapse; }'
-            . 'th { background: #e8e8e8; text-align: left; padding: 2mm 3mm; font-size: 8pt; border-bottom: 0.5pt solid #999; }'
-            . 'td { padding: 2mm 3mm; font-size: 8pt; border-bottom: 0.25pt solid #ddd; vertical-align: top; }'
-            . 'tr:nth-child(even) td { background: #f8f8f8; }'
-            . '.hidden-badge { background: #dc3545; color: #fff; font-size: 7pt; padding: 1px 4px; border-radius: 3px; }'
-            . '.photo { width: 28px; height: 28px; object-fit: cover; border-radius: 3px; }'
-            . '</style>';
-
-        $html .= '<table><thead><tr>'
-            . '<th></th>'
-            . '<th>Name</th>'
-            . '<th>Email</th>'
-            . '<th>Phone</th>'
-            . '<th>Mobile</th>'
-            . '<th>Address</th>'
-            . '<th>Household</th>'
-            . '</tr></thead><tbody>';
-
-        foreach ($items as $item) {
-            $name    = trim(($item->name ?? '') . ' ' . ($item->lname ?? ''));
-            $address = implode(', ', array_filter([
-                (string) ($item->address ?? ''),
-                (string) ($item->suburb ?? ''),
-                (string) ($item->state ?? ''),
-                (string) ($item->postcode ?? ''),
-            ]));
-
-            $imgTag = '';
-
-            if (!empty($item->image)) {
-                $imgTag = '<img class="photo" src="' . htmlspecialchars($photosBase . $item->image, ENT_QUOTES, 'UTF-8') . '" alt="" />';
-            }
-
-            $hiddenBadge = '';
-
-            if ($includeHidden && (int) ($item->display_in_directory ?? 1) === 0) {
-                $hiddenBadge = ' <span class="hidden-badge">hidden</span>';
-            }
-
-            $html .= '<tr>'
-                . '<td>' . $imgTag . '</td>'
-                . '<td>' . htmlspecialchars($name, ENT_QUOTES, 'UTF-8') . $hiddenBadge . '</td>'
-                . '<td>' . htmlspecialchars((string) ($item->email_to ?? ''), ENT_QUOTES, 'UTF-8') . '</td>'
-                . '<td>' . htmlspecialchars((string) ($item->telephone ?? ''), ENT_QUOTES, 'UTF-8') . '</td>'
-                . '<td>' . htmlspecialchars((string) ($item->mobile ?? ''), ENT_QUOTES, 'UTF-8') . '</td>'
-                . '<td>' . htmlspecialchars($address, ENT_QUOTES, 'UTF-8') . '</td>'
-                . '<td>' . htmlspecialchars((string) ($item->funit_name ?? ''), ENT_QUOTES, 'UTF-8') . '</td>'
-                . '</tr>';
-        }
-
-        $html .= '</tbody></table>';
-
-        return $html;
     }
 
     /**
