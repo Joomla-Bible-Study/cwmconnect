@@ -571,7 +571,7 @@ Everything the photo-detail layout needs already exists on `#__cwmconnect_detail
 | Anniversary / birthday | `anniversary`, `birthdate` (both present, currently `DATETIME`) |
 | Position / role (staff section) | `con_position` |
 | Grouping | `funitid` (household), `catid` (category), `kmlid`, `dirheader_name` |
-| Cover church name/contact | the dirheader record (name + address + contact) |
+| Cover church name/contact | component options (K.2) — the dirheader table has no contact columns; PC campus can supply name + address (see §13.5) |
 
 **mpdf note:** mpdf cannot reliably fetch remote image URLs — resolve every
 photo to an absolute filesystem path (`JPATH_ROOT . '/' . image`) and fall back
@@ -589,13 +589,15 @@ no photo still renders a clean cell.
 
 ### 13.4 Build phases (printed directory)
 
-1. **K.1 — Photo-detail layout.** Rewrite `default_pdf.php` to the 4/page
-   photo-left/details-right entry, alphabetical by surname, with the photo→path
-   resolver + silhouette fallback. Couples rendered "Surname, First and Spouse."
-2. **K.2 — Cover + sections.** Cover page from the dirheader record; staff
-   section driven by `con_position`; alphabetical (A/B/C…) dividers. Each gated
-   by a component option.
-3. **K.3 — Appearance options.** `config.xml` fieldset: layout style, color/B&W,
+1. **K.1 — Photo-detail layout. ✅ DONE.** `default_pdf.php` rewritten to the
+   photo-left/details-right entry, alphabetical by surname, photo→path resolver
+   + initials placeholder. Couples rendered "Surname, First and Spouse."
+2. **K.2 — Cover + sections. ✅ DONE.** "Printed Directory" `config.xml`
+   fieldset: cover page (image + church name/address/phone/email/website), staff
+   section (driven by `con_position`), alphabetical (A/B/C…) dividers — each a
+   component option (default on). Cover fields ARE the manual/override layer
+   (see K.6). `MembersModel` now selects `anniversary`.
+3. **K.3 — Appearance options.** `config.xml`: layout style, color/B&W,
    page size (Letter / booklet), font size, photo corners. Wire into PdfView's
    mpdf config + the template.
 4. **K.4 — Additional layout styles.** Photo-grid (names only) + roster-only,
@@ -603,5 +605,40 @@ no photo still renders a clean cell.
 5. **K.5 — Admin print parity.** Point the admin Reports → Print Directory path
    (`ReportbuildHelper::getPdf()`, currently deferred) at the same renderer, with
    the hidden-member override the admin export is allowed.
+6. **K.6 — Planning Center sourcing + override (cover/church info).** See §13.5.
 
-K.1 is the "great start" deliverable; K.2–K.5 layer on the full option set.
+K.1–K.2 are done; K.3–K.6 layer on the full option set.
+
+### 13.5 Planning Center sourcing & override
+
+Requirement (user, 2026-05-29): data that *can* come from Planning Center
+should be **syncable from PC and locally overridable**.
+
+**What PC can supply for the directory:**
+- **Member fields** (name, address, anniversary, phones, email) + **photos** —
+  already synced (Phases C–E). The member listing is therefore already
+  PC-sourced; local edits in standalone mode, locked rendering in PC mode
+  (Phase F pattern).
+- **Cover church name + postal address** — available from the **PC campus**
+  object (`people_church_campuses`: `name`, `street`, `city`, `state`, `zip`,
+  `country`, `phone_number`, `contact_email_address`, `website`). Verified live:
+  the org returns one campus ("NFSDA Church", 2800 Blair Boulevard, Nashville TN
+  37213); phone/email/website were null there, so those stay manual.
+
+**Current state:** `#__cwmconnect_dirheader` reserves `pc_campus_id` +
+`pc_last_synced_at`, and people sync already requests the `primary_campus`
+include — but **no service writes campus data yet**, and the dirheader has no
+address/phone/website columns. K.2's cover fields are the manual layer.
+
+**K.6 plan (the sync + override pattern):**
+1. Extend `#__cwmconnect_dirheader` with campus contact columns (street, city,
+   state, zip, country, phone, email, website) + update SQL.
+2. A campus-sync step (own service, mirrors `MediaPhotoCache`/`PersonMapper`)
+   writes the PC campus into the dirheader, stamping `pc_last_synced_at`.
+3. A "cover source" option per field: **PC** (use synced campus value, rendered
+   read-only — the Phase F lock pattern) or **Override** (use the K.2
+   `config.xml` value). Standalone installs always use the manual value.
+4. PdfView resolves each cover field as `override ?? pc_campus_value ?? sitename`.
+
+This mirrors how PC-mapped member fields already work, so the cover behaves
+consistently with the rest of the PC integration.
