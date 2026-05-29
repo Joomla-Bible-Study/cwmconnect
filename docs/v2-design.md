@@ -608,8 +608,11 @@ no photo still renders a clean cell.
    cells uniform and the PDF small. Decided 2026-05-29: 3:4 portrait, sync +
    on-demand. (Image processing is external to mpdf by necessity — mpdf can't
    crop/resize.) Tested incl. an end-to-end mpdf render smoke test.
-5. **K.4 — Additional layout styles.** Photo-grid (names only) + roster-only,
-   selectable via the layout option; optional photos-front/roster-back ordering.
+5. **K.4 — Additional layout styles. ✅ DONE.** `pdf_layout` option:
+   `photo_detail` (default), `photo_grid` (3-up cards: 3:4 photo + name +
+   phone), `roster` (text-only, one dot-separated line per member). Plus
+   `pdf_append_roster` (photos-front / roster-back). Staff section stays
+   photo-detail. Data-provider render test covers all three.
 5. **K.5 — Admin print parity.** Point the admin Reports → Print Directory path
    (`ReportbuildHelper::getPdf()`, currently deferred) at the same renderer, with
    the hidden-member override the admin export is allowed.
