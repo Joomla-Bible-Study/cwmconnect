@@ -56,6 +56,12 @@ jobs:
       - name: Check PHP syntax (admin/src + site/src + modules + plugins)
         run: composer lint:syntax
 
+      - name: Check coding standards (php-cs-fixer)
+        run: composer lint
+
+      - name: Run unit tests (phpunit)
+        run: composer test
+
       - name: Build package (stub during phase 1)
         run: composer build
 

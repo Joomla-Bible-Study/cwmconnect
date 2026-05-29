@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace CWM\Component\Cwmconnect\Site\Service;
 
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\PhotoThumbnailer;
+use CWM\Component\Cwmconnect\Site\Helper\PhotoAccess;
 use Joomla\CMS\Language\Text;
 
 // phpcs:disable PSR1.Files.SideEffects
@@ -162,17 +163,10 @@ final class DirectoryPdfPresenter
      */
     public function memberPhotoPath(object $item): ?string
     {
-        $image = trim((string) ($item->image ?? ''));
+        $image  = trim((string) ($item->image ?? ''));
+        $source = PhotoAccess::resolvePath($image);
 
-        if ($image === '' || preg_match('~^https?://~i', $image) === 1) {
-            return null;
-        }
-
-        $source = str_contains($image, '/')
-            ? JPATH_ROOT . '/' . ltrim($image, '/')
-            : JPATH_ROOT . '/media/com_cwmconnect/photos/' . $image;
-
-        if (!is_file($source)) {
+        if ($source === null) {
             return null;
         }
 

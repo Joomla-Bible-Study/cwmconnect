@@ -40,18 +40,21 @@ $wa->useScript('form.validate');
 	<?php endif; ?>
 
 	<div class="row g-4">
-		<?php // ── Left column: profile form ── ?>
+		<?php // ── Left column: profile form ──?>
 		<div class="col-lg-8">
 			<?php if ($this->form !== null) : ?>
 				<form action="<?php echo $saveAction; ?>" method="post" class="form-validate">
 
-					<?php // Identity ?>
+					<?php // Identity?>
 					<div class="card mb-3">
 						<div class="card-header"><h3 class="card-title h6 mb-0"><?php echo Text::_('COM_CWMCONNECT_MYPROFILE_FIELDSET_IDENTITY'); ?></h3></div>
 						<div class="card-body">
 							<div class="row">
 								<?php foreach ($this->form->getFieldset('identity') as $field) : ?>
-									<?php if ($field->hidden) { echo $field->input; continue; } ?>
+									<?php if ($field->hidden) {
+									    echo $field->input;
+									    continue;
+									} ?>
 									<div class="col-md-6 mb-3">
 										<?php echo $field->renderField(); ?>
 									</div>
@@ -60,7 +63,7 @@ $wa->useScript('form.validate');
 						</div>
 					</div>
 
-					<?php // Contact ?>
+					<?php // Contact?>
 					<div class="card mb-3">
 						<div class="card-header"><h3 class="card-title h6 mb-0"><?php echo Text::_('COM_CWMCONNECT_MYPROFILE_FIELDSET_CONTACT'); ?></h3></div>
 						<div class="card-body">
@@ -74,7 +77,7 @@ $wa->useScript('form.validate');
 						</div>
 					</div>
 
-					<?php // Address ?>
+					<?php // Address?>
 					<div class="card mb-3">
 						<div class="card-header"><h3 class="card-title h6 mb-0"><?php echo Text::_('COM_CWMCONNECT_MYPROFILE_FIELDSET_ADDRESS'); ?></h3></div>
 						<div class="card-body">
@@ -88,7 +91,7 @@ $wa->useScript('form.validate');
 						</div>
 					</div>
 
-					<?php // Dates ?>
+					<?php // Dates?>
 					<div class="card mb-3">
 						<div class="card-header"><h3 class="card-title h6 mb-0"><?php echo Text::_('COM_CWMCONNECT_MYPROFILE_FIELDSET_DATES'); ?></h3></div>
 						<div class="card-body">
@@ -118,9 +121,9 @@ $wa->useScript('form.validate');
 			<?php endif; ?>
 		</div>
 
-		<?php // ── Right column: settings sidebar ── ?>
+		<?php // ── Right column: settings sidebar ──?>
 		<div class="col-lg-4">
-			<?php // Directory visibility ?>
+			<?php // Directory visibility?>
 			<?php if ($this->form !== null) : ?>
 				<div class="card mb-3">
 					<div class="card-header"><h3 class="card-title h6 mb-0"><?php echo Text::_('COM_CWMCONNECT_MYPROFILE_FIELDSET_DIRECTORY'); ?></h3></div>
@@ -134,7 +137,7 @@ $wa->useScript('form.validate');
 				</div>
 			<?php endif; ?>
 
-			<?php // KML Feed management ?>
+			<?php // KML Feed management?>
 			<div class="card mb-3">
 				<div class="card-header"><h3 class="card-title h6 mb-0"><?php echo Text::_('COM_CWMCONNECT_MYPROFILE_KML_HEADING'); ?></h3></div>
 				<div class="card-body">
