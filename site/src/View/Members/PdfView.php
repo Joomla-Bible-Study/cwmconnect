@@ -107,4 +107,125 @@ class PdfView extends BaseHtmlView
 
         $app->close();
     }
+
+    /**
+     * Resolve a member's photo to an absolute filesystem path mpdf can read,
+     * or null when there is no usable local image.
+     *
+     * The `image` column carries two shapes: a root-relative path (legacy /
+     * standalone records, e.g. `images/members/foo.jpg`) or a bare filename
+     * for a PC-synced avatar cached under `media/com_cwmconnect/photos/`.
+     * Remote URLs are skipped — mpdf cannot reliably fetch them.
+     *
+     * @param   object  $item  A member row from MembersModel.
+     *
+     * @return  string|null
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    public function memberPhotoPath(object $item): ?string
+    {
+        $image = trim((string) ($item->image ?? ''));
+
+        if ($image === '' || preg_match('~^https?://~i', $image) === 1) {
+            return null;
+        }
+
+        $candidate = str_contains($image, '/')
+            ? JPATH_ROOT . '/' . ltrim($image, '/')
+            : JPATH_ROOT . '/media/com_cwmconnect/photos/' . $image;
+
+        return is_file($candidate) ? $candidate : null;
+    }
+
+    /**
+     * Directory display name: "Surname, First [and Spouse]".
+     *
+     * @param   object  $item  A member row from MembersModel.
+     *
+     * @return  string
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    public function memberName(object $item): string
+    {
+        $surname = trim((string) ($item->surname ?? '')) ?: trim((string) ($item->lname ?? ''));
+        $given   = trim((string) ($item->name ?? ''));
+        $spouse  = trim((string) ($item->spouse ?? ''));
+
+        $label = $given;
+
+        if ($spouse !== '') {
+            $label = $given !== ''
+                ? Text::sprintf('COM_CWMCONNECT_PDF_NAME_COUPLE', $given, $spouse)
+                : $spouse;
+        }
+
+        if ($surname !== '' && $label !== '') {
+            return $surname . ', ' . $label;
+        }
+
+        return $surname !== '' ? $surname : $label;
+    }
+
+    /**
+     * Up-to-two-letter initials for the no-photo placeholder.
+     *
+     * @param   object  $item  A member row from MembersModel.
+     *
+     * @return  string
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    public function memberInitials(object $item): string
+    {
+        $given   = trim((string) ($item->name ?? ''));
+        $surname = trim((string) ($item->surname ?? '')) ?: trim((string) ($item->lname ?? ''));
+
+        $initials = mb_substr($given, 0, 1) . mb_substr($surname, 0, 1);
+
+        return mb_strtoupper($initials !== '' ? $initials : '?');
+    }
+
+    /**
+     * Anniversary formatted as "June 12", or null when unset / zero-date.
+     *
+     * @param   object  $item  A member row from MembersModel.
+     *
+     * @return  string|null
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    public function memberAnniversary(object $item): ?string
+    {
+        $raw = trim((string) ($item->anniversary ?? ''));
+
+        if ($raw === '' || str_starts_with($raw, '0000')) {
+            return null;
+        }
+
+        $timestamp = strtotime($raw);
+
+        return $timestamp !== false ? date('F j', $timestamp) : null;
+    }
+
+    /**
+     * City/State ZIP line assembled from the address parts, skipping blanks.
+     *
+     * @param   object  $item  A member row from MembersModel.
+     *
+     * @return  string
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    public function memberLocality(object $item): string
+    {
+        $city  = trim((string) ($item->suburb ?? ''));
+        $state = trim((string) ($item->state ?? ''));
+        $zip   = trim((string) ($item->postcode ?? ''));
+
+        $cityState = $city !== '' && $state !== '' ? $city . ', ' . $state : $city . $state;
+
+        return trim($cityState . ' ' . $zip);
+    }
 }
