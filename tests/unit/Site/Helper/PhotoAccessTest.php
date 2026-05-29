@@ -65,12 +65,16 @@ final class PhotoAccessTest extends TestCase
     }
 
     #[Test]
-    public function resolvePathRejectsBlankRemoteAndTraversal(): void
+    public function resolvePathRejectsBlankRemoteTraversalAndNonImages(): void
     {
         self::assertNull(PhotoAccess::resolvePath(''));
         self::assertNull(PhotoAccess::resolvePath('https://evil.example/x.jpg'));
         self::assertNull(PhotoAccess::resolvePath('../../configuration.php'));
         self::assertNull(PhotoAccess::resolvePath('does-not-exist.jpg'));
+        // Extension allowlist: never serve non-image files even if they exist.
+        self::assertNull(PhotoAccess::resolvePath('configuration.php'));
+        self::assertNull(PhotoAccess::resolvePath('administrator/logs/error.php'));
+        self::assertNull(PhotoAccess::resolvePath('photos/secret.txt'));
     }
 
     #[Test]
@@ -81,7 +85,8 @@ final class PhotoAccessTest extends TestCase
         $file = $dir . '/999.jpg';
         file_put_contents($file, 'x');
 
-        self::assertSame($file, PhotoAccess::resolvePath('999.jpg'));
+        // resolvePath returns the canonical (realpath) form after containment.
+        self::assertSame(realpath($file), PhotoAccess::resolvePath('999.jpg'));
 
         @unlink($file);
     }

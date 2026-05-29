@@ -33,6 +33,14 @@ use Joomla\Database\ParameterType;
 final class PhotoAccess
 {
     /**
+     * Extensions the proxy is allowed to serve. Anything else (config, source,
+     * logs, …) is refused regardless of the stored value.
+     *
+     * @since  __DEPLOY_VERSION__
+     */
+    private const IMAGE_EXTENSIONS = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+
+    /**
      * May the viewer see this member's photo? Managers (core.manage) see all;
      * everyone else is held to the same visibility gates as the directory
      * listing (published + display_in_directory + directory_scope, with
@@ -86,11 +94,26 @@ final class PhotoAccess
             return null;
         }
 
-        $path = str_contains($image, '/')
+        // Only ever serve real image files — never config, source, or logs,
+        // whatever the stored value happens to be.
+        if (!\in_array(strtolower(pathinfo($image, \PATHINFO_EXTENSION)), self::IMAGE_EXTENSIONS, true)) {
+            return null;
+        }
+
+        $candidate = str_contains($image, '/')
             ? JPATH_ROOT . '/' . ltrim($image, '/')
             : JPATH_ROOT . '/media/com_cwmconnect/photos/' . $image;
 
-        return is_file($path) ? $path : null;
+        // Containment: the resolved real path must stay inside the document
+        // root, so a stray DB value can never escape to the wider filesystem.
+        $real = realpath($candidate);
+        $root = realpath(JPATH_ROOT);
+
+        if ($real === false || $root === false || !str_starts_with($real, $root . \DIRECTORY_SEPARATOR)) {
+            return null;
+        }
+
+        return is_file($real) ? $real : null;
     }
 
     /**
