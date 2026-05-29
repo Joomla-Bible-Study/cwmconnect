@@ -17,7 +17,6 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Session\Session;
-use Joomla\CMS\Uri\Uri;
 
 /** @var \CWM\Component\Cwmconnect\Administrator\View\Members\HtmlView $this */
 
@@ -125,7 +124,7 @@ if ($saveOrder && !empty($this->items)) {
                                     <div class="small">
                                         <?php echo Text::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($item->alias)); ?>
                                         <?php if (!empty($item->image)) : ?>
-                                            <img class="cd-h-img" alt="" src="<?php echo Uri::root() . $this->escape($item->image); ?>">
+                                            <img class="cd-h-img" alt="" src="<?php echo Route::_('index.php?option=com_cwmconnect&task=photo.serve&id=' . (int) $item->id); ?>">
                                         <?php endif; ?>
                                     </div>
                                     <div class="small">

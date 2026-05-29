@@ -53,6 +53,16 @@ class KmlView extends BaseHtmlView
     private array $categoryIconMap = [];
 
     /**
+     * The feed token for this request (empty for session users). Threaded into
+     * placemark photo URLs so an external client (Google Earth) can fetch them
+     * through the gated photo proxy.
+     *
+     * @var    string
+     * @since  __DEPLOY_VERSION__
+     */
+    private string $feedToken = '';
+
+    /**
      * @param   string|null  $tpl  Unused.
      *
      * @return  void
@@ -65,6 +75,8 @@ class KmlView extends BaseHtmlView
     {
         $app   = Factory::getApplication();
         $token = (string) $app->getInput()->getString('token', '');
+
+        $this->feedToken = $token;
 
         $isLoggedIn = (int) ($app->getIdentity()?->id ?? 0) > 0;
 
@@ -384,11 +396,18 @@ class KmlView extends BaseHtmlView
             return '';
         }
 
-        $fullName   = trim(($item->name ?? '') . ' ' . ($item->lname ?? ''));
-        $photosBase = Uri::root() . 'media/com_cwmconnect/photos/';
+        $fullName = trim(($item->name ?? '') . ' ' . ($item->lname ?? ''));
+
+        // Photos are served through the gated proxy (direct access is blocked),
+        // so an external client must carry the feed token to fetch them.
+        $photoUrl = Uri::root() . 'index.php?option=com_cwmconnect&task=photo.serve&id=' . (int) $item->id;
+
+        if ($this->feedToken !== '') {
+            $photoUrl .= '&token=' . urlencode($this->feedToken);
+        }
 
         $photoHtml = !empty($item->image)
-            ? '<img src="' . htmlspecialchars($photosBase . $item->image, ENT_QUOTES, 'UTF-8')
+            ? '<img src="' . htmlspecialchars($photoUrl, ENT_QUOTES, 'UTF-8')
                 . '" width="80" height="80" style="border-radius:6px;object-fit:cover;" />'
             : '<div style="width:80px;height:80px;background:#e0e0e0;border-radius:6px;'
                 . 'display:flex;align-items:center;justify-content:center;font-size:28px;color:#999;">'

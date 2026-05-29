@@ -77,4 +77,20 @@ abstract class RouteHelper
 
         return $link;
     }
+
+    /**
+     * URL to a member's photo via the gated proxy. The photo cache is blocked
+     * from direct web access, so member-facing views must point <img> tags at
+     * this endpoint rather than the file path.
+     *
+     * @param   int  $memberId
+     *
+     * @return  string
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    public static function getPhotoRoute(int $memberId): string
+    {
+        return 'index.php?option=com_cwmconnect&task=photo.serve&id=' . $memberId;
+    }
 }

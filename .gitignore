@@ -16,8 +16,12 @@ composer.phar
 /media/com_cwmconnect/css/
 /media/com_cwmconnect/js/
 
-# Phase E: PC avatar cache (runtime artifacts, re-downloaded by sync)
-/media/com_cwmconnect/photos/
+# Phase E: PC avatar cache (runtime artifacts, re-downloaded by sync).
+# Ignore the cached images themselves but keep the access-control files that
+# block direct web access to the private photos (K — photo hardening).
+/media/com_cwmconnect/photos/*
+!/media/com_cwmconnect/photos/.htaccess
+!/media/com_cwmconnect/photos/web.config
 
 # Phase K: generated PDF exports (runtime artifacts)
 /media/com_cwmconnect/exports/

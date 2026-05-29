@@ -11,15 +11,14 @@
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
+use CWM\Component\Cwmconnect\Site\Helper\RouteHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
-use Joomla\CMS\Uri\Uri;
 
 /** @var \CWM\Component\Cwmconnect\Site\View\Members\HtmlView $this */
 
-$photosBase  = Uri::root(true) . '/media/com_cwmconnect/photos/';
 $search      = (string) $this->state->get('filter.search', '');
 $layoutMode  = $this->layoutMode === 'table' ? 'table' : 'grid';
 $gridActive  = $layoutMode === 'grid' ? ' active' : '';
@@ -80,7 +79,7 @@ if ($menuItems) {
             <?php foreach ($this->items as $item) :
                 $profileUrl = Route::_('index.php?option=com_cwmconnect&view=member&id=' . (int) $item->id . '&Itemid=' . $memberItemId);
                 $imgPath    = (string) ($item->image ?? '');
-                $imgUrl     = $imgPath !== '' ? $photosBase . rawurlencode($imgPath) : '';
+                $imgUrl     = $imgPath !== '' ? Route::_(RouteHelper::getPhotoRoute((int) $item->id)) : '';
                 $name       = trim(($item->name ?: '') ?: ($item->lname ?: ''));
                 ?>
                 <div class="col">

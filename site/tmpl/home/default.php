@@ -72,7 +72,7 @@ $count = \count($this->items);
                         <div class="center">
                             <a href="<?php echo $route; ?>">
                                 <?php if ($item->image && $item->image !== '/') : ?>
-                                    <img src="<?php echo $this->escape($item->image); ?>"
+                                    <img src="<?php echo $this->escape(Route::_(RouteHelper::getPhotoRoute((int) $item->id))); ?>"
                                          alt="<?php echo $this->escape($item->name); ?>"
                                          style="max-width:240px;" class="img-polaroid"><br/>
                                 <?php endif; ?>

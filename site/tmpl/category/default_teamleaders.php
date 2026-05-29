@@ -12,7 +12,6 @@
 
 use CWM\Component\Cwmconnect\Site\Helper\RouteHelper;
 use Joomla\CMS\Factory;
-use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 
@@ -48,14 +47,9 @@ $teamleaders      = (string) $this->params->get('teamleaders', '1');
             </span>
 
             <p>
-                <?php
-                $imgSrc = $item->image ?: 'media/com_cwmconnect/images/200-photo_not_available.jpg';
-        echo HTMLHelper::image(
-            $imgSrc,
-            Text::_('COM_CWMCONNECT_IMAGE_DETAILS'),
-            ['height' => '100', 'width' => '100']
-        );
-        ?>
+                <img src="<?php echo $this->escape(Route::_(RouteHelper::getPhotoRoute((int) $item->id))); ?>"
+                     alt="<?php echo $this->escape(Text::_('COM_CWMCONNECT_IMAGE_DETAILS')); ?>"
+                     height="100" width="100" />
                 <br/>
                 <strong class="list-title">
                     <a href="<?php echo Route::_(RouteHelper::getMemberRoute($item->slug, $item->catid)); ?>">

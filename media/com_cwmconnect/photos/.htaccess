@@ -1,0 +1,16 @@
+## Member photos are private. Direct web access is blocked; they are served
+## only through the gated com_cwmconnect photo proxy
+## (index.php?option=com_cwmconnect&task=photo.serve&id=N), which enforces the
+## members-only login wall and per-member visibility. mpdf reads these files
+## from the filesystem, so the printed directory is unaffected.
+
+## Apache 2.4+
+<IfModule mod_authz_core.c>
+    Require all denied
+</IfModule>
+
+## Apache 2.2
+<IfModule !mod_authz_core.c>
+    Order allow,deny
+    Deny from all
+</IfModule>
