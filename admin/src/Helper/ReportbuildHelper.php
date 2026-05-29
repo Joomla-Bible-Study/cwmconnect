@@ -15,6 +15,8 @@ namespace CWM\Component\Cwmconnect\Administrator\Helper;
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
+use CWM\Component\Cwmconnect\Administrator\Service\Pc\PhotoThumbnailer;
+use CWM\Component\Cwmconnect\Site\Helper\PhotoAccess;
 use CWM\Component\Cwmconnect\Site\Service\DirectoryPdfPresenter;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Date\Date;
@@ -186,7 +188,11 @@ class ReportbuildHelper
             $grouped[$catName] = $this->groupBy($rows, 'suburb');
         }
 
-        $counter = 0;
+        // entry-name => absolute source path, bundled into the KMZ so Google
+        // Earth resolves photos from inside the archive (the live photo dir is
+        // blocked from direct web access).
+        $photoFiles = [];
+        $counter    = 0;
 
         foreach ($grouped as $catName => $bySuburb) {
             $kml[] = '<Folder id="' . $counter . '">';
@@ -232,10 +238,19 @@ class ReportbuildHelper
                     $kml[] = '<Snippet maxLines="' . (int) $kmlParams->get('rmaxlines', 2) . '">…</Snippet>';
                     $kml[] = '<description><![CDATA[<div style="padding: 10px;">';
 
-                    if (empty($row->image)) {
-                        $kml[] = '<img src="' . Uri::base() . 'media/com_cwmconnect/images/photo_not_available.jpg" alt="Photo" width="100" height="100" /><br />';
+                    $photoPath = $this->kmzPhotoPath($row);
+
+                    if ($photoPath !== null) {
+                        $entry = 'files/' . (int) $row->id . '.' . strtolower(pathinfo($photoPath, \PATHINFO_EXTENSION));
                     } else {
-                        $kml[] = '<img src="' . Uri::base() . $row->image . '" alt="Photo" width="100" height="100" /><br />';
+                        $entry       = 'files/_placeholder.jpg';
+                        $placeholder = PhotoAccess::placeholderPath();
+                        $photoPath   = $placeholder;
+                    }
+
+                    if ($photoPath !== null) {
+                        $photoFiles[$entry] = $photoPath;
+                        $kml[]              = '<img src="' . htmlspecialchars($entry, ENT_XML1) . '" alt="Photo" width="100" height="100" /><br />';
                     }
 
                     if (!empty($row->con_position)) {
@@ -283,18 +298,71 @@ class ReportbuildHelper
             $kml[] = '</Folder>';
         }
 
-        $filename = $report ?: (string) $kmlInfo->alias;
-        $stem     = preg_replace('/[^A-Za-z0-9._-]/', '_', $filename);
-
-        header('Content-type: application/vnd.google-earth.kml+xml');
-        header('Content-Disposition: attachment; filename="' . $stem . '.kml"');
-
         $kml[] = '</Document>';
         $kml[] = '</kml>';
 
-        echo implode("\n", $kml);
+        $filename = $report ?: (string) $kmlInfo->alias;
+        $stem     = preg_replace('/[^A-Za-z0-9._-]/', '_', $filename) ?: 'directory';
+
+        // Bundle the KML + photos into a self-contained KMZ so Google Earth can
+        // render photos offline without reaching the (blocked) live photo dir.
+        $tmpKmz = tempnam(sys_get_temp_dir(), 'cwmkmz');
+        $zip    = new \ZipArchive();
+
+        if ($tmpKmz === false || $zip->open($tmpKmz, \ZipArchive::OVERWRITE) !== true) {
+            throw new \RuntimeException('Could not create the KMZ archive.');
+        }
+
+        $zip->addFromString('doc.kml', implode("\n", $kml));
+
+        foreach ($photoFiles as $entry => $source) {
+            $zip->addFile($source, $entry);
+        }
+
+        $zip->close();
+
+        header('Content-Type: application/vnd.google-earth.kmz');
+        header('Content-Disposition: attachment; filename="' . $stem . '.kmz"');
+        header('Content-Length: ' . (string) (filesize($tmpKmz) ?: 0));
+
+        readfile($tmpKmz);
+        @unlink($tmpKmz);
 
         Factory::getApplication()->close();
+    }
+
+    /**
+     * Resolve a member's photo to an absolute path to bundle into the KMZ,
+     * preferring the small 3:4 thumbnail (generated on demand to keep the
+     * archive small), or null when there is no usable image.
+     *
+     * @param   object  $row  Member row.
+     *
+     * @return  string|null
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    private function kmzPhotoPath(object $row): ?string
+    {
+        $image = trim((string) ($row->image ?? ''));
+
+        if ($image === '') {
+            return null;
+        }
+
+        $thumb = JPATH_ROOT . '/media/com_cwmconnect/photos/thumb/' . PhotoThumbnailer::thumbFilename($image);
+
+        if (is_file($thumb)) {
+            return $thumb;
+        }
+
+        $full = PhotoAccess::resolvePath($image);
+
+        if ($full === null) {
+            return null;
+        }
+
+        return new PhotoThumbnailer()->generate($full, $thumb) ? $thumb : $full;
     }
 
     /**
