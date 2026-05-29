@@ -69,27 +69,32 @@ $renderEntry = function (object $item, bool $isStaff): void {
     <?php
 };
 ?>
+<?php
+// Base body size drives everything else via em units, so the "large print"
+// option scales the whole document.
+$fontBase = $this->appearance['fontBasePt'] ?? 10.0;
+?>
 <style>
-    body { font-family: DejaVu Sans, sans-serif; font-size: 10pt; color: #2b2b2b; }
-    h1 { font-size: 18pt; margin: 0 0 2mm; color: #1a1a1a; }
-    .meta { font-size: 8pt; color: #888; margin-bottom: 6mm; }
+    body { font-family: DejaVu Sans, sans-serif; font-size: <?php echo $fontBase; ?>pt; color: #2b2b2b; }
+    h1 { font-size: 1.8em; margin: 0 0 2mm; color: #1a1a1a; }
+    .meta { font-size: 0.8em; color: #888; margin-bottom: 6mm; }
 
     /* Cover page. */
     .cover { text-align: center; padding-top: 30mm; }
     .cover img.cover-img { margin-bottom: 10mm; border: 0.5pt solid #ccc; }
-    .cover .cover-name { font-size: 24pt; font-weight: bold; color: #1a1a1a; margin-bottom: 5mm; }
-    .cover .cover-line { font-size: 11pt; color: #555; line-height: 1.6; }
+    .cover .cover-name { font-size: 2.4em; font-weight: bold; color: #1a1a1a; margin-bottom: 5mm; }
+    .cover .cover-line { font-size: 1.1em; color: #555; line-height: 1.6; }
 
     /* Section heading (e.g. "Our Staff"). */
     .section-heading {
-        font-size: 16pt; font-weight: bold; color: #444;
+        font-size: 1.6em; font-weight: bold; color: #444;
         border-bottom: 1.5pt solid #888;
         margin: 0 0 4mm; padding-bottom: 1mm;
     }
 
     /* Alphabetical section divider. */
     .letter {
-        font-size: 15pt; font-weight: bold; color: #555;
+        font-size: 1.5em; font-weight: bold; color: #555;
         border-bottom: 1pt solid #999;
         margin: 4mm 0 2mm; padding-bottom: 1mm;
     }
@@ -105,14 +110,14 @@ $renderEntry = function (object $item, bool $isStaff): void {
     .no-photo {
         width: 30mm; height: 36mm;
         background: #eef0f2; border: 0.5pt solid #ccc;
-        color: #9aa0a6; font-size: 18pt; font-weight: bold;
+        color: #9aa0a6; font-size: 1.8em; font-weight: bold;
         text-align: center;
     }
     .no-photo span { vertical-align: middle; }
 
     .details { padding-left: 4mm; }
-    .details .name { font-size: 12pt; font-weight: bold; color: #1a1a1a; }
-    .details .line { font-size: 9.5pt; line-height: 1.35; }
+    .details .name { font-size: 1.2em; font-weight: bold; color: #1a1a1a; }
+    .details .line { font-size: 0.95em; line-height: 1.35; }
     .details .position { font-style: italic; color: #555; }
     .details .muted { color: #777; }
     .details .email { color: #1a5276; }

@@ -76,6 +76,16 @@ class PdfView extends BaseHtmlView
     public bool $showSectionHeaders = true;
 
     /**
+     * Appearance options resolved from the component config. Key: `fontBasePt`
+     * (float — base body size that drives the em-relative type scale). Page
+     * size + colour are applied to the mpdf instance directly, not here.
+     *
+     * @var    array<string, mixed>
+     * @since  __DEPLOY_VERSION__
+     */
+    public array $appearance = ['fontBasePt' => 10.0];
+
+    /**
      * Render the PDF and stream it to the browser.
      *
      * @param   string|null  $tpl  Template name (unused — always renders default_pdf).
@@ -105,6 +115,14 @@ class PdfView extends BaseHtmlView
 
         $this->showStaff          = (bool) $params->get('pdf_staff', 1);
         $this->showSectionHeaders = (bool) $params->get('pdf_section_headers', 1);
+
+        $this->appearance = [
+            'fontBasePt' => match ((string) $params->get('pdf_font_size', 'normal')) {
+                'large'  => 12.0,
+                'xlarge' => 14.0,
+                default  => 10.0,
+            },
+        ];
 
         if ((bool) $params->get('pdf_cover', 1)) {
             $usePc  = (bool) $params->get('pc_enabled', 0) && (bool) $params->get('pdf_cover_use_pc', 1);
@@ -152,16 +170,28 @@ class PdfView extends BaseHtmlView
 
         require_once $autoload;
 
+        // Booklet = US half-letter (5.5 × 8.5 in) in mm; otherwise US Letter.
+        $pageFormat = $params->get('pdf_page_size', 'letter') === 'booklet'
+            ? [139.7, 215.9]
+            : 'Letter';
+
+        $config = [
+            'mode'          => 'utf-8',
+            'format'        => $pageFormat,
+            'margin_left'   => 15,
+            'margin_right'  => 15,
+            'margin_top'    => 16,
+            'margin_bottom' => 16,
+            'tempDir'       => $app->get('tmp_path', sys_get_temp_dir()),
+        ];
+
+        // Black & white: restrict the output colour space to grayscale (1).
+        if ($params->get('pdf_color', 'color') === 'bw') {
+            $config['restrictColorSpace'] = 1;
+        }
+
         try {
-            $mpdf = new \Mpdf\Mpdf([
-                'mode'          => 'utf-8',
-                'format'        => 'Letter',
-                'margin_left'   => 15,
-                'margin_right'  => 15,
-                'margin_top'    => 16,
-                'margin_bottom' => 16,
-                'tempDir'       => $app->get('tmp_path', sys_get_temp_dir()),
-            ]);
+            $mpdf = new \Mpdf\Mpdf($config);
 
             $mpdf->SetTitle(Text::_('COM_CWMCONNECT_PDF_TITLE'));
             $mpdf->SetAuthor(Text::_('COM_CWMCONNECT'));

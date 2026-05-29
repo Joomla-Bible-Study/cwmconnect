@@ -1271,5 +1271,36 @@
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
+		<field name="pdf_page_size"
+		       type="radio"
+		       class="btn-group"
+		       default="letter"
+		       label="COM_CWMCONNECT_FIELD_PDF_PAGE_SIZE_LABEL"
+		       description="COM_CWMCONNECT_FIELD_PDF_PAGE_SIZE_DESC"
+		>
+			<option value="letter">COM_CWMCONNECT_FIELD_PDF_PAGE_SIZE_LETTER</option>
+			<option value="booklet">COM_CWMCONNECT_FIELD_PDF_PAGE_SIZE_BOOKLET</option>
+		</field>
+		<field name="pdf_color"
+		       type="radio"
+		       class="btn-group"
+		       default="color"
+		       label="COM_CWMCONNECT_FIELD_PDF_COLOR_LABEL"
+		       description="COM_CWMCONNECT_FIELD_PDF_COLOR_DESC"
+		>
+			<option value="color">COM_CWMCONNECT_FIELD_PDF_COLOR_FULL</option>
+			<option value="bw">COM_CWMCONNECT_FIELD_PDF_COLOR_BW</option>
+		</field>
+		<field name="pdf_font_size"
+		       type="radio"
+		       class="btn-group"
+		       default="normal"
+		       label="COM_CWMCONNECT_FIELD_PDF_FONT_SIZE_LABEL"
+		       description="COM_CWMCONNECT_FIELD_PDF_FONT_SIZE_DESC"
+		>
+			<option value="normal">COM_CWMCONNECT_FIELD_PDF_FONT_SIZE_NORMAL</option>
+			<option value="large">COM_CWMCONNECT_FIELD_PDF_FONT_SIZE_LARGE</option>
+			<option value="xlarge">COM_CWMCONNECT_FIELD_PDF_FONT_SIZE_XLARGE</option>
+		</field>
 	</fieldset>
 </config>
