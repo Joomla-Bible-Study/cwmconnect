@@ -605,9 +605,10 @@ no photo still renders a clean cell.
 5. **K.5 — Admin print parity.** Point the admin Reports → Print Directory path
    (`ReportbuildHelper::getPdf()`, currently deferred) at the same renderer, with
    the hidden-member override the admin export is allowed.
-6. **K.6 — Planning Center sourcing + override (cover/church info).** See §13.5.
+6. **K.6 — Planning Center sourcing + override (cover/church info). ✅ DONE.**
+   See §13.5.
 
-K.1–K.2 are done; K.3–K.6 layer on the full option set.
+K.1, K.2, K.6 are done; K.3–K.5 layer on the remaining option set.
 
 ### 13.5 Planning Center sourcing & override
 
@@ -625,20 +626,21 @@ should be **syncable from PC and locally overridable**.
   the org returns one campus ("NFSDA Church", 2800 Blair Boulevard, Nashville TN
   37213); phone/email/website were null there, so those stay manual.
 
-**Current state:** `#__cwmconnect_dirheader` reserves `pc_campus_id` +
-`pc_last_synced_at`, and people sync already requests the `primary_campus`
-include — but **no service writes campus data yet**, and the dirheader has no
-address/phone/website columns. K.2's cover fields are the manual layer.
+**Implemented (K.6):**
+1. `#__cwmconnect_dirheader` extended with `pc_street/city/state/zip/country/
+   phone/email/website` (install SQL + `updates/mysql/2.0.0-20260529.sql`).
+2. `Client::listCampuses()` → `CampusMapper` (pure, unit-tested) →
+   `DatabaseCampusRepository::upsertByPcCampusId()`, orchestrated by
+   `CampusSync`. `CpanelController::pcSync()` runs it best-effort (campus
+   failures never abort the people sync), stamping `pc_last_synced_at`.
+3. Override model: a non-empty manual `config.xml` cover field wins; a blank
+   field falls back to the synced PC campus value. Gated by the
+   `pdf_cover_use_pc` toggle (`showon` pc_enabled). Standalone installs (PC off)
+   always use the manual values.
+4. `PdfView` resolves each cover field as `manual_override ?? pc_campus ??
+   sitename` via `DatabaseCampusRepository::findPrimary()`.
 
-**K.6 plan (the sync + override pattern):**
-1. Extend `#__cwmconnect_dirheader` with campus contact columns (street, city,
-   state, zip, country, phone, email, website) + update SQL.
-2. A campus-sync step (own service, mirrors `MediaPhotoCache`/`PersonMapper`)
-   writes the PC campus into the dirheader, stamping `pc_last_synced_at`.
-3. A "cover source" option per field: **PC** (use synced campus value, rendered
-   read-only — the Phase F lock pattern) or **Override** (use the K.2
-   `config.xml` value). Standalone installs always use the manual value.
-4. PdfView resolves each cover field as `override ?? pc_campus_value ?? sitename`.
-
-This mirrors how PC-mapped member fields already work, so the cover behaves
-consistently with the rest of the PC integration.
+Mirrors how PC-mapped member fields already work, so the cover behaves
+consistently with the rest of the PC integration. **Needs live verification**
+on a J5/J6 install with PC connected (the campus fetch + DB write can't run in
+the local harness).
