@@ -1199,6 +1199,28 @@
 	          label="COM_CWMCONNECT_FIELD_CONFIG_PRINTED_DIRECTORY"
 	          description="COM_CWMCONNECT_FIELD_CONFIG_PRINTED_DIRECTORY_DESC"
 	>
+		<field name="pdf_layout"
+		       type="radio"
+		       class="btn-group"
+		       default="photo_detail"
+		       label="COM_CWMCONNECT_FIELD_PDF_LAYOUT_LABEL"
+		       description="COM_CWMCONNECT_FIELD_PDF_LAYOUT_DESC"
+		>
+			<option value="photo_detail">COM_CWMCONNECT_FIELD_PDF_LAYOUT_PHOTO_DETAIL</option>
+			<option value="photo_grid">COM_CWMCONNECT_FIELD_PDF_LAYOUT_PHOTO_GRID</option>
+			<option value="roster">COM_CWMCONNECT_FIELD_PDF_LAYOUT_ROSTER</option>
+		</field>
+		<field name="pdf_append_roster"
+		       type="radio"
+		       class="btn-group"
+		       default="0"
+		       label="COM_CWMCONNECT_FIELD_PDF_APPEND_ROSTER_LABEL"
+		       description="COM_CWMCONNECT_FIELD_PDF_APPEND_ROSTER_DESC"
+		       showon="pdf_layout!:roster"
+		>
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
 		<field name="pdf_cover"
 		       type="radio"
 		       class="btn-group"

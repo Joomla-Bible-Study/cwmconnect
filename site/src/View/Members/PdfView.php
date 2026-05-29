@@ -87,6 +87,24 @@ class PdfView extends BaseHtmlView
     public array $appearance = ['fontBasePt' => 10.0];
 
     /**
+     * Member-entry layout: `photo_detail` (photo left + details right),
+     * `photo_grid` (compact photo cards), or `roster` (text only).
+     *
+     * @var    string
+     * @since  __DEPLOY_VERSION__
+     */
+    public string $pdfLayout = 'photo_detail';
+
+    /**
+     * Whether to append a text roster section after the photo pages
+     * (photos-front / roster-back). Ignored when the layout is already roster.
+     *
+     * @var    bool
+     * @since  __DEPLOY_VERSION__
+     */
+    public bool $appendRoster = false;
+
+    /**
      * Render the PDF and stream it to the browser.
      *
      * @param   string|null  $tpl  Template name (unused — always renders default_pdf).
@@ -124,6 +142,9 @@ class PdfView extends BaseHtmlView
                 default  => 10.0,
             },
         ];
+
+        $this->pdfLayout    = (string) $params->get('pdf_layout', 'photo_detail');
+        $this->appendRoster = (bool) $params->get('pdf_append_roster', 0);
 
         if ((bool) $params->get('pdf_cover', 1)) {
             $usePc  = (bool) $params->get('pc_enabled', 0) && (bool) $params->get('pdf_cover_use_pc', 1);

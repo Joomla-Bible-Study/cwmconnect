@@ -157,4 +157,49 @@ final class MembersPdfViewTest extends TestCase
         self::assertGreaterThan(2000, \strlen($pdf), 'PDF should have real content');
         self::assertGreaterThanOrEqual(3, $mpdf->page, 'cover + staff + listing = 3+ pages');
     }
+
+    /**
+     * @return iterable<string, array{string, bool}>
+     */
+    public static function layoutProvider(): iterable
+    {
+        yield 'photo grid'            => ['photo_grid', false];
+        yield 'roster'               => ['roster', false];
+        yield 'detail + roster back'  => ['photo_detail', true];
+    }
+
+    #[Test]
+    #[\PHPUnit\Framework\Attributes\DataProvider('layoutProvider')]
+    public function rendersEachLayoutToValidPdf(string $layout, bool $appendRoster): void
+    {
+        if (!is_file(JPATH_LIBRARIES . '/mpdf/vendor/autoload.php')) {
+            self::markTestSkipped('mpdf library not present.');
+        }
+
+        require_once JPATH_LIBRARIES . '/mpdf/vendor/autoload.php';
+        @mkdir(JPATH_ROOT . '/media/com_cwmconnect/photos/thumb', 0o755, true);
+
+        $this->view->items = [
+            self::member(['surname' => 'Abbott', 'name' => 'Marie', 'spouse' => 'Tony', 'suburb' => 'Springfield', 'state' => 'SC', 'postcode' => '12345', 'telephone' => '(217) 555-6270', 'email_to' => 'a@example.com']),
+            self::member(['surname' => 'Brennan', 'name' => 'Sam', 'address' => '88 River Rd', 'suburb' => 'Lakeside', 'state' => 'SC', 'postcode' => '12350', 'telephone' => '(217) 555-1188']),
+        ];
+        $this->view->pdfLayout    = $layout;
+        $this->view->appendRoster = $appendRoster;
+        $this->view->appearance   = ['fontBasePt' => 10.0];
+
+        $template = \dirname(__DIR__, 4) . '/site/tmpl/members/default_pdf.php';
+        $render   = \Closure::bind(function (string $tpl): string {
+            ob_start();
+            include $tpl;
+
+            return (string) ob_get_clean();
+        }, $this->view, PdfView::class);
+
+        $mpdf = new \Mpdf\Mpdf(['mode' => 'utf-8', 'format' => 'Letter', 'tempDir' => sys_get_temp_dir()]);
+        $mpdf->WriteHTML($render($template));
+        $pdf = $mpdf->Output('', \Mpdf\Output\Destination::STRING_RETURN);
+
+        self::assertStringStartsWith('%PDF-', $pdf, "layout {$layout}");
+        self::assertGreaterThanOrEqual(1, $mpdf->page, "layout {$layout} should produce pages");
+    }
 }
