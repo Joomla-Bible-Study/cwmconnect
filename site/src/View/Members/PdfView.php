@@ -16,6 +16,7 @@ namespace CWM\Component\Cwmconnect\Site\View\Members;
 // phpcs:enable PSR1.Files.SideEffects
 
 use CWM\Component\Cwmconnect\Site\Model\MembersModel;
+use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
@@ -37,6 +38,40 @@ class PdfView extends BaseHtmlView
      * @since  __DEPLOY_VERSION__
      */
     public array $items = [];
+
+    /**
+     * Members holding a position (`con_position`), for the staff section.
+     *
+     * @var    list<object>
+     * @since  __DEPLOY_VERSION__
+     */
+    public array $staff = [];
+
+    /**
+     * Cover-page content resolved from the component options. Keys:
+     * `enabled`, `image` (absolute path or null), `name`, `address`,
+     * `phone`, `email`, `website`.
+     *
+     * @var    array<string, mixed>
+     * @since  __DEPLOY_VERSION__
+     */
+    public array $cover = ['enabled' => false];
+
+    /**
+     * Whether to render a "Staff" section ahead of the member listing.
+     *
+     * @var    bool
+     * @since  __DEPLOY_VERSION__
+     */
+    public bool $showStaff = true;
+
+    /**
+     * Whether to render alphabetical (A, B, C…) surname dividers.
+     *
+     * @var    bool
+     * @since  __DEPLOY_VERSION__
+     */
+    public bool $showSectionHeaders = true;
 
     /**
      * Render the PDF and stream it to the browser.
@@ -63,12 +98,37 @@ class PdfView extends BaseHtmlView
             throw new \RuntimeException(Text::_('COM_CWMCONNECT_PDF_ERROR_NO_MEMBERS'), 404);
         }
 
+        $app    = Factory::getApplication();
+        $params = ComponentHelper::getParams('com_cwmconnect');
+
+        $this->showStaff          = (bool) $params->get('pdf_staff', 1);
+        $this->showSectionHeaders = (bool) $params->get('pdf_section_headers', 1);
+
+        if ((bool) $params->get('pdf_cover', 1)) {
+            $this->cover = [
+                'enabled' => true,
+                'image'   => $this->resolvePdfImage((string) $params->get('pdf_cover_image', '')),
+                'name'    => trim((string) $params->get('pdf_church_name', '')) ?: (string) $app->get('sitename'),
+                'address' => trim((string) $params->get('pdf_church_address', '')),
+                'phone'   => trim((string) $params->get('pdf_church_phone', '')),
+                'email'   => trim((string) $params->get('pdf_church_email', '')),
+                'website' => trim((string) $params->get('pdf_church_website', '')),
+            ];
+        }
+
+        if ($this->showStaff) {
+            $this->staff = array_values(
+                array_filter(
+                    $this->items,
+                    static fn(object $item): bool => trim((string) ($item->con_position ?? '')) !== '',
+                ),
+            );
+        }
+
         ob_start();
         $this->setLayout('default_pdf');
         parent::display();
         $html = ob_get_clean();
-
-        $app = Factory::getApplication();
 
         $autoload = JPATH_LIBRARIES . '/mpdf/vendor/autoload.php';
 
@@ -134,6 +194,30 @@ class PdfView extends BaseHtmlView
         $candidate = str_contains($image, '/')
             ? JPATH_ROOT . '/' . ltrim($image, '/')
             : JPATH_ROOT . '/media/com_cwmconnect/photos/' . $image;
+
+        return is_file($candidate) ? $candidate : null;
+    }
+
+    /**
+     * Resolve an arbitrary root-relative image path (e.g. a media-field value
+     * such as the cover image) to an absolute filesystem path mpdf can read,
+     * or null when blank / remote / missing.
+     *
+     * @param   string  $image  Root-relative path, or empty.
+     *
+     * @return  string|null
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    public function resolvePdfImage(string $image): ?string
+    {
+        $image = trim($image);
+
+        if ($image === '' || preg_match('~^https?://~i', $image) === 1) {
+            return null;
+        }
+
+        $candidate = JPATH_ROOT . '/' . ltrim($image, '/');
 
         return is_file($candidate) ? $candidate : null;
     }

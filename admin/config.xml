@@ -1195,4 +1195,70 @@
 		       class="inputbox"
 		       size="1"/>
 	</fieldset>
+	<fieldset name="printeddirectory"
+	          label="COM_CWMCONNECT_FIELD_CONFIG_PRINTED_DIRECTORY"
+	          description="COM_CWMCONNECT_FIELD_CONFIG_PRINTED_DIRECTORY_DESC"
+	>
+		<field name="pdf_cover"
+		       type="radio"
+		       class="btn-group"
+		       default="1"
+		       label="COM_CWMCONNECT_FIELD_PDF_COVER_LABEL"
+		       description="COM_CWMCONNECT_FIELD_PDF_COVER_DESC"
+		>
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		<field name="pdf_cover_image"
+		       type="media"
+		       label="COM_CWMCONNECT_FIELD_PDF_COVER_IMAGE_LABEL"
+		       description="COM_CWMCONNECT_FIELD_PDF_COVER_IMAGE_DESC"
+		       showon="pdf_cover:1"/>
+		<field name="pdf_church_name"
+		       type="text"
+		       label="COM_CWMCONNECT_FIELD_PDF_CHURCH_NAME_LABEL"
+		       description="COM_CWMCONNECT_FIELD_PDF_CHURCH_NAME_DESC"
+		       showon="pdf_cover:1"/>
+		<field name="pdf_church_address"
+		       type="textarea"
+		       rows="3"
+		       label="COM_CWMCONNECT_FIELD_PDF_CHURCH_ADDRESS_LABEL"
+		       description="COM_CWMCONNECT_FIELD_PDF_CHURCH_ADDRESS_DESC"
+		       showon="pdf_cover:1"/>
+		<field name="pdf_church_phone"
+		       type="text"
+		       label="COM_CWMCONNECT_FIELD_PDF_CHURCH_PHONE_LABEL"
+		       description="COM_CWMCONNECT_FIELD_PDF_CHURCH_PHONE_DESC"
+		       showon="pdf_cover:1"/>
+		<field name="pdf_church_email"
+		       type="email"
+		       label="COM_CWMCONNECT_FIELD_PDF_CHURCH_EMAIL_LABEL"
+		       description="COM_CWMCONNECT_FIELD_PDF_CHURCH_EMAIL_DESC"
+		       showon="pdf_cover:1"/>
+		<field name="pdf_church_website"
+		       type="url"
+		       label="COM_CWMCONNECT_FIELD_PDF_CHURCH_WEBSITE_LABEL"
+		       description="COM_CWMCONNECT_FIELD_PDF_CHURCH_WEBSITE_DESC"
+		       showon="pdf_cover:1"/>
+		<field name="pdf_staff"
+		       type="radio"
+		       class="btn-group"
+		       default="1"
+		       label="COM_CWMCONNECT_FIELD_PDF_STAFF_LABEL"
+		       description="COM_CWMCONNECT_FIELD_PDF_STAFF_DESC"
+		>
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		<field name="pdf_section_headers"
+		       type="radio"
+		       class="btn-group"
+		       default="1"
+		       label="COM_CWMCONNECT_FIELD_PDF_SECTION_HEADERS_LABEL"
+		       description="COM_CWMCONNECT_FIELD_PDF_SECTION_HEADERS_DESC"
+		>
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+	</fieldset>
 </config>

@@ -112,6 +112,7 @@ class MembersModel extends ListModel
             $db->quoteName('a.children'),
             $db->quoteName('a.fax'),
             $db->quoteName('a.misc'),
+            $db->quoteName('a.anniversary'),
         ])
         ->select($db->quoteName('c.title', 'category_title'))
         ->select($db->quoteName('c.params', 'category_params'))
