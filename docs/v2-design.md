@@ -508,3 +508,100 @@ software early:
 
 Each phase ships an independent PR. We don't need to do them in this exact
 order if priorities shift; A → B → C is the only hard prereq chain.
+
+## 13. Printed directory PDF — options catalog & plan
+
+The current PDF (`site/src/View/Members/PdfView.php` + `tmpl/members/default_pdf.php`)
+is a flat 5-column contact table. The goal is a real **pictorial directory**
+PDF in the spirit of the major commercial tools. This section captures the
+full option surface those tools offer (so we don't under-scope), maps each to
+our data, and lays out a phased build.
+
+### 13.1 Reference formats (what the market offers)
+
+Surveyed against a real Instant Church Directory export (`churchdirectory.pdf`,
+30pp, US-Letter) plus the published option lists of Instant Church Directory,
+Universal Church Directories (UCDir), and Church Pictorial.
+
+**Sample structure (Instant Church Directory):** full-bleed photo cover →
+pastor welcome letter → "Our Staff" (photo-left, name/title/bio-right) →
+"Our Church Activities" (photo collage + captions) → **member directory**
+(4 entries/page, photo-left, `LASTNAME, First [and Spouse]` + street +
+city/state/zip + anniversary + phone(s) + email, alphabetical by surname) →
+back-cover event flyer.
+
+**Member-entry layout styles (the core choice):**
+
+| Style | Density | Per entry | Source |
+|---|---|---|---|
+| Photo + details beside | 4 / page | photo + name + full contact to the right | ICD "Photo + details"; UCDir "Premier Connect" (8/pg) |
+| Photo grid + names only | 9–16 / page | photo + name only (details on separate roster) | ICD "12 photos + roster"; UCDir "Premier/Traditional" |
+| Photo + contact below | ~6–12 / page | photo on top, name + short contact under it | Church Pictorial entry style |
+| Roster only (no photos) | many / page | text listing of families/individuals + contact | ICD "Roster only" (≈ our current table) |
+| Photos-front / roster-back | — | pictorial section, then a text roster section | ICD page-arrangement option |
+
+**Document sections (toggleable, drag-to-reorder in the commercial tools):**
+cover page · pastor/welcome letter · staff/leadership pages · activities /
+ministry pages · **member listing** · alphabetical text roster · custom
+inserts (PDF/image upload) · back cover.
+
+**Appearance settings:**
+- Color vs. black-and-white.
+- Page size: US-Letter 8.5×11 **or** booklet 5.5×8.5 (half-letter).
+- Font family + font size (large-print roster option for older members).
+- Image quality / resolution.
+- Photo corners: square vs. rounded; optional drop shadow.
+- Alphabetical section dividers (A, B, C…).
+- Index / table of contents.
+
+**Sort / grouping:** by surname (default), by family/household, by
+ministry/position, by category (directory header). Couples shown as
+"`Surname, First and Spouse`"; children optionally listed.
+
+### 13.2 Mapping to our data model
+
+Everything the photo-detail layout needs already exists on `#__cwmconnect_details`:
+
+| Directory element | Column(s) |
+|---|---|
+| Photo | `image` (root-relative path) or PC avatar cached under `media/com_cwmconnect/photos/` |
+| Name / family name | `surname`, `lname`, `name`, `spouse`, `children` |
+| Street / city / state / zip | `address`, `suburb`, `state`, `postcode`, `country` |
+| Phones / email | `telephone`, `mobile`, `email_to` |
+| Anniversary / birthday | `anniversary`, `birthdate` (both present, currently `DATETIME`) |
+| Position / role (staff section) | `con_position` |
+| Grouping | `funitid` (household), `catid` (category), `kmlid`, `dirheader_name` |
+| Cover church name/contact | the dirheader record (name + address + contact) |
+
+**mpdf note:** mpdf cannot reliably fetch remote image URLs — resolve every
+photo to an absolute filesystem path (`JPATH_ROOT . '/' . image`) and fall back
+to a neutral silhouette placeholder when the file is missing, so a member with
+no photo still renders a clean cell.
+
+### 13.3 Decisions locked with the user (2026-05-29)
+
+- **Primary member-entry layout:** *Photo + details beside* (4/page) — closest
+  to the sample. Built first.
+- **Sections to include:** cover page, staff/leadership, alphabetical section
+  headers, and the member listing — **each a component option (default on)**, so
+  "member listing only" is reachable by toggling the others off (resolves the
+  mutually-exclusive selection cleanly).
+
+### 13.4 Build phases (printed directory)
+
+1. **K.1 — Photo-detail layout.** Rewrite `default_pdf.php` to the 4/page
+   photo-left/details-right entry, alphabetical by surname, with the photo→path
+   resolver + silhouette fallback. Couples rendered "Surname, First and Spouse."
+2. **K.2 — Cover + sections.** Cover page from the dirheader record; staff
+   section driven by `con_position`; alphabetical (A/B/C…) dividers. Each gated
+   by a component option.
+3. **K.3 — Appearance options.** `config.xml` fieldset: layout style, color/B&W,
+   page size (Letter / booklet), font size, photo corners. Wire into PdfView's
+   mpdf config + the template.
+4. **K.4 — Additional layout styles.** Photo-grid (names only) + roster-only,
+   selectable via the layout option; optional photos-front/roster-back ordering.
+5. **K.5 — Admin print parity.** Point the admin Reports → Print Directory path
+   (`ReportbuildHelper::getPdf()`, currently deferred) at the same renderer, with
+   the hidden-member override the admin export is allowed.
+
+K.1 is the "great start" deliverable; K.2–K.5 layer on the full option set.
