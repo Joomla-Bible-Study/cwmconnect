@@ -148,8 +148,25 @@ final class SyncEngineTest extends TestCase
     }
 
     #[Test]
-    public function membershipFilterIsPassedToFirstPageQuery(): void
+    public function singleMembershipStatusIsSentAsServerFilter(): void
     {
+        $client = $this->fakeClient([
+            $this->pcPage([], null),
+        ]);
+
+        $repo = $this->fakeRepo();
+
+        new SyncEngine($client, $repo, new PersonMapper())->run(['Member']);
+
+        self::assertSame('Member', $client->capturedQueries[0]['where[membership]'] ?? null);
+    }
+
+    #[Test]
+    public function multipleMembershipStatusesAreNotSentAsServerFilter(): void
+    {
+        // PC's where[membership] accepts a single value, so the engine omits
+        // the server-side filter for multiple statuses and filters in PHP
+        // instead (SyncEngine::run() local-filter branch).
         $client = $this->fakeClient([
             $this->pcPage([], null),
         ]);
@@ -158,7 +175,7 @@ final class SyncEngineTest extends TestCase
 
         new SyncEngine($client, $repo, new PersonMapper())->run(['Member', 'Regular Attender']);
 
-        self::assertSame('Member,Regular Attender', $client->capturedQueries[0]['where[membership]'] ?? null);
+        self::assertArrayNotHasKey('where[membership]', $client->capturedQueries[0]);
     }
 
     #[Test]

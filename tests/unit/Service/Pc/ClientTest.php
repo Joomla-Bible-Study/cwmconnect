@@ -44,14 +44,16 @@ final class ClientTest extends TestCase
     }
 
     #[Test]
-    public function authorizationHeaderUsesBearerScheme(): void
+    public function authorizationHeaderUsesBasicScheme(): void
     {
         $http = $this->fakeHttp(200, '{"data":{}}');
 
+        // PCO personal access tokens authenticate via HTTP Basic: the
+        // application id is the username and the secret is the password.
         $client = new Client($http, 'sekret');
         $client->me();
 
-        self::assertSame('Bearer sekret', $http->capturedHeaders['Authorization'] ?? null);
+        self::assertSame('Basic ' . base64_encode(':sekret'), $http->capturedHeaders['Authorization'] ?? null);
     }
 
     #[Test]
@@ -66,25 +68,25 @@ final class ClientTest extends TestCase
     }
 
     #[Test]
-    public function applicationIdHeaderIsOmittedWhenEmpty(): void
+    public function emptyApplicationIdLeavesBlankBasicUsername(): void
     {
         $http = $this->fakeHttp(200, '{"data":{}}');
 
         $client = new Client($http, 't');
         $client->me();
 
-        self::assertArrayNotHasKey('X-PCO-Application-Id', $http->capturedHeaders);
+        self::assertSame('Basic ' . base64_encode(':t'), $http->capturedHeaders['Authorization'] ?? null);
     }
 
     #[Test]
-    public function applicationIdHeaderIsSentWhenProvided(): void
+    public function applicationIdIsIncludedInBasicCredentials(): void
     {
         $http = $this->fakeHttp(200, '{"data":{}}');
 
         $client = new Client($http, 't', 'app-id-here');
         $client->me();
 
-        self::assertSame('app-id-here', $http->capturedHeaders['X-PCO-Application-Id'] ?? null);
+        self::assertSame('Basic ' . base64_encode('app-id-here:t'), $http->capturedHeaders['Authorization'] ?? null);
     }
 
     #[Test]

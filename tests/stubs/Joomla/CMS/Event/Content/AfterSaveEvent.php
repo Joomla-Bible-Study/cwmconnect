@@ -8,9 +8,10 @@ namespace Joomla\CMS\Event\Content;
  * Minimal stub of Joomla\CMS\Event\Content\AfterSaveEvent for unit tests.
  *
  * Mirrors just the getters our plugin handler reads. Production class
- * derives from a Joomla\Event\Event chain we don't need under test.
+ * derives from a Joomla\Event\Event chain we don't need under test; the
+ * EventInterface marker satisfies the handler's parameter type.
  */
-class AfterSaveEvent
+class AfterSaveEvent implements \Joomla\Event\EventInterface
 {
     public function __construct(
         private readonly string $context,
