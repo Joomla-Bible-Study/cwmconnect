@@ -613,9 +613,12 @@ no photo still renders a clean cell.
    phone), `roster` (text-only, one dot-separated line per member). Plus
    `pdf_append_roster` (photos-front / roster-back). Staff section stays
    photo-detail. Data-provider render test covers all three.
-5. **K.5 — Admin print parity.** Point the admin Reports → Print Directory path
-   (`ReportbuildHelper::getPdf()`, currently deferred) at the same renderer, with
-   the hidden-member override the admin export is allowed.
+5. **K.5 — Admin print parity. ✅ DONE.** Extracted `DirectoryPdfPresenter`
+   (shared view-model); both `PdfView` and `ReportbuildHelper::getPdf()` bind the
+   same template, so admin Reports → Print Directory gets the polished layouts +
+   3:4 photos instead of its old contact-table `buildPrintHtml`. The admin
+   "include hidden members" override (§17) renders a red "hidden" badge per row
+   and keeps the STAFF COPY header. **All printed-directory phases K.1–K.7 done.**
 6. **K.6 — Planning Center sourcing + override (cover/church info). ✅ DONE.**
    See §13.5.
 
@@ -682,9 +685,15 @@ protection?
 
 - Pure logic is unit-tested: `CampusMapper` (K.6), `PhotoThumbnailer` crop +
   placeholder + filename (K.7).
-- `MembersPdfViewTest` instantiates the real `PdfView` (via a small
-  `Joomla\CMS\MVC\View\HtmlView` test stub) and covers the presentation helpers
-  (name/initials/anniversary/locality), plus an **end-to-end render smoke test**
-  that runs the real `default_pdf.php` template through the bundled mpdf and
-  asserts a valid multi-page `%PDF` — catching template / mpdf regressions in CI
-  without needing poppler. Suite at 134 passing.
+- `DirectoryPdfPresenterTest` covers the shared view-model's presentation
+  helpers (name/initials/anniversary/locality), `isHidden`, plus an
+  **end-to-end render smoke test** that runs the real `default_pdf.php` template
+  through the bundled mpdf across every layout (detail / grid / roster /
+  roster-back / admin hidden-badges) and asserts a valid `%PDF` — catching
+  template / mpdf regressions in CI without poppler.
+- The previously-red tests were all stale/incomplete tests, not product bugs,
+  now fixed: a marker `Joomla\Event\EventInterface` stub (+ event stubs
+  implementing it) for the plugin handlers; `ClientTest` updated for the
+  Bearer→Basic PC auth switch; `SyncEngineTest` updated for single-value
+  `where[membership]` + local multi-status filtering.
+- **Suite fully green: 140 tests, 0 errors, 0 failures.**
