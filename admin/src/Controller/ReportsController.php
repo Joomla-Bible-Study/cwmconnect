@@ -19,8 +19,10 @@ use CWM\Component\Cwmconnect\Administrator\Model\ReportsModel;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Controller\BaseController;
+use Joomla\CMS\Response\JsonResponse;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Session\Session;
+use Joomla\CMS\Uri\Uri;
 use Joomla\Component\Actionlogs\Administrator\Model\ActionlogModel;
 
 /**
@@ -95,6 +97,75 @@ class ReportsController extends BaseController
 
             $this->setRedirect(Route::_('index.php?option=com_cwmconnect&view=reports', false));
         }
+    }
+
+    /**
+     * AJAX endpoint: build the directory PDF and return its download URL as
+     * JSON. Lets the reports page show a "building…" spinner and then a
+     * download link, instead of a frozen full-page navigation while mpdf
+     * renders hundreds of members.
+     *
+     * @return  void
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    public function generatepdf(): void
+    {
+        if (!Session::checkToken()) {
+            $this->sendJson(new JsonResponse(new \RuntimeException(Text::_('JINVALID_TOKEN_NOTICE'), 403)), 403);
+        }
+
+        $report = (string) $this->input->get('report', 'directory', 'string');
+
+        try {
+            /** @var ReportsModel $model */
+            $model = $this->getModel('Reports');
+            $model->getExport('pdf', $report);
+
+            $path  = (string) $this->app->getUserState('com_cwmconnect.reports.pdf_path', '');
+            $count = (int) $this->app->getUserState('com_cwmconnect.reports.pdf_count', 0);
+            $this->app->setUserState('com_cwmconnect.reports.pdf_path', null);
+            $this->app->setUserState('com_cwmconnect.reports.pdf_count', null);
+
+            if ($path === '') {
+                throw new \RuntimeException(Text::_('COM_CWMCONNECT_REPORTS_PDF_FAILED'));
+            }
+
+            if ((bool) $this->input->getInt('include_hidden', 0)) {
+                $this->logHiddenPrintOverride();
+            }
+
+            $response = new JsonResponse(
+                ['url' => Uri::root() . $path, 'count' => $count],
+                Text::_('COM_CWMCONNECT_REPORTS_PDF_GENERATED'),
+                false,
+            );
+        } catch (\Throwable $e) {
+            $response = new JsonResponse(null, $e->getMessage(), true);
+        }
+
+        $this->sendJson($response);
+    }
+
+    /**
+     * Stream a JsonResponse envelope and end the request.
+     *
+     * @param   JsonResponse  $response    The response envelope.
+     * @param   int           $httpStatus  HTTP status code to advertise.
+     *
+     * @return  void
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    private function sendJson(JsonResponse $response, int $httpStatus = 200): void
+    {
+        $this->app->setHeader('Content-Type', 'application/json; charset=utf-8', true);
+        $this->app->setHeader('status', (string) $httpStatus, true);
+        $this->app->sendHeaders();
+
+        echo $response;
+
+        $this->app->close();
     }
 
     /**

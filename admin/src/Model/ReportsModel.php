@@ -307,10 +307,9 @@ class ReportsModel extends ListModel
             $includeHidden = (bool) Factory::getApplication()->getInput()->getInt('include_hidden', 0);
             $relativePath  = $reportBuild->getPdf($items, $report, $includeHidden);
 
-            Factory::getApplication()->setUserState(
-                'com_cwmconnect.reports.pdf_path',
-                $relativePath,
-            );
+            $app = Factory::getApplication();
+            $app->setUserState('com_cwmconnect.reports.pdf_path', $relativePath);
+            $app->setUserState('com_cwmconnect.reports.pdf_count', \count($items));
 
             return;
         }

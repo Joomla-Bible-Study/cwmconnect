@@ -70,6 +70,17 @@
       "attributes": {
         "defer": true
       }
+    },
+    {
+      "name": "com_cwmconnect.admin-reports",
+      "type": "script",
+      "uri": "com_cwmconnect/admin-reports.js",
+      "dependencies": [
+        "core"
+      ],
+      "attributes": {
+        "defer": true
+      }
     }
   ]
 }

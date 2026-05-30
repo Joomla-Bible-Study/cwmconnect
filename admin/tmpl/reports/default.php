@@ -82,6 +82,9 @@ if ($pdfPath !== '') {
                             </a>
                         </div>
                     <?php endif; ?>
+                    <?php /* AJAX build feedback (admin-reports.js targets these). */ ?>
+                    <div id="pdf-build-status" class="mt-2" aria-live="polite"></div>
+                    <div id="pdf-build-result" class="mt-2"></div>
                 </div>
                 <div class="col-md-3">
                     <h2>Missing Photos</h2>
