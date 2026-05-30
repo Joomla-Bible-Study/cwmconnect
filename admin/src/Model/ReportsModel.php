@@ -112,7 +112,7 @@ class ReportsModel extends ListModel
         $menuParams = new Registry();
 
         if ($menu = $app->getMenu()?->getActive()) {
-            $menuParams->loadString($menu->params);
+            $menuParams->merge($menu->getParams());
         }
 
         $mergedParams = clone $params;

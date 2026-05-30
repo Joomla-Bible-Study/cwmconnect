@@ -245,7 +245,7 @@ class DirectoryModel extends ListModel
         $menuParams = new Registry();
 
         if ($menu = $app->getMenu()?->getActive()) {
-            $menuParams->loadString($menu->params);
+            $menuParams->merge($menu->getParams());
         }
 
         $merged   = clone $params;
@@ -294,7 +294,7 @@ class DirectoryModel extends ListModel
         $menuParams = new Registry();
 
         if ($active = Factory::getApplication()->getMenu()?->getActive()) {
-            $menuParams->loadString($active->params);
+            $menuParams->merge($active->getParams());
         }
 
         $options = [
