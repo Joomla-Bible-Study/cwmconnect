@@ -104,16 +104,30 @@ final class PhotoAccess
             ? JPATH_ROOT . '/' . ltrim($image, '/')
             : JPATH_ROOT . '/media/com_cwmconnect/photos/' . $image;
 
-        // Containment: the resolved real path must stay inside the document
-        // root, so a stray DB value can never escape to the wider filesystem.
         $real = realpath($candidate);
-        $root = realpath(JPATH_ROOT);
 
-        if ($real === false || $root === false || !str_starts_with($real, $root . \DIRECTORY_SEPARATOR)) {
+        if ($real === false || !is_file($real)) {
             return null;
         }
 
-        return is_file($real) ? $real : null;
+        // Containment: the resolved real path must stay inside the document
+        // root OR the component's media dir, so a stray DB value can never
+        // escape to the wider filesystem. The media dir is checked separately
+        // because `composer link` (and some production setups) symlink media/
+        // out of the install root — realpath() resolves that symlink, so a
+        // legitimate photo's real path legitimately lives outside JPATH_ROOT.
+        $allowedBases = array_filter([
+            realpath(JPATH_ROOT),
+            realpath(JPATH_ROOT . '/media/com_cwmconnect'),
+        ]);
+
+        foreach ($allowedBases as $base) {
+            if (str_starts_with($real, $base . \DIRECTORY_SEPARATOR)) {
+                return $real;
+            }
+        }
+
+        return null;
     }
 
     /**
