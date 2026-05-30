@@ -192,8 +192,11 @@ class ReportsModel extends ListModel
             . ', ' . $db->quoteName('c.alias', 'category_alias')
             . ', ' . $db->quoteName('c.access', 'category_access')
         );
+        // LEFT, not INNER: PC-synced members carry catid = 0 (no Joomla
+        // category), so an INNER join silently drops every synced member and
+        // the report shows only the hand-entered rows. Matches the site models.
         $query->join(
-            'INNER',
+            'LEFT',
             $db->quoteName('#__categories', 'c')
             . ' ON ' . $db->quoteName('c.id') . ' = ' . $db->quoteName('a.catid')
         );
