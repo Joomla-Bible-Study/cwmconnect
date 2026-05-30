@@ -67,7 +67,7 @@ final class PersonMapper
         $mobilePhone    = $this->pickPrimaryPhone($byTypeId, $relIds['phone_numbers'] ?? [], true);
         $primaryAddress = $this->pickPrimaryAddress($byTypeId, $relIds['addresses'] ?? []);
 
-        $directoryStatus = (string) ($attrs['directory_status'] ?? 'everyone');
+        $directoryStatus = (string) ($attrs['directory_status'] ?? '');
         $isChild         = (bool) ($attrs['child'] ?? false);
         $pcStatus        = (string) ($attrs['status'] ?? 'active');
 
@@ -94,7 +94,7 @@ final class PersonMapper
             'anniversary'          => $this->dateAttr($attrs, 'anniversary'),
             'directory_scope'      => $this->mapDirectoryScope($directoryStatus),
             'pc_shared_info'       => $this->encodeSharedInfo($attrs['directory_shared_info'] ?? null),
-            'display_in_directory' => ($isChild || $directoryStatus === 'no') ? 0 : 1,
+            'display_in_directory' => (!$isChild && $directoryStatus === 'participant') ? 1 : 0,
             'published'            => $pcStatus === 'active' ? 1 : 0,
         ];
     }
@@ -468,19 +468,22 @@ final class PersonMapper
     /**
      * Translate PC's `directory_status` string to our `directory_scope` enum.
      *
-     * @param   string  $pcStatus
+     * PC's live values are `participant`, `viewer`, and `no_access`. Only a
+     * `participant` is publicly listed; `viewer` (can browse the directory but
+     * isn't listed) and `no_access` are hidden. Any unknown/missing value is
+     * treated as hidden so a person is never exposed by default.
+     *
+     * @param   string  $directoryStatus  PC `directory_status` attribute.
      *
      * @return  string  One of 'public', 'household', 'hidden'.
      *
      * @since   __DEPLOY_VERSION__
      */
-    private function mapDirectoryScope(string $pcStatus): string
+    private function mapDirectoryScope(string $directoryStatus): string
     {
-        return match ($pcStatus) {
-            'no'             => 'hidden',
-            'limited_access',
-            'household_only' => 'household',
-            default          => 'public',
+        return match ($directoryStatus) {
+            'participant' => 'public',
+            default       => 'hidden',
         };
     }
 

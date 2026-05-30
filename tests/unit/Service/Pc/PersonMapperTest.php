@@ -41,25 +41,33 @@ final class PersonMapperTest extends TestCase
     }
 
     #[Test]
-    public function childFlagForcesDisplayInDirectoryToZero(): void
+    public function childFlagForcesDisplayInDirectoryToZeroEvenWhenParticipant(): void
     {
-        $row = $this->mapper->map($this->person(['first_name' => 'Junior', 'child' => true]));
+        $row = $this->mapper->map($this->person([
+            'first_name'       => 'Junior',
+            'child'            => true,
+            'directory_status' => 'participant',
+        ]));
 
         self::assertSame(0, $row['display_in_directory']);
     }
 
     #[Test]
-    public function directoryStatusNoForcesDisplayInDirectoryToZero(): void
+    public function nonParticipantDirectoryStatusKeepsDisplayInDirectoryZero(): void
     {
-        $row = $this->mapper->map($this->person(['directory_status' => 'no']));
+        // PC's real values: only `participant` is publicly listed; `viewer`
+        // (can browse but isn't listed) and `no_access` stay hidden.
+        foreach (['viewer', 'no_access', ''] as $status) {
+            $row = $this->mapper->map($this->person(['directory_status' => $status]));
 
-        self::assertSame(0, $row['display_in_directory']);
+            self::assertSame(0, $row['display_in_directory'], "directory_status='$status' must not be listed");
+        }
     }
 
     #[Test]
-    public function defaultDisplayInDirectoryIsOne(): void
+    public function participantDirectoryStatusEnablesDisplayInDirectory(): void
     {
-        $row = $this->mapper->map($this->person(['directory_status' => 'everyone']));
+        $row = $this->mapper->map($this->person(['directory_status' => 'participant']));
 
         self::assertSame(1, $row['display_in_directory']);
     }
@@ -67,15 +75,13 @@ final class PersonMapperTest extends TestCase
     #[Test]
     public function directoryStatusMapsToScopeEnum(): void
     {
-        $publicRow    = $this->mapper->map($this->person(['directory_status' => 'everyone']));
-        $hiddenRow    = $this->mapper->map($this->person(['directory_status' => 'no']));
-        $householdRow = $this->mapper->map($this->person(['directory_status' => 'household_only']));
-        $limitedRow   = $this->mapper->map($this->person(['directory_status' => 'limited_access']));
+        $publicRow   = $this->mapper->map($this->person(['directory_status' => 'participant']));
+        $viewerRow   = $this->mapper->map($this->person(['directory_status' => 'viewer']));
+        $noAccessRow = $this->mapper->map($this->person(['directory_status' => 'no_access']));
 
         self::assertSame('public', $publicRow['directory_scope']);
-        self::assertSame('hidden', $hiddenRow['directory_scope']);
-        self::assertSame('household', $householdRow['directory_scope']);
-        self::assertSame('household', $limitedRow['directory_scope']);
+        self::assertSame('hidden', $viewerRow['directory_scope']);
+        self::assertSame('hidden', $noAccessRow['directory_scope']);
     }
 
     #[Test]
