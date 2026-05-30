@@ -381,6 +381,16 @@ class ReportbuildHelper
      */
     public function getPdf(array $items = [], ?string $report = null, bool $includeHidden = false): string
     {
+        // A full-directory PDF (hundreds of members + embedded photos) is
+        // memory- and time-hungry in mpdf. Raise the ceilings for this request
+        // so a large render can't die mid-build with an uncatchable fatal
+        // (which leaves no file and no feedback). Never lower an unlimited cap.
+        @set_time_limit(0);
+
+        if ((string) @ini_get('memory_limit') !== '-1') {
+            @ini_set('memory_limit', '1024M');
+        }
+
         $autoload = JPATH_LIBRARIES . '/mpdf/vendor/autoload.php';
 
         if (!is_file($autoload)) {
@@ -398,6 +408,11 @@ class ReportbuildHelper
         $app    = Factory::getApplication();
         $params = ComponentHelper::getParams('com_cwmconnect');
 
+        // The shared template/presenter use COM_CWMCONNECT_PDF_* strings that
+        // live only in the SITE language file. We render from the administrator
+        // app here, so load the site language explicitly or those keys print raw.
+        $app->getLanguage()->load('com_cwmconnect', JPATH_SITE);
+
         // Same shared view-model + template as the front-end self-service PDF,
         // so the admin print uses the configured layout and normalized photos.
         // Admin print is a working document: no cover/staff section, and it can
@@ -408,6 +423,9 @@ class ReportbuildHelper
         $presenter->pdfLayout          = (string) $params->get('pdf_layout', 'photo_detail');
         $presenter->appendRoster       = (bool) $params->get('pdf_append_roster', 0);
         $presenter->showHiddenBadges   = $includeHidden;
+        // Admin print carries the title/date in the running header + footer
+        // (SetHeader/SetFooter below), so suppress the duplicate body title.
+        $presenter->showTitleBlock     = false;
         $presenter->appearance         = [
             'fontBasePt' => match ((string) $params->get('pdf_font_size', 'normal')) {
                 'large'  => 12.0,

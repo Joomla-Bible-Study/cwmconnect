@@ -255,10 +255,12 @@ $renderRoster = function (array $items, bool $dividers) use (&$currentLetter, $e
 <?php endif; ?>
 
 <?php // ── Member listing ───────────────────────────────────────────────?>
-<h1><?php echo Text::_('COM_CWMCONNECT_PDF_TITLE'); ?></h1>
-<div class="meta">
-    <?php echo Text::sprintf('COM_CWMCONNECT_PDF_GENERATED', date('F j, Y'), \count($this->items)); ?>
-</div>
+<?php if ($this->showTitleBlock) : ?>
+    <h1><?php echo Text::_('COM_CWMCONNECT_PDF_TITLE'); ?></h1>
+    <div class="meta">
+        <?php echo Text::sprintf('COM_CWMCONNECT_PDF_GENERATED', date('F j, Y'), \count($this->items)); ?>
+    </div>
+<?php endif; ?>
 
 <?php
 $currentLetter = null;
