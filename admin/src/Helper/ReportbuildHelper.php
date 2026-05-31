@@ -408,10 +408,9 @@ class ReportbuildHelper
         $app    = Factory::getApplication();
         $params = ComponentHelper::getParams('com_cwmconnect');
 
-        // The shared template/presenter use COM_CWMCONNECT_PDF_* strings that
-        // live only in the SITE language file. We render from the administrator
-        // app here, so load the site language explicitly or those keys print raw.
-        $app->getLanguage()->load('com_cwmconnect', JPATH_SITE);
+        // The shared template uses COM_CWMCONNECT_PDF_* strings; they're mirrored
+        // into the admin language file (see com_cwmconnect.ini) because this runs
+        // in the administrator app, which doesn't load the site language file.
 
         // Same shared view-model + template as the front-end self-service PDF,
         // so the admin print uses the configured layout and normalized photos.
