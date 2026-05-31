@@ -146,6 +146,10 @@ final class DirectoryPdfPresenterTest extends TestCase
         self::assertStringContainsString('Test Church', $html);
         self::assertStringContainsString('Our Staff', $html);
 
+        if ($layout === 'photo_detail') {
+            self::assertStringContainsString('entry-grid', $html, 'photo_detail must use the two-column grid');
+        }
+
         if ($hiddenBadges) {
             self::assertStringContainsString('hidden-badge', $html);
         }

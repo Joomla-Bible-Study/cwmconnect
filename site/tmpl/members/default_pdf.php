@@ -87,6 +87,77 @@ $renderEntry = function (object $item, bool $isStaff): void {
 };
 
 /**
+ * Compact member block for one cell of the two-column photo-detail grid:
+ * a small photo beside name/address/anniversary/phone/email. No staff
+ * position line (that section stays full-width via $renderEntry).
+ */
+$renderCellInner = function (object $item): void {
+    $photo    = $this->memberPhotoSrc($item);
+    $locality = $this->memberLocality($item);
+    ?>
+    <table class="cell-entry">
+        <tr>
+            <td class="cell-photo-cell">
+                <?php if ($photo !== null) : ?>
+                    <img class="photo" src="<?php echo $this->escape($photo); ?>" width="83" alt="" />
+                <?php else : ?>
+                    <div class="cell-no-photo"><span><?php echo $this->escape($this->memberInitials($item)); ?></span></div>
+                <?php endif; ?>
+            </td>
+            <td class="cell-details">
+                <div class="name"><?php echo $this->escape($this->memberName($item)); ?><?php if ($this->isHidden($item)) : ?> <span class="hidden-badge">hidden</span><?php endif; ?></div>
+
+                <?php if (!empty($item->address)) : ?>
+                    <div class="line"><?php echo $this->escape((string) $item->address); ?></div>
+                <?php endif; ?>
+
+                <?php if ($locality !== '') : ?>
+                    <div class="line"><?php echo $this->escape($locality); ?></div>
+                <?php endif; ?>
+
+                <?php if ($anniversary = $this->memberAnniversary($item)) : ?>
+                    <div class="line muted"><?php echo Text::sprintf('COM_CWMCONNECT_PDF_ANNIVERSARY', $this->escape($anniversary)); ?></div>
+                <?php endif; ?>
+
+                <?php foreach (array_filter([(string) ($item->telephone ?? ''), (string) ($item->mobile ?? '')]) as $phone) : ?>
+                    <div class="line"><?php echo $this->escape($phone); ?></div>
+                <?php endforeach; ?>
+
+                <?php if (!empty($item->email_to)) : ?>
+                    <div class="line email"><?php echo $this->escape((string) $item->email_to); ?></div>
+                <?php endif; ?>
+            </td>
+        </tr>
+    </table>
+    <?php
+};
+
+/**
+ * Render a list of members as a two-column grid (two entries per row). The
+ * outer table paginates between rows; each cell avoids splitting internally.
+ */
+$renderTwoColumn = function (array $members) use ($renderCellInner): void {
+    $members = array_values($members);
+    $count   = \count($members);
+
+    echo '<table class="entry-grid"><tbody>';
+
+    for ($i = 0; $i < $count; $i += 2) {
+        echo '<tr><td class="entry-cell">';
+        $renderCellInner($members[$i]);
+        echo '</td><td class="entry-cell">';
+
+        if (isset($members[$i + 1])) {
+            $renderCellInner($members[$i + 1]);
+        }
+
+        echo '</td></tr>';
+    }
+
+    echo '</tbody></table>';
+};
+
+/**
  * Photo grid: compact cards (photo + name + primary phone), three per row.
  * Contact detail is intentionally minimal — pair with an appended roster for
  * full contact info.
@@ -203,6 +274,29 @@ $renderRoster = function (array $items, bool $dividers) use (&$currentLetter, $e
 
     .rule { border-bottom: 0.25pt solid #e2e2e2; margin-bottom: 4mm; }
 
+    /* Photo-detail two-column member grid. */
+    .entry-grid { width: 100%; }
+    .entry-grid td.entry-cell {
+        width: 50%; vertical-align: top;
+        padding: 0 4mm 4mm 0;
+        page-break-inside: avoid;
+    }
+    .cell-entry { width: 100%; }
+    .cell-entry td { vertical-align: top; padding: 0; }
+    .cell-photo-cell { width: 25mm; }
+    .cell-entry img.photo { border: 0.5pt solid #ccc; }
+    .cell-no-photo {
+        width: 22mm; height: 29mm;
+        background: #eef0f2; border: 0.5pt solid #ccc;
+        color: #9aa0a6; font-size: 1.4em; font-weight: bold; text-align: center;
+    }
+    .cell-no-photo span { vertical-align: middle; }
+    .cell-details { padding-left: 3mm; }
+    .cell-details .name { font-size: 1.05em; font-weight: bold; color: #1a1a1a; }
+    .cell-details .line { font-size: 0.82em; line-height: 1.3; }
+    .cell-details .muted { color: #777; }
+    .cell-details .email { color: #1a5276; }
+
     /* Photo grid (compact cards). */
     .grid { width: 100%; page-break-inside: avoid; }
     .grid td.grid-cell { width: 33%; text-align: center; vertical-align: top; padding: 0 2mm 5mm; }
@@ -270,12 +364,26 @@ if ($this->pdfLayout === 'photo_grid') {
 } elseif ($this->pdfLayout === 'roster') {
     $renderRoster($this->items, $this->showSectionHeaders);
 } else {
-    foreach ($this->items as $item) {
-        if ($this->showSectionHeaders) {
-            $emitDivider($item);
+    // photo_detail — two columns, with full-width alphabetical dividers
+    // between letter groups so the columns reset cleanly under each header.
+    $grouped = [];
+
+    if ($this->showSectionHeaders) {
+        foreach ($this->items as $item) {
+            $surname            = trim((string) ($item->surname ?? '')) ?: trim((string) ($item->lname ?? ''));
+            $letter             = strtoupper(mb_substr($surname, 0, 1)) ?: '#';
+            $grouped[$letter][] = $item;
+        }
+    } else {
+        $grouped[''] = $this->items;
+    }
+
+    foreach ($grouped as $letter => $members) {
+        if ($letter !== '') {
+            echo '<div class="letter">' . $this->escape($letter) . '</div>';
         }
 
-        $renderEntry($item, false);
+        $renderTwoColumn($members);
     }
 }
 
