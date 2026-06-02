@@ -10,6 +10,7 @@
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
+use CWM\Component\Cwmconnect\Site\Helper\Layout;
 use CWM\Component\Cwmconnect\Site\Helper\RouteHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
@@ -47,9 +48,15 @@ $teamleaders      = (string) $this->params->get('teamleaders', '1');
             </span>
 
             <p>
-                <img src="<?php echo $this->escape(Route::_(RouteHelper::getPhotoRoute((int) $item->id, 'thumb'))); ?>"
-                     alt="<?php echo $this->escape(Text::_('COM_CWMCONNECT_IMAGE_DETAILS')); ?>"
-                     height="100" width="100" loading="lazy" decoding="async" />
+                <?php echo Layout::render('photo', [
+                    'id'       => (int) $item->id,
+                    'hasPhoto' => (string) ($item->image ?? '') !== '',
+                    'alt'      => $item->name,
+                    'sizes'    => '100px',
+                    'width'    => 100,
+                    'height'   => 100,
+                    'rounded'  => true,
+                ]); ?>
                 <br/>
                 <strong class="list-title">
                     <a href="<?php echo Route::_(RouteHelper::getMemberRoute($item->slug, $item->catid)); ?>">

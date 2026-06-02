@@ -10,6 +10,7 @@
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
+use CWM\Component\Cwmconnect\Site\Helper\Layout;
 use CWM\Component\Cwmconnect\Site\Helper\RouteHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
@@ -48,9 +49,15 @@ $teamleaders      = (string) $this->params->get('teamleaders', '1');
 
             <p>
                 <?php if ($this->params->get('show_image_headings')) : ?>
-                    <img src="<?php echo $this->escape(Route::_(RouteHelper::getPhotoRoute((int) $item->id, 'thumb'))); ?>"
-                         alt="<?php echo $this->escape(Text::_('COM_CWMCONNECT_IMAGE_DETAILS')); ?>"
-                         height="100" width="100" loading="lazy" decoding="async" />
+                    <?php echo Layout::render('photo', [
+                        'id'       => (int) $item->id,
+                        'hasPhoto' => (string) ($item->image ?? '') !== '',
+                        'alt'      => $item->name,
+                        'sizes'    => '100px',
+                        'width'    => 100,
+                        'height'   => 100,
+                        'rounded'  => true,
+                    ]); ?>
                 <?php endif; ?>
                 <br/>
                 <strong class="list-title">
@@ -67,16 +74,12 @@ $teamleaders      = (string) $this->params->get('teamleaders', '1');
                 <br/>
 
                 <?php if ($this->params->get('show_position_headings') && $item->con_position && $this->params->get('show_position')) : ?>
-                    <dl class="contact-position">
-                        <dt>
-                            <?php if ($item->con_position != '-1') : ?>
-                                <?php echo Text::_('COM_CWMCONNECT_POSITIONS'); ?>
-                            <?php endif; ?>
-                        </dt>
-                        <dd>
-                            <?php echo $this->renderHelper->getPosition($item->con_position); ?>
-                        </dd>
-                    </dl>
+                    <div class="small text-body-secondary">
+                        <?php if ($item->con_position != '-1') : ?>
+                            <?php echo Text::_('COM_CWMCONNECT_POSITIONS'); ?>:
+                        <?php endif; ?>
+                        <?php echo $this->renderHelper->getPosition($item->con_position); ?>
+                    </div>
                 <?php endif; ?>
 
                 <?php if ($this->params->get('show_email_headings')) : ?>
