@@ -333,10 +333,18 @@ $renderRoster = function (array $items, bool $dividers) use (&$currentLetter, $e
     .meta { font-size: 0.8em; color: #888; margin-bottom: 6mm; }
 
     /* Cover page. */
-    .cover { text-align: center; padding-top: 30mm; }
-    .cover img.cover-img { margin-bottom: 10mm; border: 0.5pt solid #ccc; }
-    .cover .cover-name { font-size: 2.4em; font-weight: bold; color: #1a1a1a; margin-bottom: 5mm; }
-    .cover .cover-line { font-size: 1.1em; color: #555; line-height: 1.6; }
+    .cover { text-align: center; padding-top: 12mm; }
+    .cover img.cover-img { margin-bottom: 8mm; border: 0.5pt solid #ccc; }
+    .cover .cover-name { font-size: 2.6em; font-weight: bold; color: #1a1a1a; margin-bottom: 4mm; }
+    .cover .cover-line { font-size: 1.05em; color: #555; line-height: 1.55; }
+
+    /* Welcome letter: a letterhead (church name + contact) over the body. */
+    .welcome { padding-top: 4mm; }
+    .welcome-head { margin-bottom: 8mm; }
+    .welcome-church { font-size: 1.9em; font-weight: bold; color: #1a1a1a; margin-bottom: 2mm; }
+    .welcome-line { font-size: 0.9em; color: #555; line-height: 1.5; }
+    .welcome-body { font-size: 1em; line-height: 1.55; color: #2b2b2b; }
+    .welcome-body p { margin: 0 0 3mm; }
 
     /* Section heading (e.g. "Our Staff", "Member Roster"). */
     .section-heading {
@@ -426,7 +434,7 @@ $renderRoster = function (array $items, bool $dividers) use (&$currentLetter, $e
 <?php if (!empty($this->cover['enabled'])) : ?>
     <div class="cover">
         <?php if (!empty($this->cover['image'])) : ?>
-            <img class="cover-img" src="<?php echo $this->escape((string) $this->cover['image']); ?>" width="560" alt="" />
+            <img class="cover-img" src="<?php echo $this->escape((string) $this->cover['image']); ?>" width="620" alt="" />
         <?php endif; ?>
         <div class="cover-name"><?php echo $this->escape((string) $this->cover['name']); ?></div>
         <?php foreach (preg_split('/\r\n|\r|\n/', (string) $this->cover['address']) as $addressLine) : ?>
@@ -434,10 +442,35 @@ $renderRoster = function (array $items, bool $dividers) use (&$currentLetter, $e
                 <div class="cover-line"><?php echo $this->escape(trim($addressLine)); ?></div>
             <?php endif; ?>
         <?php endforeach; ?>
-        <?php $contact = array_filter([(string) $this->cover['phone'], (string) $this->cover['email'], (string) $this->cover['website']]); ?>
-        <?php if ($contact !== []) : ?>
-            <div class="cover-line"><?php echo $this->escape(implode('  •  ', $contact)); ?></div>
+        <?php $coverContact = array_filter([(string) $this->cover['phone'], (string) $this->cover['email']]); ?>
+        <?php if ($coverContact !== []) : ?>
+            <div class="cover-line"><?php echo $this->escape(implode('  |  ', $coverContact)); ?></div>
         <?php endif; ?>
+        <?php if (!empty($this->cover['website'])) : ?>
+            <div class="cover-line"><?php echo $this->escape((string) $this->cover['website']); ?></div>
+        <?php endif; ?>
+    </div>
+    <div class="pagebreak"></div>
+<?php endif; ?>
+
+<?php // ── Welcome letter (trusted admin rich text on its own page) ────────?>
+<?php if (trim((string) $this->welcome) !== '') : ?>
+    <div class="welcome">
+        <?php if (!empty($this->cover['name'])) : ?>
+            <div class="welcome-head">
+                <div class="welcome-church"><?php echo $this->escape((string) $this->cover['name']); ?></div>
+                <?php foreach (preg_split('/\r\n|\r|\n/', (string) ($this->cover['address'] ?? '')) as $headLine) : ?>
+                    <?php if (trim($headLine) !== '') : ?>
+                        <div class="welcome-line"><?php echo $this->escape(trim($headLine)); ?></div>
+                    <?php endif; ?>
+                <?php endforeach; ?>
+                <?php $welcomeContact = array_filter([(string) ($this->cover['phone'] ?? ''), (string) ($this->cover['email'] ?? ''), (string) ($this->cover['website'] ?? '')]); ?>
+                <?php if ($welcomeContact !== []) : ?>
+                    <div class="welcome-line"><?php echo $this->escape(implode('  |  ', $welcomeContact)); ?></div>
+                <?php endif; ?>
+            </div>
+        <?php endif; ?>
+        <div class="welcome-body"><?php echo $this->welcome; ?></div>
     </div>
     <div class="pagebreak"></div>
 <?php endif; ?>

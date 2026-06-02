@@ -151,6 +151,21 @@ final class DirectoryPdfPresenterTest extends TestCase
     }
 
     #[Test]
+    public function welcomeLetterRendersOnItsOwnPageWhenSet(): void
+    {
+        $this->presenter->items    = [self::member(['surname' => 'Test', 'fname' => 'Ada'])];
+        $this->presenter->pdfLayout = 'roster';
+        $this->presenter->cover    = ['enabled' => true, 'name' => 'Grace Church', 'image' => null, 'address' => '1 Main St', 'phone' => '', 'email' => '', 'website' => ''];
+        $this->presenter->welcome  = '<p>Dear Church Family</p>';
+
+        $html = $this->presenter->renderHtml();
+
+        self::assertStringContainsString('welcome-body', $html);
+        self::assertStringContainsString('Dear Church Family', $html);
+        self::assertStringContainsString('welcome-church', $html, 'letterhead uses the cover name');
+    }
+
+    #[Test]
     public function householdDisplayNameComposesAdultsOnly(): void
     {
         $family = ['surname' => 'Cordis', 'members' => [

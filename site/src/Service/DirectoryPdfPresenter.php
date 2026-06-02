@@ -76,6 +76,15 @@ final class DirectoryPdfPresenter
     public array $cover = ['enabled' => false];
 
     /**
+     * Welcome-letter body (trusted admin rich text), shown on its own page after
+     * the cover. Null/empty suppresses the page.
+     *
+     * @var    string|null
+     * @since  __DEPLOY_VERSION__
+     */
+    public ?string $welcome = null;
+
+    /**
      * Whether to render alphabetical (A, B, C…) surname dividers.
      *
      * @var    bool
