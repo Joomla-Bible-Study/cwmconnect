@@ -141,7 +141,13 @@ class HtmlView extends BaseHtmlView
 
         $groups = $user ? $user->getAuthorisedViewLevels() : [1];
 
-        if (!\in_array($item->access, $groups, false) || !\in_array($item->category_access, $groups, false)) {
+        // The category access check only applies to categorised members. PC-
+        // synced members carry catid=0 (no Joomla category), so the LEFT join
+        // leaves category_access NULL — that must not deny access; only the
+        // member's own access level gates an uncategorised row.
+        $categoryDenied = (int) $item->catid > 0 && !\in_array($item->category_access, $groups, false);
+
+        if (!\in_array($item->access, $groups, false) || $categoryDenied) {
             $app->enqueueMessage(Text::_('JERROR_ALERTNOAUTHOR'), 'warning');
             $app->setHeader('status', 403, true);
             throw new GenericDataException(Text::_('JERROR_ALERTNOAUTHOR'), 403);
