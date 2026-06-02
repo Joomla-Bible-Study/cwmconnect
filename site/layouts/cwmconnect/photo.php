@@ -78,8 +78,10 @@ if ($linkFull) {
     // autocreate behaviour reads the JSON config off the data attribute and
     // intercepts the click; with JS off the link still opens the original in a
     // new tab.
-    Factory::getApplication()->getDocument()->getWebAssetManager()
-        ->useScript('joomla.dialog-autocreate');
+    $wa = Factory::getApplication()->getDocument()->getWebAssetManager();
+    $wa->useScript('joomla.dialog-autocreate')
+        ->useScript('com_cwmconnect.dialog-enhance')
+        ->useStyle('com_cwmconnect.dialog');
 
     $dialogConfig = json_encode([
         'popupType'  => 'image',

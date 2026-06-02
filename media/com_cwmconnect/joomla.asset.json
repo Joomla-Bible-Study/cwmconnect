@@ -12,6 +12,23 @@
       "dependencies": []
     },
     {
+      "name": "com_cwmconnect.dialog",
+      "type": "style",
+      "uri": "com_cwmconnect/dialog.css",
+      "dependencies": []
+    },
+    {
+      "name": "com_cwmconnect.dialog-enhance",
+      "type": "script",
+      "uri": "com_cwmconnect/dialog-enhance.js",
+      "dependencies": [
+        "core"
+      ],
+      "attributes": {
+        "defer": true
+      }
+    },
+    {
       "name": "com_cwmconnect.directory",
       "type": "style",
       "uri": "com_cwmconnect/cwmconnect.css",
