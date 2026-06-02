@@ -128,6 +128,11 @@ final class PersonMapper
             // PC `gender` (Male / Female / '' when unset). Stored verbatim to
             // stay in line with PC rather than the legacy 0/1 "sex" encoding.
             'gender'               => $this->stringAttr($attrs, 'gender'),
+            // Minors aren't listed on their own in the directory — they appear
+            // under their family unit instead. Determined by age when a
+            // birthdate is on file (most reliable for "under 18"), falling back
+            // to PC's `child` flag when it isn't.
+            'is_child'             => $this->isMinor($attrs) ? 1 : 0,
         ];
     }
 
@@ -645,6 +650,61 @@ final class PersonMapper
         return preg_match('/^(?:Jr|Sr|II|III|IV|V|VI|VII|VIII|IX|X|[0-9]+(?:st|nd|rd|th))\.?$/i', $candidate) === 1
             ? rtrim($candidate, '.')
             : '';
+    }
+
+    /**
+     * Is this person a minor (excluded from standalone directory listings,
+     * shown only under their family unit)? Age from the birthdate decides when
+     * one is on file — the most faithful reading of "under 18" — otherwise we
+     * defer to PC's `child` flag (the church-maintained signal), since most
+     * people have no birthdate recorded.
+     *
+     * @param   array<string, mixed>  $attrs  PC person attributes.
+     *
+     * @return  bool
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    private function isMinor(array $attrs): bool
+    {
+        $age = $this->ageFromBirthdate($this->stringAttr($attrs, 'birthdate'));
+
+        if ($age !== null) {
+            return $age < 18;
+        }
+
+        return (bool) ($attrs['child'] ?? false);
+    }
+
+    /**
+     * Whole years between a `YYYY-MM-DD` birthdate and today, or null when the
+     * value is missing / unparseable / in the future.
+     *
+     * @param   string  $birthdate  Raw PC birthdate.
+     *
+     * @return  int|null
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    private function ageFromBirthdate(string $birthdate): ?int
+    {
+        if ($birthdate === '') {
+            return null;
+        }
+
+        try {
+            $born = new \DateTimeImmutable(substr($birthdate, 0, 10));
+        } catch (\Exception) {
+            return null;
+        }
+
+        $today = new \DateTimeImmutable();
+
+        if ($born > $today) {
+            return null;
+        }
+
+        return $today->diff($born)->y;
     }
 
     /**

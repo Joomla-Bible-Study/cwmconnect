@@ -45,6 +45,19 @@ final class PersonMapperTest extends TestCase
     }
 
     #[Test]
+    public function flagsMinorsByAgeThenChildFlag(): void
+    {
+        // Age wins when a birthdate is on file.
+        self::assertSame(1, $this->mapper->map($this->person(['birthdate' => '2015-01-01']))['is_child'], 'under 18 by birthdate');
+        self::assertSame(0, $this->mapper->map($this->person(['birthdate' => '1980-01-01', 'child' => true]))['is_child'], 'adult birthdate overrides a stray child flag');
+
+        // No birthdate → defer to PC's child flag.
+        self::assertSame(1, $this->mapper->map($this->person(['child' => true]))['is_child'], 'child flag, no birthdate');
+        self::assertSame(0, $this->mapper->map($this->person(['child' => false]))['is_child'], 'adult, no birthdate');
+        self::assertSame(0, $this->mapper->map($this->person([]))['is_child'], 'unknown defaults to not-a-child');
+    }
+
+    #[Test]
     public function capturesGenderVerbatimFromPc(): void
     {
         self::assertSame('Male', $this->mapper->map($this->person(['gender' => 'Male']))['gender']);

@@ -130,9 +130,16 @@ if ($saveOrder && !empty($this->items)) {
                                     <div class="small">
                                         <?php echo Text::_('JCATEGORY') . ': ' . $this->escape($item->category_title); ?>
                                     </div>
-                                    <?php if (!empty($item->pc_membership)) : ?>
+                                    <?php if (!empty($item->pc_membership) || !empty($item->is_child)) : ?>
                                         <div class="small">
-                                            <span class="badge bg-secondary"><?php echo $this->escape($item->pc_membership); ?></span>
+                                            <?php if (!empty($item->pc_membership)) : ?>
+                                                <span class="badge bg-secondary"><?php echo $this->escape($item->pc_membership); ?></span>
+                                            <?php endif; ?>
+                                            <?php if (!empty($item->is_child)) : ?>
+                                                <span class="badge bg-info text-dark" title="<?php echo $this->escape(Text::_('COM_CWMCONNECT_MEMBERS_CHILD_HINT')); ?>">
+                                                    <?php echo Text::_('COM_CWMCONNECT_MEMBERS_CHILD'); ?>
+                                                </span>
+                                            <?php endif; ?>
                                         </div>
                                     <?php endif; ?>
                                     <?php

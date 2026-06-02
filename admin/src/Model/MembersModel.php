@@ -193,7 +193,7 @@ class MembersModel extends ListModel
                         'a.id, a.name, a.lname, a.funitid, a.alias, a.checked_out, a.checked_out_time, a.catid, a.user_id'
                         . ', a.published, a.access, a.created, a.created_by, a.ordering, a.featured, a.language, a.mstatus'
                         . ', a.image, a.publish_up, a.publish_down'
-                        . ', a.display_in_directory, a.hidden_reason, a.pc_person_id, a.pc_membership'
+                        . ', a.display_in_directory, a.hidden_reason, a.pc_person_id, a.pc_membership, a.is_child'
                     )
                 )
             )
@@ -292,6 +292,7 @@ class MembersModel extends ListModel
                     'a.hidden_reason',
                     'a.pc_person_id',
                     'a.pc_membership',
+                    'a.is_child',
                     'ul.name',
                     'ul.email',
                     'fu.name',

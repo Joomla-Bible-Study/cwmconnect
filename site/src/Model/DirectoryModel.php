@@ -166,7 +166,9 @@ class DirectoryModel extends ListModel
         }
 
         $query->where('a.published = 1')
-            ->where('a.display_in_directory = 1');
+            ->where('a.display_in_directory = 1')
+            // Minors appear under their family unit, not as their own listing.
+            ->where('a.is_child = 0');
 
         $nullDate = $db->quote($db->getNullDate());
         $nowDate  = $db->quote(Factory::getDate()->toSql());
