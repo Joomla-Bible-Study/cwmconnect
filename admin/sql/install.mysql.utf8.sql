@@ -76,6 +76,10 @@ CREATE TABLE IF NOT EXISTS `#__cwmconnect_details` (
   `version`          INT(10) UNSIGNED    NOT NULL DEFAULT '1',
   `hits`             INT(10) UNSIGNED    NOT NULL DEFAULT '0',
   `surname`          VARCHAR(255)        NOT NULL DEFAULT '',
+  `fname`            VARCHAR(255)        NOT NULL DEFAULT '',
+  `mname`            VARCHAR(255)        NOT NULL DEFAULT '',
+  `nickname`         VARCHAR(255)        NOT NULL DEFAULT '',
+  `suffix`           VARCHAR(64)         NOT NULL DEFAULT '',
   `mstatus`          TINYINT(3)          NOT NULL DEFAULT '0'
   COMMENT 'Used to track Members Status',
   PRIMARY KEY (`id`),

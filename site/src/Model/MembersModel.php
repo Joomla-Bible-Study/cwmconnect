@@ -90,6 +90,8 @@ class MembersModel extends ListModel
             $db->quoteName('a.name'),
             $db->quoteName('a.lname'),
             $db->quoteName('a.surname'),
+            $db->quoteName('a.fname'),
+            $db->quoteName('a.nickname'),
             $db->quoteName('a.alias'),
             $db->quoteName('a.email_to'),
             $db->quoteName('a.telephone'),
