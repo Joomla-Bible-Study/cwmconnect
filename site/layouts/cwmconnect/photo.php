@@ -24,6 +24,7 @@
  */
 
 use CWM\Component\Cwmconnect\Site\Helper\RouteHelper;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 
@@ -72,7 +73,24 @@ $img = '<img src="' . htmlspecialchars($src, ENT_QUOTES) . '"'
     . ' alt="' . htmlspecialchars($alt, ENT_QUOTES) . '">';
 
 if ($linkFull) {
+    // Show the full-resolution image in Joomla's native dialog — an accessible
+    // <dialog> with focus trap, Escape and backdrop, maintained by core. The
+    // autocreate behaviour reads the JSON config off the data attribute and
+    // intercepts the click; with JS off the link still opens the original in a
+    // new tab.
+    $wa = Factory::getApplication()->getDocument()->getWebAssetManager();
+    $wa->useScript('joomla.dialog-autocreate')
+        ->useScript('com_cwmconnect.dialog-enhance')
+        ->useStyle('com_cwmconnect.dialog');
+
+    $dialogConfig = json_encode([
+        'popupType'  => 'image',
+        'src'        => $fullUrl,
+        'textHeader' => $alt !== '' ? $alt : Text::_('COM_CWMCONNECT_IMAGE_VIEW_FULL'),
+    ], \JSON_THROW_ON_ERROR);
+
     echo '<a href="' . htmlspecialchars($fullUrl, ENT_QUOTES) . '" target="_blank" rel="noopener"'
+        . ' data-joomla-dialog="' . htmlspecialchars($dialogConfig, ENT_QUOTES) . '"'
         . ' title="' . htmlspecialchars(Text::_('COM_CWMCONNECT_IMAGE_VIEW_FULL'), ENT_QUOTES) . '">' . $img . '</a>';
 
     return;
