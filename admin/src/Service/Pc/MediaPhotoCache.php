@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace CWM\Component\Cwmconnect\Administrator\Service\Pc;
 
+use CWM\Component\Cwmconnect\Administrator\Service\Image\ImageVariants;
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\Exception\PcException;
 use Joomla\CMS\Http\Http;
 
@@ -74,6 +75,7 @@ final class MediaPhotoCache implements PhotoCacheInterface
         private readonly string $cacheRoot,
         private readonly int $timeoutSeconds = 30,
         private readonly ?PhotoThumbnailer $thumbnailer = null,
+        private readonly ?ImageVariants $variants = null,
     ) {}
 
     public function cache(int $pcPersonId, ?string $avatarUrl, ?string $currentHash): ?PhotoCacheResult
@@ -106,8 +108,32 @@ final class MediaPhotoCache implements PhotoCacheInterface
         $relativePath = $this->relativePathFor($pcPersonId, $avatarUrl);
         $this->writeBytes($relativePath, $bytes);
         $this->writeThumbnail($relativePath);
+        $this->writeWebVariants($relativePath);
 
         return new PhotoCacheResult($relativePath, $hash, true);
+    }
+
+    /**
+     * Generate the browser-optimized web variants (thumb/medium × WebP/JPEG)
+     * for a freshly cached photo, under `<cacheRoot>/web/`. Best-effort — the
+     * serve proxy falls back to the original if a variant is missing.
+     *
+     * @param   string  $relativePath  Original photo path relative to cacheRoot.
+     *
+     * @return  void
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    private function writeWebVariants(string $relativePath): void
+    {
+        $stem = pathinfo($relativePath, \PATHINFO_FILENAME);
+
+        if ($stem === '') {
+            return;
+        }
+
+        $root = rtrim($this->cacheRoot, '/');
+        ($this->variants ?? new ImageVariants())->generate($root . '/' . $relativePath, $root . '/web', $stem);
     }
 
     /**
