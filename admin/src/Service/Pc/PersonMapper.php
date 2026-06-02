@@ -217,6 +217,81 @@ final class PersonMapper
     }
 
     /**
+     * Resolve the person's PC household to local family-unit columns, or null
+     * when they belong to no household (or the Household resource wasn't
+     * included on this page). PC allows a person to sit in more than one
+     * household; we take the first, which is the primary in practice.
+     *
+     * @param   array<string, mixed>             $personData  PC Person row.
+     * @param   array<int, array<string, mixed>> $included    JSON:API
+     *                                                        `included` array,
+     *                                                        carrying the
+     *                                                        Household resource.
+     *
+     * @return  array{pc_household_id: int, name: string, alias: string}|null
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    public function extractHousehold(array $personData, array $included): ?array
+    {
+        $refs = $this->relationshipIds($personData)['households'] ?? [];
+
+        if ($refs === []) {
+            return null;
+        }
+
+        $byTypeId = $this->indexIncluded($included);
+
+        foreach ($refs as $ref) {
+            if ($ref['type'] !== 'Household') {
+                continue;
+            }
+
+            $resource = $byTypeId['Household:' . $ref['id']] ?? null;
+
+            if ($resource !== null) {
+                return $this->mapHousehold($resource);
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Map a PC Household resource to local family-unit columns. Returns null
+     * for a non-positive id.
+     *
+     * @param   array<string, mixed>  $householdData  A PC Household resource.
+     *
+     * @return  array{pc_household_id: int, name: string, alias: string}|null
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    private function mapHousehold(array $householdData): ?array
+    {
+        $id = (int) ($householdData['id'] ?? 0);
+
+        if ($id <= 0) {
+            return null;
+        }
+
+        $attrs = \is_array($householdData['attributes'] ?? null) ? $householdData['attributes'] : [];
+        $name  = trim((string) ($attrs['name'] ?? ''));
+
+        if ($name === '') {
+            $name = 'Household ' . $id;
+        }
+
+        $slug = trim((string) preg_replace('/[^A-Za-z0-9]+/', '-', strtolower($name)), '-');
+
+        return [
+            'pc_household_id' => $id,
+            'name'            => $name,
+            'alias'           => ($slug === '' ? 'household' : $slug) . '-pchh-' . $id,
+        ];
+    }
+
+    /**
      * Extract and validate the PC person id from a person resource.
      *
      * @param   array<string, mixed>  $personData

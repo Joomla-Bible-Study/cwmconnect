@@ -111,6 +111,16 @@ final class SyncReport
     public int $paired = 0;
 
     /**
+     * Member rows linked to a household (family unit) this run. Counts each
+     * person whose `funitid` was resolved from a PC household — not the number
+     * of distinct households.
+     *
+     * @var    int
+     * @since  __DEPLOY_VERSION__
+     */
+    public int $householdsLinked = 0;
+
+    /**
      * Per-person error list, one entry per failure.
      *
      * @var    list<array{pcPersonId: int|null, message: string}>
@@ -234,6 +244,7 @@ final class SyncReport
             'photosDownloaded'    => $this->photosDownloaded,
             'photosUnchanged'     => $this->photosUnchanged,
             'paired'              => $this->paired,
+            'householdsLinked'    => $this->householdsLinked,
             'errorCount'       => $this->errorCount(),
             'errors'           => $this->errors,
             'startedAt'        => $this->startedAt->format(\DateTimeImmutable::ATOM),

@@ -17,6 +17,7 @@ use CWM\Component\Cwmconnect\Administrator\Service\Pc\CampusSync;
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\Client as PcClient;
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\DatabaseCampusRepository;
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\DatabaseFieldMapRepository;
+use CWM\Component\Cwmconnect\Administrator\Service\Pc\DatabaseHouseholdRepository;
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\DatabaseMemberRepository;
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\Exception\AuthenticationException;
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\Exception\ConfigurationException as PcConfigurationException;
@@ -368,6 +369,7 @@ class CpanelController extends BaseController
                 cacheRoot: JPATH_ROOT . '/media/com_cwmconnect/photos',
             ),
             pairing: new DatabaseMemberPairing($db),
+            households: new DatabaseHouseholdRepository($db),
         );
     }
 

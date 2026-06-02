@@ -196,6 +196,51 @@ final class PersonMapperTest extends TestCase
     }
 
     #[Test]
+    public function extractHouseholdMapsTheIncludedHouseholdResource(): void
+    {
+        $person   = $this->person(['first_name' => 'Brent'], ['households' => [['type' => 'Household', 'id' => '13638556']]]);
+        $included = [
+            ['type' => 'Household', 'id' => '13638556', 'attributes' => ['name' => 'Cordis Household']],
+        ];
+
+        $household = $this->mapper->extractHousehold($person, $included);
+
+        self::assertSame(13638556, $household['pc_household_id']);
+        self::assertSame('Cordis Household', $household['name']);
+        self::assertSame('cordis-household-pchh-13638556', $household['alias']);
+    }
+
+    #[Test]
+    public function extractHouseholdIsNullWhenPersonHasNoHousehold(): void
+    {
+        $person = $this->person(['first_name' => 'Solo']);
+
+        self::assertNull($this->mapper->extractHousehold($person, []));
+    }
+
+    #[Test]
+    public function extractHouseholdIsNullWhenResourceNotIncluded(): void
+    {
+        // Household ref present but the Household resource didn't land in the
+        // page's `included` — we link on the next page that carries it.
+        $person = $this->person(['first_name' => 'Brent'], ['households' => [['type' => 'Household', 'id' => '13638556']]]);
+
+        self::assertNull($this->mapper->extractHousehold($person, []));
+    }
+
+    #[Test]
+    public function extractHouseholdFallsBackToAGeneratedNameWhenBlank(): void
+    {
+        $person   = $this->person(['first_name' => 'Brent'], ['households' => [['type' => 'Household', 'id' => '42']]]);
+        $included = [['type' => 'Household', 'id' => '42', 'attributes' => ['name' => '']]];
+
+        $household = $this->mapper->extractHousehold($person, $included);
+
+        self::assertSame('Household 42', $household['name']);
+        self::assertSame('household-42-pchh-42', $household['alias']);
+    }
+
+    #[Test]
     public function birthdateIsoIsExpandedToDatetime(): void
     {
         $row = $this->mapper->map($this->person(['birthdate' => '1981-12-03']));

@@ -16,9 +16,11 @@ use CWM\Component\Cwmconnect\Administrator\Service\Pairing\MemberPairingInterfac
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\Client as PcClient;
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\CustomFieldWriterInterface as PcCustomFieldWriterInterface;
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\DatabaseFieldMapRepository as PcDatabaseFieldMapRepository;
+use CWM\Component\Cwmconnect\Administrator\Service\Pc\DatabaseHouseholdRepository as PcDatabaseHouseholdRepository;
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\DatabaseMemberRepository as PcDatabaseMemberRepository;
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\Exception\ConfigurationException as PcConfigurationException;
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\FieldMapRepositoryInterface as PcFieldMapRepositoryInterface;
+use CWM\Component\Cwmconnect\Administrator\Service\Pc\HouseholdRepositoryInterface as PcHouseholdRepositoryInterface;
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\FieldsHelperWriter as PcFieldsHelperWriter;
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\MediaPhotoCache as PcMediaPhotoCache;
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\MemberRepositoryInterface as PcMemberRepositoryInterface;
@@ -144,6 +146,12 @@ return new class implements ServiceProviderInterface {
         );
 
         $container->set(
+            PcHouseholdRepositoryInterface::class,
+            static fn(Container $c): PcHouseholdRepositoryInterface
+                => new PcDatabaseHouseholdRepository($c->get(DatabaseInterface::class)),
+        );
+
+        $container->set(
             PcSyncEngine::class,
             static fn(Container $c): PcSyncEngine => new PcSyncEngine(
                 client: $c->get(PcClient::class),
@@ -153,6 +161,7 @@ return new class implements ServiceProviderInterface {
                 fieldWriter: $c->get(PcCustomFieldWriterInterface::class),
                 photoCache: $c->get(PcPhotoCacheInterface::class),
                 pairing: $c->get(MemberPairingInterface::class),
+                households: $c->get(PcHouseholdRepositoryInterface::class),
             ),
         );
     }

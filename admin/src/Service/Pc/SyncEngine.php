@@ -121,6 +121,7 @@ final class SyncEngine
         private readonly ?CustomFieldWriterInterface $fieldWriter = null,
         private readonly ?PhotoCacheInterface $photoCache = null,
         private readonly ?MemberPairingInterface $pairing = null,
+        private readonly ?HouseholdRepositoryInterface $households = null,
         private readonly LoggerInterface $logger = new NullLogger(),
     ) {}
 
@@ -197,7 +198,17 @@ final class SyncEngine
                 $pcPersonId = isset($person['id']) ? (int) $person['id'] : null;
 
                 try {
-                    $attrs   = $this->mapper->map($person, $included);
+                    $attrs = $this->mapper->map($person, $included);
+
+                    if ($this->households !== null) {
+                        $funitid = $this->linkHousehold($person, $included, $report);
+
+                        if ($funitid !== null) {
+                            $attrs['funitid'] = $funitid;
+                            $report->householdsLinked++;
+                        }
+                    }
+
                     $outcome = $this->repository->upsertByPcPersonId($attrs);
 
                     match ($outcome) {
@@ -246,6 +257,41 @@ final class SyncEngine
         $this->logger->info('PC sync finished.', $report->toArray());
 
         return $report;
+    }
+
+    /**
+     * Resolve the person's PC household to a local family-unit id, upserting
+     * the family-unit row on the way. Returns null when the person has no
+     * household (or its resource wasn't included on this page). Failures are
+     * recorded on the report rather than thrown — a bad household must not
+     * abort the member sync.
+     *
+     * @param   array<string, mixed>             $person    Raw PC Person row.
+     * @param   array<int, array<string, mixed>> $included  JSON:API included.
+     * @param   SyncReport                       $report    Mutated in-place.
+     *
+     * @return  int|null  Local `#__cwmconnect_familyunit.id`, or null.
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    private function linkHousehold(array $person, array $included, SyncReport $report): ?int
+    {
+        try {
+            $mapped = $this->mapper->extractHousehold($person, $included);
+
+            if ($mapped === null) {
+                return null;
+            }
+
+            return $this->households->upsertByPcHouseholdId($mapped);
+        } catch (\Throwable $e) {
+            $report->recordError(
+                isset($person['id']) ? (int) $person['id'] : null,
+                'Household link failed: ' . $e->getMessage(),
+            );
+
+            return null;
+        }
     }
 
     /**
