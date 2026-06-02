@@ -61,14 +61,24 @@ final class PcLockedFieldsTest extends TestCase
     }
 
     #[Test]
-    public function locksDisplayInDirectoryWhenPcHidesTheRow(): void
+    public function keepsVisibilityEditableEvenWhenHidden(): void
     {
-        // PC's child boolean (or directory_status=no) set the flag to 0.
-        // Admin must unlink the row before re-enabling visibility.
+        // Full-directory policy: visibility is admin-owned, so neither
+        // display_in_directory nor published is ever locked — the admin can
+        // hide a synced member and the hide survives re-sync.
         $item   = (object) ['pc_person_id' => 42, 'display_in_directory' => 0];
         $locked = PcLockedFields::forItem($item);
 
-        self::assertContains('display_in_directory', $locked);
+        self::assertNotContains('display_in_directory', $locked);
+        self::assertNotContains('published', $locked);
+    }
+
+    #[Test]
+    public function locksTheSyncedHousehold(): void
+    {
+        $item = (object) ['pc_person_id' => 42, 'display_in_directory' => 1];
+
+        self::assertContains('funitid', PcLockedFields::forItem($item));
     }
 
     #[Test]

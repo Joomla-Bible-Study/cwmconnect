@@ -140,17 +140,14 @@ if ($saveOrder && !empty($this->items)) {
                                     // when published AND flagged for the directory. Flag the rest
                                     // with the reason so admins can see why someone is missing.
                                     if (empty($item->display_in_directory) || (int) $item->published === 0) :
-                                        if (!empty($item->hidden_reason)) {
-                                            $reasonKey = (string) $item->hidden_reason;
-                                        } elseif ((int) $item->published === 0) {
-                                            $reasonKey = 'inactive';
-                                        } else {
-                                            // Published but flagged off the directory: an admin
-                                            // hid this individual (the full-directory sync lists
-                                            // every active member otherwise).
-                                            $reasonKey = 'manual';
-                                        }
-                            ?>
+                                        // A sync-recorded reason (legacy 'inactive') wins;
+                                        // otherwise the row was hidden by an admin — the
+                                        // full-directory sync lists every active member and
+                                        // hard-deletes inactive ones, so published=0 /
+                                        // display_in_directory=0 on a retained row is a manual
+                                        // hide that now survives re-sync.
+                                        $reasonKey = !empty($item->hidden_reason) ? (string) $item->hidden_reason : 'manual';
+                                        ?>
                                         <div class="small mt-1">
                                             <span class="badge bg-warning text-dark">
                                                 <span class="icon-eye-slash" aria-hidden="true"></span>

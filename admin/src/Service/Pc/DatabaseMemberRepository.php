@@ -253,10 +253,16 @@ final class DatabaseMemberRepository implements MemberRepositoryInterface
      */
     private function update(int $id, array $attrs): void
     {
-        $attrs['id']                   = $id;
-        $attrs['modified']              = new \DateTimeImmutable()->format('Y-m-d H:i:s');
-        $attrs['display_in_directory'] ??= 1;
-        $attrs['published']             ??= 1;
+        $attrs['id']       = $id;
+        $attrs['modified'] = new \DateTimeImmutable()->format('Y-m-d H:i:s');
+
+        // Visibility is admin-owned once a row exists. The sync sets published
+        // + display_in_directory on INSERT (visible by default) but must NOT
+        // clobber a later admin hide/unpublish on UPDATE. Inactive people are
+        // hard-deleted by the sweep — never kept as published=0 — so there is
+        // no PC-driven published change to push here; published=0 on a retained
+        // synced row always means "an admin hid this person."
+        unset($attrs['display_in_directory'], $attrs['published']);
 
         $row = (object) $attrs;
         $this->db->updateObject(self::TABLE, $row, 'id');
