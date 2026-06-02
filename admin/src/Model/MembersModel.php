@@ -134,6 +134,10 @@ class MembersModel extends ListModel
             'filter.visibility',
             $this->getUserStateFromRequest($this->context . '.filter.visibility', 'filter_visibility', '', 'cmd')
         );
+        $this->setState(
+            'filter.membership',
+            $this->getUserStateFromRequest($this->context . '.filter.membership', 'filter_membership', '', 'string')
+        );
 
         parent::populateState($ordering, $direction);
 
@@ -162,6 +166,7 @@ class MembersModel extends ListModel
         $id .= ':' . $this->getState('filter.tag');
         $id .= ':' . $this->getState('filter.level');
         $id .= ':' . $this->getState('filter.visibility');
+        $id .= ':' . $this->getState('filter.membership');
 
         return parent::getStoreId($id);
     }
@@ -188,7 +193,7 @@ class MembersModel extends ListModel
                         'a.id, a.name, a.lname, a.funitid, a.alias, a.checked_out, a.checked_out_time, a.catid, a.user_id'
                         . ', a.published, a.access, a.created, a.created_by, a.ordering, a.featured, a.language, a.mstatus'
                         . ', a.image, a.publish_up, a.publish_down'
-                        . ', a.display_in_directory, a.hidden_reason, a.pc_person_id'
+                        . ', a.display_in_directory, a.hidden_reason, a.pc_person_id, a.pc_membership'
                     )
                 )
             )
@@ -286,6 +291,7 @@ class MembersModel extends ListModel
                     'a.display_in_directory',
                     'a.hidden_reason',
                     'a.pc_person_id',
+                    'a.pc_membership',
                     'ul.name',
                     'ul.email',
                     'fu.name',
@@ -382,6 +388,12 @@ class MembersModel extends ListModel
                     . ' OR ' . $db->quoteName('a.display_in_directory') . ' = 0)'
                 );
                 break;
+        }
+
+        // Filter by PC membership designation (Member / Regular Attender / …).
+        if ($membership = $this->getState('filter.membership')) {
+            $query->where($db->quoteName('a.pc_membership') . ' = :membership')
+                ->bind(':membership', $membership);
         }
 
         // Filter by tag.

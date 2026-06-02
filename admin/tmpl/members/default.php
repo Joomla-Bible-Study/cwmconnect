@@ -130,6 +130,11 @@ if ($saveOrder && !empty($this->items)) {
                                     <div class="small">
                                         <?php echo Text::_('JCATEGORY') . ': ' . $this->escape($item->category_title); ?>
                                     </div>
+                                    <?php if (!empty($item->pc_membership)) : ?>
+                                        <div class="small">
+                                            <span class="badge bg-secondary"><?php echo $this->escape($item->pc_membership); ?></span>
+                                        </div>
+                                    <?php endif; ?>
                                     <?php
                                     // Directory visibility: a member shows on the front end only
                                     // when published AND flagged for the directory. Flag the rest

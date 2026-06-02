@@ -33,6 +33,18 @@ final class PersonMapperTest extends TestCase
     }
 
     #[Test]
+    public function capturesPcMembershipDesignation(): void
+    {
+        $member   = $this->mapper->map($this->person(['membership' => 'Member']));
+        $attender = $this->mapper->map($this->person(['membership' => 'Regular Attender']));
+        $blank    = $this->mapper->map($this->person([]));
+
+        self::assertSame('Member', $member['pc_membership']);
+        self::assertSame('Regular Attender', $attender['pc_membership']);
+        self::assertSame('', $blank['pc_membership']);
+    }
+
+    #[Test]
     public function nameIncludesMiddleNameWhenPresent(): void
     {
         $row = $this->mapper->map($this->person([

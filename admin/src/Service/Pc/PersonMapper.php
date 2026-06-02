@@ -120,6 +120,11 @@ final class PersonMapper
             'display_in_directory' => 1,
             'published'            => $pcStatus === 'active' ? 1 : 0,
             'hidden_reason'        => $pcStatus === 'active' ? '' : 'inactive',
+            // PC membership designation (Member / Regular Attender / Visitor /
+            // …). Recorded so the directory can tell official members from the
+            // household-mates pulled in by the family-expansion policy — drives
+            // the admin membership filter and the members-only roster.
+            'pc_membership'        => $this->stringAttr($attrs, 'membership'),
         ];
     }
 
