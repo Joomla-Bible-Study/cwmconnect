@@ -71,14 +71,17 @@ final class DatabaseHouseholdRepository implements HouseholdRepositoryInterface
         $existingId = $this->findRowIdByHouseholdId($pcHouseholdId);
 
         // Update touches only the name + sync stamp, leaving alias (SEF-stable)
-        // and published (an admin may have unpublished it) untouched.
+        // and published (an admin may have unpublished it) untouched. The row
+        // must be a variable: updateObject() takes it by reference.
         if ($existingId !== null) {
-            $this->db->updateObject(self::TABLE, (object) [
+            $row = (object) [
                 'id'                => $existingId,
                 'name'              => (string) $fields['name'],
                 'pc_last_synced_at' => $now,
                 'modified'          => $now,
-            ], 'id');
+            ];
+
+            $this->db->updateObject(self::TABLE, $row, 'id');
 
             return $existingId;
         }
