@@ -19,9 +19,11 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
 
-HTMLHelper::_('behavior.keepalive');
-HTMLHelper::_('behavior.formvalidation');
-HTMLHelper::_('behavior.tooltip');
+// J5/J6: behavior.formvalidation + behavior.tooltip were removed. Load the
+// form-validate + keepalive web assets and Bootstrap tooltips instead.
+$wa = Factory::getApplication()->getDocument()->getWebAssetManager();
+$wa->useScript('keepalive')->useScript('form.validate');
+HTMLHelper::_('bootstrap.tooltip', '.hasTooltip');
 if (isset($this->error)) : ?>
 <div class="cwmconnect-error">
 	<?php echo $this->error; ?>
