@@ -26,9 +26,6 @@ HTMLHelper::_('bootstrap.tooltip', '.hasTooltip');
 
 $fields = ['cwmconnect_name', 'cwmconnect_email', 'cwmconnect_subject', 'cwmconnect_message'];
 
-if ($this->params->get('show_email_copy')) {
-    $fields[] = 'cwmconnect_email_copy';
-}
 ?>
 <?php if (isset($this->error)) : ?>
     <div class="alert alert-danger"><?php echo $this->error; ?></div>
@@ -60,6 +57,13 @@ if ($this->params->get('show_email_copy')) {
             <?php endforeach; ?>
         <?php endif; ?>
     <?php endforeach; ?>
+
+    <?php if ($this->params->get('show_email_copy')) : ?>
+        <div class="form-check mb-3">
+            <?php echo $this->form->getInput('cwmconnect_email_copy'); ?>
+            <?php echo $this->form->getLabel('cwmconnect_email_copy'); ?>
+        </div>
+    <?php endif; ?>
 
     <div class="d-flex">
         <button class="btn btn-primary validate" type="submit">
