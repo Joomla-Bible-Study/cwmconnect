@@ -41,6 +41,17 @@
       }
     },
     {
+      "name": "com_cwmconnect.lightbox",
+      "type": "script",
+      "uri": "com_cwmconnect/lightbox.js",
+      "dependencies": [
+        "core"
+      ],
+      "attributes": {
+        "defer": true
+      }
+    },
+    {
       "name": "com_cwmconnect.jscolor",
       "type": "script",
       "uri": "com_cwmconnect/jscolor.min.js",

@@ -24,6 +24,7 @@
  */
 
 use CWM\Component\Cwmconnect\Site\Helper\RouteHelper;
+use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 
@@ -72,7 +73,17 @@ $img = '<img src="' . htmlspecialchars($src, ENT_QUOTES) . '"'
     . ' alt="' . htmlspecialchars($alt, ENT_QUOTES) . '">';
 
 if ($linkFull) {
+    // Progressive enhancement: the lightbox script intercepts the click and
+    // shows the full image in an in-page overlay; with JS off the link still
+    // opens the original in a new tab.
+    Factory::getApplication()->getDocument()->getWebAssetManager()
+        ->useScript('com_cwmconnect.lightbox');
+
     echo '<a href="' . htmlspecialchars($fullUrl, ENT_QUOTES) . '" target="_blank" rel="noopener"'
+        . ' data-cwm-lightbox'
+        . ' data-cwm-full="' . htmlspecialchars($fullUrl, ENT_QUOTES) . '"'
+        . ' data-cwm-caption="' . htmlspecialchars($alt, ENT_QUOTES) . '"'
+        . ' data-cwm-close="' . htmlspecialchars(Text::_('JCLOSE'), ENT_QUOTES) . '"'
         . ' title="' . htmlspecialchars(Text::_('COM_CWMCONNECT_IMAGE_VIEW_FULL'), ENT_QUOTES) . '">' . $img . '</a>';
 
     return;
