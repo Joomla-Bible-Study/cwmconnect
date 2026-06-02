@@ -162,14 +162,19 @@
      * the checkbox so a staff copy can flag hidden members.
      *
      * @param {boolean} includeHidden
+     * @param {boolean} membersOnly
      * @returns {Promise<{success: boolean, message: string, data: *}>}
      */
-    const callEndpoint = async (includeHidden) => {
+    const callEndpoint = async (includeHidden, membersOnly) => {
         const body = new FormData();
         body.append(options.csrfToken, '1');
 
         if (includeHidden) {
             body.append('include_hidden', '1');
+        }
+
+        if (membersOnly) {
+            body.append('members_only', '1');
         }
 
         const response = await fetch(options.generateUrl, {
@@ -199,6 +204,8 @@
 
         const hidden = document.getElementById('includeHidden');
         const includeHidden = Boolean(hidden && hidden.checked);
+        const members = document.getElementById('membersOnly');
+        const membersOnly = Boolean(members && members.checked);
 
         button.classList.add('disabled');
         button.setAttribute('aria-disabled', 'true');
@@ -207,7 +214,7 @@
         let json;
 
         try {
-            json = await callEndpoint(includeHidden);
+            json = await callEndpoint(includeHidden, membersOnly);
         } catch {
             json = { success: false, message: options.i18n.unknownError, data: null };
         }

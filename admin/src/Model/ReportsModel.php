@@ -21,6 +21,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Mail\MailHelper;
 use Joomla\CMS\MVC\Model\ListModel;
+use Joomla\Database\ParameterType;
 use Joomla\Database\QueryInterface;
 use Joomla\Registry\Registry;
 
@@ -256,6 +257,16 @@ class ReportsModel extends ListModel
             $query->where($db->quoteName('a.display_in_directory') . ' = ' . (int) $visible);
         }
 
+        // Members-only roster: restrict to official members (the configured PC
+        // membership designations), dropping the household-mates the family-
+        // expansion policy pulls in (Visitors / Regular Attenders). Used for a
+        // voting / business-meeting list as opposed to the full directory.
+        $memberStatuses = $this->getState('filter.members_only');
+
+        if (\is_array($memberStatuses) && $memberStatuses !== []) {
+            $query->whereIn($db->quoteName('a.pc_membership'), $memberStatuses, ParameterType::STRING);
+        }
+
         if ($language = $this->getState('filter.language')) {
             $query->where($db->quoteName('a.language') . ' IN (' . $db->quote($language) . ', ' . $db->quote('*') . ')');
         }
@@ -295,6 +306,13 @@ class ReportsModel extends ListModel
 
         if (!$includeHidden) {
             $this->setState('filter.display_in_directory', 1);
+        }
+
+        // Members-only roster: when requested, restrict the export to the
+        // configured PC member designations (excludes household-mates).
+        if ((bool) Factory::getApplication()->getInput()->getInt('members_only', 0)) {
+            $statuses = (array) $params->get('pc_membership_statuses', []);
+            $this->setState('filter.members_only', array_values(array_filter($statuses)));
         }
 
         $reportBuild = new ReportbuildHelper();
