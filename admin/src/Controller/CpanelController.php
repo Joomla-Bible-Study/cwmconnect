@@ -139,6 +139,13 @@ class CpanelController extends BaseController
     {
         $this->assertAdminAjax();
 
+        // Release the session write-lock now that auth + CSRF have been checked.
+        // The sync runs for 20-30s; without this the PHP session file stays
+        // exclusively locked for the whole request and every concurrent
+        // `pcSyncProgress` poll blocks until the sync ends — so the progress
+        // spinner would never update mid-run. Nothing below writes to session.
+        $this->app->getSession()->close();
+
         $progressFile = $this->progressFilePath();
 
         try {
