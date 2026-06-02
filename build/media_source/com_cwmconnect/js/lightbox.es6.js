@@ -21,6 +21,11 @@
  * extra stylesheet is required. Dismiss via the close button, a backdrop
  * click, or Escape; focus returns to the trigger that opened it.
  *
+ * Visibility is toggled with the `d-none` / `d-flex` utility classes rather
+ * than the `hidden` property: Bootstrap's display utilities (and
+ * `.spinner-border`) set `display`, which would override the `[hidden]`
+ * attribute's `display: none` and leave elements stuck visible.
+ *
  * All DOM is built with createElement + textContent so caption/alt strings
  * never reach the HTML parser.
  */
@@ -65,14 +70,28 @@
     };
 
     /**
+     * Show or hide an element via the `d-none` utility class.
+     *
+     * @param {HTMLElement} el
+     * @param {boolean}     visible
+     * @returns {void}
+     */
+    const setVisible = (el, visible) => {
+        el.classList.toggle('d-none', !visible);
+    };
+
+    /**
      * Close the overlay, restore body scroll and return focus to the trigger.
+     *
+     * @returns {void}
      */
     const close = () => {
-        if (!overlay || overlay.hidden) {
+        if (!overlay || overlay.classList.contains('d-none')) {
             return;
         }
 
-        overlay.hidden = true;
+        overlay.classList.remove('d-flex');
+        overlay.classList.add('d-none');
         document.body.classList.remove('overflow-hidden');
 
         // Drop the src so a huge image is not retained between opens.
@@ -88,7 +107,8 @@
     };
 
     /**
-     * Build the overlay DOM once and wire its dismiss handlers.
+     * Build the overlay DOM once and wire its dismiss handlers. The overlay
+     * starts hidden (`d-none`); `open()` swaps it to `d-flex`.
      *
      * @param {string} closeLabel  Accessible label for the close control.
      * @returns {void}
@@ -96,10 +116,9 @@
     const build = (closeLabel) => {
         overlay = make(
             'div',
-            'cwm-lightbox position-fixed top-0 start-0 w-100 h-100 d-flex '
+            'cwm-lightbox position-fixed top-0 start-0 w-100 h-100 d-none '
             + 'align-items-center justify-content-center p-3',
         );
-        overlay.hidden = true;
         overlay.setAttribute('role', 'dialog');
         overlay.setAttribute('aria-modal', 'true');
         overlay.style.background = 'rgba(0, 0, 0, 0.85)';
@@ -110,7 +129,7 @@
         closeBtn.setAttribute('aria-label', closeLabel);
         closeBtn.style.zIndex = '1';
 
-        spinner = make('span', 'spinner-border text-light position-absolute');
+        spinner = make('span', 'spinner-border text-light position-absolute top-50 start-50 translate-middle');
         spinner.setAttribute('aria-hidden', 'true');
 
         const figure = make('figure', 'm-0 text-center mw-100 mh-100 d-flex flex-column');
@@ -141,7 +160,7 @@
 
         image.addEventListener('load', () => {
             if (spinner) {
-                spinner.hidden = true;
+                setVisible(spinner, false);
             }
         });
     };
@@ -165,16 +184,22 @@
 
         const text = trigger.getAttribute('data-cwm-caption') || '';
         caption.textContent = text;
-        caption.hidden = text === '';
+        setVisible(caption, text !== '');
         image.setAttribute('alt', text);
 
-        if (spinner) {
-            spinner.hidden = false;
-        }
+        setVisible(spinner, true);
 
         lastFocus = document.activeElement;
         image.src = src;
-        overlay.hidden = false;
+
+        // If the image is already cached it may be complete before the load
+        // listener fires — hide the spinner immediately in that case.
+        if (image.complete) {
+            setVisible(spinner, false);
+        }
+
+        overlay.classList.remove('d-none');
+        overlay.classList.add('d-flex');
         document.body.classList.add('overflow-hidden');
         closeBtn.focus();
     };
