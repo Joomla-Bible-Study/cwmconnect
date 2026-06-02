@@ -99,6 +99,12 @@ final class PersonMapper
             'name'                 => $fullName !== '' ? $fullName : $this->stringAttr($attrs, 'name'),
             'lname'                => $lastName,
             'surname'              => $lastName,
+            // Structured PC name parts stored like-for-like so display names can
+            // be composed without re-parsing the computed `name`.
+            'fname'                => $firstName,
+            'mname'                => $middleName,
+            'nickname'             => $nickname,
+            'suffix'               => $suffix,
             'alias'                => $this->buildAlias($firstName, $lastName, $pcPersonId),
             'email_to'             => $primaryEmail,
             'telephone'            => $primaryPhone,

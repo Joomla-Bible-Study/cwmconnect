@@ -48,6 +48,7 @@ final class DirectoryPdfPresenterTest extends TestCase
     {
         return (object) array_merge([
             'name'        => '', 'surname' => '', 'lname' => '', 'spouse' => '',
+            'fname'       => '', 'nickname' => '',
             'con_position' => '', 'address' => '', 'suburb' => '', 'state' => '',
             'postcode'    => '', 'anniversary' => '', 'telephone' => '', 'mobile' => '',
             'email_to'    => '', 'image' => '', 'display_in_directory' => 1,
@@ -65,6 +66,28 @@ final class DirectoryPdfPresenterTest extends TestCase
 
         self::assertSame('Brennan', $this->presenter->memberName(self::member(['surname' => 'Brennan'])));
         self::assertSame('', $this->presenter->memberName(self::member([])));
+    }
+
+    #[Test]
+    public function memberNameUsesStructuredFirstNameAndNickname(): void
+    {
+        // Primary path: the PC sync stores fname / nickname like-for-like, so the
+        // given name needs no parsing of the computed full name.
+        self::assertSame('Ababio, Gifty', $this->presenter->memberName(self::member(['surname' => 'Ababio', 'fname' => 'Gifty'])));
+        self::assertSame('Adalla, Antony (Tony)', $this->presenter->memberName(self::member(['surname' => 'Adalla', 'fname' => 'Antony', 'nickname' => 'Tony'])));
+        // A nickname echoing the first name is dropped.
+        self::assertSame('Allen, James', $this->presenter->memberName(self::member(['surname' => 'Allen', 'fname' => 'James', 'nickname' => 'James'])));
+    }
+
+    #[Test]
+    public function memberNameFallsBackToStrippingSurnameWhenNoFirstName(): void
+    {
+        // Fallback path (manual rows / not yet re-synced): no fname, so strip the
+        // surname out of the full display name rather than repeat it.
+        self::assertSame('Ababio, Gifty B.', $this->presenter->memberName(self::member(['surname' => 'Ababio', 'lname' => 'Ababio', 'name' => 'Gifty B. Ababio'])));
+        self::assertSame('Adalla, Antony John (Tony)', $this->presenter->memberName(self::member(['surname' => 'Adalla', 'name' => 'Antony John Adalla (Tony)'])));
+        self::assertSame('Addison-Amponsah, Kwabena A', $this->presenter->memberName(self::member(['surname' => 'Addison-Amponsah', 'name' => 'Kwabena A Addison-Amponsah'])));
+        self::assertSame('Cox, Sherman, III', $this->presenter->memberName(self::member(['surname' => 'Cox', 'name' => 'Sherman Cox, III'])));
     }
 
     #[Test]

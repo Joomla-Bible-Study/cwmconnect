@@ -239,8 +239,8 @@ final class DirectoryPdfPresenter
     public function memberName(object $item): string
     {
         $surname = trim((string) ($item->surname ?? '')) ?: trim((string) ($item->lname ?? ''));
-        $given   = trim((string) ($item->name ?? ''));
         $spouse  = trim((string) ($item->spouse ?? ''));
+        $given   = $this->memberGiven($item);
 
         $label = $given;
 
@@ -258,6 +258,46 @@ final class DirectoryPdfPresenter
     }
 
     /**
+     * The given-name portion for the inverted "Surname, Given" directory label.
+     *
+     * Prefers the structured `fname` (+ `nickname`) the PC sync now stores
+     * like-for-like. Falls back — for manual rows or any not yet re-synced — to
+     * stripping the surname out of the full display `name` so the inverted label
+     * doesn't repeat it ("Ababio, Gifty B." not "Ababio, Gifty B. Ababio").
+     *
+     * @param   object  $item
+     *
+     * @return  string
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    private function memberGiven(object $item): string
+    {
+        $first = trim((string) ($item->fname ?? ''));
+
+        if ($first !== '') {
+            $nick = trim((string) ($item->nickname ?? ''));
+
+            return ($nick !== '' && strcasecmp($nick, $first) !== 0)
+                ? $first . ' (' . $nick . ')'
+                : $first;
+        }
+
+        $given   = trim((string) ($item->name ?? ''));
+        $surname = trim((string) ($item->surname ?? '')) ?: trim((string) ($item->lname ?? ''));
+
+        if ($surname === '' || $given === '') {
+            return $given;
+        }
+
+        $stripped = preg_replace('/\b' . preg_quote($surname, '/') . '\b/u', '', $given);
+        $stripped = trim((string) preg_replace('/\s+,/', ',', (string) $stripped));
+        $stripped = trim(preg_replace('/\s{2,}/', ' ', $stripped) ?? '', " ,");
+
+        return $stripped !== '' ? $stripped : $given;
+    }
+
+    /**
      * Up-to-two-letter initials for the no-photo placeholder.
      *
      * @param   object  $item
@@ -268,7 +308,7 @@ final class DirectoryPdfPresenter
      */
     public function memberInitials(object $item): string
     {
-        $given   = trim((string) ($item->name ?? ''));
+        $given   = trim((string) ($item->fname ?? '')) ?: trim((string) ($item->name ?? ''));
         $surname = trim((string) ($item->surname ?? '')) ?: trim((string) ($item->lname ?? ''));
 
         $initials = mb_substr($given, 0, 1) . mb_substr($surname, 0, 1);
