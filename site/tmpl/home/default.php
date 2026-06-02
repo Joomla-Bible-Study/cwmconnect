@@ -4,108 +4,90 @@
  * @package    Cwmconnect.Site
  * @copyright  (C) 2026 CWM Team All rights reserved
  * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * @link       https://www.christianwebministries.org
  */
 
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
+use CWM\Component\Cwmconnect\Site\Helper\Layout;
 use CWM\Component\Cwmconnect\Site\Helper\RouteHelper;
-use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 
 /** @var \CWM\Component\Cwmconnect\Site\View\Home\HtmlView $this */
 
-HTMLHelper::_('bootstrap.framework');
-HTMLHelper::_('bootstrap.tooltip');
-
-$login = $this->user === null || $this->user->guest;
-$check = \in_array($this->params->get('accesslevel'), $this->user?->getAuthorisedViewLevels() ?? [], false);
-$count = \count($this->items);
+$login     = $this->user === null || $this->user->guest;
+$check     = \in_array($this->params->get('accesslevel'), $this->user?->getAuthorisedViewLevels() ?? [], false);
+$count     = \count($this->items);
+$heading   = (string) $this->params->get('page_heading', '');
+$intro     = (string) $this->params->get('home_intro', '');
+$browseUrl = Route::_('index.php?option=com_cwmconnect&view=members');
 ?>
-<div class="chdhome" style="padding: 5px;">
-    <h1 class="center">
-        <?php if ($this->params->get('show_page_heading', 0)) : ?>
-            <?php echo $this->escape($this->params->get('page_heading')); ?>
-        <?php endif; ?>
-    </h1>
+<div class="cwmconnect-home">
 
-    <div class="span2 pull-left">
-        <a href="index.php?option=com_users&amp;return=<?php echo $this->return; ?>">
-            <button class="btn btn-primary">
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+        <h1 class="h2 mb-0"><?php echo $heading !== '' ? $this->escape($heading) : Text::_('COM_CWMCONNECT_DEFAULT_PAGE_TITLE'); ?></h1>
+        <div class="d-flex flex-wrap gap-2 align-items-center">
+            <?php echo $this->renderHelper->getSearchField($this->params); ?>
+            <a class="btn btn-outline-secondary btn-sm" href="<?php echo Route::_('index.php?option=com_users&return=' . $this->return); ?>">
+                <span class="icon-<?php echo $login ? 'lock' : 'out-2'; ?>" aria-hidden="true"></span>
                 <?php echo $login ? Text::_('JLOGIN') : Text::_('JLOGOUT'); ?>
-            </button>
-        </a>
+            </a>
+        </div>
     </div>
-    <div class="pull-right">
-        <?php echo $this->renderHelper->getSearchField($this->params); ?>
-    </div>
-    <div class="clearfix"></div>
 
-    <?php if (($intro = (string) $this->params->get('home_intro', '')) !== '') : ?>
-        <p class="center"><?php echo $intro; ?></p>
+    <?php if ($intro !== '') : ?>
+        <p class="lead"><?php echo $intro; ?></p>
     <?php endif; ?>
 
-    <p class="center">
-        <a class="btn btn-primary" href="<?php echo Route::_('index.php?option=com_cwmconnect&view=members'); ?>">
-            <span class="icon-users" aria-hidden="true"></span>
-            <?php echo Text::_('COM_CWMCONNECT_HOME_BROWSE_DIRECTORY'); ?>
+    <p>
+        <a class="btn btn-primary" href="<?php echo $browseUrl; ?>">
+            <span class="icon-users" aria-hidden="true"></span> <?php echo Text::_('COM_CWMCONNECT_HOME_BROWSE_DIRECTORY'); ?>
+        </a>
+        <a class="btn btn-outline-secondary" href="<?php echo Route::_('index.php?option=com_cwmconnect&view=households'); ?>">
+            <span class="icon-home" aria-hidden="true"></span> <?php echo Text::_('COM_CWMCONNECT_HOME_BROWSE_HOUSEHOLDS'); ?>
         </a>
     </p>
 
     <?php if ($login) : ?>
-        <div class="chdlogin" style="padding-bottom: 40px">
-            <div class="chdintro">
-                <?php echo Text::_('COM_CWMCONNECT_HOME_INTRO'); ?>
-                <?php if ($this->params->get('form')) : ?>
-                    <a href="<?php echo $this->escape($this->params->get('form')); ?>">
-                        <?php echo Text::_('COM_CWMCONNECT_AUTH_FORM'); ?>
-                    </a>
-                <?php endif; ?>
-            </div>
+        <div class="alert alert-info">
+            <?php echo Text::_('COM_CWMCONNECT_HOME_INTRO'); ?>
+            <?php if ($this->params->get('form')) : ?>
+                <a class="alert-link" href="<?php echo $this->escape($this->params->get('form')); ?>">
+                    <?php echo Text::_('COM_CWMCONNECT_AUTH_FORM'); ?>
+                </a>
+            <?php endif; ?>
         </div>
     <?php endif; ?>
 
     <?php if (!$check) : ?>
-        <span class="chdpleasereg">Please register as a church member. This directory is for church members only</span>
+        <?php echo Layout::render('emptystate', [
+            'icon'    => 'icon-lock',
+            'message' => Text::_('COM_CWMCONNECT_HOME_MEMBERS_ONLY'),
+        ]); ?>
     <?php elseif ($count === 0) : ?>
-        <p class="center text-muted"><?php echo Text::_('COM_CWMCONNECT_HOME_NO_FEATURED'); ?></p>
+        <?php echo Layout::render('emptystate', [
+            'icon'    => 'icon-users',
+            'message' => Text::_('COM_CWMCONNECT_HOME_NO_FEATURED'),
+            'ctaUrl'  => $browseUrl,
+            'ctaText' => Text::_('COM_CWMCONNECT_HOME_BROWSE_DIRECTORY'),
+        ]); ?>
     <?php else : ?>
-        <h2 class="center"><?php echo Text::_('COM_CWMCONNECT_HOME_FEATURED_HEADING'); ?></h2>
-        <div class="row-fluid">
-            <div class="span12">
-                <?php
-                $split = $count / 2;
-        foreach ($this->items as $i => $item) :
-            $route = Route::_(RouteHelper::getMemberRoute($item->slug, $item->catid));
-            ?>
-                    <div class="span6 pull-left" style="margin-left: 0">
-                        <div class="center">
-                            <a href="<?php echo $route; ?>">
-                                <?php if ($item->image && $item->image !== '/') : ?>
-                                    <img src="<?php echo $this->escape(Route::_(RouteHelper::getPhotoRoute((int) $item->id, 'thumb'))); ?>"
-                                         srcset="<?php echo $this->escape(RouteHelper::getPhotoSrcset((int) $item->id)); ?>"
-                                         sizes="240px" width="300" height="400" loading="lazy" decoding="async"
-                                         alt="<?php echo $this->escape($item->name); ?>"
-                                         style="max-width:240px;" class="img-polaroid"><br/>
-                                <?php endif; ?>
-                            </a>
-                            <div class="cd-home-positions">
-                                <a href="<?php echo $route; ?>">
-                                    <span class="buld" style="font-size: x-large;">
-                                        <?php echo $this->escape($item->name); ?>
-                                    </span>
-                                </a>
-                                <br/>
-                                <span class="small">
-                                    <?php echo $this->renderHelper->getPosition($item->con_position); ?>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                <?php endforeach; ?>
-            </div>
+        <h2 class="h4 mt-4 mb-3"><?php echo Text::_('COM_CWMCONNECT_HOME_FEATURED_HEADING'); ?></h2>
+        <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-3">
+            <?php foreach ($this->items as $item) : ?>
+                <div class="col">
+                    <?php echo Layout::render('membercard', [
+                        'id'         => (int) $item->id,
+                        'name'       => $item->name,
+                        'hasPhoto'   => $item->image && $item->image !== '/',
+                        'profileUrl' => Route::_(RouteHelper::getMemberRoute($item->slug, $item->catid)),
+                        'position'   => $this->renderHelper->getPosition($item->con_position),
+                    ]); ?>
+                </div>
+            <?php endforeach; ?>
         </div>
     <?php endif; ?>
 </div>

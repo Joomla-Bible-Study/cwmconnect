@@ -556,49 +556,23 @@ class RenderHelper
     public function getSearchField(Registry $params): string
     {
         $route  = 'index.php?option=com_cwmconnect&view=directory&layout=search';
-        $params->def('field_size', 20);
-        $suffix = $params->get('moduleclass_sfx');
-
-        $input  = '<input type="text" name="filter[search]" id="filter_search" size="'
-            . $params->get('field_size', 20) . '" placeholder="' . Text::_('Search') . '" data-original-title=""/>';
-
-        $showLabel  = $params->get('show_label', 1);
-        $labelClass = (!$showLabel ? 'element-invisible ' : '') . 'finder' . $suffix;
-        $label      = '<label for="filter_search" class="' . $labelClass . '">'
-            . $params->get('alt_label', Text::_('JSEARCH_FILTER_SUBMIT')) . '</label>';
-
-        $output = match ($params->get('label_pos', 'left')) {
-            'top'    => $label . '<br />' . $input,
-            'bottom' => $input . '<br />' . $label,
-            'right'  => $input . $label,
-            default  => $label . ' ' . $input,
-        };
-
-        if ($params->get('show_button')) {
-            $button = '<button class="btn btn-primary hasTooltip ' . $suffix . ' finder' . $suffix
-                . '" type="submit" title="' . Text::_('COM_CWMCONNECT_FILTER_SUBMIT')
-                . '"><span class="icon-search icon-white"></span>' . Text::_('JSEARCH_FILTER_SUBMIT') . '</button>';
-
-            $output = match ($params->get('button_pos', 'left')) {
-                'top'    => $button . '<br />' . $output,
-                'bottom' => $output . '<br />' . $button,
-                'right'  => $output . $button,
-                default  => $button . $output,
-            };
-        }
-
         $itemid = Factory::getApplication()->getInput()->getInt('Itemid', 0);
+        $label  = (string) $params->get('alt_label', Text::_('JSEARCH_FILTER_SUBMIT'));
 
-        $render  = '<form id="com_cwmconnect_search" action="' . Route::_($route)
-            . '" method="get" class="form-search"><div class="search' . $suffix . '">';
-        $render .= $output;
-        $render .= '<input type="hidden" name="option" value="com_cwmconnect">';
-        $render .= '<input type="hidden" name="view" value="directory">';
-        $render .= '<input type="hidden" name="layout" value="search">';
-        $render .= '<input type="hidden" name="Itemid" value="' . $itemid . '">';
-        $render .= '</div></form>';
-
-        return $render;
+        return '<form id="com_cwmconnect_search" role="search" method="get" class="cwm-search"'
+            . ' action="' . Route::_($route) . '">'
+            . '<label for="filter_search" class="visually-hidden">' . $label . '</label>'
+            . '<div class="input-group input-group-sm">'
+            . '<input type="search" name="filter[search]" id="filter_search" class="form-control"'
+            . ' placeholder="' . Text::_('Search') . '" aria-label="' . $label . '">'
+            . '<button class="btn btn-primary" type="submit" title="' . Text::_('COM_CWMCONNECT_FILTER_SUBMIT') . '">'
+            . '<span class="icon-search" aria-hidden="true"></span></button>'
+            . '</div>'
+            . '<input type="hidden" name="option" value="com_cwmconnect">'
+            . '<input type="hidden" name="view" value="directory">'
+            . '<input type="hidden" name="layout" value="search">'
+            . '<input type="hidden" name="Itemid" value="' . $itemid . '">'
+            . '</form>';
     }
 
     /**
