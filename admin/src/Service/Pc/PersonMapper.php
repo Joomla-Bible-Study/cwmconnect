@@ -320,12 +320,16 @@ final class PersonMapper
             $name = 'Household ' . $id;
         }
 
-        $slug = trim((string) preg_replace('/[^A-Za-z0-9]+/', '-', strtolower($name)), '-');
+        $slug   = trim((string) preg_replace('/[^A-Za-z0-9]+/', '-', strtolower($name)), '-');
+        $avatar = $attrs['avatar'] ?? null;
 
         return [
             'pc_household_id' => $id,
             'name'            => $name,
             'alias'           => ($slug === '' ? 'household' : $slug) . '-pchh-' . $id,
+            // Real uploaded family photo URL, or '' (generated -square.png
+            // placeholders are skipped by the photo cache, not here).
+            'avatar'          => \is_string($avatar) ? $avatar : '',
         ];
     }
 

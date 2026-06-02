@@ -186,7 +186,10 @@ final class MediaPhotoCache implements PhotoCacheInterface
 
         return str_contains($path, '/static/')
             || str_contains($path, 'demographic_avatar')
-            || str_contains($path, 'avatar_default');
+            || str_contains($path, 'avatar_default')
+            // Households with no uploaded photo get a generated coloured square
+            // (e.g. cloudfront `/455-square.png`); treat it as "no photo".
+            || str_ends_with($path, '-square.png');
     }
 
     /**

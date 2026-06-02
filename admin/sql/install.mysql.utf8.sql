@@ -216,6 +216,7 @@ CREATE TABLE IF NOT EXISTS `#__cwmconnect_familyunit` (
                      COLLATE utf8mb4_bin    NOT NULL DEFAULT '',
   `description`      MEDIUMTEXT          NOT NULL,
   `image`            VARCHAR(255) DEFAULT NULL,
+  `image_hash`       VARCHAR(64)  DEFAULT NULL,
   `published`        TINYINT(3)          NOT NULL DEFAULT '0',
   `checked_out`      INT(11) UNSIGNED    NOT NULL DEFAULT '0',
   `checked_out_time` DATETIME            NOT NULL DEFAULT '0000-00-00 00:00:00',

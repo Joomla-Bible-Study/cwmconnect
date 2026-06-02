@@ -162,6 +162,10 @@ return new class implements ServiceProviderInterface {
                 photoCache: $c->get(PcPhotoCacheInterface::class),
                 pairing: $c->get(MemberPairingInterface::class),
                 households: $c->get(PcHouseholdRepositoryInterface::class),
+                householdPhotoCache: new PcMediaPhotoCache(
+                    http: \Joomla\CMS\Http\HttpFactory::getHttp(),
+                    cacheRoot: JPATH_ROOT . '/media/com_cwmconnect/photos/households',
+                ),
             ),
         );
     }

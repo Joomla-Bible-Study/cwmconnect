@@ -109,6 +109,14 @@ final class SyncEngine
      *                                                                 `$fieldMapRepo` is
      *                                                                 supplied; null
      *                                                                 otherwise.
+     * @param   PhotoCacheInterface|null            $photoCache      Phase E: member avatar
+     *                                                                 cache. Null skips photos.
+     * @param   MemberPairingInterface|null         $pairing         Phase H: email-match
+     *                                                                 user pairing. Null skips.
+     * @param   HouseholdRepositoryInterface|null   $households      Household → family-unit
+     *                                                                 linkage. Null skips.
+     * @param   PhotoCacheInterface|null            $householdPhotoCache  Family-photo cache for
+     *                                                                 household avatars. Null skips.
      * @param   LoggerInterface                     $logger          Optional PSR-3 logger.
      *
      * @since   __DEPLOY_VERSION__
@@ -122,6 +130,7 @@ final class SyncEngine
         private readonly ?PhotoCacheInterface $photoCache = null,
         private readonly ?MemberPairingInterface $pairing = null,
         private readonly ?HouseholdRepositoryInterface $households = null,
+        private readonly ?PhotoCacheInterface $householdPhotoCache = null,
         private readonly LoggerInterface $logger = new NullLogger(),
     ) {}
 
@@ -384,7 +393,10 @@ final class SyncEngine
                 return null;
             }
 
-            return $this->households->upsertByPcHouseholdId($mapped);
+            $funitid = $this->households->upsertByPcHouseholdId($mapped);
+            $this->cacheHouseholdAvatar((int) $mapped['pc_household_id'], (string) ($mapped['avatar'] ?? ''), $report);
+
+            return $funitid;
         } catch (\Throwable $e) {
             $report->recordError(
                 isset($person['id']) ? (int) $person['id'] : null,
@@ -392,6 +404,51 @@ final class SyncEngine
             );
 
             return null;
+        }
+    }
+
+    /**
+     * Download + cache a household's family photo (and its web variants) when
+     * one is configured, stamping the family-unit row. No-op without a
+     * household photo cache, or for households with no uploaded photo (the
+     * cache skips generated `-square.png` placeholders). Best-effort: failures
+     * land on the report and never abort the run. Idempotent across the many
+     * members of a household — the hash check makes re-encounters a no-op.
+     *
+     * @param   int         $pcHouseholdId  PC household id (filename stem).
+     * @param   string      $avatarUrl      The household `avatar` URL, or ''.
+     * @param   SyncReport  $report         Mutated in-place.
+     *
+     * @return  void
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    private function cacheHouseholdAvatar(int $pcHouseholdId, string $avatarUrl, SyncReport $report): void
+    {
+        if ($this->householdPhotoCache === null || $this->households === null || $pcHouseholdId <= 0 || $avatarUrl === '') {
+            return;
+        }
+
+        try {
+            $currentHash = $this->households->findImageHashByPcHouseholdId($pcHouseholdId);
+            $result      = $this->householdPhotoCache->cache($pcHouseholdId, $avatarUrl, $currentHash);
+
+            if ($result === null) {
+                return;
+            }
+
+            if ($result->downloaded) {
+                $this->households->updateImageByPcHouseholdId($pcHouseholdId, $result->relativePath, $result->hash);
+                $report->photosDownloaded++;
+            } else {
+                $report->photosUnchanged++;
+            }
+        } catch (\Throwable $e) {
+            $report->recordError(null, 'Household photo cache failed: ' . $e->getMessage());
+            $this->logger->error('PC sync household photo error.', [
+                'pcHouseholdId' => $pcHouseholdId,
+                'error'         => $e->getMessage(),
+            ]);
         }
     }
 

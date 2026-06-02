@@ -100,6 +100,35 @@ final class DatabaseHouseholdRepository implements HouseholdRepositoryInterface
         return (int) $this->db->insertid();
     }
 
+    public function findImageHashByPcHouseholdId(int $pcHouseholdId): ?string
+    {
+        $query = $this->db->createQuery()
+            ->select($this->db->quoteName('image_hash'))
+            ->from($this->db->quoteName(self::TABLE))
+            ->where($this->db->quoteName('pc_household_id') . ' = :householdId')
+            ->bind(':householdId', $pcHouseholdId, ParameterType::INTEGER);
+
+        $hash = $this->db->setQuery($query, 0, 1)->loadResult();
+
+        return ($hash !== null && $hash !== '') ? (string) $hash : null;
+    }
+
+    public function updateImageByPcHouseholdId(int $pcHouseholdId, string $relativePath, string $hash): void
+    {
+        $query = $this->db->createQuery()
+            ->update($this->db->quoteName(self::TABLE))
+            ->set([
+                $this->db->quoteName('image') . ' = :image',
+                $this->db->quoteName('image_hash') . ' = :hash',
+            ])
+            ->where($this->db->quoteName('pc_household_id') . ' = :householdId')
+            ->bind(':image', $relativePath, ParameterType::STRING)
+            ->bind(':hash', $hash, ParameterType::STRING)
+            ->bind(':householdId', $pcHouseholdId, ParameterType::INTEGER);
+
+        $this->db->setQuery($query)->execute();
+    }
+
     /**
      * Row id of the family-unit linked to a PC household, or null.
      *

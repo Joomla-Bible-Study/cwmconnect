@@ -435,6 +435,10 @@ class CpanelController extends BaseController
             ),
             pairing: new DatabaseMemberPairing($db),
             households: new DatabaseHouseholdRepository($db),
+            householdPhotoCache: new MediaPhotoCache(
+                http: HttpFactory::getHttp(),
+                cacheRoot: JPATH_ROOT . '/media/com_cwmconnect/photos/households',
+            ),
         );
     }
 

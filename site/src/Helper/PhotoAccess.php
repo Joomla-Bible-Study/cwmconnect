@@ -173,6 +173,75 @@ final class PhotoAccess
     }
 
     /**
+     * Load a family-unit row for household-photo serving (id, image,
+     * published), or null.
+     *
+     * @param   DatabaseInterface  $db        Database driver.
+     * @param   int                $funitId   Family-unit id.
+     *
+     * @return  object|null
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    public static function loadHousehold(DatabaseInterface $db, int $funitId): ?object
+    {
+        if ($funitId <= 0) {
+            return null;
+        }
+
+        $query = $db->createQuery()
+            ->select($db->quoteName(['id', 'image', 'published']))
+            ->from($db->quoteName('#__cwmconnect_familyunit'))
+            ->where($db->quoteName('id') . ' = :id')
+            ->bind(':id', $funitId, ParameterType::INTEGER);
+
+        return $db->setQuery($query, 0, 1)->loadObject() ?: null;
+    }
+
+    /**
+     * Resolve a household family photo to an absolute path — an optimized web
+     * variant first (WebP when accepted), then the original — under
+     * `photos/households/`, or null. Stem comes from pathinfo, so no path or
+     * extension from the stored value reaches the filesystem lookup.
+     *
+     * @param   string  $image        The family-unit `image` value.
+     * @param   string  $size         Variant size, or '' for the original.
+     * @param   bool    $acceptsWebp  Whether the client sent image/webp.
+     *
+     * @return  string|null
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    public static function resolveHouseholdImage(string $image, string $size, bool $acceptsWebp): ?string
+    {
+        $image = trim($image);
+        $base  = JPATH_ROOT . '/media/com_cwmconnect/photos/households';
+        $stem  = pathinfo($image, \PATHINFO_FILENAME);
+
+        if ($stem !== '' && isset(ImageVariants::SIZES[$size]) && ($webDir = realpath($base . '/web')) !== false) {
+            foreach ($acceptsWebp ? ['webp', 'jpg'] : ['jpg'] as $format) {
+                $real = realpath($webDir . '/' . ImageVariants::variantFilename($stem, $size, $format));
+
+                if ($real !== false && is_file($real) && str_starts_with($real, $webDir . \DIRECTORY_SEPARATOR)) {
+                    return $real;
+                }
+            }
+        }
+
+        if ($image === '' || str_contains($image, '..')
+            || !\in_array(strtolower(pathinfo($image, \PATHINFO_EXTENSION)), self::IMAGE_EXTENSIONS, true)) {
+            return null;
+        }
+
+        $real     = realpath($base . '/' . $image);
+        $baseReal = realpath($base);
+
+        return ($real !== false && is_file($real) && $baseReal !== false && str_starts_with($real, $baseReal . \DIRECTORY_SEPARATOR))
+            ? $real
+            : null;
+    }
+
+    /**
      * Absolute path to the "no photo available" placeholder, or null.
      *
      * @return  string|null

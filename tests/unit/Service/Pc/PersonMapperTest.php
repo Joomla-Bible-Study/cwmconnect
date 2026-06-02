@@ -233,7 +233,7 @@ final class PersonMapperTest extends TestCase
     {
         $person   = $this->person(['first_name' => 'Brent'], ['households' => [['type' => 'Household', 'id' => '13638556']]]);
         $included = [
-            ['type' => 'Household', 'id' => '13638556', 'attributes' => ['name' => 'Cordis Household']],
+            ['type' => 'Household', 'id' => '13638556', 'attributes' => ['name' => 'Cordis Household', 'avatar' => 'https://example.org/cordis.jpg']],
         ];
 
         $household = $this->mapper->extractHousehold($person, $included);
@@ -241,6 +241,7 @@ final class PersonMapperTest extends TestCase
         self::assertSame(13638556, $household['pc_household_id']);
         self::assertSame('Cordis Household', $household['name']);
         self::assertSame('cordis-household-pchh-13638556', $household['alias']);
+        self::assertSame('https://example.org/cordis.jpg', $household['avatar']);
     }
 
     #[Test]

@@ -37,4 +37,30 @@ interface HouseholdRepositoryInterface
      * @since   __DEPLOY_VERSION__
      */
     public function upsertByPcHouseholdId(array $fields): int;
+
+    /**
+     * The cached image hash for a household, or null when it has no photo yet.
+     * Lets the sync skip re-downloading an unchanged family photo.
+     *
+     * @param   int  $pcHouseholdId
+     *
+     * @return  string|null
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    public function findImageHashByPcHouseholdId(int $pcHouseholdId): ?string;
+
+    /**
+     * Persist a freshly cached family photo's relative path + hash onto the
+     * family-unit row.
+     *
+     * @param   int     $pcHouseholdId
+     * @param   string  $relativePath
+     * @param   string  $hash
+     *
+     * @return  void
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    public function updateImageByPcHouseholdId(int $pcHouseholdId, string $relativePath, string $hash): void;
 }
