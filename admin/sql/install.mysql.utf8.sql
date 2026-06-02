@@ -12,6 +12,7 @@ CREATE TABLE IF NOT EXISTS `#__cwmconnect_details` (
   `directory_scope`      ENUM('public', 'household', 'hidden')  NOT NULL DEFAULT 'public',
   `hidden_reason`        VARCHAR(20)                            NOT NULL DEFAULT '',
   `pc_membership`        VARCHAR(50)                            NOT NULL DEFAULT '',
+  `gender`               VARCHAR(20)                            NOT NULL DEFAULT '',
   `pc_shared_info`       JSON                                   NULL,
   `image_filename`       VARCHAR(255)                           NULL,
   `image_hash`           VARCHAR(64)                            NULL,

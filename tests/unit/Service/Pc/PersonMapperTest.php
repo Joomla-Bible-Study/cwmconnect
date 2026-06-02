@@ -45,6 +45,14 @@ final class PersonMapperTest extends TestCase
     }
 
     #[Test]
+    public function capturesGenderVerbatimFromPc(): void
+    {
+        self::assertSame('Male', $this->mapper->map($this->person(['gender' => 'Male']))['gender']);
+        self::assertSame('Female', $this->mapper->map($this->person(['gender' => 'Female']))['gender']);
+        self::assertSame('', $this->mapper->map($this->person([]))['gender']);
+    }
+
+    #[Test]
     public function nameIncludesMiddleNameWhenPresent(): void
     {
         $row = $this->mapper->map($this->person([

@@ -94,17 +94,11 @@ class ReportbuildHelper
                     $paramsAtt = new \stdClass();
 
                     foreach ((array) $params as $p => $itemP) {
-                        $key = 'att_' . $p;
-
-                        if ($p === 'sex') {
-                            $paramsAtt->{$key} = match ((int) $itemP) {
-                                0       => 'M',
-                                1       => 'F',
-                                default => $itemP,
-                            };
-                        } else {
-                            $paramsAtt->{$key} = $itemP;
-                        }
+                        // Gender is a first-class synced column now (Male /
+                        // Female, in line with PC); the legacy 0/1 attribs
+                        // "sex" encoding — and its inverted M/F mapping — is
+                        // gone.
+                        $paramsAtt->{'att_' . $p} = $itemP;
                     }
 
                     unset($line->attribs);

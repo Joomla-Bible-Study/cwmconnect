@@ -125,6 +125,9 @@ final class PersonMapper
             // household-mates pulled in by the family-expansion policy — drives
             // the admin membership filter and the members-only roster.
             'pc_membership'        => $this->stringAttr($attrs, 'membership'),
+            // PC `gender` (Male / Female / '' when unset). Stored verbatim to
+            // stay in line with PC rather than the legacy 0/1 "sex" encoding.
+            'gender'               => $this->stringAttr($attrs, 'gender'),
         ];
     }
 
