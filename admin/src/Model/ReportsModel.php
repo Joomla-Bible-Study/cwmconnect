@@ -247,6 +247,15 @@ class ReportsModel extends ListModel
             $query->where($db->quoteName('a.mstatus') . ' = ' . (int) $mstatus);
         }
 
+        // Visibility gate (spec §17): exclude hidden (display_in_directory = 0)
+        // members unless an admin explicitly opted in via the print "Include
+        // hidden" override. Mirrors the front-end models, which always filter
+        // = 1. The state stays unset when the override is on, so no WHERE is
+        // added and every published member is included.
+        if (($visible = $this->getState('filter.display_in_directory')) !== null) {
+            $query->where($db->quoteName('a.display_in_directory') . ' = ' . (int) $visible);
+        }
+
         if ($language = $this->getState('filter.language')) {
             $query->where($db->quoteName('a.language') . ' IN (' . $db->quote($language) . ', ' . $db->quote('*') . ')');
         }
@@ -278,6 +287,16 @@ class ReportsModel extends ListModel
         $this->getState();
         $this->setState('filter.published', 1);
 
+        // §17 print-gate: hidden members are excluded from every export unless
+        // the admin ticks "Include hidden" on the print form (PDF only). Read
+        // it here so the gate is applied at the query level — keeping the
+        // member count accurate — rather than post-filtering the result set.
+        $includeHidden = (bool) Factory::getApplication()->getInput()->getInt('include_hidden', 0);
+
+        if (!$includeHidden) {
+            $this->setState('filter.display_in_directory', 1);
+        }
+
         $reportBuild = new ReportbuildHelper();
         $items       = $this->getDatabase()->setQuery($this->getListQuery())->loadObjectList();
 
@@ -304,8 +323,7 @@ class ReportsModel extends ListModel
         }
 
         if ($type === 'pdf') {
-            $includeHidden = (bool) Factory::getApplication()->getInput()->getInt('include_hidden', 0);
-            $relativePath  = $reportBuild->getPdf($items, $report, $includeHidden);
+            $relativePath = $reportBuild->getPdf($items, $report, $includeHidden);
 
             $app = Factory::getApplication();
             $app->setUserState('com_cwmconnect.reports.pdf_path', $relativePath);
