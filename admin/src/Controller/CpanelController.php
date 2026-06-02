@@ -359,13 +359,12 @@ class CpanelController extends BaseController
 
             Log::add(
                 \sprintf(
-                    'PC sync finished: seen=%d added=%d updated=%d unarchived=%d archived=%d '
+                    'PC sync finished: seen=%d added=%d updated=%d deleted=%d '
                     . 'households=%d photos=%d fields=%d paired=%d errors=%d',
                     (int) ($data['seen'] ?? 0),
                     (int) ($data['added'] ?? 0),
                     (int) ($data['updated'] ?? 0),
-                    (int) ($data['unarchived'] ?? 0),
-                    (int) ($data['archived'] ?? 0),
+                    (int) ($data['deleted'] ?? 0),
                     (int) ($data['householdsLinked'] ?? 0),
                     (int) ($data['photosDownloaded'] ?? 0),
                     (int) ($data['customFieldsWritten'] ?? 0),

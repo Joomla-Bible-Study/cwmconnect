@@ -53,12 +53,13 @@ final class SyncReport
     public int $updated = 0;
 
     /**
-     * Local rows archived by the sweep step (display_in_directory = 0).
+     * Local PC-synced rows hard-deleted by the sweep step — people who went
+     * inactive in PC or left the org and so were not seen this run.
      *
      * @var    int
      * @since  __DEPLOY_VERSION__
      */
-    public int $archived = 0;
+    public int $deleted = 0;
 
     /**
      * Rows previously archived that came back in this run's PC result and
@@ -238,7 +239,7 @@ final class SyncReport
             'seen'             => $this->seen,
             'added'            => $this->added,
             'updated'          => $this->updated,
-            'archived'         => $this->archived,
+            'deleted'          => $this->deleted,
             'unarchived'       => $this->unarchived,
             'customFieldsWritten' => $this->customFieldsWritten,
             'photosDownloaded'    => $this->photosDownloaded,

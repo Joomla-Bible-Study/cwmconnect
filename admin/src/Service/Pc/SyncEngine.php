@@ -244,7 +244,7 @@ final class SyncEngine
         }
 
         try {
-            $report->archived = $this->repository->archiveMissingPcPersonIds(
+            $report->deleted = $this->repository->deleteMissingPcPersonIds(
                 array_values(array_unique($seenIds)),
             );
         } catch (\Throwable $e) {
@@ -487,6 +487,11 @@ final class SyncEngine
         $query = [
             'include'  => self::PEOPLE_INCLUDES,
             'per_page' => '100',
+            // Active members only: PCO returns inactive people by default, but
+            // an inactive member must never enter the directory. Anyone who
+            // goes inactive in PC drops out of this result set and the sweep
+            // then hard-deletes their local row (re-activating re-syncs fresh).
+            'where[status]' => 'active',
         ];
 
         if (\count($membershipStatuses) === 1) {

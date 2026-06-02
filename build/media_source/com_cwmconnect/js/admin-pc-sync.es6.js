@@ -194,12 +194,12 @@
         const table   = make('table', 'table table-sm table-borderless w-auto');
         const tbody   = make('tbody');
 
-        tbody.appendChild(reportRow('Seen',       Number(data.seen)       || 0));
-        tbody.appendChild(reportRow('Added',      Number(data.added)      || 0));
-        tbody.appendChild(reportRow('Updated',    Number(data.updated)    || 0));
-        tbody.appendChild(reportRow('Unarchived', Number(data.unarchived) || 0));
-        tbody.appendChild(reportRow('Archived',   Number(data.archived)   || 0));
-        tbody.appendChild(reportRow('Errors',     Number(data.errorCount) || 0));
+        tbody.appendChild(reportRow('Seen',       Number(data.seen)             || 0));
+        tbody.appendChild(reportRow('Added',      Number(data.added)            || 0));
+        tbody.appendChild(reportRow('Updated',    Number(data.updated)          || 0));
+        tbody.appendChild(reportRow('Households',  Number(data.householdsLinked) || 0));
+        tbody.appendChild(reportRow('Deleted',    Number(data.deleted)          || 0));
+        tbody.appendChild(reportRow('Errors',     Number(data.errorCount)       || 0));
 
         table.appendChild(tbody);
 

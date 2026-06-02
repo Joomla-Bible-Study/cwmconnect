@@ -33,7 +33,7 @@ final class SyncEngineTest extends TestCase
         self::assertSame(2, $report->seen);
         self::assertSame(2, $report->added);
         self::assertSame(0, $report->updated);
-        self::assertSame(0, $report->archived);
+        self::assertSame(0, $report->deleted);
         self::assertTrue($report->success());
     }
 
@@ -87,19 +87,33 @@ final class SyncEngineTest extends TestCase
     }
 
     #[Test]
-    public function archivedCountReflectsSweepStepResult(): void
+    public function deletedCountReflectsSweepStepResult(): void
     {
         $client = $this->fakeClient([
             $this->pcPage([$this->pcPerson(1, 'Alice')], null),
         ]);
 
         $repo                 = $this->fakeRepo(outcome: UpsertOutcome::Updated);
-        $repo->archiveResult  = 3;
+        $repo->deleteResult  = 3;
 
         $report = new SyncEngine($client, $repo, new PersonMapper())->run([]);
 
-        self::assertSame(3, $report->archived);
+        self::assertSame(3, $report->deleted);
         self::assertSame([1], $repo->capturedSeenIds);
+    }
+
+    #[Test]
+    public function firstPageRequestsActiveMembersOnly(): void
+    {
+        $client = $this->fakeClient([
+            $this->pcPage([$this->pcPerson(1, 'Alice')], null),
+        ]);
+
+        new SyncEngine($client, $this->fakeRepo(), new PersonMapper())->run([]);
+
+        // Inactive members must never be fetched — they drop out of the result
+        // set so the sweep hard-deletes their local row (drop-inactive policy).
+        self::assertSame('active', $client->capturedQueries[0]['where[status]'] ?? null);
     }
 
     #[Test]
@@ -179,11 +193,11 @@ final class SyncEngineTest extends TestCase
     }
 
     #[Test]
-    public function engineAlwaysCallsArchiveStepWithSeenIds(): void
+    public function engineAlwaysCallsSweepStepWithSeenIds(): void
     {
-        // Engine contract: every run calls archive() exactly once, passing the
-        // (de-duplicated) list of PC ids it saw. Whether to no-op on an empty
-        // list is the repository's decision, not the engine's.
+        // Engine contract: every run calls the delete sweep exactly once,
+        // passing the (de-duplicated) list of PC ids it saw. Whether to no-op
+        // on an empty list is the repository's decision, not the engine's.
         $client = $this->fakeClient([
             $this->pcPage([], null),
         ]);
@@ -192,7 +206,7 @@ final class SyncEngineTest extends TestCase
 
         new SyncEngine($client, $repo, new PersonMapper())->run([]);
 
-        self::assertSame(1, $repo->archiveCalls);
+        self::assertSame(1, $repo->deleteCalls);
         self::assertSame([], $repo->capturedSeenIds);
     }
 
@@ -263,9 +277,9 @@ final class SyncEngineTest extends TestCase
     private function fakeRepo(array $existingPcIds = [], UpsertOutcome $outcome = UpsertOutcome::Added): object
     {
         return new class ($outcome) implements MemberRepositoryInterface {
-            public int $archiveCalls = 0;
+            public int $deleteCalls = 0;
 
-            public int $archiveResult = 0;
+            public int $deleteResult = 0;
 
             /** @var list<int> */
             public array $capturedSeenIds = [];
@@ -277,12 +291,12 @@ final class SyncEngineTest extends TestCase
                 return $this->outcome;
             }
 
-            public function archiveMissingPcPersonIds(array $seenPcPersonIds): int
+            public function deleteMissingPcPersonIds(array $seenPcPersonIds): int
             {
-                $this->archiveCalls++;
+                $this->deleteCalls++;
                 $this->capturedSeenIds = $seenPcPersonIds;
 
-                return $this->archiveResult;
+                return $this->deleteResult;
             }
 
             public function findIdByPcPersonId(int $pcPersonId): ?int
