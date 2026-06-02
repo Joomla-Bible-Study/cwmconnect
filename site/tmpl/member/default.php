@@ -31,6 +31,12 @@ $children     = ($params->get('dr_show_children') && $familyPos != '2')
     ? $render->getChildren((int) $member->fu_id, false, $member->children) : '';
 $categoryUrl  = (int) $member->catid > 0 ? RouteHelper::getCategoryRoute($member->catid) : '';
 $hasEmailForm = $params->get('show_email_form') && !empty($member->email_to);
+
+if ($hasEmailForm) {
+    // Email form is collapsed by default and revealed by the "Email this member"
+    // toggle below — needs Bootstrap's collapse plugin.
+    $this->getDocument()->getWebAssetManager()->useScript('bootstrap.collapse');
+}
 ?>
 <div class="cwmconnect-member container-fluid px-0">
 
@@ -93,9 +99,11 @@ $hasEmailForm = $params->get('show_email_form') && !empty($member->email_to);
 
                     <div class="d-flex flex-wrap gap-2 mt-3">
                         <?php if ($hasEmailForm) : ?>
-                            <a class="btn btn-primary btn-sm" href="#cwm-email-form">
+                            <button class="btn btn-primary btn-sm" type="button"
+                                    data-bs-toggle="collapse" data-bs-target="#cwm-email-form"
+                                    aria-expanded="false" aria-controls="cwm-email-form">
                                 <span class="icon-envelope" aria-hidden="true"></span> <?php echo Text::_('COM_CWMCONNECT_EMAIL_FORM'); ?>
-                            </a>
+                            </button>
                         <?php endif; ?>
                         <?php if ($params->get('allow_vcard')) : ?>
                             <a class="btn btn-outline-secondary btn-sm" href="<?php echo Route::_('index.php?option=com_cwmconnect&view=member&id=' . (int) $member->id . '&format=vcf'); ?>">
@@ -167,7 +175,7 @@ if ($household !== '') :
         <?php endif; ?>
 
         <?php if ($hasEmailForm) : ?>
-            <div class="col-12" id="cwm-email-form">
+            <div class="col-12 collapse" id="cwm-email-form">
                 <?php echo Layout::render('sectioncard', [
                     'title' => Text::_('COM_CWMCONNECT_EMAIL_FORM'),
                     'icon'  => 'icon-envelope',
