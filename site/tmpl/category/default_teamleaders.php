@@ -47,9 +47,9 @@ $teamleaders      = (string) $this->params->get('teamleaders', '1');
             </span>
 
             <p>
-                <img src="<?php echo $this->escape(Route::_(RouteHelper::getPhotoRoute((int) $item->id))); ?>"
+                <img src="<?php echo $this->escape(Route::_(RouteHelper::getPhotoRoute((int) $item->id, 'thumb'))); ?>"
                      alt="<?php echo $this->escape(Text::_('COM_CWMCONNECT_IMAGE_DETAILS')); ?>"
-                     height="100" width="100" />
+                     height="100" width="100" loading="lazy" decoding="async" />
                 <br/>
                 <strong class="list-title">
                     <a href="<?php echo Route::_(RouteHelper::getMemberRoute($item->slug, $item->catid)); ?>">

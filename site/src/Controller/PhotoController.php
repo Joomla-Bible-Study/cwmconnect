@@ -73,9 +73,19 @@ class PhotoController extends BaseController
         $viewerId  = $isLoggedIn ? (int) $user->id : (int) $tokenUserId;
         $household = $isManager ? null : PhotoAccess::householdId($db, $viewerId);
 
-        $path = PhotoAccess::canView($isManager, $member, $household)
-            ? PhotoAccess::resolvePath((string) ($member->image ?? ''))
-            : null;
+        $path = null;
+
+        if (PhotoAccess::canView($isManager, $member, $household)) {
+            $image       = (string) ($member->image ?? '');
+            $size        = $this->input->getWord('size', '');
+            $acceptsWebp = str_contains($this->input->server->getString('HTTP_ACCEPT', ''), 'image/webp');
+
+            // Prefer an optimized web variant (smaller, WebP when accepted);
+            // fall back to the full-size original when no variant exists yet
+            // (e.g. a photo cached before the variant pipeline landed).
+            $path = $size !== '' ? PhotoAccess::resolveVariant($image, $size, $acceptsWebp) : null;
+            $path ??= PhotoAccess::resolvePath($image);
+        }
 
         $path ??= PhotoAccess::placeholderPath();
 

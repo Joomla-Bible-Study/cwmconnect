@@ -89,8 +89,27 @@ abstract class RouteHelper
      *
      * @since   __DEPLOY_VERSION__
      */
-    public static function getPhotoRoute(int $memberId): string
+    public static function getPhotoRoute(int $memberId, string $size = ''): string
     {
-        return 'index.php?option=com_cwmconnect&task=photo.serve&id=' . $memberId;
+        $url = 'index.php?option=com_cwmconnect&task=photo.serve&id=' . $memberId;
+
+        return $size !== '' ? $url . '&size=' . $size : $url;
+    }
+
+    /**
+     * `srcset` value offering the thumb (300w) and medium (600w) web variants
+     * so the browser picks the right resolution; the proxy serves WebP or JPEG
+     * per the request's Accept header. Pair with a `sizes` attribute.
+     *
+     * @param   int  $memberId
+     *
+     * @return  string
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    public static function getPhotoSrcset(int $memberId): string
+    {
+        return \Joomla\CMS\Router\Route::_(self::getPhotoRoute($memberId, 'thumb')) . ' 300w, '
+            . \Joomla\CMS\Router\Route::_(self::getPhotoRoute($memberId, 'medium')) . ' 600w';
     }
 }

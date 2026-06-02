@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace CWM\Component\Cwmconnect\Site\Helper;
 
+use CWM\Component\Cwmconnect\Administrator\Service\Image\ImageVariants;
 use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Database\ParameterType;
@@ -131,6 +132,47 @@ final class PhotoAccess
     }
 
     /**
+     * Resolve a browser-optimized web variant of a member photo, or null when
+     * none exists (caller falls back to {@see resolvePath()} on the original).
+     * Prefers WebP when the client accepts it, then the JPEG fallback.
+     *
+     * The stem comes from the stored `image` value via pathinfo, so only the
+     * id/hash survives — no path or extension reaches the filesystem lookup.
+     *
+     * @param   string  $image         The member `image` column value.
+     * @param   string  $size          Variant size (e.g. 'thumb', 'medium').
+     * @param   bool    $acceptsWebp    Whether the client sent image/webp.
+     *
+     * @return  string|null  Absolute path to the variant, or null.
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    public static function resolveVariant(string $image, string $size, bool $acceptsWebp): ?string
+    {
+        $stem = pathinfo(trim($image), \PATHINFO_FILENAME);
+
+        if ($stem === '' || !isset(ImageVariants::SIZES[$size])) {
+            return null;
+        }
+
+        $webDir = realpath(JPATH_ROOT . '/media/com_cwmconnect/photos/web');
+
+        if ($webDir === false) {
+            return null;
+        }
+
+        foreach ($acceptsWebp ? ['webp', 'jpg'] : ['jpg'] as $format) {
+            $real = realpath($webDir . '/' . ImageVariants::variantFilename($stem, $size, $format));
+
+            if ($real !== false && is_file($real) && str_starts_with($real, $webDir . \DIRECTORY_SEPARATOR)) {
+                return $real;
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * Absolute path to the "no photo available" placeholder, or null.
      *
      * @return  string|null
@@ -231,7 +273,12 @@ final class PhotoAccess
     {
         $app->setHeader('Content-Type', self::contentType($path), true);
         $app->setHeader('Content-Length', (string) (filesize($path) ?: 0), true);
-        $app->setHeader('Cache-Control', 'private, max-age=300, must-revalidate', true);
+        // Photos are access-gated, so cache privately (browser only). A
+        // day-long cache spares the proxy on busy directory pages while
+        // keeping a re-synced photo (same filename) fresh within a day. Vary
+        // on Accept so a WebP response is never reused for a JPEG-only client.
+        $app->setHeader('Cache-Control', 'private, max-age=86400', true);
+        $app->setHeader('Vary', 'Accept', true);
         $app->sendHeaders();
 
         readfile($path);
