@@ -71,9 +71,29 @@ final class PersonMapper
         $isChild         = (bool) ($attrs['child'] ?? false);
         $pcStatus        = (string) ($attrs['status'] ?? 'active');
 
-        $firstName = $this->stringAttr($attrs, 'first_name');
-        $lastName  = $this->stringAttr($attrs, 'last_name');
-        $fullName  = trim($firstName . ' ' . $lastName);
+        $firstName  = $this->stringAttr($attrs, 'first_name');
+        $middleName = $this->stringAttr($attrs, 'middle_name');
+        $lastName   = $this->stringAttr($attrs, 'last_name');
+        $nickname   = $this->stringAttr($attrs, 'nickname');
+        $suffix     = $this->suffixFromComputedName($this->stringAttr($attrs, 'name'));
+
+        // Directory display name: First [Middle] Last[, Suffix], collapsing the
+        // gaps left by absent middle names. PC People has no dedicated suffix
+        // field — a generational suffix (Jr/Sr/II–X) only surfaces in the
+        // computed `name` (e.g. "Sherman Cox, III") — so we mine it from there
+        // and graft it onto the structured first/middle/last parts.
+        $fullName = trim((string) preg_replace('/\s+/', ' ', $firstName . ' ' . $middleName . ' ' . $lastName));
+
+        if ($suffix !== '' && $fullName !== '') {
+            $fullName .= ', ' . $suffix;
+        }
+
+        // A nickname PC stores apart from the first name (e.g. "Robert" with
+        // nickname "Bob") is appended in parentheses; one that merely echoes
+        // the first name is dropped.
+        if ($nickname !== '' && strcasecmp($nickname, $firstName) !== 0) {
+            $fullName = $fullName !== '' ? $fullName . ' (' . $nickname . ')' : $nickname;
+        }
 
         return [
             'pc_person_id'         => $pcPersonId,
@@ -508,6 +528,33 @@ final class PersonMapper
         } catch (\JsonException) {
             return null;
         }
+    }
+
+    /**
+     * Mine a generational suffix from PC's computed `name` attribute. PC
+     * People exposes no dedicated suffix field; a suffix (Jr/Sr/II–X or a
+     * numeric ordinal) only appears in `name`, formatted as a trailing
+     * ", <suffix>" segment (e.g. "Sherman Cox, III"). Anything that isn't a
+     * recognised generational suffix — so a "Last, First" computed format
+     * can't masquerade as one — yields ''.
+     *
+     * @param   string  $name  The computed `name` attribute.
+     *
+     * @return  string  The suffix without its comma/trailing dot, or ''.
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    private function suffixFromComputedName(string $name): string
+    {
+        if (preg_match('/,\s*([^,]+?)\s*$/', $name, $m) !== 1) {
+            return '';
+        }
+
+        $candidate = trim($m[1]);
+
+        return preg_match('/^(?:Jr|Sr|II|III|IV|V|VI|VII|VIII|IX|X|[0-9]+(?:st|nd|rd|th))\.?$/i', $candidate) === 1
+            ? rtrim($candidate, '.')
+            : '';
     }
 
     /**

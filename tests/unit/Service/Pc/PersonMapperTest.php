@@ -33,6 +33,88 @@ final class PersonMapperTest extends TestCase
     }
 
     #[Test]
+    public function nameIncludesMiddleNameWhenPresent(): void
+    {
+        $row = $this->mapper->map($this->person([
+            'first_name'  => 'John',
+            'middle_name' => 'Michael',
+            'last_name'   => 'Smith',
+        ]));
+
+        self::assertSame('John Michael Smith', $row['name']);
+        // Alias stays first+last so it doesn't churn when a middle name lands.
+        self::assertSame('john-smith-pc-12345', $row['alias']);
+    }
+
+    #[Test]
+    public function nameAppendsDistinctNicknameInParentheses(): void
+    {
+        $row = $this->mapper->map($this->person([
+            'first_name' => 'Robert',
+            'last_name'  => 'Jones',
+            'nickname'   => 'Bob',
+        ]));
+
+        self::assertSame('Robert Jones (Bob)', $row['name']);
+    }
+
+    #[Test]
+    public function nameDropsNicknameThatEchoesFirstName(): void
+    {
+        $row = $this->mapper->map($this->person([
+            'first_name' => 'Sam',
+            'last_name'  => 'Lee',
+            'nickname'   => 'sam',
+        ]));
+
+        self::assertSame('Sam Lee', $row['name']);
+    }
+
+    #[Test]
+    public function nameGraftsGenerationalSuffixFromComputedName(): void
+    {
+        // PC has no suffix field — it only surfaces in the computed `name`
+        // as a trailing ", III". Graft it onto the structured parts.
+        $row = $this->mapper->map($this->person([
+            'first_name' => 'Sherman',
+            'last_name'  => 'Cox',
+            'name'       => 'Sherman Cox, III',
+        ]));
+
+        self::assertSame('Sherman Cox, III', $row['name']);
+        // Alias ignores the suffix so generational siblings stay distinct only
+        // by their PC id, not a churning alias.
+        self::assertSame('sherman-cox-pc-12345', $row['alias']);
+    }
+
+    #[Test]
+    public function nameAcceptsJrAndSrSuffixes(): void
+    {
+        foreach (['Jr.' => 'Jr', 'Sr' => 'Sr'] as $computed => $expected) {
+            $row = $this->mapper->map($this->person([
+                'first_name' => 'Sam',
+                'last_name'  => 'Lee',
+                'name'       => "Sam Lee, $computed",
+            ]));
+
+            self::assertSame("Sam Lee, $expected", $row['name'], "suffix '$computed'");
+        }
+    }
+
+    #[Test]
+    public function nameIgnoresNonSuffixCommaSegments(): void
+    {
+        // A "Last, First" computed format must not be mistaken for a suffix.
+        $row = $this->mapper->map($this->person([
+            'first_name' => 'Jane',
+            'last_name'  => 'Doe',
+            'name'       => 'Doe, Jane',
+        ]));
+
+        self::assertSame('Jane Doe', $row['name']);
+    }
+
+    #[Test]
     public function aliasFallsBackToPcIdWhenNamesAreEmpty(): void
     {
         $row = $this->mapper->map($this->person([]));
