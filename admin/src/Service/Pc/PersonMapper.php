@@ -116,7 +116,35 @@ final class PersonMapper
             'pc_shared_info'       => $this->encodeSharedInfo($attrs['directory_shared_info'] ?? null),
             'display_in_directory' => (!$isChild && $directoryStatus === 'participant') ? 1 : 0,
             'published'            => $pcStatus === 'active' ? 1 : 0,
+            'hidden_reason'        => $this->hiddenReason($pcStatus, $isChild, $directoryStatus),
         ];
+    }
+
+    /**
+     * Derive the single most-blocking reason a synced member is kept out of
+     * the public directory, for display in the admin members list. Returns ''
+     * when the member is fully visible. Precedence runs from the gate that
+     * suppresses them outright (inactive membership) down to the directory
+     * preference; `display_in_directory` / `published` remain the real gates,
+     * this is purely the human-readable "why".
+     *
+     * @param   string  $pcStatus         PC `status` (active / inactive).
+     * @param   bool    $isChild          PC `child` flag.
+     * @param   string  $directoryStatus  PC `directory_status`.
+     *
+     * @return  string  One of inactive|child|viewer|no_access, or ''.
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    private function hiddenReason(string $pcStatus, bool $isChild, string $directoryStatus): string
+    {
+        return match (true) {
+            $pcStatus !== 'active'              => 'inactive',
+            $isChild                            => 'child',
+            $directoryStatus === 'participant'  => '',
+            $directoryStatus === 'viewer'       => 'viewer',
+            default                             => 'no_access',
+        };
     }
 
     /**

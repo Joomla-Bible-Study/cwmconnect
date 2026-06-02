@@ -130,6 +130,31 @@ if ($saveOrder && !empty($this->items)) {
                                     <div class="small">
                                         <?php echo Text::_('JCATEGORY') . ': ' . $this->escape($item->category_title); ?>
                                     </div>
+                                    <?php
+                                    // Directory visibility: a member shows on the front end only
+                                    // when published AND flagged for the directory. Flag the rest
+                                    // with the reason so admins can see why someone is missing.
+                                    if (empty($item->display_in_directory) || (int) $item->published === 0) :
+                                        if (!empty($item->hidden_reason)) {
+                                            $reasonKey = (string) $item->hidden_reason;
+                                        } elseif ((int) $item->published === 0) {
+                                            $reasonKey = 'inactive';
+                                        } elseif (!empty($item->pc_person_id)) {
+                                            $reasonKey = 'no_access';
+                                        } else {
+                                            $reasonKey = 'manual';
+                                        }
+                            ?>
+                                        <div class="small mt-1">
+                                            <span class="badge bg-warning text-dark">
+                                                <span class="icon-eye-slash" aria-hidden="true"></span>
+                                                <?php echo Text::_('COM_CWMCONNECT_MEMBERS_HIDDEN_BADGE'); ?>
+                                            </span>
+                                            <span class="text-muted">
+                                                <?php echo Text::_('COM_CWMCONNECT_MEMBERS_HIDDEN_REASON_' . strtoupper($reasonKey)); ?>
+                                            </span>
+                                        </div>
+                                    <?php endif; ?>
                                     <?php if (!empty($item->funitname)) : ?>
                                         <div class="small">
                                             <?php echo Text::sprintf('COM_CWMCONNECT_FUNITNAME_SPRINTF', $this->escape($item->funitname)); ?>

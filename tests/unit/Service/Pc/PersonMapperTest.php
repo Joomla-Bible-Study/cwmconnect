@@ -167,6 +167,35 @@ final class PersonMapperTest extends TestCase
     }
 
     #[Test]
+    public function hiddenReasonIsEmptyForListedParticipant(): void
+    {
+        $row = $this->mapper->map($this->person([
+            'directory_status' => 'participant',
+            'status'           => 'active',
+        ]));
+
+        self::assertSame('', $row['hidden_reason']);
+    }
+
+    #[Test]
+    public function hiddenReasonReflectsTheBlockingGate(): void
+    {
+        $cases = [
+            // inactive membership trumps everything, even a participant child.
+            'inactive'  => ['status' => 'inactive', 'child' => true, 'directory_status' => 'participant'],
+            'child'     => ['status' => 'active', 'child' => true, 'directory_status' => 'participant'],
+            'viewer'    => ['status' => 'active', 'directory_status' => 'viewer'],
+            'no_access' => ['status' => 'active', 'directory_status' => 'no_access'],
+        ];
+
+        foreach ($cases as $expected => $attrs) {
+            $row = $this->mapper->map($this->person($attrs));
+
+            self::assertSame($expected, $row['hidden_reason'], "expected reason '$expected'");
+        }
+    }
+
+    #[Test]
     public function sharedInfoIsEncodedAsJson(): void
     {
         $row = $this->mapper->map($this->person([
