@@ -116,10 +116,10 @@ if ($contact !== '') :
     ?>
             <div class="col-12 col-lg-6">
                 <?php echo Layout::render('sectioncard', [
-            'title' => Text::_('COM_CWMCONNECT_DETAILS'),
-            'icon'  => 'icon-address',
-            'body'  => $contact,
-        ]); ?>
+                    'title' => Text::_('COM_CWMCONNECT_DETAILS'),
+                    'icon'  => 'icon-address',
+                    'body'  => $contact,
+                ]); ?>
             </div>
         <?php endif; ?>
 
@@ -129,50 +129,50 @@ if ($household !== '') :
     ?>
             <div class="col-12 col-lg-6">
                 <?php echo Layout::render('sectioncard', [
-            'title' => Text::_('COM_CWMCONNECT_MEMBER_HOUSEHOLD_HEADING'),
-            'icon'  => 'icon-users',
-            'body'  => $household,
-        ]); ?>
+                    'title' => Text::_('COM_CWMCONNECT_MEMBER_HOUSEHOLD_HEADING'),
+                    'icon'  => 'icon-users',
+                    'body'  => $household,
+                ]); ?>
             </div>
         <?php endif; ?>
 
         <?php if ($member->misc && $params->get('show_misc')) : ?>
             <div class="col-12 col-lg-6">
                 <?php echo Layout::render('sectioncard', [
-            'title' => Text::_('COM_CWMCONNECT_OTHER_INFORMATION'),
-            'icon'  => 'icon-info-circle',
-            'body'  => '<div class="contact-misc">' . $member->misc . '</div>',
-        ]); ?>
+                    'title' => Text::_('COM_CWMCONNECT_OTHER_INFORMATION'),
+                    'icon'  => 'icon-info-circle',
+                    'body'  => '<div class="contact-misc">' . $member->misc . '</div>',
+                ]); ?>
             </div>
         <?php endif; ?>
 
         <?php if ($params->get('show_links') && $member->params->get('linka') != null) : ?>
             <div class="col-12 col-lg-6">
                 <?php echo Layout::render('sectioncard', [
-            'title' => Text::_('COM_CWMCONNECT_LINKS'),
-            'icon'  => 'icon-link',
-            'body'  => trim($this->loadTemplate('links')),
-        ]); ?>
+                    'title' => Text::_('COM_CWMCONNECT_LINKS'),
+                    'icon'  => 'icon-link',
+                    'body'  => trim($this->loadTemplate('links')),
+                ]); ?>
             </div>
         <?php endif; ?>
 
         <?php if ($params->get('show_articles') && $member->user_id && $member->articles) : ?>
             <div class="col-12 col-lg-6">
                 <?php echo Layout::render('sectioncard', [
-            'title' => Text::_('JGLOBAL_ARTICLES'),
-            'icon'  => 'icon-file-alt',
-            'body'  => trim($this->loadTemplate('articles')),
-        ]); ?>
+                    'title' => Text::_('JGLOBAL_ARTICLES'),
+                    'icon'  => 'icon-file-alt',
+                    'body'  => trim($this->loadTemplate('articles')),
+                ]); ?>
             </div>
         <?php endif; ?>
 
         <?php if ($hasEmailForm) : ?>
             <div class="col-12" id="cwm-email-form">
                 <?php echo Layout::render('sectioncard', [
-            'title' => Text::_('COM_CWMCONNECT_EMAIL_FORM'),
-            'icon'  => 'icon-envelope',
-            'body'  => trim($this->loadTemplate('form')),
-        ]); ?>
+                    'title' => Text::_('COM_CWMCONNECT_EMAIL_FORM'),
+                    'icon'  => 'icon-envelope',
+                    'body'  => trim($this->loadTemplate('form')),
+                ]); ?>
             </div>
         <?php endif; ?>
     </div>
