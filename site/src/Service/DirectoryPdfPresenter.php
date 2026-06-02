@@ -42,6 +42,23 @@ final class DirectoryPdfPresenter
     public array $items = [];
 
     /**
+     * Family-unit rows keyed by id, each carrying `name` + `image`. Supplied by
+     * the view so the `family` layout can attach a household photo / name.
+     *
+     * @var    array<int, object>
+     * @since  __DEPLOY_VERSION__
+     */
+    public array $families = [];
+
+    /**
+     * Memoised household grouping built from {@see self::households()}.
+     *
+     * @var    list<array<string, mixed>>|null
+     * @since  __DEPLOY_VERSION__
+     */
+    private ?array $householdsCache = null;
+
+    /**
      * Members holding a position (`con_position`), for the staff section.
      *
      * @var    list<object>
@@ -173,8 +190,24 @@ final class DirectoryPdfPresenter
      */
     public function memberPhotoPath(object $item): ?string
     {
-        $image  = trim((string) ($item->image ?? ''));
-        $source = PhotoAccess::resolvePath($image);
+        return $this->resolveImageThumb((string) ($item->image ?? ''));
+    }
+
+    /**
+     * Resolve any stored image reference (member `image` or a family-unit
+     * `image`) to an absolute 3:4-thumbnail path mpdf can read, building the
+     * thumbnail on demand. Null when there is no usable local image.
+     *
+     * @param   string  $image
+     *
+     * @return  string|null
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    private function resolveImageThumb(string $image): ?string
+    {
+        $image  = trim($image);
+        $source = $image !== '' ? PhotoAccess::resolvePath($image) : null;
 
         if ($source === null) {
             return null;
@@ -206,15 +239,22 @@ final class DirectoryPdfPresenter
      */
     public function memberPhotoSrc(object $item): ?string
     {
-        $photo = $this->memberPhotoPath($item);
+        return $this->memberPhotoPath($item) ?? $this->placeholderSrc($this->memberInitials($item));
+    }
 
-        if ($photo !== null) {
-            return $photo;
-        }
-
-        $initials = $this->memberInitials($item);
-        $safe     = preg_replace('/[^A-Z0-9]/', '', strtoupper($initials)) ?: substr(sha1($initials), 0, 8);
-        $file     = JPATH_ROOT . '/media/com_cwmconnect/photos/thumb/ph/' . $safe . '.jpg';
+    /**
+     * Generate (or reuse) a 3:4 initials placeholder card and return its path.
+     *
+     * @param   string  $initials
+     *
+     * @return  string|null
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    private function placeholderSrc(string $initials): ?string
+    {
+        $safe = preg_replace('/[^A-Z0-9]/', '', strtoupper($initials)) ?: substr(sha1($initials), 0, 8);
+        $file = JPATH_ROOT . '/media/com_cwmconnect/photos/thumb/ph/' . $safe . '.jpg';
 
         if (is_file($file)) {
             return $file;
@@ -271,7 +311,7 @@ final class DirectoryPdfPresenter
      *
      * @since   __DEPLOY_VERSION__
      */
-    private function memberGiven(object $item): string
+    public function memberGiven(object $item): string
     {
         $first = trim((string) ($item->fname ?? ''));
 
@@ -356,5 +396,153 @@ final class DirectoryPdfPresenter
         $cityState = $city !== '' && $state !== '' ? $city . ', ' . $state : $city . $state;
 
         return trim($cityState . ' ' . $zip);
+    }
+
+    /**
+     * Group the members into households for the `family` layout: members sharing
+     * a `funitid` form one household; each unlinked member (`funitid <= 0`) is its
+     * own one-person household. Adults sort before children within a household;
+     * households sort alphabetically by surname then head given name. Memoised.
+     *
+     * Each entry: { familyId:int, surname:string, image:string, members:list<object> }.
+     *
+     * @return  list<array<string, mixed>>
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    public function households(): array
+    {
+        if ($this->householdsCache !== null) {
+            return $this->householdsCache;
+        }
+
+        $groups    = [];
+        $singleton = 0;
+
+        foreach ($this->items as $item) {
+            $fid = (int) ($item->funitid ?? 0);
+            $key = $fid > 0 ? 'f' . $fid : 's' . $singleton++;
+
+            if (!isset($groups[$key])) {
+                $family = $fid > 0 ? ($this->families[$fid] ?? null) : null;
+
+                $groups[$key] = [
+                    'familyId' => $fid,
+                    'surname'  => trim((string) ($item->surname ?? '')) ?: trim((string) ($item->lname ?? '')),
+                    'image'    => $family !== null ? trim((string) ($family->image ?? '')) : '',
+                    'members'  => [],
+                ];
+            }
+
+            $groups[$key]['members'][] = $item;
+        }
+
+        $households = array_values($groups);
+
+        foreach ($households as &$household) {
+            usort(
+                $household['members'],
+                static fn(object $a, object $b): int => ((int) ($a->is_child ?? 0)) <=> ((int) ($b->is_child ?? 0)),
+            );
+        }
+
+        unset($household);
+
+        usort($households, fn(array $a, array $b): int => [strtolower($a['surname']), strtolower($this->memberGiven($a['members'][0]))]
+            <=> [strtolower($b['surname']), strtolower($this->memberGiven($b['members'][0]))]);
+
+        $this->householdsCache = $households;
+
+        return $households;
+    }
+
+    /**
+     * The household's head member (first adult, else first member).
+     *
+     * @param   array<string, mixed>  $household
+     *
+     * @return  object
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    public function householdHead(array $household): object
+    {
+        return $household['members'][0];
+    }
+
+    /**
+     * Family headline name: "SURNAME, Given and Given" from the adult members
+     * (children kept in the household but off the headline). Singleton → "SURNAME, Given".
+     *
+     * @param   array<string, mixed>  $household
+     *
+     * @return  string
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    public function householdDisplayName(array $household): string
+    {
+        $adults = array_filter($household['members'], static fn(object $m): bool => (int) ($m->is_child ?? 0) === 0);
+        $adults = $adults !== [] ? $adults : $household['members'];
+
+        $givens = array_values(array_filter(array_map(fn(object $m): string => $this->memberGiven($m), $adults)));
+
+        $names = match (true) {
+            $givens === []       => '',
+            \count($givens) <= 2 => implode(' and ', $givens),
+            default              => implode(', ', \array_slice($givens, 0, -1)) . ' and ' . end($givens),
+        };
+
+        $surname = mb_strtoupper(trim((string) $household['surname']));
+
+        if ($surname === '') {
+            return $names;
+        }
+
+        return $names !== '' ? $surname . ', ' . $names : $surname;
+    }
+
+    /**
+     * The household photo for mpdf: the family-unit photo, else the head member's
+     * photo, else a surname initials card.
+     *
+     * @param   array<string, mixed>  $household
+     *
+     * @return  string|null
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    public function householdPhotoSrc(array $household): ?string
+    {
+        $family = $this->resolveImageThumb((string) ($household['image'] ?? ''));
+
+        if ($family !== null) {
+            return $family;
+        }
+
+        $headPhoto = $this->memberPhotoPath($this->householdHead($household));
+
+        if ($headPhoto !== null) {
+            return $headPhoto;
+        }
+
+        $initials = mb_strtoupper(mb_substr(trim((string) $household['surname']), 0, 2)) ?: '?';
+
+        return $this->placeholderSrc($initials);
+    }
+
+    /**
+     * City/State ZIP for the household, taken from the head member (a PC
+     * household shares one address).
+     *
+     * @param   array<string, mixed>  $household
+     *
+     * @return  string
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    public function householdLocality(array $household): string
+    {
+        return $this->memberLocality($this->householdHead($household));
     }
 }

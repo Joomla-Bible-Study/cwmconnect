@@ -416,6 +416,21 @@ class ReportbuildHelper
         $presenter->pdfLayout          = (string) $params->get('pdf_layout', 'photo_detail');
         $presenter->appendRoster       = (bool) $params->get('pdf_append_roster', 0);
         $presenter->showHiddenBadges   = $includeHidden;
+
+        if ($presenter->pdfLayout === 'family') {
+            $famQuery = $this->db->createQuery()
+                ->select($this->db->quoteName(['id', 'name', 'image']))
+                ->from($this->db->quoteName('#__cwmconnect_familyunit'));
+            $this->db->setQuery($famQuery);
+
+            $families = [];
+
+            foreach ($this->db->loadObjectList() ?: [] as $family) {
+                $families[(int) $family->id] = $family;
+            }
+
+            $presenter->families = $families;
+        }
         // Admin print carries the title/date in the running header + footer
         // (SetHeader/SetFooter below), so suppress the duplicate body title.
         $presenter->showTitleBlock     = false;

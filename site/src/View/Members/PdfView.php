@@ -71,6 +71,10 @@ class PdfView extends BaseHtmlView
         $presenter->showSectionHeaders = (bool) $params->get('pdf_section_headers', 1);
         $presenter->pdfLayout          = (string) $params->get('pdf_layout', 'photo_detail');
         $presenter->appendRoster       = (bool) $params->get('pdf_append_roster', 0);
+
+        if ($presenter->pdfLayout === 'family') {
+            $presenter->families = $this->loadFamilies($model, $items);
+        }
         $presenter->appearance         = [
             'fontBasePt' => match ((string) $params->get('pdf_font_size', 'normal')) {
                 'large'  => 12.0,
@@ -147,6 +151,50 @@ class PdfView extends BaseHtmlView
         $mpdf->Output($filename, \Mpdf\Output\Destination::INLINE);
 
         $app->close();
+    }
+
+    /**
+     * Load the family-unit rows (id/name/image) referenced by the members'
+     * `funitid`, keyed by id, for the family layout's household grouping.
+     *
+     * @param   MembersModel   $model
+     * @param   list<object>   $items
+     *
+     * @return  array<int, object>
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    private function loadFamilies(MembersModel $model, array $items): array
+    {
+        $ids = [];
+
+        foreach ($items as $item) {
+            $fid = (int) ($item->funitid ?? 0);
+
+            if ($fid > 0) {
+                $ids[$fid] = $fid;
+            }
+        }
+
+        if ($ids === []) {
+            return [];
+        }
+
+        $db    = $model->getDatabase();
+        $query = $db->createQuery()
+            ->select([$db->quoteName('id'), $db->quoteName('name'), $db->quoteName('image')])
+            ->from($db->quoteName('#__cwmconnect_familyunit'))
+            ->whereIn($db->quoteName('id'), array_values($ids));
+
+        $db->setQuery($query);
+
+        $families = [];
+
+        foreach ($db->loadObjectList() ?: [] as $row) {
+            $families[(int) $row->id] = $row;
+        }
+
+        return $families;
     }
 
     /**

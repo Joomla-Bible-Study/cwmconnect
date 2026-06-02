@@ -158,6 +158,109 @@ $renderTwoColumn = function (array $members) use ($renderCellInner): void {
 };
 
 /**
+ * Family-photo grid: one card per household — the family photo + the family
+ * headline name ("SURNAME, Given and Given"), three per row. Mirrors the
+ * reference directory's pictorial grid.
+ */
+$familyGrid = function (array $households): void {
+    $columns = 3;
+    $count   = \count($households);
+
+    for ($i = 0; $i < $count; $i += $columns) :
+        ?>
+        <table class="grid">
+            <tr>
+                <?php for ($c = 0; $c < $columns; $c++) : ?>
+                    <?php $household = $households[$i + $c] ?? null; ?>
+                    <td class="grid-cell">
+                        <?php if ($household !== null) : ?>
+                            <?php $src = $this->householdPhotoSrc($household); ?>
+                            <?php if ($src !== null) : ?>
+                                <img class="grid-photo" src="<?php echo $this->escape($src); ?>" width="92" alt="" />
+                            <?php else : ?>
+                                <div class="grid-nophoto"><span><?php echo $this->escape(mb_strtoupper(mb_substr((string) $household['surname'], 0, 2))); ?></span></div>
+                            <?php endif; ?>
+                            <div class="grid-name"><?php echo $this->escape($this->householdDisplayName($household)); ?></div>
+                        <?php endif; ?>
+                    </td>
+                <?php endfor; ?>
+            </tr>
+        </table>
+        <?php
+    endfor;
+};
+
+/**
+ * One household block for the family detail grid: the family photo beside the
+ * family headline, shared address, then each member's given name + personal
+ * contact.
+ */
+$familyCellInner = function (array $household): void {
+    $src      = $this->householdPhotoSrc($household);
+    $head     = $this->householdHead($household);
+    $locality = $this->householdLocality($household);
+    ?>
+    <table class="cell-entry">
+        <tr>
+            <td class="cell-photo-cell">
+                <?php if ($src !== null) : ?>
+                    <img class="photo" src="<?php echo $this->escape($src); ?>" width="83" alt="" />
+                <?php else : ?>
+                    <div class="cell-no-photo"><span><?php echo $this->escape(mb_strtoupper(mb_substr((string) $household['surname'], 0, 2))); ?></span></div>
+                <?php endif; ?>
+            </td>
+            <td class="cell-details">
+                <div class="name"><?php echo $this->escape($this->householdDisplayName($household)); ?></div>
+
+                <?php if (!empty($head->address)) : ?>
+                    <div class="line"><?php echo $this->escape((string) $head->address); ?></div>
+                <?php endif; ?>
+                <?php if ($locality !== '') : ?>
+                    <div class="line"><?php echo $this->escape($locality); ?></div>
+                <?php endif; ?>
+
+                <?php foreach ($household['members'] as $member) : ?>
+                    <?php
+                    $contact = array_values(array_filter([
+                        trim((string) ($member->telephone ?? '')) ?: trim((string) ($member->mobile ?? '')),
+                        trim((string) ($member->email_to ?? '')),
+                    ]));
+                    ?>
+                    <div class="line member">
+                        <strong><?php echo $this->escape($this->memberGiven($member)); ?></strong><?php if ($contact !== []) : ?> — <?php echo $this->escape(implode(' · ', $contact)); ?><?php endif; ?>
+                    </div>
+                <?php endforeach; ?>
+            </td>
+        </tr>
+    </table>
+    <?php
+};
+
+/**
+ * Render households as a two-column family detail grid (two per row).
+ */
+$familyDetail = function (array $households) use ($familyCellInner): void {
+    $households = array_values($households);
+    $count      = \count($households);
+
+    echo '<table class="entry-grid"><tbody>';
+
+    for ($i = 0; $i < $count; $i += 2) {
+        echo '<tr><td class="entry-cell">';
+        $familyCellInner($households[$i]);
+        echo '</td><td class="entry-cell">';
+
+        if (isset($households[$i + 1])) {
+            $familyCellInner($households[$i + 1]);
+        }
+
+        echo '</td></tr>';
+    }
+
+    echo '</tbody></table>';
+};
+
+/**
  * Photo grid: compact cards (photo + name + primary phone), three per row.
  * Contact detail is intentionally minimal — pair with an appended roster for
  * full contact info.
@@ -363,6 +466,31 @@ if ($this->pdfLayout === 'photo_grid') {
     $renderGrid($this->items);
 } elseif ($this->pdfLayout === 'roster') {
     $renderRoster($this->items, $this->showSectionHeaders);
+} elseif ($this->pdfLayout === 'family') {
+    // Family-centric (mirrors the reference): a family-photo grid, then family
+    // detail pages grouped under alphabetical surname dividers.
+    $households = $this->households();
+
+    $familyGrid($households);
+
+    echo '<div class="pagebreak"></div>';
+    echo '<h2 class="section-heading">' . Text::_('COM_CWMCONNECT_PDF_FAMILIES_HEADING') . '</h2>';
+
+    if ($this->showSectionHeaders) {
+        $groupedFamilies = [];
+
+        foreach ($households as $household) {
+            $letter                     = strtoupper(mb_substr((string) $household['surname'], 0, 1)) ?: '#';
+            $groupedFamilies[$letter][] = $household;
+        }
+
+        foreach ($groupedFamilies as $letter => $group) {
+            echo '<div class="letter">' . $this->escape((string) $letter) . '</div>';
+            $familyDetail($group);
+        }
+    } else {
+        $familyDetail($households);
+    }
 } else {
     // photo_detail — two columns, with full-width alphabetical dividers
     // between letter groups so the columns reset cleanly under each header.
