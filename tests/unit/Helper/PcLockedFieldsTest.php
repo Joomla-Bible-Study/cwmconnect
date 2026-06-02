@@ -43,7 +43,7 @@ final class PcLockedFieldsTest extends TestCase
         $item   = (object) ['pc_person_id' => 42, 'display_in_directory' => 1];
         $locked = PcLockedFields::forItem($item);
 
-        foreach (['name', 'email_to', 'telephone', 'address', 'birthdate', 'image'] as $expected) {
+        foreach (['name', 'email_to', 'telephone', 'address', 'birthdate', 'gender', 'image'] as $expected) {
             self::assertContains(
                 $expected,
                 $locked,

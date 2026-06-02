@@ -63,6 +63,7 @@ final class PcLockedFields
         'country',
         'birthdate',
         'anniversary',
+        'gender',
         'image',
     ];
 
