@@ -161,6 +161,15 @@ final class SyncEngine
 
         $this->logger->info('PC sync started.', ['statuses' => $membershipStatuses]);
 
+        // Discovery pass: which households contain a qualifying member? Their
+        // household-mates get pulled in below even when their own membership
+        // status wouldn't qualify (e.g. a Member's "Regular Attender" child).
+        if ($onProgress !== null) {
+            $onProgress(0, 0, 'preparing');
+        }
+
+        $memberHouseholds = $this->discoverMemberHouseholds($membershipStatuses);
+
         do {
             $pagesWalked++;
 
@@ -177,20 +186,14 @@ final class SyncEngine
             $data     = \is_array($page['data'] ?? null) ? $page['data'] : [];
             $included = \is_array($page['included'] ?? null) ? $page['included'] : [];
 
-            $filterLocally = \count($membershipStatuses) > 1;
-
             foreach ($data as $person) {
                 if (!\is_array($person)) {
                     $report->recordError(null, 'Skipping non-array entry in PC response data.');
                     continue;
                 }
 
-                if ($filterLocally) {
-                    $personMembership = (string) ($person['attributes']['membership'] ?? '');
-
-                    if (!\in_array($personMembership, $membershipStatuses, true)) {
-                        continue;
-                    }
+                if (!$this->personIncluded($person, $membershipStatuses, $memberHouseholds)) {
+                    continue;
                 }
 
                 $report->seen++;
@@ -257,6 +260,104 @@ final class SyncEngine
         $this->logger->info('PC sync finished.', $report->toArray());
 
         return $report;
+    }
+
+    /**
+     * Discovery pass: collect every PC household id that contains at least one
+     * qualifying member, so the main pass can also import their household-mates
+     * (children, spouses) whose own membership status wouldn't qualify.
+     *
+     * Walks the active people WITHOUT includes — only the household
+     * relationship ids are needed — so it's a light, fast pass. An empty
+     * status list means "no membership filter," so household expansion is moot
+     * and we return an empty set.
+     *
+     * @param   list<string>  $membershipStatuses  Qualifying membership values.
+     *
+     * @return  array<string, true>  Set of qualifying PC household ids.
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    private function discoverMemberHouseholds(array $membershipStatuses): array
+    {
+        if ($membershipStatuses === []) {
+            return [];
+        }
+
+        $households = [];
+        $nextUrl    = null;
+        $pages      = 0;
+
+        do {
+            $pages++;
+
+            if ($pages > self::MAX_PAGES) {
+                break;
+            }
+
+            // include=households is required: without it PCO returns
+            // relationships.households.data = null, so a person's household
+            // ids can't be read. We only need the linkage, not the Household
+            // resources, but the include is what populates it.
+            $page = $nextUrl === null
+                ? $this->client->getJson('/people/v2/people', ['per_page' => '100', 'where[status]' => 'active', 'include' => 'households'])
+                : $this->client->getJsonAbsolute($nextUrl);
+
+            foreach (\is_array($page['data'] ?? null) ? $page['data'] : [] as $person) {
+                if (!\is_array($person)) {
+                    continue;
+                }
+
+                $membership = (string) ($person['attributes']['membership'] ?? '');
+
+                if (!\in_array($membership, $membershipStatuses, true)) {
+                    continue;
+                }
+
+                foreach ($this->mapper->householdRefIds($person) as $householdId) {
+                    $households[$householdId] = true;
+                }
+            }
+
+            $nextUrl = $this->extractNextLink($page);
+        } while ($nextUrl !== null);
+
+        return $households;
+    }
+
+    /**
+     * Should this person be imported? A person qualifies when they directly
+     * hold a configured membership status, OR they share a PC household with
+     * someone who does (the household-expansion policy). An empty status list
+     * imports everyone active.
+     *
+     * @param   array<string, mixed>  $person             PC Person row.
+     * @param   list<string>          $membershipStatuses Qualifying values.
+     * @param   array<string, true>   $memberHouseholds   Qualifying household ids.
+     *
+     * @return  bool
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    private function personIncluded(array $person, array $membershipStatuses, array $memberHouseholds): bool
+    {
+        if ($membershipStatuses === []) {
+            return true;
+        }
+
+        $membership = (string) ($person['attributes']['membership'] ?? '');
+
+        if (\in_array($membership, $membershipStatuses, true)) {
+            return true;
+        }
+
+        foreach ($this->mapper->householdRefIds($person) as $householdId) {
+            if (isset($memberHouseholds[$householdId])) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -484,21 +585,17 @@ final class SyncEngine
      */
     private function fetchFirstPage(array $membershipStatuses): array
     {
-        $query = [
-            'include'  => self::PEOPLE_INCLUDES,
-            'per_page' => '100',
-            // Active members only: PCO returns inactive people by default, but
-            // an inactive member must never enter the directory. Anyone who
-            // goes inactive in PC drops out of this result set and the sweep
-            // then hard-deletes their local row (re-activating re-syncs fresh).
+        // No server-side where[membership] filter: the household-expansion
+        // policy needs every active person in the result set so a member's
+        // household-mates (children, spouses) — whose own membership wouldn't
+        // qualify — can be pulled in. Membership filtering happens locally in
+        // personIncluded(). where[status]=active still drops inactive people
+        // (the sweep then hard-deletes any local row that goes inactive).
+        return $this->client->getJson('/people/v2/people', [
+            'include'       => self::PEOPLE_INCLUDES,
+            'per_page'      => '100',
             'where[status]' => 'active',
-        ];
-
-        if (\count($membershipStatuses) === 1) {
-            $query['where[membership]'] = $membershipStatuses[0];
-        }
-
-        return $this->client->getJson('/people/v2/people', $query);
+        ]);
     }
 
     /**

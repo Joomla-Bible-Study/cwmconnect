@@ -232,6 +232,31 @@ final class PersonMapper
      *
      * @since   __DEPLOY_VERSION__
      */
+    /**
+     * The PC household ids a person belongs to (relationship refs only — no
+     * `included` lookup needed). Used by the sync's discovery pass to find
+     * households that contain a qualifying member, so their household-mates
+     * (children, spouses) can be pulled into the directory too.
+     *
+     * @param   array<string, mixed>  $personData  PC Person row.
+     *
+     * @return  list<string>  PC household ids, or [].
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    public function householdRefIds(array $personData): array
+    {
+        $out = [];
+
+        foreach ($this->relationshipIds($personData)['households'] ?? [] as $ref) {
+            if ($ref['type'] === 'Household') {
+                $out[] = $ref['id'];
+            }
+        }
+
+        return $out;
+    }
+
     public function extractHousehold(array $personData, array $included): ?array
     {
         $refs = $this->relationshipIds($personData)['households'] ?? [];

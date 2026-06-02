@@ -162,34 +162,43 @@ final class SyncEngineTest extends TestCase
     }
 
     #[Test]
-    public function singleMembershipStatusIsSentAsServerFilter(): void
+    public function membershipIsNeverSentAsServerSideFilter(): void
     {
+        // Household expansion needs every active person in the result set, so
+        // the engine never uses where[membership] (which would drop non-member
+        // household-mates) — it filters locally in personIncluded() instead.
         $client = $this->fakeClient([
             $this->pcPage([], null),
         ]);
 
-        $repo = $this->fakeRepo();
+        new SyncEngine($client, $this->fakeRepo(), new PersonMapper())->run(['Member']);
 
-        new SyncEngine($client, $repo, new PersonMapper())->run(['Member']);
+        foreach ($client->capturedQueries as $query) {
+            self::assertArrayNotHasKey('where[membership]', $query);
+        }
 
-        self::assertSame('Member', $client->capturedQueries[0]['where[membership]'] ?? null);
+        self::assertSame('active', $client->capturedQueries[0]['where[status]'] ?? null);
     }
 
     #[Test]
-    public function multipleMembershipStatusesAreNotSentAsServerFilter(): void
+    public function householdMatesOfMembersAreImported(): void
     {
-        // PC's where[membership] accepts a single value, so the engine omits
-        // the server-side filter for multiple statuses and filters in PHP
-        // instead (SyncEngine::run() local-filter branch).
+        // P1 is a Member in household H; P2 a "Regular Attender" child in the
+        // same household H; P3 a Visitor in household X. With statuses=Member,
+        // P1 qualifies directly, P2 via the shared household, P3 is excluded.
         $client = $this->fakeClient([
-            $this->pcPage([], null),
+            $this->pcPage([
+                $this->pcPerson(1, 'Parent', 'Member', 'H'),
+                $this->pcPerson(2, 'Child', 'Regular Attender', 'H'),
+                $this->pcPerson(3, 'Guest', 'Visitor', 'X'),
+            ], null),
         ]);
 
-        $repo = $this->fakeRepo();
+        $repo   = $this->fakeRepo(outcome: UpsertOutcome::Added);
+        $report = new SyncEngine($client, $repo, new PersonMapper())->run(['Member']);
 
-        new SyncEngine($client, $repo, new PersonMapper())->run(['Member', 'Regular Attender']);
-
-        self::assertArrayNotHasKey('where[membership]', $client->capturedQueries[0]);
+        self::assertSame(2, $report->seen);
+        self::assertSame([1, 2], $repo->capturedSeenIds);
     }
 
     #[Test]
@@ -241,6 +250,9 @@ final class SyncEngineTest extends TestCase
             {
                 $this->urls[]            = $path;
                 $this->capturedQueries[] = $query;
+                // Each first-page call starts a fresh walk (the engine makes a
+                // discovery pass then the main pass); replay pages from the top.
+                $this->index = 0;
 
                 return $this->nextPage();
             }
@@ -337,13 +349,19 @@ final class SyncEngineTest extends TestCase
     /**
      * @return array<string, mixed>
      */
-    private function pcPerson(int $id, string $firstName): array
+    private function pcPerson(int $id, string $firstName, string $membership = 'Member', ?string $householdId = null): array
     {
+        $relationships = [];
+
+        if ($householdId !== null) {
+            $relationships['households'] = ['data' => [['type' => 'Household', 'id' => $householdId]]];
+        }
+
         return [
             'type'          => 'Person',
             'id'            => (string) $id,
-            'attributes'    => ['first_name' => $firstName, 'last_name' => 'Test'],
-            'relationships' => [],
+            'attributes'    => ['first_name' => $firstName, 'last_name' => 'Test', 'membership' => $membership],
+            'relationships' => $relationships,
         ];
     }
 }
