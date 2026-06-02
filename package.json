@@ -22,10 +22,14 @@
         "rollup-plugin-gzip": "^4.1.1"
     },
     "scripts": {
-        "build":      "npm run build:js",
-        "build:js":   "SOURCE_DIR=build/media_source/com_cwmconnect/js OUTPUT_DIR=media/com_cwmconnect/js rollup -c libraries/vendor/cwm/build-tools/templates/rollup.config.js",
-        "watch":      "SOURCE_DIR=build/media_source/com_cwmconnect/js OUTPUT_DIR=media/com_cwmconnect/js rollup -c libraries/vendor/cwm/build-tools/templates/rollup.config.js -w",
-        "lint":       "eslint .",
-        "lint:fix":   "eslint . --fix"
+        "build": "npm run build:js && npm run build:assets",
+        "build:js": "SOURCE_DIR=build/media_source/com_cwmconnect/js OUTPUT_DIR=media/com_cwmconnect/js rollup -c libraries/vendor/cwm/build-tools/templates/rollup.config.js",
+        "build:assets": "node libraries/vendor/cwm/build-tools/templates/build-assets.js",
+        "watch": "SOURCE_DIR=build/media_source/com_cwmconnect/js OUTPUT_DIR=media/com_cwmconnect/js rollup -c libraries/vendor/cwm/build-tools/templates/rollup.config.js -w",
+        "lint": "eslint .",
+        "lint:fix": "eslint . --fix"
+    },
+    "dependencies": {
+        "@fancyapps/ui": "^6.1.14"
     }
 }

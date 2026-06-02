@@ -45,6 +45,20 @@
         "file": "build/cwmconnect-changelog.xml",
         "url":  "https://raw.githubusercontent.com/Joomla-Bible-Study/cwmconnect/master/build/cwmconnect-changelog.xml"
     },
+    "assets": {
+        "_comment": "Drives `npm run build:assets` (cwm-build-tools build-assets.js): copies third-party libraries from node_modules into media/com_cwmconnect/vendor so they ship with the package.",
+        "vendorOutputDir": "media/com_cwmconnect/vendor",
+        "packages": [
+            {
+                "name": "@fancyapps/ui",
+                "cleanDest": "fancybox",
+                "files": [
+                    { "from": "dist/fancybox/fancybox.umd.js", "to": "fancybox/fancybox.umd.js" },
+                    { "from": "dist/fancybox/fancybox.css", "to": "fancybox/fancybox.css" }
+                ]
+            }
+        ]
+    },
     "dev": {
         "_comment": "Drives cwm-link / cwm-link-check / cwm-clean / cwm-verify against the developer's local Joomla install(s). Component admin/site/media + the bundled module + finder plugin are auto-derived from manifests.extensions[]; the internalLinks entry replaces the manual `ln -s` step previously documented in CLAUDE.md.",
         "internalLinks": [
