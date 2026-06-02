@@ -48,7 +48,7 @@ final class DirectoryPdfPresenterTest extends TestCase
     {
         return (object) array_merge([
             'name'        => '', 'surname' => '', 'lname' => '', 'spouse' => '',
-            'fname'       => '', 'nickname' => '',
+            'fname'       => '', 'nickname' => '', 'funitid' => 0, 'is_child' => 0,
             'con_position' => '', 'address' => '', 'suburb' => '', 'state' => '',
             'postcode'    => '', 'anniversary' => '', 'telephone' => '', 'mobile' => '',
             'email_to'    => '', 'image' => '', 'display_in_directory' => 1,
@@ -128,11 +128,55 @@ final class DirectoryPdfPresenterTest extends TestCase
         self::assertFalse($this->presenter->isHidden(self::member(['display_in_directory' => 1])));
     }
 
+    #[Test]
+    public function householdsGroupMembersByFamilyUnitWithSinglesSeparate(): void
+    {
+        $this->presenter->items = [
+            self::member(['surname' => 'Cordis', 'fname' => 'Brent', 'funitid' => 3]),
+            self::member(['surname' => 'Cordis', 'fname' => 'Amy', 'funitid' => 3]),
+            self::member(['surname' => 'Cordis', 'fname' => 'Savannah', 'funitid' => 3, 'is_child' => 1]),
+            self::member(['surname' => 'Ababio', 'fname' => 'Gifty', 'funitid' => 0]),
+            self::member(['surname' => 'Allen', 'fname' => 'Lee', 'funitid' => 0]),
+        ];
+
+        $households = $this->presenter->households();
+
+        // 1 family (Cordis ×3) + 2 singletons, sorted by surname.
+        self::assertCount(3, $households);
+        self::assertSame(['Ababio', 'Allen', 'Cordis'], array_column($households, 'surname'));
+        self::assertCount(3, $households[2]['members']);
+        // Adults sort before the child within the household.
+        self::assertSame(0, (int) $households[2]['members'][0]->is_child);
+        self::assertSame(1, (int) $households[2]['members'][2]->is_child);
+    }
+
+    #[Test]
+    public function householdDisplayNameComposesAdultsOnly(): void
+    {
+        $family = ['surname' => 'Cordis', 'members' => [
+            self::member(['fname' => 'Brent']),
+            self::member(['fname' => 'Amy']),
+            self::member(['fname' => 'Savannah', 'is_child' => 1]),
+        ]];
+        self::assertSame('CORDIS, Brent and Amy', $this->presenter->householdDisplayName($family));
+
+        $trio = ['surname' => 'Andal', 'members' => [
+            self::member(['fname' => 'Lauren']),
+            self::member(['fname' => 'Ric']),
+            self::member(['fname' => 'Pamela']),
+        ]];
+        self::assertSame('ANDAL, Lauren, Ric and Pamela', $this->presenter->householdDisplayName($trio));
+
+        $single = ['surname' => 'Ababio', 'members' => [self::member(['fname' => 'Gifty'])]];
+        self::assertSame('ABABIO, Gifty', $this->presenter->householdDisplayName($single));
+    }
+
     /**
      * @return iterable<string, array{string, bool, bool}>
      */
     public static function layoutProvider(): iterable
     {
+        yield 'family'               => ['family', false, false];
         yield 'photo detail'         => ['photo_detail', false, false];
         yield 'photo grid'           => ['photo_grid', false, false];
         yield 'roster'               => ['roster', false, false];

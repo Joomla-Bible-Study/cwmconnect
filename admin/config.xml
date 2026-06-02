@@ -1202,10 +1202,11 @@
 		<field name="pdf_layout"
 		       type="radio"
 		       class="btn-group"
-		       default="photo_detail"
+		       default="family"
 		       label="COM_CWMCONNECT_FIELD_PDF_LAYOUT_LABEL"
 		       description="COM_CWMCONNECT_FIELD_PDF_LAYOUT_DESC"
 		>
+			<option value="family">COM_CWMCONNECT_FIELD_PDF_LAYOUT_FAMILY</option>
 			<option value="photo_detail">COM_CWMCONNECT_FIELD_PDF_LAYOUT_PHOTO_DETAIL</option>
 			<option value="photo_grid">COM_CWMCONNECT_FIELD_PDF_LAYOUT_PHOTO_GRID</option>
 			<option value="roster">COM_CWMCONNECT_FIELD_PDF_LAYOUT_ROSTER</option>
