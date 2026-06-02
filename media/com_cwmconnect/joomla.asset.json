@@ -12,17 +12,25 @@
       "dependencies": []
     },
     {
-      "name": "com_cwmconnect.dialog",
+      "name": "com_cwmconnect.fancybox-vendor-css",
       "type": "style",
-      "uri": "com_cwmconnect/dialog.css",
+      "uri": "media/com_cwmconnect/vendor/fancybox/fancybox.css",
       "dependencies": []
     },
     {
-      "name": "com_cwmconnect.dialog-enhance",
+      "name": "com_cwmconnect.fancybox-vendor",
       "type": "script",
-      "uri": "com_cwmconnect/dialog-enhance.js",
+      "uri": "media/com_cwmconnect/vendor/fancybox/fancybox.umd.js",
+      "attributes": {
+        "defer": true
+      }
+    },
+    {
+      "name": "com_cwmconnect.fancybox",
+      "type": "script",
+      "uri": "com_cwmconnect/fancybox.js",
       "dependencies": [
-        "core"
+        "com_cwmconnect.fancybox-vendor"
       ],
       "attributes": {
         "defer": true
