@@ -67,9 +67,7 @@ final class PersonMapper
         $mobilePhone    = $this->pickPrimaryPhone($byTypeId, $relIds['phone_numbers'] ?? [], true);
         $primaryAddress = $this->pickPrimaryAddress($byTypeId, $relIds['addresses'] ?? []);
 
-        $directoryStatus = (string) ($attrs['directory_status'] ?? '');
-        $isChild         = (bool) ($attrs['child'] ?? false);
-        $pcStatus        = (string) ($attrs['status'] ?? 'active');
+        $pcStatus = (string) ($attrs['status'] ?? 'active');
 
         $firstName  = $this->stringAttr($attrs, 'first_name');
         $middleName = $this->stringAttr($attrs, 'middle_name');
@@ -112,39 +110,17 @@ final class PersonMapper
             'postcode'             => $primaryAddress['zip']      ?? '',
             'birthdate'            => $this->dateAttr($attrs, 'birthdate'),
             'anniversary'          => $this->dateAttr($attrs, 'anniversary'),
-            'directory_scope'      => $this->mapDirectoryScope($directoryStatus),
+            // Full church directory: every active member is listed by default,
+            // regardless of their PC `directory_status` (which is mostly an
+            // unset default, not a deliberate opt-out) or `child` flag.
+            // `published` still gates active vs inactive membership; an admin
+            // can hide an individual by clearing `display_in_directory`.
+            'directory_scope'      => 'public',
             'pc_shared_info'       => $this->encodeSharedInfo($attrs['directory_shared_info'] ?? null),
-            'display_in_directory' => (!$isChild && $directoryStatus === 'participant') ? 1 : 0,
+            'display_in_directory' => 1,
             'published'            => $pcStatus === 'active' ? 1 : 0,
-            'hidden_reason'        => $this->hiddenReason($pcStatus, $isChild, $directoryStatus),
+            'hidden_reason'        => $pcStatus === 'active' ? '' : 'inactive',
         ];
-    }
-
-    /**
-     * Derive the single most-blocking reason a synced member is kept out of
-     * the public directory, for display in the admin members list. Returns ''
-     * when the member is fully visible. Precedence runs from the gate that
-     * suppresses them outright (inactive membership) down to the directory
-     * preference; `display_in_directory` / `published` remain the real gates,
-     * this is purely the human-readable "why".
-     *
-     * @param   string  $pcStatus         PC `status` (active / inactive).
-     * @param   bool    $isChild          PC `child` flag.
-     * @param   string  $directoryStatus  PC `directory_status`.
-     *
-     * @return  string  One of inactive|child|viewer|no_access, or ''.
-     *
-     * @since   __DEPLOY_VERSION__
-     */
-    private function hiddenReason(string $pcStatus, bool $isChild, string $directoryStatus): string
-    {
-        return match (true) {
-            $pcStatus !== 'active'              => 'inactive',
-            $isChild                            => 'child',
-            $directoryStatus === 'participant'  => '',
-            $directoryStatus === 'viewer'       => 'viewer',
-            default                             => 'no_access',
-        };
     }
 
     /**
@@ -511,28 +487,6 @@ final class PersonMapper
             'country' => (string) ($attrs['country_code'] ?? $attrs['country_name'] ?? ''),
             'zip'     => (string) ($attrs['zip'] ?? ''),
         ];
-    }
-
-    /**
-     * Translate PC's `directory_status` string to our `directory_scope` enum.
-     *
-     * PC's live values are `participant`, `viewer`, and `no_access`. Only a
-     * `participant` is publicly listed; `viewer` (can browse the directory but
-     * isn't listed) and `no_access` are hidden. Any unknown/missing value is
-     * treated as hidden so a person is never exposed by default.
-     *
-     * @param   string  $directoryStatus  PC `directory_status` attribute.
-     *
-     * @return  string  One of 'public', 'household', 'hidden'.
-     *
-     * @since   __DEPLOY_VERSION__
-     */
-    private function mapDirectoryScope(string $directoryStatus): string
-    {
-        return match ($directoryStatus) {
-            'participant' => 'public',
-            default       => 'hidden',
-        };
     }
 
     /**

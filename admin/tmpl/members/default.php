@@ -139,9 +139,10 @@ if ($saveOrder && !empty($this->items)) {
                                             $reasonKey = (string) $item->hidden_reason;
                                         } elseif ((int) $item->published === 0) {
                                             $reasonKey = 'inactive';
-                                        } elseif (!empty($item->pc_person_id)) {
-                                            $reasonKey = 'no_access';
                                         } else {
+                                            // Published but flagged off the directory: an admin
+                                            // hid this individual (the full-directory sync lists
+                                            // every active member otherwise).
                                             $reasonKey = 'manual';
                                         }
                             ?>

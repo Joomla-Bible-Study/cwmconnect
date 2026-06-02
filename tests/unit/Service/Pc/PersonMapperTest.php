@@ -123,76 +123,55 @@ final class PersonMapperTest extends TestCase
     }
 
     #[Test]
-    public function childFlagForcesDisplayInDirectoryToZeroEvenWhenParticipant(): void
+    public function fullDirectoryListsEveryActiveMemberRegardlessOfPcPreference(): void
+    {
+        // Show-all policy: PC `directory_status` is mostly an unset default,
+        // not a deliberate opt-out, so it never hides anyone. Children are
+        // listed too. Only inactive membership keeps a row off the directory.
+        foreach (['participant', 'viewer', 'no_access', ''] as $status) {
+            $row = $this->mapper->map($this->person([
+                'directory_status' => $status,
+                'status'           => 'active',
+            ]));
+
+            self::assertSame(1, $row['display_in_directory'], "directory_status='$status' must still list");
+            self::assertSame('public', $row['directory_scope'], "directory_status='$status' scope");
+            self::assertSame('', $row['hidden_reason'], "directory_status='$status' reason");
+        }
+    }
+
+    #[Test]
+    public function childrenAreListedInTheFullDirectory(): void
     {
         $row = $this->mapper->map($this->person([
             'first_name'       => 'Junior',
             'child'            => true,
-            'directory_status' => 'participant',
-        ]));
-
-        self::assertSame(0, $row['display_in_directory']);
-    }
-
-    #[Test]
-    public function nonParticipantDirectoryStatusKeepsDisplayInDirectoryZero(): void
-    {
-        // PC's real values: only `participant` is publicly listed; `viewer`
-        // (can browse but isn't listed) and `no_access` stay hidden.
-        foreach (['viewer', 'no_access', ''] as $status) {
-            $row = $this->mapper->map($this->person(['directory_status' => $status]));
-
-            self::assertSame(0, $row['display_in_directory'], "directory_status='$status' must not be listed");
-        }
-    }
-
-    #[Test]
-    public function participantDirectoryStatusEnablesDisplayInDirectory(): void
-    {
-        $row = $this->mapper->map($this->person(['directory_status' => 'participant']));
-
-        self::assertSame(1, $row['display_in_directory']);
-    }
-
-    #[Test]
-    public function directoryStatusMapsToScopeEnum(): void
-    {
-        $publicRow   = $this->mapper->map($this->person(['directory_status' => 'participant']));
-        $viewerRow   = $this->mapper->map($this->person(['directory_status' => 'viewer']));
-        $noAccessRow = $this->mapper->map($this->person(['directory_status' => 'no_access']));
-
-        self::assertSame('public', $publicRow['directory_scope']);
-        self::assertSame('hidden', $viewerRow['directory_scope']);
-        self::assertSame('hidden', $noAccessRow['directory_scope']);
-    }
-
-    #[Test]
-    public function hiddenReasonIsEmptyForListedParticipant(): void
-    {
-        $row = $this->mapper->map($this->person([
-            'directory_status' => 'participant',
+            'directory_status' => 'no_access',
             'status'           => 'active',
         ]));
 
+        self::assertSame(1, $row['display_in_directory']);
         self::assertSame('', $row['hidden_reason']);
     }
 
     #[Test]
-    public function hiddenReasonReflectsTheBlockingGate(): void
+    public function inactiveMembershipIsTheOnlySyncedHiddenReason(): void
     {
-        $cases = [
-            // inactive membership trumps everything, even a participant child.
-            'inactive'  => ['status' => 'inactive', 'child' => true, 'directory_status' => 'participant'],
-            'child'     => ['status' => 'active', 'child' => true, 'directory_status' => 'participant'],
-            'viewer'    => ['status' => 'active', 'directory_status' => 'viewer'],
-            'no_access' => ['status' => 'active', 'directory_status' => 'no_access'],
-        ];
+        // Inactive members are still imported but unpublished; the admin list
+        // surfaces "inactive" as the reason. (A child / no_access person who is
+        // active is fully listed under the show-all policy.)
+        $inactive = $this->mapper->map($this->person([
+            'status'           => 'inactive',
+            'child'            => true,
+            'directory_status' => 'participant',
+        ]));
 
-        foreach ($cases as $expected => $attrs) {
-            $row = $this->mapper->map($this->person($attrs));
+        self::assertSame(0, $inactive['published']);
+        self::assertSame('inactive', $inactive['hidden_reason']);
 
-            self::assertSame($expected, $row['hidden_reason'], "expected reason '$expected'");
-        }
+        $active = $this->mapper->map($this->person(['status' => 'active', 'directory_status' => 'no_access']));
+        self::assertSame(1, $active['published']);
+        self::assertSame('', $active['hidden_reason']);
     }
 
     #[Test]
