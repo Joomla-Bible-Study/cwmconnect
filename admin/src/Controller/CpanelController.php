@@ -17,6 +17,7 @@ use CWM\Component\Cwmconnect\Administrator\Service\Pc\CampusSync;
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\Client as PcClient;
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\DatabaseCampusRepository;
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\DatabaseFieldMapRepository;
+use CWM\Component\Cwmconnect\Administrator\Service\Pc\DatabaseHouseholdRepository;
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\DatabaseMemberRepository;
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\Exception\AuthenticationException;
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\Exception\ConfigurationException as PcConfigurationException;
@@ -29,6 +30,7 @@ use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Http\HttpFactory;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\Log\Log;
 use Joomla\CMS\MVC\Controller\BaseController;
 use Joomla\CMS\Response\JsonResponse;
 use Joomla\Component\Actionlogs\Administrator\Model\ActionlogModel;
@@ -310,16 +312,80 @@ class CpanelController extends BaseController
      */
     private function logSyncResult(array $data, bool $success): void
     {
+        // Detailed run summary + every per-person error go to a dedicated
+        // Joomla log file (administrator/logs/com_cwmconnect.sync.php).
+        $this->writeSyncLogFile($data);
+
+        // The action log keeps only a concise audit record — the counts, not
+        // the (potentially hundreds of) individual error lines, which would
+        // bloat one #__action_logs row into an unreadable JSON blob.
+        $summary = array_diff_key($data, ['errors' => null]);
+
         try {
             $factory = Factory::getApplication()->bootComponent('com_actionlogs')->getMVCFactory();
 
             /** @var ActionlogModel $model */
             $model = $factory->createModel('Actionlog', 'Administrator');
             $model->addLog(
-                [$data],
+                [$summary],
                 $success ? 'COM_CWMCONNECT_ACTIONLOG_SYNC_OK' : 'COM_CWMCONNECT_ACTIONLOG_SYNC_PARTIAL',
                 'com_cwmconnect.sync',
             );
+        } catch (\Throwable) {
+        }
+    }
+
+    /**
+     * Write the sync run to a dedicated Joomla log file: one summary line plus
+     * one line per recorded error. Keeps the full error detail out of the
+     * action log while still persisting it for diagnosis.
+     *
+     * @param   array<string, mixed>  $data  The SyncReport::toArray() payload.
+     *
+     * @return  void
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    private function writeSyncLogFile(array $data): void
+    {
+        try {
+            Log::addLogger(
+                ['text_file' => 'com_cwmconnect.sync.php'],
+                Log::ALL,
+                ['com_cwmconnect.sync'],
+            );
+
+            $errorCount = (int) ($data['errorCount'] ?? 0);
+
+            Log::add(
+                \sprintf(
+                    'PC sync finished: seen=%d added=%d updated=%d deleted=%d '
+                    . 'households=%d photos=%d fields=%d paired=%d errors=%d',
+                    (int) ($data['seen'] ?? 0),
+                    (int) ($data['added'] ?? 0),
+                    (int) ($data['updated'] ?? 0),
+                    (int) ($data['deleted'] ?? 0),
+                    (int) ($data['householdsLinked'] ?? 0),
+                    (int) ($data['photosDownloaded'] ?? 0),
+                    (int) ($data['customFieldsWritten'] ?? 0),
+                    (int) ($data['paired'] ?? 0),
+                    $errorCount,
+                ),
+                $errorCount > 0 ? Log::WARNING : Log::INFO,
+                'com_cwmconnect.sync',
+            );
+
+            foreach ($data['errors'] ?? [] as $error) {
+                Log::add(
+                    \sprintf(
+                        'PC person %s: %s',
+                        $error['pcPersonId'] ?? '-',
+                        (string) ($error['message'] ?? ''),
+                    ),
+                    Log::ERROR,
+                    'com_cwmconnect.sync',
+                );
+            }
         } catch (\Throwable) {
         }
     }
@@ -368,6 +434,11 @@ class CpanelController extends BaseController
                 cacheRoot: JPATH_ROOT . '/media/com_cwmconnect/photos',
             ),
             pairing: new DatabaseMemberPairing($db),
+            households: new DatabaseHouseholdRepository($db),
+            householdPhotoCache: new MediaPhotoCache(
+                http: HttpFactory::getHttp(),
+                cacheRoot: JPATH_ROOT . '/media/com_cwmconnect/photos/households',
+            ),
         );
     }
 

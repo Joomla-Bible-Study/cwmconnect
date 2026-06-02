@@ -33,6 +33,121 @@ final class PersonMapperTest extends TestCase
     }
 
     #[Test]
+    public function capturesPcMembershipDesignation(): void
+    {
+        $member   = $this->mapper->map($this->person(['membership' => 'Member']));
+        $attender = $this->mapper->map($this->person(['membership' => 'Regular Attender']));
+        $blank    = $this->mapper->map($this->person([]));
+
+        self::assertSame('Member', $member['pc_membership']);
+        self::assertSame('Regular Attender', $attender['pc_membership']);
+        self::assertSame('', $blank['pc_membership']);
+    }
+
+    #[Test]
+    public function flagsMinorsByAgeThenChildFlag(): void
+    {
+        // Age wins when a birthdate is on file.
+        self::assertSame(1, $this->mapper->map($this->person(['birthdate' => '2015-01-01']))['is_child'], 'under 18 by birthdate');
+        self::assertSame(0, $this->mapper->map($this->person(['birthdate' => '1980-01-01', 'child' => true]))['is_child'], 'adult birthdate overrides a stray child flag');
+
+        // No birthdate → defer to PC's child flag.
+        self::assertSame(1, $this->mapper->map($this->person(['child' => true]))['is_child'], 'child flag, no birthdate');
+        self::assertSame(0, $this->mapper->map($this->person(['child' => false]))['is_child'], 'adult, no birthdate');
+        self::assertSame(0, $this->mapper->map($this->person([]))['is_child'], 'unknown defaults to not-a-child');
+    }
+
+    #[Test]
+    public function capturesGenderVerbatimFromPc(): void
+    {
+        self::assertSame('Male', $this->mapper->map($this->person(['gender' => 'Male']))['gender']);
+        self::assertSame('Female', $this->mapper->map($this->person(['gender' => 'Female']))['gender']);
+        self::assertSame('', $this->mapper->map($this->person([]))['gender']);
+    }
+
+    #[Test]
+    public function nameIncludesMiddleNameWhenPresent(): void
+    {
+        $row = $this->mapper->map($this->person([
+            'first_name'  => 'John',
+            'middle_name' => 'Michael',
+            'last_name'   => 'Smith',
+        ]));
+
+        self::assertSame('John Michael Smith', $row['name']);
+        // Alias stays first+last so it doesn't churn when a middle name lands.
+        self::assertSame('john-smith-pc-12345', $row['alias']);
+    }
+
+    #[Test]
+    public function nameAppendsDistinctNicknameInParentheses(): void
+    {
+        $row = $this->mapper->map($this->person([
+            'first_name' => 'Robert',
+            'last_name'  => 'Jones',
+            'nickname'   => 'Bob',
+        ]));
+
+        self::assertSame('Robert Jones (Bob)', $row['name']);
+    }
+
+    #[Test]
+    public function nameDropsNicknameThatEchoesFirstName(): void
+    {
+        $row = $this->mapper->map($this->person([
+            'first_name' => 'Sam',
+            'last_name'  => 'Lee',
+            'nickname'   => 'sam',
+        ]));
+
+        self::assertSame('Sam Lee', $row['name']);
+    }
+
+    #[Test]
+    public function nameGraftsGenerationalSuffixFromComputedName(): void
+    {
+        // PC has no suffix field — it only surfaces in the computed `name`
+        // as a trailing ", III". Graft it onto the structured parts.
+        $row = $this->mapper->map($this->person([
+            'first_name' => 'Sherman',
+            'last_name'  => 'Cox',
+            'name'       => 'Sherman Cox, III',
+        ]));
+
+        self::assertSame('Sherman Cox, III', $row['name']);
+        // Alias ignores the suffix so generational siblings stay distinct only
+        // by their PC id, not a churning alias.
+        self::assertSame('sherman-cox-pc-12345', $row['alias']);
+    }
+
+    #[Test]
+    public function nameAcceptsJrAndSrSuffixes(): void
+    {
+        foreach (['Jr.' => 'Jr', 'Sr' => 'Sr'] as $computed => $expected) {
+            $row = $this->mapper->map($this->person([
+                'first_name' => 'Sam',
+                'last_name'  => 'Lee',
+                'name'       => "Sam Lee, $computed",
+            ]));
+
+            self::assertSame("Sam Lee, $expected", $row['name'], "suffix '$computed'");
+        }
+    }
+
+    #[Test]
+    public function nameIgnoresNonSuffixCommaSegments(): void
+    {
+        // A "Last, First" computed format must not be mistaken for a suffix.
+        $row = $this->mapper->map($this->person([
+            'first_name' => 'Jane',
+            'last_name'  => 'Doe',
+            'name'       => 'Doe, Jane',
+        ]));
+
+        self::assertSame('Jane Doe', $row['name']);
+    }
+
+    #[Test]
     public function aliasFallsBackToPcIdWhenNamesAreEmpty(): void
     {
         $row = $this->mapper->map($this->person([]));
@@ -41,41 +156,55 @@ final class PersonMapperTest extends TestCase
     }
 
     #[Test]
-    public function childFlagForcesDisplayInDirectoryToZero(): void
+    public function fullDirectoryListsEveryActiveMemberRegardlessOfPcPreference(): void
     {
-        $row = $this->mapper->map($this->person(['first_name' => 'Junior', 'child' => true]));
+        // Show-all policy: PC `directory_status` is mostly an unset default,
+        // not a deliberate opt-out, so it never hides anyone. Children are
+        // listed too. Only inactive membership keeps a row off the directory.
+        foreach (['participant', 'viewer', 'no_access', ''] as $status) {
+            $row = $this->mapper->map($this->person([
+                'directory_status' => $status,
+                'status'           => 'active',
+            ]));
 
-        self::assertSame(0, $row['display_in_directory']);
+            self::assertSame(1, $row['display_in_directory'], "directory_status='$status' must still list");
+            self::assertSame('public', $row['directory_scope'], "directory_status='$status' scope");
+            self::assertSame('', $row['hidden_reason'], "directory_status='$status' reason");
+        }
     }
 
     #[Test]
-    public function directoryStatusNoForcesDisplayInDirectoryToZero(): void
+    public function childrenAreListedInTheFullDirectory(): void
     {
-        $row = $this->mapper->map($this->person(['directory_status' => 'no']));
-
-        self::assertSame(0, $row['display_in_directory']);
-    }
-
-    #[Test]
-    public function defaultDisplayInDirectoryIsOne(): void
-    {
-        $row = $this->mapper->map($this->person(['directory_status' => 'everyone']));
+        $row = $this->mapper->map($this->person([
+            'first_name'       => 'Junior',
+            'child'            => true,
+            'directory_status' => 'no_access',
+            'status'           => 'active',
+        ]));
 
         self::assertSame(1, $row['display_in_directory']);
+        self::assertSame('', $row['hidden_reason']);
     }
 
     #[Test]
-    public function directoryStatusMapsToScopeEnum(): void
+    public function inactiveMembershipIsTheOnlySyncedHiddenReason(): void
     {
-        $publicRow    = $this->mapper->map($this->person(['directory_status' => 'everyone']));
-        $hiddenRow    = $this->mapper->map($this->person(['directory_status' => 'no']));
-        $householdRow = $this->mapper->map($this->person(['directory_status' => 'household_only']));
-        $limitedRow   = $this->mapper->map($this->person(['directory_status' => 'limited_access']));
+        // Inactive members are still imported but unpublished; the admin list
+        // surfaces "inactive" as the reason. (A child / no_access person who is
+        // active is fully listed under the show-all policy.)
+        $inactive = $this->mapper->map($this->person([
+            'status'           => 'inactive',
+            'child'            => true,
+            'directory_status' => 'participant',
+        ]));
 
-        self::assertSame('public', $publicRow['directory_scope']);
-        self::assertSame('hidden', $hiddenRow['directory_scope']);
-        self::assertSame('household', $householdRow['directory_scope']);
-        self::assertSame('household', $limitedRow['directory_scope']);
+        self::assertSame(0, $inactive['published']);
+        self::assertSame('inactive', $inactive['hidden_reason']);
+
+        $active = $this->mapper->map($this->person(['status' => 'active', 'directory_status' => 'no_access']));
+        self::assertSame(1, $active['published']);
+        self::assertSame('', $active['hidden_reason']);
     }
 
     #[Test]
@@ -97,6 +226,52 @@ final class PersonMapperTest extends TestCase
         $row = $this->mapper->map($this->person([]));
 
         self::assertNull($row['pc_shared_info']);
+    }
+
+    #[Test]
+    public function extractHouseholdMapsTheIncludedHouseholdResource(): void
+    {
+        $person   = $this->person(['first_name' => 'Brent'], ['households' => [['type' => 'Household', 'id' => '13638556']]]);
+        $included = [
+            ['type' => 'Household', 'id' => '13638556', 'attributes' => ['name' => 'Cordis Household', 'avatar' => 'https://example.org/cordis.jpg']],
+        ];
+
+        $household = $this->mapper->extractHousehold($person, $included);
+
+        self::assertSame(13638556, $household['pc_household_id']);
+        self::assertSame('Cordis Household', $household['name']);
+        self::assertSame('cordis-household-pchh-13638556', $household['alias']);
+        self::assertSame('https://example.org/cordis.jpg', $household['avatar']);
+    }
+
+    #[Test]
+    public function extractHouseholdIsNullWhenPersonHasNoHousehold(): void
+    {
+        $person = $this->person(['first_name' => 'Solo']);
+
+        self::assertNull($this->mapper->extractHousehold($person, []));
+    }
+
+    #[Test]
+    public function extractHouseholdIsNullWhenResourceNotIncluded(): void
+    {
+        // Household ref present but the Household resource didn't land in the
+        // page's `included` — we link on the next page that carries it.
+        $person = $this->person(['first_name' => 'Brent'], ['households' => [['type' => 'Household', 'id' => '13638556']]]);
+
+        self::assertNull($this->mapper->extractHousehold($person, []));
+    }
+
+    #[Test]
+    public function extractHouseholdFallsBackToAGeneratedNameWhenBlank(): void
+    {
+        $person   = $this->person(['first_name' => 'Brent'], ['households' => [['type' => 'Household', 'id' => '42']]]);
+        $included = [['type' => 'Household', 'id' => '42', 'attributes' => ['name' => '']]];
+
+        $household = $this->mapper->extractHousehold($person, $included);
+
+        self::assertSame('Household 42', $household['name']);
+        self::assertSame('household-42-pchh-42', $household['alias']);
     }
 
     #[Test]

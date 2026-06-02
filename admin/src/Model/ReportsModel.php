@@ -21,6 +21,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Mail\MailHelper;
 use Joomla\CMS\MVC\Model\ListModel;
+use Joomla\Database\ParameterType;
 use Joomla\Database\QueryInterface;
 use Joomla\Registry\Registry;
 
@@ -112,7 +113,7 @@ class ReportsModel extends ListModel
         $menuParams = new Registry();
 
         if ($menu = $app->getMenu()?->getActive()) {
-            $menuParams->loadString($menu->params);
+            $menuParams->merge($menu->getParams());
         }
 
         $mergedParams = clone $params;
@@ -192,8 +193,11 @@ class ReportsModel extends ListModel
             . ', ' . $db->quoteName('c.alias', 'category_alias')
             . ', ' . $db->quoteName('c.access', 'category_access')
         );
+        // LEFT, not INNER: PC-synced members carry catid = 0 (no Joomla
+        // category), so an INNER join silently drops every synced member and
+        // the report shows only the hand-entered rows. Matches the site models.
         $query->join(
-            'INNER',
+            'LEFT',
             $db->quoteName('#__categories', 'c')
             . ' ON ' . $db->quoteName('c.id') . ' = ' . $db->quoteName('a.catid')
         );
@@ -244,6 +248,25 @@ class ReportsModel extends ListModel
             $query->where($db->quoteName('a.mstatus') . ' = ' . (int) $mstatus);
         }
 
+        // Visibility gate (spec §17): exclude hidden (display_in_directory = 0)
+        // members unless an admin explicitly opted in via the print "Include
+        // hidden" override. Mirrors the front-end models, which always filter
+        // = 1. The state stays unset when the override is on, so no WHERE is
+        // added and every published member is included.
+        if (($visible = $this->getState('filter.display_in_directory')) !== null) {
+            $query->where($db->quoteName('a.display_in_directory') . ' = ' . (int) $visible);
+        }
+
+        // Members-only roster: restrict to official members (the configured PC
+        // membership designations), dropping the household-mates the family-
+        // expansion policy pulls in (Visitors / Regular Attenders). Used for a
+        // voting / business-meeting list as opposed to the full directory.
+        $memberStatuses = $this->getState('filter.members_only');
+
+        if (\is_array($memberStatuses) && $memberStatuses !== []) {
+            $query->whereIn($db->quoteName('a.pc_membership'), $memberStatuses, ParameterType::STRING);
+        }
+
         if ($language = $this->getState('filter.language')) {
             $query->where($db->quoteName('a.language') . ' IN (' . $db->quote($language) . ', ' . $db->quote('*') . ')');
         }
@@ -275,6 +298,23 @@ class ReportsModel extends ListModel
         $this->getState();
         $this->setState('filter.published', 1);
 
+        // §17 print-gate: hidden members are excluded from every export unless
+        // the admin ticks "Include hidden" on the print form (PDF only). Read
+        // it here so the gate is applied at the query level — keeping the
+        // member count accurate — rather than post-filtering the result set.
+        $includeHidden = (bool) Factory::getApplication()->getInput()->getInt('include_hidden', 0);
+
+        if (!$includeHidden) {
+            $this->setState('filter.display_in_directory', 1);
+        }
+
+        // Members-only roster: when requested, restrict the export to the
+        // configured PC member designations (excludes household-mates).
+        if ((bool) Factory::getApplication()->getInput()->getInt('members_only', 0)) {
+            $statuses = (array) $params->get('pc_membership_statuses', []);
+            $this->setState('filter.members_only', array_values(array_filter($statuses)));
+        }
+
         $reportBuild = new ReportbuildHelper();
         $items       = $this->getDatabase()->setQuery($this->getListQuery())->loadObjectList();
 
@@ -301,13 +341,11 @@ class ReportsModel extends ListModel
         }
 
         if ($type === 'pdf') {
-            $includeHidden = (bool) Factory::getApplication()->getInput()->getInt('include_hidden', 0);
-            $relativePath  = $reportBuild->getPdf($items, $report, $includeHidden);
+            $relativePath = $reportBuild->getPdf($items, $report, $includeHidden);
 
-            Factory::getApplication()->setUserState(
-                'com_cwmconnect.reports.pdf_path',
-                $relativePath,
-            );
+            $app = Factory::getApplication();
+            $app->setUserState('com_cwmconnect.reports.pdf_path', $relativePath);
+            $app->setUserState('com_cwmconnect.reports.pdf_count', \count($items));
 
             return;
         }

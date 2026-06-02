@@ -79,13 +79,17 @@ if ($menuItems) {
             <?php foreach ($this->items as $item) :
                 $profileUrl = Route::_('index.php?option=com_cwmconnect&view=member&id=' . (int) $item->id . '&Itemid=' . $memberItemId);
                 $imgPath    = (string) ($item->image ?? '');
-                $imgUrl     = $imgPath !== '' ? Route::_(RouteHelper::getPhotoRoute((int) $item->id)) : '';
+                $imgUrl     = $imgPath !== '' ? Route::_(RouteHelper::getPhotoRoute((int) $item->id, 'thumb')) : '';
+                $imgSrcset  = $imgPath !== '' ? RouteHelper::getPhotoSrcset((int) $item->id) : '';
                 $name       = trim(($item->name ?: '') ?: ($item->lname ?: ''));
                 ?>
                 <div class="col">
                     <a class="card h-100 text-decoration-none text-body" href="<?php echo $profileUrl; ?>">
                         <?php if ($imgUrl !== '') : ?>
                             <img class="card-img-top" src="<?php echo $this->escape($imgUrl); ?>"
+                                 srcset="<?php echo $this->escape($imgSrcset); ?>"
+                                 sizes="(max-width: 600px) 50vw, 300px"
+                                 width="300" height="400" decoding="async"
                                  alt="<?php echo $this->escape($name); ?>" loading="lazy">
                         <?php else : ?>
                             <div class="card-img-top d-flex align-items-center justify-content-center bg-light text-muted" style="aspect-ratio: 1/1;">

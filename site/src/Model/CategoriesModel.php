@@ -83,12 +83,10 @@ class CategoriesModel extends ListModel
             return $this->items;
         }
 
+        // MenuItem::$params is protected in Joomla 5/6 — read it via getParams()
+        // (returns a Registry) rather than direct property access.
         $active = Factory::getApplication()->getMenu()?->getActive();
-        $params = new Registry();
-
-        if ($active) {
-            $params->loadString($active->params);
-        }
+        $params = $active !== null ? $active->getParams() : new Registry();
 
         $options = [
             'countItems' => $params->get('show_cat_items_cat', 1)

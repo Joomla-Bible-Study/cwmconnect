@@ -48,9 +48,9 @@ $teamleaders      = (string) $this->params->get('teamleaders', '1');
 
             <p>
                 <?php if ($this->params->get('show_image_headings')) : ?>
-                    <img src="<?php echo $this->escape(Route::_(RouteHelper::getPhotoRoute((int) $item->id))); ?>"
+                    <img src="<?php echo $this->escape(Route::_(RouteHelper::getPhotoRoute((int) $item->id, 'thumb'))); ?>"
                          alt="<?php echo $this->escape(Text::_('COM_CWMCONNECT_IMAGE_DETAILS')); ?>"
-                         height="100" width="100" />
+                         height="100" width="100" loading="lazy" decoding="async" />
                 <?php endif; ?>
                 <br/>
                 <strong class="list-title">

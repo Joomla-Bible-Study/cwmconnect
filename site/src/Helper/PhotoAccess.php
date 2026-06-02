@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace CWM\Component\Cwmconnect\Site\Helper;
 
+use CWM\Component\Cwmconnect\Administrator\Service\Image\ImageVariants;
 use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Database\ParameterType;
@@ -104,16 +105,140 @@ final class PhotoAccess
             ? JPATH_ROOT . '/' . ltrim($image, '/')
             : JPATH_ROOT . '/media/com_cwmconnect/photos/' . $image;
 
-        // Containment: the resolved real path must stay inside the document
-        // root, so a stray DB value can never escape to the wider filesystem.
         $real = realpath($candidate);
-        $root = realpath(JPATH_ROOT);
 
-        if ($real === false || $root === false || !str_starts_with($real, $root . \DIRECTORY_SEPARATOR)) {
+        if ($real === false || !is_file($real)) {
             return null;
         }
 
-        return is_file($real) ? $real : null;
+        // Containment: the resolved real path must stay inside the document
+        // root OR the component's media dir, so a stray DB value can never
+        // escape to the wider filesystem. The media dir is checked separately
+        // because `composer link` (and some production setups) symlink media/
+        // out of the install root — realpath() resolves that symlink, so a
+        // legitimate photo's real path legitimately lives outside JPATH_ROOT.
+        $allowedBases = array_filter([
+            realpath(JPATH_ROOT),
+            realpath(JPATH_ROOT . '/media/com_cwmconnect'),
+        ]);
+
+        foreach ($allowedBases as $base) {
+            if (str_starts_with($real, $base . \DIRECTORY_SEPARATOR)) {
+                return $real;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Resolve a browser-optimized web variant of a member photo, or null when
+     * none exists (caller falls back to {@see resolvePath()} on the original).
+     * Prefers WebP when the client accepts it, then the JPEG fallback.
+     *
+     * The stem comes from the stored `image` value via pathinfo, so only the
+     * id/hash survives — no path or extension reaches the filesystem lookup.
+     *
+     * @param   string  $image         The member `image` column value.
+     * @param   string  $size          Variant size (e.g. 'thumb', 'medium').
+     * @param   bool    $acceptsWebp    Whether the client sent image/webp.
+     *
+     * @return  string|null  Absolute path to the variant, or null.
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    public static function resolveVariant(string $image, string $size, bool $acceptsWebp): ?string
+    {
+        $stem = pathinfo(trim($image), \PATHINFO_FILENAME);
+
+        if ($stem === '' || !isset(ImageVariants::SIZES[$size])) {
+            return null;
+        }
+
+        $webDir = realpath(JPATH_ROOT . '/media/com_cwmconnect/photos/web');
+
+        if ($webDir === false) {
+            return null;
+        }
+
+        foreach ($acceptsWebp ? ['webp', 'jpg'] : ['jpg'] as $format) {
+            $real = realpath($webDir . '/' . ImageVariants::variantFilename($stem, $size, $format));
+
+            if ($real !== false && is_file($real) && str_starts_with($real, $webDir . \DIRECTORY_SEPARATOR)) {
+                return $real;
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Load a family-unit row for household-photo serving (id, image,
+     * published), or null.
+     *
+     * @param   DatabaseInterface  $db        Database driver.
+     * @param   int                $funitId   Family-unit id.
+     *
+     * @return  object|null
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    public static function loadHousehold(DatabaseInterface $db, int $funitId): ?object
+    {
+        if ($funitId <= 0) {
+            return null;
+        }
+
+        $query = $db->createQuery()
+            ->select($db->quoteName(['id', 'image', 'published']))
+            ->from($db->quoteName('#__cwmconnect_familyunit'))
+            ->where($db->quoteName('id') . ' = :id')
+            ->bind(':id', $funitId, ParameterType::INTEGER);
+
+        return $db->setQuery($query, 0, 1)->loadObject() ?: null;
+    }
+
+    /**
+     * Resolve a household family photo to an absolute path — an optimized web
+     * variant first (WebP when accepted), then the original — under
+     * `photos/households/`, or null. Stem comes from pathinfo, so no path or
+     * extension from the stored value reaches the filesystem lookup.
+     *
+     * @param   string  $image        The family-unit `image` value.
+     * @param   string  $size         Variant size, or '' for the original.
+     * @param   bool    $acceptsWebp  Whether the client sent image/webp.
+     *
+     * @return  string|null
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    public static function resolveHouseholdImage(string $image, string $size, bool $acceptsWebp): ?string
+    {
+        $image = trim($image);
+        $base  = JPATH_ROOT . '/media/com_cwmconnect/photos/households';
+        $stem  = pathinfo($image, \PATHINFO_FILENAME);
+
+        if ($stem !== '' && isset(ImageVariants::SIZES[$size]) && ($webDir = realpath($base . '/web')) !== false) {
+            foreach ($acceptsWebp ? ['webp', 'jpg'] : ['jpg'] as $format) {
+                $real = realpath($webDir . '/' . ImageVariants::variantFilename($stem, $size, $format));
+
+                if ($real !== false && is_file($real) && str_starts_with($real, $webDir . \DIRECTORY_SEPARATOR)) {
+                    return $real;
+                }
+            }
+        }
+
+        if ($image === '' || str_contains($image, '..')
+            || !\in_array(strtolower(pathinfo($image, \PATHINFO_EXTENSION)), self::IMAGE_EXTENSIONS, true)) {
+            return null;
+        }
+
+        $real     = realpath($base . '/' . $image);
+        $baseReal = realpath($base);
+
+        return ($real !== false && is_file($real) && $baseReal !== false && str_starts_with($real, $baseReal . \DIRECTORY_SEPARATOR))
+            ? $real
+            : null;
     }
 
     /**
@@ -217,7 +342,12 @@ final class PhotoAccess
     {
         $app->setHeader('Content-Type', self::contentType($path), true);
         $app->setHeader('Content-Length', (string) (filesize($path) ?: 0), true);
-        $app->setHeader('Cache-Control', 'private, max-age=300, must-revalidate', true);
+        // Photos are access-gated, so cache privately (browser only). A
+        // day-long cache spares the proxy on busy directory pages while
+        // keeping a re-synced photo (same filename) fresh within a day. Vary
+        // on Accept so a WebP response is never reused for a JPEG-only client.
+        $app->setHeader('Cache-Control', 'private, max-age=86400', true);
+        $app->setHeader('Vary', 'Accept', true);
         $app->sendHeaders();
 
         readfile($path);

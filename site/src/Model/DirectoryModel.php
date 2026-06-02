@@ -166,7 +166,9 @@ class DirectoryModel extends ListModel
         }
 
         $query->where('a.published = 1')
-            ->where('a.display_in_directory = 1');
+            ->where('a.display_in_directory = 1')
+            // Minors appear under their family unit, not as their own listing.
+            ->where('a.is_child = 0');
 
         $nullDate = $db->quote($db->getNullDate());
         $nowDate  = $db->quote(Factory::getDate()->toSql());
@@ -245,7 +247,7 @@ class DirectoryModel extends ListModel
         $menuParams = new Registry();
 
         if ($menu = $app->getMenu()?->getActive()) {
-            $menuParams->loadString($menu->params);
+            $menuParams->merge($menu->getParams());
         }
 
         $merged   = clone $params;
@@ -294,7 +296,7 @@ class DirectoryModel extends ListModel
         $menuParams = new Registry();
 
         if ($active = Factory::getApplication()->getMenu()?->getActive()) {
-            $menuParams->loadString($active->params);
+            $menuParams->merge($active->getParams());
         }
 
         $options = [

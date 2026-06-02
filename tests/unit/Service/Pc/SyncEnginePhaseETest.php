@@ -139,7 +139,7 @@ final class SyncEnginePhaseETest extends TestCase
                 return UpsertOutcome::Added;
             }
 
-            public function archiveMissingPcPersonIds(array $seenPcPersonIds): int
+            public function deleteMissingPcPersonIds(array $seenPcPersonIds): int
             {
                 return 0;
             }

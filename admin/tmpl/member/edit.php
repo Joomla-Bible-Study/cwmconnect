@@ -99,7 +99,7 @@ $pcProfileUrl = $pcPersonId > 0
                     <div class="col-md-6">
                         <?php echo $this->form->renderField('surname'); ?>
                         <?php echo $this->form->renderField('lng'); ?>
-                        <?php echo $this->form->renderField('sex', 'attribs'); ?>
+                        <?php echo $this->form->renderField('gender'); ?>
                         <?php echo $this->form->renderField('user_id'); ?>
                     </div>
                 </div>

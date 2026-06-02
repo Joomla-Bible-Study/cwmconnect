@@ -94,17 +94,11 @@ class ReportbuildHelper
                     $paramsAtt = new \stdClass();
 
                     foreach ((array) $params as $p => $itemP) {
-                        $key = 'att_' . $p;
-
-                        if ($p === 'sex') {
-                            $paramsAtt->{$key} = match ((int) $itemP) {
-                                0       => 'M',
-                                1       => 'F',
-                                default => $itemP,
-                            };
-                        } else {
-                            $paramsAtt->{$key} = $itemP;
-                        }
+                        // Gender is a first-class synced column now (Male /
+                        // Female, in line with PC); the legacy 0/1 attribs
+                        // "sex" encoding — and its inverted M/F mapping — is
+                        // gone.
+                        $paramsAtt->{'att_' . $p} = $itemP;
                     }
 
                     unset($line->attribs);
@@ -381,6 +375,16 @@ class ReportbuildHelper
      */
     public function getPdf(array $items = [], ?string $report = null, bool $includeHidden = false): string
     {
+        // A full-directory PDF (hundreds of members + embedded photos) is
+        // memory- and time-hungry in mpdf. Raise the ceilings for this request
+        // so a large render can't die mid-build with an uncatchable fatal
+        // (which leaves no file and no feedback). Never lower an unlimited cap.
+        @set_time_limit(0);
+
+        if ((string) @ini_get('memory_limit') !== '-1') {
+            @ini_set('memory_limit', '1024M');
+        }
+
         $autoload = JPATH_LIBRARIES . '/mpdf/vendor/autoload.php';
 
         if (!is_file($autoload)) {
@@ -398,6 +402,10 @@ class ReportbuildHelper
         $app    = Factory::getApplication();
         $params = ComponentHelper::getParams('com_cwmconnect');
 
+        // The shared template uses COM_CWMCONNECT_PDF_* strings; they're mirrored
+        // into the admin language file (see com_cwmconnect.ini) because this runs
+        // in the administrator app, which doesn't load the site language file.
+
         // Same shared view-model + template as the front-end self-service PDF,
         // so the admin print uses the configured layout and normalized photos.
         // Admin print is a working document: no cover/staff section, and it can
@@ -408,6 +416,9 @@ class ReportbuildHelper
         $presenter->pdfLayout          = (string) $params->get('pdf_layout', 'photo_detail');
         $presenter->appendRoster       = (bool) $params->get('pdf_append_roster', 0);
         $presenter->showHiddenBadges   = $includeHidden;
+        // Admin print carries the title/date in the running header + footer
+        // (SetHeader/SetFooter below), so suppress the duplicate body title.
+        $presenter->showTitleBlock     = false;
         $presenter->appearance         = [
             'fontBasePt' => match ((string) $params->get('pdf_font_size', 'normal')) {
                 'large'  => 12.0,

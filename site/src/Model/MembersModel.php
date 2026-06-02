@@ -123,7 +123,9 @@ class MembersModel extends ListModel
         ->join('LEFT', $db->quoteName('#__cwmconnect_dirheader', 'd') . ' ON d.id = a.kmlid')
         ->join('LEFT', $db->quoteName('#__cwmconnect_familyunit', 'fu') . ' ON fu.id = a.funitid')
         ->where($db->quoteName('a.published') . ' = 1')
-        ->where($db->quoteName('a.display_in_directory') . ' = 1');
+        ->where($db->quoteName('a.display_in_directory') . ' = 1')
+        // Minors appear under their family unit, not as their own listing.
+        ->where($db->quoteName('a.is_child') . ' = 0');
 
         if ($catId = (int) $this->getState('filter.category_id')) {
             $query->where($db->quoteName('a.catid') . ' = ' . $catId);

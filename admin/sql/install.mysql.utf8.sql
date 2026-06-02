@@ -10,6 +10,10 @@ CREATE TABLE IF NOT EXISTS `#__cwmconnect_details` (
   `pc_last_synced_at`    DATETIME                               NULL,
   `display_in_directory` TINYINT(1)                             NOT NULL DEFAULT 1,
   `directory_scope`      ENUM('public', 'household', 'hidden')  NOT NULL DEFAULT 'public',
+  `hidden_reason`        VARCHAR(20)                            NOT NULL DEFAULT '',
+  `pc_membership`        VARCHAR(50)                            NOT NULL DEFAULT '',
+  `gender`               VARCHAR(20)                            NOT NULL DEFAULT '',
+  `is_child`             TINYINT(1)                             NOT NULL DEFAULT 0,
   `pc_shared_info`       JSON                                   NULL,
   `image_filename`       VARCHAR(255)                           NULL,
   `image_hash`           VARCHAR(64)                            NULL,
@@ -88,7 +92,8 @@ CREATE TABLE IF NOT EXISTS `#__cwmconnect_details` (
   KEY `idx_kmlid` (`kmlid`),
   KEY `idx_funit` (`funitid`),
   KEY `idx_display_in_directory` (`display_in_directory`),
-  KEY `idx_directory_scope` (`directory_scope`)
+  KEY `idx_directory_scope` (`directory_scope`),
+  KEY `idx_is_child` (`is_child`)
 )
   ENGINE =InnoDB
   DEFAULT CHARSET = utf8mb4
@@ -211,6 +216,7 @@ CREATE TABLE IF NOT EXISTS `#__cwmconnect_familyunit` (
                      COLLATE utf8mb4_bin    NOT NULL DEFAULT '',
   `description`      MEDIUMTEXT          NOT NULL,
   `image`            VARCHAR(255) DEFAULT NULL,
+  `image_hash`       VARCHAR(64)  DEFAULT NULL,
   `published`        TINYINT(3)          NOT NULL DEFAULT '0',
   `checked_out`      INT(11) UNSIGNED    NOT NULL DEFAULT '0',
   `checked_out_time` DATETIME            NOT NULL DEFAULT '0000-00-00 00:00:00',

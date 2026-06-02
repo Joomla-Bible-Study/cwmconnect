@@ -130,6 +130,41 @@ if ($saveOrder && !empty($this->items)) {
                                     <div class="small">
                                         <?php echo Text::_('JCATEGORY') . ': ' . $this->escape($item->category_title); ?>
                                     </div>
+                                    <?php if (!empty($item->pc_membership) || !empty($item->is_child)) : ?>
+                                        <div class="small">
+                                            <?php if (!empty($item->pc_membership)) : ?>
+                                                <span class="badge bg-secondary"><?php echo $this->escape($item->pc_membership); ?></span>
+                                            <?php endif; ?>
+                                            <?php if (!empty($item->is_child)) : ?>
+                                                <span class="badge bg-info text-dark" title="<?php echo $this->escape(Text::_('COM_CWMCONNECT_MEMBERS_CHILD_HINT')); ?>">
+                                                    <?php echo Text::_('COM_CWMCONNECT_MEMBERS_CHILD'); ?>
+                                                </span>
+                                            <?php endif; ?>
+                                        </div>
+                                    <?php endif; ?>
+                                    <?php
+                                    // Directory visibility: a member shows on the front end only
+                                    // when published AND flagged for the directory. Flag the rest
+                                    // with the reason so admins can see why someone is missing.
+                                    if (empty($item->display_in_directory) || (int) $item->published === 0) :
+                                        // A sync-recorded reason (legacy 'inactive') wins;
+                                        // otherwise the row was hidden by an admin — the
+                                        // full-directory sync lists every active member and
+                                        // hard-deletes inactive ones, so published=0 /
+                                        // display_in_directory=0 on a retained row is a manual
+                                        // hide that now survives re-sync.
+                                        $reasonKey = !empty($item->hidden_reason) ? (string) $item->hidden_reason : 'manual';
+                                        ?>
+                                        <div class="small mt-1">
+                                            <span class="badge bg-warning text-dark">
+                                                <span class="icon-eye-slash" aria-hidden="true"></span>
+                                                <?php echo Text::_('COM_CWMCONNECT_MEMBERS_HIDDEN_BADGE'); ?>
+                                            </span>
+                                            <span class="text-muted">
+                                                <?php echo Text::_('COM_CWMCONNECT_MEMBERS_HIDDEN_REASON_' . strtoupper($reasonKey)); ?>
+                                            </span>
+                                        </div>
+                                    <?php endif; ?>
                                     <?php if (!empty($item->funitname)) : ?>
                                         <div class="small">
                                             <?php echo Text::sprintf('COM_CWMCONNECT_FUNITNAME_SPRINTF', $this->escape($item->funitname)); ?>

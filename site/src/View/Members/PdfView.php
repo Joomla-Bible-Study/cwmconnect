@@ -92,6 +92,15 @@ class PdfView extends BaseHtmlView
             );
         }
 
+        // Rendering hundreds of members + photos in mpdf is memory- and
+        // time-hungry; raise the ceilings so a large directory can't die
+        // mid-build with an uncatchable fatal. Never lower an unlimited cap.
+        @set_time_limit(0);
+
+        if ((string) @ini_get('memory_limit') !== '-1') {
+            @ini_set('memory_limit', '1024M');
+        }
+
         $html = $presenter->renderHtml();
 
         $autoload = JPATH_LIBRARIES . '/mpdf/vendor/autoload.php';

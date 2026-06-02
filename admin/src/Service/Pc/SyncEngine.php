@@ -109,6 +109,14 @@ final class SyncEngine
      *                                                                 `$fieldMapRepo` is
      *                                                                 supplied; null
      *                                                                 otherwise.
+     * @param   PhotoCacheInterface|null            $photoCache      Phase E: member avatar
+     *                                                                 cache. Null skips photos.
+     * @param   MemberPairingInterface|null         $pairing         Phase H: email-match
+     *                                                                 user pairing. Null skips.
+     * @param   HouseholdRepositoryInterface|null   $households      Household → family-unit
+     *                                                                 linkage. Null skips.
+     * @param   PhotoCacheInterface|null            $householdPhotoCache  Family-photo cache for
+     *                                                                 household avatars. Null skips.
      * @param   LoggerInterface                     $logger          Optional PSR-3 logger.
      *
      * @since   __DEPLOY_VERSION__
@@ -121,6 +129,8 @@ final class SyncEngine
         private readonly ?CustomFieldWriterInterface $fieldWriter = null,
         private readonly ?PhotoCacheInterface $photoCache = null,
         private readonly ?MemberPairingInterface $pairing = null,
+        private readonly ?HouseholdRepositoryInterface $households = null,
+        private readonly ?PhotoCacheInterface $householdPhotoCache = null,
         private readonly LoggerInterface $logger = new NullLogger(),
     ) {}
 
@@ -160,6 +170,15 @@ final class SyncEngine
 
         $this->logger->info('PC sync started.', ['statuses' => $membershipStatuses]);
 
+        // Discovery pass: which households contain a qualifying member? Their
+        // household-mates get pulled in below even when their own membership
+        // status wouldn't qualify (e.g. a Member's "Regular Attender" child).
+        if ($onProgress !== null) {
+            $onProgress(0, 0, 'preparing');
+        }
+
+        $memberHouseholds = $this->discoverMemberHouseholds($membershipStatuses);
+
         do {
             $pagesWalked++;
 
@@ -176,20 +195,14 @@ final class SyncEngine
             $data     = \is_array($page['data'] ?? null) ? $page['data'] : [];
             $included = \is_array($page['included'] ?? null) ? $page['included'] : [];
 
-            $filterLocally = \count($membershipStatuses) > 1;
-
             foreach ($data as $person) {
                 if (!\is_array($person)) {
                     $report->recordError(null, 'Skipping non-array entry in PC response data.');
                     continue;
                 }
 
-                if ($filterLocally) {
-                    $personMembership = (string) ($person['attributes']['membership'] ?? '');
-
-                    if (!\in_array($personMembership, $membershipStatuses, true)) {
-                        continue;
-                    }
+                if (!$this->personIncluded($person, $membershipStatuses, $memberHouseholds)) {
+                    continue;
                 }
 
                 $report->seen++;
@@ -197,7 +210,17 @@ final class SyncEngine
                 $pcPersonId = isset($person['id']) ? (int) $person['id'] : null;
 
                 try {
-                    $attrs   = $this->mapper->map($person, $included);
+                    $attrs = $this->mapper->map($person, $included);
+
+                    if ($this->households !== null) {
+                        $funitid = $this->linkHousehold($person, $included, $report);
+
+                        if ($funitid !== null) {
+                            $attrs['funitid'] = $funitid;
+                            $report->householdsLinked++;
+                        }
+                    }
+
                     $outcome = $this->repository->upsertByPcPersonId($attrs);
 
                     match ($outcome) {
@@ -233,7 +256,7 @@ final class SyncEngine
         }
 
         try {
-            $report->archived = $this->repository->archiveMissingPcPersonIds(
+            $report->deleted = $this->repository->deleteMissingPcPersonIds(
                 array_values(array_unique($seenIds)),
             );
         } catch (\Throwable $e) {
@@ -246,6 +269,187 @@ final class SyncEngine
         $this->logger->info('PC sync finished.', $report->toArray());
 
         return $report;
+    }
+
+    /**
+     * Discovery pass: collect every PC household id that contains at least one
+     * qualifying member, so the main pass can also import their household-mates
+     * (children, spouses) whose own membership status wouldn't qualify.
+     *
+     * Walks the active people WITHOUT includes — only the household
+     * relationship ids are needed — so it's a light, fast pass. An empty
+     * status list means "no membership filter," so household expansion is moot
+     * and we return an empty set.
+     *
+     * @param   list<string>  $membershipStatuses  Qualifying membership values.
+     *
+     * @return  array<string, true>  Set of qualifying PC household ids.
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    private function discoverMemberHouseholds(array $membershipStatuses): array
+    {
+        if ($membershipStatuses === []) {
+            return [];
+        }
+
+        $households = [];
+        $nextUrl    = null;
+        $pages      = 0;
+
+        do {
+            $pages++;
+
+            if ($pages > self::MAX_PAGES) {
+                break;
+            }
+
+            // include=households is required: without it PCO returns
+            // relationships.households.data = null, so a person's household
+            // ids can't be read. We only need the linkage, not the Household
+            // resources, but the include is what populates it.
+            $page = $nextUrl === null
+                ? $this->client->getJson('/people/v2/people', ['per_page' => '100', 'where[status]' => 'active', 'include' => 'households'])
+                : $this->client->getJsonAbsolute($nextUrl);
+
+            foreach (\is_array($page['data'] ?? null) ? $page['data'] : [] as $person) {
+                if (!\is_array($person)) {
+                    continue;
+                }
+
+                $membership = (string) ($person['attributes']['membership'] ?? '');
+
+                if (!\in_array($membership, $membershipStatuses, true)) {
+                    continue;
+                }
+
+                foreach ($this->mapper->householdRefIds($person) as $householdId) {
+                    $households[$householdId] = true;
+                }
+            }
+
+            $nextUrl = $this->extractNextLink($page);
+        } while ($nextUrl !== null);
+
+        return $households;
+    }
+
+    /**
+     * Should this person be imported? A person qualifies when they directly
+     * hold a configured membership status, OR they share a PC household with
+     * someone who does (the household-expansion policy). An empty status list
+     * imports everyone active.
+     *
+     * @param   array<string, mixed>  $person             PC Person row.
+     * @param   list<string>          $membershipStatuses Qualifying values.
+     * @param   array<string, true>   $memberHouseholds   Qualifying household ids.
+     *
+     * @return  bool
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    private function personIncluded(array $person, array $membershipStatuses, array $memberHouseholds): bool
+    {
+        if ($membershipStatuses === []) {
+            return true;
+        }
+
+        $membership = (string) ($person['attributes']['membership'] ?? '');
+
+        if (\in_array($membership, $membershipStatuses, true)) {
+            return true;
+        }
+
+        foreach ($this->mapper->householdRefIds($person) as $householdId) {
+            if (isset($memberHouseholds[$householdId])) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Resolve the person's PC household to a local family-unit id, upserting
+     * the family-unit row on the way. Returns null when the person has no
+     * household (or its resource wasn't included on this page). Failures are
+     * recorded on the report rather than thrown — a bad household must not
+     * abort the member sync.
+     *
+     * @param   array<string, mixed>             $person    Raw PC Person row.
+     * @param   array<int, array<string, mixed>> $included  JSON:API included.
+     * @param   SyncReport                       $report    Mutated in-place.
+     *
+     * @return  int|null  Local `#__cwmconnect_familyunit.id`, or null.
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    private function linkHousehold(array $person, array $included, SyncReport $report): ?int
+    {
+        try {
+            $mapped = $this->mapper->extractHousehold($person, $included);
+
+            if ($mapped === null) {
+                return null;
+            }
+
+            $funitid = $this->households->upsertByPcHouseholdId($mapped);
+            $this->cacheHouseholdAvatar((int) $mapped['pc_household_id'], (string) ($mapped['avatar'] ?? ''), $report);
+
+            return $funitid;
+        } catch (\Throwable $e) {
+            $report->recordError(
+                isset($person['id']) ? (int) $person['id'] : null,
+                'Household link failed: ' . $e->getMessage(),
+            );
+
+            return null;
+        }
+    }
+
+    /**
+     * Download + cache a household's family photo (and its web variants) when
+     * one is configured, stamping the family-unit row. No-op without a
+     * household photo cache, or for households with no uploaded photo (the
+     * cache skips generated `-square.png` placeholders). Best-effort: failures
+     * land on the report and never abort the run. Idempotent across the many
+     * members of a household — the hash check makes re-encounters a no-op.
+     *
+     * @param   int         $pcHouseholdId  PC household id (filename stem).
+     * @param   string      $avatarUrl      The household `avatar` URL, or ''.
+     * @param   SyncReport  $report         Mutated in-place.
+     *
+     * @return  void
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    private function cacheHouseholdAvatar(int $pcHouseholdId, string $avatarUrl, SyncReport $report): void
+    {
+        if ($this->householdPhotoCache === null || $this->households === null || $pcHouseholdId <= 0 || $avatarUrl === '') {
+            return;
+        }
+
+        try {
+            $currentHash = $this->households->findImageHashByPcHouseholdId($pcHouseholdId);
+            $result      = $this->householdPhotoCache->cache($pcHouseholdId, $avatarUrl, $currentHash);
+
+            if ($result === null) {
+                return;
+            }
+
+            if ($result->downloaded) {
+                $this->households->updateImageByPcHouseholdId($pcHouseholdId, $result->relativePath, $result->hash);
+                $report->photosDownloaded++;
+            } else {
+                $report->photosUnchanged++;
+            }
+        } catch (\Throwable $e) {
+            $report->recordError(null, 'Household photo cache failed: ' . $e->getMessage());
+            $this->logger->error('PC sync household photo error.', [
+                'pcHouseholdId' => $pcHouseholdId,
+                'error'         => $e->getMessage(),
+            ]);
+        }
     }
 
     /**
@@ -438,16 +642,17 @@ final class SyncEngine
      */
     private function fetchFirstPage(array $membershipStatuses): array
     {
-        $query = [
-            'include'  => self::PEOPLE_INCLUDES,
-            'per_page' => '100',
-        ];
-
-        if (\count($membershipStatuses) === 1) {
-            $query['where[membership]'] = $membershipStatuses[0];
-        }
-
-        return $this->client->getJson('/people/v2/people', $query);
+        // No server-side where[membership] filter: the household-expansion
+        // policy needs every active person in the result set so a member's
+        // household-mates (children, spouses) — whose own membership wouldn't
+        // qualify — can be pulled in. Membership filtering happens locally in
+        // personIncluded(). where[status]=active still drops inactive people
+        // (the sweep then hard-deletes any local row that goes inactive).
+        return $this->client->getJson('/people/v2/people', [
+            'include'       => self::PEOPLE_INCLUDES,
+            'per_page'      => '100',
+            'where[status]' => 'active',
+        ]);
     }
 
     /**

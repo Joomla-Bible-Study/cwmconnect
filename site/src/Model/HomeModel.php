@@ -107,6 +107,7 @@ class HomeModel extends ListModel
             ->where('a.access IN (' . $groups . ')')
             ->where('a.published = 1')
             ->where('a.display_in_directory = 1')
+            ->where('a.is_child = 0')
             ->where('a.featured = 1')
             ->order($db->escape('a.ordering') . ' ASC');
 

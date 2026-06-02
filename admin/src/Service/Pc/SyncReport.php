@@ -53,12 +53,13 @@ final class SyncReport
     public int $updated = 0;
 
     /**
-     * Local rows archived by the sweep step (display_in_directory = 0).
+     * Local PC-synced rows hard-deleted by the sweep step — people who went
+     * inactive in PC or left the org and so were not seen this run.
      *
      * @var    int
      * @since  __DEPLOY_VERSION__
      */
-    public int $archived = 0;
+    public int $deleted = 0;
 
     /**
      * Rows previously archived that came back in this run's PC result and
@@ -109,6 +110,16 @@ final class SyncReport
      * @since  __DEPLOY_VERSION__
      */
     public int $paired = 0;
+
+    /**
+     * Member rows linked to a household (family unit) this run. Counts each
+     * person whose `funitid` was resolved from a PC household — not the number
+     * of distinct households.
+     *
+     * @var    int
+     * @since  __DEPLOY_VERSION__
+     */
+    public int $householdsLinked = 0;
 
     /**
      * Per-person error list, one entry per failure.
@@ -228,12 +239,13 @@ final class SyncReport
             'seen'             => $this->seen,
             'added'            => $this->added,
             'updated'          => $this->updated,
-            'archived'         => $this->archived,
+            'deleted'          => $this->deleted,
             'unarchived'       => $this->unarchived,
             'customFieldsWritten' => $this->customFieldsWritten,
             'photosDownloaded'    => $this->photosDownloaded,
             'photosUnchanged'     => $this->photosUnchanged,
             'paired'              => $this->paired,
+            'householdsLinked'    => $this->householdsLinked,
             'errorCount'       => $this->errorCount(),
             'errors'           => $this->errors,
             'startedAt'        => $this->startedAt->format(\DateTimeImmutable::ATOM),

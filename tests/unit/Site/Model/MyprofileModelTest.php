@@ -139,17 +139,17 @@ final class MyprofileModelTest extends TestCase
     }
 
     #[Test]
-    public function editableColumnsAlsoExcludesDisplayInDirectoryWhenPcHidIt(): void
+    public function memberMayControlOwnDirectoryVisibility(): void
     {
-        // Spec: when PC set display_in_directory=0 (child row), admin can't
-        // re-enable visibility without unlinking, and neither can the member.
-        $hiddenPcItem = (object) [
+        // Full-directory policy: the sync no longer owns visibility, so a
+        // member can opt their own row in or out via the portal — and that
+        // choice survives re-sync (DatabaseMemberRepository::update() no longer
+        // clobbers display_in_directory).
+        $pcItem = (object) [
             'pc_person_id'         => 42,
             'display_in_directory' => 0,
         ];
 
-        $columns = MyprofileModel::editableColumns($hiddenPcItem);
-
-        self::assertNotContains('display_in_directory', $columns);
+        self::assertContains('display_in_directory', MyprofileModel::editableColumns($pcItem));
     }
 }

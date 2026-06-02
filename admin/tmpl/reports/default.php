@@ -63,6 +63,12 @@ if ($pdfPath !== '') {
                 <div class="col-md-3">
                     <h2><?php echo Text::_('COM_CWMCONNECT_REPORTS_PRINT_DIRECTORY'); ?></h2>
                     <p><?php echo Text::_('COM_CWMCONNECT_REPORTS_PRINT_DIRECTORY_DESC'); ?></p>
+                    <div class="form-check mb-2">
+                        <input class="form-check-input" type="checkbox" id="membersOnly" name="members_only" value="1">
+                        <label class="form-check-label" for="membersOnly">
+                            <?php echo Text::_('COM_CWMCONNECT_REPORTS_MEMBERS_ONLY'); ?>
+                        </label>
+                    </div>
                     <?php if ($isAdmin) : ?>
                         <div class="form-check mb-2">
                             <input class="form-check-input" type="checkbox" id="includeHidden" name="include_hidden" value="1">
@@ -82,6 +88,9 @@ if ($pdfPath !== '') {
                             </a>
                         </div>
                     <?php endif; ?>
+                    <?php /* AJAX build feedback (admin-reports.js targets these). */ ?>
+                    <div id="pdf-build-status" class="mt-2" aria-live="polite"></div>
+                    <div id="pdf-build-result" class="mt-2"></div>
                 </div>
                 <div class="col-md-3">
                     <h2>Missing Photos</h2>
@@ -96,16 +105,20 @@ if ($pdfPath !== '') {
         <?php echo HTMLHelper::_('form.token'); ?>
     </div>
 </form>
-<?php if ($isAdmin) : ?>
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     var btn = document.getElementById('pdfExportBtn');
-    var cb  = document.getElementById('includeHidden');
-    if (!btn || !cb) return;
-    var base = btn.href;
-    cb.addEventListener('change', function () {
-        btn.href = cb.checked ? base + '&include_hidden=1' : base;
-    });
+    if (!btn) return;
+    var base       = btn.href;
+    var hiddenCb   = document.getElementById('includeHidden');
+    var membersCb  = document.getElementById('membersOnly');
+    var refresh = function () {
+        var href = base;
+        if (hiddenCb && hiddenCb.checked)  { href += '&include_hidden=1'; }
+        if (membersCb && membersCb.checked) { href += '&members_only=1'; }
+        btn.href = href;
+    };
+    if (hiddenCb)  { hiddenCb.addEventListener('change', refresh); }
+    if (membersCb) { membersCb.addEventListener('change', refresh); }
 });
 </script>
-<?php endif; ?>

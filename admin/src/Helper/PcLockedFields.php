@@ -27,13 +27,16 @@ namespace CWM\Component\Cwmconnect\Administrator\Helper;
  * model where the Joomla `#__fields` table is already in scope — see
  * {@see \CWM\Component\Cwmconnect\Administrator\Service\Pc\FieldMapRepositoryInterface::lockedJoomlaFieldNames()}.
  *
- * Lock policy (per spec §6.3):
- *  - Identity / contact / address / dates → locked when `pc_person_id` is set
+ * Lock policy:
+ *  - Identity / contact / address / dates / gender → locked when
+ *    `pc_person_id` is set (PC owns the data).
+ *  - `funitid` (household) → locked when linked: the household comes from PC.
  *  - `image` → locked when `pc_person_id` is set (Phase E owns the avatar
- *    cache; a future Phase H photo override would bypass this lock through
- *    a different column)
- *  - `display_in_directory` → locked only when PC set it to 0 (child or
- *    `directory_status=no`). Admin can edit when PC left it visible.
+ *    cache; a future photo override would bypass this lock through a
+ *    different column).
+ *  - Visibility (`published` / `display_in_directory`) → NOT locked: the
+ *    full-directory sync doesn't drive visibility, so the admin stays free to
+ *    hide an individual, and that hide survives re-sync.
  *
  * `alias`, `con_position`, `featured`, and Joomla metadata (`catid`,
  * `ordering`, `language`, ...) stay editable so admins keep control over
@@ -63,6 +66,8 @@ final class PcLockedFields
         'country',
         'birthdate',
         'anniversary',
+        'gender',
+        'funitid',
         'image',
     ];
 
@@ -89,15 +94,11 @@ final class PcLockedFields
             return [];
         }
 
-        $locked = self::BASE_LOCKED;
-
-        // PC set this row's visibility to 0 (either via the child boolean
-        // or directory_status=no). Admin can't accidentally re-enable
-        // visibility without unlinking the row first.
-        if ((int) ($item->display_in_directory ?? 1) === 0) {
-            $locked[] = 'display_in_directory';
-        }
-
-        return $locked;
+        // Visibility (published / display_in_directory) is deliberately NOT
+        // locked: under the full-directory policy the sync no longer drives a
+        // member's visibility, so an admin must stay free to hide an
+        // individual — and that manual hide now survives re-sync (see
+        // DatabaseMemberRepository::update()).
+        return self::BASE_LOCKED;
     }
 }

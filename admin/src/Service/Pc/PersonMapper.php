@@ -67,13 +67,31 @@ final class PersonMapper
         $mobilePhone    = $this->pickPrimaryPhone($byTypeId, $relIds['phone_numbers'] ?? [], true);
         $primaryAddress = $this->pickPrimaryAddress($byTypeId, $relIds['addresses'] ?? []);
 
-        $directoryStatus = (string) ($attrs['directory_status'] ?? 'everyone');
-        $isChild         = (bool) ($attrs['child'] ?? false);
-        $pcStatus        = (string) ($attrs['status'] ?? 'active');
+        $pcStatus = (string) ($attrs['status'] ?? 'active');
 
-        $firstName = $this->stringAttr($attrs, 'first_name');
-        $lastName  = $this->stringAttr($attrs, 'last_name');
-        $fullName  = trim($firstName . ' ' . $lastName);
+        $firstName  = $this->stringAttr($attrs, 'first_name');
+        $middleName = $this->stringAttr($attrs, 'middle_name');
+        $lastName   = $this->stringAttr($attrs, 'last_name');
+        $nickname   = $this->stringAttr($attrs, 'nickname');
+        $suffix     = $this->suffixFromComputedName($this->stringAttr($attrs, 'name'));
+
+        // Directory display name: First [Middle] Last[, Suffix], collapsing the
+        // gaps left by absent middle names. PC People has no dedicated suffix
+        // field — a generational suffix (Jr/Sr/II–X) only surfaces in the
+        // computed `name` (e.g. "Sherman Cox, III") — so we mine it from there
+        // and graft it onto the structured first/middle/last parts.
+        $fullName = trim((string) preg_replace('/\s+/', ' ', $firstName . ' ' . $middleName . ' ' . $lastName));
+
+        if ($suffix !== '' && $fullName !== '') {
+            $fullName .= ', ' . $suffix;
+        }
+
+        // A nickname PC stores apart from the first name (e.g. "Robert" with
+        // nickname "Bob") is appended in parentheses; one that merely echoes
+        // the first name is dropped.
+        if ($nickname !== '' && strcasecmp($nickname, $firstName) !== 0) {
+            $fullName = $fullName !== '' ? $fullName . ' (' . $nickname . ')' : $nickname;
+        }
 
         return [
             'pc_person_id'         => $pcPersonId,
@@ -92,10 +110,29 @@ final class PersonMapper
             'postcode'             => $primaryAddress['zip']      ?? '',
             'birthdate'            => $this->dateAttr($attrs, 'birthdate'),
             'anniversary'          => $this->dateAttr($attrs, 'anniversary'),
-            'directory_scope'      => $this->mapDirectoryScope($directoryStatus),
+            // Full church directory: every active member is listed by default,
+            // regardless of their PC `directory_status` (which is mostly an
+            // unset default, not a deliberate opt-out) or `child` flag.
+            // `published` still gates active vs inactive membership; an admin
+            // can hide an individual by clearing `display_in_directory`.
+            'directory_scope'      => 'public',
             'pc_shared_info'       => $this->encodeSharedInfo($attrs['directory_shared_info'] ?? null),
-            'display_in_directory' => ($isChild || $directoryStatus === 'no') ? 0 : 1,
+            'display_in_directory' => 1,
             'published'            => $pcStatus === 'active' ? 1 : 0,
+            'hidden_reason'        => $pcStatus === 'active' ? '' : 'inactive',
+            // PC membership designation (Member / Regular Attender / Visitor /
+            // …). Recorded so the directory can tell official members from the
+            // household-mates pulled in by the family-expansion policy — drives
+            // the admin membership filter and the members-only roster.
+            'pc_membership'        => $this->stringAttr($attrs, 'membership'),
+            // PC `gender` (Male / Female / '' when unset). Stored verbatim to
+            // stay in line with PC rather than the legacy 0/1 "sex" encoding.
+            'gender'               => $this->stringAttr($attrs, 'gender'),
+            // Minors aren't listed on their own in the directory — they appear
+            // under their family unit instead. Determined by age when a
+            // birthdate is on file (most reliable for "under 18"), falling back
+            // to PC's `child` flag when it isn't.
+            'is_child'             => $this->isMinor($attrs) ? 1 : 0,
         ];
     }
 
@@ -190,6 +227,110 @@ final class PersonMapper
         }
 
         return $out;
+    }
+
+    /**
+     * Resolve the person's PC household to local family-unit columns, or null
+     * when they belong to no household (or the Household resource wasn't
+     * included on this page). PC allows a person to sit in more than one
+     * household; we take the first, which is the primary in practice.
+     *
+     * @param   array<string, mixed>             $personData  PC Person row.
+     * @param   array<int, array<string, mixed>> $included    JSON:API
+     *                                                        `included` array,
+     *                                                        carrying the
+     *                                                        Household resource.
+     *
+     * @return  array{pc_household_id: int, name: string, alias: string}|null
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    /**
+     * The PC household ids a person belongs to (relationship refs only — no
+     * `included` lookup needed). Used by the sync's discovery pass to find
+     * households that contain a qualifying member, so their household-mates
+     * (children, spouses) can be pulled into the directory too.
+     *
+     * @param   array<string, mixed>  $personData  PC Person row.
+     *
+     * @return  list<string>  PC household ids, or [].
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    public function householdRefIds(array $personData): array
+    {
+        $out = [];
+
+        foreach ($this->relationshipIds($personData)['households'] ?? [] as $ref) {
+            if ($ref['type'] === 'Household') {
+                $out[] = $ref['id'];
+            }
+        }
+
+        return $out;
+    }
+
+    public function extractHousehold(array $personData, array $included): ?array
+    {
+        $refs = $this->relationshipIds($personData)['households'] ?? [];
+
+        if ($refs === []) {
+            return null;
+        }
+
+        $byTypeId = $this->indexIncluded($included);
+
+        foreach ($refs as $ref) {
+            if ($ref['type'] !== 'Household') {
+                continue;
+            }
+
+            $resource = $byTypeId['Household:' . $ref['id']] ?? null;
+
+            if ($resource !== null) {
+                return $this->mapHousehold($resource);
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Map a PC Household resource to local family-unit columns. Returns null
+     * for a non-positive id.
+     *
+     * @param   array<string, mixed>  $householdData  A PC Household resource.
+     *
+     * @return  array{pc_household_id: int, name: string, alias: string}|null
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    private function mapHousehold(array $householdData): ?array
+    {
+        $id = (int) ($householdData['id'] ?? 0);
+
+        if ($id <= 0) {
+            return null;
+        }
+
+        $attrs = \is_array($householdData['attributes'] ?? null) ? $householdData['attributes'] : [];
+        $name  = trim((string) ($attrs['name'] ?? ''));
+
+        if ($name === '') {
+            $name = 'Household ' . $id;
+        }
+
+        $slug   = trim((string) preg_replace('/[^A-Za-z0-9]+/', '-', strtolower($name)), '-');
+        $avatar = $attrs['avatar'] ?? null;
+
+        return [
+            'pc_household_id' => $id,
+            'name'            => $name,
+            'alias'           => ($slug === '' ? 'household' : $slug) . '-pchh-' . $id,
+            // Real uploaded family photo URL, or '' (generated -square.png
+            // placeholders are skipped by the photo cache, not here).
+            'avatar'          => \is_string($avatar) ? $avatar : '',
+        ];
     }
 
     /**
@@ -466,25 +607,6 @@ final class PersonMapper
     }
 
     /**
-     * Translate PC's `directory_status` string to our `directory_scope` enum.
-     *
-     * @param   string  $pcStatus
-     *
-     * @return  string  One of 'public', 'household', 'hidden'.
-     *
-     * @since   __DEPLOY_VERSION__
-     */
-    private function mapDirectoryScope(string $pcStatus): string
-    {
-        return match ($pcStatus) {
-            'no'             => 'hidden',
-            'limited_access',
-            'household_only' => 'household',
-            default          => 'public',
-        };
-    }
-
-    /**
      * Serialise the `directory_shared_info` object to JSON for the
      * `pc_shared_info` column. Returns null when there's nothing to store.
      *
@@ -505,6 +627,88 @@ final class PersonMapper
         } catch (\JsonException) {
             return null;
         }
+    }
+
+    /**
+     * Mine a generational suffix from PC's computed `name` attribute. PC
+     * People exposes no dedicated suffix field; a suffix (Jr/Sr/II–X or a
+     * numeric ordinal) only appears in `name`, formatted as a trailing
+     * ", <suffix>" segment (e.g. "Sherman Cox, III"). Anything that isn't a
+     * recognised generational suffix — so a "Last, First" computed format
+     * can't masquerade as one — yields ''.
+     *
+     * @param   string  $name  The computed `name` attribute.
+     *
+     * @return  string  The suffix without its comma/trailing dot, or ''.
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    private function suffixFromComputedName(string $name): string
+    {
+        if (preg_match('/,\s*([^,]+?)\s*$/', $name, $m) !== 1) {
+            return '';
+        }
+
+        $candidate = trim($m[1]);
+
+        return preg_match('/^(?:Jr|Sr|II|III|IV|V|VI|VII|VIII|IX|X|[0-9]+(?:st|nd|rd|th))\.?$/i', $candidate) === 1
+            ? rtrim($candidate, '.')
+            : '';
+    }
+
+    /**
+     * Is this person a minor (excluded from standalone directory listings,
+     * shown only under their family unit)? Age from the birthdate decides when
+     * one is on file — the most faithful reading of "under 18" — otherwise we
+     * defer to PC's `child` flag (the church-maintained signal), since most
+     * people have no birthdate recorded.
+     *
+     * @param   array<string, mixed>  $attrs  PC person attributes.
+     *
+     * @return  bool
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    private function isMinor(array $attrs): bool
+    {
+        $age = $this->ageFromBirthdate($this->stringAttr($attrs, 'birthdate'));
+
+        if ($age !== null) {
+            return $age < 18;
+        }
+
+        return (bool) ($attrs['child'] ?? false);
+    }
+
+    /**
+     * Whole years between a `YYYY-MM-DD` birthdate and today, or null when the
+     * value is missing / unparseable / in the future.
+     *
+     * @param   string  $birthdate  Raw PC birthdate.
+     *
+     * @return  int|null
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    private function ageFromBirthdate(string $birthdate): ?int
+    {
+        if ($birthdate === '') {
+            return null;
+        }
+
+        try {
+            $born = new \DateTimeImmutable(substr($birthdate, 0, 10));
+        } catch (\Exception) {
+            return null;
+        }
+
+        $today = new \DateTimeImmutable();
+
+        if ($born > $today) {
+            return null;
+        }
+
+        return $today->diff($born)->y;
     }
 
     /**

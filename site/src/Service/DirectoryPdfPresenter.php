@@ -100,6 +100,16 @@ final class DirectoryPdfPresenter
     public bool $showHiddenBadges = false;
 
     /**
+     * Whether to render the body title block (`<h1>` + "Generated …" meta).
+     * On for the member-facing PDF; off for the admin print, which already
+     * carries the title/date in its mpdf running header and footer.
+     *
+     * @var    bool
+     * @since  __DEPLOY_VERSION__
+     */
+    public bool $showTitleBlock = true;
+
+    /**
      * Escape a value for HTML output.
      *
      * @param   mixed  $value

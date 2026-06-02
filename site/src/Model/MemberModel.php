@@ -157,7 +157,8 @@ class MemberModel extends FormModel
                 $data = $db->setQuery($query)->loadObject();
 
                 if (empty($data)) {
-                    $app->enqueueMessage(Text::_('COM_CWMCONNECT_ERROR_MEMBER_NOT_FOUND'), 'error');
+                    // The view presents the friendly "not available / no linked
+                    // profile" notice; the model just reports "not found".
                     $this->item[$pk] = false;
                     return $this->item[$pk];
                 }

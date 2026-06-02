@@ -20,7 +20,7 @@ final class SyncReportTest extends TestCase
         self::assertSame(0, $report->seen);
         self::assertSame(0, $report->added);
         self::assertSame(0, $report->updated);
-        self::assertSame(0, $report->archived);
+        self::assertSame(0, $report->deleted);
         self::assertSame(0, $report->unarchived);
         self::assertSame(0, $report->errorCount());
         self::assertTrue($report->success());

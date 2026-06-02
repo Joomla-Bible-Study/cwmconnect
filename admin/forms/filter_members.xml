@@ -22,6 +22,31 @@
 		</field>
 
 		<field
+			name="visibility"
+			type="list"
+			label="COM_CWMCONNECT_FILTER_VISIBILITY_LABEL"
+			description="COM_CWMCONNECT_FILTER_VISIBILITY_DESC"
+			onchange="this.form.submit();"
+			>
+			<option value="">COM_CWMCONNECT_FILTER_VISIBILITY_SELECT</option>
+			<option value="visible">COM_CWMCONNECT_FILTER_VISIBILITY_VISIBLE</option>
+			<option value="hidden">COM_CWMCONNECT_FILTER_VISIBILITY_HIDDEN</option>
+		</field>
+
+		<field
+			name="membership"
+			type="sql"
+			label="COM_CWMCONNECT_FILTER_MEMBERSHIP_LABEL"
+			description="COM_CWMCONNECT_FILTER_MEMBERSHIP_DESC"
+			query="SELECT DISTINCT pc_membership AS value, pc_membership AS text FROM #__cwmconnect_details WHERE pc_membership != '' ORDER BY pc_membership"
+			key_field="value"
+			value_field="text"
+			onchange="this.form.submit();"
+			>
+			<option value="">COM_CWMCONNECT_FILTER_MEMBERSHIP_SELECT</option>
+		</field>
+
+		<field
 			name="category_id"
 			type="category"
 			label="JOPTION_FILTER_CATEGORY"

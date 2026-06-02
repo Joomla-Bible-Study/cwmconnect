@@ -11,6 +11,7 @@
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
+use CWM\Component\Cwmconnect\Site\Helper\RouteHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 
@@ -44,12 +45,21 @@ $search = (string) $this->state->get('filter.search', '');
     <?php else : ?>
         <ul class="list-group cwmconnect-household-list">
             <?php foreach ($this->items as $item) :
-                $count = (int) ($item->visible_count ?? 0);
-                $url   = Route::_('index.php?option=com_cwmconnect&view=members&filter_household_id=' . (int) $item->id);
+                $count    = (int) ($item->visible_count ?? 0);
+                $url      = Route::_('index.php?option=com_cwmconnect&view=members&filter_household_id=' . (int) $item->id);
+                $hasPhoto = trim((string) ($item->image ?? '')) !== '';
                 ?>
                 <li class="list-group-item d-flex justify-content-between align-items-center">
-                    <a href="<?php echo $url; ?>" class="text-decoration-none">
-                        <span class="icon-users me-2" aria-hidden="true"></span>
+                    <a href="<?php echo $url; ?>" class="text-decoration-none d-flex align-items-center">
+                        <?php if ($hasPhoto) : ?>
+                            <img src="<?php echo $this->escape(Route::_(RouteHelper::getHouseholdPhotoRoute((int) $item->id, 'thumb'))); ?>"
+                                 srcset="<?php echo $this->escape(RouteHelper::getHouseholdPhotoSrcset((int) $item->id)); ?>"
+                                 sizes="48px" width="48" height="48" loading="lazy" decoding="async"
+                                 class="rounded me-2" style="width:48px;height:48px;object-fit:cover;"
+                                 alt="<?php echo $this->escape((string) $item->name); ?>">
+                        <?php else : ?>
+                            <span class="icon-users me-2" aria-hidden="true"></span>
+                        <?php endif; ?>
                         <?php echo $this->escape((string) $item->name); ?>
                     </a>
                     <span class="badge bg-secondary rounded-pill">

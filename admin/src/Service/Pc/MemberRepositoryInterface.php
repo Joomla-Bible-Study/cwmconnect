@@ -44,22 +44,21 @@ interface MemberRepositoryInterface
     public function upsertByPcPersonId(array $attrs): UpsertOutcome;
 
     /**
-     * Mark every member row whose `pc_person_id` is set but is NOT in the
-     * given list of "seen" ids. Implements the spec §5.4 sweep step.
+     * Hard-delete every PC-synced member row whose `pc_person_id` is set but
+     * is NOT in the given list of "seen" ids — the spec §5.4 sweep step. These
+     * are people who went inactive in PC (active-only fetch no longer returns
+     * them) or left the org. Re-activating in PC re-syncs a fresh row.
      *
-     * Archive semantics: `display_in_directory = 0` AND `published = 0`. The
-     * row is retained (not deleted) per the default config; hard-delete is a
-     * separate Phase-K concern.
+     * Manual (non-PC) rows are never touched. Empty seen list is a no-op.
      *
      * @param   list<int>  $seenPcPersonIds  PC person ids that DID match the
      *                                        current filter on this run.
      *
-     * @return  int  Number of rows newly archived (already-archived rows are
-     *                not re-counted).
+     * @return  int  Number of rows deleted.
      *
      * @since   __DEPLOY_VERSION__
      */
-    public function archiveMissingPcPersonIds(array $seenPcPersonIds): int;
+    public function deleteMissingPcPersonIds(array $seenPcPersonIds): int;
 
     /**
      * Phase D: look up a local member row id by PC person id. Used after

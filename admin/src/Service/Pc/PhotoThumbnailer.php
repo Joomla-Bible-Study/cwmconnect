@@ -78,12 +78,13 @@ final class PhotoThumbnailer
      *
      * @param   string  $sourcePath  Absolute path to the source image.
      * @param   string  $destPath    Absolute path to write the thumbnail.
+     * @param   string  $format      Output format: 'jpg' (default) or 'webp'.
      *
      * @return  bool
      *
      * @since   __DEPLOY_VERSION__
      */
-    public function generate(string $sourcePath, string $destPath): bool
+    public function generate(string $sourcePath, string $destPath, string $format = 'jpg'): bool
     {
         if (!is_file($sourcePath)) {
             return false;
@@ -131,7 +132,9 @@ final class PhotoThumbnailer
                 return false;
             }
 
-            $ok = imagejpeg($dst, $destPath, $this->quality);
+            $ok = $format === 'webp' && \function_exists('imagewebp')
+                ? imagewebp($dst, $destPath, $this->quality)
+                : imagejpeg($dst, $destPath, $this->quality);
             imagedestroy($dst);
 
             return $ok && is_file($destPath);

@@ -73,9 +73,61 @@ class PhotoController extends BaseController
         $viewerId  = $isLoggedIn ? (int) $user->id : (int) $tokenUserId;
         $household = $isManager ? null : PhotoAccess::householdId($db, $viewerId);
 
-        $path = PhotoAccess::canView($isManager, $member, $household)
-            ? PhotoAccess::resolvePath((string) ($member->image ?? ''))
-            : null;
+        $path = null;
+
+        if (PhotoAccess::canView($isManager, $member, $household)) {
+            $image       = (string) ($member->image ?? '');
+            $size        = $this->input->getWord('size', '');
+            $acceptsWebp = str_contains($this->input->server->getString('HTTP_ACCEPT', ''), 'image/webp');
+
+            // Prefer an optimized web variant (smaller, WebP when accepted);
+            // fall back to the full-size original when no variant exists yet
+            // (e.g. a photo cached before the variant pipeline landed).
+            $path = $size !== '' ? PhotoAccess::resolveVariant($image, $size, $acceptsWebp) : null;
+            $path ??= PhotoAccess::resolvePath($image);
+        }
+
+        $path ??= PhotoAccess::placeholderPath();
+
+        if ($path === null) {
+            $app->setHeader('status', '404', true);
+            $app->sendHeaders();
+            $app->close();
+        }
+
+        PhotoAccess::stream($app, $path);
+    }
+
+    /**
+     * Stream a household family photo for `task=photo.servehousehold&id=N`
+     * (N = family-unit id). Family group photos sit behind the directory's
+     * login wall, so any logged-in viewer may see a published household's
+     * photo; guests are refused.
+     *
+     * @return  void
+     *
+     * @throws  NotAllowed
+     * @since   __DEPLOY_VERSION__
+     */
+    public function servehousehold(): void
+    {
+        $app  = Factory::getApplication();
+        $user = $app->getIdentity();
+
+        if ($user === null || (int) $user->id <= 0) {
+            throw new NotAllowed('JERROR_ALERTNOAUTHOR', 403);
+        }
+
+        $db        = Factory::getContainer()->get(DatabaseInterface::class);
+        $household = PhotoAccess::loadHousehold($db, $this->input->getInt('id', 0));
+
+        $path = null;
+
+        if ($household !== null && (int) ($household->published ?? 0) === 1) {
+            $size        = $this->input->getWord('size', '');
+            $acceptsWebp = str_contains($this->input->server->getString('HTTP_ACCEPT', ''), 'image/webp');
+            $path        = PhotoAccess::resolveHouseholdImage((string) ($household->image ?? ''), $size, $acceptsWebp);
+        }
 
         $path ??= PhotoAccess::placeholderPath();
 

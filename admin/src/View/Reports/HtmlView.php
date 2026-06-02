@@ -15,10 +15,13 @@ namespace CWM\Component\Cwmconnect\Administrator\View\Reports;
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
+use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\ContentHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\CanDo;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Session\Session;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 
 /**
@@ -51,8 +54,36 @@ class HtmlView extends BaseHtmlView
         $this->canDo = ContentHelper::getActions('com_cwmconnect');
 
         $this->addToolbar();
+        $this->registerAssets();
 
         parent::display($tpl);
+    }
+
+    /**
+     * Load the reports admin script and publish the endpoint URL, CSRF token,
+     * and translated UI strings the AJAX PDF-build button reads.
+     *
+     * @return  void
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    private function registerAssets(): void
+    {
+        $document = Factory::getApplication()->getDocument();
+        $wa       = $document->getWebAssetManager();
+        $wa->getRegistry()->addExtensionRegistryFile('com_cwmconnect');
+        $wa->useScript('com_cwmconnect.admin-reports');
+
+        $document->addScriptOptions('com_cwmconnect.reports', [
+            'csrfToken'   => Session::getFormToken(),
+            'generateUrl' => Route::_('index.php?option=com_cwmconnect&task=reports.generatepdf', false),
+            'i18n'        => [
+                'building'     => Text::_('COM_CWMCONNECT_REPORTS_PDF_BUILDING'),
+                'download'     => Text::_('COM_CWMCONNECT_REPORTS_DOWNLOAD_PDF'),
+                'ready'        => Text::_('COM_CWMCONNECT_REPORTS_PDF_READY'),
+                'unknownError' => Text::_('COM_CWMCONNECT_REPORTS_PDF_UNKNOWN_ERROR'),
+            ],
+        ]);
     }
 
     /**

@@ -141,8 +141,10 @@ class CategoryModel extends ListModel
             $query->where('a.published = ' . (int) $state);
         }
 
-        // Phase G §7.2: front-end never surfaces opted-out / child rows.
-        $query->where('a.display_in_directory = 1');
+        // Phase G §7.2: front-end never surfaces opted-out rows; minors are
+        // shown under their family unit, not listed on their own.
+        $query->where('a.display_in_directory = 1')
+            ->where('a.is_child = 0');
 
         if ($this->getState('filter.publish_date')) {
             $nullDate = $db->quote($db->getNullDate());
@@ -201,7 +203,7 @@ class CategoryModel extends ListModel
         $menuParams = new Registry();
 
         if ($menu = $app->getMenu()?->getActive()) {
-            $menuParams->loadString($menu->params);
+            $menuParams->merge($menu->getParams());
         }
 
         $merged = clone $params;
@@ -248,7 +250,7 @@ class CategoryModel extends ListModel
         $menuParams = new Registry();
 
         if ($active = Factory::getApplication()->getMenu()?->getActive()) {
-            $menuParams->loadString($active->params);
+            $menuParams->merge($active->getParams());
         }
 
         $options = [

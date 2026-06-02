@@ -130,6 +130,14 @@ class MembersModel extends ListModel
             'filter.mstatus',
             $this->getUserStateFromRequest($this->context . '.filter.mstatus', 'filter_mstatus', '', 'string')
         );
+        $this->setState(
+            'filter.visibility',
+            $this->getUserStateFromRequest($this->context . '.filter.visibility', 'filter_visibility', '', 'cmd')
+        );
+        $this->setState(
+            'filter.membership',
+            $this->getUserStateFromRequest($this->context . '.filter.membership', 'filter_membership', '', 'string')
+        );
 
         parent::populateState($ordering, $direction);
 
@@ -157,6 +165,8 @@ class MembersModel extends ListModel
         $id .= ':' . $this->getState('filter.mstatus');
         $id .= ':' . $this->getState('filter.tag');
         $id .= ':' . $this->getState('filter.level');
+        $id .= ':' . $this->getState('filter.visibility');
+        $id .= ':' . $this->getState('filter.membership');
 
         return parent::getStoreId($id);
     }
@@ -183,6 +193,7 @@ class MembersModel extends ListModel
                         'a.id, a.name, a.lname, a.funitid, a.alias, a.checked_out, a.checked_out_time, a.catid, a.user_id'
                         . ', a.published, a.access, a.created, a.created_by, a.ordering, a.featured, a.language, a.mstatus'
                         . ', a.image, a.publish_up, a.publish_down'
+                        . ', a.display_in_directory, a.hidden_reason, a.pc_person_id, a.pc_membership, a.is_child'
                     )
                 )
             )
@@ -277,6 +288,11 @@ class MembersModel extends ListModel
                     'a.image',
                     'a.publish_up',
                     'a.publish_down',
+                    'a.display_in_directory',
+                    'a.hidden_reason',
+                    'a.pc_person_id',
+                    'a.pc_membership',
+                    'a.is_child',
                     'ul.name',
                     'ul.email',
                     'fu.name',
@@ -354,6 +370,31 @@ class MembersModel extends ListModel
         // Filter on member status.
         if ($mstatus = $this->getState('filter.mstatus')) {
             $query->where($db->quoteName('a.mstatus') . ' = ' . $db->quote($mstatus));
+        }
+
+        // Filter on directory visibility. "Visible" means a member would
+        // actually appear on the front end: published AND flagged for the
+        // directory. "Hidden" is the inverse — either gate closed. Mirrors the
+        // two-gate model the site views enforce (published=1 AND
+        // display_in_directory=1).
+        switch ((string) $this->getState('filter.visibility')) {
+            case 'visible':
+                $query->where($db->quoteName('a.published') . ' = 1')
+                    ->where($db->quoteName('a.display_in_directory') . ' = 1');
+                break;
+
+            case 'hidden':
+                $query->where(
+                    '(' . $db->quoteName('a.published') . ' = 0'
+                    . ' OR ' . $db->quoteName('a.display_in_directory') . ' = 0)'
+                );
+                break;
+        }
+
+        // Filter by PC membership designation (Member / Regular Attender / …).
+        if ($membership = $this->getState('filter.membership')) {
+            $query->where($db->quoteName('a.pc_membership') . ' = :membership')
+                ->bind(':membership', $membership);
         }
 
         // Filter by tag.

@@ -709,3 +709,82 @@ protection?
   Bearer→Basic PC auth switch; `SyncEngineTest` updated for single-value
   `where[membership]` + local multi-status filtering.
 - **Suite fully green: 140 tests, 0 errors, 0 failures.**
+
+## 14. PC custom-field import wizard — discovery & design
+
+The current PC ↔ Joomla field mapping (Phase D) is a **manual per-field screen**:
+the admin creates a Joomla custom field, then pairs it to a PC field definition,
+one at a time. Real-world feedback (2026-05-29): too much lift, and the install
+has **no Joomla custom fields yet**, so every PC field needs a mirror created
+*and* mapped by hand. Goal: an **auto-create wizard** that reads PC custom
+fields and generates the mirroring Joomla fields, segmented sensibly.
+
+### 14.1 Discovery — the live PC org's custom fields
+
+Pulled from the connected org (`people_tabs` + `people_field_definitions`):
+**3 tabs, 10 field definitions** — types: 4 boolean, 3 string, 2 select, 1 checkboxes.
+
+| Tab | Field | PC data_type |
+|---|---|---|
+| Church Info | Positions | string |
+| Church Info | Leader | boolean |
+| Church Info | Ministry Teams | checkboxes |
+| Church Info | Sabbath School Class | select |
+| Church Info | Origin of Country | string |
+| Church Info | Church Board Member | boolean |
+| Consent to Text | opt-in to text messages | boolean |
+| Adventurers | Class | select |
+| Adventurers | Parent | boolean |
+| Adventurers | Guardian Of | string |
+
+**Key insight:** PC *tabs* are the natural segmentation — map each tab to a
+Joomla **field group** (`#__fields_groups`, context `com_cwmconnect.member`) and
+each PC field to a Joomla field in that group. Categorization comes free from
+how the org already structured PC. The client already lists field definitions
+with their tab (`Client::listFieldDefinitions()` returns id/slug/name/data_type/
+tab); a `people_tabs` fetch supplies the group names.
+
+### 14.2 Proposed wizard
+
+1. **Scan** — fetch PC tabs + field definitions.
+2. **Review table** — one row per PC field with: proposed Joomla field *type*
+   (inferred, see 14.3), proposed *group* (= PC tab), and per-field toggles:
+   import? · show on profile? · searchable? · filterable? · admin-only?
+   Sensible defaults (select/checkboxes → filterable; booleans like "Church
+   Board Member"/"Leader" → admin-only candidates).
+3. **Create** — on confirm: upsert a Joomla field group per tab, create each
+   `com_fields` field in context `com_cwmconnect.member` with the chosen type +
+   options, and write the `#__cwmconnect_pc_field_map` mapping rows. Idempotent
+   (re-running matches existing fields by slug, doesn't duplicate).
+4. **Sync** writes values as today (`FieldsHelperWriter`).
+
+### 14.3 PC data_type → Joomla field type
+
+| PC data_type | Joomla field | Notes |
+|---|---|---|
+| string | text | |
+| text | textarea | |
+| boolean | radio (Yes/No) or checkbox | "Leader", "Parent", … |
+| select | list | **must import the PC field's options** |
+| checkboxes | checkboxes | multi-value; **import options**; e.g. "Ministry Teams" |
+| date | calendar | |
+| number | number | |
+| header | (skip) | PC section divider, not a value |
+
+### 14.4 Open questions (need more design)
+
+- **Options import** — `select`/`checkboxes` fields need their option values
+  pulled from PC (a `field_options` fetch per field) so the Joomla list/checkbox
+  field offers the same choices. This is the main extra lift.
+- **"Positions" overlap** — the PC string field "Positions" overlaps the
+  component's existing Position entity. Decide: map to Position, or to a plain
+  custom field, or both.
+- **Filtering UX** — to "browse by department" (e.g. Ministry Teams / Sabbath
+  School Class), the directory list filter + finder need to read these custom
+  fields. Scope which fields become directory filters.
+- **Re-sync drift** — when a PC field's options change, how the wizard reconciles
+  the Joomla field's option list (add new, keep removed for historical values?).
+- **Visibility** — tie per-field "admin-only" to the existing `pc_shared_info` /
+  directory visibility model so internal PC fields don't leak to members.
+
+Not yet scheduled — this section is the discovery artifact for that work.

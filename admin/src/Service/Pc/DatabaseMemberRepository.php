@@ -113,19 +113,24 @@ final class DatabaseMemberRepository implements MemberRepositoryInterface
     }
 
     /**
-     * Archive every PC-synced member row whose `pc_person_id` is NOT in the
-     * given list. Empty list is treated as a no-op (see implementation note).
+     * Hard-delete every PC-synced member row whose `pc_person_id` is NOT in
+     * the given list — people who went inactive in PC (no longer fetched) or
+     * left the org entirely. Re-activating them in PC re-syncs a fresh row.
+     * Empty list is treated as a no-op (see implementation note).
+     *
+     * Only `pc_person_id IS NOT NULL` rows are touched, so hand-entered
+     * (manual) members are never deleted by the sweep.
      *
      * @param   list<int>  $seenPcPersonIds
      *
-     * @return  int  Number of rows newly archived.
+     * @return  int  Number of rows deleted.
      *
      * @since   __DEPLOY_VERSION__
      */
-    public function archiveMissingPcPersonIds(array $seenPcPersonIds): int
+    public function deleteMissingPcPersonIds(array $seenPcPersonIds): int
     {
         // Empty seen list means PC returned zero people. That could mean "the
-        // org is empty" or "filter returned nothing"; either way, archiving
+        // org is empty" or "filter returned nothing"; either way, deleting
         // every existing PC-synced row from a single bad run is almost never
         // what an operator wants. Skip — admin can re-run after fixing the
         // filter.
@@ -135,13 +140,8 @@ final class DatabaseMemberRepository implements MemberRepositoryInterface
 
         $query = $this->db->createQuery();
 
-        $query->update($this->db->quoteName(self::TABLE))
-            ->set([
-                $this->db->quoteName('display_in_directory') . ' = 0',
-                $this->db->quoteName('published') . ' = 0',
-            ])
+        $query->delete($this->db->quoteName(self::TABLE))
             ->where($this->db->quoteName('pc_person_id') . ' IS NOT NULL')
-            ->where($this->db->quoteName('display_in_directory') . ' = 1')
             ->where($this->db->quoteName('pc_person_id') . ' NOT IN (' . implode(',', array_map('intval', $seenPcPersonIds)) . ')');
 
         $this->db->setQuery($query)->execute();
@@ -253,10 +253,16 @@ final class DatabaseMemberRepository implements MemberRepositoryInterface
      */
     private function update(int $id, array $attrs): void
     {
-        $attrs['id']                   = $id;
-        $attrs['modified']              = new \DateTimeImmutable()->format('Y-m-d H:i:s');
-        $attrs['display_in_directory'] ??= 1;
-        $attrs['published']             ??= 1;
+        $attrs['id']       = $id;
+        $attrs['modified'] = new \DateTimeImmutable()->format('Y-m-d H:i:s');
+
+        // Visibility is admin-owned once a row exists. The sync sets published
+        // + display_in_directory on INSERT (visible by default) but must NOT
+        // clobber a later admin hide/unpublish on UPDATE. Inactive people are
+        // hard-deleted by the sweep — never kept as published=0 — so there is
+        // no PC-driven published change to push here; published=0 on a retained
+        // synced row always means "an admin hid this person."
+        unset($attrs['display_in_directory'], $attrs['published']);
 
         $row = (object) $attrs;
         $this->db->updateObject(self::TABLE, $row, 'id');

@@ -185,9 +185,13 @@ if ($spouse && $this->member->attribs->get('familypostion') != '2') {
 if (!empty($this->member->image) && $this->params->get('show_image')) {
     ?>
 			<div class="thumbnail pull-right">
-				<img src="<?php echo $this->escape(Route::_(RouteHelper::getPhotoRoute((int) $this->member->id))); ?>"
-					 alt="<?php echo $this->escape(Text::_('COM_CWMCONNECT_IMAGE_DETAILS')); ?>"
-					 class="thumbnail" style="max-width: 250px;" align="right" />
+				<a href="<?php echo $this->escape(Route::_(RouteHelper::getPhotoRoute((int) $this->member->id))); ?>"
+				   target="_blank" rel="noopener" title="<?php echo $this->escape(Text::_('COM_CWMCONNECT_IMAGE_VIEW_FULL')); ?>">
+					<img src="<?php echo $this->escape(Route::_(RouteHelper::getPhotoRoute((int) $this->member->id, 'medium'))); ?>"
+						 alt="<?php echo $this->escape(Text::_('COM_CWMCONNECT_IMAGE_DETAILS')); ?>"
+						 width="300" height="400" loading="lazy" decoding="async"
+						 class="thumbnail" style="max-width: 250px;" align="right" />
+				</a>
 			</div>
 			<?php
 }

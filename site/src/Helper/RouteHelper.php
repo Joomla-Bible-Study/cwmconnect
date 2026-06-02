@@ -89,8 +89,59 @@ abstract class RouteHelper
      *
      * @since   __DEPLOY_VERSION__
      */
-    public static function getPhotoRoute(int $memberId): string
+    public static function getPhotoRoute(int $memberId, string $size = ''): string
     {
-        return 'index.php?option=com_cwmconnect&task=photo.serve&id=' . $memberId;
+        $url = 'index.php?option=com_cwmconnect&task=photo.serve&id=' . $memberId;
+
+        return $size !== '' ? $url . '&size=' . $size : $url;
+    }
+
+    /**
+     * `srcset` value offering the thumb (300w) and medium (600w) web variants
+     * so the browser picks the right resolution; the proxy serves WebP or JPEG
+     * per the request's Accept header. Pair with a `sizes` attribute.
+     *
+     * @param   int  $memberId
+     *
+     * @return  string
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    public static function getPhotoSrcset(int $memberId): string
+    {
+        return \Joomla\CMS\Router\Route::_(self::getPhotoRoute($memberId, 'thumb')) . ' 300w, '
+            . \Joomla\CMS\Router\Route::_(self::getPhotoRoute($memberId, 'medium')) . ' 600w';
+    }
+
+    /**
+     * URL to a household's family photo via the gated proxy.
+     *
+     * @param   int     $funitId  Family-unit id.
+     * @param   string  $size     Variant size (thumb / medium), or '' for full.
+     *
+     * @return  string
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    public static function getHouseholdPhotoRoute(int $funitId, string $size = ''): string
+    {
+        $url = 'index.php?option=com_cwmconnect&task=photo.servehousehold&id=' . $funitId;
+
+        return $size !== '' ? $url . '&size=' . $size : $url;
+    }
+
+    /**
+     * `srcset` for a household family photo (thumb 300w / medium 600w).
+     *
+     * @param   int  $funitId  Family-unit id.
+     *
+     * @return  string
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    public static function getHouseholdPhotoSrcset(int $funitId): string
+    {
+        return \Joomla\CMS\Router\Route::_(self::getHouseholdPhotoRoute($funitId, 'thumb')) . ' 300w, '
+            . \Joomla\CMS\Router\Route::_(self::getHouseholdPhotoRoute($funitId, 'medium')) . ' 600w';
     }
 }
