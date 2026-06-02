@@ -163,6 +163,13 @@
                 setVisible(spinner, false);
             }
         });
+
+        // Never spin forever: stop the spinner if the full-size image fails.
+        image.addEventListener('error', () => {
+            if (spinner) {
+                setVisible(spinner, false);
+            }
+        });
     };
 
     /**
