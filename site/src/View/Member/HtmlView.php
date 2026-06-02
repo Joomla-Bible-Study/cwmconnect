@@ -114,7 +114,22 @@ class HtmlView extends BaseHtmlView
         $this->form = $model->getForm();
 
         if (!$item) {
-            throw new GenericDataException(Text::_('COM_CWMCONNECT_ERROR_MEMBER_NOT_FOUND'), 404);
+            // Nothing to show — an unknown/missing id, a member who isn't
+            // listed, or a logged-in viewer whose account has no member
+            // profile linked. Send them back to the directory with a friendly
+            // notice rather than a raw 404 error page.
+            $requestedId = (int) $model->getState('member.id', 0);
+            $app->enqueueMessage(
+                Text::_(
+                    $requestedId > 0
+                        ? 'COM_CWMCONNECT_MEMBER_PROFILE_UNAVAILABLE'
+                        : 'COM_CWMCONNECT_MEMBER_NO_LINKED_PROFILE',
+                ),
+                'info',
+            );
+            $app->redirect(Route::_('index.php?option=com_cwmconnect&view=members', false));
+
+            return;
         }
 
         if (\count($errors = $model->getErrors())) {

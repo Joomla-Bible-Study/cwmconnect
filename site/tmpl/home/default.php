@@ -43,7 +43,16 @@ $count = \count($this->items);
     </div>
     <div class="clearfix"></div>
 
-    <p class="center"><?php echo $this->params->get('home_intro', 'No Intro Text'); ?></p>
+    <?php if (($intro = (string) $this->params->get('home_intro', '')) !== '') : ?>
+        <p class="center"><?php echo $intro; ?></p>
+    <?php endif; ?>
+
+    <p class="center">
+        <a class="btn btn-primary" href="<?php echo Route::_('index.php?option=com_cwmconnect&view=members'); ?>">
+            <span class="icon-users" aria-hidden="true"></span>
+            <?php echo Text::_('COM_CWMCONNECT_HOME_BROWSE_DIRECTORY'); ?>
+        </a>
+    </p>
 
     <?php if ($login) : ?>
         <div class="chdlogin" style="padding-bottom: 40px">
@@ -60,7 +69,10 @@ $count = \count($this->items);
 
     <?php if (!$check) : ?>
         <span class="chdpleasereg">Please register as a church member. This directory is for church members only</span>
+    <?php elseif ($count === 0) : ?>
+        <p class="center text-muted"><?php echo Text::_('COM_CWMCONNECT_HOME_NO_FEATURED'); ?></p>
     <?php else : ?>
+        <h2 class="center"><?php echo Text::_('COM_CWMCONNECT_HOME_FEATURED_HEADING'); ?></h2>
         <div class="row-fluid">
             <div class="span12">
                 <?php
