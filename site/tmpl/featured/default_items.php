@@ -10,6 +10,7 @@
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
+use CWM\Component\Cwmconnect\Site\Helper\Layout;
 use CWM\Component\Cwmconnect\Site\Helper\RouteHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
@@ -23,7 +24,10 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
 ?>
 
 <?php if (empty($this->items)) : ?>
-    <p><?php echo Text::_('COM_CWMCONNECT_NO_MEMBERS'); ?></p>
+    <?php echo Layout::render('emptystate', [
+        'icon'    => 'icon-users',
+        'message' => Text::_('COM_CWMCONNECT_NO_MEMBERS'),
+    ]); ?>
 <?php else : ?>
     <form action="<?php echo htmlspecialchars(Uri::getInstance()->toString()); ?>" method="post"
           name="adminForm" id="adminForm">
@@ -39,7 +43,7 @@ $listDirn  = $this->escape($this->state->get('list.direction'));
             <input type="hidden" name="filter_order_Dir" value="<?php echo $listDirn; ?>"/>
         </fieldset>
 
-        <table class="category">
+        <table class="table table-striped table-hover">
             <?php if ($this->params->get('show_headings')) : ?>
                 <thead>
                 <tr>

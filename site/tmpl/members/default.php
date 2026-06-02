@@ -11,9 +11,8 @@
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
-use CWM\Component\Cwmconnect\Site\Helper\RouteHelper;
+use CWM\Component\Cwmconnect\Site\Helper\Layout;
 use Joomla\CMS\Factory;
-use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 
@@ -71,38 +70,21 @@ if ($menuItems) {
     </div>
 
     <?php if ($this->items === []) : ?>
-        <div class="alert alert-info">
-            <?php echo Text::_('COM_CWMCONNECT_MEMBERS_EMPTY'); ?>
-        </div>
+        <?php echo Layout::render('emptystate', [
+            'icon'    => 'icon-users',
+            'message' => Text::_('COM_CWMCONNECT_MEMBERS_EMPTY'),
+        ]); ?>
     <?php elseif ($layoutMode === 'grid') : ?>
         <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-3 cwmconnect-photo-grid">
-            <?php foreach ($this->items as $item) :
-                $profileUrl = Route::_('index.php?option=com_cwmconnect&view=member&id=' . (int) $item->id . '&Itemid=' . $memberItemId);
-                $imgPath    = (string) ($item->image ?? '');
-                $imgUrl     = $imgPath !== '' ? Route::_(RouteHelper::getPhotoRoute((int) $item->id, 'thumb')) : '';
-                $imgSrcset  = $imgPath !== '' ? RouteHelper::getPhotoSrcset((int) $item->id) : '';
-                $name       = trim(($item->name ?: '') ?: ($item->lname ?: ''));
-                ?>
+            <?php foreach ($this->items as $item) : ?>
                 <div class="col">
-                    <a class="card h-100 text-decoration-none text-body" href="<?php echo $profileUrl; ?>">
-                        <?php if ($imgUrl !== '') : ?>
-                            <img class="card-img-top" src="<?php echo $this->escape($imgUrl); ?>"
-                                 srcset="<?php echo $this->escape($imgSrcset); ?>"
-                                 sizes="(max-width: 600px) 50vw, 300px"
-                                 width="300" height="400" decoding="async"
-                                 alt="<?php echo $this->escape($name); ?>" loading="lazy">
-                        <?php else : ?>
-                            <div class="card-img-top d-flex align-items-center justify-content-center bg-light text-muted" style="aspect-ratio: 1/1;">
-                                <span class="icon-user" aria-hidden="true" style="font-size: 3rem;"></span>
-                            </div>
-                        <?php endif; ?>
-                        <div class="card-body">
-                            <div class="fw-semibold"><?php echo $this->escape($name); ?></div>
-                            <?php if ($item->category_title) : ?>
-                                <div class="small text-muted"><?php echo $this->escape((string) $item->category_title); ?></div>
-                            <?php endif; ?>
-                        </div>
-                    </a>
+                    <?php echo Layout::render('membercard', [
+                        'id'         => (int) $item->id,
+                        'name'       => trim(($item->name ?: '') ?: ($item->lname ?: '')),
+                        'hasPhoto'   => (string) ($item->image ?? '') !== '',
+                        'profileUrl' => Route::_('index.php?option=com_cwmconnect&view=member&id=' . (int) $item->id . '&Itemid=' . $memberItemId),
+                        'household'  => (string) ($item->household_name ?? ''),
+                    ]); ?>
                 </div>
             <?php endforeach; ?>
         </div>
