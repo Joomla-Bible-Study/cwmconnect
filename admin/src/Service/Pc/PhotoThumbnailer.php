@@ -79,12 +79,15 @@ final class PhotoThumbnailer
      * @param   string  $sourcePath  Absolute path to the source image.
      * @param   string  $destPath    Absolute path to write the thumbnail.
      * @param   string  $format      Output format: 'jpg' (default) or 'webp'.
+     * @param   string  $fit         'crop' (default, centre-crop to fill) or
+     *                               'contain' (letterbox the whole image — for
+     *                               group/household photos that shouldn't be cut).
      *
      * @return  bool
      *
      * @since   __DEPLOY_VERSION__
      */
-    public function generate(string $sourcePath, string $destPath, string $format = 'jpg'): bool
+    public function generate(string $sourcePath, string $destPath, string $format = 'jpg', string $fit = 'crop'): bool
     {
         if (!is_file($sourcePath)) {
             return false;
@@ -104,25 +107,47 @@ final class PhotoThumbnailer
                 return false;
             }
 
-            // Centre-crop the source to the target aspect ratio.
-            $targetRatio = $this->width / $this->height;
-            $sourceRatio = $srcWidth / $srcHeight;
-
-            if ($sourceRatio > $targetRatio) {
-                $cropHeight = $srcHeight;
-                $cropWidth  = (int) round($srcHeight * $targetRatio);
-                $cropX      = (int) round(($srcWidth - $cropWidth) / 2);
-                $cropY      = 0;
-            } else {
-                $cropWidth  = $srcWidth;
-                $cropHeight = (int) round($srcWidth / $targetRatio);
-                $cropX      = 0;
-                $cropY      = (int) round(($srcHeight - $cropHeight) / 2);
-            }
-
             $dst = imagecreatetruecolor($this->width, $this->height);
             imagefill($dst, 0, 0, imagecolorallocate($dst, 255, 255, 255));
-            imagecopyresampled($dst, $src, 0, 0, $cropX, $cropY, $this->width, $this->height, $cropWidth, $cropHeight);
+
+            if ($fit === 'contain') {
+                // Letterbox the WHOLE image into the target (no crop) so a wide
+                // group photo keeps everyone in frame, centred with padding.
+                $scale = min($this->width / $srcWidth, $this->height / $srcHeight);
+                $dstW  = max(1, (int) round($srcWidth * $scale));
+                $dstH  = max(1, (int) round($srcHeight * $scale));
+
+                imagecopyresampled(
+                    $dst,
+                    $src,
+                    (int) round(($this->width - $dstW) / 2),
+                    (int) round(($this->height - $dstH) / 2),
+                    0,
+                    0,
+                    $dstW,
+                    $dstH,
+                    $srcWidth,
+                    $srcHeight,
+                );
+            } else {
+                // Centre-crop the source to the target aspect ratio.
+                $targetRatio = $this->width / $this->height;
+                $sourceRatio = $srcWidth / $srcHeight;
+
+                if ($sourceRatio > $targetRatio) {
+                    $cropHeight = $srcHeight;
+                    $cropWidth  = (int) round($srcHeight * $targetRatio);
+                    $cropX      = (int) round(($srcWidth - $cropWidth) / 2);
+                    $cropY      = 0;
+                } else {
+                    $cropWidth  = $srcWidth;
+                    $cropHeight = (int) round($srcWidth / $targetRatio);
+                    $cropX      = 0;
+                    $cropY      = (int) round(($srcHeight - $cropHeight) / 2);
+                }
+
+                imagecopyresampled($dst, $src, 0, 0, $cropX, $cropY, $this->width, $this->height, $cropWidth, $cropHeight);
+            }
 
             $dir = \dirname($destPath);
 

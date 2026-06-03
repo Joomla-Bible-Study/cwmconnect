@@ -649,13 +649,15 @@ final class DirectoryPdfPresenter
             return null;
         }
 
-        $thumb = JPATH_ROOT . '/media/com_cwmconnect/photos/thumb/hh-' . PhotoThumbnailer::thumbFilename($image);
+        // 'hhf-' (household fit) cache: a household group photo is letterboxed
+        // (contain), not centre-cropped, so nobody is sliced off the sides.
+        $thumb = JPATH_ROOT . '/media/com_cwmconnect/photos/thumb/hhf-' . PhotoThumbnailer::thumbFilename($image);
 
         if (is_file($thumb)) {
             return $thumb;
         }
 
-        if (new PhotoThumbnailer()->generate($source, $thumb)) {
+        if (new PhotoThumbnailer()->generate($source, $thumb, 'jpg', 'contain')) {
             return $thumb;
         }
 
