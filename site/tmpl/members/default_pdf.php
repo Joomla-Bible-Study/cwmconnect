@@ -40,8 +40,7 @@ $emitDivider = function (object $item) use (&$currentLetter): void {
  * line. Used by the staff section and the photo_detail listing.
  */
 $renderEntry = function (object $item, string $role = ''): void {
-    $photo    = $this->memberPhotoSrc($item);
-    $locality = $this->memberLocality($item);
+    $photo = $this->memberPhotoSrc($item);
     ?>
     <table class="entry">
         <tr>
@@ -57,18 +56,6 @@ $renderEntry = function (object $item, string $role = ''): void {
 
                 <?php if ($role !== '') : ?>
                     <div class="line position"><?php echo $this->escape($role); ?></div>
-                <?php endif; ?>
-
-                <?php if (!empty($item->address)) : ?>
-                    <div class="line"><?php echo $this->escape((string) $item->address); ?></div>
-                <?php endif; ?>
-
-                <?php if ($locality !== '') : ?>
-                    <div class="line"><?php echo $this->escape($locality); ?></div>
-                <?php endif; ?>
-
-                <?php if ($role === '' && ($anniversary = $this->memberAnniversary($item))) : ?>
-                    <div class="line muted"><?php echo Text::sprintf('COM_CWMCONNECT_PDF_ANNIVERSARY', $this->escape($anniversary)); ?></div>
                 <?php endif; ?>
 
                 <?php foreach (array_filter([(string) ($item->telephone ?? ''), (string) ($item->mobile ?? '')]) as $phone) : ?>
