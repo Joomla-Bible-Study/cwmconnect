@@ -91,6 +91,18 @@ class PdfView extends BaseHtmlView
             $presenter->welcome = (string) $params->get('pdf_welcome_text', '');
         }
 
+        if ((bool) $params->get('pdf_board', 1)) {
+            $presenter->board = array_values(
+                array_filter($items, static fn(object $item): bool => (int) ($item->is_board ?? 0) === 1),
+            );
+        }
+
+        if ((bool) $params->get('pdf_officers', 1)) {
+            $presenter->officers = array_values(
+                array_filter($items, static fn(object $item): bool => $presenter->isOfficer($item)),
+            );
+        }
+
         if ((bool) $params->get('pdf_staff', 1)) {
             $presenter->staff = array_values(
                 array_filter(

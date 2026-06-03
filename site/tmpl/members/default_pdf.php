@@ -39,9 +39,8 @@ $emitDivider = function (object $item) use (&$currentLetter): void {
  * Photo-detail entry: photo left, details right. $isStaff adds the position
  * line. Used by the staff section and the photo_detail listing.
  */
-$renderEntry = function (object $item, bool $isStaff): void {
+$renderEntry = function (object $item, string $role = ''): void {
     $photo    = $this->memberPhotoSrc($item);
-    $position = trim((string) ($item->con_position ?? ''));
     $locality = $this->memberLocality($item);
     ?>
     <table class="entry">
@@ -56,8 +55,8 @@ $renderEntry = function (object $item, bool $isStaff): void {
             <td class="details">
                 <div class="name"><?php echo $this->escape($this->memberName($item)); ?><?php if ($this->isHidden($item)) : ?> <span class="hidden-badge">hidden</span><?php endif; ?></div>
 
-                <?php if ($isStaff && $position !== '') : ?>
-                    <div class="line position"><?php echo $this->escape($position); ?></div>
+                <?php if ($role !== '') : ?>
+                    <div class="line position"><?php echo $this->escape($role); ?></div>
                 <?php endif; ?>
 
                 <?php if (!empty($item->address)) : ?>
@@ -68,7 +67,7 @@ $renderEntry = function (object $item, bool $isStaff): void {
                     <div class="line"><?php echo $this->escape($locality); ?></div>
                 <?php endif; ?>
 
-                <?php if (!$isStaff && ($anniversary = $this->memberAnniversary($item))) : ?>
+                <?php if ($role === '' && ($anniversary = $this->memberAnniversary($item))) : ?>
                     <div class="line muted"><?php echo Text::sprintf('COM_CWMCONNECT_PDF_ANNIVERSARY', $this->escape($anniversary)); ?></div>
                 <?php endif; ?>
 
@@ -475,14 +474,34 @@ $renderRoster = function (array $items, bool $dividers) use (&$currentLetter, $e
     <div class="pagebreak"></div>
 <?php endif; ?>
 
-<?php // ── Staff section (always photo-detail style) ─────────────────────?>
-<?php if ($this->staff !== []) : ?>
-    <h2 class="section-heading"><?php echo Text::_('COM_CWMCONNECT_PDF_STAFF_HEADING'); ?></h2>
-    <?php foreach ($this->staff as $member) : ?>
-        <?php $renderEntry($member, true); ?>
-    <?php endforeach; ?>
-    <div class="pagebreak"></div>
-<?php endif; ?>
+<?php // ── Front-matter sections: Church Board, Officers, Staff ───────────?>
+<?php
+$frontSections = [
+    ['heading' => Text::_('COM_CWMCONNECT_PDF_BOARD_HEADING'),    'members' => $this->board],
+    ['heading' => Text::_('COM_CWMCONNECT_PDF_OFFICERS_HEADING'), 'members' => $this->officers],
+    ['heading' => Text::_('COM_CWMCONNECT_PDF_STAFF_HEADING'),    'members' => $this->staff],
+];
+
+$renderedSection = false;
+
+foreach ($frontSections as $section) {
+    if ($section['members'] === []) {
+        continue;
+    }
+
+    $renderedSection = true;
+
+    echo '<h2 class="section-heading">' . $this->escape($section['heading']) . '</h2>';
+
+    foreach ($section['members'] as $sectionMember) {
+        $renderEntry($sectionMember, $this->memberRole($sectionMember));
+    }
+}
+
+if ($renderedSection) {
+    echo '<div class="pagebreak"></div>';
+}
+?>
 
 <?php // ── Member listing ───────────────────────────────────────────────?>
 <?php if ($this->showTitleBlock) : ?>

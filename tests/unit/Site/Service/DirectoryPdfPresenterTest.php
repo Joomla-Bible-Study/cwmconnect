@@ -49,6 +49,7 @@ final class DirectoryPdfPresenterTest extends TestCase
         return (object) array_merge([
             'name'        => '', 'surname' => '', 'lname' => '', 'spouse' => '',
             'fname'       => '', 'nickname' => '', 'funitid' => 0, 'is_child' => 0,
+            'is_board'    => 0, 'pc_positions' => '', 'pc_ministry_teams' => '',
             'con_position' => '', 'address' => '', 'suburb' => '', 'state' => '',
             'postcode'    => '', 'anniversary' => '', 'telephone' => '', 'mobile' => '',
             'email_to'    => '', 'image' => '', 'display_in_directory' => 1,
@@ -148,6 +149,38 @@ final class DirectoryPdfPresenterTest extends TestCase
         // Adults sort before the child within the household.
         self::assertSame(0, (int) $households[2]['members'][0]->is_child);
         self::assertSame(1, (int) $households[2]['members'][2]->is_child);
+    }
+
+    #[Test]
+    public function isOfficerAndMemberRoleDeriveFromPcFields(): void
+    {
+        $byPosition = self::member(['pc_positions' => 'Head Deacon']);
+        self::assertTrue($this->presenter->isOfficer($byPosition));
+        self::assertSame('Head Deacon', $this->presenter->memberRole($byPosition));
+
+        $byTeam = self::member(['pc_ministry_teams' => 'Greeters, Elders']);
+        self::assertTrue($this->presenter->isOfficer($byTeam));
+        self::assertSame('Elders', $this->presenter->memberRole($byTeam), 'role shows only the officer-type team');
+
+        $nonOfficer = self::member(['pc_ministry_teams' => 'Greeters, Choristers']);
+        self::assertFalse($this->presenter->isOfficer($nonOfficer));
+        self::assertSame('', $this->presenter->memberRole($nonOfficer));
+    }
+
+    #[Test]
+    public function frontMatterSectionsRenderWhenPopulated(): void
+    {
+        @mkdir(JPATH_ROOT . '/media/com_cwmconnect/photos/thumb', 0o755, true);
+
+        $this->presenter->pdfLayout = 'roster';
+        $this->presenter->board     = [self::member(['surname' => 'Smith', 'fname' => 'John', 'is_board' => 1])];
+        $this->presenter->officers  = [self::member(['surname' => 'Doe', 'fname' => 'Jane', 'pc_positions' => 'Treasurer'])];
+
+        $html = $this->presenter->renderHtml();
+
+        self::assertStringContainsString('COM_CWMCONNECT_PDF_BOARD_HEADING', $html);
+        self::assertStringContainsString('COM_CWMCONNECT_PDF_OFFICERS_HEADING', $html);
+        self::assertStringContainsString('Treasurer', $html, 'officer role line rendered');
     }
 
     #[Test]

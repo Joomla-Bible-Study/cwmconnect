@@ -428,12 +428,23 @@ class CpanelController extends BaseController
      */
     private function createSyncEngine(): PcSyncEngine
     {
-        $db = Factory::getContainer()->get(DatabaseInterface::class);
+        $db     = Factory::getContainer()->get(DatabaseInterface::class);
+        $params = ComponentHelper::getParams('com_cwmconnect');
+
+        // PC field-definition slugs for the directory-role fields are admin-
+        // configurable (they are custom fields, so the slug differs per org); a
+        // blank value disables that role.
+        $roleFieldSlugs = [
+            'board'          => (string) $params->get('pc_field_board', PersonMapper::DEFAULT_ROLE_FIELDS['board']),
+            'positions'      => (string) $params->get('pc_field_positions', PersonMapper::DEFAULT_ROLE_FIELDS['positions']),
+            'ministry_teams' => (string) $params->get('pc_field_ministry_teams', PersonMapper::DEFAULT_ROLE_FIELDS['ministry_teams']),
+            'leader'         => (string) $params->get('pc_field_leader', PersonMapper::DEFAULT_ROLE_FIELDS['leader']),
+        ];
 
         return new PcSyncEngine(
             client: $this->createPcClient(),
             repository: new DatabaseMemberRepository($db),
-            mapper: new PersonMapper(),
+            mapper: new PersonMapper($roleFieldSlugs),
             fieldMapRepo: new DatabaseFieldMapRepository($db),
             fieldWriter: new FieldsHelperWriter(),
             photoCache: new MediaPhotoCache(
