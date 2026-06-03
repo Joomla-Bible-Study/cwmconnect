@@ -425,16 +425,22 @@ final class DirectoryPdfPresenter
     }
 
     /**
-     * Ministry-team values (from PC `ministry_teams`) treated as church officers.
+     * Officer-title keywords matched (case-insensitively, as substrings) inside
+     * the comma-separated PC `positions` / `ministry_teams` text. `positions` is
+     * free-text holding ALL of a member's roles ("Video Team Member", "Elder,
+     * Praise Team"…), so a church officer is recognised by these specific titles
+     * rather than by simply having any position. "deacon" also catches
+     * Deacons / Deaconess (and the "Deacones" misspelling); "clerk" catches
+     * Church Clerk.
      *
      * @var    list<string>
      * @since  __DEPLOY_VERSION__
      */
-    public const OFFICER_TEAMS = ['Elders', 'Deacons', 'Deaconess', 'Treasurer', 'Church Clerk'];
+    public const OFFICER_KEYWORDS = ['elder', 'deacon', 'treasurer', 'clerk'];
 
     /**
-     * Whether a member qualifies for the Officers section: they hold a PC
-     * `positions` value or an officer-type ministry team.
+     * Whether a member qualifies for the Officers section: any of their role
+     * text matches an officer title.
      *
      * @param   object  $item
      *
@@ -444,17 +450,14 @@ final class DirectoryPdfPresenter
      */
     public function isOfficer(object $item): bool
     {
-        if (trim((string) ($item->pc_positions ?? '')) !== '') {
-            return true;
-        }
-
-        return $this->officerTeams($item) !== [];
+        return $this->officerRoles($item) !== [];
     }
 
     /**
-     * The role label shown under a member's name in a front-matter section:
-     * the PC position(s), else any officer-type ministry team(s), else the
-     * legacy `con_position`.
+     * The role label shown under a member's name in a front-matter section. For
+     * officers it is just the matching officer title(s) (e.g. "Deacon", "Head
+     * Elder") — not the member's whole list of ministry roles. Otherwise the raw
+     * positions text, else the legacy `con_position`.
      *
      * @param   object  $item
      *
@@ -464,24 +467,18 @@ final class DirectoryPdfPresenter
      */
     public function memberRole(object $item): string
     {
-        $position = trim((string) ($item->pc_positions ?? ''));
+        $officer = $this->officerRoles($item);
 
-        if ($position !== '') {
-            return $position;
+        if ($officer !== []) {
+            return implode(', ', $officer);
         }
 
-        $teams = $this->officerTeams($item);
-
-        if ($teams !== []) {
-            return implode(', ', $teams);
-        }
-
-        return trim((string) ($item->con_position ?? ''));
+        return trim((string) ($item->pc_positions ?? '')) ?: trim((string) ($item->con_position ?? ''));
     }
 
     /**
-     * The member's officer-type ministry teams (intersection of `pc_ministry_teams`
-     * with {@see self::OFFICER_TEAMS}).
+     * The member's officer titles: comma-separated parts of `pc_positions` (then,
+     * if none, `pc_ministry_teams`) that contain an officer keyword.
      *
      * @param   object  $item
      *
@@ -489,11 +486,45 @@ final class DirectoryPdfPresenter
      *
      * @since   __DEPLOY_VERSION__
      */
-    private function officerTeams(object $item): array
+    private function officerRoles(object $item): array
     {
-        $teams = array_map('trim', explode(',', (string) ($item->pc_ministry_teams ?? '')));
+        $fromPositions = $this->matchOfficerParts((string) ($item->pc_positions ?? ''));
 
-        return array_values(array_intersect($teams, self::OFFICER_TEAMS));
+        return $fromPositions !== [] ? $fromPositions : $this->matchOfficerParts((string) ($item->pc_ministry_teams ?? ''));
+    }
+
+    /**
+     * The comma-separated parts of a role string that name an officer.
+     *
+     * @param   string  $roles
+     *
+     * @return  list<string>
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    private function matchOfficerParts(string $roles): array
+    {
+        $out = [];
+
+        foreach (explode(',', $roles) as $part) {
+            $part = trim($part);
+
+            if ($part === '') {
+                continue;
+            }
+
+            $lower = mb_strtolower($part);
+
+            foreach (self::OFFICER_KEYWORDS as $keyword) {
+                if (str_contains($lower, $keyword)) {
+                    $out[$part] = $part;
+
+                    break;
+                }
+            }
+        }
+
+        return array_values($out);
     }
 
     /**

@@ -152,7 +152,7 @@ final class DirectoryPdfPresenterTest extends TestCase
     }
 
     #[Test]
-    public function isOfficerAndMemberRoleDeriveFromPcFields(): void
+    public function isOfficerAndMemberRoleMatchOfficerTitlesOnly(): void
     {
         $byPosition = self::member(['pc_positions' => 'Head Deacon']);
         self::assertTrue($this->presenter->isOfficer($byPosition));
@@ -161,6 +161,15 @@ final class DirectoryPdfPresenterTest extends TestCase
         $byTeam = self::member(['pc_ministry_teams' => 'Greeters, Elders']);
         self::assertTrue($this->presenter->isOfficer($byTeam));
         self::assertSame('Elders', $this->presenter->memberRole($byTeam), 'role shows only the officer-type team');
+
+        // A free-text position that is NOT an officer title must not qualify.
+        $ministryOnly = self::member(['pc_positions' => 'Video Team Member']);
+        self::assertFalse($this->presenter->isOfficer($ministryOnly));
+
+        // A mixed role list shows only the officer title, not the whole list.
+        $mixed = self::member(['pc_positions' => 'Elder, Praise Team, Youth SS - Head']);
+        self::assertTrue($this->presenter->isOfficer($mixed));
+        self::assertSame('Elder', $this->presenter->memberRole($mixed));
 
         $nonOfficer = self::member(['pc_ministry_teams' => 'Greeters, Choristers']);
         self::assertFalse($this->presenter->isOfficer($nonOfficer));
