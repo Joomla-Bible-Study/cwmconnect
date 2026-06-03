@@ -440,9 +440,13 @@ final class DirectoryPdfPresenter
     }
 
     /**
-     * The role label shown under a member's name in a front-matter section: the
-     * office role from the PC list mapping (e.g. "Deacon, Treasurer"), else the
-     * legacy positions / con_position text.
+     * The role label shown under a member's name in a front-matter section.
+     *
+     * Officers (members in a mapped PC office list) show their curated office
+     * role, e.g. "Deacon, Treasurer". Everyone else — chiefly the Church Leaders
+     * section, driven by the PC Leader switch — has no office role, so their
+     * ministry positions text is shown verbatim (e.g. "Audio Team Lead, Safety
+     * Committee"). `con_position` is the legacy fallback for non-PC rows.
      *
      * @param   object  $item
      *
@@ -458,6 +462,7 @@ final class DirectoryPdfPresenter
             return $office;
         }
 
+        // Leaders carry no office role — their positions text is the role.
         return trim((string) ($item->pc_positions ?? '')) ?: trim((string) ($item->con_position ?? ''));
     }
 
