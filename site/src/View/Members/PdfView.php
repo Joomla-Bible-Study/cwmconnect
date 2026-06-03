@@ -74,7 +74,7 @@ class PdfView extends BaseHtmlView
         $presenter                     = new DirectoryPdfPresenter();
         $presenter->items              = $items;
         $presenter->showSectionHeaders = (bool) $params->get('pdf_section_headers', 1);
-        $presenter->pdfLayout          = (string) $params->get('pdf_layout', 'photo_detail');
+        $presenter->pdfLayout          = (string) $params->get('pdf_layout', 'family');
         $presenter->appendRoster       = (bool) $params->get('pdf_append_roster', 0);
 
         if ($presenter->pdfLayout === 'family') {
