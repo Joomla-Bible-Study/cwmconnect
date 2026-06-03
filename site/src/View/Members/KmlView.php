@@ -104,6 +104,11 @@ class KmlView extends BaseHtmlView
 
         /** @var MembersModel $model */
         $model = $this->getModel();
+
+        // Trigger populateState() before overriding: it runs lazily inside
+        // getItems() and (via parent ListModel) resets list.limit to the
+        // menu/global default (20), so without this the feed caps at one page.
+        $model->getState();
         $model->setState('list.start', 0);
         $model->setState('list.limit', 0);
 

@@ -425,16 +425,32 @@ final class DirectoryPdfPresenter
     }
 
     /**
-     * Ministry-team values (from PC `ministry_teams`) treated as church officers.
+     * Officer-title keywords matched as whole words (case-insensitive) inside
+     * the comma-separated PC `positions` / `ministry_teams` text. `positions` is
+     * free-text holding ALL of a member's roles ("Video Team Member", "Elder,
+     * Praise Team"…), so a church officer is recognised by these specific titles.
+     * Whole-word matching keeps the SINGULAR office ("Deacon", "Head Deacon")
+     * while a PLURAL team name ("Deacons", "Elders") does NOT count — so a member
+     * who is merely on the deacons team is not listed as an officer.
      *
      * @var    list<string>
      * @since  __DEPLOY_VERSION__
      */
-    public const OFFICER_TEAMS = ['Elders', 'Deacons', 'Deaconess', 'Treasurer', 'Church Clerk'];
+    public const OFFICER_KEYWORDS = ['elder', 'deacon', 'deaconess', 'treasurer', 'clerk'];
 
     /**
-     * Whether a member qualifies for the Officers section: they hold a PC
-     * `positions` value or an officer-type ministry team.
+     * Active officer-title keywords (lower-case), overridable from the component
+     * options so each church can define what counts as an officer. Defaults to
+     * {@see self::OFFICER_KEYWORDS}. A "Head Deacon" still matches "deacon".
+     *
+     * @var    list<string>
+     * @since  __DEPLOY_VERSION__
+     */
+    public array $officerKeywords = self::OFFICER_KEYWORDS;
+
+    /**
+     * Whether a member qualifies for the Officers section: any of their role
+     * text matches an officer title.
      *
      * @param   object  $item
      *
@@ -444,17 +460,14 @@ final class DirectoryPdfPresenter
      */
     public function isOfficer(object $item): bool
     {
-        if (trim((string) ($item->pc_positions ?? '')) !== '') {
-            return true;
-        }
-
-        return $this->officerTeams($item) !== [];
+        return $this->officerRoles($item) !== [];
     }
 
     /**
-     * The role label shown under a member's name in a front-matter section:
-     * the PC position(s), else any officer-type ministry team(s), else the
-     * legacy `con_position`.
+     * The role label shown under a member's name in a front-matter section. For
+     * officers it is just the matching officer title(s) (e.g. "Deacon", "Head
+     * Elder") — not the member's whole list of ministry roles. Otherwise the raw
+     * positions text, else the legacy `con_position`.
      *
      * @param   object  $item
      *
@@ -464,24 +477,18 @@ final class DirectoryPdfPresenter
      */
     public function memberRole(object $item): string
     {
-        $position = trim((string) ($item->pc_positions ?? ''));
+        $officer = $this->officerRoles($item);
 
-        if ($position !== '') {
-            return $position;
+        if ($officer !== []) {
+            return implode(', ', $officer);
         }
 
-        $teams = $this->officerTeams($item);
-
-        if ($teams !== []) {
-            return implode(', ', $teams);
-        }
-
-        return trim((string) ($item->con_position ?? ''));
+        return trim((string) ($item->pc_positions ?? '')) ?: trim((string) ($item->con_position ?? ''));
     }
 
     /**
-     * The member's officer-type ministry teams (intersection of `pc_ministry_teams`
-     * with {@see self::OFFICER_TEAMS}).
+     * The member's officer titles: comma-separated parts of `pc_positions` (then,
+     * if none, `pc_ministry_teams`) that contain an officer keyword.
      *
      * @param   object  $item
      *
@@ -489,11 +496,45 @@ final class DirectoryPdfPresenter
      *
      * @since   __DEPLOY_VERSION__
      */
-    private function officerTeams(object $item): array
+    private function officerRoles(object $item): array
     {
-        $teams = array_map('trim', explode(',', (string) ($item->pc_ministry_teams ?? '')));
+        $fromPositions = $this->matchOfficerParts((string) ($item->pc_positions ?? ''));
 
-        return array_values(array_intersect($teams, self::OFFICER_TEAMS));
+        return $fromPositions !== [] ? $fromPositions : $this->matchOfficerParts((string) ($item->pc_ministry_teams ?? ''));
+    }
+
+    /**
+     * The comma-separated parts of a role string that name an officer.
+     *
+     * @param   string  $roles
+     *
+     * @return  list<string>
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    private function matchOfficerParts(string $roles): array
+    {
+        $out = [];
+
+        foreach (explode(',', $roles) as $part) {
+            $part = trim($part);
+
+            if ($part === '') {
+                continue;
+            }
+
+            $lower = mb_strtolower($part);
+
+            foreach ($this->officerKeywords as $keyword) {
+                if (preg_match('/\b' . preg_quote($keyword, '/') . '\b/', $lower) === 1) {
+                    $out[$part] = $part;
+
+                    break;
+                }
+            }
+        }
+
+        return array_values($out);
     }
 
     /**
@@ -569,8 +610,9 @@ final class DirectoryPdfPresenter
     }
 
     /**
-     * Family headline name: "SURNAME, Given and Given" from the adult members
-     * (children kept in the household but off the headline). Singleton → "SURNAME, Given".
+     * Family headline name: "SURNAME, Given, Given and Given" listing every
+     * household member (adults first, then children — they share the family
+     * unit). Singleton → "SURNAME, Given".
      *
      * @param   array<string, mixed>  $household
      *
@@ -580,10 +622,10 @@ final class DirectoryPdfPresenter
      */
     public function householdDisplayName(array $household): string
     {
-        $adults = array_filter($household['members'], static fn(object $m): bool => (int) ($m->is_child ?? 0) === 0);
-        $adults = $adults !== [] ? $adults : $household['members'];
-
-        $givens = array_values(array_filter(array_map(fn(object $m): string => $this->memberGiven($m), $adults)));
+        $givens = array_values(array_filter(array_map(
+            fn(object $m): string => $this->memberGiven($m),
+            $household['members'],
+        )));
 
         $names = match (true) {
             $givens === []       => '',
@@ -612,21 +654,56 @@ final class DirectoryPdfPresenter
      */
     public function householdPhotoSrc(array $household): ?string
     {
-        $family = $this->resolveImageThumb((string) ($household['image'] ?? ''));
+        $family = $this->resolveHouseholdThumb((string) ($household['image'] ?? ''));
 
         if ($family !== null) {
             return $family;
         }
 
-        $headPhoto = $this->memberPhotoPath($this->householdHead($household));
-
-        if ($headPhoto !== null) {
-            return $headPhoto;
-        }
-
+        // No household photo on file → a neutral surname-initials card. We do NOT
+        // fall back to a member's photo: a single member's face misrepresents the
+        // whole family. A PC re-sync fills in real household photos.
         $initials = mb_strtoupper(mb_substr(trim((string) $household['surname']), 0, 2)) ?: '?';
 
         return $this->placeholderSrc($initials);
+    }
+
+    /**
+     * Resolve a family-unit image to an absolute 3:4-thumbnail path mpdf can
+     * read. Family photos live under `photos/households/` (NOT the member dir),
+     * so this resolves there via {@see PhotoAccess::resolveHouseholdImage()} and
+     * thumbnails on demand (the thumb is `hh-`-prefixed to avoid colliding with a
+     * member thumbnail of the same numeric name). Null when there is no photo.
+     *
+     * @param   string  $image
+     *
+     * @return  string|null
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    private function resolveHouseholdThumb(string $image): ?string
+    {
+        $image  = trim($image);
+        $source = $image !== '' ? PhotoAccess::resolveHouseholdImage($image, '', false) : null;
+
+        if ($source === null) {
+            return null;
+        }
+
+        // 'hhn-' (household natural) cache: a household group photo is scaled to
+        // fit at its own aspect (contain), never centre-cropped, so nobody is
+        // sliced off and a wide photo fills the card width.
+        $thumb = JPATH_ROOT . '/media/com_cwmconnect/photos/thumb/hhn-' . PhotoThumbnailer::thumbFilename($image);
+
+        if (is_file($thumb)) {
+            return $thumb;
+        }
+
+        if (new PhotoThumbnailer()->generate($source, $thumb, 'jpg', 'contain')) {
+            return $thumb;
+        }
+
+        return $source;
     }
 
     /**

@@ -79,12 +79,18 @@ final class PhotoThumbnailer
      * @param   string  $sourcePath  Absolute path to the source image.
      * @param   string  $destPath    Absolute path to write the thumbnail.
      * @param   string  $format      Output format: 'jpg' (default) or 'webp'.
+     * @param   string  $fit         'crop' (default, centre-crop to a fixed 3:4)
+     *                               or 'contain' (scale the whole image to fit,
+     *                               keeping its own aspect — for group/household
+     *                               photos that shouldn't be cropped). In
+     *                               'contain' mode the output is sized to the
+     *                               scaled image, not the fixed width/height.
      *
      * @return  bool
      *
      * @since   __DEPLOY_VERSION__
      */
-    public function generate(string $sourcePath, string $destPath, string $format = 'jpg'): bool
+    public function generate(string $sourcePath, string $destPath, string $format = 'jpg', string $fit = 'crop'): bool
     {
         if (!is_file($sourcePath)) {
             return false;
@@ -104,25 +110,39 @@ final class PhotoThumbnailer
                 return false;
             }
 
-            // Centre-crop the source to the target aspect ratio.
-            $targetRatio = $this->width / $this->height;
-            $sourceRatio = $srcWidth / $srcHeight;
+            if ($fit === 'contain') {
+                // Scale the WHOLE image to fit within the target box, keeping its
+                // own aspect (no crop, no padding) — a wide family photo stays
+                // wide and fills the card width instead of floating inside a
+                // portrait frame.
+                $scale = min($this->width / $srcWidth, $this->height / $srcHeight);
+                $dstW  = max(1, (int) round($srcWidth * $scale));
+                $dstH  = max(1, (int) round($srcHeight * $scale));
 
-            if ($sourceRatio > $targetRatio) {
-                $cropHeight = $srcHeight;
-                $cropWidth  = (int) round($srcHeight * $targetRatio);
-                $cropX      = (int) round(($srcWidth - $cropWidth) / 2);
-                $cropY      = 0;
+                $dst = imagecreatetruecolor($dstW, $dstH);
+                imagefill($dst, 0, 0, imagecolorallocate($dst, 255, 255, 255));
+                imagecopyresampled($dst, $src, 0, 0, 0, 0, $dstW, $dstH, $srcWidth, $srcHeight);
             } else {
-                $cropWidth  = $srcWidth;
-                $cropHeight = (int) round($srcWidth / $targetRatio);
-                $cropX      = 0;
-                $cropY      = (int) round(($srcHeight - $cropHeight) / 2);
-            }
+                // Centre-crop the source to the target aspect ratio (headshots).
+                $targetRatio = $this->width / $this->height;
+                $sourceRatio = $srcWidth / $srcHeight;
 
-            $dst = imagecreatetruecolor($this->width, $this->height);
-            imagefill($dst, 0, 0, imagecolorallocate($dst, 255, 255, 255));
-            imagecopyresampled($dst, $src, 0, 0, $cropX, $cropY, $this->width, $this->height, $cropWidth, $cropHeight);
+                if ($sourceRatio > $targetRatio) {
+                    $cropHeight = $srcHeight;
+                    $cropWidth  = (int) round($srcHeight * $targetRatio);
+                    $cropX      = (int) round(($srcWidth - $cropWidth) / 2);
+                    $cropY      = 0;
+                } else {
+                    $cropWidth  = $srcWidth;
+                    $cropHeight = (int) round($srcWidth / $targetRatio);
+                    $cropX      = 0;
+                    $cropY      = (int) round(($srcHeight - $cropHeight) / 2);
+                }
+
+                $dst = imagecreatetruecolor($this->width, $this->height);
+                imagefill($dst, 0, 0, imagecolorallocate($dst, 255, 255, 255));
+                imagecopyresampled($dst, $src, 0, 0, $cropX, $cropY, $this->width, $this->height, $cropWidth, $cropHeight);
+            }
 
             $dir = \dirname($destPath);
 

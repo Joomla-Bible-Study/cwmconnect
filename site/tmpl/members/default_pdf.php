@@ -40,8 +40,7 @@ $emitDivider = function (object $item) use (&$currentLetter): void {
  * line. Used by the staff section and the photo_detail listing.
  */
 $renderEntry = function (object $item, string $role = ''): void {
-    $photo    = $this->memberPhotoSrc($item);
-    $locality = $this->memberLocality($item);
+    $photo = $this->memberPhotoSrc($item);
     ?>
     <table class="entry">
         <tr>
@@ -57,18 +56,6 @@ $renderEntry = function (object $item, string $role = ''): void {
 
                 <?php if ($role !== '') : ?>
                     <div class="line position"><?php echo $this->escape($role); ?></div>
-                <?php endif; ?>
-
-                <?php if (!empty($item->address)) : ?>
-                    <div class="line"><?php echo $this->escape((string) $item->address); ?></div>
-                <?php endif; ?>
-
-                <?php if ($locality !== '') : ?>
-                    <div class="line"><?php echo $this->escape($locality); ?></div>
-                <?php endif; ?>
-
-                <?php if ($role === '' && ($anniversary = $this->memberAnniversary($item))) : ?>
-                    <div class="line muted"><?php echo Text::sprintf('COM_CWMCONNECT_PDF_ANNIVERSARY', $this->escape($anniversary)); ?></div>
                 <?php endif; ?>
 
                 <?php foreach (array_filter([(string) ($item->telephone ?? ''), (string) ($item->mobile ?? '')]) as $phone) : ?>
@@ -175,7 +162,7 @@ $familyGrid = function (array $households): void {
                         <?php if ($household !== null) : ?>
                             <?php $src = $this->householdPhotoSrc($household); ?>
                             <?php if ($src !== null) : ?>
-                                <img class="grid-photo" src="<?php echo $this->escape($src); ?>" width="92" alt="" />
+                                <img class="grid-photo" src="<?php echo $this->escape($src); ?>" width="178" alt="" />
                             <?php else : ?>
                                 <div class="grid-nophoto"><span><?php echo $this->escape(mb_strtoupper(mb_substr((string) $household['surname'], 0, 2))); ?></span></div>
                             <?php endif; ?>
@@ -278,7 +265,7 @@ $renderGrid = function (array $items): void {
                         <?php if ($item !== null) : ?>
                             <?php $src = $this->memberPhotoSrc($item); ?>
                             <?php if ($src !== null) : ?>
-                                <img class="grid-photo" src="<?php echo $this->escape($src); ?>" width="92" alt="" />
+                                <img class="grid-photo" src="<?php echo $this->escape($src); ?>" width="178" alt="" />
                             <?php else : ?>
                                 <div class="grid-nophoto"><span><?php echo $this->escape($this->memberInitials($item)); ?></span></div>
                             <?php endif; ?>
@@ -409,14 +396,14 @@ $renderRoster = function (array $items, bool $dividers) use (&$currentLetter, $e
 
     /* Photo grid (compact cards). */
     .grid { width: 100%; page-break-inside: avoid; }
-    .grid td.grid-cell { width: 33%; text-align: center; vertical-align: top; padding: 0 2mm 5mm; }
+    .grid td.grid-cell { width: 33%; text-align: center; vertical-align: top; padding: 0 2mm 6mm; }
     .grid img.grid-photo { border: 0.5pt solid #ccc; }
     .grid .grid-nophoto {
-        width: 24mm; height: 32mm; margin: 0 auto;
+        width: 47mm; height: 63mm; margin: 0 auto;
         background: #eef0f2; border: 0.5pt solid #ccc;
-        color: #9aa0a6; font-size: 1.4em; font-weight: bold; text-align: center;
+        color: #9aa0a6; font-size: 2.6em; font-weight: bold; text-align: center;
     }
-    .grid .grid-name { font-weight: bold; font-size: 0.95em; margin-top: 1.5mm; }
+    .grid .grid-name { font-weight: bold; font-size: 0.95em; margin-top: 2mm; }
     .grid .grid-line { font-size: 0.85em; color: #555; }
 
     /* Text roster. */

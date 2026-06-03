@@ -54,6 +54,11 @@ class PdfView extends BaseHtmlView
         /** @var MembersModel $model */
         $model = $this->getModel();
 
+        // Trigger populateState() now: MembersModel::populateState() runs lazily
+        // inside getItems() and (via parent ListModel) resets list.limit to the
+        // menu/global default (20). Forcing it first, then overriding, makes the
+        // PDF cover the whole directory instead of a single page.
+        $model->getState();
         $model->setState('list.start', 0);
         $model->setState('list.limit', 0);
 
@@ -69,11 +74,17 @@ class PdfView extends BaseHtmlView
         $presenter                     = new DirectoryPdfPresenter();
         $presenter->items              = $items;
         $presenter->showSectionHeaders = (bool) $params->get('pdf_section_headers', 1);
-        $presenter->pdfLayout          = (string) $params->get('pdf_layout', 'photo_detail');
+        $presenter->pdfLayout          = (string) $params->get('pdf_layout', 'family');
         $presenter->appendRoster       = (bool) $params->get('pdf_append_roster', 0);
 
         if ($presenter->pdfLayout === 'family') {
-            $presenter->families = $this->loadFamilies($model, $items);
+            // Children are kept out of the individual listing (MembersModel filters
+            // is_child = 0) but belong under their family here. Pull the children
+            // of the households already on the page and merge them in.
+            $items            = array_merge($items, $this->loadHouseholdChildren($items));
+            $presenter->items = $items;
+
+            $presenter->families = $this->loadFamilies($items);
         }
         $presenter->appearance         = [
             'fontBasePt' => match ((string) $params->get('pdf_font_size', 'normal')) {
@@ -91,23 +102,47 @@ class PdfView extends BaseHtmlView
             $presenter->welcome = (string) $params->get('pdf_welcome_text', '');
         }
 
+        // Front-matter sections, most-senior first; each member appears in only
+        // one (Board → Officers → Staff) so nobody is listed two or three times.
+        $placed = [];
+
         if ((bool) $params->get('pdf_board', 1)) {
             $presenter->board = array_values(
                 array_filter($items, static fn(object $item): bool => (int) ($item->is_board ?? 0) === 1),
             );
+
+            foreach ($presenter->board as $member) {
+                $placed[(int) $member->id] = true;
+            }
         }
 
         if ((bool) $params->get('pdf_officers', 1)) {
+            $titles = $this->parseOfficerTitles((string) $params->get('pdf_officer_titles', ''));
+
+            if ($titles !== []) {
+                $presenter->officerKeywords = $titles;
+            }
+
             $presenter->officers = array_values(
-                array_filter($items, static fn(object $item): bool => $presenter->isOfficer($item)),
+                array_filter(
+                    $items,
+                    static fn(object $item): bool => !isset($placed[(int) $item->id]) && $presenter->isOfficer($item),
+                ),
             );
+
+            foreach ($presenter->officers as $member) {
+                $placed[(int) $member->id] = true;
+            }
         }
 
         if ((bool) $params->get('pdf_staff', 1)) {
+            // The PC "leader" switch (is_leader) is the church's leadership
+            // designation; the legacy con_position is kept for manual rows.
             $presenter->staff = array_values(
                 array_filter(
                     $items,
-                    static fn(object $item): bool => trim((string) ($item->con_position ?? '')) !== '',
+                    static fn(object $item): bool => !isset($placed[(int) $item->id])
+                        && ((int) ($item->is_leader ?? 0) === 1 || trim((string) ($item->con_position ?? '')) !== ''),
                 ),
             );
         }
@@ -170,17 +205,74 @@ class PdfView extends BaseHtmlView
     }
 
     /**
+     * Parse the configured officer-title list (one per line or comma-separated)
+     * into lower-case keywords. Empty entries are dropped.
+     *
+     * @param   string  $raw
+     *
+     * @return  list<string>
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    private function parseOfficerTitles(string $raw): array
+    {
+        $titles = preg_split('/[\r\n,]+/', mb_strtolower($raw)) ?: [];
+
+        return array_values(array_filter(array_map('trim', $titles)));
+    }
+
+    /**
+     * Load the children (excluded from the individual listing) that belong to a
+     * household already represented in the adult `$items`, so the family layout
+     * can list them under their family. Restricting to those households avoids
+     * surfacing a child as a lone directory entry.
+     *
+     * @param   list<object>   $adults
+     *
+     * @return  list<object>
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    private function loadHouseholdChildren(array $adults): array
+    {
+        $funitIds = [];
+
+        foreach ($adults as $adult) {
+            $fid = (int) ($adult->funitid ?? 0);
+
+            if ($fid > 0) {
+                $funitIds[$fid] = $fid;
+            }
+        }
+
+        if ($funitIds === []) {
+            return [];
+        }
+
+        $db    = Factory::getContainer()->get(DatabaseInterface::class);
+        $query = $db->createQuery()
+            ->select($db->quoteName('a') . '.*')
+            ->from($db->quoteName('#__cwmconnect_details', 'a'))
+            ->where($db->quoteName('a.published') . ' = 1')
+            ->where($db->quoteName('a.is_child') . ' = 1')
+            ->whereIn($db->quoteName('a.funitid'), array_values($funitIds));
+
+        $db->setQuery($query);
+
+        return $db->loadObjectList() ?: [];
+    }
+
+    /**
      * Load the family-unit rows (id/name/image) referenced by the members'
      * `funitid`, keyed by id, for the family layout's household grouping.
      *
-     * @param   MembersModel   $model
      * @param   list<object>   $items
      *
      * @return  array<int, object>
      *
      * @since   __DEPLOY_VERSION__
      */
-    private function loadFamilies(MembersModel $model, array $items): array
+    private function loadFamilies(array $items): array
     {
         $ids = [];
 
@@ -196,7 +288,7 @@ class PdfView extends BaseHtmlView
             return [];
         }
 
-        $db    = $model->getDatabase();
+        $db    = Factory::getContainer()->get(DatabaseInterface::class);
         $query = $db->createQuery()
             ->select([$db->quoteName('id'), $db->quoteName('name'), $db->quoteName('image')])
             ->from($db->quoteName('#__cwmconnect_familyunit'))

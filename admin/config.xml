@@ -1338,6 +1338,13 @@
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
+		<field name="pdf_officer_titles"
+		       type="textarea"
+		       rows="4"
+		       default="Elder&#10;Deacon&#10;Deaconess&#10;Treasurer&#10;Clerk"
+		       label="COM_CWMCONNECT_FIELD_PDF_OFFICER_TITLES_LABEL"
+		       description="COM_CWMCONNECT_FIELD_PDF_OFFICER_TITLES_DESC"
+		       showon="pdf_officers:1"/>
 		<field name="pdf_staff"
 		       type="radio"
 		       class="btn-group"

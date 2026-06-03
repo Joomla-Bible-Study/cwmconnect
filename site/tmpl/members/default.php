@@ -61,10 +61,14 @@ if ($menuItems) {
     </form>
 
     <div class="d-flex justify-content-end gap-2 mb-3">
-        <a href="<?php echo Route::_('index.php?option=com_cwmconnect&view=members&format=pdf'); ?>" class="btn btn-outline-secondary btn-sm">
-            <span class="icon-download" aria-hidden="true"></span> <?php echo Text::_('COM_CWMCONNECT_PDF_DOWNLOAD_BUTTON'); ?>
+        <a href="<?php echo Route::_('index.php?option=com_cwmconnect&view=members&format=pdf'); ?>"
+           class="btn btn-primary btn-sm" target="_blank" rel="noopener"
+           title="<?php echo $this->escape(Text::_('COM_CWMCONNECT_PDF_DOWNLOAD_BUTTON_TITLE')); ?>">
+            <span class="icon-file-pdf" aria-hidden="true"></span> <?php echo Text::_('COM_CWMCONNECT_PDF_DOWNLOAD_BUTTON'); ?>
         </a>
-        <a href="<?php echo Route::_('index.php?option=com_cwmconnect&task=members.kmlFeed'); ?>" class="btn btn-outline-secondary btn-sm">
+        <a href="<?php echo Route::_('index.php?option=com_cwmconnect&task=members.kmlFeed'); ?>"
+           class="btn btn-outline-secondary btn-sm" target="_blank" rel="noopener"
+           title="<?php echo $this->escape(Text::_('COM_CWMCONNECT_KML_DOWNLOAD_BUTTON_TITLE')); ?>">
             <span class="icon-location" aria-hidden="true"></span> <?php echo Text::_('COM_CWMCONNECT_KML_DOWNLOAD_BUTTON'); ?>
         </a>
     </div>
