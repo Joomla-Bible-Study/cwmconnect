@@ -19,6 +19,7 @@ use CWM\Component\Cwmconnect\Administrator\Service\Pc\DatabaseCampusRepository;
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\DatabaseFieldMapRepository;
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\DatabaseHouseholdRepository;
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\DatabaseMemberRepository;
+use CWM\Component\Cwmconnect\Administrator\Service\Pc\OfficeListSync;
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\Exception\AuthenticationException;
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\Exception\ConfigurationException as PcConfigurationException;
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\Exception\PcException;
@@ -173,6 +174,21 @@ class CpanelController extends BaseController
 
             $report = $engine->run($statuses, $onProgress);
 
+            // Tag members with their church office from the configured PC office
+            // lists (Elders, Deacons…). Best-effort: the people sync is the point.
+            try {
+                $officeLists = $this->officerLists($params);
+
+                if ($officeLists !== []) {
+                    new OfficeListSync(
+                        $this->createPcClient(),
+                        Factory::getContainer()->get(DatabaseInterface::class),
+                    )->run($officeLists);
+                }
+            } catch (\Throwable) {
+                // Office-list tagging must not abort the people sync.
+            }
+
             @unlink($progressFile);
 
             $this->logSyncResult($report->toArray(), $report->success());
@@ -289,6 +305,33 @@ class CpanelController extends BaseController
 
             if ($line !== '') {
                 $out[] = $line;
+            }
+        }
+
+        return $out;
+    }
+
+    /**
+     * Parse the "office lists" subform option into a PC list id => role-label map
+     * for {@see OfficeListSync}. Rows missing a list id or role are dropped.
+     *
+     * @param   \Joomla\Registry\Registry  $params
+     *
+     * @return  array<int, string>
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    private function officerLists(\Joomla\Registry\Registry $params): array
+    {
+        $out = [];
+
+        foreach ((array) $params->get('pdf_officer_lists', []) as $row) {
+            $row    = (array) $row;
+            $listId = (int) ($row['list_id'] ?? 0);
+            $role   = trim((string) ($row['role'] ?? ''));
+
+            if ($listId > 0 && $role !== '') {
+                $out[$listId] = $role;
             }
         }
 

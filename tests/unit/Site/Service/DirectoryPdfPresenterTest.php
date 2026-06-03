@@ -49,7 +49,7 @@ final class DirectoryPdfPresenterTest extends TestCase
         return (object) array_merge([
             'name'        => '', 'surname' => '', 'lname' => '', 'spouse' => '',
             'fname'       => '', 'nickname' => '', 'funitid' => 0, 'is_child' => 0,
-            'is_board'    => 0, 'pc_positions' => '', 'pc_ministry_teams' => '',
+            'is_board'    => 0, 'pc_positions' => '', 'pc_ministry_teams' => '', 'pc_office_role' => '',
             'con_position' => '', 'address' => '', 'suburb' => '', 'state' => '',
             'postcode'    => '', 'anniversary' => '', 'telephone' => '', 'mobile' => '',
             'email_to'    => '', 'image' => '', 'display_in_directory' => 1,
@@ -152,33 +152,20 @@ final class DirectoryPdfPresenterTest extends TestCase
     }
 
     #[Test]
-    public function isOfficerAndMemberRoleMatchOfficerTitlesOnly(): void
+    public function isOfficerAndMemberRoleComeFromPcOfficeRole(): void
     {
-        $byPosition = self::member(['pc_positions' => 'Head Deacon']);
-        self::assertTrue($this->presenter->isOfficer($byPosition));
-        self::assertSame('Head Deacon', $this->presenter->memberRole($byPosition));
+        // The office role is tagged from PC office lists (OfficeListSync).
+        $officer = self::member(['pc_office_role' => 'Deacon']);
+        self::assertTrue($this->presenter->isOfficer($officer));
+        self::assertSame('Deacon', $this->presenter->memberRole($officer));
 
-        $byTitle = self::member(['pc_positions' => 'Deaconess']);
-        self::assertTrue($this->presenter->isOfficer($byTitle));
-        self::assertSame('Deaconess', $this->presenter->memberRole($byTitle));
+        $multi = self::member(['pc_office_role' => 'Deacon, Treasurer']);
+        self::assertSame('Deacon, Treasurer', $this->presenter->memberRole($multi));
 
-        // A PLURAL team name ("Deacons"/"Elders") is team membership, not an
-        // office — being on the deacons team must not make someone an officer.
+        // Not in any office list → not an officer, even with "Deacons" in the
+        // free-text positions (team membership, not an office).
         $teamMember = self::member(['pc_positions' => 'Audio, Video, Deacons']);
-        self::assertFalse($this->presenter->isOfficer($teamMember), 'a plural team name is not an office');
-
-        // A free-text position that is NOT an officer title must not qualify.
-        $ministryOnly = self::member(['pc_positions' => 'Video Team Member']);
-        self::assertFalse($this->presenter->isOfficer($ministryOnly));
-
-        // A mixed role list shows only the officer title, not the whole list.
-        $mixed = self::member(['pc_positions' => 'Elder, Praise Team, Youth SS - Head']);
-        self::assertTrue($this->presenter->isOfficer($mixed));
-        self::assertSame('Elder', $this->presenter->memberRole($mixed));
-
-        $nonOfficer = self::member(['pc_ministry_teams' => 'Greeters, Choristers']);
-        self::assertFalse($this->presenter->isOfficer($nonOfficer));
-        self::assertSame('', $this->presenter->memberRole($nonOfficer));
+        self::assertFalse($this->presenter->isOfficer($teamMember));
     }
 
     #[Test]

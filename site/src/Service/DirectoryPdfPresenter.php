@@ -425,32 +425,8 @@ final class DirectoryPdfPresenter
     }
 
     /**
-     * Officer-title keywords matched as whole words (case-insensitive) inside
-     * the comma-separated PC `positions` / `ministry_teams` text. `positions` is
-     * free-text holding ALL of a member's roles ("Video Team Member", "Elder,
-     * Praise Team"…), so a church officer is recognised by these specific titles.
-     * Whole-word matching keeps the SINGULAR office ("Deacon", "Head Deacon")
-     * while a PLURAL team name ("Deacons", "Elders") does NOT count — so a member
-     * who is merely on the deacons team is not listed as an officer.
-     *
-     * @var    list<string>
-     * @since  __DEPLOY_VERSION__
-     */
-    public const OFFICER_KEYWORDS = ['elder', 'deacon', 'deaconess', 'treasurer', 'clerk'];
-
-    /**
-     * Active officer-title keywords (lower-case), overridable from the component
-     * options so each church can define what counts as an officer. Defaults to
-     * {@see self::OFFICER_KEYWORDS}. A "Head Deacon" still matches "deacon".
-     *
-     * @var    list<string>
-     * @since  __DEPLOY_VERSION__
-     */
-    public array $officerKeywords = self::OFFICER_KEYWORDS;
-
-    /**
-     * Whether a member qualifies for the Officers section: any of their role
-     * text matches an officer title.
+     * Whether a member belongs in the Officers section — i.e. they were tagged
+     * with a church office from a PC office list (see OfficeListSync).
      *
      * @param   object  $item
      *
@@ -460,14 +436,13 @@ final class DirectoryPdfPresenter
      */
     public function isOfficer(object $item): bool
     {
-        return $this->officerRoles($item) !== [];
+        return trim((string) ($item->pc_office_role ?? '')) !== '';
     }
 
     /**
-     * The role label shown under a member's name in a front-matter section. For
-     * officers it is just the matching officer title(s) (e.g. "Deacon", "Head
-     * Elder") — not the member's whole list of ministry roles. Otherwise the raw
-     * positions text, else the legacy `con_position`.
+     * The role label shown under a member's name in a front-matter section: the
+     * office role from the PC list mapping (e.g. "Deacon, Treasurer"), else the
+     * legacy positions / con_position text.
      *
      * @param   object  $item
      *
@@ -477,64 +452,13 @@ final class DirectoryPdfPresenter
      */
     public function memberRole(object $item): string
     {
-        $officer = $this->officerRoles($item);
+        $office = trim((string) ($item->pc_office_role ?? ''));
 
-        if ($officer !== []) {
-            return implode(', ', $officer);
+        if ($office !== '') {
+            return $office;
         }
 
         return trim((string) ($item->pc_positions ?? '')) ?: trim((string) ($item->con_position ?? ''));
-    }
-
-    /**
-     * The member's officer titles: comma-separated parts of `pc_positions` (then,
-     * if none, `pc_ministry_teams`) that contain an officer keyword.
-     *
-     * @param   object  $item
-     *
-     * @return  list<string>
-     *
-     * @since   __DEPLOY_VERSION__
-     */
-    private function officerRoles(object $item): array
-    {
-        $fromPositions = $this->matchOfficerParts((string) ($item->pc_positions ?? ''));
-
-        return $fromPositions !== [] ? $fromPositions : $this->matchOfficerParts((string) ($item->pc_ministry_teams ?? ''));
-    }
-
-    /**
-     * The comma-separated parts of a role string that name an officer.
-     *
-     * @param   string  $roles
-     *
-     * @return  list<string>
-     *
-     * @since   __DEPLOY_VERSION__
-     */
-    private function matchOfficerParts(string $roles): array
-    {
-        $out = [];
-
-        foreach (explode(',', $roles) as $part) {
-            $part = trim($part);
-
-            if ($part === '') {
-                continue;
-            }
-
-            $lower = mb_strtolower($part);
-
-            foreach ($this->officerKeywords as $keyword) {
-                if (preg_match('/\b' . preg_quote($keyword, '/') . '\b/', $lower) === 1) {
-                    $out[$part] = $part;
-
-                    break;
-                }
-            }
-        }
-
-        return array_values($out);
     }
 
     /**
