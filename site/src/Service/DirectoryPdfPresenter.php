@@ -649,9 +649,10 @@ final class DirectoryPdfPresenter
             return null;
         }
 
-        // 'hhf-' (household fit) cache: a household group photo is letterboxed
-        // (contain), not centre-cropped, so nobody is sliced off the sides.
-        $thumb = JPATH_ROOT . '/media/com_cwmconnect/photos/thumb/hhf-' . PhotoThumbnailer::thumbFilename($image);
+        // 'hhn-' (household natural) cache: a household group photo is scaled to
+        // fit at its own aspect (contain), never centre-cropped, so nobody is
+        // sliced off and a wide photo fills the card width.
+        $thumb = JPATH_ROOT . '/media/com_cwmconnect/photos/thumb/hhn-' . PhotoThumbnailer::thumbFilename($image);
 
         if (is_file($thumb)) {
             return $thumb;

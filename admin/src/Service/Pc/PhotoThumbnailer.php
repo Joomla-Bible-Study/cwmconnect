@@ -79,9 +79,12 @@ final class PhotoThumbnailer
      * @param   string  $sourcePath  Absolute path to the source image.
      * @param   string  $destPath    Absolute path to write the thumbnail.
      * @param   string  $format      Output format: 'jpg' (default) or 'webp'.
-     * @param   string  $fit         'crop' (default, centre-crop to fill) or
-     *                               'contain' (letterbox the whole image — for
-     *                               group/household photos that shouldn't be cut).
+     * @param   string  $fit         'crop' (default, centre-crop to a fixed 3:4)
+     *                               or 'contain' (scale the whole image to fit,
+     *                               keeping its own aspect — for group/household
+     *                               photos that shouldn't be cropped). In
+     *                               'contain' mode the output is sized to the
+     *                               scaled image, not the fixed width/height.
      *
      * @return  bool
      *
@@ -107,30 +110,20 @@ final class PhotoThumbnailer
                 return false;
             }
 
-            $dst = imagecreatetruecolor($this->width, $this->height);
-            imagefill($dst, 0, 0, imagecolorallocate($dst, 255, 255, 255));
-
             if ($fit === 'contain') {
-                // Letterbox the WHOLE image into the target (no crop) so a wide
-                // group photo keeps everyone in frame, centred with padding.
+                // Scale the WHOLE image to fit within the target box, keeping its
+                // own aspect (no crop, no padding) — a wide family photo stays
+                // wide and fills the card width instead of floating inside a
+                // portrait frame.
                 $scale = min($this->width / $srcWidth, $this->height / $srcHeight);
                 $dstW  = max(1, (int) round($srcWidth * $scale));
                 $dstH  = max(1, (int) round($srcHeight * $scale));
 
-                imagecopyresampled(
-                    $dst,
-                    $src,
-                    (int) round(($this->width - $dstW) / 2),
-                    (int) round(($this->height - $dstH) / 2),
-                    0,
-                    0,
-                    $dstW,
-                    $dstH,
-                    $srcWidth,
-                    $srcHeight,
-                );
+                $dst = imagecreatetruecolor($dstW, $dstH);
+                imagefill($dst, 0, 0, imagecolorallocate($dst, 255, 255, 255));
+                imagecopyresampled($dst, $src, 0, 0, 0, 0, $dstW, $dstH, $srcWidth, $srcHeight);
             } else {
-                // Centre-crop the source to the target aspect ratio.
+                // Centre-crop the source to the target aspect ratio (headshots).
                 $targetRatio = $this->width / $this->height;
                 $sourceRatio = $srcWidth / $srcHeight;
 
@@ -146,6 +139,8 @@ final class PhotoThumbnailer
                     $cropY      = (int) round(($srcHeight - $cropHeight) / 2);
                 }
 
+                $dst = imagecreatetruecolor($this->width, $this->height);
+                imagefill($dst, 0, 0, imagecolorallocate($dst, 255, 255, 255));
                 imagecopyresampled($dst, $src, 0, 0, $cropX, $cropY, $this->width, $this->height, $cropWidth, $cropHeight);
             }
 
