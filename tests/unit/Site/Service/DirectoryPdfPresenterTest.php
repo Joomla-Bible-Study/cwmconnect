@@ -199,21 +199,20 @@ final class DirectoryPdfPresenterTest extends TestCase
     }
 
     #[Test]
-    public function householdDisplayNameComposesAdultsOnly(): void
+    public function householdDisplayNameListsEveryMemberIncludingChildren(): void
     {
         $family = ['surname' => 'Cordis', 'members' => [
             self::member(['fname' => 'Brent']),
             self::member(['fname' => 'Amy']),
             self::member(['fname' => 'Savannah', 'is_child' => 1]),
         ]];
-        self::assertSame('CORDIS, Brent and Amy', $this->presenter->householdDisplayName($family));
+        self::assertSame('CORDIS, Brent, Amy and Savannah', $this->presenter->householdDisplayName($family));
 
-        $trio = ['surname' => 'Andal', 'members' => [
-            self::member(['fname' => 'Lauren']),
-            self::member(['fname' => 'Ric']),
-            self::member(['fname' => 'Pamela']),
+        $couple = ['surname' => 'Abbott', 'members' => [
+            self::member(['fname' => 'Boris']),
+            self::member(['fname' => 'Stella']),
         ]];
-        self::assertSame('ANDAL, Lauren, Ric and Pamela', $this->presenter->householdDisplayName($trio));
+        self::assertSame('ABBOTT, Boris and Stella', $this->presenter->householdDisplayName($couple));
 
         $single = ['surname' => 'Ababio', 'members' => [self::member(['fname' => 'Gifty'])]];
         self::assertSame('ABABIO, Gifty', $this->presenter->householdDisplayName($single));

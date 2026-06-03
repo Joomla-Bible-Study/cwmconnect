@@ -569,8 +569,9 @@ final class DirectoryPdfPresenter
     }
 
     /**
-     * Family headline name: "SURNAME, Given and Given" from the adult members
-     * (children kept in the household but off the headline). Singleton → "SURNAME, Given".
+     * Family headline name: "SURNAME, Given, Given and Given" listing every
+     * household member (adults first, then children — they share the family
+     * unit). Singleton → "SURNAME, Given".
      *
      * @param   array<string, mixed>  $household
      *
@@ -580,10 +581,10 @@ final class DirectoryPdfPresenter
      */
     public function householdDisplayName(array $household): string
     {
-        $adults = array_filter($household['members'], static fn(object $m): bool => (int) ($m->is_child ?? 0) === 0);
-        $adults = $adults !== [] ? $adults : $household['members'];
-
-        $givens = array_values(array_filter(array_map(fn(object $m): string => $this->memberGiven($m), $adults)));
+        $givens = array_values(array_filter(array_map(
+            fn(object $m): string => $this->memberGiven($m),
+            $household['members'],
+        )));
 
         $names = match (true) {
             $givens === []       => '',
@@ -618,12 +619,9 @@ final class DirectoryPdfPresenter
             return $family;
         }
 
-        $headPhoto = $this->memberPhotoPath($this->householdHead($household));
-
-        if ($headPhoto !== null) {
-            return $headPhoto;
-        }
-
+        // No household photo on file → a neutral surname-initials card. We do NOT
+        // fall back to a member's photo: a single member's face misrepresents the
+        // whole family. A PC re-sync fills in real household photos.
         $initials = mb_strtoupper(mb_substr(trim((string) $household['surname']), 0, 2)) ?: '?';
 
         return $this->placeholderSrc($initials);

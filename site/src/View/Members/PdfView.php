@@ -78,7 +78,7 @@ class PdfView extends BaseHtmlView
         $presenter->appendRoster       = (bool) $params->get('pdf_append_roster', 0);
 
         if ($presenter->pdfLayout === 'family') {
-            $presenter->families = $this->loadFamilies($model, $items);
+            $presenter->families = $this->loadFamilies($items);
         }
         $presenter->appearance         = [
             'fontBasePt' => match ((string) $params->get('pdf_font_size', 'normal')) {
@@ -178,14 +178,13 @@ class PdfView extends BaseHtmlView
      * Load the family-unit rows (id/name/image) referenced by the members'
      * `funitid`, keyed by id, for the family layout's household grouping.
      *
-     * @param   MembersModel   $model
      * @param   list<object>   $items
      *
      * @return  array<int, object>
      *
      * @since   __DEPLOY_VERSION__
      */
-    private function loadFamilies(MembersModel $model, array $items): array
+    private function loadFamilies(array $items): array
     {
         $ids = [];
 
@@ -201,7 +200,7 @@ class PdfView extends BaseHtmlView
             return [];
         }
 
-        $db    = $model->getDatabase();
+        $db    = Factory::getContainer()->get(DatabaseInterface::class);
         $query = $db->createQuery()
             ->select([$db->quoteName('id'), $db->quoteName('name'), $db->quoteName('image')])
             ->from($db->quoteName('#__cwmconnect_familyunit'))
