@@ -87,6 +87,10 @@ class PdfView extends BaseHtmlView
             $presenter->cover = $this->resolveCover($params, $app);
         }
 
+        if ((bool) $params->get('pdf_welcome', 0)) {
+            $presenter->welcome = (string) $params->get('pdf_welcome_text', '');
+        }
+
         if ((bool) $params->get('pdf_staff', 1)) {
             $presenter->staff = array_values(
                 array_filter(

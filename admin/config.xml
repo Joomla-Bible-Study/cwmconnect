@@ -1274,6 +1274,22 @@
 		       label="COM_CWMCONNECT_FIELD_PDF_CHURCH_WEBSITE_LABEL"
 		       description="COM_CWMCONNECT_FIELD_PDF_CHURCH_WEBSITE_DESC"
 		       showon="pdf_cover:1"/>
+		<field name="pdf_welcome"
+		       type="radio"
+		       class="btn-group"
+		       default="0"
+		       label="COM_CWMCONNECT_FIELD_PDF_WELCOME_LABEL"
+		       description="COM_CWMCONNECT_FIELD_PDF_WELCOME_DESC"
+		>
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		<field name="pdf_welcome_text"
+		       type="editor"
+		       filter="safehtml"
+		       label="COM_CWMCONNECT_FIELD_PDF_WELCOME_TEXT_LABEL"
+		       description="COM_CWMCONNECT_FIELD_PDF_WELCOME_TEXT_DESC"
+		       showon="pdf_welcome:1"/>
 		<field name="pdf_staff"
 		       type="radio"
 		       class="btn-group"
