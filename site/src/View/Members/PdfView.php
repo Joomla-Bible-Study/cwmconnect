@@ -54,6 +54,11 @@ class PdfView extends BaseHtmlView
         /** @var MembersModel $model */
         $model = $this->getModel();
 
+        // Trigger populateState() now: MembersModel::populateState() runs lazily
+        // inside getItems() and (via parent ListModel) resets list.limit to the
+        // menu/global default (20). Forcing it first, then overriding, makes the
+        // PDF cover the whole directory instead of a single page.
+        $model->getState();
         $model->setState('list.start', 0);
         $model->setState('list.limit', 0);
 
