@@ -67,6 +67,23 @@ final class DirectoryPdfPresenter
     public array $staff = [];
 
     /**
+     * Officers (a PC position or an officer-type ministry team), for the
+     * Officers section.
+     *
+     * @var    list<object>
+     * @since  __DEPLOY_VERSION__
+     */
+    public array $officers = [];
+
+    /**
+     * Church-board members (PC `church_board_member`), for the Board section.
+     *
+     * @var    list<object>
+     * @since  __DEPLOY_VERSION__
+     */
+    public array $board = [];
+
+    /**
      * Cover-page content. Keys: `enabled`, `image` (absolute path or null),
      * `name`, `address`, `phone`, `email`, `website`.
      *
@@ -405,6 +422,78 @@ final class DirectoryPdfPresenter
         $cityState = $city !== '' && $state !== '' ? $city . ', ' . $state : $city . $state;
 
         return trim($cityState . ' ' . $zip);
+    }
+
+    /**
+     * Ministry-team values (from PC `ministry_teams`) treated as church officers.
+     *
+     * @var    list<string>
+     * @since  __DEPLOY_VERSION__
+     */
+    public const OFFICER_TEAMS = ['Elders', 'Deacons', 'Deaconess', 'Treasurer', 'Church Clerk'];
+
+    /**
+     * Whether a member qualifies for the Officers section: they hold a PC
+     * `positions` value or an officer-type ministry team.
+     *
+     * @param   object  $item
+     *
+     * @return  bool
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    public function isOfficer(object $item): bool
+    {
+        if (trim((string) ($item->pc_positions ?? '')) !== '') {
+            return true;
+        }
+
+        return $this->officerTeams($item) !== [];
+    }
+
+    /**
+     * The role label shown under a member's name in a front-matter section:
+     * the PC position(s), else any officer-type ministry team(s), else the
+     * legacy `con_position`.
+     *
+     * @param   object  $item
+     *
+     * @return  string
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    public function memberRole(object $item): string
+    {
+        $position = trim((string) ($item->pc_positions ?? ''));
+
+        if ($position !== '') {
+            return $position;
+        }
+
+        $teams = $this->officerTeams($item);
+
+        if ($teams !== []) {
+            return implode(', ', $teams);
+        }
+
+        return trim((string) ($item->con_position ?? ''));
+    }
+
+    /**
+     * The member's officer-type ministry teams (intersection of `pc_ministry_teams`
+     * with {@see self::OFFICER_TEAMS}).
+     *
+     * @param   object  $item
+     *
+     * @return  list<string>
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    private function officerTeams(object $item): array
+    {
+        $teams = array_map('trim', explode(',', (string) ($item->pc_ministry_teams ?? '')));
+
+        return array_values(array_intersect($teams, self::OFFICER_TEAMS));
     }
 
     /**

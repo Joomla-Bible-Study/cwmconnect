@@ -1171,6 +1171,34 @@
 			<option value="archive">COM_CWMCONNECT_FIELD_PC_ARCHIVE_POLICY_ARCHIVE</option>
 			<option value="delete">COM_CWMCONNECT_FIELD_PC_ARCHIVE_POLICY_DELETE</option>
 		</field>
+		<field name="pc_field_spacer"
+		       type="spacer"
+		       label="COM_CWMCONNECT_FIELD_PC_ROLE_FIELDS_HEADING"
+		       showon="pc_enabled:1"/>
+		<field name="pc_field_board"
+		       type="text"
+		       default="church_board_member"
+		       label="COM_CWMCONNECT_FIELD_PC_FIELD_BOARD_LABEL"
+		       description="COM_CWMCONNECT_FIELD_PC_FIELD_BOARD_DESC"
+		       showon="pc_enabled:1"/>
+		<field name="pc_field_positions"
+		       type="text"
+		       default="positions"
+		       label="COM_CWMCONNECT_FIELD_PC_FIELD_POSITIONS_LABEL"
+		       description="COM_CWMCONNECT_FIELD_PC_FIELD_POSITIONS_DESC"
+		       showon="pc_enabled:1"/>
+		<field name="pc_field_ministry_teams"
+		       type="text"
+		       default="ministry_teams"
+		       label="COM_CWMCONNECT_FIELD_PC_FIELD_MINISTRY_TEAMS_LABEL"
+		       description="COM_CWMCONNECT_FIELD_PC_FIELD_MINISTRY_TEAMS_DESC"
+		       showon="pc_enabled:1"/>
+		<field name="pc_field_leader"
+		       type="text"
+		       default="leader"
+		       label="COM_CWMCONNECT_FIELD_PC_FIELD_LEADER_LABEL"
+		       description="COM_CWMCONNECT_FIELD_PC_FIELD_LEADER_DESC"
+		       showon="pc_enabled:1"/>
 	</fieldset>
 	<fieldset name="permissions"
 	          label="JCONFIG_PERMISSIONS_LABEL"
@@ -1290,6 +1318,26 @@
 		       label="COM_CWMCONNECT_FIELD_PDF_WELCOME_TEXT_LABEL"
 		       description="COM_CWMCONNECT_FIELD_PDF_WELCOME_TEXT_DESC"
 		       showon="pdf_welcome:1"/>
+		<field name="pdf_board"
+		       type="radio"
+		       class="btn-group"
+		       default="1"
+		       label="COM_CWMCONNECT_FIELD_PDF_BOARD_LABEL"
+		       description="COM_CWMCONNECT_FIELD_PDF_BOARD_DESC"
+		>
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+		<field name="pdf_officers"
+		       type="radio"
+		       class="btn-group"
+		       default="1"
+		       label="COM_CWMCONNECT_FIELD_PDF_OFFICERS_LABEL"
+		       description="COM_CWMCONNECT_FIELD_PDF_OFFICERS_DESC"
+		>
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
 		<field name="pdf_staff"
 		       type="radio"
 		       class="btn-group"

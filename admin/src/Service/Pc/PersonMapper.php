@@ -36,6 +36,34 @@ use CWM\Component\Cwmconnect\Administrator\Service\Pc\Exception\ApiException;
 final class PersonMapper
 {
     /**
+     * Default PC field-definition slugs for the directory-role fields. The org
+     * that drove this build uses these; another org overrides them (or blanks a
+     * slug to disable that role) via the component options. A blank slug means
+     * the role is not synced.
+     *
+     * @var    array<string, string>
+     * @since  __DEPLOY_VERSION__
+     */
+    public const DEFAULT_ROLE_FIELDS = [
+        'board'          => 'church_board_member',
+        'positions'      => 'positions',
+        'ministry_teams' => 'ministry_teams',
+        'leader'         => 'leader',
+    ];
+
+    /**
+     * PC field-definition slugs the directory-role columns are sourced from,
+     * keyed `board` / `positions` / `ministry_teams` / `leader`.
+     *
+     * @param   array<string, string>  $roleFieldSlugs
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    public function __construct(
+        private readonly array $roleFieldSlugs = self::DEFAULT_ROLE_FIELDS,
+    ) {}
+
+    /**
      * Map a single Person from a PC JSON:API payload to local-row attributes.
      *
      * @param   array<string, mixed>             $personData  The `data` object
@@ -66,6 +94,11 @@ final class PersonMapper
         $primaryPhone   = $this->pickPrimaryPhone($byTypeId, $relIds['phone_numbers'] ?? [], false);
         $mobilePhone    = $this->pickPrimaryPhone($byTypeId, $relIds['phone_numbers'] ?? [], true);
         $primaryAddress = $this->pickPrimaryAddress($byTypeId, $relIds['addresses'] ?? []);
+
+        // Custom field-data, matched by PC field-definition slug. Used for the
+        // printed-directory Officers / Church-Board sections (Phase 3). A
+        // checkboxes field (ministry_teams) yields one value per checked option.
+        $fields = $this->fieldDataBySlug($byTypeId, $relIds['field_data'] ?? []);
 
         $pcStatus = (string) ($attrs['status'] ?? 'active');
 
@@ -134,6 +167,12 @@ final class PersonMapper
             // PC `gender` (Male / Female / '' when unset). Stored verbatim to
             // stay in line with PC rather than the legacy 0/1 "sex" encoding.
             'gender'               => $this->stringAttr($attrs, 'gender'),
+            // PC custom fields (admin-mapped slugs) driving the printed-directory
+            // Officers / Church-Board sections. A blank slug disables that role.
+            'is_board'             => $this->roleBool('board', $fields),
+            'is_leader'            => $this->roleBool('leader', $fields),
+            'pc_positions'         => trim((string) ($this->roleValues('positions', $fields)[0] ?? '')),
+            'pc_ministry_teams'    => implode(', ', $this->roleValues('ministry_teams', $fields)),
             // Minors aren't listed on their own in the directory — they appear
             // under their family unit instead. Determined by age when a
             // birthdate is on file (most reliable for "under 18"), falling back
@@ -233,6 +272,101 @@ final class PersonMapper
         }
 
         return $out;
+    }
+
+    /**
+     * Collect a person's custom field-data keyed by the PC field-definition
+     * slug, e.g. `['church_board_member' => ['true'], 'ministry_teams' =>
+     * ['Elders', 'Greeters']]`. A checkboxes field yields one entry per checked
+     * option, so values are lists. Empty values are skipped.
+     *
+     * @param   array<string, array<string, mixed>>  $byTypeId  Indexed `included`.
+     * @param   list<array{type: string, id: string}> $refs     `field_data` refs.
+     *
+     * @return  array<string, list<string>>
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    private function fieldDataBySlug(array $byTypeId, array $refs): array
+    {
+        $out = [];
+
+        foreach ($refs as $ref) {
+            if (($ref['type'] ?? null) !== 'FieldDatum') {
+                continue;
+            }
+
+            $resource = $byTypeId['FieldDatum:' . ($ref['id'] ?? '')] ?? null;
+            $value    = $resource['attributes']['value'] ?? null;
+
+            if ($resource === null || !\is_scalar($value) || (string) $value === '') {
+                continue;
+            }
+
+            $fdRel = $resource['relationships']['field_definition']['data'] ?? null;
+
+            if (!\is_array($fdRel) || ($fdRel['type'] ?? null) !== 'FieldDefinition') {
+                continue;
+            }
+
+            $definition = $byTypeId['FieldDefinition:' . ($fdRel['id'] ?? '')] ?? null;
+            $slug       = $definition !== null ? trim((string) ($definition['attributes']['slug'] ?? '')) : '';
+
+            if ($slug !== '') {
+                $out[$slug][] = (string) $value;
+            }
+        }
+
+        return $out;
+    }
+
+    /**
+     * Whether a PC boolean field-data value is set (PC stores booleans as the
+     * strings "true"/"false").
+     *
+     * @param   string  $value
+     *
+     * @return  bool
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    private function isTrue(string $value): bool
+    {
+        return \in_array(strtolower(trim($value)), ['true', '1', 'yes'], true);
+    }
+
+    /**
+     * Field-data values for a directory role, resolved through the configured
+     * slug map. Empty when the role's slug is blank (mapping disabled) or absent
+     * on the person.
+     *
+     * @param   string                       $roleKey  board|positions|ministry_teams|leader.
+     * @param   array<string, list<string>>  $fields   Field-data keyed by slug.
+     *
+     * @return  list<string>
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    private function roleValues(string $roleKey, array $fields): array
+    {
+        $slug = trim((string) ($this->roleFieldSlugs[$roleKey] ?? ''));
+
+        return $slug !== '' ? ($fields[$slug] ?? []) : [];
+    }
+
+    /**
+     * 1/0 for a boolean directory-role field resolved through the slug map.
+     *
+     * @param   string                       $roleKey
+     * @param   array<string, list<string>>  $fields
+     *
+     * @return  int
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    private function roleBool(string $roleKey, array $fields): int
+    {
+        return $this->isTrue((string) ($this->roleValues($roleKey, $fields)[0] ?? '')) ? 1 : 0;
     }
 
     /**

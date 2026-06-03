@@ -100,6 +100,54 @@ final class PersonMapperFieldDataTest extends TestCase
         self::assertSame([['pc_field_id' => 42, 'value' => '2025']], $out);
     }
 
+    #[Test]
+    public function mapsDirectoryRoleColumnsFromConfiguredSlugs(): void
+    {
+        $person = $this->person([
+            ['type' => 'FieldDatum', 'id' => 'b'],
+            ['type' => 'FieldDatum', 'id' => 'p'],
+            ['type' => 'FieldDatum', 'id' => 'm1'],
+            ['type' => 'FieldDatum', 'id' => 'm2'],
+        ]);
+
+        $included = [
+            $this->fieldDatum('b', 'true', 1),
+            $this->fieldDatum('p', 'Treasurer', 2),
+            $this->fieldDatum('m1', 'Elders', 3),
+            $this->fieldDatum('m2', 'Greeters', 3),
+            $this->fieldDefinition(1, 'church_board_member'),
+            $this->fieldDefinition(2, 'positions'),
+            $this->fieldDefinition(3, 'ministry_teams'),
+        ];
+
+        $row = new PersonMapper()->map($person, $included);
+
+        self::assertSame(1, $row['is_board']);
+        self::assertSame('Treasurer', $row['pc_positions']);
+        self::assertSame('Elders, Greeters', $row['pc_ministry_teams']);
+    }
+
+    #[Test]
+    public function honoursCustomSlugMapAndBlankDisablesRole(): void
+    {
+        $person   = $this->person([['type' => 'FieldDatum', 'id' => 'x']]);
+        $included = [
+            $this->fieldDatum('x', 'true', 7),
+            $this->fieldDefinition(7, 'my_board_flag'),
+        ];
+
+        $mapper = new PersonMapper([
+            'board'          => 'my_board_flag',
+            'positions'      => '',
+            'ministry_teams' => 'ministry_teams',
+            'leader'         => 'leader',
+        ]);
+        $row = $mapper->map($person, $included);
+
+        self::assertSame(1, $row['is_board'], 'a custom board slug is honoured');
+        self::assertSame('', $row['pc_positions'], 'a blank slug disables that role');
+    }
+
     /**
      * @param  list<array{type: string, id: string}>  $fieldDataRefs
      *
@@ -131,6 +179,18 @@ final class PersonMapperFieldDataTest extends TestCase
                     'data' => ['type' => 'FieldDefinition', 'id' => (string) $fieldDefId],
                 ],
             ],
+        ];
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function fieldDefinition(int $id, string $slug): array
+    {
+        return [
+            'type'       => 'FieldDefinition',
+            'id'         => (string) $id,
+            'attributes' => ['slug' => $slug],
         ];
     }
 }

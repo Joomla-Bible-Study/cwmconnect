@@ -80,6 +80,10 @@ CREATE TABLE IF NOT EXISTS `#__cwmconnect_details` (
   `mname`            VARCHAR(255)        NOT NULL DEFAULT '',
   `nickname`         VARCHAR(255)        NOT NULL DEFAULT '',
   `suffix`           VARCHAR(64)         NOT NULL DEFAULT '',
+  `is_board`         TINYINT(1)          NOT NULL DEFAULT '0',
+  `is_leader`        TINYINT(1)          NOT NULL DEFAULT '0',
+  `pc_positions`     VARCHAR(255)        NOT NULL DEFAULT '',
+  `pc_ministry_teams` VARCHAR(1024)      NOT NULL DEFAULT '',
   `mstatus`          TINYINT(3)          NOT NULL DEFAULT '0'
   COMMENT 'Used to track Members Status',
   PRIMARY KEY (`id`),
