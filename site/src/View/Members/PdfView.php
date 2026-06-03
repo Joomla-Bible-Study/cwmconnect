@@ -130,13 +130,13 @@ class PdfView extends BaseHtmlView
         }
 
         if ((bool) $params->get('pdf_staff', 1)) {
-            // The PC "leader" switch (is_leader) is the church's leadership
-            // designation; the legacy con_position is kept for manual rows.
+            // The Church Leaders section is exactly the PC "leader" switch
+            // (is_leader = yes) — nobody else, regardless of con_position.
             $presenter->staff = array_values(
                 array_filter(
                     $items,
                     static fn(object $item): bool => !isset($placed[(int) $item->id])
-                        && ((int) ($item->is_leader ?? 0) === 1 || trim((string) ($item->con_position ?? '')) !== ''),
+                        && (int) ($item->is_leader ?? 0) === 1,
                 ),
             );
         }
