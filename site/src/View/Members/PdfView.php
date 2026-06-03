@@ -102,10 +102,18 @@ class PdfView extends BaseHtmlView
             $presenter->welcome = (string) $params->get('pdf_welcome_text', '');
         }
 
+        // Front-matter sections, most-senior first; each member appears in only
+        // one (Board → Officers → Staff) so nobody is listed two or three times.
+        $placed = [];
+
         if ((bool) $params->get('pdf_board', 1)) {
             $presenter->board = array_values(
                 array_filter($items, static fn(object $item): bool => (int) ($item->is_board ?? 0) === 1),
             );
+
+            foreach ($presenter->board as $member) {
+                $placed[(int) $member->id] = true;
+            }
         }
 
         if ((bool) $params->get('pdf_officers', 1)) {
@@ -116,15 +124,25 @@ class PdfView extends BaseHtmlView
             }
 
             $presenter->officers = array_values(
-                array_filter($items, static fn(object $item): bool => $presenter->isOfficer($item)),
+                array_filter(
+                    $items,
+                    static fn(object $item): bool => !isset($placed[(int) $item->id]) && $presenter->isOfficer($item),
+                ),
             );
+
+            foreach ($presenter->officers as $member) {
+                $placed[(int) $member->id] = true;
+            }
         }
 
         if ((bool) $params->get('pdf_staff', 1)) {
+            // The PC "leader" switch (is_leader) is the church's leadership
+            // designation; the legacy con_position is kept for manual rows.
             $presenter->staff = array_values(
                 array_filter(
                     $items,
-                    static fn(object $item): bool => trim((string) ($item->con_position ?? '')) !== '',
+                    static fn(object $item): bool => !isset($placed[(int) $item->id])
+                        && ((int) ($item->is_leader ?? 0) === 1 || trim((string) ($item->con_position ?? '')) !== ''),
                 ),
             );
         }
