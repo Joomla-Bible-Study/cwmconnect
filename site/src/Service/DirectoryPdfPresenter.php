@@ -613,7 +613,7 @@ final class DirectoryPdfPresenter
      */
     public function householdPhotoSrc(array $household): ?string
     {
-        $family = $this->resolveImageThumb((string) ($household['image'] ?? ''));
+        $family = $this->resolveHouseholdThumb((string) ($household['image'] ?? ''));
 
         if ($family !== null) {
             return $family;
@@ -625,6 +625,41 @@ final class DirectoryPdfPresenter
         $initials = mb_strtoupper(mb_substr(trim((string) $household['surname']), 0, 2)) ?: '?';
 
         return $this->placeholderSrc($initials);
+    }
+
+    /**
+     * Resolve a family-unit image to an absolute 3:4-thumbnail path mpdf can
+     * read. Family photos live under `photos/households/` (NOT the member dir),
+     * so this resolves there via {@see PhotoAccess::resolveHouseholdImage()} and
+     * thumbnails on demand (the thumb is `hh-`-prefixed to avoid colliding with a
+     * member thumbnail of the same numeric name). Null when there is no photo.
+     *
+     * @param   string  $image
+     *
+     * @return  string|null
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    private function resolveHouseholdThumb(string $image): ?string
+    {
+        $image  = trim($image);
+        $source = $image !== '' ? PhotoAccess::resolveHouseholdImage($image, '', false) : null;
+
+        if ($source === null) {
+            return null;
+        }
+
+        $thumb = JPATH_ROOT . '/media/com_cwmconnect/photos/thumb/hh-' . PhotoThumbnailer::thumbFilename($image);
+
+        if (is_file($thumb)) {
+            return $thumb;
+        }
+
+        if (new PhotoThumbnailer()->generate($source, $thumb)) {
+            return $thumb;
+        }
+
+        return $source;
     }
 
     /**
