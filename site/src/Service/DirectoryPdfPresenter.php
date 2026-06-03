@@ -439,6 +439,16 @@ final class DirectoryPdfPresenter
     public const OFFICER_KEYWORDS = ['elder', 'deacon', 'treasurer', 'clerk'];
 
     /**
+     * Active officer-title keywords (lower-case), overridable from the component
+     * options so each church can define what counts as an officer. Defaults to
+     * {@see self::OFFICER_KEYWORDS}. A "Head Deacon" still matches "deacon".
+     *
+     * @var    list<string>
+     * @since  __DEPLOY_VERSION__
+     */
+    public array $officerKeywords = self::OFFICER_KEYWORDS;
+
+    /**
      * Whether a member qualifies for the Officers section: any of their role
      * text matches an officer title.
      *
@@ -515,7 +525,7 @@ final class DirectoryPdfPresenter
 
             $lower = mb_strtolower($part);
 
-            foreach (self::OFFICER_KEYWORDS as $keyword) {
+            foreach ($this->officerKeywords as $keyword) {
                 if (str_contains($lower, $keyword)) {
                     $out[$part] = $part;
 

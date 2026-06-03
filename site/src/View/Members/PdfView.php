@@ -109,6 +109,12 @@ class PdfView extends BaseHtmlView
         }
 
         if ((bool) $params->get('pdf_officers', 1)) {
+            $titles = $this->parseOfficerTitles((string) $params->get('pdf_officer_titles', ''));
+
+            if ($titles !== []) {
+                $presenter->officerKeywords = $titles;
+            }
+
             $presenter->officers = array_values(
                 array_filter($items, static fn(object $item): bool => $presenter->isOfficer($item)),
             );
@@ -178,6 +184,23 @@ class PdfView extends BaseHtmlView
         $mpdf->Output($filename, \Mpdf\Output\Destination::INLINE);
 
         $app->close();
+    }
+
+    /**
+     * Parse the configured officer-title list (one per line or comma-separated)
+     * into lower-case keywords. Empty entries are dropped.
+     *
+     * @param   string  $raw
+     *
+     * @return  list<string>
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    private function parseOfficerTitles(string $raw): array
+    {
+        $titles = preg_split('/[\r\n,]+/', mb_strtolower($raw)) ?: [];
+
+        return array_values(array_filter(array_map('trim', $titles)));
     }
 
     /**
