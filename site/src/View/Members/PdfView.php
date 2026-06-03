@@ -78,6 +78,12 @@ class PdfView extends BaseHtmlView
         $presenter->appendRoster       = (bool) $params->get('pdf_append_roster', 0);
 
         if ($presenter->pdfLayout === 'family') {
+            // Children are kept out of the individual listing (MembersModel filters
+            // is_child = 0) but belong under their family here. Pull the children
+            // of the households already on the page and merge them in.
+            $items            = array_merge($items, $this->loadHouseholdChildren($items));
+            $presenter->items = $items;
+
             $presenter->families = $this->loadFamilies($items);
         }
         $presenter->appearance         = [
@@ -172,6 +178,47 @@ class PdfView extends BaseHtmlView
         $mpdf->Output($filename, \Mpdf\Output\Destination::INLINE);
 
         $app->close();
+    }
+
+    /**
+     * Load the children (excluded from the individual listing) that belong to a
+     * household already represented in the adult `$items`, so the family layout
+     * can list them under their family. Restricting to those households avoids
+     * surfacing a child as a lone directory entry.
+     *
+     * @param   list<object>   $adults
+     *
+     * @return  list<object>
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    private function loadHouseholdChildren(array $adults): array
+    {
+        $funitIds = [];
+
+        foreach ($adults as $adult) {
+            $fid = (int) ($adult->funitid ?? 0);
+
+            if ($fid > 0) {
+                $funitIds[$fid] = $fid;
+            }
+        }
+
+        if ($funitIds === []) {
+            return [];
+        }
+
+        $db    = Factory::getContainer()->get(DatabaseInterface::class);
+        $query = $db->createQuery()
+            ->select($db->quoteName('a') . '.*')
+            ->from($db->quoteName('#__cwmconnect_details', 'a'))
+            ->where($db->quoteName('a.published') . ' = 1')
+            ->where($db->quoteName('a.is_child') . ' = 1')
+            ->whereIn($db->quoteName('a.funitid'), array_values($funitIds));
+
+        $db->setQuery($query);
+
+        return $db->loadObjectList() ?: [];
     }
 
     /**
