@@ -1338,13 +1338,24 @@
 			<option value="0">JNO</option>
 			<option value="1">JYES</option>
 		</field>
-		<field name="pdf_officer_titles"
-		       type="textarea"
-		       rows="4"
-		       default="Elder&#10;Deacon&#10;Deaconess&#10;Treasurer&#10;Clerk"
-		       label="COM_CWMCONNECT_FIELD_PDF_OFFICER_TITLES_LABEL"
-		       description="COM_CWMCONNECT_FIELD_PDF_OFFICER_TITLES_DESC"
-		       showon="pdf_officers:1"/>
+		<field name="pdf_officer_lists"
+		       type="subform"
+		       multiple="true"
+		       layout="joomla.form.field.subform.repeatable-table"
+		       label="COM_CWMCONNECT_FIELD_PDF_OFFICER_LISTS_LABEL"
+		       description="COM_CWMCONNECT_FIELD_PDF_OFFICER_LISTS_DESC"
+		       showon="pdf_officers:1[AND]pc_enabled:1">
+			<form>
+				<field name="list_id"
+				       type="text"
+				       label="COM_CWMCONNECT_FIELD_PDF_OFFICER_LIST_ID_LABEL"
+				       description="COM_CWMCONNECT_FIELD_PDF_OFFICER_LIST_ID_DESC"/>
+				<field name="role"
+				       type="text"
+				       label="COM_CWMCONNECT_FIELD_PDF_OFFICER_LIST_ROLE_LABEL"
+				       description="COM_CWMCONNECT_FIELD_PDF_OFFICER_LIST_ROLE_DESC"/>
+			</form>
+		</field>
 		<field name="pdf_staff"
 		       type="radio"
 		       class="btn-group"

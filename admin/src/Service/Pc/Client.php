@@ -186,6 +186,46 @@ class Client
     }
 
     /**
+     * Fetch the PC `Person` ids that belong to a People list, following
+     * pagination. Used to map office lists (Elders, Deacons…) to directory roles.
+     *
+     * @param   int  $listId
+     *
+     * @return  list<int>
+     *
+     * @throws  ApiException
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    public function listResults(int $listId): array
+    {
+        $url  = $this->buildUrl('/people/v2/lists/' . $listId . '/list_results', ['per_page' => '100']);
+        $ids  = [];
+        $hops = 0;
+
+        do {
+            if (++$hops > 100) {
+                throw new ApiException('PC list-results pagination cap reached (100 pages).');
+            }
+
+            $page = $this->getJsonAbsolute($url);
+
+            foreach ((array) ($page['data'] ?? []) as $row) {
+                $personId = $row['relationships']['person']['data']['id'] ?? null;
+
+                if ($personId !== null) {
+                    $ids[(int) $personId] = (int) $personId;
+                }
+            }
+
+            $next = \is_array($page['links'] ?? null) ? ($page['links']['next'] ?? null) : null;
+            $url  = \is_string($next) && $next !== '' ? $next : null;
+        } while ($url !== null);
+
+        return array_values($ids);
+    }
+
+    /**
      * Build a `Tab:<id>` → name lookup from the `included` array on a
      * paginated `/people/v2/field_definitions?include=tab` response.
      *
