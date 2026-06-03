@@ -425,18 +425,18 @@ final class DirectoryPdfPresenter
     }
 
     /**
-     * Officer-title keywords matched (case-insensitively, as substrings) inside
+     * Officer-title keywords matched as whole words (case-insensitive) inside
      * the comma-separated PC `positions` / `ministry_teams` text. `positions` is
      * free-text holding ALL of a member's roles ("Video Team Member", "Elder,
-     * Praise Team"…), so a church officer is recognised by these specific titles
-     * rather than by simply having any position. "deacon" also catches
-     * Deacons / Deaconess (and the "Deacones" misspelling); "clerk" catches
-     * Church Clerk.
+     * Praise Team"…), so a church officer is recognised by these specific titles.
+     * Whole-word matching keeps the SINGULAR office ("Deacon", "Head Deacon")
+     * while a PLURAL team name ("Deacons", "Elders") does NOT count — so a member
+     * who is merely on the deacons team is not listed as an officer.
      *
      * @var    list<string>
      * @since  __DEPLOY_VERSION__
      */
-    public const OFFICER_KEYWORDS = ['elder', 'deacon', 'treasurer', 'clerk'];
+    public const OFFICER_KEYWORDS = ['elder', 'deacon', 'deaconess', 'treasurer', 'clerk'];
 
     /**
      * Active officer-title keywords (lower-case), overridable from the component
@@ -526,7 +526,7 @@ final class DirectoryPdfPresenter
             $lower = mb_strtolower($part);
 
             foreach ($this->officerKeywords as $keyword) {
-                if (str_contains($lower, $keyword)) {
+                if (preg_match('/\b' . preg_quote($keyword, '/') . '\b/', $lower) === 1) {
                     $out[$part] = $part;
 
                     break;

@@ -158,9 +158,14 @@ final class DirectoryPdfPresenterTest extends TestCase
         self::assertTrue($this->presenter->isOfficer($byPosition));
         self::assertSame('Head Deacon', $this->presenter->memberRole($byPosition));
 
-        $byTeam = self::member(['pc_ministry_teams' => 'Greeters, Elders']);
-        self::assertTrue($this->presenter->isOfficer($byTeam));
-        self::assertSame('Elders', $this->presenter->memberRole($byTeam), 'role shows only the officer-type team');
+        $byTitle = self::member(['pc_positions' => 'Deaconess']);
+        self::assertTrue($this->presenter->isOfficer($byTitle));
+        self::assertSame('Deaconess', $this->presenter->memberRole($byTitle));
+
+        // A PLURAL team name ("Deacons"/"Elders") is team membership, not an
+        // office — being on the deacons team must not make someone an officer.
+        $teamMember = self::member(['pc_positions' => 'Audio, Video, Deacons']);
+        self::assertFalse($this->presenter->isOfficer($teamMember), 'a plural team name is not an office');
 
         // A free-text position that is NOT an officer title must not qualify.
         $ministryOnly = self::member(['pc_positions' => 'Video Team Member']);
