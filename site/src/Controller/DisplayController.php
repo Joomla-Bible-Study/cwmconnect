@@ -27,5 +27,5 @@ use Joomla\CMS\MVC\Controller\BaseController;
 class DisplayController extends BaseController
 {
     /** @var string Fallback view when none is provided. */
-    protected $default_view = 'directory';
+    protected $default_view = 'members';
 }

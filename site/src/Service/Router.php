@@ -74,6 +74,10 @@ class Router extends RouterView
         $this->registerView(new RouterViewConfiguration('directory'));
         $this->registerView(new RouterViewConfiguration('home'));
 
+        // Phase 0: the v2 single-member profile. Flat, id-keyed — reached from
+        // the directory, not via the legacy categories→category→member chain.
+        $this->registerView(new RouterViewConfiguration('profile')->setKey('id'));
+
         parent::__construct($app, $menu);
 
         $this->attachRule(new MenuRules($this));
