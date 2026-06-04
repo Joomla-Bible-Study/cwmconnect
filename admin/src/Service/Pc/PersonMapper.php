@@ -173,6 +173,10 @@ final class PersonMapper
             'is_leader'            => $this->roleBool('leader', $fields),
             'pc_positions'         => trim((string) ($this->roleValues('positions', $fields)[0] ?? '')),
             'pc_ministry_teams'    => implode(', ', $this->roleValues('ministry_teams', $fields)),
+            // PC SocialProfile resources (site + url) as a JSON array, e.g.
+            // [{"site":"Twitter","url":"https://twitter.com/.."}]. Empty string
+            // when the member has none.
+            'pc_social'            => $this->socialProfiles($byTypeId, $relIds['social_profiles'] ?? []),
             // Minors aren't listed on their own in the directory — they appear
             // under their family unit instead. Determined by age when a
             // birthdate is on file (most reliable for "under 18"), falling back
@@ -629,6 +633,44 @@ final class PersonMapper
         }
 
         return $candidates[0]['address'] ?? '';
+    }
+
+    /**
+     * Collect the member's PC SocialProfile resources into a compact JSON array
+     * of `{site, url}` objects (e.g. Twitter / Facebook / LinkedIn / Instagram).
+     * Entries without a usable URL are dropped; an empty set yields `''` so the
+     * column stays blank rather than holding `[]`.
+     *
+     * @param   array<string, array<string, mixed>>  $byTypeId  Indexed `included`.
+     * @param   array<int, array{type: string, id: string}>  $refs  social_profiles refs.
+     *
+     * @return  string  JSON array, or '' when the member has no social profiles.
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    private function socialProfiles(array $byTypeId, array $refs): string
+    {
+        $out = [];
+
+        foreach ($refs as $ref) {
+            $resource = $byTypeId[$ref['type'] . ':' . $ref['id']] ?? null;
+
+            if ($resource === null) {
+                continue;
+            }
+
+            $attrs = (array) ($resource['attributes'] ?? []);
+            $url   = trim((string) ($attrs['url'] ?? ''));
+            $site  = trim((string) ($attrs['site'] ?? ''));
+
+            if ($url === '') {
+                continue;
+            }
+
+            $out[] = ['site' => $site, 'url' => $url];
+        }
+
+        return $out === [] ? '' : (string) json_encode($out, \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE);
     }
 
     /**

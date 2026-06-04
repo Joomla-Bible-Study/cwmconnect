@@ -77,10 +77,12 @@ final class SyncEngine
      * full FieldDatum + its FieldDefinition relationship in `included`.
      * Households / primary_campus FK resolution still defers to a later
      * phase but stay requested so the response shape is stable.
+     * `social_profiles` lands the member's PC SocialProfile resources
+     * (site + url) so {@see PersonMapper::map()} can store them as `pc_social`.
      *
      * @since  __DEPLOY_VERSION__
      */
-    private const PEOPLE_INCLUDES = 'emails,phone_numbers,addresses,households,primary_campus,field_data,field_data.field_definition';
+    private const PEOPLE_INCLUDES = 'emails,phone_numbers,addresses,households,primary_campus,field_data,field_data.field_definition,social_profiles';
 
     /**
      * Per-run cache for the PC→Joomla field mapping table. Loaded lazily on
