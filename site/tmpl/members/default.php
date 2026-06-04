@@ -23,11 +23,7 @@ $layoutMode  = $this->layoutMode === 'table' ? 'table' : 'grid';
 $gridActive  = $layoutMode === 'grid' ? ' active' : '';
 $tableActive = $layoutMode === 'table' ? ' active' : '';
 
-$memberItemId = 0;
-$menuItems = Factory::getApplication()->getMenu()->getItems('link', 'index.php?option=com_cwmconnect&view=member');
-if ($menuItems) {
-    $memberItemId = (int) $menuItems[0]->id;
-}
+$profileLink = static fn(int $id): string => Route::_('index.php?option=com_cwmconnect&view=profile&id=' . $id);
 ?>
 <div class="cwmconnect-members">
     <form action="<?php echo Route::_('index.php?option=com_cwmconnect&view=members'); ?>" method="get" class="row g-2 align-items-end mb-3">
@@ -86,7 +82,7 @@ if ($menuItems) {
                         'id'         => (int) $item->id,
                         'name'       => trim(($item->name ?: '') ?: ($item->lname ?: '')),
                         'hasPhoto'   => (string) ($item->image ?? '') !== '',
-                        'profileUrl' => Route::_('index.php?option=com_cwmconnect&view=member&id=' . (int) $item->id . '&Itemid=' . $memberItemId),
+                        'profileUrl' => $profileLink((int) $item->id),
                         'household'  => (string) ($item->household_name ?? ''),
                     ]); ?>
                 </div>
@@ -105,7 +101,7 @@ if ($menuItems) {
             </thead>
             <tbody>
             <?php foreach ($this->items as $item) :
-                $profileUrl = Route::_('index.php?option=com_cwmconnect&view=member&id=' . (int) $item->id . '&Itemid=' . $memberItemId);
+                $profileUrl = $profileLink((int) $item->id);
                 ?>
                 <tr>
                     <td>
