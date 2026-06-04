@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <config>
-	<fieldset name="member"
-	          label="COM_CWMCONNECT_FIELD_CONFIG_INDIVIDUAL_MEMBER_DISPLAY"
-	          description="COM_CWMCONNECT_FIELD_CONFIG_INDIVIDUAL_MEMBER_DESC"
+	<fieldset name="directory"
+	          label="COM_CWMCONNECT_FIELD_CONFIG_DIRECTORY_MEMBER_DISPLAY"
+	          description="COM_CWMCONNECT_FIELD_CONFIG_DIRECTORY_MEMBER_DESC"
 	>
 		<field name="image"
 		       type="media"
 		       label="COM_CWMCONNECT_FIELD_PARAMS_IMAGE_LABEL"
 		       description="COM_CWMCONNECT_FIELD_PARAMS_IMAGE_DESC"
-		>
-		</field>
+		/>
 		<field name="allow_vcard"
 		       type="radio"
 		       layout="joomla.form.field.radio.switcher"
@@ -20,127 +19,17 @@
 			<option value="0">JHIDE</option>
 			<option value="1">JSHOW</option>
 		</field>
-	</fieldset>
-	<fieldset name="category"
-	          label="JCATEGORY"
-	          description="COM_CWMCONNECT_FIELD_CONFIG_CATEGORY_DESC"
-	>
 		<field name="show_description"
 		       type="radio"
 		       layout="joomla.form.field.radio.switcher"
 		       default="1"
-		       description="JGLOBAL_SHOW_CATEGORY_DESCRIPTION_DESC"
 		       label="JGLOBAL_SHOW_CATEGORY_DESCRIPTION_LABEL"
+		       description="JGLOBAL_SHOW_CATEGORY_DESCRIPTION_DESC"
 		>
 			<option value="0">JHIDE</option>
 			<option value="1">JSHOW</option>
 		</field>
-	</fieldset>
-	<fieldset name="directorylist"
-	          label="COM_CWMCONNECT_FIELD_CONFIG_DIRECTORY_MEMBER_DISPLAY"
-	          description="COM_CWMCONNECT_FIELD_CONFIG_DIRECTORY_MEMBER_DESC"
-	>
-		<field name="dr_show_email"
-		       type="radio"
-		       layout="joomla.form.field.radio.switcher"
-		       default="1"
-		       label="JGLOBAL_EMAIL"
-		       description="COM_CWMCONNECT_FIELD_PARAMS_MEMBER_E_MAIL_DESC"
-		>
-			<option value="0">JHIDE</option>
-			<option value="1">JSHOW</option>
-		</field>
-		<field name="dr_show_street_address"
-		       type="radio"
-		       layout="joomla.form.field.radio.switcher"
-		       default="1"
-		       label="COM_CWMCONNECT_FIELD_PARAMS_STREET_ADDRESS_LABEL"
-		       description="COM_CWMCONNECT_FIELD_PARAMS_STREET_ADDRESS_DESC"
-		>
-			<option value="0">JHIDE</option>
-			<option value="1">JSHOW</option>
-		</field>
-		<field name="dr_show_suburb"
-		       type="radio"
-		       layout="joomla.form.field.radio.switcher"
-		       default="1"
-		       label="COM_CWMCONNECT_FIELD_PARAMS_TOWN-SUBURB_LABEL"
-		       description="COM_CWMCONNECT_FIELD_PARAMS_TOWN-SUBURB_DESC"
-		>
-			<option value="0">JHIDE</option>
-			<option value="1">JSHOW</option>
-		</field>
-		<field name="dr_show_state"
-		       type="radio"
-		       layout="joomla.form.field.radio.switcher"
-		       default="1"
-		       label="COM_CWMCONNECT_FIELD_PARAMS_STATE-COUNTY_LABEL"
-		       description="COM_CWMCONNECT_FIELD_PARAMS_STATE-COUNTY_DESC"
-		>
-			<option value="0">JHIDE</option>
-			<option value="1">JSHOW</option>
-		</field>
-		<field name="dr_show_postcode"
-		       type="radio"
-		       layout="joomla.form.field.radio.switcher"
-		       default="1"
-		       label="COM_CWMCONNECT_FIELD_PARAMS_POST-ZIP_CODE_LABEL"
-		       description="COM_CWMCONNECT_FIELD_PARAMS_POST-ZIP_CODE_DESC"
-		>
-			<option value="0">JHIDE</option>
-			<option value="1">JSHOW</option>
-		</field>
-		<field name="dr_show_country"
-		       type="radio"
-		       layout="joomla.form.field.radio.switcher"
-		       default="1"
-		       label="COM_CWMCONNECT_FIELD_PARAMS_COUNTRY_LABEL"
-		       description="COM_CWMCONNECT_FIELD_PARAMS_COUNTRY_DESC"
-		>
-			<option value="0">JHIDE</option>
-			<option value="1">JSHOW</option>
-		</field>
-		<field name="dr_show_telephone"
-		       type="radio"
-		       layout="joomla.form.field.radio.switcher"
-		       default="1"
-		       label="COM_CWMCONNECT_FIELD_PARAMS_TELEPHONE_LABEL"
-		       description="COM_CWMCONNECT_FIELD_PARAMS_TELEPHONE_DESC"
-		>
-			<option value="0">JHIDE</option>
-			<option value="1">JSHOW</option>
-		</field>
-		<field name="dr_show_mobile"
-		       type="radio"
-		       layout="joomla.form.field.radio.switcher"
-		       default="1"
-		       label="COM_CWMCONNECT_FIELD_PARAMS_MOBILE_LABEL"
-		       description="COM_CWMCONNECT_FIELD_PARAMS_MOBILE_DESC"
-		>
-			<option value="0">JHIDE</option>
-			<option value="1">JSHOW</option>
-		</field>
-		<field name="dr_show_fax"
-		       type="radio"
-		       layout="joomla.form.field.radio.switcher"
-		       default="1"
-		       label="COM_CWMCONNECT_FIELD_PARAMS_FAX_LABEL"
-		       description="COM_CWMCONNECT_FIELD_PARAMS_FAX_DESC"
-		>
-			<option value="0">JHIDE</option>
-			<option value="1">JSHOW</option>
-		</field>
-		<field name="dr_show_webpage"
-		       type="radio"
-		       layout="joomla.form.field.radio.switcher"
-		       default="1"
-		       label="COM_CWMCONNECT_FIELD_PARAMS_WEBPAGE_LABEL"
-		       description="COM_CWMCONNECT_FIELD_PARAMS_WEBPAGE_DESC"
-		>
-			<option value="0">JHIDE</option>
-			<option value="1">JSHOW</option>
-		</field>
-		<field name="dinitial_sort"
+		<field name="initial_sort"
 		       type="list"
 		       label="COM_CWMCONNECT_FIELD_INITIAL_SORT_LABEL"
 		       description="COM_CWMCONNECT_FIELD_INITIAL_SORT_DESC"
@@ -346,17 +235,7 @@
 		       component="com_cwmconnect"
 		       section="component"/>
 	</fieldset>
-	<fieldset name="reports"
-	          label="COM_CWMCONNECT_FIELD_CONFIG_REPORTS"
-	          description="COM_CWMCONNECT_FIELD_CONFIG_REPORTS_DESC"
-	>
-		<field name="rules_level"
-		       type="accesslevel"
-		       label="COM_CWMCONNECT_FIELD_MEMBER_ACCESS_LEVEL_LABEL"
-		       description="COM_CWMCONNECT_FIELD_MEMBER_ACCESS_LEVEL_DESC"
-		/>
-	</fieldset>
-	<fieldset name="printeddirectory"
+<fieldset name="printeddirectory"
 	          label="COM_CWMCONNECT_FIELD_CONFIG_PRINTED_DIRECTORY"
 	          description="COM_CWMCONNECT_FIELD_CONFIG_PRINTED_DIRECTORY_DESC"
 	>
