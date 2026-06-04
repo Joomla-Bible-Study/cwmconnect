@@ -182,7 +182,7 @@ final class SyncRunner
         return new SyncEngine(
             client: $this->buildClient(),
             repository: new DatabaseMemberRepository($this->db),
-            mapper: new PersonMapper($roleFieldSlugs),
+            mapper: new PersonMapper($roleFieldSlugs, (int) $this->params->get('member_access', 2)),
             fieldMapRepo: new DatabaseFieldMapRepository($this->db),
             fieldWriter: new FieldsHelperWriter(),
             photoCache: new MediaPhotoCache(

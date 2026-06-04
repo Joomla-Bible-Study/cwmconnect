@@ -63,7 +63,10 @@ final class DatabaseMemberRepository implements MemberRepositoryInterface
         'lat'              => 0,
         'lng'              => 0,
         'language'         => '*',
-        'access'           => 1,
+        // Registered (2), not Public (1): members-only directory. See
+        // PersonMapper::map() — keeps member PII out of guest-visible Smart
+        // Search results and any other access-respecting surface.
+        'access'           => 2,
         'published'        => 1,
         'kmlid'            => 1,
     ];
