@@ -11,22 +11,10 @@ declare(strict_types=1);
 
 namespace CWM\Component\Cwmconnect\Administrator\Controller;
 
-use CWM\Component\Cwmconnect\Administrator\Service\Pairing\DatabaseMemberPairing;
-use CWM\Component\Cwmconnect\Administrator\Service\Pc\CampusMapper;
-use CWM\Component\Cwmconnect\Administrator\Service\Pc\CampusSync;
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\Client as PcClient;
-use CWM\Component\Cwmconnect\Administrator\Service\Pc\DatabaseCampusRepository;
-use CWM\Component\Cwmconnect\Administrator\Service\Pc\DatabaseFieldMapRepository;
-use CWM\Component\Cwmconnect\Administrator\Service\Pc\DatabaseHouseholdRepository;
-use CWM\Component\Cwmconnect\Administrator\Service\Pc\DatabaseMemberRepository;
-use CWM\Component\Cwmconnect\Administrator\Service\Pc\OfficeListSync;
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\Exception\AuthenticationException;
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\Exception\ConfigurationException as PcConfigurationException;
-use CWM\Component\Cwmconnect\Administrator\Service\Pc\Exception\PcException;
-use CWM\Component\Cwmconnect\Administrator\Service\Pc\FieldsHelperWriter;
-use CWM\Component\Cwmconnect\Administrator\Service\Pc\MediaPhotoCache;
-use CWM\Component\Cwmconnect\Administrator\Service\Pc\PersonMapper;
-use CWM\Component\Cwmconnect\Administrator\Service\Pc\SyncEngine as PcSyncEngine;
+use CWM\Component\Cwmconnect\Administrator\Service\Pc\SyncRunner;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Http\HttpFactory;
@@ -35,7 +23,6 @@ use Joomla\CMS\Log\Log;
 use Joomla\CMS\MVC\Controller\BaseController;
 use Joomla\CMS\Response\JsonResponse;
 use Joomla\Component\Actionlogs\Administrator\Model\ActionlogModel;
-use Joomla\Database\DatabaseInterface;
 
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
@@ -150,44 +137,17 @@ class CpanelController extends BaseController
         $progressFile = $this->progressFilePath();
 
         try {
-            $params      = ComponentHelper::getParams('com_cwmconnect');
-            $rawStatuses = $params->get('pc_membership_statuses', []);
-            $statuses    = \is_array($rawStatuses)
-                ? array_values(array_filter($rawStatuses))
-                : $this->parseStatusList((string) $rawStatuses);
-
             $this->writeProgress($progressFile, 'starting', 0, 0);
 
-            // Auxiliary: refresh campus data (cover church name/address) from
-            // PC. Failures here must not abort the people sync.
-            try {
-                $this->createCampusSync()->run();
-            } catch (\Throwable) {
-                // Campus sync is best-effort; the people sync is the point.
-            }
-
-            /** @var PcSyncEngine $engine */
-            $engine     = $this->createSyncEngine();
-            $onProgress = function (int $pagesCompleted, int $totalSeen, string $phase) use ($progressFile): void {
-                $this->writeProgress($progressFile, $phase, $pagesCompleted, $totalSeen);
-            };
-
-            $report = $engine->run($statuses, $onProgress);
-
-            // Tag members with their church office from the configured PC office
-            // lists (Elders, Deacons…). Best-effort: the people sync is the point.
-            try {
-                $officeLists = $this->officerLists($params);
-
-                if ($officeLists !== []) {
-                    new OfficeListSync(
-                        $this->createPcClient(),
-                        Factory::getContainer()->get(DatabaseInterface::class),
-                    )->run($officeLists);
-                }
-            } catch (\Throwable) {
-                // Office-list tagging must not abort the people sync.
-            }
+            // Campus refresh → people sync → office-list tagging, all via the
+            // shared runner (the same code path the CLI + scheduled-task plugin
+            // use). The progress callback streams page-by-page state to the
+            // cache file the pcSyncProgress poll reads.
+            $report = SyncRunner::create()->runFull(
+                function (int $pagesCompleted, int $totalSeen, string $phase) use ($progressFile): void {
+                    $this->writeProgress($progressFile, $phase, $pagesCompleted, $totalSeen);
+                },
+            );
 
             @unlink($progressFile);
 
@@ -277,65 +237,6 @@ class CpanelController extends BaseController
         }
 
         $this->checkToken();
-    }
-
-    /**
-     * Split a textarea value (one status per line, blank lines tolerated)
-     * into a clean list. Phase C accepts a free-form text list; a future
-     * phase may swap this for a dynamic dropdown that fetches from PC.
-     *
-     * @param   string  $raw
-     *
-     * @return  list<string>
-     *
-     * @since   __DEPLOY_VERSION__
-     */
-    private function parseStatusList(string $raw): array
-    {
-        if (trim($raw) === '') {
-            return [];
-        }
-
-        $lines = preg_split('/\r\n|\r|\n/', $raw) ?: [];
-
-        $out = [];
-
-        foreach ($lines as $line) {
-            $line = trim($line);
-
-            if ($line !== '') {
-                $out[] = $line;
-            }
-        }
-
-        return $out;
-    }
-
-    /**
-     * Parse the "office lists" subform option into a PC list id => role-label map
-     * for {@see OfficeListSync}. Rows missing a list id or role are dropped.
-     *
-     * @param   \Joomla\Registry\Registry  $params
-     *
-     * @return  array<int, string>
-     *
-     * @since   __DEPLOY_VERSION__
-     */
-    private function officerLists(\Joomla\Registry\Registry $params): array
-    {
-        $out = [];
-
-        foreach ((array) $params->get('pdf_officer_lists', []) as $row) {
-            $row    = (array) $row;
-            $listId = (int) ($row['list_id'] ?? 0);
-            $role   = trim((string) ($row['role'] ?? ''));
-
-            if ($listId > 0 && $role !== '') {
-                $out[$listId] = $role;
-            }
-        }
-
-        return $out;
     }
 
     /**
@@ -461,63 +362,6 @@ class CpanelController extends BaseController
             personalAccessToken: $token,
             applicationId: $appId,
             baseUrl: $baseUrl !== '' ? $baseUrl : PcClient::DEFAULT_BASE_URL,
-        );
-    }
-
-    /**
-     * @return  PcSyncEngine
-     *
-     * @since   __DEPLOY_VERSION__
-     */
-    private function createSyncEngine(): PcSyncEngine
-    {
-        $db     = Factory::getContainer()->get(DatabaseInterface::class);
-        $params = ComponentHelper::getParams('com_cwmconnect');
-
-        // PC field-definition slugs for the directory-role fields are admin-
-        // configurable (they are custom fields, so the slug differs per org); a
-        // blank value disables that role.
-        $roleFieldSlugs = [
-            'board'          => (string) $params->get('pc_field_board', PersonMapper::DEFAULT_ROLE_FIELDS['board']),
-            'positions'      => (string) $params->get('pc_field_positions', PersonMapper::DEFAULT_ROLE_FIELDS['positions']),
-            'ministry_teams' => (string) $params->get('pc_field_ministry_teams', PersonMapper::DEFAULT_ROLE_FIELDS['ministry_teams']),
-            'leader'         => (string) $params->get('pc_field_leader', PersonMapper::DEFAULT_ROLE_FIELDS['leader']),
-        ];
-
-        return new PcSyncEngine(
-            client: $this->createPcClient(),
-            repository: new DatabaseMemberRepository($db),
-            mapper: new PersonMapper($roleFieldSlugs),
-            fieldMapRepo: new DatabaseFieldMapRepository($db),
-            fieldWriter: new FieldsHelperWriter(),
-            photoCache: new MediaPhotoCache(
-                http: HttpFactory::getHttp(),
-                cacheRoot: JPATH_ROOT . '/media/com_cwmconnect/photos',
-            ),
-            pairing: new DatabaseMemberPairing($db),
-            households: new DatabaseHouseholdRepository($db),
-            householdPhotoCache: new MediaPhotoCache(
-                http: HttpFactory::getHttp(),
-                cacheRoot: JPATH_ROOT . '/media/com_cwmconnect/photos/households',
-            ),
-        );
-    }
-
-    /**
-     * Build a campus sync (K.6) wired to the PC client + dirheader repository.
-     *
-     * @return  CampusSync
-     *
-     * @since   __DEPLOY_VERSION__
-     */
-    private function createCampusSync(): CampusSync
-    {
-        $db = Factory::getContainer()->get(DatabaseInterface::class);
-
-        return new CampusSync(
-            client: $this->createPcClient(),
-            mapper: new CampusMapper(),
-            repository: new DatabaseCampusRepository($db),
         );
     }
 

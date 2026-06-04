@@ -20,7 +20,8 @@
             { "type": "plugin",    "path": "plugins/user/cwmconnect/cwmconnect.xml" },
             { "type": "plugin",    "path": "plugins/content/cwmconnect/cwmconnect.xml" },
             { "type": "library",   "path": "libraries/mpdf/mpdf.xml" },
-            { "type": "plugin",    "path": "plugins/privacy/cwmconnect/cwmconnect.xml" }
+            { "type": "plugin",    "path": "plugins/privacy/cwmconnect/cwmconnect.xml" },
+            { "type": "plugin",    "path": "plugins/task/cwmconnect/cwmconnect.xml" }
         ]
     },
     "build": {
