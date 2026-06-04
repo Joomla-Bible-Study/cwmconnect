@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<metadata>
+    <layout title="COM_CWMCONNECT_MEMBERS_VIEW_DEFAULT_TITLE" option="COM_CWMCONNECT_MEMBERS_VIEW_DEFAULT_OPTION">
+        <message>
+            <![CDATA[COM_CWMCONNECT_MEMBERS_VIEW_DEFAULT_DESC]]>
+        </message>
+    </layout>
+    <fields name="request">
+        <fieldset name="request">
+            <field
+                name="layout_mode"
+                type="list"
+                label="COM_CWMCONNECT_MEMBERS_FIELD_LAYOUT_MODE_LABEL"
+                description="COM_CWMCONNECT_MEMBERS_FIELD_LAYOUT_MODE_DESC"
+                default="grid"
+            >
+                <option value="grid">COM_CWMCONNECT_MEMBERS_LAYOUT_GRID</option>
+                <option value="list">COM_CWMCONNECT_MEMBERS_LAYOUT_LIST</option>
+            </field>
+        </fieldset>
+    </fields>
+</metadata>
