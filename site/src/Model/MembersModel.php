@@ -114,6 +114,7 @@ class MembersModel extends ListModel
             $db->quoteName('a.is_leader'),
             $db->quoteName('a.pc_positions'),
             $db->quoteName('a.pc_office_role'),
+            $db->quoteName('a.pc_social'),
             $db->quoteName('a.is_child'),
             $db->quoteName('a.spouse'),
             $db->quoteName('a.children'),
