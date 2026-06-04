@@ -221,6 +221,12 @@
 	          label="COM_CWMCONNECT_FIELD_CONFIG_GLOBLE_MEMBER_DISPLAY"
 	          description="COM_CWMCONNECT_FIELD_CONFIG_GLOBLE_MEMBER_DESC"
 	>
+		<field name="member_access"
+		       type="accesslevel"
+		       label="COM_CWMCONNECT_FIELD_MEMBER_ACCESS_LABEL"
+		       description="COM_CWMCONNECT_FIELD_MEMBER_ACCESS_DESC"
+		       default="2"
+		/>
 		<field name="protectedaccess"
 		       type="usergroup"
 		       label="COM_CWMCONNECT_FIELD_MEMBER_PROTECTED_ACCESS_LABEL"

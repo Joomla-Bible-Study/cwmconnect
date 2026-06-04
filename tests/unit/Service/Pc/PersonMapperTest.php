@@ -33,6 +33,25 @@ final class PersonMapperTest extends TestCase
     }
 
     #[Test]
+    public function assignsRegisteredViewLevelByDefaultNeverPublic(): void
+    {
+        // Members-only directory: a synced member must never be Public (1),
+        // or the finder would index their PII into guest-visible search.
+        $row = $this->mapper->map($this->person([]));
+
+        self::assertSame(2, $row['access']);
+    }
+
+    #[Test]
+    public function honoursConfiguredMemberViewLevel(): void
+    {
+        // A site with a custom "Church Members" level (e.g. id 5) gets it.
+        $mapper = new PersonMapper(PersonMapper::DEFAULT_ROLE_FIELDS, 5);
+
+        self::assertSame(5, $mapper->map($this->person([]))['access']);
+    }
+
+    #[Test]
     public function capturesPcMembershipDesignation(): void
     {
         $member   = $this->mapper->map($this->person(['membership' => 'Member']));

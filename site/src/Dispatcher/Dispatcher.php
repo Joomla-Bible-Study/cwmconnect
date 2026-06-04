@@ -16,6 +16,7 @@ namespace CWM\Component\Cwmconnect\Site\Dispatcher;
 // phpcs:enable PSR1.Files.SideEffects
 
 use CWM\Component\Cwmconnect\Site\Helper\LoginWall;
+use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Dispatcher\ComponentDispatcher;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
@@ -50,20 +51,42 @@ class Dispatcher extends ComponentDispatcher
     #[\Override]
     public function dispatch(): void
     {
-        if ($this->shouldEnforceWall()) {
-            $current  = (string) Uri::getInstance();
-            $userId   = (int) ($this->app->getIdentity()?->id ?? 0);
-            $redirect = LoginWall::redirectForGuest($userId, $current);
-
-            if ($redirect !== null) {
+        if ($this->shouldEnforceWall() && !$this->viewerHasMemberAccess()) {
+            // A guest gets the login wall (and returns here after logging in);
+            // a logged-in user who simply lacks the configured member view
+            // level (e.g. a registered non-member) is refused outright.
+            if ((int) ($this->app->getIdentity()?->id ?? 0) === 0) {
                 $this->app->enqueueMessage(Text::_('COM_CWMCONNECT_LOGIN_REQUIRED'), 'notice');
-                $this->app->redirect(Route::_($redirect, false));
+                $this->app->redirect(
+                    Route::_((string) LoginWall::redirectForGuest(0, (string) Uri::getInstance()), false),
+                );
 
                 return;
             }
+
+            throw new \RuntimeException(Text::_('COM_CWMCONNECT_ACCESS_DENIED'), 403);
         }
 
         parent::dispatch();
+    }
+
+    /**
+     * Whether the current viewer holds the configured member view level
+     * (`member_access`, Registered by default). This is what makes the
+     * directory members-only: being logged in isn't enough — a registered
+     * non-member without the level is turned away.
+     *
+     * @return  bool
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    private function viewerHasMemberAccess(): bool
+    {
+        $user     = $this->app->getIdentity();
+        $levels   = $user ? $user->getAuthorisedViewLevels() : [1];
+        $required = (int) ComponentHelper::getParams('com_cwmconnect')->get('member_access', 2);
+
+        return \in_array($required, $levels, true);
     }
 
     /**

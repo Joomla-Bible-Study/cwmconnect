@@ -56,11 +56,17 @@ final class PersonMapper
      * keyed `board` / `positions` / `ministry_teams` / `leader`.
      *
      * @param   array<string, string>  $roleFieldSlugs
+     * @param   int                    $memberAccess   View-level id every synced
+     *                                                 member is assigned (the
+     *                                                 component `member_access`
+     *                                                 option; Registered = 2 by
+     *                                                 default).
      *
      * @since   __DEPLOY_VERSION__
      */
     public function __construct(
         private readonly array $roleFieldSlugs = self::DEFAULT_ROLE_FIELDS,
+        private readonly int $memberAccess = 2,
     ) {}
 
     /**
@@ -155,6 +161,16 @@ final class PersonMapper
             // `published` still gates active vs inactive membership; an admin
             // can hide an individual by clearing `display_in_directory`.
             'directory_scope'      => 'public',
+            // Members-only directory: every synced row gets the configured
+            // member view level (`member_access`, Registered by default), never
+            // Public. The front end is gated by the dispatcher wall, but
+            // Joomla-native surfaces that read the row's access directly —
+            // chiefly Smart Search (the finder indexes name/address/phone/email
+            // with the row's access) — would otherwise expose member PII to
+            // guests / non-member users. Forced on every sync so a stray Public
+            // row can't linger. ('public' above is `directory_scope`, the
+            // household-visibility tier — unrelated to the view-level id.)
+            'access'               => $this->memberAccess,
             'pc_shared_info'       => $this->encodeSharedInfo($attrs['directory_shared_info'] ?? null),
             'display_in_directory' => 1,
             'published'            => $pcStatus === 'active' ? 1 : 0,
