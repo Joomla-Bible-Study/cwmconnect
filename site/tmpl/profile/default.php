@@ -11,9 +11,9 @@ declare(strict_types=1);
 
 \defined('_JEXEC') or die;
 
-use CWM\Component\Cwmconnect\Site\Helper\HouseholdVisibility;
 use CWM\Component\Cwmconnect\Site\Helper\Layout;
 use CWM\Component\Cwmconnect\Site\Helper\SocialLinks;
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 
@@ -25,6 +25,11 @@ $social      = SocialLinks::fromJson($item->pc_social ?? null);
 $showAddress = trim((string) ($item->address ?? '') . ($item->suburb ?? '') . ($item->state ?? '') . ($item->postcode ?? '')) !== '';
 $listUrl     = Route::_('index.php?option=com_cwmconnect&view=members');
 $profileLink = static fn(int $id): string => Route::_('index.php?option=com_cwmconnect&view=profile&id=' . $id);
+$vcardUrl    = Route::_('index.php?option=com_cwmconnect&view=profile&format=vcf&id=' . (int) $item->id);
+
+if ($this->enquiryForm !== null) {
+    $this->getDocument()->getWebAssetManager()->useScript('form.validate');
+}
 ?>
 <div class="com-cwmconnect-profile container">
 	<p class="mb-3">
@@ -94,8 +99,39 @@ $profileLink = static fn(int $id): string => Route::_('index.php?option=com_cwmc
 					</ul>
 				</div>
 			<?php endif; ?>
+
+			<?php if ($this->showVcard) : ?>
+				<div class="mt-3">
+					<a class="btn btn-outline-primary btn-sm" href="<?php echo $vcardUrl; ?>">
+						<span class="icon-download" aria-hidden="true"></span> <?php echo Text::_('COM_CWMCONNECT_PROFILE_DOWNLOAD_VCARD'); ?>
+					</a>
+				</div>
+			<?php endif; ?>
 		</div>
 	</div>
+
+	<?php if ($this->enquiryForm !== null) : ?>
+		<hr class="my-4">
+		<div class="card">
+			<div class="card-header"><h2 class="h5 mb-0"><?php echo Text::sprintf('COM_CWMCONNECT_PROFILE_CONTACT_HEADING', $this->escape((string) $item->name)); ?></h2></div>
+			<div class="card-body">
+				<form action="<?php echo Route::_('index.php?option=com_cwmconnect'); ?>" method="post" class="form-validate">
+					<?php foreach ($this->enquiryForm->getFieldset() as $field) : ?>
+						<div class="mb-3">
+							<?php echo $field->renderField(); ?>
+						</div>
+					<?php endforeach; ?>
+					<button type="submit" class="btn btn-primary validate">
+						<?php echo Text::_('COM_CWMCONNECT_PROFILE_CONTACT_SEND'); ?>
+					</button>
+					<input type="hidden" name="option" value="com_cwmconnect">
+					<input type="hidden" name="task" value="profile.submit">
+					<input type="hidden" name="id" value="<?php echo (int) $item->id; ?>">
+					<?php echo HTMLHelper::_('form.token'); ?>
+				</form>
+			</div>
+		</div>
+	<?php endif; ?>
 
 	<?php if ($this->householdMembers !== [] || $this->hiddenHouseholdCount > 0) : ?>
 		<hr class="my-4">

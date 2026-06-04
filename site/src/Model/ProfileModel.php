@@ -11,8 +11,10 @@ declare(strict_types=1);
 
 namespace CWM\Component\Cwmconnect\Site\Model;
 
+use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
-use Joomla\CMS\MVC\Model\ItemModel;
+use Joomla\CMS\Form\Form;
+use Joomla\CMS\MVC\Model\FormModel;
 use Joomla\Database\ParameterType;
 
 // phpcs:disable PSR1.Files.SideEffects
@@ -29,7 +31,7 @@ use Joomla\Database\ParameterType;
  *
  * @since  __DEPLOY_VERSION__
  */
-class ProfileModel extends ItemModel
+class ProfileModel extends FormModel
 {
     /**
      * Read the requested member id into state.
@@ -44,6 +46,48 @@ class ProfileModel extends ItemModel
     protected function populateState($ordering = null, $direction = null): void
     {
         $this->setState('profile.id', (int) Factory::getApplication()->getInput()->getInt('id', 0));
+    }
+
+    /**
+     * Load the "contact this member" enquiry form. The copy-to-sender field is
+     * stripped when the component option disables it. Reuses the shared
+     * `member` form definition + its anti-spam validation rules.
+     *
+     * @param   array    $data      Pre-fill data.
+     * @param   boolean  $loadData  Whether to seed from user state.
+     *
+     * @return  Form|false
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    public function getForm($data = [], $loadData = true): Form|false
+    {
+        $form = $this->loadForm('com_cwmconnect.profile.enquiry', 'member', ['control' => 'jform', 'load_data' => $loadData]);
+
+        if (empty($form)) {
+            return false;
+        }
+
+        if (!ComponentHelper::getParams('com_cwmconnect')->get('show_email_copy', 0)) {
+            $form->removeField('cwmconnect_email_copy');
+        }
+
+        return $form;
+    }
+
+    /**
+     * Restore in-flight enquiry data from user state after a failed submit.
+     *
+     * @return  array
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    protected function loadFormData(): array
+    {
+        $data = (array) Factory::getApplication()->getUserState('com_cwmconnect.profile.data', []);
+        $this->preprocessData('com_cwmconnect.profile', $data);
+
+        return $data;
     }
 
     /**

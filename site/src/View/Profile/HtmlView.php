@@ -17,6 +17,8 @@ namespace CWM\Component\Cwmconnect\Site\View\Profile;
 
 use CWM\Component\Cwmconnect\Site\Helper\HouseholdVisibility;
 use CWM\Component\Cwmconnect\Site\Model\ProfileModel;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Form\Form;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
 
@@ -63,6 +65,23 @@ class HtmlView extends BaseHtmlView
     public int $hiddenHouseholdCount = 0;
 
     /**
+     * The "contact this member" enquiry form, or null when disabled / the
+     * member has no email to receive it.
+     *
+     * @var    Form|null
+     * @since  __DEPLOY_VERSION__
+     */
+    public ?Form $enquiryForm = null;
+
+    /**
+     * Whether a vCard download is offered for this member.
+     *
+     * @var    boolean
+     * @since  __DEPLOY_VERSION__
+     */
+    public bool $showVcard = false;
+
+    /**
      * Render the profile.
      *
      * @param   string|null  $tpl  The template name.
@@ -98,6 +117,14 @@ class HtmlView extends BaseHtmlView
             if (!$sameHousehold) {
                 $this->hiddenHouseholdCount = $model->getHiddenHouseholdCount($targetHouseholdId, (int) $item->id);
             }
+        }
+
+        $params = ComponentHelper::getParams('com_cwmconnect');
+
+        $this->showVcard = (bool) $params->get('allow_vcard', 0);
+
+        if ((bool) $params->get('show_email_form', 0) && trim((string) ($item->email_to ?? '')) !== '') {
+            $this->enquiryForm = $model->getForm() ?: null;
         }
 
         $this->setDocumentTitle((string) $item->name);
