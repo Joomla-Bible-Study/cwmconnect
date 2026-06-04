@@ -11,11 +11,14 @@ declare(strict_types=1);
 
 \defined('_JEXEC') or die;
 
+use CWM\Component\Cwmconnect\Site\Helper\SocialLinks;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 
 /** @var \CWM\Component\Cwmconnect\Site\View\Myprofile\HtmlView $this */
+
+$socialLinks = SocialLinks::fromJson($this->item->pc_social ?? null);
 
 $saveAction = Route::_('index.php?option=com_cwmconnect&task=myprofile.save');
 
@@ -76,6 +79,27 @@ $wa->useScript('form.validate');
 							</div>
 						</div>
 					</div>
+
+					<?php // Social profiles (read-only — synced from Planning Center)?>
+					<?php if ($socialLinks !== []) : ?>
+						<div class="card mb-3">
+							<div class="card-header"><h3 class="card-title h6 mb-0"><?php echo Text::_('COM_CWMCONNECT_MYPROFILE_FIELDSET_SOCIAL'); ?></h3></div>
+							<div class="card-body">
+								<p class="text-muted small mb-2"><?php echo Text::_('COM_CWMCONNECT_MYPROFILE_SOCIAL_NOTE'); ?></p>
+								<ul class="list-unstyled d-flex flex-wrap gap-2 mb-0">
+									<?php foreach ($socialLinks as $link) : ?>
+										<li>
+											<a class="btn btn-outline-secondary btn-sm cwm-social cwm-social-<?php echo $this->escape($link['key']); ?>"
+											   href="<?php echo $this->escape($link['url']); ?>"
+											   target="_blank" rel="noopener noreferrer nofollow">
+												<?php echo $this->escape($link['label']); ?>
+											</a>
+										</li>
+									<?php endforeach; ?>
+								</ul>
+							</div>
+						</div>
+					<?php endif; ?>
 
 					<?php // Address?>
 					<div class="card mb-3">
