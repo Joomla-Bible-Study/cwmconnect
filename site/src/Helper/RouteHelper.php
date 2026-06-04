@@ -15,7 +15,6 @@ namespace CWM\Component\Cwmconnect\Site\Helper;
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
-use Joomla\CMS\Categories\CategoryNode;
 use Joomla\CMS\Language\Multilanguage;
 
 /**
@@ -26,10 +25,12 @@ use Joomla\CMS\Language\Multilanguage;
 abstract class RouteHelper
 {
     /**
-     * Build the canonical `index.php?option=…&view=member&id=…` route for a member.
+     * Build the canonical `index.php?option=…&view=profile&id=…` route for a
+     * member. (Phase 2: repointed from the retired `member` view to the v2
+     * `profile` view; the flat profile ignores the legacy `$catid`.)
      *
      * @param   int|string         $id        Member id (raw or `id:alias` slug).
-     * @param   int                $catid     Owning category id.
+     * @param   int                $catid     Owning category id (legacy, ignored).
      * @param   int|string|null    $language  Multilanguage code, or 0/null when not multi-lingual.
      *
      * @return  string
@@ -38,38 +39,7 @@ abstract class RouteHelper
      */
     public static function getMemberRoute(int|string $id, int $catid = 0, int|string|null $language = 0): string
     {
-        $link = 'index.php?option=com_cwmconnect&view=member&id=' . $id;
-
-        if ($catid > 1) {
-            $link .= '&catid=' . (int) $catid;
-        }
-
-        if ($language && $language !== '*' && Multilanguage::isEnabled()) {
-            $link .= '&lang=' . $language;
-        }
-
-        return $link;
-    }
-
-    /**
-     * Build the canonical `…&view=category&id=…` route for a category.
-     *
-     * @param   int|CategoryNode      $catid     Category id or node.
-     * @param   int|string|null       $language  Multilanguage code.
-     *
-     * @return  string  Empty string when $catid resolves to 0 or less.
-     *
-     * @since   2.0.0
-     */
-    public static function getCategoryRoute(int|CategoryNode $catid, int|string|null $language = 0): string
-    {
-        $id = $catid instanceof CategoryNode ? (int) $catid->id : (int) $catid;
-
-        if ($id < 1) {
-            return '';
-        }
-
-        $link = 'index.php?option=com_cwmconnect&view=category&id=' . $id;
+        $link = 'index.php?option=com_cwmconnect&view=profile&id=' . $id;
 
         if ($language && $language !== '*' && Multilanguage::isEnabled()) {
             $link .= '&lang=' . $language;

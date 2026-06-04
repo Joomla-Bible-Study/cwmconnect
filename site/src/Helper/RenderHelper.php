@@ -233,7 +233,7 @@ class RenderHelper
      */
     public function getMemberStatus(object $member, bool $from = false): string
     {
-        $href = 'index.php?option=com_cwmconnect&view=member&id=' . (int) $member->id;
+        $href = 'index.php?option=com_cwmconnect&view=profile&id=' . (int) $member->id;
         $name = $member->name;
 
         return match ((string) $member->mstatus) {
@@ -555,7 +555,7 @@ class RenderHelper
      */
     public function getSearchField(Registry $params): string
     {
-        $route  = 'index.php?option=com_cwmconnect&view=directory&layout=search';
+        $route  = 'index.php?option=com_cwmconnect&view=members';
         $itemid = Factory::getApplication()->getInput()->getInt('Itemid', 0);
         $label  = (string) $params->get('alt_label', Text::_('JSEARCH_FILTER_SUBMIT'));
 
