@@ -165,11 +165,17 @@ class Com_cwmconnectInstallerScript
 
         // v2 front-end views that need a routing-target menu item so the router
         // can build SEF URLs. The legacy member/category/directory/home views
-        // were retired; the directory (members) + per-member profile + the
-        // self-service myprofile are what remain.
+        // were retired; the directory (members) + self-service myprofile are
+        // what remain.
+        //
+        // The per-member `profile` view deliberately gets NO menu item: it's a
+        // detail view reached from the directory and is keyed by `id`. A menu
+        // item of `view=profile` with no id would 404 when opened and — worse —
+        // when the router anchored a profile link on it, it treated the menu
+        // item as the complete profile and dropped the id segment. Profile URLs
+        // route from the directory item instead.
         $views = [
             'members'   => ['title' => 'Church Directory', 'access' => 2],
-            'profile'   => ['title' => 'Member Profile',   'access' => 2],
             'myprofile' => ['title' => 'My Profile',       'access' => 2],
         ];
 
