@@ -21,7 +21,7 @@
 			<option value="1">JSHOW</option>
 		</field>
 	</fieldset>
-	<fieldset name="Category"
+	<fieldset name="category"
 	          label="JCATEGORY"
 	          description="COM_CWMCONNECT_FIELD_CONFIG_CATEGORY_DESC"
 	>
@@ -53,7 +53,8 @@
 		<field name="dr_show_street_address"
 		       type="radio"
 		       class="btn-group"
-		       default="1" label="COM_CWMCONNECT_FIELD_PARAMS_STREET_ADDRESS_LABEL"
+		       default="1"
+		       label="COM_CWMCONNECT_FIELD_PARAMS_STREET_ADDRESS_LABEL"
 		       description="COM_CWMCONNECT_FIELD_PARAMS_STREET_ADDRESS_DESC"
 		>
 			<option value="0">JHIDE</option>
@@ -139,9 +140,10 @@
 			<option value="0">JHIDE</option>
 			<option value="1">JSHOW</option>
 		</field>
-		<field name="dinitial_sort" type="list"
-		       description="COM_CWMCONNECT_FIELD_INITIAL_SORT_DESC"
+		<field name="dinitial_sort"
+		       type="list"
 		       label="COM_CWMCONNECT_FIELD_INITIAL_SORT_LABEL"
+		       description="COM_CWMCONNECT_FIELD_INITIAL_SORT_DESC"
 		       validate="options"
 		       default="lname"
 		>
@@ -151,7 +153,7 @@
 			<option value="ordering">COM_CWMCONNECT_FIELD_VALUE_ORDERING</option>
 		</field>
 	</fieldset>
-	<fieldset name="Contact_Form"
+	<fieldset name="contactform"
 	          label="COM_CWMCONNECT_FIELD_CONFIG_MEMBER_FORM"
 	          description="COM_CWMCONNECT_FIELD_CONFIG_INDIVIDUAL_MEMBER_DESC"
 	>
@@ -179,21 +181,18 @@
 		       type="textarea"
 		       label="COM_CWMCONNECT_FIELD_CONFIG_BANNED_EMAIL_LABEL"
 		       rows="3"
-		       cols="30"
 		       description="COM_CWMCONNECT_FIELD_CONFIG_BANNED_EMAIL_DESC"
 		/>
 		<field name="banned_subject"
 		       type="textarea"
 		       label="COM_CWMCONNECT_FIELD_CONFIG_BANNED_SUBJECT_LABEL"
 		       rows="3"
-		       cols="30"
 		       description="COM_CWMCONNECT_FIELD_CONFIG_BANNED_SUBJECT_DESC"
 		/>
 		<field name="banned_text"
 		       type="textarea"
 		       label="COM_CWMCONNECT_FIELD_CONFIG_BANNED_TEXT_LABEL"
 		       rows="3"
-		       cols="30"
 		       description="COM_CWMCONNECT_FIELD_CONFIG_BANNED_TEXT_DESC"
 		/>
 		<field name="validate_session"
@@ -217,9 +216,9 @@
 			<option value="1">JYES</option>
 		</field>
 	</fieldset>
-	<fieldset name="globle"
-	          label="COM_CWMCONNECT_FIELD_CONFIG_GLOBLE_MEMBER_DISPLAY"
-	          description="COM_CWMCONNECT_FIELD_CONFIG_GLOBLE_MEMBER_DESC"
+	<fieldset name="global"
+	          label="COM_CWMCONNECT_FIELD_CONFIG_GLOBAL_MEMBER_DISPLAY"
+	          description="COM_CWMCONNECT_FIELD_CONFIG_GLOBAL_MEMBER_DESC"
 	>
 		<field name="member_access"
 		       type="accesslevel"
@@ -231,11 +230,9 @@
 		       type="usergroup"
 		       label="COM_CWMCONNECT_FIELD_MEMBER_PROTECTED_ACCESS_LABEL"
 		       description="COM_CWMCONNECT_FIELD_MEMBER_PROTECTED_ACCESS_DESC"
-		       class="inputbox"
-		       size="1"
 		/>
 		<field name="teamleaders"
-		       type="SQL"
+		       type="sql"
 		       query="SELECT id , name FROM #__cwmconnect_position where published=1"
 		       key_field="id"
 		       value_field="name"
@@ -261,7 +258,6 @@
 		<field name="pc_personal_access_token"
 		       type="password"
 		       autocomplete="off"
-		       size="60"
 		       label="COM_CWMCONNECT_FIELD_PC_PAT_LABEL"
 		       description="COM_CWMCONNECT_FIELD_PC_PAT_DESC"
 		       showon="pc_enabled:1"
@@ -269,7 +265,6 @@
 
 		<field name="pc_application_id"
 		       type="text"
-		       size="60"
 		       label="COM_CWMCONNECT_FIELD_PC_APP_ID_LABEL"
 		       description="COM_CWMCONNECT_FIELD_PC_APP_ID_DESC"
 		       showon="pc_enabled:1"
@@ -277,7 +272,6 @@
 
 		<field name="pc_api_base_url"
 		       type="url"
-		       size="60"
 		       default="https://api.planningcenteronline.com"
 		       label="COM_CWMCONNECT_FIELD_PC_BASE_URL_LABEL"
 		       description="COM_CWMCONNECT_FIELD_PC_BASE_URL_DESC"
@@ -295,7 +289,6 @@
 
 		<field name="pc_list_id"
 		       type="text"
-		       size="20"
 		       label="COM_CWMCONNECT_FIELD_PC_LIST_ID_LABEL"
 		       description="COM_CWMCONNECT_FIELD_PC_LIST_ID_DESC"
 		       showon="pc_enabled:1"
@@ -361,8 +354,7 @@
 		       type="accesslevel"
 		       label="COM_CWMCONNECT_FIELD_MEMBER_ACCESS_LEVEL_LABEL"
 		       description="COM_CWMCONNECT_FIELD_MEMBER_ACCESS_LEVEL_DESC"
-		       class="inputbox"
-		       size="1"/>
+		/>
 	</fieldset>
 	<fieldset name="printeddirectory"
 	          label="COM_CWMCONNECT_FIELD_CONFIG_PRINTED_DIRECTORY"
