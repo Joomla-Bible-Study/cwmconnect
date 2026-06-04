@@ -119,7 +119,7 @@ class ReportsModel extends ListModel
         $mergedParams = clone $params;
         $mergedParams->merge($menuParams);
 
-        $orderCol = $app->getInput()->get('filter_order', $mergedParams->get('dinitial_sort', 'ordering'));
+        $orderCol = $app->getInput()->get('filter_order', $mergedParams->get('initial_sort', 'ordering'));
         $this->setState('list.ordering', $orderCol);
 
         $listOrder = strtoupper((string) $app->getInput()->get('filter_order_Dir', 'ASC'));
