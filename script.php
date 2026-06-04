@@ -163,12 +163,14 @@ class Com_cwmconnectInstallerScript
             $db->insertObject('#__menu_types', $row);
         }
 
+        // v2 front-end views that need a routing-target menu item so the router
+        // can build SEF URLs. The legacy member/category/directory/home views
+        // were retired; the directory (members) + per-member profile + the
+        // self-service myprofile are what remain.
         $views = [
-            'members'    => ['title' => 'Member Directory',     'access' => 2],
-            'member'     => ['title' => 'Member Profile',       'access' => 2],
-            'myprofile'  => ['title' => 'My Profile',           'access' => 2],
-            'categories' => ['title' => 'Directory Categories', 'access' => 2],
-            'directory'  => ['title' => 'Directory',            'access' => 2],
+            'members'   => ['title' => 'Church Directory', 'access' => 2],
+            'profile'   => ['title' => 'Member Profile',   'access' => 2],
+            'myprofile' => ['title' => 'My Profile',       'access' => 2],
         ];
 
         $componentId = $this->getComponentId($db);
@@ -178,7 +180,25 @@ class Com_cwmconnectInstallerScript
         }
 
         foreach ($views as $view => $meta) {
-            $link = 'index.php?option=com_cwmconnect&view=' . $view;
+            $link  = 'index.php?option=com_cwmconnect&view=' . $view;
+            $alias = 'cwmconnect-' . $view;
+
+            // Self-heal upgrades from the legacy layout: an older version
+            // created routing items for the now-removed home/member/directory
+            // views, and one of them holds this view's canonical alias (e.g.
+            // the old "home" item kept `cwmconnect-members`). Joomla's alias
+            // uniqueness — which counts trashed rows too — would then block the
+            // new item. Retire any mismatched holder of the alias first.
+            $db->setQuery(
+                $db->createQuery()
+                    ->update($db->quoteName('#__menu'))
+                    ->set($db->quoteName('alias') . " = CONCAT(" . $db->quoteName('alias') . ", '-legacy')")
+                    ->set($db->quoteName('published') . ' = -2')
+                    ->where($db->quoteName('menutype') . ' = ' . $db->quote($menuType))
+                    ->where($db->quoteName('client_id') . ' = 0')
+                    ->where($db->quoteName('alias') . ' = ' . $db->quote($alias))
+                    ->where($db->quoteName('link') . ' <> ' . $db->quote($link)),
+            )->execute();
 
             $exists = $db->createQuery()
                 ->select('COUNT(*)')
