@@ -13,6 +13,7 @@
 
 use CWM\Component\Cwmconnect\Site\Helper\Layout;
 use Joomla\CMS\Factory;
+use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
 
@@ -56,17 +57,26 @@ $profileLink = static fn(int $id): string => Route::_('index.php?option=com_cwmc
         </div>
     </form>
 
-    <div class="d-flex justify-content-end gap-2 mb-3">
+    <div class="d-flex justify-content-end align-items-end gap-2 mb-3 flex-wrap">
         <a href="<?php echo Route::_('index.php?option=com_cwmconnect&view=members&format=pdf'); ?>"
            class="btn btn-primary btn-sm" target="_blank" rel="noopener"
            title="<?php echo $this->escape(Text::_('COM_CWMCONNECT_PDF_DOWNLOAD_BUTTON_TITLE')); ?>">
             <span class="icon-file-pdf" aria-hidden="true"></span> <?php echo Text::_('COM_CWMCONNECT_PDF_DOWNLOAD_BUTTON'); ?>
         </a>
-        <a href="<?php echo Route::_('index.php?option=com_cwmconnect&task=members.kmlFeed'); ?>"
-           class="btn btn-outline-secondary btn-sm" target="_blank" rel="noopener"
-           title="<?php echo $this->escape(Text::_('COM_CWMCONNECT_KML_DOWNLOAD_BUTTON_TITLE')); ?>">
-            <span class="icon-location" aria-hidden="true"></span> <?php echo Text::_('COM_CWMCONNECT_KML_DOWNLOAD_BUTTON'); ?>
-        </a>
+        <form action="<?php echo Route::_('index.php?option=com_cwmconnect&task=members.kmlFeed'); ?>" method="post"
+              class="d-flex align-items-end gap-2">
+            <div>
+                <label for="members-feed-label" class="form-label small mb-0"><?php echo Text::_('COM_CWMCONNECT_KML_DOWNLOAD_BUTTON'); ?></label>
+                <input type="text" name="feed_label" id="members-feed-label" class="form-control form-control-sm" maxlength="120"
+                       style="max-width:16rem;"
+                       placeholder="<?php echo $this->escape(Text::_('COM_CWMCONNECT_MEMBERS_KML_FEED_NAME_PLACEHOLDER')); ?>">
+            </div>
+            <button type="submit" class="btn btn-outline-secondary btn-sm text-nowrap"
+                    title="<?php echo $this->escape(Text::_('COM_CWMCONNECT_KML_DOWNLOAD_BUTTON_TITLE')); ?>">
+                <span class="icon-location" aria-hidden="true"></span> <?php echo Text::_('COM_CWMCONNECT_MEMBERS_KML_FEED_DOWNLOAD'); ?>
+            </button>
+            <?php echo HTMLHelper::_('form.token'); ?>
+        </form>
     </div>
 
     <?php if ($this->items === []) : ?>

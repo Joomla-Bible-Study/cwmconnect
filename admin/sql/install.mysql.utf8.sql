@@ -461,6 +461,7 @@ CREATE TABLE IF NOT EXISTS `#__cwmconnect_feed_tokens` (
   `created_at`   DATETIME     NOT NULL,
   `last_used_at` DATETIME     NULL,
   `revoked_at`   DATETIME     NULL,
+  `expires_at`   DATETIME     NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uniq_token_hash` (`token_hash`),
   KEY `idx_user_id` (`user_id`)

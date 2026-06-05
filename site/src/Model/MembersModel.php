@@ -15,12 +15,10 @@ namespace CWM\Component\Cwmconnect\Site\Model;
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
-use CWM\Component\Cwmconnect\Administrator\Service\FeedToken\FeedTokenService;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\ListModel;
 use Joomla\CMS\Uri\Uri;
-use Joomla\Database\ParameterType;
 use Joomla\Database\QueryInterface;
 
 /**
@@ -168,22 +166,20 @@ class MembersModel extends ListModel
     }
 
     /**
-     * Build a NetworkLink KML document with the user's feed token baked in.
-     * Auto-creates a token if the user doesn't have one yet.
+     * Build a NetworkLink KML document that auto-refreshes the directory feed
+     * for an already-issued token. Token creation lives in
+     * {@see \CWM\Component\Cwmconnect\Site\Model\MyprofileModel::createFeed()};
+     * this is purely the wrapper document Google Earth polls.
      *
-     * @param   int     $userId    Joomla user ID.
-     * @param   string  $username  Display name for auto-created token label.
+     * @param   string  $cleartext  The feed token to bake into the refresh URL.
      *
      * @return  string  Complete KML XML document.
      *
      * @since   __DEPLOY_VERSION__
      */
-    public function buildKmlFeedFile(int $userId, string $username): string
+    public function buildNetworkLinkDocument(string $cleartext): string
     {
-        $db        = $this->getDatabase();
-        $service   = new FeedTokenService($db);
-        $cleartext = $this->getOrCreateToken($db, $service, $userId, $username);
-        $dataUrl   = Uri::root() . 'index.php?option=com_cwmconnect&view=members&format=kml&token=' . urlencode($cleartext);
+        $dataUrl = Uri::root() . 'index.php?option=com_cwmconnect&view=members&format=kml&token=' . urlencode($cleartext);
 
         $esc = static fn(string $s): string => htmlspecialchars($s, ENT_XML1 | ENT_QUOTES, 'UTF-8');
 
@@ -205,63 +201,5 @@ class MembersModel extends ListModel
         $lines[] = '</kml>';
 
         return implode("\n", $lines);
-    }
-
-    /**
-     * Find an active token for the user, or create one.
-     *
-     * @param   \Joomla\Database\DatabaseInterface  $db        Database.
-     * @param   FeedTokenService                    $service   Token service.
-     * @param   int                                 $userId    Joomla user ID.
-     * @param   string                              $username  For auto-created label.
-     *
-     * @return  string  Cleartext token.
-     *
-     * @since   __DEPLOY_VERSION__
-     */
-    private function getOrCreateToken(
-        \Joomla\Database\DatabaseInterface $db,
-        FeedTokenService $service,
-        int $userId,
-        string $username,
-    ): string {
-        $query = $db->createQuery()
-            ->select($db->quoteName('token_hash'))
-            ->from($db->quoteName('#__cwmconnect_feed_tokens'))
-            ->where($db->quoteName('user_id') . ' = :uid')
-            ->where($db->quoteName('revoked_at') . ' IS NULL')
-            ->bind(':uid', $userId, ParameterType::INTEGER)
-            ->setLimit(1);
-
-        $existingHash = $db->setQuery($query)->loadResult();
-
-        if ($existingHash) {
-            $pair = $service->generate();
-
-            $update = $db->createQuery()
-                ->update($db->quoteName('#__cwmconnect_feed_tokens'))
-                ->set($db->quoteName('token_hash') . ' = ' . $db->quote($pair['hash']))
-                ->where($db->quoteName('user_id') . ' = :uid')
-                ->where($db->quoteName('token_hash') . ' = ' . $db->quote($existingHash))
-                ->bind(':uid', $userId, ParameterType::INTEGER);
-
-            $db->setQuery($update)->execute();
-
-            return $pair['cleartext'];
-        }
-
-        $pair = $service->generate();
-        $now  = new \DateTimeImmutable('now', new \DateTimeZone('UTC'))->format('Y-m-d H:i:s');
-
-        $row = (object) [
-            'user_id'    => $userId,
-            'token_hash' => $pair['hash'],
-            'label'      => 'Auto — ' . $username,
-            'created_at' => $now,
-        ];
-
-        $db->insertObject('#__cwmconnect_feed_tokens', $row);
-
-        return $pair['cleartext'];
     }
 }

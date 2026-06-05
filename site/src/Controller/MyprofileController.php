@@ -15,14 +15,12 @@ namespace CWM\Component\Cwmconnect\Site\Controller;
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
-use CWM\Component\Cwmconnect\Administrator\Service\FeedToken\FeedTokenService;
 use CWM\Component\Cwmconnect\Site\Model\MyprofileModel;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Controller\BaseController;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Session\Session;
-use Joomla\Database\DatabaseInterface;
 
 /**
  * Phase H: self-service portal controller. Renders `view=myprofile` and
@@ -86,7 +84,89 @@ class MyprofileController extends BaseController
     }
 
     /**
-     * Revoke all active KML feed tokens for the current user.
+     * Create a new named live map feed for the current user and stash the
+     * one-time cleartext URL for the portal to show once.
+     *
+     * @return  void
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    public function createKmlFeed(): void
+    {
+        Session::checkToken();
+
+        $input = $this->app->getInput();
+        $label = (string) $input->getString('feed_label', '');
+
+        /** @var MyprofileModel $model */
+        $model = $this->getModel('Myprofile');
+
+        try {
+            $result = $model->createFeed($label, $this->parseExpiry((string) $input->getString('feed_expires', '')));
+            $this->app->setUserState('com_cwmconnect.myprofile.feed_cleartext', $result['cleartext']);
+            $this->app->enqueueMessage(Text::_('COM_CWMCONNECT_MYPROFILE_FEED_CREATED'));
+        } catch (\RuntimeException $e) {
+            $this->app->enqueueMessage($e->getMessage(), 'error');
+        }
+
+        $this->setRedirect($this->portalRoute());
+    }
+
+    /**
+     * Rotate one of the current user's feeds and stash the fresh cleartext URL.
+     *
+     * @return  void
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    public function regenerateKmlFeed(): void
+    {
+        Session::checkToken();
+
+        $id = (int) $this->app->getInput()->getInt('feed_id', 0);
+
+        /** @var MyprofileModel $model */
+        $model = $this->getModel('Myprofile');
+
+        try {
+            $cleartext = $model->regenerateFeed($id);
+            $this->app->setUserState('com_cwmconnect.myprofile.feed_cleartext', $cleartext);
+            $this->app->enqueueMessage(Text::_('COM_CWMCONNECT_MYPROFILE_FEED_REGENERATED'));
+        } catch (\RuntimeException $e) {
+            $this->app->enqueueMessage($e->getMessage(), 'error');
+        }
+
+        $this->setRedirect($this->portalRoute());
+    }
+
+    /**
+     * Revoke a single feed owned by the current user.
+     *
+     * @return  void
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    public function revokeKmlFeed(): void
+    {
+        Session::checkToken();
+
+        $id = (int) $this->app->getInput()->getInt('feed_id', 0);
+
+        /** @var MyprofileModel $model */
+        $model = $this->getModel('Myprofile');
+
+        try {
+            $model->revokeFeed($id);
+            $this->app->enqueueMessage(Text::_('COM_CWMCONNECT_MYPROFILE_FEED_REVOKED'));
+        } catch (\RuntimeException $e) {
+            $this->app->enqueueMessage($e->getMessage(), 'error');
+        }
+
+        $this->setRedirect($this->portalRoute());
+    }
+
+    /**
+     * Revoke every active feed for the current user (panic button).
      *
      * @return  void
      *
@@ -96,32 +176,48 @@ class MyprofileController extends BaseController
     {
         Session::checkToken();
 
-        $userId   = (int) ($this->app->getIdentity()?->id ?? 0);
-        $redirect = Route::_('index.php?option=com_cwmconnect&view=myprofile', false);
-
-        if ($userId <= 0) {
-            $this->setRedirect($redirect);
-
-            return;
-        }
-
-        $db      = $this->app->getContainer()->get(DatabaseInterface::class);
-        $service = new FeedTokenService($db);
-
-        $query = $db->createQuery()
-            ->select($db->quoteName('id'))
-            ->from($db->quoteName('#__cwmconnect_feed_tokens'))
-            ->where($db->quoteName('user_id') . ' = :uid')
-            ->where($db->quoteName('revoked_at') . ' IS NULL')
-            ->bind(':uid', $userId, \Joomla\Database\ParameterType::INTEGER);
-
-        $ids = array_map('intval', $db->setQuery($query)->loadColumn() ?: []);
-
-        if ($ids !== []) {
-            $service->revoke($ids);
-        }
+        /** @var MyprofileModel $model */
+        $model = $this->getModel('Myprofile');
+        $model->revokeAllFeeds();
 
         $this->app->enqueueMessage(Text::_('COM_CWMCONNECT_MYPROFILE_KML_REVOKED'));
-        $this->setRedirect($redirect);
+        $this->setRedirect($this->portalRoute());
+    }
+
+    /**
+     * Normalise a user-supplied 'YYYY-MM-DD' expiry into an end-of-day UTC
+     * timestamp, or null when blank/invalid.
+     *
+     * @param   string  $raw  Raw date input.
+     *
+     * @return  string|null
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    private function parseExpiry(string $raw): ?string
+    {
+        $raw = trim($raw);
+
+        if ($raw === '') {
+            return null;
+        }
+
+        try {
+            return new \DateTimeImmutable($raw . ' 23:59:59', new \DateTimeZone('UTC'))->format('Y-m-d H:i:s');
+        } catch (\Exception) {
+            return null;
+        }
+    }
+
+    /**
+     * Route back to the portal.
+     *
+     * @return  string
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    private function portalRoute(): string
+    {
+        return Route::_('index.php?option=com_cwmconnect&view=myprofile', false);
     }
 }
