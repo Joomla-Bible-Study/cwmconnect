@@ -208,8 +208,7 @@ final class Cwmconnect extends Adapter implements SubscriberInterface
         $item->params  = new Registry($item->params);
 
         $item->url   = $this->getUrl($item->id, $this->extension, $this->layout);
-        $item->route = RouteHelper::getMemberRoute($item->slug, $item->catslug);
-        $item->path  = Helper::getContentPath($item->route);
+        $item->route = RouteHelper::getMemberRoute($item->slug, (int) $item->catid, $item->language);
 
         $title = $this->getItemMenuTitle($item->url);
 
