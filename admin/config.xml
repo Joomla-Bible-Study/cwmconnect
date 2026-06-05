@@ -56,6 +56,33 @@
 		       description="COM_CWMCONNECT_FIELD_KML_FEED_MAX_DESC"
 		/>
 	</fieldset>
+	<fieldset name="geocoding"
+	          label="COM_CWMCONNECT_FIELDSET_GEOCODING_LABEL"
+	          description="COM_CWMCONNECT_FIELDSET_GEOCODING_DESC"
+	>
+		<field name="geocode_provider"
+		       type="list"
+		       default="nominatim"
+		       validate="options"
+		       label="COM_CWMCONNECT_FIELD_GEOCODE_PROVIDER_LABEL"
+		       description="COM_CWMCONNECT_FIELD_GEOCODE_PROVIDER_DESC"
+		>
+			<option value="nominatim">COM_CWMCONNECT_FIELD_GEOCODE_PROVIDER_NOMINATIM</option>
+			<option value="google">COM_CWMCONNECT_FIELD_GEOCODE_PROVIDER_GOOGLE</option>
+		</field>
+		<field name="geocode_contact_email"
+		       type="email"
+		       label="COM_CWMCONNECT_FIELD_GEOCODE_CONTACT_LABEL"
+		       description="COM_CWMCONNECT_FIELD_GEOCODE_CONTACT_DESC"
+		       showon="geocode_provider:nominatim"
+		/>
+		<field name="geocode_api_key"
+		       type="text"
+		       label="COM_CWMCONNECT_FIELD_GEOCODE_API_KEY_LABEL"
+		       description="COM_CWMCONNECT_FIELD_GEOCODE_API_KEY_DESC"
+		       showon="geocode_provider:google"
+		/>
+	</fieldset>
 	<fieldset name="contactform"
 	          label="COM_CWMCONNECT_FIELD_CONFIG_MEMBER_FORM"
 	          description="COM_CWMCONNECT_FIELD_CONFIG_INDIVIDUAL_MEMBER_DESC"
