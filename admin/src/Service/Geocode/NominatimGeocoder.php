@@ -108,7 +108,7 @@ final readonly class NominatimGeocoder implements GeocoderInterface
      */
     public static function composeAddress(string $street, string $city, string $state, string $country): string
     {
-        return implode(', ', array_filter(array_map('trim', [$street, $city, $state, $country])));
+        return AddressNormalizer::compose($street, $city, $state, $country);
     }
 
     /**
