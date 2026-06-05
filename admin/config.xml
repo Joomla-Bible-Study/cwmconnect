@@ -223,19 +223,7 @@
 		       description="COM_CWMCONNECT_FIELD_PC_FIELD_LEADER_DESC"
 		       showon="pc_enabled:1"/>
 	</fieldset>
-	<fieldset name="permissions"
-	          label="JCONFIG_PERMISSIONS_LABEL"
-	          description="JCONFIG_PERMISSIONS_DESC"
-	>
-		<field name="rules"
-		       type="rules"
-		       label="JCONFIG_PERMISSIONS_LABEL"
-		       validate="rules"
-		       filter="rules"
-		       component="com_cwmconnect"
-		       section="component"/>
-	</fieldset>
-<fieldset name="printeddirectory"
+	<fieldset name="printeddirectory"
 	          label="COM_CWMCONNECT_FIELD_CONFIG_PRINTED_DIRECTORY"
 	          description="COM_CWMCONNECT_FIELD_CONFIG_PRINTED_DIRECTORY_DESC"
 	>
@@ -419,5 +407,17 @@
 			<option value="large">COM_CWMCONNECT_FIELD_PDF_FONT_SIZE_LARGE</option>
 			<option value="xlarge">COM_CWMCONNECT_FIELD_PDF_FONT_SIZE_XLARGE</option>
 		</field>
+	</fieldset>
+	<fieldset name="permissions"
+	          label="JCONFIG_PERMISSIONS_LABEL"
+	          description="JCONFIG_PERMISSIONS_DESC"
+	>
+		<field name="rules"
+		       type="rules"
+		       label="JCONFIG_PERMISSIONS_LABEL"
+		       validate="rules"
+		       filter="rules"
+		       component="com_cwmconnect"
+		       section="component"/>
 	</fieldset>
 </config>
