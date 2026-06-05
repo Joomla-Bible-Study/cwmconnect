@@ -41,6 +41,13 @@
 			<option value="lname">COM_CWMCONNECT_FIELD_VALUE_LAST_NAME</option>
 			<option value="ordering">COM_CWMCONNECT_FIELD_VALUE_ORDERING</option>
 		</field>
+		<field name="kml_feed_inactivity_days"
+		       type="number"
+		       default="90"
+		       min="0"
+		       label="COM_CWMCONNECT_FIELD_KML_FEED_INACTIVITY_LABEL"
+		       description="COM_CWMCONNECT_FIELD_KML_FEED_INACTIVITY_DESC"
+		/>
 	</fieldset>
 	<fieldset name="contactform"
 	          label="COM_CWMCONNECT_FIELD_CONFIG_MEMBER_FORM"
