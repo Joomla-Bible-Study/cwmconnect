@@ -48,6 +48,13 @@
 		       label="COM_CWMCONNECT_FIELD_KML_FEED_INACTIVITY_LABEL"
 		       description="COM_CWMCONNECT_FIELD_KML_FEED_INACTIVITY_DESC"
 		/>
+		<field name="kml_feed_max_per_member"
+		       type="number"
+		       default="5"
+		       min="1"
+		       label="COM_CWMCONNECT_FIELD_KML_FEED_MAX_LABEL"
+		       description="COM_CWMCONNECT_FIELD_KML_FEED_MAX_DESC"
+		/>
 	</fieldset>
 	<fieldset name="contactform"
 	          label="COM_CWMCONNECT_FIELD_CONFIG_MEMBER_FORM"

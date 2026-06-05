@@ -18,6 +18,7 @@ namespace CWM\Component\Cwmconnect\Site\Controller;
 use CWM\Component\Cwmconnect\Administrator\Service\FeedToken\FeedTokenService;
 use CWM\Component\Cwmconnect\Site\Helper\PhotoAccess;
 use Joomla\CMS\Access\Exception\NotAllowed;
+use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Controller\BaseController;
 use Joomla\Database\DatabaseInterface;
@@ -59,8 +60,9 @@ class PhotoController extends BaseController
             $token = (string) $this->input->getString('token', '');
 
             if ($token !== '') {
-                $tokenRow    = new FeedTokenService($db)->validate($token);
-                $tokenUserId = $tokenRow !== null ? (int) $tokenRow->user_id : null;
+                $inactivityDays = (int) ComponentHelper::getParams('com_cwmconnect')->get('kml_feed_inactivity_days', 90);
+                $tokenRow       = new FeedTokenService($db)->validate($token, $inactivityDays);
+                $tokenUserId    = $tokenRow !== null ? (int) $tokenRow->user_id : null;
             }
 
             if ($tokenUserId === null) {

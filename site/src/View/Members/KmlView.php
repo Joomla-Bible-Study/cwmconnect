@@ -18,6 +18,7 @@ namespace CWM\Component\Cwmconnect\Site\View\Members;
 use CWM\Component\Cwmconnect\Administrator\Helper\DbHelper;
 use CWM\Component\Cwmconnect\Administrator\Service\FeedToken\FeedTokenService;
 use CWM\Component\Cwmconnect\Site\Model\MembersModel;
+use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
@@ -85,9 +86,10 @@ class KmlView extends BaseHtmlView
         }
 
         if ($token !== '') {
-            $db       = Factory::getContainer()->get(\Joomla\Database\DatabaseInterface::class);
-            $service  = new FeedTokenService($db);
-            $tokenRow = $service->validate($token);
+            $db            = Factory::getContainer()->get(\Joomla\Database\DatabaseInterface::class);
+            $service       = new FeedTokenService($db);
+            $inactivityDays = (int) ComponentHelper::getParams('com_cwmconnect')->get('kml_feed_inactivity_days', 90);
+            $tokenRow      = $service->validate($token, $inactivityDays);
 
             if ($tokenRow === null) {
                 throw new \RuntimeException(Text::_('COM_CWMCONNECT_KML_FEED_TOKEN_INVALID'), 403);

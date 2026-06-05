@@ -15,6 +15,7 @@ use CWM\Component\Cwmconnect\Site\Helper\SocialLinks;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
+use Joomla\CMS\Uri\Uri;
 
 /** @var \CWM\Component\Cwmconnect\Site\View\Myprofile\HtmlView $this */
 
@@ -161,31 +162,106 @@ $wa->useScript('form.validate');
 				</div>
 			<?php endif; ?>
 
-			<?php // KML Feed management?>
+			<?php // My live map feeds?>
 			<div class="card mb-3">
-				<div class="card-header"><h3 class="card-title h6 mb-0"><?php echo Text::_('COM_CWMCONNECT_MYPROFILE_KML_HEADING'); ?></h3></div>
+				<div class="card-header"><h3 class="card-title h6 mb-0"><?php echo Text::_('COM_CWMCONNECT_MYPROFILE_FEEDS_HEADING'); ?></h3></div>
 				<div class="card-body">
-					<?php if ($this->hasActiveToken) : ?>
-						<p class="text-success mb-2">
-							<span class="icon-checkmark" aria-hidden="true"></span>
-							<?php echo Text::_('COM_CWMCONNECT_MYPROFILE_KML_ACTIVE'); ?>
-						</p>
-						<div class="d-grid gap-2">
-							<a href="<?php echo Route::_('index.php?option=com_cwmconnect&task=members.kmlFeed'); ?>" class="btn btn-outline-primary btn-sm">
-								<span class="icon-download" aria-hidden="true"></span> <?php echo Text::_('COM_CWMCONNECT_MYPROFILE_KML_DOWNLOAD'); ?>
-							</a>
-							<form action="<?php echo Route::_('index.php?option=com_cwmconnect&task=myprofile.revokeKml'); ?>" method="post">
-								<button type="submit" class="btn btn-outline-danger btn-sm w-100">
-									<span class="icon-ban-circle" aria-hidden="true"></span> <?php echo Text::_('COM_CWMCONNECT_MYPROFILE_KML_REVOKE'); ?>
-								</button>
-								<?php echo HTMLHelper::_('form.token'); ?>
-							</form>
+					<p class="text-muted small"><?php echo Text::_('COM_CWMCONNECT_MYPROFILE_FEEDS_INTRO'); ?></p>
+
+					<?php if ($this->newFeedCleartext !== '') :
+					    $feedUrl = Uri::root() . 'index.php?option=com_cwmconnect&view=members&format=kml&token=' . urlencode($this->newFeedCleartext);
+					    $dlUrl   = $feedUrl . '&networklink=1';
+					    ?>
+						<div class="alert alert-success">
+							<h4 class="alert-heading h6"><?php echo Text::_('COM_CWMCONNECT_MYPROFILE_FEED_READY_HEADING'); ?></h4>
+							<p class="mb-2">
+								<a href="<?php echo $this->escape($dlUrl); ?>" class="btn btn-success btn-sm" download="church-directory-live.kml">
+									<span class="icon-download" aria-hidden="true"></span> <?php echo Text::_('COM_CWMCONNECT_MYPROFILE_FEED_DOWNLOAD_BTN'); ?>
+								</a>
+							</p>
+							<p class="small text-muted mb-2"><?php echo Text::_('COM_CWMCONNECT_MYPROFILE_FEED_DOWNLOAD_HINT'); ?></p>
+							<label class="small mb-1" for="cwm-feed-url"><?php echo Text::_('COM_CWMCONNECT_MYPROFILE_FEED_URL_LABEL'); ?></label>
+							<input type="text" id="cwm-feed-url" class="form-control form-control-sm font-monospace" value="<?php echo $this->escape($feedUrl); ?>" readonly onclick="this.select();">
+							<p class="small text-muted mb-0 mt-1"><?php echo Text::_('COM_CWMCONNECT_MYPROFILE_FEED_URL_WARNING'); ?></p>
 						</div>
+					<?php endif; ?>
+
+					<?php if ($this->feeds !== []) : ?>
+						<div class="table-responsive">
+							<table class="table table-sm align-middle">
+								<thead>
+									<tr>
+										<th scope="col"><?php echo Text::_('COM_CWMCONNECT_MYPROFILE_FEED_COL_NAME'); ?></th>
+										<th scope="col" class="d-none d-sm-table-cell"><?php echo Text::_('COM_CWMCONNECT_MYPROFILE_FEED_COL_CREATED'); ?></th>
+										<th scope="col" class="d-none d-md-table-cell"><?php echo Text::_('COM_CWMCONNECT_MYPROFILE_FEED_COL_LASTUSED'); ?></th>
+										<th scope="col"><?php echo Text::_('COM_CWMCONNECT_MYPROFILE_FEED_COL_STATUS'); ?></th>
+										<th scope="col"><span class="visually-hidden"><?php echo Text::_('JACTION_EDIT'); ?></span></th>
+									</tr>
+								</thead>
+								<tbody>
+								<?php foreach ($this->feeds as $feed) :
+								    $isActive = ($feed->status ?? '') === 'active';
+								    ?>
+									<tr>
+										<td><?php echo $this->escape((string) $feed->label); ?></td>
+										<td class="small d-none d-sm-table-cell"><?php echo HTMLHelper::_('date', $feed->created_at, Text::_('DATE_FORMAT_LC4')); ?></td>
+										<td class="small d-none d-md-table-cell">
+											<?php echo $feed->last_used_at
+								                ? HTMLHelper::_('date', $feed->last_used_at, Text::_('DATE_FORMAT_LC4'))
+								                : Text::_('COM_CWMCONNECT_MYPROFILE_FEED_NEVER_USED'); ?>
+										</td>
+										<td>
+											<span class="badge bg-<?php echo $isActive ? 'success' : 'secondary'; ?>">
+												<?php echo $isActive
+								                    ? Text::_('COM_CWMCONNECT_MYPROFILE_FEED_STATUS_ACTIVE')
+								                    : Text::_('COM_CWMCONNECT_MYPROFILE_FEED_STATUS_EXPIRED'); ?>
+											</span>
+										</td>
+										<td class="text-end text-nowrap">
+											<form action="<?php echo Route::_('index.php?option=com_cwmconnect&task=myprofile.regenerateKmlFeed'); ?>" method="post" class="d-inline">
+												<input type="hidden" name="feed_id" value="<?php echo (int) $feed->id; ?>">
+												<button type="submit" class="btn btn-outline-secondary btn-sm"><?php echo Text::_('COM_CWMCONNECT_MYPROFILE_FEED_REGENERATE'); ?></button>
+												<?php echo HTMLHelper::_('form.token'); ?>
+											</form>
+											<form action="<?php echo Route::_('index.php?option=com_cwmconnect&task=myprofile.revokeKmlFeed'); ?>" method="post" class="d-inline">
+												<input type="hidden" name="feed_id" value="<?php echo (int) $feed->id; ?>">
+												<button type="submit" class="btn btn-outline-danger btn-sm"><?php echo Text::_('COM_CWMCONNECT_MYPROFILE_FEED_REVOKE'); ?></button>
+												<?php echo HTMLHelper::_('form.token'); ?>
+											</form>
+										</td>
+									</tr>
+								<?php endforeach; ?>
+								</tbody>
+							</table>
+						</div>
+						<form action="<?php echo Route::_('index.php?option=com_cwmconnect&task=myprofile.revokeKml'); ?>" method="post" class="mb-3">
+							<button type="submit" class="btn btn-link btn-sm text-danger p-0"><?php echo Text::_('COM_CWMCONNECT_MYPROFILE_FEED_REVOKE_ALL'); ?></button>
+							<?php echo HTMLHelper::_('form.token'); ?>
+						</form>
 					<?php else : ?>
-						<p class="text-muted small mb-2"><?php echo Text::_('COM_CWMCONNECT_MYPROFILE_KML_NONE'); ?></p>
-						<a href="<?php echo Route::_('index.php?option=com_cwmconnect&task=members.kmlFeed'); ?>" class="btn btn-primary btn-sm w-100">
-							<span class="icon-location" aria-hidden="true"></span> <?php echo Text::_('COM_CWMCONNECT_MYPROFILE_KML_CONNECT'); ?>
-						</a>
+						<p class="text-muted small"><?php echo Text::_('COM_CWMCONNECT_MYPROFILE_FEEDS_EMPTY'); ?></p>
+					<?php endif; ?>
+
+					<?php if ($this->atFeedCap) : ?>
+						<p class="small text-muted mb-0"><?php echo Text::sprintf('COM_CWMCONNECT_MYPROFILE_FEED_CAP_NOTE', $this->maxFeeds); ?></p>
+					<?php else : ?>
+						<hr>
+						<h4 class="h6"><?php echo Text::_('COM_CWMCONNECT_MYPROFILE_FEED_CREATE_HEADING'); ?></h4>
+						<form action="<?php echo Route::_('index.php?option=com_cwmconnect&task=myprofile.createKmlFeed'); ?>" method="post" class="row g-2 align-items-end">
+							<div class="col-sm-6">
+								<label class="form-label small" for="cwm-feed-label"><?php echo Text::_('COM_CWMCONNECT_MYPROFILE_FEED_NAME_LABEL'); ?></label>
+								<input type="text" name="feed_label" id="cwm-feed-label" class="form-control form-control-sm" maxlength="120"
+								       placeholder="<?php echo $this->escape(Text::_('COM_CWMCONNECT_MYPROFILE_FEED_NAME_PLACEHOLDER')); ?>">
+							</div>
+							<div class="col-sm-4">
+								<label class="form-label small" for="cwm-feed-expires"><?php echo Text::_('COM_CWMCONNECT_MYPROFILE_FEED_EXPIRES_LABEL'); ?></label>
+								<input type="date" name="feed_expires" id="cwm-feed-expires" class="form-control form-control-sm">
+							</div>
+							<div class="col-sm-2">
+								<button type="submit" class="btn btn-primary btn-sm w-100"><?php echo Text::_('COM_CWMCONNECT_MYPROFILE_FEED_CREATE_BTN'); ?></button>
+							</div>
+							<?php echo HTMLHelper::_('form.token'); ?>
+						</form>
 					<?php endif; ?>
 				</div>
 			</div>
