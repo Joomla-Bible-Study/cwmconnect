@@ -210,6 +210,16 @@ class GeoupdateModel extends BaseDatabaseModel
 
         if ($id) {
             $query->where($db->quoteName('id') . ' = ' . (int) $id);
+        } else {
+            // Full scan: only members that still need coordinates and actually
+            // have an address — so a re-run retries failures + new members
+            // without re-geocoding everyone or churning on blank addresses.
+            $query->where(
+                '(' . $db->quoteName('lat') . ' = 0 OR ' . $db->quoteName('lng') . ' = 0'
+                . ' OR ' . $db->quoteName('lat') . ' IS NULL OR ' . $db->quoteName('lng') . ' IS NULL)',
+            )
+                ->where($db->quoteName('address') . ' IS NOT NULL')
+                ->where('TRIM(' . $db->quoteName('address') . ") <> ''");
         }
 
         $db->setQuery($query);
