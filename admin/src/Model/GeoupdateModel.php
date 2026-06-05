@@ -15,18 +15,21 @@ namespace CWM\Component\Cwmconnect\Administrator\Model;
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
+use CWM\Component\Cwmconnect\Administrator\Service\Geocode\GeocoderFactory;
+use CWM\Component\Cwmconnect\Administrator\Service\Geocode\GeocoderInterface;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\Database\ParameterType;
 
 /**
  * Geocoding worker model.
  *
- * Walks every member row that has a postal address and asks the Google
- * geocoding API for lat/lng coordinates, persisting either the result on
- * the member row or the failure on `#__cwmconnect_geoupdate`. The
- * queue is paged through the user's session so the browser can drive
- * the pass forward in slices.
+ * Walks every member row that has a postal address and asks the configured
+ * geocoding provider (Nominatim or Google — see {@see GeocoderFactory}) for
+ * lat/lng coordinates, persisting either the result on the member row or the
+ * failure on `#__cwmconnect_geoupdate`. The queue is paged through the user's
+ * session so the browser can drive the pass forward in slices.
  *
  * @since  2.0.0
  */
@@ -85,6 +88,14 @@ class GeoupdateModel extends BaseDatabaseModel
      * @since 2.0.0
      */
     public int $doneMembers = 0;
+
+    /**
+     * Geocoder, built lazily from the component params.
+     *
+     * @var    GeocoderInterface|null
+     * @since  __DEPLOY_VERSION__
+     */
+    private ?GeocoderInterface $geocoder = null;
 
     /**
      * Reset and start a fresh scan. If $id is set, only that single row is
@@ -225,8 +236,7 @@ class GeoupdateModel extends BaseDatabaseModel
             return false;
         }
 
-        $db  = $this->getDatabase();
-        $key = ComponentHelper::getParams('com_cwmconnect')->get('apikey');
+        $db = $this->getDatabase();
 
         if ($id) {
             $memberId = $id;
@@ -248,110 +258,132 @@ class GeoupdateModel extends BaseDatabaseModel
             return false;
         }
 
-        $baseUrl = 'https://maps.googleapis.com/maps/api/geocode/xml?address=';
-        $address = str_replace(' ', '+', (string) $row->address);
-        $suburb  = str_replace(' ', '+', (string) ($row->suburb ?? ''));
-        $state   = (string) ($row->state ?? '');
+        $geocoder = $this->geocoder();
+        $result   = $geocoder->geocode(
+            (string) $row->address,
+            (string) ($row->suburb ?? ''),
+            (string) ($row->state ?? ''),
+            (string) ($row->country ?? ''),
+        );
 
-        $requestUrl = $baseUrl . $address . ',+' . $suburb . ',+' . $state
-            . '&sensor=true&key=' . urlencode((string) $key);
+        // Bounded back-off retry on a rate-limit, staying inside the slice
+        // budget; the provider also self-throttles where its policy requires it.
+        $delay    = 0;
+        $attempts = 0;
 
-        $delay           = 0;
-        $geocodePending  = true;
+        while ($result->rateLimited && $attempts < 5 && $this->haveEnoughTime()) {
+            $delay = min($delay + 200_000, (int) (self::SLICE_BUDGET * 1_000_000));
+            usleep($delay);
 
-        while ($geocodePending) {
-            $body = @file_get_contents($requestUrl);
-
-            if ($body === false) {
-                return true;
-            }
-
-            $xml = @simplexml_load_string($body);
-
-            if (!$xml instanceof \SimpleXMLElement) {
-                return true;
-            }
-
-            $status = (string) $xml->status;
-
-            if ($status === 'OK') {
-                $geocodePending = false;
-
-                foreach ($xml->result as $data) {
-                    $ulat  = (string) $data->geometry->location->lat;
-                    $ulng  = (string) $data->geometry->location->lng;
-
-                    $update = $db->createQuery()
-                        ->update($db->quoteName('#__cwmconnect_details'))
-                        ->set($db->quoteName('lat') . ' = ' . $db->quote($ulat))
-                        ->set($db->quoteName('lng') . ' = ' . $db->quote($ulng))
-                        ->where($db->quoteName('id') . ' = ' . (int) $row->id);
-                    $db->setQuery($update)->execute();
-
-                    // Drop any prior error row for this member.
-                    $check = $db->createQuery()
-                        ->select($db->quoteName('member_id'))
-                        ->from($db->quoteName('#__cwmconnect_geoupdate'))
-                        ->where($db->quoteName('member_id') . ' = ' . (int) $memberId);
-                    $db->setQuery($check);
-
-                    if ($db->loadResult()) {
-                        $delete = $db->createQuery()
-                            ->delete($db->quoteName('#__cwmconnect_geoupdate'))
-                            ->where($db->quoteName('member_id') . ' = ' . (int) $memberId);
-                        $db->setQuery($delete)->execute();
-                    }
-                }
-            } elseif ($status === 'OVER_QUERY_LIMIT') {
-                // Cap incremental backoff so a sustained rate-limit can't
-                // accumulate an unbounded usleep past the slice budget.
-                $delay = min($delay + 100000, (int) (self::SLICE_BUDGET * 1_000_000));
-            } else {
-                $geocodePending = false;
-                $errorMessage   = isset($xml->result->error_message)
-                    ? (string) $xml->result->error_message
-                    : '';
-                $info = sprintf(
-                    'Status: %s<br /><div style="float:left; padding:5px;">Error Message:</div><div style="float:left; padding:5px;">%s</div>',
-                    $status,
-                    $errorMessage
-                );
-
-                $check = $db->createQuery()
-                    ->select('*')
-                    ->from($db->quoteName('#__cwmconnect_geoupdate'))
-                    ->where($db->quoteName('member_id') . ' = ' . (int) $row->id);
-                $db->setQuery($check);
-
-                if ($db->loadResult()) {
-                    $update = $db->createQuery()
-                        ->update($db->quoteName('#__cwmconnect_geoupdate'))
-                        ->set($db->quoteName('status') . ' = ' . $db->quote($info))
-                        ->where($db->quoteName('member_id') . ' = ' . (int) $row->id);
-                    $db->setQuery($update)->execute();
-                } else {
-                    $insert = $db->createQuery()
-                        ->insert($db->quoteName('#__cwmconnect_geoupdate'))
-                        ->set($db->quoteName('member_id') . ' = ' . (int) $row->id)
-                        ->set($db->quoteName('status') . ' = ' . $db->quote($info));
-                    $db->setQuery($insert)->execute();
-                }
-            }
-
-            if ($delay > 0) {
-                usleep($delay);
-            }
-
-            // Bubble back to the outer slice when over budget; the row
-            // stays pending and the next tick will retry it. Without this
-            // a sustained OVER_QUERY_LIMIT response would spin past
-            // SLICE_BUDGET because the inner loop never re-checks time.
-            if ($geocodePending && !$this->haveEnoughTime()) {
-                break;
-            }
+            $result = $geocoder->geocode(
+                (string) $row->address,
+                (string) ($row->suburb ?? ''),
+                (string) ($row->state ?? ''),
+                (string) ($row->country ?? ''),
+            );
+            $attempts++;
         }
 
-        return $geocodePending;
+        if ($result->found) {
+            $this->storeCoordinates($memberId, (float) $result->lat, (float) $result->lng);
+
+            return false;
+        }
+
+        $this->logGeocodeError($memberId, $result->status, $result->message);
+
+        return $result->rateLimited;
+    }
+
+    /**
+     * Build (once) the configured geocoder.
+     *
+     * @return  GeocoderInterface
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    private function geocoder(): GeocoderInterface
+    {
+        return $this->geocoder ??= GeocoderFactory::fromParams(
+            ComponentHelper::getParams('com_cwmconnect'),
+            (string) Factory::getApplication()->get('mailfrom', ''),
+        );
+    }
+
+    /**
+     * Persist resolved coordinates and clear any prior error row.
+     *
+     * @param   int    $memberId  Member row id.
+     * @param   float  $lat       Latitude.
+     * @param   float  $lng       Longitude.
+     *
+     * @return  void
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    private function storeCoordinates(int $memberId, float $lat, float $lng): void
+    {
+        $db     = $this->getDatabase();
+        $latStr = sprintf('%.8F', $lat);
+        $lngStr = sprintf('%.8F', $lng);
+
+        $update = $db->createQuery()
+            ->update($db->quoteName('#__cwmconnect_details'))
+            ->set($db->quoteName('lat') . ' = :lat')
+            ->set($db->quoteName('lng') . ' = :lng')
+            ->where($db->quoteName('id') . ' = :id')
+            ->bind(':lat', $latStr, ParameterType::STRING)
+            ->bind(':lng', $lngStr, ParameterType::STRING)
+            ->bind(':id', $memberId, ParameterType::INTEGER);
+        $db->setQuery($update)->execute();
+
+        $delete = $db->createQuery()
+            ->delete($db->quoteName('#__cwmconnect_geoupdate'))
+            ->where($db->quoteName('member_id') . ' = :id')
+            ->bind(':id', $memberId, ParameterType::INTEGER);
+        $db->setQuery($delete)->execute();
+    }
+
+    /**
+     * Upsert the per-member geocode failure on `#__cwmconnect_geoupdate` so the
+     * Geo status report can surface what went wrong.
+     *
+     * @param   int     $memberId  Member row id.
+     * @param   string  $status    Short status code.
+     * @param   string  $message   Detail.
+     *
+     * @return  void
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    private function logGeocodeError(int $memberId, string $status, string $message): void
+    {
+        $db   = $this->getDatabase();
+        $info = trim($status . ($message !== '' ? ': ' . $message : ''));
+
+        $exists = $db->createQuery()
+            ->select($db->quoteName('member_id'))
+            ->from($db->quoteName('#__cwmconnect_geoupdate'))
+            ->where($db->quoteName('member_id') . ' = :id')
+            ->bind(':id', $memberId, ParameterType::INTEGER);
+
+        if ($db->setQuery($exists)->loadResult()) {
+            $query = $db->createQuery()
+                ->update($db->quoteName('#__cwmconnect_geoupdate'))
+                ->set($db->quoteName('status') . ' = :info')
+                ->where($db->quoteName('member_id') . ' = :id')
+                ->bind(':info', $info, ParameterType::STRING)
+                ->bind(':id', $memberId, ParameterType::INTEGER);
+        } else {
+            $query = $db->createQuery()
+                ->insert($db->quoteName('#__cwmconnect_geoupdate'))
+                ->columns($db->quoteName(['member_id', 'status']))
+                ->values(':id, :info')
+                ->bind(':id', $memberId, ParameterType::INTEGER)
+                ->bind(':info', $info, ParameterType::STRING);
+        }
+
+        $db->setQuery($query)->execute();
     }
 
     /**
