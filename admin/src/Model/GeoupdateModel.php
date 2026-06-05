@@ -492,9 +492,15 @@ class GeoupdateModel extends BaseDatabaseModel
 
         $decoded = json_decode($stack, true, 512, JSON_THROW_ON_ERROR);
 
-        $this->membersStack = (array) ($decoded['members'] ?? []);
-        $this->totalMembers = (int) ($decoded['total']   ?? 0);
-        $this->doneMembers  = (int) ($decoded['done']    ?? 0);
+        // The queue is JSON-decoded associatively, so each member comes back as
+        // an array; re-hydrate to stdClass to match loadMembers() and the
+        // object-typed update() the worker calls.
+        $this->membersStack = array_map(
+            static fn($member): object => (object) $member,
+            (array) ($decoded['members'] ?? []),
+        );
+        $this->totalMembers = (int) ($decoded['total'] ?? 0);
+        $this->doneMembers  = (int) ($decoded['done']  ?? 0);
 
         return true;
     }
