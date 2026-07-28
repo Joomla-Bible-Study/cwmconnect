@@ -206,3 +206,25 @@ p {
   padding-top: 5px;
 }
 /*# sourceMappingURL=cwmconnect.css.map */
+/* Directory grid.
+ *
+ * Bootstrap's row-cols-* stepped 2 -> 3 -> 4 columns at fixed breakpoints and
+ * then stopped, so past ~992px four cards simply grew to fill the row — around
+ * 320px each, and tall enough with a 3:4 photo that barely two rows fit on a
+ * 1080px-high screen.
+ *
+ * auto-fill + minmax lets the column count follow the available width instead,
+ * so cards keep a roughly constant size and a wider window gains columns rather
+ * than bulk. The clamp sets that size: a floor of 8.5rem keeps two columns on a
+ * phone, it scales with the viewport in between, and the 12rem cap stops a very
+ * wide window drifting back to oversized cards.
+ *
+ * Override --cwm-card-min on the grid or :root to retune; nothing else changes.
+ */
+.cwmconnect-photo-grid {
+  --cwm-card-min: clamp(8.5rem, 16vw, 12rem);
+
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(var(--cwm-card-min), 1fr));
+  gap: 1rem;
+}
