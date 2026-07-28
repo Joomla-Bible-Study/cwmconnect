@@ -258,6 +258,20 @@ class DirheaderTable extends Table
             return false;
         }
 
+        // publish_up / publish_down are NOT NULL datetime columns, but an
+        // empty calendar control posts '' — which MySQL rejects outright under
+        // STRICT_TRANS_TABLES ("Incorrect datetime value: ''"). Fall back to
+        // the null date, matching MemberTable.
+        $nullDate = $this->getDatabase()->getNullDate();
+
+        if (!$this->publish_up) {
+            $this->publish_up = $nullDate;
+        }
+
+        if (!$this->publish_down) {
+            $this->publish_down = $nullDate;
+        }
+
         return parent::store($updateNulls);
     }
 
