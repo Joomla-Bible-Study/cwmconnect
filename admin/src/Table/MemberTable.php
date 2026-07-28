@@ -33,6 +33,8 @@ use Joomla\String\StringHelper;
  */
 class MemberTable extends Table
 {
+    use NormalisesTypedInputTrait;
+
     /** @since 2.0.0 */
     public ?int $id = 0;
     /** @since 2.0.0 */
@@ -167,7 +169,9 @@ class MemberTable extends Table
     }
 
     /**
-     * Override bind: collapse a multi-select con_position array to a CSV string.
+     * Override bind: collapse a multi-select con_position array to a CSV
+     * string, and reconcile empty form input with the typed properties
+     * (see {@see NormalisesTypedInputTrait}).
      *
      * @param   mixed  $array   Data to bind.
      * @param   mixed  $ignore  Properties to ignore.
@@ -187,7 +191,7 @@ class MemberTable extends Table
             $array['con_position'] = implode(',', $array['con_position']);
         }
 
-        return parent::bind($array, $ignore);
+        return parent::bind($this->normaliseTypedInput($array), $ignore);
     }
 
     /**
