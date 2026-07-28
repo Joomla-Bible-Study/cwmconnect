@@ -167,6 +167,43 @@
 		       description="COM_CWMCONNECT_FIELD_MEMBER_GROUP_NOTE_DESC"
 		       class="alert alert-info"
 		/>
+		<field name="access_code_enabled"
+		       type="radio"
+		       layout="joomla.form.field.radio.switcher"
+		       label="COM_CWMCONNECT_FIELD_ACCESS_CODE_ENABLED_LABEL"
+		       description="COM_CWMCONNECT_FIELD_ACCESS_CODE_ENABLED_DESC"
+		       default="0">
+			<option value="0">JDISABLED</option>
+			<option value="1">JENABLED</option>
+		</field>
+		<field name="access_code"
+		       type="accesscode"
+		       label="COM_CWMCONNECT_FIELD_ACCESS_CODE_LABEL"
+		       description="COM_CWMCONNECT_FIELD_ACCESS_CODE_DESC"
+		       showon="access_code_enabled:1"
+		/>
+		<field name="access_code_group"
+		       type="usergroup"
+		       label="COM_CWMCONNECT_FIELD_ACCESS_CODE_GROUP_LABEL"
+		       description="COM_CWMCONNECT_FIELD_ACCESS_CODE_GROUP_DESC"
+		       showon="access_code_enabled:1"
+		/>
+		<field name="access_code_expires"
+		       type="calendar"
+		       translateformat="true"
+		       showtime="true"
+		       filter="user_utc"
+		       label="COM_CWMCONNECT_FIELD_ACCESS_CODE_EXPIRES_LABEL"
+		       description="COM_CWMCONNECT_FIELD_ACCESS_CODE_EXPIRES_DESC"
+		       showon="access_code_enabled:1"
+		/>
+		<field name="access_code_note"
+		       type="note"
+		       label="COM_CWMCONNECT_FIELD_ACCESS_CODE_NOTE_LABEL"
+		       description="COM_CWMCONNECT_FIELD_ACCESS_CODE_NOTE_DESC"
+		       class="alert alert-warning"
+		       showon="access_code_enabled:1"
+		/>
 		<field name="protectedaccess"
 		       type="usergroup"
 		       label="COM_CWMCONNECT_FIELD_MEMBER_PROTECTED_ACCESS_LABEL"
