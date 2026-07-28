@@ -80,13 +80,15 @@ class AccesscodeField extends TextField
                 JS
         );
 
+        $esc = static fn(string $value): string => htmlspecialchars($value, \ENT_QUOTES, 'UTF-8');
+
         return '<div class="input-group">'
             . parent::getInput()
-            . '<button type="button" class="btn btn-secondary" data-cwm-rotate="' . $this->escape($id) . '">'
-            . $this->escape(Text::_('COM_CWMCONNECT_FIELD_ACCESS_CODE_ROTATE'))
+            . '<button type="button" class="btn btn-secondary" data-cwm-rotate="' . $esc($id) . '">'
+            . $esc(Text::_('COM_CWMCONNECT_FIELD_ACCESS_CODE_ROTATE'))
             . '</button>'
             . '</div>'
-            . '<div class="form-text">' . $this->escape($this->statusLine()) . '</div>';
+            . '<div class="form-text">' . $esc($this->statusLine()) . '</div>';
     }
 
     /**

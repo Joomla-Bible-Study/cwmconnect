@@ -43,7 +43,18 @@ class PcMembershipStatusField extends CheckboxesField
         $statuses = $this->fetchFromPc();
 
         foreach ($statuses as $status) {
-            $options[] = HTMLHelper::_('select.option', $status, $status);
+            $option = HTMLHelper::_('select.option', $status, $status);
+
+            // `joomla.form.field.checkboxes` reads `$option->checked` directly
+            // rather than through empty(), so an option built straight from
+            // select.option — which only sets value and text — raises
+            // "Undefined property: stdClass::$checked" once per option.
+            // ListField sets this when it builds options from XML; options
+            // added here have to do the same. Always false: nothing is ticked
+            // by default, and an unset membership filter means "sync everyone".
+            $option->checked = false;
+
+            $options[] = $option;
         }
 
         return array_merge(parent::getOptions(), $options);
