@@ -12,6 +12,31 @@ listed separately in §7 so the happy path stays readable.
 
 ---
 
+---
+
+## 0. Which path are you on
+
+Not every church connects Planning Center, and the answer changes which of the
+steps below apply. `pc_enabled` gates only two things in the whole codebase —
+the Control Panel's PC card and the PDF cover — so the component works fully
+without it.
+
+| Path | Steps that apply |
+|---|---|
+| **PC-synced** | all of them |
+| **Manual** — no Planning Center | skip §2 (connect), §3 (sync). Enter members by hand; every field is editable, because `PcLockedFields` only locks rows that have a `pc_person_id`. |
+| **Hybrid** — synced plus hand-entered | all of them, plus **Reconcile** to merge a manual row into a PC person once they appear in the sync |
+
+Two things the manual path does **not** get away with:
+
+- It still needs groups, a view level, KML settings and geocoding — §4 onward
+  apply unchanged.
+- It has **no automatic route into the member group**, because pairing matches
+  on the email Planning Center holds and there is no PC. The shared access code
+  (§5) is the only self-service way in, so it moves from optional to essential.
+
+---
+
 ## 1. Install
 
 Upload the package through **System → Install → Extensions**. On a symlinked
