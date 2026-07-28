@@ -30,8 +30,21 @@ use Joomla\Database\ParameterType;
  */
 final readonly class DatabaseMemberPairing implements MemberPairingInterface
 {
-    /** @since __DEPLOY_VERSION__ */
-    public function __construct(private DatabaseInterface $db) {}
+    /**
+     * @param   DatabaseInterface  $db         Database driver.
+     * @param   MemberGroupSync|null  $groupSync  Grants the directory-member
+     *                                            group on a successful pair.
+     *                                            Null in contexts that only
+     *                                            need the lookups (and in
+     *                                            tests), where group
+     *                                            membership is not in play.
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    public function __construct(
+        private DatabaseInterface $db,
+        private ?MemberGroupSync $groupSync = null,
+    ) {}
 
     /** @inheritDoc @since __DEPLOY_VERSION__ */
     public function findUnpairedMemberIdByEmail(string $email): ?int
@@ -97,6 +110,15 @@ final readonly class DatabaseMemberPairing implements MemberPairingInterface
 
         $this->db->setQuery($query)->execute();
 
-        return $this->db->getAffectedRows() === 1;
+        if ($this->db->getAffectedRows() !== 1) {
+            return false;
+        }
+
+        // Pairing is what makes someone a member of the directory rather than
+        // merely a registered website account, so it is also what grants the
+        // member group that carries the directory view level.
+        $this->groupSync?->reconcile($userId);
+
+        return true;
     }
 }

@@ -12,6 +12,7 @@
 use CWM\Component\Cwmconnect\Administrator\Extension\CwmconnectComponent;
 use CWM\Component\Cwmconnect\Administrator\Service\FeedToken\FeedTokenService;
 use CWM\Component\Cwmconnect\Administrator\Service\Pairing\DatabaseMemberPairing;
+use CWM\Component\Cwmconnect\Administrator\Service\Pairing\MemberGroupSync;
 use CWM\Component\Cwmconnect\Administrator\Service\Pairing\MemberPairingInterface;
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\Client as PcClient;
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\CustomFieldWriterInterface as PcCustomFieldWriterInterface;
@@ -139,10 +140,18 @@ return new class implements ServiceProviderInterface {
         );
 
         // Phase H: identity-binding pair service shared with plg_user_cwmconnect.
+        // The group sync rides along so that every pairing route — PC sync, the
+        // user plugin, the content plugin and the admin pair UI — grants the
+        // directory-member group without each caller having to remember to.
         $container->set(
             MemberPairingInterface::class,
-            static fn(Container $c): MemberPairingInterface
-                => new DatabaseMemberPairing($c->get(DatabaseInterface::class)),
+            static fn(Container $c): MemberPairingInterface => new DatabaseMemberPairing(
+                $c->get(DatabaseInterface::class),
+                new MemberGroupSync(
+                    $c->get(DatabaseInterface::class),
+                    (int) ComponentHelper::getParams('com_cwmconnect')->get('member_group', 0),
+                ),
+            ),
         );
 
         $container->set(
