@@ -17,6 +17,7 @@ namespace CWM\Component\Cwmconnect\Site\View\Members;
 
 use CWM\Component\Cwmconnect\Administrator\Helper\DbHelper;
 use CWM\Component\Cwmconnect\Administrator\Service\FeedToken\FeedTokenService;
+use CWM\Component\Cwmconnect\Site\Helper\MemberAccess;
 use CWM\Component\Cwmconnect\Site\Model\MembersModel;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
@@ -85,6 +86,14 @@ class KmlView extends BaseHtmlView
             throw new \RuntimeException(Text::_('COM_CWMCONNECT_KML_FEED_TOKEN_INVALID'), 403);
         }
 
+        // This route is in the dispatcher's PUBLIC_ROUTES so external clients
+        // can pull without a Joomla session, which means the member-access
+        // wall never ran for it. Re-apply it here on both credentials, or the
+        // feed becomes a way around `member_access`: a registered non-member
+        // refused the HTML directory could still pull the whole directory as
+        // KML. A token is checked against *its owner* because a feed
+        // authorises as that member — if they lose the level, the feed has to
+        // stop serving even while the token itself is still valid.
         if ($token !== '') {
             $db            = Factory::getContainer()->get(\Joomla\Database\DatabaseInterface::class);
             $service       = new FeedTokenService($db);
@@ -95,7 +104,13 @@ class KmlView extends BaseHtmlView
                 throw new \RuntimeException(Text::_('COM_CWMCONNECT_KML_FEED_TOKEN_INVALID'), 403);
             }
 
+            if (!MemberAccess::userIdHas((int) $tokenRow->user_id)) {
+                throw new \RuntimeException(Text::_('COM_CWMCONNECT_ACCESS_DENIED'), 403);
+            }
+
             $service->touchLastUsed((int) $tokenRow->id);
+        } elseif (!MemberAccess::userHas($app->getIdentity())) {
+            throw new \RuntimeException(Text::_('COM_CWMCONNECT_ACCESS_DENIED'), 403);
         }
 
         if ((bool) $app->getInput()->getInt('networklink', 0)) {

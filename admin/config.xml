@@ -156,6 +156,17 @@
 		       description="COM_CWMCONNECT_FIELD_MEMBER_ACCESS_DESC"
 		       default="2"
 		/>
+		<field name="member_group"
+		       type="usergroup"
+		       label="COM_CWMCONNECT_FIELD_MEMBER_GROUP_LABEL"
+		       description="COM_CWMCONNECT_FIELD_MEMBER_GROUP_DESC"
+		/>
+		<field name="member_group_note"
+		       type="note"
+		       label="COM_CWMCONNECT_FIELD_MEMBER_GROUP_NOTE_LABEL"
+		       description="COM_CWMCONNECT_FIELD_MEMBER_GROUP_NOTE_DESC"
+		       class="alert alert-info"
+		/>
 		<field name="protectedaccess"
 		       type="usergroup"
 		       label="COM_CWMCONNECT_FIELD_MEMBER_PROTECTED_ACCESS_LABEL"

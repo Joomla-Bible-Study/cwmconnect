@@ -98,15 +98,15 @@ class CpanelController extends BaseController
             );
         } catch (PcConfigurationException $e) {
             $this->sendJsonAndClose(
-                new JsonResponse(Text::_('COM_CWMCONNECT_PC_NOT_CONFIGURED'), 'warning', true),
+                new JsonResponse(null, Text::_('COM_CWMCONNECT_PC_NOT_CONFIGURED'), true),
             );
         } catch (AuthenticationException $e) {
             $this->sendJsonAndClose(
-                new JsonResponse(Text::_('COM_CWMCONNECT_PC_AUTH_FAILED'), 'error', true),
+                new JsonResponse(null, Text::_('COM_CWMCONNECT_PC_AUTH_FAILED'), true),
             );
         } catch (\Throwable $e) {
             $this->sendJsonAndClose(
-                new JsonResponse($e->getMessage(), 'error', true),
+                new JsonResponse(null, $e->getMessage(), true),
             );
         }
     }
@@ -163,12 +163,12 @@ class CpanelController extends BaseController
         } catch (PcConfigurationException $e) {
             @unlink($progressFile);
             $this->sendJsonAndClose(
-                new JsonResponse(Text::_('COM_CWMCONNECT_PC_NOT_CONFIGURED'), 'warning', true),
+                new JsonResponse(null, Text::_('COM_CWMCONNECT_PC_NOT_CONFIGURED'), true),
             );
         } catch (\Throwable $e) {
             @unlink($progressFile);
             $this->sendJsonAndClose(
-                new JsonResponse($e->getMessage(), 'error', true),
+                new JsonResponse(null, $e->getMessage(), true),
             );
         }
     }
@@ -231,7 +231,7 @@ class CpanelController extends BaseController
     {
         if (!$this->app->getIdentity()?->authorise('core.admin', 'com_cwmconnect')) {
             $this->sendJsonAndClose(
-                new JsonResponse(Text::_('JERROR_ALERTNOAUTHOR'), 'error', true),
+                new JsonResponse(null, Text::_('JERROR_ALERTNOAUTHOR'), true),
                 403,
             );
         }

@@ -16,7 +16,7 @@ namespace CWM\Component\Cwmconnect\Site\Dispatcher;
 // phpcs:enable PSR1.Files.SideEffects
 
 use CWM\Component\Cwmconnect\Site\Helper\LoginWall;
-use Joomla\CMS\Component\ComponentHelper;
+use CWM\Component\Cwmconnect\Site\Helper\MemberAccess;
 use Joomla\CMS\Dispatcher\ComponentDispatcher;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
@@ -46,6 +46,25 @@ class Dispatcher extends ComponentDispatcher
     private const PUBLIC_ROUTES = [
         ['view' => 'members', 'format' => 'kml'],
         ['view' => 'directory', 'format' => 'kml'],
+    ];
+
+    /**
+     * Tasks that bypass the login wall for the same reason as
+     * {@see self::PUBLIC_ROUTES}, but are addressed by `task=` and so carry no
+     * `view` to match on.
+     *
+     * `photo.serve` backs the photos inside KML balloons: Google Earth fetches
+     * each one as a separate session-less request carrying the feed token, so
+     * holding it to the wall made every balloon photo 403 for external
+     * clients. It authenticates itself (session or feed token, then the
+     * per-member visibility gates in PhotoAccess), which is what makes
+     * exempting it safe.
+     *
+     * @var    array<int, string>
+     * @since  __DEPLOY_VERSION__
+     */
+    private const PUBLIC_TASKS = [
+        'photo.serve',
     ];
 
     #[\Override]
@@ -82,11 +101,7 @@ class Dispatcher extends ComponentDispatcher
      */
     private function viewerHasMemberAccess(): bool
     {
-        $user     = $this->app->getIdentity();
-        $levels   = $user ? $user->getAuthorisedViewLevels() : [1];
-        $required = (int) ComponentHelper::getParams('com_cwmconnect')->get('member_access', 2);
-
-        return \in_array($required, $levels, true);
+        return MemberAccess::userHas($this->app->getIdentity());
     }
 
     /**
@@ -106,6 +121,10 @@ class Dispatcher extends ComponentDispatcher
             if ($route['view'] === $view && $route['format'] === $format) {
                 return false;
             }
+        }
+
+        if (\in_array((string) $input->getCmd('task', ''), self::PUBLIC_TASKS, true)) {
+            return false;
         }
 
         return true;

@@ -16,8 +16,10 @@ namespace CWM\Component\Cwmconnect\Administrator\Model;
 // phpcs:enable PSR1.Files.SideEffects
 
 use CWM\Component\Cwmconnect\Administrator\Helper\PcLockedFields;
+use CWM\Component\Cwmconnect\Administrator\Service\Pairing\MemberGroupSync;
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\FieldMapRepositoryInterface;
 use Joomla\CMS\Application\ApplicationHelper;
+use Joomla\CMS\Component\ComponentHelper;
 use Joomla\Component\Categories\Administrator\Helper\CategoriesHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
@@ -29,6 +31,7 @@ use Joomla\CMS\MVC\Model\AdminModel;
 use Joomla\CMS\String\PunycodeHelper;
 use Joomla\CMS\Table\Table;
 use Joomla\CMS\Versioning\VersionableModelTrait;
+use Joomla\Database\ParameterType;
 use Joomla\Registry\Registry;
 use Joomla\String\StringHelper;
 use Joomla\Utilities\ArrayHelper;
@@ -367,6 +370,13 @@ class MemberModel extends AdminModel
     {
         $input = Factory::getApplication()->getInput();
 
+        // Remember who this member was paired to before the save so the
+        // directory-member group can be reconciled for *both* users when an
+        // admin re-points or clears `user_id` — the person losing the pairing
+        // has to lose the group too, and that write never goes through the
+        // pairing service.
+        $previousUserId = $this->pairedUserId((int) ($data['id'] ?? 0));
+
         $rawCatid = trim((string) ($data['catid'] ?? ''));
         $catid    = (int) $rawCatid;
 
@@ -443,9 +453,162 @@ class MemberModel extends AdminModel
                     );
                 }
             }
+
+            $newUserId = (int) ($data['user_id'] ?? 0);
+
+            if ($newUserId === 0 && $previousUserId > 0) {
+                $this->clearPairing((int) ($data['id'] ?? $this->getState($this->getName() . '.id')));
+            }
+
+            $this->reconcileMemberGroups($previousUserId, $newUserId);
         }
 
         return $save;
+    }
+
+    /**
+     * Publish/unpublish, then re-evaluate directory-member group membership
+     * for everyone affected.
+     *
+     * Unpublishing is how an admin retires a member, and a retired member
+     * should no longer see everyone else's details — but this path never goes
+     * through {@see self::save()}, so without this override the group would
+     * only ever be reconciled on pairing changes and the `published` half of
+     * the rule would go unenforced.
+     *
+     * @param   array  &$pks    Member ids being published/unpublished.
+     * @param   int    $value  The new published state.
+     *
+     * @return  bool
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    #[\Override]
+    public function publish(&$pks, $value = 1): bool
+    {
+        $userIds = $this->pairedUserIds((array) $pks);
+
+        if (!parent::publish($pks, $value)) {
+            return false;
+        }
+
+        foreach ($userIds as $userId) {
+            $this->reconcileMemberGroups($userId, $userId);
+        }
+
+        return true;
+    }
+
+    /**
+     * The Joomla users paired to any of these member rows.
+     *
+     * @param   array<int, mixed>  $memberIds  Member ids.
+     *
+     * @return  list<int>
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    private function pairedUserIds(array $memberIds): array
+    {
+        $ids = array_values(array_filter(array_map('intval', $memberIds)));
+
+        if ($ids === []) {
+            return [];
+        }
+
+        $db    = $this->getDatabase();
+        $query = $db->createQuery()
+            ->select($db->quoteName('user_id'))
+            ->from($db->quoteName('#__cwmconnect_details'))
+            ->whereIn($db->quoteName('id'), $ids)
+            ->where($db->quoteName('user_id') . ' IS NOT NULL');
+
+        return array_values(array_unique(array_map('intval', $db->setQuery($query)->loadColumn() ?: [])));
+    }
+
+    /**
+     * Explicitly NULL a member's `user_id`.
+     *
+     * Clearing the user field on the edit form otherwise does nothing at all:
+     * `AdminModel::save()` calls `Table::store()` without `$updateNulls`, so
+     * every null property — including the one the admin just emptied on
+     * purpose — is dropped from the UPDATE and the old pairing survives.
+     * Forcing `$updateNulls` globally would be far broader, writing NULL into
+     * every other nulled column (several of which are NOT NULL in the schema),
+     * so the unpair is issued as its own statement instead.
+     *
+     * @param   int  $memberId  Member id.
+     *
+     * @return  void
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    private function clearPairing(int $memberId): void
+    {
+        if ($memberId <= 0) {
+            return;
+        }
+
+        $db    = $this->getDatabase();
+        $query = $db->createQuery()
+            ->update($db->quoteName('#__cwmconnect_details'))
+            ->set($db->quoteName('user_id') . ' = NULL')
+            ->where($db->quoteName('id') . ' = :id')
+            ->bind(':id', $memberId, ParameterType::INTEGER);
+
+        $db->setQuery($query)->execute();
+    }
+
+    /**
+     * The Joomla user a member row is currently paired to, before a save.
+     *
+     * @param   int  $memberId  Member id; 0 for a new record.
+     *
+     * @return  int  User id, or 0 when unpaired or not found.
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    private function pairedUserId(int $memberId): int
+    {
+        if ($memberId <= 0) {
+            return 0;
+        }
+
+        $db    = $this->getDatabase();
+        $query = $db->createQuery()
+            ->select($db->quoteName('user_id'))
+            ->from($db->quoteName('#__cwmconnect_details'))
+            ->where($db->quoteName('id') . ' = :id')
+            ->bind(':id', $memberId, ParameterType::INTEGER);
+
+        return (int) $db->setQuery($query)->loadResult();
+    }
+
+    /**
+     * Bring the directory-member group back in line for the users either side
+     * of a pairing change. Both ids are reconciled from the database, so it is
+     * safe to pass the same id twice or an id that did not change.
+     *
+     * @param   int  $previousUserId  Who the row was paired to before.
+     * @param   int  $newUserId       Who it is paired to now.
+     *
+     * @return  void
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    private function reconcileMemberGroups(int $previousUserId, int $newUserId): void
+    {
+        $groupId = (int) ComponentHelper::getParams('com_cwmconnect')->get('member_group', 0);
+
+        if ($groupId <= 0) {
+            return;
+        }
+
+        $sync = new MemberGroupSync($this->getDatabase(), $groupId);
+
+        foreach (array_unique(array_filter([$previousUserId, $newUserId])) as $userId) {
+            $sync->reconcile((int) $userId);
+        }
     }
 
     /**
