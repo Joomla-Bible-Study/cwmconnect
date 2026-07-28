@@ -31,6 +31,8 @@ use Joomla\Database\DatabaseInterface;
  */
 class PcFieldMapTable extends Table
 {
+    use NormalisesTypedInputTrait;
+
     public ?int $id = 0;
 
     public ?int $pc_field_id = 0;
@@ -48,6 +50,23 @@ class PcFieldMapTable extends Table
     public function __construct(DatabaseInterface $db)
     {
         parent::__construct('#__cwmconnect_pc_field_map', 'id', $db);
+    }
+
+    /**
+     * Override bind: reconcile empty form input with the typed properties
+     * (see {@see NormalisesTypedInputTrait}).
+     *
+     * @param   mixed  $array   Data to bind.
+     * @param   mixed  $ignore  Properties to ignore.
+     *
+     * @return  bool
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    #[\Override]
+    public function bind($array, $ignore = ''): bool
+    {
+        return parent::bind($this->normaliseTypedInput($array), $ignore);
     }
 
     /**

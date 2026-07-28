@@ -30,6 +30,8 @@ use Joomla\Registry\Registry;
  */
 class PositionTable extends Table
 {
+    use NormalisesTypedInputTrait;
+
     /**
      * @var int|null
      * @since 2.0.0
@@ -142,6 +144,23 @@ class PositionTable extends Table
         $this->_jsonEncode = ['params'];
 
         parent::__construct('#__cwmconnect_position', 'id', $db);
+    }
+
+    /**
+     * Override bind: reconcile empty form input with the typed properties
+     * (see {@see NormalisesTypedInputTrait}).
+     *
+     * @param   mixed  $array   Data to bind.
+     * @param   mixed  $ignore  Properties to ignore.
+     *
+     * @return  bool
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    #[\Override]
+    public function bind($array, $ignore = ''): bool
+    {
+        return parent::bind($this->normaliseTypedInput($array), $ignore);
     }
 
     /**
