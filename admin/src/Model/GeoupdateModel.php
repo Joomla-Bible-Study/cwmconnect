@@ -15,6 +15,7 @@ namespace CWM\Component\Cwmconnect\Administrator\Model;
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
+use CWM\Component\Cwmconnect\Administrator\Service\Geocode\AddressNormalizer;
 use CWM\Component\Cwmconnect\Administrator\Service\Geocode\GeocoderFactory;
 use CWM\Component\Cwmconnect\Administrator\Service\Geocode\GeocoderInterface;
 use Joomla\CMS\Component\ComponentHelper;
@@ -475,12 +476,18 @@ class GeoupdateModel extends BaseDatabaseModel
      * Copy a freshly resolved point onto every other member at the same
      * address who is still missing coordinates.
      *
-     * Households are entered per person, so the same street address recurs
-     * across the directory — 454 members share 322 distinct addresses on the
-     * reference dataset. Geocoding each of them separately buys nothing but
-     * billable lookups, and because providers can return marginally different
-     * points for identical input it also produced households whose members sat
-     * at slightly different pins.
+     * Households are entered per person, so the same place recurs across the
+     * directory — 454 members resolve to 304 distinct queries on the reference
+     * dataset, so a third of the lookups are billable duplicates. Providers
+     * can also return marginally different points for identical input, which
+     * left households sitting on slightly different pins.
+     *
+     * Matching is on {@see AddressNormalizer::compose()} — the exact string
+     * handed to the geocoder — rather than on the raw column values. That
+     * makes the rule true by construction: two members whose addresses compose
+     * identically *must* geocode identically, so copying the point is exact
+     * rather than a guess. It also groups the PO-box lines, which compose away
+     * to a city/state query and therefore genuinely do share one point.
      *
      * Only blank rows are filled: a member who already resolved (or was
      * corrected by hand) is never overwritten by a namesake address.
@@ -495,12 +502,11 @@ class GeoupdateModel extends BaseDatabaseModel
      */
     private function backfillSameAddress(int $memberId, string $latStr, string $lngStr): int
     {
-        $db  = $this->getDatabase();
-        $key = static fn(string $col): string
-            => 'TRIM(LOWER(COALESCE(' . $db->quoteName($col) . ", '')))";
+        $db     = $this->getDatabase();
+        $fields = $db->quoteName(['id', 'address', 'suburb', 'state', 'country']);
 
         $source = $db->createQuery()
-            ->select([$db->quoteName('address'), $db->quoteName('suburb'), $db->quoteName('postcode')])
+            ->select($fields)
             ->from($db->quoteName('#__cwmconnect_details'))
             ->where($db->quoteName('id') . ' = :id')
             ->bind(':id', $memberId, ParameterType::INTEGER);
@@ -511,34 +517,89 @@ class GeoupdateModel extends BaseDatabaseModel
             return 0;
         }
 
-        $address  = trim(strtolower((string) $row->address));
-        $suburb   = trim(strtolower((string) ($row->suburb ?? '')));
-        $postcode = trim(strtolower((string) ($row->postcode ?? '')));
+        $target  = $this->addressKey($row);
+        $suburb  = trim(strtolower((string) ($row->suburb ?? '')));
+        $state   = trim(strtolower((string) ($row->state ?? '')));
+        $country = trim(strtolower((string) ($row->country ?? '')));
 
-        $update = $db->createQuery()
-            ->update($db->quoteName('#__cwmconnect_details'))
-            ->set($db->quoteName('lat') . ' = :lat')
-            ->set($db->quoteName('lng') . ' = :lng')
+        // Narrow in SQL on the parts that are plain column comparisons, then
+        // settle it in PHP on the composed query — compose() collapses unit
+        // designators and PO boxes, which no column comparison can express.
+        $candidates = $db->createQuery()
+            ->select($fields)
+            ->from($db->quoteName('#__cwmconnect_details'))
             ->where($db->quoteName('id') . ' <> :id')
-            ->where($key('address') . ' = :address')
-            ->where($key('suburb') . ' = :suburb')
-            ->where($key('postcode') . ' = :postcode')
+            ->where('TRIM(COALESCE(' . $db->quoteName('address') . ", '')) <> ''")
+            ->where($this->sameText('suburb') . ' = :suburb')
+            ->where($this->sameText('state') . ' = :state')
+            ->where($this->sameText('country') . ' = :country')
             ->where(
                 '(CAST(' . $db->quoteName('lat') . ' AS DECIMAL(12,8)) = 0'
                 . ' OR CAST(' . $db->quoteName('lng') . ' AS DECIMAL(12,8)) = 0'
                 . ' OR ' . $db->quoteName('lat') . ' IS NULL'
                 . ' OR ' . $db->quoteName('lng') . ' IS NULL)',
             )
-            ->bind(':lat', $latStr, ParameterType::STRING)
-            ->bind(':lng', $lngStr, ParameterType::STRING)
             ->bind(':id', $memberId, ParameterType::INTEGER)
-            ->bind(':address', $address, ParameterType::STRING)
             ->bind(':suburb', $suburb, ParameterType::STRING)
-            ->bind(':postcode', $postcode, ParameterType::STRING);
+            ->bind(':state', $state, ParameterType::STRING)
+            ->bind(':country', $country, ParameterType::STRING);
+
+        $matches = [];
+
+        foreach ($db->setQuery($candidates)->loadObjectList() ?: [] as $candidate) {
+            if ($this->addressKey($candidate) === $target) {
+                $matches[] = (int) $candidate->id;
+            }
+        }
+
+        if ($matches === []) {
+            return 0;
+        }
+
+        $update = $db->createQuery()
+            ->update($db->quoteName('#__cwmconnect_details'))
+            ->set($db->quoteName('lat') . ' = :lat')
+            ->set($db->quoteName('lng') . ' = :lng')
+            ->whereIn($db->quoteName('id'), $matches)
+            ->bind(':lat', $latStr, ParameterType::STRING)
+            ->bind(':lng', $lngStr, ParameterType::STRING);
 
         $db->setQuery($update)->execute();
 
         return (int) $db->getAffectedRows();
+    }
+
+    /**
+     * The geocoder query a member row would produce, lowercased for comparison.
+     *
+     * @param   object  $row  Row carrying address / suburb / state / country.
+     *
+     * @return  string
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    private function addressKey(object $row): string
+    {
+        return strtolower(AddressNormalizer::compose(
+            (string) ($row->address ?? ''),
+            (string) ($row->suburb ?? ''),
+            (string) ($row->state ?? ''),
+            (string) ($row->country ?? ''),
+        ));
+    }
+
+    /**
+     * SQL fragment normalising a text column for a case/space-insensitive match.
+     *
+     * @param   string  $column  Column name.
+     *
+     * @return  string
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    private function sameText(string $column): string
+    {
+        return 'TRIM(LOWER(COALESCE(' . $this->getDatabase()->quoteName($column) . ", '')))";
     }
 
     /**
