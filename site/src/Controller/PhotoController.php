@@ -16,6 +16,7 @@ namespace CWM\Component\Cwmconnect\Site\Controller;
 // phpcs:enable PSR1.Files.SideEffects
 
 use CWM\Component\Cwmconnect\Administrator\Service\FeedToken\FeedTokenService;
+use CWM\Component\Cwmconnect\Site\Helper\MemberAccess;
 use CWM\Component\Cwmconnect\Site\Helper\PhotoAccess;
 use Joomla\CMS\Access\Exception\NotAllowed;
 use Joomla\CMS\Component\ComponentHelper;
@@ -68,6 +69,18 @@ class PhotoController extends BaseController
             if ($tokenUserId === null) {
                 throw new NotAllowed('JERROR_ALERTNOAUTHOR', 403);
             }
+        }
+
+        // This route bypasses the dispatcher's member-access wall (it has to:
+        // Google Earth fetches balloon photos without a session), so apply the
+        // same test here. A token is judged by its owner, since it authorises
+        // as that member.
+        $hasMemberAccess = $isLoggedIn
+            ? MemberAccess::userHas($user)
+            : MemberAccess::userIdHas((int) $tokenUserId);
+
+        if (!$hasMemberAccess) {
+            throw new NotAllowed('JERROR_ALERTNOAUTHOR', 403);
         }
 
         $member    = PhotoAccess::loadMember($db, $this->input->getInt('id', 0));
