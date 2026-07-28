@@ -155,7 +155,89 @@ class GeoupdateModel extends BaseDatabaseModel
 
         $this->saveStack();
 
+        // The queue has drained, so every address that could resolve has. Now
+        // give the addressless members of a household their household's point.
+        if ($result === false && $id === null) {
+            $this->propagateHouseholdCoordinates();
+        }
+
         return $result;
+    }
+
+    /**
+     * Place members who have no address of their own at their household's
+     * location.
+     *
+     * Most people with no pin are not geocoding failures — on the reference
+     * dataset 85 of 91 have no address at all, because the address lives on
+     * one member of the household and the rest inherit it socially rather than
+     * in the data. They are invisible to {@see self::loadMembers()}, which only
+     * queues rows that have something to geocode, so no number of re-runs will
+     * ever place them.
+     *
+     * A member's own address always wins — 17 of 73 households on that same
+     * dataset have members living at different addresses, so assuming one pin
+     * per household would move real people to the wrong place. Only members
+     * with a genuinely empty address inherit.
+     *
+     * Runs on every full pass rather than only filling blanks, so a household
+     * that moves re-propagates: the address holder is re-geocoded, and the
+     * inherited rows follow instead of keeping a stale pin forever.
+     *
+     * @return  int  Number of member rows moved onto a household point.
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    public function propagateHouseholdCoordinates(): int
+    {
+        $db = $this->getDatabase();
+
+        // One source per household: the lowest-id member who has both an
+        // address of their own and a resolved point.
+        $query = $db->createQuery()
+            ->select($db->quoteName(['funitid', 'lat', 'lng']))
+            ->from($db->quoteName('#__cwmconnect_details'))
+            ->where($db->quoteName('funitid') . ' > 0')
+            ->where('TRIM(COALESCE(' . $db->quoteName('address') . ", '')) <> ''")
+            ->where('CAST(' . $db->quoteName('lat') . ' AS DECIMAL(12,8)) <> 0')
+            ->where('CAST(' . $db->quoteName('lng') . ' AS DECIMAL(12,8)) <> 0')
+            ->order($db->quoteName('id') . ' ASC');
+
+        $sources = [];
+
+        foreach ($db->setQuery($query)->loadObjectList() ?: [] as $row) {
+            $sources[(int) $row->funitid] ??= $row;
+        }
+
+        $moved = 0;
+
+        foreach ($sources as $funitid => $source) {
+            $lat = (string) $source->lat;
+            $lng = (string) $source->lng;
+
+            $update = $db->createQuery()
+                ->update($db->quoteName('#__cwmconnect_details'))
+                ->set($db->quoteName('lat') . ' = :lat')
+                ->set($db->quoteName('lng') . ' = :lng')
+                ->where($db->quoteName('funitid') . ' = :funitid')
+                ->where('TRIM(COALESCE(' . $db->quoteName('address') . ", '')) = ''")
+                // Skip rows already on the point, so a no-op pass writes nothing.
+                ->where(
+                    '(COALESCE(' . $db->quoteName('lat') . ", '') <> :latCmp"
+                    . ' OR COALESCE(' . $db->quoteName('lng') . ", '') <> :lngCmp)",
+                )
+                ->bind(':lat', $lat, ParameterType::STRING)
+                ->bind(':lng', $lng, ParameterType::STRING)
+                ->bind(':latCmp', $lat, ParameterType::STRING)
+                ->bind(':lngCmp', $lng, ParameterType::STRING)
+                ->bind(':funitid', $funitid, ParameterType::INTEGER);
+
+            $db->setQuery($update)->execute();
+
+            $moved += (int) $db->getAffectedRows();
+        }
+
+        return $moved;
     }
 
     /**
@@ -268,6 +350,16 @@ class GeoupdateModel extends BaseDatabaseModel
             return false;
         }
 
+        // A sibling at the same address may have resolved since the queue was
+        // built, back-filling this row. The queue is a snapshot, so re-read the
+        // current state and skip the lookup rather than paying for a second
+        // call that can only return the same point. Not applied to a forced
+        // single-row run ($id), where the caller wants a fresh lookup because
+        // the address itself may have just changed.
+        if ($id === null && $this->hasCoordinates($memberId)) {
+            return false;
+        }
+
         $geocoder = $this->geocoder();
         $result   = $geocoder->geocode(
             (string) $row->address,
@@ -352,6 +444,101 @@ class GeoupdateModel extends BaseDatabaseModel
             ->where($db->quoteName('member_id') . ' = :id')
             ->bind(':id', $memberId, ParameterType::INTEGER);
         $db->setQuery($delete)->execute();
+
+        $this->backfillSameAddress($memberId, $latStr, $lngStr);
+    }
+
+    /**
+     * Does this member already hold real coordinates?
+     *
+     * @param   int  $memberId  Member row id.
+     *
+     * @return  bool
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    private function hasCoordinates(int $memberId): bool
+    {
+        $db    = $this->getDatabase();
+        $query = $db->createQuery()
+            ->select('COUNT(*)')
+            ->from($db->quoteName('#__cwmconnect_details'))
+            ->where($db->quoteName('id') . ' = :id')
+            ->where('CAST(' . $db->quoteName('lat') . ' AS DECIMAL(12,8)) <> 0')
+            ->where('CAST(' . $db->quoteName('lng') . ' AS DECIMAL(12,8)) <> 0')
+            ->bind(':id', $memberId, ParameterType::INTEGER);
+
+        return (int) $db->setQuery($query)->loadResult() > 0;
+    }
+
+    /**
+     * Copy a freshly resolved point onto every other member at the same
+     * address who is still missing coordinates.
+     *
+     * Households are entered per person, so the same street address recurs
+     * across the directory — 454 members share 322 distinct addresses on the
+     * reference dataset. Geocoding each of them separately buys nothing but
+     * billable lookups, and because providers can return marginally different
+     * points for identical input it also produced households whose members sat
+     * at slightly different pins.
+     *
+     * Only blank rows are filled: a member who already resolved (or was
+     * corrected by hand) is never overwritten by a namesake address.
+     *
+     * @param   int     $memberId  The member that was just geocoded.
+     * @param   string  $latStr    Latitude, pre-formatted for the column.
+     * @param   string  $lngStr    Longitude, pre-formatted for the column.
+     *
+     * @return  int  Number of sibling rows filled in.
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    private function backfillSameAddress(int $memberId, string $latStr, string $lngStr): int
+    {
+        $db  = $this->getDatabase();
+        $key = static fn(string $col): string
+            => 'TRIM(LOWER(COALESCE(' . $db->quoteName($col) . ", '')))";
+
+        $source = $db->createQuery()
+            ->select([$db->quoteName('address'), $db->quoteName('suburb'), $db->quoteName('postcode')])
+            ->from($db->quoteName('#__cwmconnect_details'))
+            ->where($db->quoteName('id') . ' = :id')
+            ->bind(':id', $memberId, ParameterType::INTEGER);
+
+        $row = $db->setQuery($source)->loadObject();
+
+        if (!\is_object($row) || trim((string) $row->address) === '') {
+            return 0;
+        }
+
+        $address  = trim(strtolower((string) $row->address));
+        $suburb   = trim(strtolower((string) ($row->suburb ?? '')));
+        $postcode = trim(strtolower((string) ($row->postcode ?? '')));
+
+        $update = $db->createQuery()
+            ->update($db->quoteName('#__cwmconnect_details'))
+            ->set($db->quoteName('lat') . ' = :lat')
+            ->set($db->quoteName('lng') . ' = :lng')
+            ->where($db->quoteName('id') . ' <> :id')
+            ->where($key('address') . ' = :address')
+            ->where($key('suburb') . ' = :suburb')
+            ->where($key('postcode') . ' = :postcode')
+            ->where(
+                '(CAST(' . $db->quoteName('lat') . ' AS DECIMAL(12,8)) = 0'
+                . ' OR CAST(' . $db->quoteName('lng') . ' AS DECIMAL(12,8)) = 0'
+                . ' OR ' . $db->quoteName('lat') . ' IS NULL'
+                . ' OR ' . $db->quoteName('lng') . ' IS NULL)',
+            )
+            ->bind(':lat', $latStr, ParameterType::STRING)
+            ->bind(':lng', $lngStr, ParameterType::STRING)
+            ->bind(':id', $memberId, ParameterType::INTEGER)
+            ->bind(':address', $address, ParameterType::STRING)
+            ->bind(':suburb', $suburb, ParameterType::STRING)
+            ->bind(':postcode', $postcode, ParameterType::STRING);
+
+        $db->setQuery($update)->execute();
+
+        return (int) $db->getAffectedRows();
     }
 
     /**
