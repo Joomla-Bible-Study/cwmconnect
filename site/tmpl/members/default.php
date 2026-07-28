@@ -25,6 +25,11 @@ $gridActive  = $layoutMode === 'grid' ? ' active' : '';
 $tableActive = $layoutMode === 'table' ? ' active' : '';
 
 $profileLink = static fn(int $id): string => Route::_('index.php?option=com_cwmconnect&view=profile&id=' . $id);
+
+// The component's own front-end stylesheet was registered but never actually
+// requested by any site view, so none of it has been reaching the browser. The
+// directory grid below depends on it.
+$this->getDocument()->getWebAssetManager()->useStyle('com_cwmconnect.directory');
 ?>
 <div class="cwmconnect-members">
     <form action="<?php echo Route::_('index.php?option=com_cwmconnect&view=members'); ?>" method="get" class="row g-2 align-items-end mb-3">
@@ -85,17 +90,15 @@ $profileLink = static fn(int $id): string => Route::_('index.php?option=com_cwmc
             'message' => Text::_('COM_CWMCONNECT_MEMBERS_EMPTY'),
         ]); ?>
     <?php elseif ($layoutMode === 'grid') : ?>
-        <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4 g-3 cwmconnect-photo-grid">
+        <div class="cwmconnect-photo-grid">
             <?php foreach ($this->items as $item) : ?>
-                <div class="col">
-                    <?php echo Layout::render('membercard', [
-                        'id'         => (int) $item->id,
-                        'name'       => trim(($item->name ?: '') ?: ($item->lname ?: '')),
-                        'hasPhoto'   => (string) ($item->image ?? '') !== '',
-                        'profileUrl' => $profileLink((int) $item->id),
-                        'household'  => (string) ($item->household_name ?? ''),
-                    ]); ?>
-                </div>
+                <?php echo Layout::render('membercard', [
+                    'id'         => (int) $item->id,
+                    'name'       => trim(($item->name ?: '') ?: ($item->lname ?: '')),
+                    'hasPhoto'   => (string) ($item->image ?? '') !== '',
+                    'profileUrl' => $profileLink((int) $item->id),
+                    'household'  => (string) ($item->household_name ?? ''),
+                ]); ?>
             <?php endforeach; ?>
         </div>
     <?php else : ?>
