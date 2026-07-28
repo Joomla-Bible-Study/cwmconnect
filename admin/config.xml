@@ -274,7 +274,6 @@
 
 		<field name="pc_archive_policy"
 		       type="radio"
-		       layout="joomla.form.field.radio.switcher"
 		       default="archive"
 		       label="COM_CWMCONNECT_FIELD_PC_ARCHIVE_POLICY_LABEL"
 		       description="COM_CWMCONNECT_FIELD_PC_ARCHIVE_POLICY_DESC"
@@ -467,7 +466,6 @@
 		</field>
 		<field name="pdf_page_size"
 		       type="radio"
-		       layout="joomla.form.field.radio.switcher"
 		       default="letter"
 		       label="COM_CWMCONNECT_FIELD_PDF_PAGE_SIZE_LABEL"
 		       description="COM_CWMCONNECT_FIELD_PDF_PAGE_SIZE_DESC"
