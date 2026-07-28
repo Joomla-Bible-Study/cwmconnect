@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<form>
+<form addfieldprefix="CWM\Component\Cwmconnect\Administrator\Field">
 	<fieldset addfieldpath="/administrator/components/com_categories/models/fields">
 		<field name="id"
 		       type="text"
@@ -154,7 +154,7 @@
 		       class="inputbox"
 		/>
 
-		<field name="image" type="media" hide_none="1"
+		<field name="image" type="lockedmedia" types="images"
 		       label="COM_CWMCONNECT_FIELD_PARAMS_IMAGE_LABEL"
 		       description="COM_CWMCONNECT_FIELD_PARAMS_IMAGE_DESC"/>
 

@@ -18,7 +18,7 @@ namespace CWM\Component\Cwmconnect\Administrator\Model;
 use CWM\Component\Cwmconnect\Administrator\Helper\PcLockedFields;
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\FieldMapRepositoryInterface;
 use Joomla\CMS\Application\ApplicationHelper;
-use Joomla\CMS\Categories\CategoriesHelper;
+use Joomla\Component\Categories\Administrator\Helper\CategoriesHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
 use Joomla\CMS\Helper\TagsHelper;
@@ -367,23 +367,32 @@ class MemberModel extends AdminModel
     {
         $input = Factory::getApplication()->getInput();
 
-        $catid = (int) ($data['catid'] ?? 0);
+        $rawCatid = trim((string) ($data['catid'] ?? ''));
+        $catid    = (int) $rawCatid;
 
         if ($catid > 0) {
-            $catid = CategoriesHelper::validateCategoryId($data['catid'], 'com_cwmconnect');
+            $catid = CategoriesHelper::validateCategoryId($rawCatid, 'com_cwmconnect');
         }
 
-        if ($catid === 0 && $this->canCreateCategory()) {
+        // The `categoryedit` field posts either an existing category id or a
+        // brand-new category *name* typed by the admin. Only a non-numeric
+        // value is a new name worth creating. Guarding on that matters here
+        // because the show-all directory leaves every member uncategorised
+        // (catid 0) — without it, each save created a junk category literally
+        // titled "0".
+        if ($catid === 0 && $rawCatid !== '' && !is_numeric($rawCatid) && $this->canCreateCategory()) {
             $table = [
-                'title'     => $data['catid'],
+                'title'     => $rawCatid,
                 'parent_id' => 1,
                 'extension' => 'com_cwmconnect',
                 'language'  => $data['language'] ?? '*',
                 'published' => 1,
             ];
 
-            $data['catid'] = CategoriesHelper::createCategory($table);
+            $catid = (int) CategoriesHelper::createCategory($table);
         }
+
+        $data['catid'] = $catid;
 
         // Alter the name for save as copy.
         if ($input->get('task') === 'save2copy') {
@@ -506,8 +515,17 @@ class MemberModel extends AdminModel
      *
      * No-op for new records (id=0) and standalone members (no
      * `pc_person_id`). `filter=unset` is the load-bearing part: even if a
-     * malicious POST bypasses the disabled UI, the model drops the value
+     * malicious POST bypasses the read-only UI, the model drops the value
      * before save.
+     *
+     * Deliberately `readonly` **without** `disabled`. A disabled input is not
+     * submitted by the browser, but {@see Form::validate()} still validates
+     * every field in the definition — so disabling the locked `name` and
+     * `lname` (both `required="true"`) made every PC-synced member fail
+     * validation with "Field required", i.e. unsaveable from admin even for
+     * the fields that stay editable. Read-only inputs post their value
+     * normally, satisfying `required`, and `filter=unset` then discards it so
+     * PC-owned data still cannot be overwritten.
      *
      * @param   Form  $form
      *
@@ -525,7 +543,6 @@ class MemberModel extends AdminModel
 
         foreach (PcLockedFields::forItem($item) as $fieldName) {
             $form->setFieldAttribute($fieldName, 'readonly', 'true');
-            $form->setFieldAttribute($fieldName, 'disabled', 'true');
             $form->setFieldAttribute($fieldName, 'filter', 'unset');
         }
 
