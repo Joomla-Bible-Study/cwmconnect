@@ -12,8 +12,6 @@ listed separately in §7 so the happy path stays readable.
 
 ---
 
----
-
 ## 0. Which path are you on
 
 Not every church connects Planning Center, and the answer changes which of the
