@@ -5,13 +5,15 @@
 --
 -- Fix for Published Problmes to allow for trash
 --
-ALTER TABLE `#__cwmconnect_details` CHANGE `published` `published` TINYINT(3) NOT NULL DEFAULT '0';
-ALTER TABLE `#__cwmconnect_familyunit` CHANGE `published` `published` TINYINT(3) NOT NULL DEFAULT '0';
-ALTER TABLE `#__cwmconnect_kml` CHANGE `published` `published` TINYINT(3) NOT NULL DEFAULT '0';
-ALTER TABLE `#__cwmconnect_position` CHANGE `published` `published` TINYINT(3) NOT NULL DEFAULT '0';
+ALTER TABLE `#__cwmconnect_details` MODIFY `published` TINYINT(3) NOT NULL DEFAULT '0';
+ALTER TABLE `#__cwmconnect_familyunit` MODIFY `published` TINYINT(3) NOT NULL DEFAULT '0';
+ALTER TABLE `#__cwmconnect_kml` MODIFY `published` TINYINT(3) NOT NULL DEFAULT '0';
+ALTER TABLE `#__cwmconnect_position` MODIFY `published` TINYINT(3) NOT NULL DEFAULT '0';
 
-ALTER TABLE `#__cwmconnect_position` ADD `webpage` VARCHAR(255) NOT NULL DEFAULT '';
-ALTER TABLE `#__cwmconnect_familyunit` ADD `image` VARCHAR(255)
+-- Dropped again in 2.0.0-20260729; commented out so the schema check does not
+-- expect a column that no longer exists. See core 5.3.0-2024-12-19.sql for the pattern.
+-- ALTER TABLE `#__cwmconnect_position` ADD COLUMN `webpage` VARCHAR(255) NOT NULL DEFAULT '';
+ALTER TABLE `#__cwmconnect_familyunit` ADD COLUMN `image` VARCHAR(255)
 CHARACTER SET utf8
 COLLATE utf8_general_ci NULL DEFAULT NULL
 AFTER `description`;

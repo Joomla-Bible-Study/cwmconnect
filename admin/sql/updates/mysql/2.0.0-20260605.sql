@@ -1,1 +1,1 @@
-ALTER TABLE `#__cwmconnect_feed_tokens` ADD `expires_at` DATETIME NULL;
+ALTER TABLE `#__cwmconnect_feed_tokens` ADD COLUMN `expires_at` DATETIME NULL;
