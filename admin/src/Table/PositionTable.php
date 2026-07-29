@@ -54,12 +54,6 @@ class PositionTable extends Table
      * @var string|null
      * @since 2.0.0
      */
-    public ?string $webpage = '';
-
-    /**
-     * @var string|null
-     * @since 2.0.0
-     */
     public ?string $language = '*';
 
     /**

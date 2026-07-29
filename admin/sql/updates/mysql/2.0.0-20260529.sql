@@ -7,18 +7,18 @@
 -- One change per ALTER TABLE, no COLUMN keyword (Joomla ChangeItem rules).
 --
 
-ALTER TABLE `#__cwmconnect_dirheader` ADD `pc_street` varchar(255) NULL;
+ALTER TABLE `#__cwmconnect_dirheader` ADD COLUMN `pc_street` varchar(255) NULL;
 
-ALTER TABLE `#__cwmconnect_dirheader` ADD `pc_city` varchar(255) NULL;
+ALTER TABLE `#__cwmconnect_dirheader` ADD COLUMN `pc_city` varchar(255) NULL;
 
-ALTER TABLE `#__cwmconnect_dirheader` ADD `pc_state` varchar(100) NULL;
+ALTER TABLE `#__cwmconnect_dirheader` ADD COLUMN `pc_state` varchar(100) NULL;
 
-ALTER TABLE `#__cwmconnect_dirheader` ADD `pc_zip` varchar(20) NULL;
+ALTER TABLE `#__cwmconnect_dirheader` ADD COLUMN `pc_zip` varchar(20) NULL;
 
-ALTER TABLE `#__cwmconnect_dirheader` ADD `pc_country` varchar(100) NULL;
+ALTER TABLE `#__cwmconnect_dirheader` ADD COLUMN `pc_country` varchar(100) NULL;
 
-ALTER TABLE `#__cwmconnect_dirheader` ADD `pc_phone` varchar(50) NULL;
+ALTER TABLE `#__cwmconnect_dirheader` ADD COLUMN `pc_phone` varchar(50) NULL;
 
-ALTER TABLE `#__cwmconnect_dirheader` ADD `pc_email` varchar(255) NULL;
+ALTER TABLE `#__cwmconnect_dirheader` ADD COLUMN `pc_email` varchar(255) NULL;
 
-ALTER TABLE `#__cwmconnect_dirheader` ADD `pc_website` varchar(255) NULL;
+ALTER TABLE `#__cwmconnect_dirheader` ADD COLUMN `pc_website` varchar(255) NULL;

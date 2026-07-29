@@ -72,8 +72,6 @@ class MemberTable extends Table
     /** @since 2.0.0 */
     public ?string $image = null;
     /** @since 2.0.0 */
-    public ?string $imagepos = null;
-    /** @since 2.0.0 */
     public ?string $email_to = null;
     /** @since 2.0.0 */
     public ?int $default_con = 0;

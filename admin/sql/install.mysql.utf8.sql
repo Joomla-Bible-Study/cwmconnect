@@ -34,7 +34,6 @@ CREATE TABLE IF NOT EXISTS `#__cwmconnect_details` (
   `spouse`           VARCHAR(255)        NOT NULL DEFAULT '',
   `children`         VARCHAR(255)        NOT NULL DEFAULT '',
   `image`            VARCHAR(255) DEFAULT NULL,
-  `imagepos`         VARCHAR(20) DEFAULT NULL,
   `email_to`         VARCHAR(255) DEFAULT NULL,
   `default_con`      TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
   `published`        TINYINT(3)          NOT NULL DEFAULT '0',
