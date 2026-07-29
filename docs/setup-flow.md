@@ -105,9 +105,11 @@ or their membership type changes. Worth choosing deliberately.
 
 **Control Panel → Sync now.**
 
-On the reference dataset the first sync took **415 seconds** for 540 members and
-544 photos, and it runs as a single request — see issue #191 before running this
-on a large congregation.
+Members sync first (~15s for 540 on the reference dataset), then photos are
+fetched in slices with a progress readout. Photos were ~400 of the 415 seconds a
+first import used to take; splitting them out is what makes this usable on a
+larger congregation, and an interrupted photo pass simply resumes on the next
+run.
 
 What the sync brings in:
 
@@ -130,13 +132,9 @@ this runs.
 
 1. **Options → Geocoding** — choose Nominatim (free, needs a contact email per
    its usage policy) or Google (needs an API key)
-2. Go to **Geo status** and press **Run geocoding**
-
-Geo status is currently not in the menu — see issue #192. Until that is fixed:
-
-```
-index.php?option=com_cwmconnect&view=geostatus
-```
+2. Go to **Components → Church Directory → Geo Status** and press
+   **Run geocoding**. The Control Panel also links to it under
+   *Directory tools*.
 
 Members with no address of their own inherit their household's point, and
 addresses that resolve to the same query are only looked up once, so the number
@@ -192,12 +190,14 @@ ambiguous). The shared access code exists to cover the rest.
 
 Things that currently make this harder than it should be. Each is tracked:
 
+Everything originally listed here has since been fixed:
+
 | | |
 |---|---|
-| [#191](../../issues/191) | Sync runs as one blocking request — times out on shared hosting, and reports failure even when it succeeded |
-| [#192](../../issues/192) | Geo status unreachable from the menu; PC Mappings and Reconcile missing too |
-| [#188](../../issues/188) | Campus data silently discarded on installs missing the `dirheader.pc_*` columns |
-| [#187](../../issues/187) | `details.note` exists only on upgraded installs |
+| [#191](../../issues/191) | Sync ran as one blocking request. Photos are now a separate resumable phase — the member sync alone is ~15s. |
+| [#192](../../issues/192) | Geo Status was unreachable; PC Field Mappings and Reconcile were missing from the menu. All three are now in the submenu. |
+| [#188](../../issues/188) | Campus data silently discarded. The schema checker could not read our update files; it can now, and reports the missing columns. |
+| [#187](../../issues/187) | `details.note` existed only on upgraded installs. Retired, along with two other columns that disagreed the same way. |
 
 Also worth fixing before this becomes user documentation:
 
@@ -206,6 +206,9 @@ Also worth fixing before this becomes user documentation:
 - No KML settings row shipped, so the map is uninitialised (§6)
 - Nothing tells an admin the directory is invisible until a view level is
   configured (§5)
+- The menu shows **PC Field Mappings** and **Reconcile Members** even on a
+  manual install, where neither does anything useful — the submenu in the
+  manifest is static, so it cannot vary on `pc_enabled`
 
 ---
 

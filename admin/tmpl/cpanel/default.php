@@ -84,5 +84,31 @@ use Joomla\CMS\Router\Route;
                 </div>
             </div>
         <?php endif; ?>
+
+        <?php
+        // Outside the Planning Center block on purpose: geocoding is needed
+        // whether or not members came from PC, and a manual install would
+        // otherwise have no route to this screen at all.
+?>
+        <div class="row mt-4">
+            <div class="col-md-9">
+                <div class="card" id="directory-tools-card">
+                    <div class="card-header">
+                        <h3 class="card-title mb-0"><?php echo Text::_('COM_CWMCONNECT_CPANEL_TOOLS_TITLE'); ?></h3>
+                    </div>
+                    <div class="card-body">
+                        <p class="text-muted">
+                            <?php echo Text::_('COM_CWMCONNECT_CPANEL_TOOLS_INTRO'); ?>
+                        </p>
+
+                        <a class="btn btn-outline-secondary"
+                           href="<?php echo Route::_('index.php?option=com_cwmconnect&view=geostatus'); ?>">
+                            <span class="icon-location" aria-hidden="true"></span>
+                            <?php echo Text::_('COM_CWMCONNECT_CPANEL_BTN_GEOSTATUS'); ?>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </form>
