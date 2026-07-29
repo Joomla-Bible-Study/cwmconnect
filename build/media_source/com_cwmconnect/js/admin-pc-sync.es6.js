@@ -111,8 +111,13 @@
      * Show a spinner + message in the status area.
      *
      * @param {string} message
+     * @param {boolean} [keepResult]  Leave the result panel alone. Used when the
+     *                                photo pass starts, so the member-sync
+     *                                summary the admin just earned stays on
+     *                                screen instead of being wiped by the next
+     *                                spinner.
      */
-    const showSpinner = (message) => {
+    const showSpinner = (message, keepResult = false) => {
         const wrap    = make('div', 'd-inline-flex align-items-center gap-2');
         const spinner = make('span', 'spinner-border spinner-border-sm');
         spinner.setAttribute('aria-hidden', 'true');
@@ -122,7 +127,10 @@
         wrap.appendChild(label);
 
         replaceChildren(status, [wrap]);
-        replaceChildren(result, []);
+
+        if (!keepResult) {
+            replaceChildren(result, []);
+        }
     };
 
     /**
@@ -281,6 +289,79 @@
     };
 
     /**
+     * Fetch member photos in time-boxed slices until done.
+     *
+     * Photos are no longer part of the sync request: they were most of the
+     * ~7 minutes a first import took, and the browser gave up long before the
+     * server finished. The sync now returns as soon as the members are in —
+     * the directory is usable at that point — and this walks the avatars in
+     * afterwards, one short request at a time so nothing hits a timeout.
+     *
+     * Abandoning the page is safe. Anything not yet fetched is simply picked
+     * up by the next sync, because what to download is decided by comparing
+     * Planning Center's avatar URL against the stored hash, not by a queue.
+     *
+     * @returns {Promise<void>}
+     */
+    const fetchPhotos = async () => {
+        let cursor     = '';
+        let checked    = 0;
+        let downloaded = 0;
+        let cached     = 0;
+
+        for (;;) {
+            const body = new FormData();
+            body.append(options.csrfToken, '1');
+            body.append('cursor', cursor);
+
+            let json;
+
+            try {
+                const response = await fetch(options.photosUrl, {
+                    method:      'POST',
+                    credentials: 'same-origin',
+                    body,
+                    headers: { Accept: 'application/json' },
+                });
+
+                json = JSON.parse(await response.text());
+            } catch {
+                showStatus('warning', sprintf(options.i18n.photosFailed, options.i18n.unknownError));
+
+                return;
+            }
+
+            if (!json || json.success === false) {
+                showStatus('warning', sprintf(options.i18n.photosFailed, (json && json.message) || options.i18n.unknownError));
+
+                return;
+            }
+
+            const data = json.data || {};
+
+            checked    += Number(data.seen) || 0;
+            downloaded += Number(data.downloaded) || 0;
+            cached     += Number(data.unchanged) || 0;
+
+            if (data.done) {
+                showStatus('success', sprintf(options.i18n.photosDone, String(downloaded), String(cached)));
+
+                return;
+            }
+
+            cursor = data.cursor || '';
+
+            if (!cursor) {
+                showStatus('success', sprintf(options.i18n.photosDone, String(downloaded), String(cached)));
+
+                return;
+            }
+
+            updateSpinnerText(sprintf(options.i18n.photosRunning, String(checked), String(downloaded)));
+        }
+    };
+
+    /**
      * Handle a click on a `[data-pc-action]` button. Dispatches to the
      * right endpoint and manages the spinner / status / result panels.
      *
@@ -310,6 +391,10 @@
 
         if (action === 'sync' && json.success) {
             renderReport(json.data);
+
+            // Members are in and the directory works; photos fill in behind.
+            showSpinner(sprintf(options.i18n.photosRunning, '0', '0'), true);
+            await fetchPhotos();
         }
     };
 
