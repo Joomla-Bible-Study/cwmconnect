@@ -149,6 +149,7 @@ class HtmlView extends BaseHtmlView
             'syncUrl'        => Route::_('index.php?option=com_cwmconnect&task=cpanel.pcSync', false),
             'testUrl'        => Route::_('index.php?option=com_cwmconnect&task=cpanel.pcTestConnection', false),
             'progressUrl'    => Route::_('index.php?option=com_cwmconnect&task=cpanel.pcSyncProgress', false),
+            'photosUrl'      => Route::_('index.php?option=com_cwmconnect&task=cpanel.pcPhotos', false),
             'i18n'           => [
                 'syncing'        => Text::_('COM_CWMCONNECT_PC_SYNCING'),
                 'testing'        => Text::_('COM_CWMCONNECT_PC_TESTING'),
@@ -156,6 +157,9 @@ class HtmlView extends BaseHtmlView
                 'summary'        => Text::_('COM_CWMCONNECT_PC_SUMMARY'),
                 'progressPage'   => Text::_('COM_CWMCONNECT_PC_PROGRESS_PAGE'),
                 'progressSweep'  => Text::_('COM_CWMCONNECT_PC_PROGRESS_SWEEP'),
+                'photosRunning'  => Text::_('COM_CWMCONNECT_PC_PHOTOS_RUNNING'),
+                'photosDone'     => Text::_('COM_CWMCONNECT_PC_PHOTOS_DONE'),
+                'photosFailed'   => Text::_('COM_CWMCONNECT_PC_PHOTOS_FAILED'),
             ],
         ]);
     }

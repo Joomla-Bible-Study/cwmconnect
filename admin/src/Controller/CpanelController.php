@@ -123,6 +123,17 @@ class CpanelController extends BaseController
      *
      * @since   __DEPLOY_VERSION__
      */
+    /**
+     * Seconds of work per avatar slice.
+     *
+     * Kept well under the shortest timeout worth defending against (~60s at a
+     * proxy). The engine can only check the clock between pages, so the real
+     * ceiling is this plus one page of downloads — about 13s measured.
+     *
+     * @since  __DEPLOY_VERSION__
+     */
+    private const PHOTO_SLICE_SECONDS = 5.0;
+
     public function pcSync(): void
     {
         $this->assertAdminAjax();
@@ -143,10 +154,16 @@ class CpanelController extends BaseController
             // shared runner (the same code path the CLI + scheduled-task plugin
             // use). The progress callback streams page-by-page state to the
             // cache file the pcSyncProgress poll reads.
+            // Photos are excluded deliberately: they were ~400 of the 415
+            // seconds a first sync took, and the browser gave up long before
+            // the server did. The member walk on its own finishes in ~15s for
+            // 540 people, so the directory is usable immediately and the
+            // client then drives pcPhotos() to fill the avatars in. See #191.
             $report = SyncRunner::create()->runFull(
                 function (int $pagesCompleted, int $totalSeen, string $phase) use ($progressFile): void {
                     $this->writeProgress($progressFile, $phase, $pagesCompleted, $totalSeen);
                 },
+                false,
             );
 
             @unlink($progressFile);
@@ -167,6 +184,61 @@ class CpanelController extends BaseController
             );
         } catch (\Throwable $e) {
             @unlink($progressFile);
+            $this->sendJsonAndClose(
+                new JsonResponse(null, $e->getMessage(), true),
+            );
+        }
+    }
+
+    /**
+     * AJAX endpoint: fetch one time-boxed slice of member avatars.
+     *
+     * Called repeatedly by the client after `pcSync` returns, passing back the
+     * `cursor` from the previous response until `done` is true. Each call is
+     * bounded so it cannot outlive a proxy timeout or `max_execution_time` —
+     * which is the whole reason photos no longer run inside the sync.
+     *
+     * @return  void
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    public function pcPhotos(): void
+    {
+        $this->assertAdminAjax();
+
+        // Same reasoning as pcSync(): nothing below writes to the session, and
+        // holding the lock would block the progress poll for the whole slice.
+        $this->app->getSession()->close();
+
+        $cursor = trim((string) $this->input->getString('cursor', ''));
+
+        try {
+            $result = SyncRunner::create()->runPhotoPass(
+                self::PHOTO_SLICE_SECONDS,
+                $cursor !== '' ? $cursor : null,
+            );
+
+            $report = $result['report']->toArray();
+
+            $this->sendJsonAndClose(
+                new JsonResponse(
+                    [
+                        'done'       => $result['nextUrl'] === null,
+                        'cursor'     => $result['nextUrl'],
+                        'pages'      => $result['pages'],
+                        'seen'       => $report['seen'] ?? 0,
+                        'downloaded' => $report['photosDownloaded'] ?? 0,
+                        'unchanged'  => $report['photosUnchanged'] ?? 0,
+                    ],
+                    '',
+                    false,
+                ),
+            );
+        } catch (PcConfigurationException) {
+            $this->sendJsonAndClose(
+                new JsonResponse(null, Text::_('COM_CWMCONNECT_PC_NOT_CONFIGURED'), true),
+            );
+        } catch (\Throwable $e) {
             $this->sendJsonAndClose(
                 new JsonResponse(null, $e->getMessage(), true),
             );

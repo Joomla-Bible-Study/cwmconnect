@@ -78,7 +78,7 @@ final class SyncRunner
      *
      * @since   __DEPLOY_VERSION__
      */
-    public function runFull(?\Closure $onProgress = null): SyncReport
+    public function runFull(?\Closure $onProgress = null, bool $includePhotos = true): SyncReport
     {
         // Auxiliary: refresh campus data (cover church name/address) from PC.
         try {
@@ -87,7 +87,7 @@ final class SyncRunner
             // Campus sync is best-effort; the people sync is the point.
         }
 
-        $report = $this->buildEngine()->run($this->membershipStatuses(), $onProgress);
+        $report = $this->buildEngine()->run($this->membershipStatuses(), $onProgress, $includePhotos);
 
         // Tag members with their church office from the configured PC office
         // lists (Elders, Deacons…). Best-effort.
@@ -102,6 +102,30 @@ final class SyncRunner
         }
 
         return $report;
+    }
+
+    /**
+     * Run one slice of the avatar pass, resuming from `$resumeUrl`.
+     *
+     * Companion to {@see self::runFull()} called with `$includePhotos = false`:
+     * the member sync lands a usable directory in seconds, and this fills the
+     * photos in behind it without any single request running long enough to be
+     * cut off by a proxy or `max_execution_time`.
+     *
+     * @param   float          $timeBudget  Seconds to work for before yielding.
+     * @param   string|null    $resumeUrl   Cursor from the previous slice, or null to start.
+     * @param   \Closure|null  $onProgress  fn(int $pages, int $seen, string $phase)
+     *
+     * @return  array{report: SyncReport, nextUrl: string|null, pages: int}
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    public function runPhotoPass(
+        float $timeBudget = 10.0,
+        ?string $resumeUrl = null,
+        ?\Closure $onProgress = null,
+    ): array {
+        return $this->buildEngine()->runPhotoPass($timeBudget, $resumeUrl, $onProgress);
     }
 
     /**
