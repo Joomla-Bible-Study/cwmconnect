@@ -26,6 +26,8 @@ use Joomla\Database\DatabaseInterface;
  */
 class FeedTokenTable extends Table
 {
+    use NormalisesTypedInputTrait;
+
     /** @since __DEPLOY_VERSION__ */
     public ?int $id = null;
 
@@ -55,6 +57,23 @@ class FeedTokenTable extends Table
     public function __construct(DatabaseInterface $db)
     {
         parent::__construct('#__cwmconnect_feed_tokens', 'id', $db);
+    }
+
+    /**
+     * Override bind: reconcile empty form input with the typed properties
+     * (see {@see NormalisesTypedInputTrait}).
+     *
+     * @param   mixed  $array   Data to bind.
+     * @param   mixed  $ignore  Properties to ignore.
+     *
+     * @return  bool
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    #[\Override]
+    public function bind($array, $ignore = ''): bool
+    {
+        return parent::bind($this->normaliseTypedInput($array), $ignore);
     }
 
     /**

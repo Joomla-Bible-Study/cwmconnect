@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS `#__cwmconnect_geoupdate` (
   ENGINE =InnoDB
   DEFAULT CHARSET =utf8;
 
-ALTER TABLE `#__cwmconnect_details` DROP `imagepos`;
+ALTER TABLE `#__cwmconnect_details` DROP COLUMN `imagepos`;
 
 ALTER TABLE `#__cwmconnect_details` ENGINE =InnoDB;
 ALTER TABLE `#__cwmconnect_dirheader` ENGINE =InnoDB;

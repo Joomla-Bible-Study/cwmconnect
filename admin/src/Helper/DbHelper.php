@@ -58,9 +58,16 @@ class DbHelper
     }
 
     /**
-     * Read the configured KML row (id=1) and unpack its params Registry.
+     * Read the KML settings row and unpack its params Registry.
      *
-     * @return  object|null  Returns null if the seed row is missing.
+     * Takes the lowest-id published row rather than `id = 1`. Nothing
+     * guarantees the settings live at id 1: the install ships no rows at all
+     * now, and an admin who deletes the row and creates a replacement gets
+     * whatever id is next. Pinning to 1 meant the map camera and the whole
+     * admin KML export quietly stopped working in both cases, with the id
+     * being the only clue and nothing surfacing it.
+     *
+     * @return  object|null  Null when no published settings row exists.
      *
      * @throws  \Exception
      * @since   2.0.0
@@ -71,7 +78,9 @@ class DbHelper
         $query = $db->createQuery()
             ->select('*')
             ->from($db->quoteName('#__cwmconnect_kml'))
-            ->where($db->quoteName('id') . ' = 1');
+            ->where($db->quoteName('published') . ' = 1')
+            ->order($db->quoteName('id') . ' ASC')
+            ->setLimit(1);
         $db->setQuery($query);
 
         $kml = $db->loadObject();

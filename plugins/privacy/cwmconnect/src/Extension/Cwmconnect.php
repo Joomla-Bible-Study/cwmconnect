@@ -15,6 +15,8 @@ namespace CWM\Plugin\Privacy\Cwmconnect\Extension;
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
+use CWM\Component\Cwmconnect\Administrator\Service\Pairing\MemberGroupSync;
+use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Event\Privacy\ExportRequestEvent;
 use Joomla\CMS\Event\Privacy\RemoveDataEvent;
 use Joomla\Component\Privacy\Administrator\Plugin\PrivacyPlugin;
@@ -175,5 +177,15 @@ final class Cwmconnect extends PrivacyPlugin implements SubscriberInterface
             ->bind(':userId', $user->id, ParameterType::INTEGER);
 
         $db->setQuery($revokeQuery)->execute();
+
+        // The row above was just unpaired and unpublished, so this user is no
+        // longer a member: drop the group that carries directory access.
+        // Reconciled from the database, so it is correct even if they somehow
+        // still hold another member row.
+        $groupId = (int) ComponentHelper::getParams('com_cwmconnect')->get('member_group', 0);
+
+        if ($groupId > 0) {
+            new MemberGroupSync($db, $groupId)->reconcile((int) $user->id);
+        }
     }
 }

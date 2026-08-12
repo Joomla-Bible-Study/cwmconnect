@@ -21,6 +21,8 @@ use CWM\Component\Cwmconnect\Site\Service\DirectoryPdfPresenter;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Date\Date;
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
@@ -143,9 +145,13 @@ class ReportbuildHelper
         $kmlInfo  = $dbHelper->getKmlSettings();
 
         if ($kmlInfo === null) {
-            // No KML seed row — bail out silently rather than streaming a
-            // half-built document.
-            Factory::getApplication()->close();
+            // No published KML settings row. Streaming a half-built document
+            // would be worse, but closing without a word leaves the admin
+            // clicking Export and getting a blank tab with nothing to act on —
+            // say what is missing and send them back.
+            $app = Factory::getApplication();
+            $app->enqueueMessage(Text::_('COM_CWMCONNECT_KML_NO_SETTINGS'), 'warning');
+            $app->redirect(Route::_('index.php?option=com_cwmconnect&view=kmls', false));
 
             return;
         }

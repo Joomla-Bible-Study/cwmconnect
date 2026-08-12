@@ -30,6 +30,8 @@ use Joomla\Registry\Registry;
  */
 class PositionTable extends Table
 {
+    use NormalisesTypedInputTrait;
+
     /**
      * @var int|null
      * @since 2.0.0
@@ -47,12 +49,6 @@ class PositionTable extends Table
      * @since 2.0.0
      */
     public ?string $alias = '';
-
-    /**
-     * @var string|null
-     * @since 2.0.0
-     */
-    public ?string $webpage = '';
 
     /**
      * @var string|null
@@ -145,6 +141,23 @@ class PositionTable extends Table
     }
 
     /**
+     * Override bind: reconcile empty form input with the typed properties
+     * (see {@see NormalisesTypedInputTrait}).
+     *
+     * @param   mixed  $array   Data to bind.
+     * @param   mixed  $ignore  Properties to ignore.
+     *
+     * @return  bool
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    #[\Override]
+    public function bind($array, $ignore = ''): bool
+    {
+        return parent::bind($this->normaliseTypedInput($array), $ignore);
+    }
+
+    /**
      * Stores a position record.
      *
      * @param   bool  $updateNulls  True to update fields even if they are null.
@@ -176,6 +189,20 @@ class PositionTable extends Table
             if (empty($this->created_by)) {
                 $this->created_by = $userId;
             }
+        }
+
+        // publish_up / publish_down are NOT NULL datetime columns, but an
+        // empty calendar control posts '' — which MySQL rejects outright under
+        // STRICT_TRANS_TABLES ("Incorrect datetime value: ''"). Fall back to
+        // the null date, matching MemberTable.
+        $nullDate = $this->getDatabase()->getNullDate();
+
+        if (!$this->publish_up) {
+            $this->publish_up = $nullDate;
+        }
+
+        if (!$this->publish_down) {
+            $this->publish_down = $nullDate;
         }
 
         return parent::store($updateNulls);

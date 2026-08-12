@@ -72,6 +72,21 @@ final class SyncEngine
     private const MAX_PAGES = 200;
 
     /**
+     * Page size for {@see self::runPhotoPass()}.
+     *
+     * Much smaller than the sync's 100, because the time budget can only be
+     * honoured *between* pages — a page is fetched and worked in full before
+     * the clock is consulted again. At roughly 0.7s per avatar download, a
+     * 100-person page is ~70 seconds of work that no budget can interrupt,
+     * which is exactly the timeout this pass exists to avoid. Twelve keeps the
+     * worst-case overrun to about 8 seconds at the cost of a few more API
+     * calls, which are free by comparison.
+     *
+     * @since  __DEPLOY_VERSION__
+     */
+    private const PHOTO_PAGE_SIZE = 12;
+
+    /**
      * Includes we pass to PC. `field_data` + `field_data.field_definition`
      * land in Phase D so {@see PersonMapper::extractFieldData()} has the
      * full FieldDatum + its FieldDefinition relationship in `included`.
@@ -163,8 +178,11 @@ final class SyncEngine
      *
      * @since   __DEPLOY_VERSION__
      */
-    public function run(array $membershipStatuses = [], ?\Closure $onProgress = null): SyncReport
-    {
+    public function run(
+        array $membershipStatuses = [],
+        ?\Closure $onProgress = null,
+        bool $includePhotos = true,
+    ): SyncReport {
         $report      = new SyncReport();
         $seenIds     = [];
         $nextUrl     = null;
@@ -234,7 +252,18 @@ final class SyncEngine
                     if ($pcPersonId !== null && $pcPersonId > 0) {
                         $seenIds[] = $pcPersonId;
                         $this->writeCustomFields($pcPersonId, $person, $included, $report);
-                        $this->cacheAvatar($pcPersonId, $person, $report);
+
+                        // Photos are the whole cost of a first sync — 544
+                        // downloads plus variant generation accounted for
+                        // ~400 of the 415 seconds it took to import 540
+                        // members, against 16 seconds for the same members
+                        // with photos already cached. Skipping them here lets
+                        // the directory be usable in seconds; runPhotoPass()
+                        // fills them in afterwards, resumably.
+                        if ($includePhotos) {
+                            $this->cacheAvatar($pcPersonId, $person, $report);
+                        }
+
                         $this->tryPairByEmail($pcPersonId, $attrs, $report);
                     }
                 } catch (\Throwable $e) {
@@ -271,6 +300,117 @@ final class SyncEngine
         $this->logger->info('PC sync finished.', $report->toArray());
 
         return $report;
+    }
+
+    /**
+     * Fetch avatars for people already imported, resumably.
+     *
+     * Split out of {@see self::run()} because photos are the entire cost of a
+     * first sync: importing 540 members took 415 seconds with 544 photos to
+     * fetch, and 16 seconds once they were cached. Running them separately
+     * means the directory is usable within seconds of a sync and the slow part
+     * fills in behind it.
+     *
+     * Re-walks the PC pages rather than reading a queue of pending avatars.
+     * That costs ~16 extra API calls for 800 people — nothing beside the
+     * downloads — and avoids a schema change to carry pending URLs, which
+     * matters while update SQL is not reliably applied to existing installs
+     * (see issue #188). Deciding what to fetch stays exactly where it already
+     * was: {@see MediaPhotoCache::cache()} compares PC's avatar URL against
+     * the stored `image_hash` and returns early when unchanged.
+     *
+     * Stops once `$timeBudget` seconds have elapsed and returns the cursor to
+     * resume from, so no single request outlives a proxy timeout. A caller
+     * that wants the whole thing in one go can pass a large budget.
+     *
+     * @param   float          $timeBudget  Seconds to work for before yielding.
+     * @param   string|null    $resumeUrl   Cursor from a previous call, or null to start.
+     * @param   \Closure|null  $onProgress  fn(int $pagesWalked, int $peopleSeen, string $phase)
+     *
+     * @return  array{report: SyncReport, nextUrl: string|null, pages: int}
+     *          `nextUrl` is null when the walk finished.
+     *
+     * @throws  PcException  Only for fatal transport/auth failures.
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    public function runPhotoPass(
+        float $timeBudget = 10.0,
+        ?string $resumeUrl = null,
+        ?\Closure $onProgress = null,
+    ): array {
+        $report  = new SyncReport();
+        $started = microtime(true);
+        $nextUrl = $resumeUrl;
+        $pages   = 0;
+        $first   = $resumeUrl === null;
+
+        do {
+            if ($pages > self::MAX_PAGES) {
+                $this->logger->warning('PC photo pass hit MAX_PAGES guard.', ['pages' => $pages]);
+                $report->recordError(null, \sprintf('Pagination cap reached at %d pages.', self::MAX_PAGES));
+                $nextUrl = null;
+
+                break;
+            }
+
+            $page = $first
+                ? $this->client->getJson('/people/v2/people', [
+                    'include'       => self::PEOPLE_INCLUDES,
+                    'per_page'      => (string) self::PHOTO_PAGE_SIZE,
+                    'where[status]' => 'active',
+                ])
+                : $this->client->getJsonAbsolute((string) $nextUrl);
+
+            $first = false;
+            $pages++;
+
+            foreach (\is_array($page['data'] ?? null) ? $page['data'] : [] as $person) {
+                if (!\is_array($person)) {
+                    continue;
+                }
+
+                $report->seen++;
+                $pcPersonId = (int) ($person['id'] ?? 0);
+
+                if ($pcPersonId <= 0) {
+                    continue;
+                }
+
+                try {
+                    // Only fetch for people the member sync actually imported.
+                    // PC is walked unfiltered here (the membership filter needs
+                    // the household-discovery pass to be meaningful), so
+                    // without this the pass downloads an avatar for every
+                    // active person in the organisation — 257 wasted downloads
+                    // out of 797 on the reference account, for people who have
+                    // no row to attach them to. The write itself is keyed on
+                    // pc_person_id and would have been a no-op; the download
+                    // is what costs.
+                    if ($this->repository->findIdByPcPersonId($pcPersonId) === null) {
+                        continue;
+                    }
+
+                    $this->cacheAvatar($pcPersonId, $person, $report);
+                } catch (\Throwable $e) {
+                    $report->recordError($pcPersonId, $e->getMessage());
+                    $this->logger->error('PC photo pass error on person.', [
+                        'pcPersonId' => $pcPersonId,
+                        'error'      => $e->getMessage(),
+                    ]);
+                }
+            }
+
+            $nextUrl = $this->extractNextLink($page);
+
+            if ($onProgress !== null) {
+                $onProgress($pages, $report->seen, 'photos');
+            }
+        } while ($nextUrl !== null && (microtime(true) - $started) < $timeBudget);
+
+        $report->finish();
+
+        return ['report' => $report, 'nextUrl' => $nextUrl, 'pages' => $pages];
     }
 
     /**

@@ -15,7 +15,9 @@ namespace CWM\Component\Cwmconnect\Site\Dispatcher;
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
+use CWM\Component\Cwmconnect\Administrator\Service\AccessCode\AccessCodeService;
 use CWM\Component\Cwmconnect\Site\Helper\LoginWall;
+use CWM\Component\Cwmconnect\Site\Helper\MemberAccess;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Dispatcher\ComponentDispatcher;
 use Joomla\CMS\Language\Text;
@@ -46,6 +48,35 @@ class Dispatcher extends ComponentDispatcher
     private const PUBLIC_ROUTES = [
         ['view' => 'members', 'format' => 'kml'],
         ['view' => 'directory', 'format' => 'kml'],
+        // The access-code form is the one page a logged-in non-member must be
+        // able to reach: it is how they stop being one. Holding it behind the
+        // very wall it exists to get past would make the feature unusable.
+        // It grants nothing by being visible — the controller still requires a
+        // session and the correct code.
+        ['view' => 'redeem', 'format' => 'html'],
+    ];
+
+    /**
+     * Tasks that bypass the login wall for the same reason as
+     * {@see self::PUBLIC_ROUTES}, but are addressed by `task=` and so carry no
+     * `view` to match on.
+     *
+     * `photo.serve` backs the photos inside KML balloons: Google Earth fetches
+     * each one as a separate session-less request carrying the feed token, so
+     * holding it to the wall made every balloon photo 403 for external
+     * clients. It authenticates itself (session or feed token, then the
+     * per-member visibility gates in PhotoAccess), which is what makes
+     * exempting it safe.
+     *
+     * @var    array<int, string>
+     * @since  __DEPLOY_VERSION__
+     */
+    private const PUBLIC_TASKS = [
+        'photo.serve',
+        // The redeem form posts here, and the poster is by definition someone
+        // the wall would otherwise reject. RedeemController does its own
+        // session + CSRF + rate-limit checks.
+        'redeem.submit',
     ];
 
     #[\Override]
@@ -59,6 +90,20 @@ class Dispatcher extends ComponentDispatcher
                 $this->app->enqueueMessage(Text::_('COM_CWMCONNECT_LOGIN_REQUIRED'), 'notice');
                 $this->app->redirect(
                     Route::_((string) LoginWall::redirectForGuest(0, (string) Uri::getInstance()), false),
+                );
+
+                return;
+            }
+
+            // A logged-in user who lacks the level is not necessarily an
+            // intruder — with the shared access code switched on they are
+            // usually a member who simply has not redeemed it yet, and PC has
+            // no email to pair them on. Send them to the form rather than a
+            // dead-end 403. Without the feature configured there is nothing
+            // they could do, so the refusal stands.
+            if (new AccessCodeService(ComponentHelper::getParams('com_cwmconnect'))->isEnabled()) {
+                $this->app->redirect(
+                    Route::_('index.php?option=com_cwmconnect&view=redeem', false),
                 );
 
                 return;
@@ -82,11 +127,7 @@ class Dispatcher extends ComponentDispatcher
      */
     private function viewerHasMemberAccess(): bool
     {
-        $user     = $this->app->getIdentity();
-        $levels   = $user ? $user->getAuthorisedViewLevels() : [1];
-        $required = (int) ComponentHelper::getParams('com_cwmconnect')->get('member_access', 2);
-
-        return \in_array($required, $levels, true);
+        return MemberAccess::userHas($this->app->getIdentity());
     }
 
     /**
@@ -106,6 +147,10 @@ class Dispatcher extends ComponentDispatcher
             if ($route['view'] === $view && $route['format'] === $format) {
                 return false;
             }
+        }
+
+        if (\in_array((string) $input->getCmd('task', ''), self::PUBLIC_TASKS, true)) {
+            return false;
         }
 
         return true;
