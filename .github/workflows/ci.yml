@@ -56,6 +56,22 @@ jobs:
       - name: Check PHP syntax (admin/src + site/src + modules + plugins)
         run: composer lint:syntax
 
+      # The four checks below come from cwm/build-tools and are structural:
+      # what a query builder call, a comment or a path filter says does not
+      # vary by PHP version. If this job is ever split into a J5 x J6 matrix,
+      # they belong in one leg only, not duplicated per version.
+      - name: Check query builder usage ($db->createQuery)
+        run: composer lint-queries
+
+      - name: Check for Joomla 6/7 deprecations
+        run: composer lint-deprecations
+
+      - name: Check for issue references in comments
+        run: composer lint-comments
+
+      - name: Check workflow path filters resolve
+        run: composer lint-workflows
+
       - name: Check coding standards (php-cs-fixer)
         run: composer lint
 

@@ -80,7 +80,13 @@
         "lint":            "php-cs-fixer fix --dry-run --diff",
         "lint:fix":        "php-cs-fixer fix",
         "lint:syntax":     "find admin/src site/src modules plugins -type f -name '*.php' -print0 2>/dev/null | xargs -0 -n 1 -P 8 php -l > /dev/null",
-        "check":           ["@lint:syntax", "@lint", "@test"],
+
+        "lint-queries":      "cwm-lint-queries",
+        "lint-deprecations": "cwm-lint-deprecations",
+        "lint-comments":     "cwm-lint-comments",
+        "lint-workflows":    "cwm-lint-workflows",
+
+        "check":           ["@lint:syntax", "@lint-queries", "@lint-deprecations", "@lint-comments", "@lint-workflows", "@lint", "@test"],
         "release":         "cwm-release",
         "bump-version":    "cwm-bump",
         "package":         "cwm-package",
