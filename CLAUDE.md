@@ -108,8 +108,12 @@ composer install                 # PSR-4 autoload + dev tooling (cwm/build-tools
 composer lint:syntax             # parallel php -l across admin/src + site/src + modules + plugins
 composer lint                    # php-cs-fixer dry-run
 composer lint:fix                # php-cs-fixer write
-composer test                    # phpunit (no tests yet — phase 8)
-composer check                   # lint:syntax + lint + test
+composer lint-queries            # $db->createQuery() over $db->getQuery(true)
+composer lint-deprecations       # Joomla 6/7 upgrade blockers (bootstrap.modal, jQuery, Joomla.Modal)
+composer lint-comments           # issue numbers don't belong in comments — git blame already links them
+composer lint-workflows          # CI path filters that match no tracked file (fails closed: job silently skipped)
+composer test                    # phpunit (250 tests under tests/unit/)
+composer check                   # lint:syntax + the four lint-* checks + lint + test
 composer build                   # pkg_cwmconnect zip (stub — see phase 1d note)
 composer release                 # full 8-step pipeline via cwm-release (phase 9 prerequisites needed)
 composer bump-version            # cwm-bump (phase 9 prerequisites needed)
