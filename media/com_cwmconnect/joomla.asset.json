@@ -1,111 +1,111 @@
 {
-  "$schema": "https://developer.joomla.org/schemas/json-schema/web_assets.json",
-  "name": "com_cwmconnect",
-  "version": "2.0.0-dev",
-  "description": "CWM Connect — Church Photo Directory front-end assets.",
-  "license": "GPL-2.0-or-later",
-  "assets": [
-    {
-      "name": "com_cwmconnect.general",
-      "type": "style",
-      "uri": "com_cwmconnect/general.css",
-      "dependencies": []
-    },
-    {
-      "name": "com_cwmconnect.fancybox-vendor-css",
-      "type": "style",
-      "uri": "media/com_cwmconnect/vendor/fancybox/fancybox.css",
-      "dependencies": []
-    },
-    {
-      "name": "com_cwmconnect.fancybox-vendor",
-      "type": "script",
-      "uri": "media/com_cwmconnect/vendor/fancybox/fancybox.umd.js",
-      "attributes": {
-        "defer": true
-      }
-    },
-    {
-      "name": "com_cwmconnect.fancybox",
-      "type": "script",
-      "uri": "com_cwmconnect/fancybox.js",
-      "dependencies": [
-        "com_cwmconnect.fancybox-vendor"
-      ],
-      "attributes": {
-        "defer": true
-      }
-    },
-    {
-      "name": "com_cwmconnect.directory",
-      "type": "style",
-      "uri": "com_cwmconnect/cwmconnect.css",
-      "dependencies": []
-    },
-    {
-      "name": "com_cwmconnect.model",
-      "type": "style",
-      "uri": "com_cwmconnect/model.css",
-      "dependencies": []
-    },
-    {
-      "name": "com_cwmconnect.ios",
-      "type": "style",
-      "uri": "com_cwmconnect/ios.css",
-      "dependencies": []
-    },
-    {
-      "name": "com_cwmconnect.scripts",
-      "type": "script",
-      "uri": "com_cwmconnect/cwmconnect.js",
-      "dependencies": [
-        "core"
-      ],
-      "attributes": {
-        "defer": true
-      }
-    },
-    {
-      "name": "com_cwmconnect.jscolor",
-      "type": "script",
-      "uri": "com_cwmconnect/jscolor.min.js",
-      "dependencies": [],
-      "attributes": {
-        "defer": true
-      }
-    },
-    {
-      "name": "com_cwmconnect.geoupdate",
-      "type": "script",
-      "uri": "com_cwmconnect/geoupdate.js",
-      "dependencies": [
-        "core"
-      ],
-      "attributes": {
-        "defer": true
-      }
-    },
-    {
-      "name": "com_cwmconnect.admin-pc-sync",
-      "type": "script",
-      "uri": "com_cwmconnect/admin-pc-sync.js",
-      "dependencies": [
-        "core"
-      ],
-      "attributes": {
-        "defer": true
-      }
-    },
-    {
-      "name": "com_cwmconnect.admin-reports",
-      "type": "script",
-      "uri": "com_cwmconnect/admin-reports.js",
-      "dependencies": [
-        "core"
-      ],
-      "attributes": {
-        "defer": true
-      }
-    }
-  ]
+    "$schema": "https://developer.joomla.org/schemas/json-schema/web_assets.json",
+    "name": "com_cwmconnect",
+    "version": "2.0.0-dev",
+    "description": "CWM Connect \u2014 Church Photo Directory front-end assets.",
+    "license": "GPL-2.0-or-later",
+    "assets": [
+        {
+            "name": "com_cwmconnect.general",
+            "type": "style",
+            "uri": "com_cwmconnect/general.css",
+            "dependencies": []
+        },
+        {
+            "name": "com_cwmconnect.fancybox-vendor-css",
+            "type": "style",
+            "uri": "media/com_cwmconnect/vendor/fancybox/fancybox.css",
+            "dependencies": []
+        },
+        {
+            "name": "com_cwmconnect.fancybox-vendor",
+            "type": "script",
+            "uri": "media/com_cwmconnect/vendor/fancybox/fancybox.umd.js",
+            "attributes": {
+                "defer": true
+            }
+        },
+        {
+            "name": "com_cwmconnect.fancybox",
+            "type": "script",
+            "uri": "com_cwmconnect/fancybox.js",
+            "dependencies": [
+                "com_cwmconnect.fancybox-vendor"
+            ],
+            "attributes": {
+                "defer": true
+            }
+        },
+        {
+            "name": "com_cwmconnect.directory",
+            "type": "style",
+            "uri": "com_cwmconnect/cwmconnect.css",
+            "dependencies": []
+        },
+        {
+            "name": "com_cwmconnect.model",
+            "type": "style",
+            "uri": "com_cwmconnect/model.css",
+            "dependencies": []
+        },
+        {
+            "name": "com_cwmconnect.ios",
+            "type": "style",
+            "uri": "com_cwmconnect/ios.css",
+            "dependencies": []
+        },
+        {
+            "name": "com_cwmconnect.scripts",
+            "type": "script",
+            "uri": "com_cwmconnect/cwmconnect.js",
+            "dependencies": [
+                "core"
+            ],
+            "attributes": {
+                "defer": true
+            }
+        },
+        {
+            "name": "com_cwmconnect.jscolor",
+            "type": "script",
+            "uri": "com_cwmconnect/jscolor.min.js",
+            "dependencies": [],
+            "attributes": {
+                "defer": true
+            }
+        },
+        {
+            "name": "com_cwmconnect.geoupdate",
+            "type": "script",
+            "uri": "com_cwmconnect/geoupdate.js",
+            "dependencies": [
+                "core"
+            ],
+            "attributes": {
+                "defer": true
+            }
+        },
+        {
+            "name": "com_cwmconnect.admin-pc-sync",
+            "type": "script",
+            "uri": "com_cwmconnect/admin-pc-sync.js",
+            "dependencies": [
+                "core"
+            ],
+            "attributes": {
+                "defer": true
+            }
+        },
+        {
+            "name": "com_cwmconnect.admin-reports",
+            "type": "script",
+            "uri": "com_cwmconnect/admin-reports.js",
+            "dependencies": [
+                "core"
+            ],
+            "attributes": {
+                "defer": true
+            }
+        }
+    ]
 }
