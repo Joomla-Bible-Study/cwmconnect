@@ -4,7 +4,12 @@
     "profile": "component",
     "versionTracking": {
         "substituteTokens": {
-            "paths": ["admin/", "site/", "modules/", "plugins/"]
+            "paths": [
+                "admin/",
+                "site/",
+                "modules/",
+                "plugins/"
+            ]
         }
     },
     "extension": {
@@ -14,25 +19,101 @@
     "manifests": {
         "package": "build/pkg_cwmconnect.xml",
         "extensions": [
-            { "type": "component", "path": "cwmconnect.xml" },
-            { "type": "module",    "path": "modules/site/mod_birthdayanniversary/mod_birthdayanniversary.xml" },
-            { "type": "plugin",    "path": "plugins/finder/cwmconnect/cwmconnect.xml" },
-            { "type": "plugin",    "path": "plugins/user/cwmconnect/cwmconnect.xml" },
-            { "type": "plugin",    "path": "plugins/content/cwmconnect/cwmconnect.xml" },
-            { "type": "library",   "path": "libraries/mpdf/mpdf.xml" },
-            { "type": "plugin",    "path": "plugins/privacy/cwmconnect/cwmconnect.xml" },
-            { "type": "plugin",    "path": "plugins/task/cwmconnect/cwmconnect.xml" }
+            {
+                "type": "component",
+                "path": "cwmconnect.xml"
+            },
+            {
+                "type": "module",
+                "path": "modules/site/mod_birthdayanniversary/mod_birthdayanniversary.xml"
+            },
+            {
+                "type": "plugin",
+                "path": "plugins/finder/cwmconnect/cwmconnect.xml"
+            },
+            {
+                "type": "plugin",
+                "path": "plugins/user/cwmconnect/cwmconnect.xml"
+            },
+            {
+                "type": "plugin",
+                "path": "plugins/content/cwmconnect/cwmconnect.xml"
+            },
+            {
+                "type": "library",
+                "path": "libraries/mpdf/mpdf.xml"
+            },
+            {
+                "type": "plugin",
+                "path": "plugins/privacy/cwmconnect/cwmconnect.xml"
+            },
+            {
+                "type": "plugin",
+                "path": "plugins/task/cwmconnect/cwmconnect.xml"
+            }
         ]
     },
     "build": {
-        "command": "php build/build-package.php build",
-        "outputGlob": "build/dist/pkg_cwmconnect-*.zip"
+        "_comment": "Builds com_cwmconnect.zip — the component only (cwmconnect.xml, script.php, admin/, site/, media/com_cwmconnect/). cwm-package runs this as the 'self' include, then bundles it with the seven other sub-zips into pkg_cwmconnect-{version}.zip. outputGlob points at the PACKAGE output (what cwm-release publishes), not the component output.\nSources are listed explicitly rather than 'from: .' because this repo keeps docs/, tests/, libraries/vendor/ and node_modules/ at the top level — an allow-list is safer than a deny-list here.\nIMPORTANT: excludes/excludePaths match the path RELATIVE TO EACH source root, not the path inside the zip. So the photo rules are 'photos/*', not 'media/com_cwmconnect/photos/*'. Getting that wrong silently shipped 5183 live member photos (53 MB of PII) into the first build.\nThe photo rules are per-extension rather than a blanket 'photos' directory exclude so that photos/.htaccess and photos/web.config — both tracked, and the only thing that creates the directory and protects it on a fresh install — still ship. fnmatch '*' crosses '/', so these also cover photos/thumb, photos/web and photos/households.\nThe '.php' and 'nect.xml' excludePaths are a STOPGAP for a cwm-build-tools bug. PackageBuilder::addDirectory() derives the zip entry name with substr(getRealPath(), strlen($sourceReal) + 1). getRealPath() follows symlinks, so admin/script.php and admin/cwmconnect.xml — the untracked dev symlinks that `composer link` points at the repo root — resolve ABOVE the source root and get sliced into the corrupt entries 'admin/.php' and 'admin/nect.xml'. Those two globs drop them. Remove both once PackageBuilder skips symlink targets that escape the source root.",
+        "command": "cwm-package",
+        "outputGlob": "build/dist/pkg_cwmconnect-*.zip",
+        "outputDir": "build/dist",
+        "outputName": "com_cwmconnect-{version}.zip",
+        "manifest": "cwmconnect.xml",
+        "scriptFile": "script.php",
+        "sources": [
+            {
+                "from": "admin",
+                "to": "admin"
+            },
+            {
+                "from": "site",
+                "to": "site"
+            },
+            {
+                "from": "media/com_cwmconnect",
+                "to": "media/com_cwmconnect"
+            }
+        ],
+        "excludeMatchMode": "strict",
+        "excludes": [
+            ".git",
+            ".github",
+            ".idea",
+            ".vscode",
+            ".DS_Store",
+            "node_modules",
+            ".php-cs-fixer.cache"
+        ],
+        "excludeExtensions": [
+            "map"
+        ],
+        "vendorPrune": true,
+        "preBuild": {
+            "_comment": "Wipes build/dist so a stale zip from a prior build cannot be picked up by outputGlob, then regenerates the two gitignored build outputs the package needs: media/com_cwmconnect/{css,js} via rollup, and libraries/mpdf/vendor via composer (lib_mpdf ships that vendor tree).",
+            "mode": "run",
+            "command": "rm -rf build/dist && npm install --no-audit --no-fund && npm run build && composer install --working-dir=libraries/mpdf --no-dev --optimize-autoloader --no-interaction"
+        },
+        "excludePaths": [
+            "photos/*.jpg",
+            "photos/*.jpeg",
+            "photos/*.png",
+            "photos/*.webp",
+            "photos/*.gif",
+            "exports/*",
+            ".php",
+            "nect.xml"
+        ]
     },
     "ars": {
         "endpoint": "https://www.christianwebministries.org",
         "categoryId": 0,
         "updateStreamId": 0,
-        "environments": ["50", "51", "60"],
+        "environments": [
+            "50",
+            "51",
+            "60"
+        ],
         "tokenItem": "CWM ARS API Token",
         "tokenVault": "CWM",
         "itemDescription": "CWM Connect — Church Photo Directory component for Joomla 5/6, with a birthday/anniversary site module and Smart Search adapter for directory entries."
@@ -44,7 +125,7 @@
     },
     "changelog": {
         "file": "build/cwmconnect-changelog.xml",
-        "url":  "https://raw.githubusercontent.com/Joomla-Bible-Study/cwmconnect/master/build/cwmconnect-changelog.xml"
+        "url": "https://raw.githubusercontent.com/Joomla-Bible-Study/cwmconnect/master/build/cwmconnect-changelog.xml"
     },
     "assets": {
         "_comment": "Drives `npm run build:assets` (cwm-build-tools build-assets.js): copies third-party libraries from node_modules into media/com_cwmconnect/vendor so they ship with the package.",
@@ -54,8 +135,14 @@
                 "name": "@fancyapps/ui",
                 "cleanDest": "fancybox",
                 "files": [
-                    { "from": "dist/fancybox/fancybox.umd.js", "to": "fancybox/fancybox.umd.js" },
-                    { "from": "dist/fancybox/fancybox.css", "to": "fancybox/fancybox.css" }
+                    {
+                        "from": "dist/fancybox/fancybox.umd.js",
+                        "to": "fancybox/fancybox.umd.js"
+                    },
+                    {
+                        "from": "dist/fancybox/fancybox.css",
+                        "to": "fancybox/fancybox.css"
+                    }
                 ]
             }
         ]
@@ -63,8 +150,220 @@
     "dev": {
         "_comment": "Drives cwm-link / cwm-link-check / cwm-clean / cwm-verify against the developer's local Joomla install(s). Component admin/site/media + the bundled module + finder plugin are auto-derived from manifests.extensions[]; the internalLinks entry replaces the manual `ln -s` step previously documented in CLAUDE.md.",
         "internalLinks": [
-            { "source": "cwmconnect.xml", "link": "admin/cwmconnect.xml" },
-            { "source": "script.php",          "link": "admin/script.php" }
+            {
+                "source": "cwmconnect.xml",
+                "link": "admin/cwmconnect.xml"
+            },
+            {
+                "source": "script.php",
+                "link": "admin/script.php"
+            }
         ]
+    },
+    "package": {
+        "_comment": "Assembles pkg_cwmconnect-{version}.zip with the eight inner zips named by build/pkg_cwmconnect.xml. innerLayout is 'root' because that manifest lists the child zips at the package root, with no packages/ prefix. Inner zip filenames must match the <file> entries in that manifest exactly.",
+        "manifest": "build/pkg_cwmconnect.xml",
+        "outputDir": "build/dist",
+        "outputName": "pkg_cwmconnect-{version}.zip",
+        "innerLayout": "root",
+        "includes": [
+            {
+                "type": "self",
+                "outputName": "com_cwmconnect.zip"
+            },
+            {
+                "type": "inline",
+                "outputName": "lib_mpdf.zip",
+                "config": {
+                    "_comment": "mpdf.xml declares <files folder=\"libraries/mpdf\">, so vendor/ and language/ must sit under that path inside the zip while the manifest itself lands at the zip root.",
+                    "outputDir": "build/dist",
+                    "outputName": "lib_mpdf-{version}.zip",
+                    "manifest": "libraries/mpdf/mpdf.xml",
+                    "sources": [
+                        {
+                            "from": "libraries/mpdf/vendor",
+                            "to": "libraries/mpdf/vendor"
+                        },
+                        {
+                            "from": "libraries/mpdf/language",
+                            "to": "libraries/mpdf/language"
+                        }
+                    ],
+                    "excludeMatchMode": "strict",
+                    "excludes": [
+                        ".git",
+                        ".github",
+                        ".idea",
+                        ".vscode",
+                        ".DS_Store",
+                        "node_modules",
+                        ".php-cs-fixer.cache"
+                    ]
+                }
+            },
+            {
+                "type": "inline",
+                "outputName": "mod_birthdayanniversary.zip",
+                "config": {
+                    "outputDir": "build/dist",
+                    "outputName": "mod_birthdayanniversary-{version}.zip",
+                    "manifest": "modules/site/mod_birthdayanniversary/mod_birthdayanniversary.xml",
+                    "sources": [
+                        {
+                            "from": "modules/site/mod_birthdayanniversary",
+                            "to": ""
+                        }
+                    ],
+                    "excludeMatchMode": "strict",
+                    "excludes": [
+                        ".git",
+                        ".github",
+                        ".idea",
+                        ".vscode",
+                        ".DS_Store",
+                        "node_modules",
+                        ".php-cs-fixer.cache"
+                    ]
+                }
+            },
+            {
+                "type": "inline",
+                "outputName": "plg_finder_cwmconnect.zip",
+                "config": {
+                    "outputDir": "build/dist",
+                    "outputName": "plg_finder_cwmconnect-{version}.zip",
+                    "manifest": "plugins/finder/cwmconnect/cwmconnect.xml",
+                    "sources": [
+                        {
+                            "from": "plugins/finder/cwmconnect",
+                            "to": ""
+                        }
+                    ],
+                    "excludeMatchMode": "strict",
+                    "excludes": [
+                        ".git",
+                        ".github",
+                        ".idea",
+                        ".vscode",
+                        ".DS_Store",
+                        "node_modules",
+                        ".php-cs-fixer.cache"
+                    ]
+                }
+            },
+            {
+                "type": "inline",
+                "outputName": "plg_user_cwmconnect.zip",
+                "config": {
+                    "outputDir": "build/dist",
+                    "outputName": "plg_user_cwmconnect-{version}.zip",
+                    "manifest": "plugins/user/cwmconnect/cwmconnect.xml",
+                    "sources": [
+                        {
+                            "from": "plugins/user/cwmconnect",
+                            "to": ""
+                        }
+                    ],
+                    "excludeMatchMode": "strict",
+                    "excludes": [
+                        ".git",
+                        ".github",
+                        ".idea",
+                        ".vscode",
+                        ".DS_Store",
+                        "node_modules",
+                        ".php-cs-fixer.cache"
+                    ]
+                }
+            },
+            {
+                "type": "inline",
+                "outputName": "plg_content_cwmconnect.zip",
+                "config": {
+                    "outputDir": "build/dist",
+                    "outputName": "plg_content_cwmconnect-{version}.zip",
+                    "manifest": "plugins/content/cwmconnect/cwmconnect.xml",
+                    "sources": [
+                        {
+                            "from": "plugins/content/cwmconnect",
+                            "to": ""
+                        }
+                    ],
+                    "excludeMatchMode": "strict",
+                    "excludes": [
+                        ".git",
+                        ".github",
+                        ".idea",
+                        ".vscode",
+                        ".DS_Store",
+                        "node_modules",
+                        ".php-cs-fixer.cache"
+                    ]
+                }
+            },
+            {
+                "type": "inline",
+                "outputName": "plg_privacy_cwmconnect.zip",
+                "config": {
+                    "outputDir": "build/dist",
+                    "outputName": "plg_privacy_cwmconnect-{version}.zip",
+                    "manifest": "plugins/privacy/cwmconnect/cwmconnect.xml",
+                    "sources": [
+                        {
+                            "from": "plugins/privacy/cwmconnect",
+                            "to": ""
+                        }
+                    ],
+                    "excludeMatchMode": "strict",
+                    "excludes": [
+                        ".git",
+                        ".github",
+                        ".idea",
+                        ".vscode",
+                        ".DS_Store",
+                        "node_modules",
+                        ".php-cs-fixer.cache"
+                    ]
+                }
+            },
+            {
+                "type": "inline",
+                "outputName": "plg_task_cwmconnect.zip",
+                "config": {
+                    "outputDir": "build/dist",
+                    "outputName": "plg_task_cwmconnect-{version}.zip",
+                    "manifest": "plugins/task/cwmconnect/cwmconnect.xml",
+                    "sources": [
+                        {
+                            "from": "plugins/task/cwmconnect",
+                            "to": ""
+                        }
+                    ],
+                    "excludeMatchMode": "strict",
+                    "excludes": [
+                        ".git",
+                        ".github",
+                        ".idea",
+                        ".vscode",
+                        ".DS_Store",
+                        "node_modules",
+                        ".php-cs-fixer.cache"
+                    ]
+                }
+            }
+        ],
+        "verify": {
+            "expectedEntries": [
+                "pkg_cwmconnect.xml",
+                "com_cwmconnect.zip",
+                "lib_mpdf.zip",
+                "mod_birthdayanniversary.zip",
+                "plg_finder_cwmconnect.zip",
+                "plg_user_cwmconnect.zip",
+                "plg_content_cwmconnect.zip",
+                "plg_privacy_cwmconnect.zip",
+                "plg_task_cwmconnect.zip"
+            ]
+        }
     }
 }
