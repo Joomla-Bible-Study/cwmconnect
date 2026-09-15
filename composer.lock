@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b2ba42af68f750ddb308f16ecdc5a520",
+    "content-hash": "6a131323d7bace74a2dab2bdea55f384",
     "packages": [
         {
             "name": "google/recaptcha",
@@ -401,16 +401,16 @@
         },
         {
             "name": "cwm/build-tools",
-            "version": "v1.34.0",
+            "version": "v1.35.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Joomla-Bible-Study/cwm-build-tools.git",
-                "reference": "795c4f9365d1e9758f9063fd4aa646a08a33a3f9"
+                "reference": "d98720cd4e210b058f30049b4d05371007bb762e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Joomla-Bible-Study/cwm-build-tools/zipball/795c4f9365d1e9758f9063fd4aa646a08a33a3f9",
-                "reference": "795c4f9365d1e9758f9063fd4aa646a08a33a3f9",
+                "url": "https://api.github.com/repos/Joomla-Bible-Study/cwm-build-tools/zipball/d98720cd4e210b058f30049b4d05371007bb762e",
+                "reference": "d98720cd4e210b058f30049b4d05371007bb762e",
                 "shasum": ""
             },
             "require": {
@@ -518,10 +518,10 @@
                 "release"
             ],
             "support": {
-                "source": "https://github.com/Joomla-Bible-Study/cwm-build-tools/tree/v1.34.0",
+                "source": "https://github.com/Joomla-Bible-Study/cwm-build-tools/tree/v1.35.0",
                 "issues": "https://github.com/Joomla-Bible-Study/cwm-build-tools/issues"
             },
-            "time": "2026-09-15T22:20:05+00:00"
+            "time": "2026-09-15T23:00:10+00:00"
         },
         {
             "name": "ergebnis/agent-detector",

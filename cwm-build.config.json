@@ -89,6 +89,15 @@
             "map"
         ],
         "vendorPrune": true,
+        "_verifyMedia_comment": "Checks media/com_cwmconnect/js against the three .es6.js sources rollup builds from. verifyMediaSources catches built output whose source is gone; verifyMediaFreshness catches built output OLDER than its source — edited and never rebuilt, so the package ships the previous build's behaviour under a new version number. ⚠️ ignore lists the three files in that directory that are NOT build output and never will be: jscolor.min.js is vendored third-party, and churchdirectory.js and geoupdate.js are hand-written (geoupdate.js is referenced from ten PHP files; it and jscolor are declared in joomla.asset.json). Without the exemption parity reports all three as orphans on a correct tree. Keep this list short — it exempts exactly what it names, and a list that grows until the check is silent is worse than no check. No css pair: media/com_cwmconnect/css has no build/media_source counterpart at all, so every file in it would be an orphan. Needs cwm/build-tools >= 1.35 for ignore; older versions reject or ignore the key. Background: cwm-build-tools#159, #166.",
+        "verifyMediaSources": [
+            {
+                "source": "build/media_source/com_cwmconnect/js",
+                "output": "media/com_cwmconnect/js",
+                "ignore": ["jscolor.min.js", "churchdirectory.js", "geoupdate.js"]
+            }
+        ],
+        "verifyMediaFreshness": true,
         "preBuild": {
             "_comment": "Wipes build/dist so a stale zip from a prior build cannot be picked up by outputGlob, then regenerates the two gitignored build outputs the package needs: media/com_cwmconnect/{css,js} via rollup, and libraries/mpdf/vendor via composer (lib_mpdf ships that vendor tree).",
             "mode": "run",
