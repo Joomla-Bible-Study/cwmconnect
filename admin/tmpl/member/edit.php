@@ -50,6 +50,11 @@ $wa->addInlineScript(<<<JS
     });
     JS);
 
+// joomla.edit.params adds its tabs to the form's uitab set only when told to use
+// uitab and which set: by default it uses bootstrap tabs on a set called myTab.
+$this->useCoreUI = true;
+$this->tab_name  = 'memberTab';
+
 // Fieldsets that are rendered manually below.
 $this->ignore_fieldsets = ['details', 'item_associations', 'jmetadata'];
 
