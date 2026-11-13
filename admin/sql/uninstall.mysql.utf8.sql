@@ -6,3 +6,4 @@ DROP TABLE IF EXISTS `#__cwmconnect_geoupdate`;
 DROP TABLE IF EXISTS `#__cwmconnect_kml`;
 DROP TABLE IF EXISTS `#__cwmconnect_position`;
 DROP TABLE IF EXISTS `#__cwmconnect_update`;
+DROP TABLE IF EXISTS `#__cwmconnect_verified_emails`;

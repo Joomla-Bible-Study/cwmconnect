@@ -59,7 +59,7 @@ off stays off.
 
 | Plugin | After install | Needed for |
 |---|---|---|
-| User – Church Directory Pairing | on | pairing a member to their Joomla account when the account is saved |
+| User – Church Directory Pairing | on | recording which accounts have proven their email (§5), and pairing a member to their Joomla account when the account is saved |
 | Content – Church Directory Pairing | on | pairing when an admin saves a member |
 | Privacy – Church Directory | on | GDPR export / removal covering member data |
 | Task – CWM Connect Sync | on | scheduled background syncs (see §7, issue #191); nothing runs until you create a task |
@@ -173,6 +173,31 @@ Pairing matches on the email Planning Center holds. On the reference account
 only **160 of 540 (30%)** can ever pair automatically — 316 have no email in PC
 at all, and 64 share one with a housemate (shared emails are refused as
 ambiguous). The shared access code exists to cover the rest.
+
+### What pairing trusts
+
+Pairing hands an account a member's profile, so it only uses an email address
+the account has proven is its own. An address counts as proven when:
+
+- the account's owner followed the activation link from registration. **Users →
+  Options → New User Account Activation** must be **Self** or **Administrator**;
+  with **Administrator**, the account pairs once it is approved, from the
+  emailed link or from the Users list
+- another administrator, one allowed to create or edit accounts, created the
+  account or changed its email
+
+Nothing else proves an address: not an email the owner sets themselves, in
+their profile or in the backend, not an administrator saving the account for
+some other reason, and not a password reset. With activation set to **None**, a self-registered
+account never pairs on its own.
+
+The **User – Church Directory Pairing** plugin is what records the proof, so
+keep it on: with it off, no further account becomes proven, and only those
+proven before can pair.
+
+Pairing by hand always works: open the member and set **Linked Joomla User**.
+A site updated from an earlier version keeps the pairs it has, but starts with
+no account proven, so any account still to pair is paired this way.
 
 ---
 

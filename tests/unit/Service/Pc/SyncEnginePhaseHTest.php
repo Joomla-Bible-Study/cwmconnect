@@ -249,6 +249,15 @@ final class SyncEnginePhaseHTest extends TestCase
 
                 return $this->pairResult;
             }
+
+            public function recordVerifiedEmail(int $userId, string $email, string $source): void {}
+
+            public function hasVerifiedEmail(int $userId, string $email): bool
+            {
+                return false;  // the engine never asks; its user lookup applies the proof itself
+            }
+
+            public function forgetVerifiedEmail(int $userId): void {}
         };
     }
 
@@ -269,6 +278,15 @@ final class SyncEnginePhaseHTest extends TestCase
             {
                 return false;
             }
+
+            public function recordVerifiedEmail(int $userId, string $email, string $source): void {}
+
+            public function hasVerifiedEmail(int $userId, string $email): bool
+            {
+                return false;
+            }
+
+            public function forgetVerifiedEmail(int $userId): void {}
         };
     }
 

@@ -384,6 +384,33 @@ CREATE TABLE IF NOT EXISTS `#__cwmconnect_pc_field_map` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `#__cwmconnect_verified_emails`
+--
+-- The last email each Joomla account has proven is its own: confirmed
+-- through the registration activation link, or set by an administrator
+-- when creating the account or changing its email. Joomla does not record
+-- this, and automatic pairing must not trust an email the account merely
+-- holds, so pairing requires the account's current email to match this
+-- row. One row per account; the user plugin writes it.
+--
+-- The collation matches #__users, so the pairing join compares emails
+-- case-insensitively with a plain `=`.
+--
+
+CREATE TABLE IF NOT EXISTS `#__cwmconnect_verified_emails` (
+  `user_id`     INT UNSIGNED NOT NULL,
+  `email`       VARCHAR(100) NOT NULL,
+  `source`      VARCHAR(20)  NOT NULL,
+  `verified_at` DATETIME     NOT NULL,
+  PRIMARY KEY (`user_id`)
+)
+  ENGINE          = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  DEFAULT COLLATE = utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Starting data for table `#__cwmconnect_dirheader`
 -- One header block and one footer block for the rendered directory
 -- (`section` 0 = header, 1 = footer). Placeholder wording — every church

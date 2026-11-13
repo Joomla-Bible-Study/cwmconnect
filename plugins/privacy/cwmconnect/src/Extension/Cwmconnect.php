@@ -15,6 +15,7 @@ namespace CWM\Plugin\Privacy\Cwmconnect\Extension;
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
+use CWM\Component\Cwmconnect\Administrator\Service\Pairing\DatabaseMemberPairing;
 use CWM\Component\Cwmconnect\Administrator\Service\Pairing\MemberGroupSync;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Event\Privacy\ExportRequestEvent;
@@ -28,9 +29,11 @@ use Joomla\Event\SubscriberInterface;
  *
  * Handles two privacy events:
  *  - **Export**: collects all member data linked to the requesting user
- *    (via user_id FK) and any feed tokens they own.
+ *    (via user_id FK), any feed tokens they own, and the email address the
+ *    account proved for pairing.
  *  - **Remove**: pseudonymises the member row (clears personal fields,
- *    sets display_in_directory=0) and revokes all feed tokens.
+ *    sets display_in_directory=0), revokes all feed tokens, and forgets the
+ *    proven email address.
  *
  * @since  __DEPLOY_VERSION__
  */
@@ -50,7 +53,8 @@ final class Cwmconnect extends PrivacyPlugin implements SubscriberInterface
     }
 
     /**
-     * Export member data and feed tokens for a privacy request.
+     * Export member data, feed tokens and the proven email for a privacy
+     * request.
      *
      * @param   ExportRequestEvent  $event  The export request event.
      *
@@ -112,13 +116,36 @@ final class Cwmconnect extends PrivacyPlugin implements SubscriberInterface
             $domains[] = $tokenDomain;
         }
 
+        $verifiedQuery = $db->createQuery()
+            ->select([
+                $db->quoteName('email'),
+                $db->quoteName('source'),
+                $db->quoteName('verified_at'),
+            ])
+            ->from($db->quoteName('#__cwmconnect_verified_emails'))
+            ->where($db->quoteName('user_id') . ' = :userId')
+            ->bind(':userId', $user->id, ParameterType::INTEGER);
+
+        $verified = $db->setQuery($verifiedQuery)->loadObjectList();
+
+        if ($verified !== []) {
+            $verifiedDomain = $this->createDomain('cwmconnect_verified_email', 'plg_privacy_cwmconnect_verified_email_data');
+
+            foreach ($verified as $row) {
+                $verifiedDomain->addItem($this->createItemFromArray((array) $row));
+            }
+
+            $domains[] = $verifiedDomain;
+        }
+
         if ($domains !== []) {
             $event->addResult($domains);
         }
     }
 
     /**
-     * Pseudonymise member data and revoke feed tokens for a removal request.
+     * Pseudonymise member data, revoke feed tokens and forget the proven
+     * email for a removal request.
      *
      * Member rows are not deleted — they're pseudonymised (personal fields
      * cleared, display_in_directory set to 0) so the directory structure
@@ -177,6 +204,8 @@ final class Cwmconnect extends PrivacyPlugin implements SubscriberInterface
             ->bind(':userId', $user->id, ParameterType::INTEGER);
 
         $db->setQuery($revokeQuery)->execute();
+
+        new DatabaseMemberPairing($db)->forgetVerifiedEmail((int) $user->id);
 
         // The row above was just unpaired and unpublished, so this user is no
         // longer a member: drop the group that carries directory access.
