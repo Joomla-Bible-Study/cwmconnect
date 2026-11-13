@@ -53,8 +53,11 @@ interface MemberPairingInterface
      * Look up the single Joomla user that matches the given email.
      *
      * Blocked accounts (`#__users.block = 1`) are excluded — pairing a
-     * member to a blocked user defeats the portal's purpose. Returns null
-     * on zero matches AND on multiple matches.
+     * member to a blocked user defeats the portal's purpose. So is any
+     * account whose current email it has not proven (see
+     * {@see self::recordVerifiedEmail()}): holding an address is not the
+     * same as owning it. Returns null on zero matches AND on multiple
+     * matches.
      *
      * @param   string  $email  Email to match against `#__users.email`.
      *
@@ -63,6 +66,46 @@ interface MemberPairingInterface
      * @since   __DEPLOY_VERSION__
      */
     public function findJoomlaUserIdByEmail(string $email): ?int;
+
+    /**
+     * Record that an account has proven an email is its own, replacing what
+     * it proved before. Called for the two moments that prove it: the
+     * registration activation link, and an administrator creating the
+     * account or changing its email.
+     *
+     * @param   int     $userId  `#__users.id`
+     * @param   string  $email   The address proven.
+     * @param   string  $source  How it was proven, for the record (`activation`, `admin`).
+     *
+     * @return  void
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    public function recordVerifiedEmail(int $userId, string $email, string $source): void;
+
+    /**
+     * Whether this email is the one the account last proved. Compared
+     * case-insensitively (utf8mb4_unicode_ci).
+     *
+     * @param   int     $userId  `#__users.id`
+     * @param   string  $email   The account's current email.
+     *
+     * @return  bool
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    public function hasVerifiedEmail(int $userId, string $email): bool;
+
+    /**
+     * Drop the account's proven email: it was deleted, or asked to be forgotten.
+     *
+     * @param   int  $userId  `#__users.id`
+     *
+     * @return  void
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    public function forgetVerifiedEmail(int $userId): void;
 
     /**
      * Bind a Joomla user id to a member row, *only* if the row is currently

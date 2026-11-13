@@ -79,17 +79,82 @@ final readonly class DatabaseMemberPairing implements MemberPairingInterface
             return null;
         }
 
+        // Only an account whose current email is the one it last proved: anyone
+        // can type a member's address into their own profile.
         $query = $this->db->createQuery()
-            ->select($this->db->quoteName('id'))
-            ->from($this->db->quoteName('#__users'))
-            ->where($this->db->quoteName('email') . ' = :email')
-            ->where($this->db->quoteName('block') . ' = 0')
+            ->select($this->db->quoteName('u.id'))
+            ->from($this->db->quoteName('#__users', 'u'))
+            ->join(
+                'INNER',
+                $this->db->quoteName('#__cwmconnect_verified_emails', 'v') . ' ON '
+                    . $this->db->quoteName('v.user_id') . ' = ' . $this->db->quoteName('u.id')
+                    . ' AND ' . $this->db->quoteName('v.email') . ' = ' . $this->db->quoteName('u.email'),
+            )
+            ->where($this->db->quoteName('u.email') . ' = :email')
+            ->where($this->db->quoteName('u.block') . ' = 0')
             ->bind(':email', $email, ParameterType::STRING)
             ->setLimit(2);
 
         $ids = $this->db->setQuery($query)->loadColumn();
 
         return \count($ids) === 1 ? (int) $ids[0] : null;
+    }
+
+    /** @inheritDoc @since __DEPLOY_VERSION__ */
+    public function recordVerifiedEmail(int $userId, string $email, string $source): void
+    {
+        $email = trim($email);
+
+        if ($userId <= 0 || $email === '') {
+            return;
+        }
+
+        // One row per account: a new proof replaces the old one.
+        $this->forgetVerifiedEmail($userId);
+
+        $row = (object) [
+            'user_id'     => $userId,
+            'email'       => $email,
+            'source'      => $source,
+            'verified_at' => new \DateTimeImmutable('now', new \DateTimeZone('UTC'))->format('Y-m-d H:i:s'),
+        ];
+
+        $this->db->insertObject('#__cwmconnect_verified_emails', $row);
+    }
+
+    /** @inheritDoc @since __DEPLOY_VERSION__ */
+    public function hasVerifiedEmail(int $userId, string $email): bool
+    {
+        $email = trim($email);
+
+        if ($userId <= 0 || $email === '') {
+            return false;
+        }
+
+        $query = $this->db->createQuery()
+            ->select('COUNT(*)')
+            ->from($this->db->quoteName('#__cwmconnect_verified_emails'))
+            ->where($this->db->quoteName('user_id') . ' = :userId')
+            ->where($this->db->quoteName('email') . ' = :email')
+            ->bind(':userId', $userId, ParameterType::INTEGER)
+            ->bind(':email', $email, ParameterType::STRING);
+
+        return (int) $this->db->setQuery($query)->loadResult() > 0;
+    }
+
+    /** @inheritDoc @since __DEPLOY_VERSION__ */
+    public function forgetVerifiedEmail(int $userId): void
+    {
+        if ($userId <= 0) {
+            return;
+        }
+
+        $query = $this->db->createQuery()
+            ->delete($this->db->quoteName('#__cwmconnect_verified_emails'))
+            ->where($this->db->quoteName('user_id') . ' = :userId')
+            ->bind(':userId', $userId, ParameterType::INTEGER);
+
+        $this->db->setQuery($query)->execute();
     }
 
     /** @inheritDoc @since __DEPLOY_VERSION__ */

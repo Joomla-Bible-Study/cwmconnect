@@ -8,14 +8,17 @@ namespace Joomla\CMS\Plugin;
  * Minimal stub of joomla/cms's CMSPlugin base class for unit tests.
  *
  * Production CMSPlugin pulls in DispatcherAwareInterface, ApplicationAware,
- * language loading, etc. Our plugin only relies on being constructible
- * and on declaring `autoloadLanguage`; tests don't exercise the wider
- * surface.
+ * language loading, etc. Our plugins rely on being constructible, on
+ * declaring `autoloadLanguage`, and on reading back the application they
+ * were given; tests don't exercise the wider surface.
  */
 abstract class CMSPlugin
 {
     /** @var bool */
     protected $autoloadLanguage = false;
+
+    /** @var mixed */
+    private $application = null;
 
     /**
      * J6.1+ single-arg constructor. The legacy 2-arg form (dispatcher,
@@ -30,13 +33,23 @@ abstract class CMSPlugin
 
     /**
      * Joomla calls setApplication on plugins resolved through the DI
-     * container. We just need the method to exist so the service
-     * provider can call it without blowing up under tests.
+     * container. Kept so a test can hand a plugin a stand-in application
+     * (anything with isClient()) and read it back via getApplication().
      *
      * @param  mixed  $app
      */
     public function setApplication($app): void
     {
-        // No-op for test purposes.
+        $this->application = $app;
+    }
+
+    /**
+     * Null until setApplication() is called, as in production.
+     *
+     * @return  mixed
+     */
+    protected function getApplication()
+    {
+        return $this->application;
     }
 }
