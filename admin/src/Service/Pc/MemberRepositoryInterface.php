@@ -63,7 +63,7 @@ interface MemberRepositoryInterface
     /**
      * Phase D: look up a local member row id by PC person id. Used after
      * `upsertByPcPersonId()` so the engine can hand the local id to
-     * {@see CustomFieldWriterInterface::setFieldValue()}.
+     * {@see CustomFieldWriterInterface::writeValues()}.
      *
      * @param   int  $pcPersonId
      *

@@ -90,9 +90,9 @@ final class SyncReport
     public int $restored = 0;
 
     /**
-     * Phase D: count of `FieldsHelper::setFieldValue()` calls completed this
-     * run. Includes both "value changed" and "value rewritten to same" — we
-     * don't currently diff before writing.
+     * Phase D: how many custom fields changed this run, counting each
+     * member's separately: given new values, or cleared. A field already
+     * holding what Planning Center does isn't counted.
      *
      * @var    int
      * @since  __DEPLOY_VERSION__

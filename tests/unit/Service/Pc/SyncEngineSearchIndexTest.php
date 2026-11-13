@@ -71,6 +71,16 @@ final class SyncEngineSearchIndexTest extends TestCase
     }
 
     #[Test]
+    public function aFieldClearedOnceTheRunIsOverReindexesTheMember(): void
+    {
+        $index = $this->searchIndex();
+
+        $this->engine($this->unchanged(), $index, fieldWriter: $this->fieldWriterForStoredValues())->run([]);
+
+        self::assertSame([1002, 1001, 1003], $index->changed, 'Person 2 as their value is written, 1 and 3 as theirs is cleared.');
+    }
+
+    #[Test]
     public function aNewPairingCountsAsAChange(): void
     {
         $index = $this->searchIndex();
@@ -244,16 +254,33 @@ final class SyncEngineSearchIndexTest extends TestCase
     }
 
     /**
-     * @param  bool  $changes  What every write reports: whether the stored value changed.
+     * A writer for members with nothing stored yet: a value given changes its
+     * field, and clearing one finds it empty already.
+     *
+     * @param  bool  $changes  Whether a value given changes the field, or it already held it.
      */
     private function fieldWriter(bool $changes): CustomFieldWriterInterface
     {
         return new class ($changes) implements CustomFieldWriterInterface {
             public function __construct(private bool $changes) {}
 
-            public function setFieldValue(int $memberId, int $joomlaFieldId, string $value): bool
+            public function writeValues(int $memberId, array $values): int
             {
-                return $this->changes;
+                return $this->changes ? \count(array_filter($values)) : 0;
+            }
+        };
+    }
+
+    /**
+     * A writer for members who all hold a value already: every field it's
+     * given changes, clearing included.
+     */
+    private function fieldWriterForStoredValues(): CustomFieldWriterInterface
+    {
+        return new class implements CustomFieldWriterInterface {
+            public function writeValues(int $memberId, array $values): int
+            {
+                return \count($values);
             }
         };
     }

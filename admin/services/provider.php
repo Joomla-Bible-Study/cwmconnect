@@ -17,13 +17,13 @@ use CWM\Component\Cwmconnect\Administrator\Service\Pairing\MemberPairingInterfac
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\CachedPhotos as PcCachedPhotos;
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\Client as PcClient;
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\CustomFieldWriterInterface as PcCustomFieldWriterInterface;
+use CWM\Component\Cwmconnect\Administrator\Service\Pc\DatabaseCustomFieldWriter as PcDatabaseCustomFieldWriter;
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\DatabaseFieldMapRepository as PcDatabaseFieldMapRepository;
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\DatabaseHouseholdRepository as PcDatabaseHouseholdRepository;
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\DatabaseMemberRepository as PcDatabaseMemberRepository;
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\Exception\ConfigurationException as PcConfigurationException;
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\FieldMapRepositoryInterface as PcFieldMapRepositoryInterface;
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\HouseholdRepositoryInterface as PcHouseholdRepositoryInterface;
-use CWM\Component\Cwmconnect\Administrator\Service\Pc\FieldsHelperWriter as PcFieldsHelperWriter;
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\MediaPhotoCache as PcMediaPhotoCache;
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\MemberRepositoryInterface as PcMemberRepositoryInterface;
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\PersonMapper as PcPersonMapper;
@@ -124,7 +124,8 @@ return new class implements ServiceProviderInterface {
 
         $container->set(
             PcCustomFieldWriterInterface::class,
-            static fn(): PcCustomFieldWriterInterface => new PcFieldsHelperWriter(),
+            static fn(Container $c): PcCustomFieldWriterInterface
+                => new PcDatabaseCustomFieldWriter($c->get(DatabaseInterface::class)),
         );
 
         // Phase E: avatar cache. Resolves the cache root at request time so

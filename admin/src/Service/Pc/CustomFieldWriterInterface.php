@@ -16,32 +16,29 @@ namespace CWM\Component\Cwmconnect\Administrator\Service\Pc;
 // phpcs:enable PSR1.Files.SideEffects
 
 /**
- * Phase D: indirection over `Joomla\Component\Fields\Administrator\Helper\FieldsHelper::setFieldValue()`.
+ * Phase D: writes the custom-field values the sync maps from Planning Center.
  *
- * Exists so the sync engine can be unit-tested without booting com_fields:
- * tests pass an in-memory writer that records calls; production wires
- * {@see FieldsHelperWriter} which delegates straight to FieldsHelper.
+ * Exists so the sync engine can be unit-tested without a database: tests pass
+ * an in-memory writer that records calls; production wires
+ * {@see DatabaseCustomFieldWriter}.
  *
- * Context is always `com_cwmconnect.member`; member id + field id +
- * stringified value travel together because that's the FieldsHelper API
- * shape.
+ * Context is always `com_cwmconnect.member`.
  *
  * @since  __DEPLOY_VERSION__
  */
 interface CustomFieldWriterInterface
 {
     /**
-     * Persist one custom-field value against a member row.
+     * Make a member's mapped custom fields hold exactly the given values.
      *
-     * @param   int     $memberId        Local cwmconnect_details.id.
-     * @param   int     $joomlaFieldId   #__fields.id (com_cwmconnect.member).
-     * @param   string  $value           Value to store. The caller has already
-     *                                    stringified PC's native datum.
+     * @param   int                       $memberId  Local cwmconnect_details.id.
+     * @param   array<int, list<string>>  $values    #__fields.id => the values Planning
+     *                                               Center holds: one per checked option
+     *                                               of a checkboxes field, none to clear it.
      *
-     * @return  bool   True when the stored value changed: false when it already
-     *                 held this value, or the write failed.
+     * @return  int  How many fields changed.
      *
      * @since   __DEPLOY_VERSION__
      */
-    public function setFieldValue(int $memberId, int $joomlaFieldId, string $value): bool;
+    public function writeValues(int $memberId, array $values): int;
 }
