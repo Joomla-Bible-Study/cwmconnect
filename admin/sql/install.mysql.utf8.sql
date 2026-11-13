@@ -352,8 +352,8 @@ CREATE TABLE IF NOT EXISTS `#__cwmconnect_feed_tokens` (
 --
 -- Phase D: maps a Planning Center custom-field definition to a Joomla
 -- custom field (#__fields row in context com_cwmconnect.member). The
--- sync engine reads this table to translate each PC FieldDatum into a
--- FieldsHelper::setFieldValue() call on the member row.
+-- sync engine reads this table to write each PC FieldDatum's value to
+-- the mapped field on the member row.
 --
 -- pc_field_id is the integer id from PC's FieldDefinition resource.
 -- pc_field_slug is a denormalised copy of the PC slug captured at map

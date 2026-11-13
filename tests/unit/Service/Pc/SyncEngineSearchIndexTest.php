@@ -244,16 +244,19 @@ final class SyncEngineSearchIndexTest extends TestCase
     }
 
     /**
-     * @param  bool  $changes  What every write reports: whether the stored value changed.
+     * A writer for members with nothing stored yet: a value given changes its
+     * field, and clearing one finds it empty already.
+     *
+     * @param  bool  $changes  Whether a value given changes the field, or it already held it.
      */
     private function fieldWriter(bool $changes): CustomFieldWriterInterface
     {
         return new class ($changes) implements CustomFieldWriterInterface {
             public function __construct(private bool $changes) {}
 
-            public function setFieldValue(int $memberId, int $joomlaFieldId, string $value): bool
+            public function writeValues(int $memberId, array $values): int
             {
-                return $this->changes;
+                return $this->changes ? \count(array_filter($values)) : 0;
             }
         };
     }

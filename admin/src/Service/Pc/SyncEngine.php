@@ -42,7 +42,8 @@ use Psr\Log\NullLogger;
  *    pairs off each person
  *  - {@see FieldMapRepositoryInterface} resolves each pc_field_id to a
  *    Joomla custom-field id (admin-managed mapping table)
- *  - {@see CustomFieldWriterInterface} performs the actual write
+ *  - {@see CustomFieldWriterInterface} makes each mapped field hold what
+ *    Planning Center does, clearing one it holds nothing for
  *
  * Phase E adds avatar caching:
  *  - {@see PersonMapper::extractAvatarUrl()} pulls the `avatar` URL
@@ -226,6 +227,11 @@ final class SyncEngine
             $data     = \is_array($page['data'] ?? null) ? $page['data'] : [];
             $included = \is_array($page['included'] ?? null) ? $page['included'] : [];
 
+            // A page with no custom-field value at all is likelier a response
+            // without them than a page of people who have none: it clears no
+            // mapped field.
+            $clearsFields = \in_array('FieldDatum', array_column($included, 'type'), true);
+
             foreach ($data as $person) {
                 if (!\is_array($person)) {
                     $report->recordError(null, 'Skipping non-array entry in PC response data.');
@@ -291,7 +297,7 @@ final class SyncEngine
                             $report->restored++;
                         }
 
-                        $fieldsChanged = $this->writeCustomFields($pcPersonId, $person, $included, $report);
+                        $fieldsChanged = $this->writeCustomFields($pcPersonId, $person, $included, $report, $clearsFields);
 
                         // Photos are the whole cost of a first sync — 544
                         // downloads plus variant generation accounted for
@@ -646,36 +652,55 @@ final class SyncEngine
      * Phase D: per-person custom-field write step. No-op when the engine
      * was constructed without a mapping repo + writer (Phase C parity).
      *
+     * Every mapped field gets the values Planning Center holds for the person,
+     * one per checked option of a checkboxes field, and none clears it:
+     * Planning Center owns mapped fields, which the admin form shows read-only.
+     *
      * Mapping-table lookup is cached for the duration of the run: a single
      * org typically has <50 PC custom fields, so loading the full mapping
      * once and reusing it across pages is cheaper than re-querying per
-     * person. Per-field errors don't abort the run — they're appended to
-     * the report.
+     * person. A failed write doesn't abort the run: it's appended to the
+     * report.
      *
      * @param   int                                $pcPersonId
-     * @param   array<string, mixed>               $person      Raw PC Person row.
-     * @param   array<int, array<string, mixed>>   $included    JSON:API included.
-     * @param   SyncReport                         $report      Mutated in-place.
+     * @param   array<string, mixed>               $person        Raw PC Person row.
+     * @param   array<int, array<string, mixed>>   $included      JSON:API included.
+     * @param   SyncReport                         $report        Mutated in-place.
+     * @param   bool                               $clearsFields  Whether a mapped field the
+     *                                                            person has no value for is
+     *                                                            cleared, or left as it is.
      *
      * @return  bool  Whether a stored value changed.
      *
      * @since   __DEPLOY_VERSION__
      */
-    private function writeCustomFields(int $pcPersonId, array $person, array $included, SyncReport $report): bool
+    private function writeCustomFields(int $pcPersonId, array $person, array $included, SyncReport $report, bool $clearsFields): bool
     {
         if ($this->fieldMapRepo === null || $this->fieldWriter === null) {
-            return false;
-        }
-
-        $extracted = $this->mapper->extractFieldData($person, $included);
-
-        if ($extracted === []) {
             return false;
         }
 
         $this->fieldMapCache ??= $this->fieldMapRepo->allKeyedByPcFieldId();
 
         if ($this->fieldMapCache === []) {
+            return false;
+        }
+
+        $held = [];
+
+        foreach ($this->mapper->extractFieldData($person, $included) as $datum) {
+            $held[$datum['pc_field_id']][] = $datum['value'];
+        }
+
+        $values = [];
+
+        foreach ($this->fieldMapCache as $pcFieldId => $mapping) {
+            if (isset($held[$pcFieldId]) || $clearsFields) {
+                $values[$mapping['joomla_field_id']] = $held[$pcFieldId] ?? [];
+            }
+        }
+
+        if ($values === []) {
             return false;
         }
 
@@ -687,30 +712,17 @@ final class SyncEngine
             return false;
         }
 
-        $changed = false;
+        try {
+            $written = $this->fieldWriter->writeValues($memberId, $values);
+        } catch (\Throwable $e) {
+            $report->recordError($pcPersonId, 'Custom-field write failed: ' . $e->getMessage());
 
-        foreach ($extracted as $datum) {
-            $mapping = $this->fieldMapCache[$datum['pc_field_id']] ?? null;
-
-            if ($mapping === null) {
-                continue;
-            }
-
-            try {
-                if ($this->fieldWriter->setFieldValue($memberId, $mapping['joomla_field_id'], $datum['value'])) {
-                    $report->customFieldsWritten++;
-                    $changed = true;
-                }
-            } catch (\Throwable $e) {
-                $report->recordError($pcPersonId, \sprintf(
-                    'Custom-field write failed (pc_field_id=%d): %s',
-                    $datum['pc_field_id'],
-                    $e->getMessage(),
-                ));
-            }
+            return false;
         }
 
-        return $changed;
+        $report->customFieldsWritten += $written;
+
+        return $written > 0;
     }
 
     /**

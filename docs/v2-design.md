@@ -216,8 +216,11 @@ For each person matching the filter:
 1. `GET /people/v2/people/{id}?include=field_data,emails,phone_numbers,addresses,households,primary_campus`
 2. Upsert `#__cwmconnect_details` keyed on `pc_person_id`. Lock the PC-mapped
    columns (write only on sync; admin form renders them read-only).
-3. For each PC FieldDatum that has a mapping in `#__fields`:
-   `FieldsHelper::setFieldValue('com_cwmconnect.member', $memberId, $fieldId, $value)`.
+3. Each PC field with a mapping in `#__cwmconnect_pc_field_map` gets the values
+   the person holds in `#__fields_values` (one row per checked option for a
+   multi-value Joomla field, joined otherwise), and is cleared when they hold
+   none. Written directly rather than through com_fields' `setFieldValue()`,
+   whose per-user `core.edit.value` check refuses a scheduled sync.
 4. If `avatar_url` hash differs from `image_hash`: download, store at
    `media/com_cwmconnect/photos/{pc_person_id}.<ext>`, update both columns.
 5. Update `pc_last_synced_at = NOW()`.
@@ -756,7 +759,7 @@ tab); a `people_tabs` fetch supplies the group names.
    `com_fields` field in context `com_cwmconnect.member` with the chosen type +
    options, and write the `#__cwmconnect_pc_field_map` mapping rows. Idempotent
    (re-running matches existing fields by slug, doesn't duplicate).
-4. **Sync** writes values as today (`FieldsHelperWriter`).
+4. **Sync** writes values as today (`DatabaseCustomFieldWriter`).
 
 ### 14.3 PC data_type → Joomla field type
 

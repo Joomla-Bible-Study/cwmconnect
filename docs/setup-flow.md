@@ -133,6 +133,7 @@ What the sync brings in:
 | Photos | downloaded and cached locally, with sized web variants |
 | Households | family units, and each member's link to theirs |
 | Campuses | written to Directory Headers, including address and contact details |
+| Custom fields | the values of the Planning Center fields mapped under **PC Field Mappings**, every checked option of a checkboxes field; a value removed in Planning Center is cleared |
 
 What it does **not** bring in: coordinates, categories, positions *assignments*,
 KML settings, or any access configuration.
