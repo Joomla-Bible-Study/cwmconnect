@@ -7,13 +7,14 @@
          executionOrder="random"
          resolveDependencies="true"
          failOnWarning="true"
-         failOnRisky="true">
+         failOnRisky="true"
+         failOnDeprecation="true">
     <testsuites>
         <testsuite name="unit">
             <directory>tests/unit</directory>
         </testsuite>
     </testsuites>
-    <source>
+    <source ignoreIndirectDeprecations="true">
         <include>
             <directory>admin/src</directory>
             <directory>site/src</directory>
@@ -21,6 +22,8 @@
             <directory>plugins/finder/cwmconnect/src</directory>
             <directory>plugins/user/cwmconnect/src</directory>
             <directory>plugins/content/cwmconnect/src</directory>
+            <directory>plugins/privacy/cwmconnect/src</directory>
+            <directory>plugins/task/cwmconnect/src</directory>
         </include>
     </source>
 </phpunit>
