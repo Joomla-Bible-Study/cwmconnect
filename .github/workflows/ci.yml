@@ -75,17 +75,59 @@ jobs:
       - name: Check coding standards (php-cs-fixer)
         run: composer lint
 
+      # lib_mpdf's vendor tree is gitignored, and only `composer build` (below)
+      # used to install it, so the six PDF render tests skipped themselves here.
+      # Installed first, CI runs the same 250 tests a local run does.
+      - name: Install lib_mpdf dependencies (for the PDF render tests)
+        run: composer install --working-dir=libraries/mpdf --no-dev --optimize-autoloader --no-interaction
+
       - name: Run unit tests (phpunit)
         run: composer test
 
-      - name: Build package (stub during phase 1)
+      - name: Build package
         run: composer build
 
       - name: List package output
-        run: |
-          if compgen -G "build/dist/pkg_cwmconnect-*.zip" > /dev/null; then
-            echo "Package contents:"
-            unzip -l build/dist/pkg_cwmconnect-*.zip
-          else
-            echo "No package zip yet (expected during phase 1 — builder is a stub)."
-          fi
+        run: unzip -l build/dist/pkg_cwmconnect-*.zip
+
+  # PHP 8.5 runs the tests only. Everything else in php-checks is structural
+  # and doesn't vary by PHP version. This is a separate job rather than a
+  # matrix on php-checks because "PHP Lint & Tests" is the required status
+  # check on master: a matrix renames it, and every PR would wait on a check
+  # that never reports. phpunit.xml fails on deprecations, so this is the job
+  # that turns red when our own code trips a PHP 8.5 deprecation.
+  php-85-tests:
+    name: Tests on PHP 8.5
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.5'
+          extensions: mbstring, json, xml, zip, curl, gd, fileinfo
+          coverage: none
+          tools: composer:v2
+
+      - name: Get Composer cache directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v5
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('composer.json') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Install Composer dependencies
+        run: composer install --no-interaction --prefer-dist
+
+      - name: Install lib_mpdf dependencies (for the PDF render tests)
+        run: composer install --working-dir=libraries/mpdf --no-dev --optimize-autoloader --no-interaction
+
+      - name: Run unit tests (phpunit)
+        run: composer test
