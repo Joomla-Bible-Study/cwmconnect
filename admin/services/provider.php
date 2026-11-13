@@ -14,6 +14,7 @@ use CWM\Component\Cwmconnect\Administrator\Service\FeedToken\FeedTokenService;
 use CWM\Component\Cwmconnect\Administrator\Service\Pairing\DatabaseMemberPairing;
 use CWM\Component\Cwmconnect\Administrator\Service\Pairing\MemberGroupSync;
 use CWM\Component\Cwmconnect\Administrator\Service\Pairing\MemberPairingInterface;
+use CWM\Component\Cwmconnect\Administrator\Service\Pc\CachedPhotos as PcCachedPhotos;
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\Client as PcClient;
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\CustomFieldWriterInterface as PcCustomFieldWriterInterface;
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\DatabaseFieldMapRepository as PcDatabaseFieldMapRepository;
@@ -28,6 +29,7 @@ use CWM\Component\Cwmconnect\Administrator\Service\Pc\MemberRepositoryInterface 
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\PersonMapper as PcPersonMapper;
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\PhotoCacheInterface as PcPhotoCacheInterface;
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\SyncEngine as PcSyncEngine;
+use CWM\Component\Cwmconnect\Administrator\Service\Privacy\DatabasePrivacySuppressions;
 use Joomla\CMS\Categories\CategoryFactoryInterface;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Component\Router\RouterFactoryInterface;
@@ -104,7 +106,10 @@ return new class implements ServiceProviderInterface {
         $container->set(
             PcMemberRepositoryInterface::class,
             static fn(Container $c): PcMemberRepositoryInterface
-                => new PcDatabaseMemberRepository($c->get(DatabaseInterface::class)),
+                => new PcDatabaseMemberRepository(
+                    $c->get(DatabaseInterface::class),
+                    new PcCachedPhotos(JPATH_ROOT . '/media/com_cwmconnect/photos'),
+                ),
         );
 
         // Phase D: PC custom-field mapping repo + writer. Engine constructor
@@ -175,6 +180,7 @@ return new class implements ServiceProviderInterface {
                     http: \Joomla\CMS\Http\HttpFactory::getHttp(),
                     cacheRoot: JPATH_ROOT . '/media/com_cwmconnect/photos/households',
                 ),
+                suppressions: new DatabasePrivacySuppressions($c->get(DatabaseInterface::class)),
             ),
         );
     }

@@ -18,6 +18,7 @@ namespace CWM\Component\Cwmconnect\Administrator\Model;
 use CWM\Component\Cwmconnect\Administrator\Helper\PcLockedFields;
 use CWM\Component\Cwmconnect\Administrator\Service\Pairing\MemberGroupSync;
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\FieldMapRepositoryInterface;
+use CWM\Component\Cwmconnect\Administrator\Service\Privacy\DatabasePrivacySuppressions;
 use Joomla\CMS\Application\ApplicationHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\Component\Categories\Administrator\Helper\CategoriesHelper;
@@ -461,6 +462,10 @@ class MemberModel extends AdminModel
             }
 
             $this->reconcileMemberGroups($previousUserId, $newUserId);
+
+            if (isset($data['published']) && $memberId > 0) {
+                $this->applyPrivacyRelease([$memberId], (int) $data['published']);
+            }
         }
 
         return $save;
@@ -496,7 +501,44 @@ class MemberModel extends AdminModel
             $this->reconcileMemberGroups($userId, $userId);
         }
 
+        $this->applyPrivacyRelease((array) $pks, (int) $value);
+
         return true;
+    }
+
+    /**
+     * Restore, or stop restoring, members removed under a privacy request. A
+     * Planning Center member removed that way waits, blank, in the archive:
+     * publishing or unpublishing the row releases them, and the next sync
+     * refills and lists them; archiving it again before then takes the
+     * release back. Trashing it changes nothing.
+     *
+     * @param   array<int, mixed>  $memberIds  Member ids whose state was set.
+     * @param   int                $state      The state they were set to.
+     *
+     * @return  void
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    private function applyPrivacyRelease(array $memberIds, int $state): void
+    {
+        $suppressions = new DatabasePrivacySuppressions($this->getDatabase());
+
+        if ($state === 2) {
+            $suppressions->unreleaseMembers(array_map('intval', $memberIds));
+
+            return;
+        }
+
+        if ($state !== 0 && $state !== 1) {
+            return;
+        }
+
+        $released = $suppressions->releaseMembers(array_map('intval', $memberIds));
+
+        if ($released > 0) {
+            Factory::getApplication()->enqueueMessage(Text::plural('COM_CWMCONNECT_MEMBERS_N_PRIVACY_RELEASED', $released), 'info');
+        }
     }
 
     /**

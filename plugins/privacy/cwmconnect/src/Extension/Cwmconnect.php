@@ -17,6 +17,9 @@ namespace CWM\Plugin\Privacy\Cwmconnect\Extension;
 
 use CWM\Component\Cwmconnect\Administrator\Service\Pairing\DatabaseMemberPairing;
 use CWM\Component\Cwmconnect\Administrator\Service\Pairing\MemberGroupSync;
+use CWM\Component\Cwmconnect\Administrator\Service\Pc\CachedPhotos;
+use CWM\Component\Cwmconnect\Administrator\Service\Privacy\DatabasePrivacySuppressions;
+use CWM\Component\Cwmconnect\Administrator\Service\Privacy\MemberErasure;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Event\Privacy\ExportRequestEvent;
 use Joomla\CMS\Event\Privacy\RemoveDataEvent;
@@ -31,9 +34,10 @@ use Joomla\Event\SubscriberInterface;
  *  - **Export**: collects all member data linked to the requesting user
  *    (via user_id FK), any feed tokens they own, and the email address the
  *    account proved for pairing.
- *  - **Remove**: pseudonymises the member row (clears personal fields,
- *    sets display_in_directory=0), revokes all feed tokens, and forgets the
- *    proven email address.
+ *  - **Remove**: erases the member (see {@see MemberErasure}): the row is
+ *    blanked and archived, the Planning Center sync stops refilling it, and
+ *    the person's custom-field values and cached photos go. It also revokes
+ *    all feed tokens and forgets the proven email address.
  *
  * @since  __DEPLOY_VERSION__
  */
@@ -144,12 +148,13 @@ final class Cwmconnect extends PrivacyPlugin implements SubscriberInterface
     }
 
     /**
-     * Pseudonymise member data, revoke feed tokens and forget the proven
-     * email for a removal request.
+     * Erase the member behind a removal request, revoke their feed tokens and
+     * forget their proven email.
      *
-     * Member rows are not deleted — they're pseudonymised (personal fields
-     * cleared, display_in_directory set to 0) so the directory structure
-     * stays intact. Feed tokens are revoked (not deleted) for audit trail.
+     * The member row stays, blanked and archived, so that an administrator can
+     * restore a Planning Center member by taking it out of the archive; until
+     * then the sync leaves it blank. Feed tokens are revoked (not deleted) for
+     * the audit trail.
      *
      * @param   RemoveDataEvent  $event  The removal request event.
      *
@@ -165,35 +170,25 @@ final class Cwmconnect extends PrivacyPlugin implements SubscriberInterface
             return;
         }
 
-        $db  = $this->getDatabase();
-        $now = new \DateTimeImmutable('now', new \DateTimeZone('UTC'))->format('Y-m-d H:i:s');
+        $db     = $this->getDatabase();
+        $now    = new \DateTimeImmutable('now', new \DateTimeZone('UTC'))->format('Y-m-d H:i:s');
+        $userId = (int) $user->id;
 
         $query = $db->createQuery()
-            ->update($db->quoteName('#__cwmconnect_details'))
-            ->set($db->quoteName('name') . ' = ' . $db->quote('Removed'))
-            ->set($db->quoteName('lname') . ' = ' . $db->quote(''))
-            ->set($db->quoteName('surname') . ' = ' . $db->quote(''))
-            ->set($db->quoteName('email_to') . ' = NULL')
-            ->set($db->quoteName('telephone') . ' = NULL')
-            ->set($db->quoteName('mobile') . ' = NULL')
-            ->set($db->quoteName('fax') . ' = NULL')
-            ->set($db->quoteName('address') . ' = NULL')
-            ->set($db->quoteName('suburb') . ' = NULL')
-            ->set($db->quoteName('state') . ' = NULL')
-            ->set($db->quoteName('postcode') . ' = NULL')
-            ->set($db->quoteName('country') . ' = NULL')
-            ->set($db->quoteName('webpage') . ' = NULL')
-            ->set($db->quoteName('misc') . ' = NULL')
-            ->set($db->quoteName('image') . ' = NULL')
-            ->set($db->quoteName('birthdate') . ' = NULL')
-            ->set($db->quoteName('anniversary') . ' = NULL')
-            ->set($db->quoteName('display_in_directory') . ' = 0')
-            ->set($db->quoteName('published') . ' = 0')
-            ->set($db->quoteName('user_id') . ' = NULL')
+            ->select($db->quoteName('id'))
+            ->from($db->quoteName('#__cwmconnect_details'))
             ->where($db->quoteName('user_id') . ' = :userId')
-            ->bind(':userId', $user->id, ParameterType::INTEGER);
+            ->bind(':userId', $userId, ParameterType::INTEGER);
 
-        $db->setQuery($query)->execute();
+        $erasure = new MemberErasure(
+            $db,
+            new DatabasePrivacySuppressions($db),
+            new CachedPhotos(JPATH_ROOT . '/media/com_cwmconnect/photos'),
+        );
+
+        foreach ($db->setQuery($query)->loadColumn() as $memberId) {
+            $erasure->erase((int) $memberId);
+        }
 
         $revokeQuery = $db->createQuery()
             ->update($db->quoteName('#__cwmconnect_feed_tokens'))
@@ -201,20 +196,20 @@ final class Cwmconnect extends PrivacyPlugin implements SubscriberInterface
             ->where($db->quoteName('user_id') . ' = :userId')
             ->where($db->quoteName('revoked_at') . ' IS NULL')
             ->bind(':now', $now, ParameterType::STRING)
-            ->bind(':userId', $user->id, ParameterType::INTEGER);
+            ->bind(':userId', $userId, ParameterType::INTEGER);
 
         $db->setQuery($revokeQuery)->execute();
 
-        new DatabaseMemberPairing($db)->forgetVerifiedEmail((int) $user->id);
+        new DatabaseMemberPairing($db)->forgetVerifiedEmail($userId);
 
-        // The row above was just unpaired and unpublished, so this user is no
+        // The rows above were just unpaired and archived, so this user is no
         // longer a member: drop the group that carries directory access.
         // Reconciled from the database, so it is correct even if they somehow
         // still hold another member row.
         $groupId = (int) ComponentHelper::getParams('com_cwmconnect')->get('member_group', 0);
 
         if ($groupId > 0) {
-            new MemberGroupSync($db, $groupId)->reconcile((int) $user->id);
+            new MemberGroupSync($db, $groupId)->reconcile($userId);
         }
     }
 }

@@ -207,6 +207,8 @@
         tbody.appendChild(reportRow('Updated',    Number(data.updated)          || 0));
         tbody.appendChild(reportRow('Households',  Number(data.householdsLinked) || 0));
         tbody.appendChild(reportRow('Deleted',    Number(data.deleted)          || 0));
+        tbody.appendChild(reportRow('Held back (privacy)', Number(data.suppressed) || 0));
+        tbody.appendChild(reportRow('Restored (privacy)',  Number(data.restored)   || 0));
         tbody.appendChild(reportRow('Errors',     Number(data.errorCount)       || 0));
 
         table.appendChild(tbody);

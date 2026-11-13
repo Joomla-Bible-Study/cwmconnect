@@ -13,6 +13,7 @@ namespace CWM\Component\Cwmconnect\Administrator\Service\Pc;
 
 use CWM\Component\Cwmconnect\Administrator\Service\Pairing\MemberPairingInterface;
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\Exception\PcException;
+use CWM\Component\Cwmconnect\Administrator\Service\Privacy\PrivacySuppressionsInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
@@ -135,6 +136,10 @@ final class SyncEngine
      * @param   PhotoCacheInterface|null            $householdPhotoCache  Family-photo cache for
      *                                                                 household avatars. Null skips.
      * @param   LoggerInterface                     $logger          Optional PSR-3 logger.
+     * @param   PrivacySuppressionsInterface|null   $suppressions    People removed under a
+     *                                                                 privacy request, whom the
+     *                                                                 sync must not refill.
+     *                                                                 Null skips the check.
      *
      * @since   __DEPLOY_VERSION__
      */
@@ -149,6 +154,7 @@ final class SyncEngine
         private readonly ?HouseholdRepositoryInterface $households = null,
         private readonly ?PhotoCacheInterface $householdPhotoCache = null,
         private readonly LoggerInterface $logger = new NullLogger(),
+        private readonly ?PrivacySuppressionsInterface $suppressions = null,
     ) {}
 
     /**
@@ -187,6 +193,7 @@ final class SyncEngine
         $seenIds     = [];
         $nextUrl     = null;
         $pagesWalked = 0;
+        $suppressed  = $this->suppressions?->all() ?? [];
 
         $this->logger->info('PC sync started.', ['statuses' => $membershipStatuses]);
 
@@ -228,6 +235,23 @@ final class SyncEngine
                 $report->seen++;
 
                 $pcPersonId = isset($person['id']) ? (int) $person['id'] : null;
+                $released   = $pcPersonId !== null ? ($suppressed[$pcPersonId] ?? null) : null;
+
+                // Removed under a privacy request: nothing from Planning Center is
+                // written for them. They still count as seen, so the sweep keeps
+                // the blanked row an administrator restores them from.
+                if ($released === false) {
+                    $seenIds[] = $pcPersonId;
+                    $report->suppressed++;
+
+                    try {
+                        $this->suppressions?->ensurePlaceholder($pcPersonId);
+                    } catch (\Throwable $e) {
+                        $report->recordError($pcPersonId, $e->getMessage());
+                    }
+
+                    continue;
+                }
 
                 try {
                     $attrs = $this->mapper->map($person, $included);
@@ -251,6 +275,14 @@ final class SyncEngine
 
                     if ($pcPersonId !== null && $pcPersonId > 0) {
                         $seenIds[] = $pcPersonId;
+
+                        // Released from a privacy removal: the row is refilled
+                        // now, so list them again and forget the suppression.
+                        if ($released === true) {
+                            $this->suppressions?->completeRestore($pcPersonId);
+                            $report->restored++;
+                        }
+
                         $this->writeCustomFields($pcPersonId, $person, $included, $report);
 
                         // Photos are the whole cost of a first sync — 544
@@ -339,11 +371,12 @@ final class SyncEngine
         ?string $resumeUrl = null,
         ?\Closure $onProgress = null,
     ): array {
-        $report  = new SyncReport();
-        $started = microtime(true);
-        $nextUrl = $resumeUrl;
-        $pages   = 0;
-        $first   = $resumeUrl === null;
+        $report     = new SyncReport();
+        $started    = microtime(true);
+        $nextUrl    = $resumeUrl;
+        $pages      = 0;
+        $first      = $resumeUrl === null;
+        $suppressed = $this->suppressions?->all() ?? [];
 
         do {
             if ($pages > self::MAX_PAGES) {
@@ -373,7 +406,9 @@ final class SyncEngine
                 $report->seen++;
                 $pcPersonId = (int) ($person['id'] ?? 0);
 
-                if ($pcPersonId <= 0) {
+                // Removed under a privacy request: their blanked row exists, but
+                // their photo must not come back with it.
+                if ($pcPersonId <= 0 || ($suppressed[$pcPersonId] ?? null) === false) {
                     continue;
                 }
 
