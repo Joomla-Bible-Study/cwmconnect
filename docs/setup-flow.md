@@ -183,11 +183,12 @@ the account has proven is its own. An address counts as proven when:
   Options → New User Account Activation** must be **Self** or **Administrator**;
   with **Administrator**, the account pairs once it is approved, from the
   emailed link or from the Users list
-- an administrator created the account, or changed its email
+- another administrator, one allowed to create or edit accounts, created the
+  account or changed its email
 
-Nothing else proves an address: not an email the owner sets in their own
-profile, not an administrator saving the account for some other reason, and
-not a password reset. With activation set to **None**, a self-registered
+Nothing else proves an address: not an email the owner sets themselves, in
+their profile or in the backend, not an administrator saving the account for
+some other reason, and not a password reset. With activation set to **None**, a self-registered
 account never pairs on its own.
 
 The **User – Church Directory Pairing** plugin is what records the proof, so

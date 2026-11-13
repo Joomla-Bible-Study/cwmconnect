@@ -26,8 +26,10 @@ use PHPUnit\Framework\TestCase;
  *  - proven email, member match found      → pairMemberToUser called once
  *
  * Proof (what gets recorded as the account's verified email):
- *  - administrator / API / CLI save that creates the account or changes its email → `admin`
+ *  - administrator / API save that creates the account or changes its email,
+ *    by someone else allowed to create / edit accounts, or any CLI save          → `admin`
  *  - the same clients saving without touching the email                         → nothing
+ *  - an account changing its own email there, or a user without that right      → nothing
  *  - site save that spends a blocked account's token, address unchanged        → `activation`
  *    (the owner's activation click, whether or not administrators then approve)
  *  - the same, but the address changes too                                      → nothing
@@ -39,6 +41,9 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(Cwmconnect::class)]
 final class CwmconnectTest extends TestCase
 {
+    /** A signed-in administrator who may create and edit accounts. */
+    private const ADMIN = ['id' => 1, 'can' => ['core.create', 'core.edit']];
+
     #[Test]
     public function failedSaveSkipsPairing(): void
     {
@@ -174,7 +179,7 @@ final class CwmconnectTest extends TestCase
     public function anAdminChangingTheEmailProvesIt(string $client): void
     {
         $pairing = $this->stubPairing(memberIdByEmail: ['member@example.com' => 99]);
-        $plugin  = $this->makePlugin($pairing, $client);
+        $plugin  = $this->makePlugin($pairing, $client, $client === 'cli' ? null : self::ADMIN);
 
         $this->save(
             $plugin,
@@ -191,7 +196,7 @@ final class CwmconnectTest extends TestCase
     public function anAdminCreatingTheAccountProvesItsEmail(string $client): void
     {
         $pairing = $this->stubPairing(memberIdByEmail: ['member@example.com' => 99]);
-        $plugin  = $this->makePlugin($pairing, $client);
+        $plugin  = $this->makePlugin($pairing, $client, $client === 'cli' ? null : self::ADMIN);
 
         // A new account has no stored row, so Joomla hands onUserBeforeSave id 0.
         $this->save(
@@ -203,6 +208,67 @@ final class CwmconnectTest extends TestCase
 
         self::assertSame([['userId' => 7, 'email' => 'member@example.com', 'source' => 'admin']], $pairing->recorded);
         self::assertSame(1, $pairing->pairCalls);
+    }
+
+    #[Test]
+    #[DataProvider('signedInClients')]
+    public function anAccountChangingItsOwnEmailOutsideTheSiteProvesNothing(string $client): void
+    {
+        // Joomla lets anyone who can sign in to the backend edit their own
+        // account there, whatever rights they have over other accounts.
+        $pairing = $this->stubPairing(memberIdByEmail: ['member@example.com' => 99]);
+        $plugin  = $this->makePlugin($pairing, $client, ['id' => 7, 'can' => ['core.create', 'core.edit']]);
+
+        $this->save(
+            $plugin,
+            before: ['id' => 7, 'email' => 'own@example.com', 'block' => 0, 'activation' => ''],
+            after: ['id' => 7, 'email' => 'member@example.com', 'block' => 0, 'activation' => ''],
+        );
+
+        self::assertSame([], $pairing->recorded);
+        self::assertSame(0, $pairing->pairCalls);
+    }
+
+    #[Test]
+    public function changingAnotherAccountsEmailNeedsTheRightToEditAccounts(): void
+    {
+        $pairing = $this->stubPairing(memberIdByEmail: ['member@example.com' => 99]);
+        $plugin  = $this->makePlugin($pairing, 'administrator', ['id' => 1, 'can' => ['core.create']]);
+
+        $this->save(
+            $plugin,
+            before: ['id' => 7, 'email' => 'old@example.com', 'block' => 0, 'activation' => ''],
+            after: ['id' => 7, 'email' => 'member@example.com', 'block' => 0, 'activation' => ''],
+        );
+
+        self::assertSame([], $pairing->recorded);
+        self::assertSame(0, $pairing->pairCalls);
+    }
+
+    #[Test]
+    public function creatingAnAccountNeedsTheRightToCreateAccounts(): void
+    {
+        $pairing = $this->stubPairing(memberIdByEmail: ['member@example.com' => 99]);
+        $plugin  = $this->makePlugin($pairing, 'administrator', ['id' => 1, 'can' => ['core.edit']]);
+
+        $this->save(
+            $plugin,
+            before: ['id' => 0, 'email' => '', 'block' => 0, 'activation' => ''],
+            after: ['id' => 7, 'email' => 'member@example.com', 'block' => 0, 'activation' => ''],
+            isNew: true,
+        );
+
+        self::assertSame([], $pairing->recorded);
+        self::assertSame(0, $pairing->pairCalls);
+    }
+
+    /**
+     * @return iterable<string, array{string}>
+     */
+    public static function signedInClients(): iterable
+    {
+        yield 'administrator' => ['administrator'];
+        yield 'api' => ['api'];
     }
 
     /**
@@ -384,17 +450,38 @@ final class CwmconnectTest extends TestCase
         self::assertSame([7], $pairing->forgotten);
     }
 
-    private function makePlugin(MemberPairingInterface $pairing, ?string $client = null): Cwmconnect
+    /**
+     * @param  array{id: int, can: list<string>}|null  $identity  Who is signed in, and what they may do in com_users.
+     */
+    private function makePlugin(MemberPairingInterface $pairing, ?string $client = null, ?array $identity = self::ADMIN): Cwmconnect
     {
         $plugin = new Cwmconnect([], $pairing);
 
         if ($client !== null) {
-            $plugin->setApplication(new class ($client) {
-                public function __construct(private readonly string $client) {}
+            $plugin->setApplication(new class ($client, $identity) {
+                /** @param array{id: int, can: list<string>}|null $identity */
+                public function __construct(private readonly string $client, private readonly ?array $identity) {}
 
                 public function isClient(string $identifier): bool
                 {
                     return $identifier === $this->client;
+                }
+
+                public function getIdentity(): ?object
+                {
+                    if ($this->identity === null) {
+                        return null;
+                    }
+
+                    return new class ($this->identity['id'], $this->identity['can']) {
+                        /** @param list<string> $can */
+                        public function __construct(public readonly int $id, private readonly array $can) {}
+
+                        public function authorise(string $action, ?string $asset = null): bool
+                        {
+                            return $asset === 'com_users' && \in_array($action, $this->can, true);
+                        }
+                    };
                 }
             });
         }

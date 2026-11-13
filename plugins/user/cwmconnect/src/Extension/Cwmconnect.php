@@ -28,10 +28,13 @@ use Joomla\Event\SubscriberInterface;
  * Pairing hands over that member's profile, so it only trusts an email the
  * account has proven is its own, and this plugin is what records the proof.
  * A save proves the account's email in exactly two cases:
- *  - an administrator (any client but the site: administrator, API, CLI)
- *    created the account, or changed its email in this save. Saving an
- *    account for any other reason proves nothing about an email its owner
- *    may have set; and
+ *  - someone with authority over other accounts created the account, or
+ *    changed its email in this save: a signed-in user allowed to create or
+ *    edit accounts, saving one that is not their own, in the administrator
+ *    or through the API, or the command line, which needs the server. Joomla
+ *    lets anyone who can sign in to the backend edit their own account
+ *    there, and saving an account for any other reason proves nothing about
+ *    an email its owner may have set; and
  *  - the account's owner followed the activation link mailed to its address
  *    when it registered: the account was blocked with an activation token,
  *    and this save spent the token without changing the address. A blocked
@@ -232,9 +235,14 @@ final class Cwmconnect extends CMSPlugin implements SubscriberInterface
         $app = $this->getApplication();
 
         if ($app !== null && !$app->isClient('site')) {
-            $changed = $before !== null && strcasecmp($before['email'], $email) !== 0;
+            $changed  = $before !== null && strcasecmp($before['email'], $email) !== 0;
+            $identity = $app->getIdentity();
+            $vouched  = $app->isClient('cli')
+                || ($identity !== null
+                    && (int) $identity->id !== (int) ($user['id'] ?? 0)
+                    && $identity->authorise($isNew ? 'core.create' : 'core.edit', 'com_users'));
 
-            return $isNew || $changed ? 'admin' : null;
+            return ($isNew || $changed) && $vouched ? 'admin' : null;
         }
 
         $spent = $before !== null
