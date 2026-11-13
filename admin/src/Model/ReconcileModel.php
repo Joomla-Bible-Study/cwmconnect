@@ -164,14 +164,32 @@ class ReconcileModel extends ListModel
      */
     public function deleteManual(int $id): bool
     {
-        $db = $this->getDatabase();
-
         if ($id <= 0 || !$this->isManualRow($id)) {
             throw new \RuntimeException('Reconcile can only delete hand-entered (non-PC) rows.');
         }
 
-        $userId = (int) $this->loadRow($id)->user_id;
-        $query  = $db->createQuery()
+        $userId  = (int) $this->loadRow($id)->user_id;
+        $deleted = $this->deleteRow($id);
+
+        // Whoever was paired to the row may no longer be a member.
+        MemberGroupSync::configured($this->getDatabase())->reconcile($userId);
+
+        return $deleted;
+    }
+
+    /**
+     * Delete a manual row, and nothing else.
+     *
+     * @param   int  $id  Local row id.
+     *
+     * @return  bool  True when a row was deleted.
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    private function deleteRow(int $id): bool
+    {
+        $db    = $this->getDatabase();
+        $query = $db->createQuery()
             ->delete($db->quoteName(self::TABLE))
             ->where($db->quoteName('id') . ' = :id')
             ->where($db->quoteName('pc_person_id') . ' IS NULL')
@@ -179,12 +197,7 @@ class ReconcileModel extends ListModel
 
         $db->setQuery($query)->execute();
 
-        $deleted = $db->getAffectedRows() > 0;
-
-        // Whoever was paired to the row may no longer be a member.
-        MemberGroupSync::configured($db)->reconcile($userId);
-
-        return $deleted;
+        return $db->getAffectedRows() > 0;
     }
 
     /**
@@ -232,17 +245,20 @@ class ReconcileModel extends ListModel
             $db->updateObject(self::TABLE, $update, 'id');
         }
 
-        $this->deleteManual($manualId);
+        $this->deleteRow($manualId);
 
         // The manual row's account link follows it to the synced row, when that
         // one has none of its own; deleting the manual row first frees the link.
+        // The group is reconciled once, after the move, so the account is never
+        // saved while it briefly has no member row.
         $userId = (int) $manual->user_id;
 
         if ($userId > 0 && (int) ($syncedRow->user_id ?? 0) === 0) {
             $update = (object) ['id' => (int) $syncedRow->id, 'user_id' => $userId];
             $db->updateObject(self::TABLE, $update, 'id');
-            MemberGroupSync::configured($db)->reconcile($userId);
         }
+
+        MemberGroupSync::configured($db)->reconcile($userId);
 
         return 'merged';
     }
