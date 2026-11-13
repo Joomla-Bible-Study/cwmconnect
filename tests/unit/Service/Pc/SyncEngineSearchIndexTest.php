@@ -71,6 +71,16 @@ final class SyncEngineSearchIndexTest extends TestCase
     }
 
     #[Test]
+    public function aFieldClearedOnceTheRunIsOverReindexesTheMember(): void
+    {
+        $index = $this->searchIndex();
+
+        $this->engine($this->unchanged(), $index, fieldWriter: $this->fieldWriterForStoredValues())->run([]);
+
+        self::assertSame([1002, 1001, 1003], $index->changed, 'Person 2 as their value is written, 1 and 3 as theirs is cleared.');
+    }
+
+    #[Test]
     public function aNewPairingCountsAsAChange(): void
     {
         $index = $this->searchIndex();
@@ -257,6 +267,20 @@ final class SyncEngineSearchIndexTest extends TestCase
             public function writeValues(int $memberId, array $values): int
             {
                 return $this->changes ? \count(array_filter($values)) : 0;
+            }
+        };
+    }
+
+    /**
+     * A writer for members who all hold a value already: every field it's
+     * given changes, clearing included.
+     */
+    private function fieldWriterForStoredValues(): CustomFieldWriterInterface
+    {
+        return new class implements CustomFieldWriterInterface {
+            public function writeValues(int $memberId, array $values): int
+            {
+                return \count($values);
             }
         };
     }

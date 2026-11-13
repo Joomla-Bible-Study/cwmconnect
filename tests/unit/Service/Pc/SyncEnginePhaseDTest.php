@@ -51,31 +51,65 @@ final class SyncEnginePhaseDTest extends TestCase
     }
 
     #[Test]
-    public function aMappedFieldThePersonHasNoValueForIsCleared(): void
+    public function aMappedFieldThePersonHasNoValueForIsClearedOnceTheRunIsOver(): void
     {
         $client  = $this->clientReturning($this->pageOf($this->person(1, [[42, 'Veteran']]), $this->person(2, [])));
+        $mapRepo = $this->stubMapRepo([42 => $this->mappingRow(42, 7777)]);
+        $writer  = $this->stubWriter(true);
+
+        $report = new SyncEngine($client, $this->stubRepo(), new PersonMapper(), $mapRepo, $writer)->run([]);
+
+        self::assertSame([
+            ['memberId' => 1001, 'values' => [7777 => ['Veteran']]],
+            ['memberId' => 1002, 'values' => [7777 => []]],
+        ], $writer->captured);
+        self::assertSame(2, $report->customFieldsWritten);
+    }
+
+    #[Test]
+    public function aFieldNobodyInTheRunHoldsKeepsItsValues(): void
+    {
+        $client  = $this->clientReturning($this->pageOf($this->person(1, [[42, 'Veteran']]), $this->person(2, [[42, 'Choir']])));
         $mapRepo = $this->stubMapRepo([42 => $this->mappingRow(42, 7777), 43 => $this->mappingRow(43, 8888)]);
         $writer  = $this->stubWriter(true);
 
         new SyncEngine($client, $this->stubRepo(), new PersonMapper(), $mapRepo, $writer)->run([]);
 
         self::assertSame([
-            ['memberId' => 1001, 'values' => [7777 => ['Veteran'], 8888 => []]],
-            ['memberId' => 1002, 'values' => [7777 => [], 8888 => []]],
-        ], $writer->captured);
+            ['memberId' => 1001, 'values' => [7777 => ['Veteran']]],
+            ['memberId' => 1002, 'values' => [7777 => ['Choir']]],
+        ], $writer->captured, 'More likely a field Planning Center stopped returning, such as a tab the token lost, than one emptied for everyone.');
     }
 
     #[Test]
     public function aPageWithNoFieldDataClearsNothing(): void
     {
-        $client  = $this->clientReturning($this->pageOf($this->person(1, []), $this->person(2, [])));
+        $client  = $this->clientWithPages($this->pageOf($this->person(1, [[42, 'Veteran']])), $this->pageOf($this->person(2, [])));
         $mapRepo = $this->stubMapRepo([42 => $this->mappingRow(42, 7777)]);
         $writer  = $this->stubWriter(true);
 
         $report = new SyncEngine($client, $this->stubRepo(), new PersonMapper(), $mapRepo, $writer)->run([]);
 
-        self::assertSame([], $writer->captured, 'More likely a response without field data than people with none.');
+        self::assertSame(2, $report->seen);
+        self::assertSame([['memberId' => 1001, 'values' => [7777 => ['Veteran']]]], $writer->captured, 'More likely a response without field data than people with none.');
         self::assertTrue($report->success());
+    }
+
+    #[Test]
+    public function aPersonOnAnotherPageIsClearedForAFieldHeldEarlierInTheRun(): void
+    {
+        $client  = $this->clientWithPages($this->pageOf($this->person(1, [[42, 'Veteran']])), $this->pageOf($this->person(2, [[43, 'Choir']])));
+        $mapRepo = $this->stubMapRepo([42 => $this->mappingRow(42, 7777), 43 => $this->mappingRow(43, 8888)]);
+        $writer  = $this->stubWriter(true);
+
+        new SyncEngine($client, $this->stubRepo(), new PersonMapper(), $mapRepo, $writer)->run([]);
+
+        self::assertSame([
+            ['memberId' => 1001, 'values' => [7777 => ['Veteran']]],
+            ['memberId' => 1002, 'values' => [8888 => ['Choir']]],
+            ['memberId' => 1001, 'values' => [8888 => []]],
+            ['memberId' => 1002, 'values' => [7777 => []]],
+        ], $writer->captured);
     }
 
     #[Test]
@@ -143,6 +177,34 @@ final class SyncEnginePhaseDTest extends TestCase
             public function getJsonAbsolute(string $url): array
             {
                 return ['data' => [], 'included' => [], 'links' => []];
+            }
+        };
+    }
+
+    /**
+     * A client whose people come in two pages.
+     *
+     * @param  array<string, mixed>  $first
+     * @param  array<string, mixed>  $second
+     */
+    private function clientWithPages(array $first, array $second): Client
+    {
+        $first['links'] = ['next' => 'https://api.example.test/people/v2/people?offset=100'];
+
+        return new class ($first, $second) extends Client {
+            public function __construct(private array $first, private array $second)
+            {
+                // bypass parent
+            }
+
+            public function getJson(string $path, array $query = []): array
+            {
+                return $this->first;
+            }
+
+            public function getJsonAbsolute(string $url): array
+            {
+                return $this->second;
             }
         };
     }

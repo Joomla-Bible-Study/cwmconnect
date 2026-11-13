@@ -219,8 +219,11 @@ For each person matching the filter:
 3. Each PC field with a mapping in `#__cwmconnect_pc_field_map` gets the values
    the person holds in `#__fields_values` (one row per checked option for a
    multi-value Joomla field, joined otherwise), and is cleared when they hold
-   none. Written directly rather than through com_fields' `setFieldValue()`,
-   whose per-user `core.edit.value` check refuses a scheduled sync.
+   none. Clears wait for the end of the run and apply only to a field someone
+   in the run holds, since one nobody holds is likelier a tab the token can no
+   longer read; a page with no field data at all clears nothing. Written
+   directly rather than through com_fields' `setFieldValue()`, whose per-user
+   `core.edit.value` check refuses a scheduled sync.
 4. If `avatar_url` hash differs from `image_hash`: download, store at
    `media/com_cwmconnect/photos/{pc_person_id}.<ext>`, update both columns.
 5. Update `pc_last_synced_at = NOW()`.

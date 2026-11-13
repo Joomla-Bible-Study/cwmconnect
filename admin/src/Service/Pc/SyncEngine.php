@@ -43,7 +43,8 @@ use Psr\Log\NullLogger;
  *  - {@see FieldMapRepositoryInterface} resolves each pc_field_id to a
  *    Joomla custom-field id (admin-managed mapping table)
  *  - {@see CustomFieldWriterInterface} makes each mapped field hold what
- *    Planning Center does, clearing one it holds nothing for
+ *    Planning Center does, clearing one it holds nothing for once the run
+ *    shows Planning Center still returns that field
  *
  * Phase E adds avatar caching:
  *  - {@see PersonMapper::extractAvatarUrl()} pulls the `avatar` URL
@@ -111,6 +112,23 @@ final class SyncEngine
      * @since  __DEPLOY_VERSION__
      */
     private ?array $fieldMapCache = null;
+
+    /**
+     * Per-run: the Planning Center fields someone in the run held a value for.
+     *
+     * @var    array<int, true>
+     * @since  __DEPLOY_VERSION__
+     */
+    private array $heldFields = [];
+
+    /**
+     * Per-run: by PC person id, the mapped fields they held nothing for, which
+     * {@see self::clearUnheldFields()} clears once the run is over.
+     *
+     * @var    array<int, array{memberId: int, fields: array<int, int>}>
+     * @since  __DEPLOY_VERSION__
+     */
+    private array $unheldFields = [];
 
     /**
      * Constructor.
@@ -200,6 +218,9 @@ final class SyncEngine
         $nextUrl     = null;
         $pagesWalked = 0;
 
+        $this->heldFields   = [];
+        $this->unheldFields = [];
+
         $this->logger->info('PC sync started.', ['statuses' => $membershipStatuses]);
 
         // Discovery pass: which households contain a qualifying member? Their
@@ -228,8 +249,8 @@ final class SyncEngine
             $included = \is_array($page['included'] ?? null) ? $page['included'] : [];
 
             // A page with no custom-field value at all is likelier a response
-            // without them than a page of people who have none: it clears no
-            // mapped field.
+            // without them than a page of people who have none: nobody on it
+            // has a mapped field cleared.
             $clearsFields = \in_array('FieldDatum', array_column($included, 'type'), true);
 
             foreach ($data as $person) {
@@ -333,6 +354,8 @@ final class SyncEngine
 
             $nextUrl = $this->extractNextLink($page);
         } while ($nextUrl !== null);
+
+        $this->clearUnheldFields($report);
 
         if ($onProgress !== null) {
             $onProgress($pagesWalked, $report->seen, 'sweeping');
@@ -653,8 +676,10 @@ final class SyncEngine
      * was constructed without a mapping repo + writer (Phase C parity).
      *
      * Every mapped field gets the values Planning Center holds for the person,
-     * one per checked option of a checkboxes field, and none clears it:
-     * Planning Center owns mapped fields, which the admin form shows read-only.
+     * one per checked option of a checkboxes field. Planning Center owns mapped
+     * fields, which the admin form shows read-only, so one they hold nothing
+     * for is noted to be cleared at the end of the run: see
+     * {@see self::clearUnheldFields()}.
      *
      * Mapping-table lookup is cached for the duration of the run: a single
      * org typically has <50 PC custom fields, so loading the full mapping
@@ -667,8 +692,8 @@ final class SyncEngine
      * @param   array<int, array<string, mixed>>   $included      JSON:API included.
      * @param   SyncReport                         $report        Mutated in-place.
      * @param   bool                               $clearsFields  Whether a mapped field the
-     *                                                            person has no value for is
-     *                                                            cleared, or left as it is.
+     *                                                            person has no value for may
+     *                                                            be cleared, or is left as it is.
      *
      * @return  bool  Whether a stored value changed.
      *
@@ -693,14 +718,18 @@ final class SyncEngine
         }
 
         $values = [];
+        $unheld = [];
 
         foreach ($this->fieldMapCache as $pcFieldId => $mapping) {
-            if (isset($held[$pcFieldId]) || $clearsFields) {
-                $values[$mapping['joomla_field_id']] = $held[$pcFieldId] ?? [];
+            if (isset($held[$pcFieldId])) {
+                $values[$mapping['joomla_field_id']] = $held[$pcFieldId];
+                $this->heldFields[$pcFieldId]        = true;
+            } elseif ($clearsFields) {
+                $unheld[$mapping['joomla_field_id']] = $pcFieldId;
             }
         }
 
-        if ($values === []) {
+        if ($values === [] && $unheld === []) {
             return false;
         }
 
@@ -709,6 +738,14 @@ final class SyncEngine
         if ($memberId === null) {
             $report->recordError($pcPersonId, 'Custom-field write skipped: local member id not found after upsert.');
 
+            return false;
+        }
+
+        if ($unheld !== []) {
+            $this->unheldFields[$pcPersonId] = ['memberId' => $memberId, 'fields' => $unheld];
+        }
+
+        if ($values === []) {
             return false;
         }
 
@@ -723,6 +760,54 @@ final class SyncEngine
         $report->customFieldsWritten += $written;
 
         return $written > 0;
+    }
+
+    /**
+     * Clear the mapped fields people held nothing for, now the run is over,
+     * but only a field someone in the run held a value for. One nobody holds
+     * is likelier a field Planning Center stopped returning, such as a tab
+     * the token lost access to, than one emptied for everyone, so it keeps
+     * its values.
+     *
+     * @param   SyncReport  $report  Mutated in-place.
+     *
+     * @return  void
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    private function clearUnheldFields(SyncReport $report): void
+    {
+        if ($this->fieldWriter === null) {
+            return;
+        }
+
+        foreach ($this->unheldFields as $pcPersonId => $unheld) {
+            $clear = [];
+
+            foreach ($unheld['fields'] as $joomlaFieldId => $pcFieldId) {
+                if (isset($this->heldFields[$pcFieldId])) {
+                    $clear[$joomlaFieldId] = [];
+                }
+            }
+
+            if ($clear === []) {
+                continue;
+            }
+
+            try {
+                $written = $this->fieldWriter->writeValues($unheld['memberId'], $clear);
+            } catch (\Throwable $e) {
+                $report->recordError($pcPersonId, 'Custom-field clear failed: ' . $e->getMessage());
+
+                continue;
+            }
+
+            $report->customFieldsWritten += $written;
+
+            if ($written > 0) {
+                $this->refreshSearchIndex($pcPersonId, $report);
+            }
+        }
     }
 
     /**
