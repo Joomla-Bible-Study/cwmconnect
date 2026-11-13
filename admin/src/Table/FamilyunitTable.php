@@ -153,10 +153,13 @@ class FamilyunitTable extends Table
     public ?int $user_id = 0;
 
     /**
+     * NOT NULL with no default, and the edit screen does not post it, so a
+     * new row needs a value here, as the household sync gives it.
+     *
      * @var string|null
      * @since 2.0.0
      */
-    public ?string $params = null;
+    public ?string $params = '';
 
     /**
      * @var string|null
@@ -169,6 +172,15 @@ class FamilyunitTable extends Table
      * @since 2.0.0
      */
     public ?string $metadesc = '';
+
+    /**
+     * NOT NULL with no default, and the form has no field for it, so a new
+     * row needs a value here, as the household sync gives it.
+     *
+     * @var string|null
+     * @since __DEPLOY_VERSION__
+     */
+    public ?string $metadata = '';
 
     /**
      * @param   DatabaseInterface  $db  Database connector object

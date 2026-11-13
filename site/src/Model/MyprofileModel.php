@@ -202,12 +202,35 @@ class MyprofileModel extends FormModel
 
             $current = $item->{$column} ?? null;
 
-            if ((string) $data[$column] !== (string) $current) {
+            if (self::comparable($column, $data[$column]) !== self::comparable($column, $current)) {
                 $violations[] = $column;
             }
         }
 
         return $violations;
+    }
+
+    /**
+     * A value as the locked-field check compares it. The birth and
+     * anniversary dates are calendar dates: the form posts one as `Y-m-d`,
+     * or '' for none, where the row holds a datetime, or the null date.
+     *
+     * @param   string  $column  The column the value belongs to.
+     * @param   mixed   $value   A posted or stored value.
+     *
+     * @return  string
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    private static function comparable(string $column, mixed $value): string
+    {
+        $value = (string) $value;
+
+        if ($column !== 'birthdate' && $column !== 'anniversary') {
+            return $value;
+        }
+
+        return str_starts_with($value, '0000-00-00') ? '' : substr($value, 0, 10);
     }
 
     /**

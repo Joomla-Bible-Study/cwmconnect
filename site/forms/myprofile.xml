@@ -88,18 +88,21 @@
 	</fieldset>
 
 	<fieldset name="dates" label="COM_CWMCONNECT_MYPROFILE_FIELDSET_DATES">
+		<!-- Calendar dates, not moments. A calendar field converts a timezone by
+		     default (user_utc, applied on display only when the filter is left
+		     empty), which moves these by a day; "raw" turns it off both ways. -->
 		<field name="birthdate"
 			type="calendar"
 			label="COM_CWMCONNECT_FIELD_BIRTHDATE_LABEL"
 			format="%Y-%m-%d"
-			filter="user_utc"
+			filter="raw"
 		/>
 
 		<field name="anniversary"
 			type="calendar"
 			label="COM_CWMCONNECT_FIELD_ANNIVERSARY_LABEL"
 			format="%Y-%m-%d"
-			filter="user_utc"
+			filter="raw"
 		/>
 	</fieldset>
 

@@ -75,6 +75,25 @@ final class MyprofileModelTest extends TestCase
     }
 
     #[Test]
+    public function detectLockedFieldChangesComparesDatesAsCalendarDates(): void
+    {
+        $item = (object) [
+            'id'                   => 1,
+            'pc_person_id'         => 42,
+            'display_in_directory' => 1,
+            'birthdate'            => '1990-05-04 00:00:00',
+            'anniversary'          => '0000-00-00 00:00:00',
+        ];
+
+        // The calendar posts a date as Y-m-d, and no date as ''.
+        $data = ['birthdate' => '1990-05-04', 'anniversary' => ''];
+
+        self::assertSame([], MyprofileModel::detectLockedFieldChanges($item, $data));
+        self::assertSame(['birthdate'], MyprofileModel::detectLockedFieldChanges($item, ['birthdate' => '1990-05-05']));
+        self::assertSame(['anniversary'], MyprofileModel::detectLockedFieldChanges($item, ['anniversary' => '2001-06-09']));
+    }
+
+    #[Test]
     public function detectLockedFieldChangesReportsEveryLockedColumnTouched(): void
     {
         $item = (object) [
