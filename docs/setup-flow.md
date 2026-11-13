@@ -51,20 +51,25 @@ The install creates:
 
 It creates **no members, no KML settings and no categories**.
 
-### 1a. Enable the plugins — required
+### 1a. Check the plugins
 
-Every bundled plugin installs **disabled**. Nothing warns you.
+A fresh install switches on four of the five bundled plugins and says so in the
+installer's message. An update never changes them, so a plugin you have switched
+off stays off.
 
-| Plugin | Needed for |
-|---|---|
-| User – Church Directory Pairing | pairing a member to their Joomla account at registration |
-| Content – Church Directory Pairing | pairing on the other content event |
-| Smart Search – Church Directory | members appearing in site search |
-| Privacy – Church Directory | GDPR export / removal covering member data |
-| Task – CWM Connect Sync | scheduled background syncs (see §7, issue #191) |
+| Plugin | After install | Needed for |
+|---|---|---|
+| User – Church Directory Pairing | on | pairing a member to their Joomla account when the account is saved |
+| Content – Church Directory Pairing | on | pairing when an admin saves a member |
+| Privacy – Church Directory | on | GDPR export / removal covering member data |
+| Task – CWM Connect Sync | on | scheduled background syncs (see §7, issue #191); nothing runs until you create a task |
+| Smart Search – Church Directory | **off** | members appearing in site search |
 
-The component works without them, but pairing, search and privacy silently do
-nothing — which looks like the feature being broken rather than switched off.
+Smart Search is left off on purpose. The Planning Center sync writes members
+straight to the database without telling Smart Search, so its index goes stale:
+new members are missing, and departed or privacy-removed members, or members
+whose access level has changed, stay findable as they were until someone
+rebuilds the index. Switch it on only if you will reindex after each sync.
 
 ---
 
@@ -201,7 +206,8 @@ Everything originally listed here has since been fixed:
 
 Also worth fixing before this becomes user documentation:
 
-- Plugins installing disabled with no prompt (§1a)
+- Smart Search's index not following the sync, which is why that plugin
+  installs off (§1a)
 - Membership types needing a save-and-reload before they populate (§2a)
 - No KML settings row shipped, so the map is uninitialised (§6)
 - Nothing tells an admin the directory is invisible until a view level is
@@ -215,7 +221,7 @@ Also worth fixing before this becomes user documentation:
 ## 8. Rough order of operations
 
 ```
-install → enable plugins → PC credentials → save → reload
+install → check plugins → PC credentials → save → reload
        → membership types → sync → geocode
        → groups + view level → populate by pairing/code
        → set member view level (last) → KML settings → menu item

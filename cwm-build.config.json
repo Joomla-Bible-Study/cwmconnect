@@ -170,8 +170,9 @@
         ]
     },
     "package": {
-        "_comment": "Assembles pkg_cwmconnect-{version}.zip with the eight inner zips named by build/pkg_cwmconnect.xml. innerLayout is 'root' because that manifest lists the child zips at the package root, with no packages/ prefix. Inner zip filenames must match the <file> entries in that manifest exactly.",
+        "_comment": "Assembles pkg_cwmconnect-{version}.zip with the eight inner zips named by build/pkg_cwmconnect.xml. innerLayout is 'root' because that manifest lists the child zips at the package root, with no packages/ prefix. Inner zip filenames must match the <file> entries in that manifest exactly. installer ships at the package root under its own name, which the manifest's <scriptfile> must match; it switches the bundled plugins on after a fresh install.",
         "manifest": "build/pkg_cwmconnect.xml",
+        "installer": "build/script.install.php",
         "outputDir": "build/dist",
         "outputName": "pkg_cwmconnect-{version}.zip",
         "innerLayout": "root",
@@ -364,6 +365,7 @@
         "verify": {
             "expectedEntries": [
                 "pkg_cwmconnect.xml",
+                "script.install.php",
                 "com_cwmconnect.zip",
                 "lib_mpdf.zip",
                 "mod_birthdayanniversary.zip",

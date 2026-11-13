@@ -36,6 +36,11 @@ final class ManifestFilesTest extends TestCase
     ];
 
     /**
+     * @var array<string, mixed>|null  cwm-build.config.json, decoded
+     */
+    private static ?array $config = null;
+
+    /**
      * @var array<string, string>|null  manifest path => repository folder of its zip root
      */
     private static ?array $manifests = null;
@@ -195,6 +200,26 @@ final class ManifestFilesTest extends TestCase
     }
 
     /**
+     * The build ships the package installer at the zip root under its own name, and
+     * Joomla runs only the script the package manifest names. If the two drift apart
+     * the script never runs, and a fresh install leaves every bundled plugin off.
+     */
+    #[Test]
+    public function thePackageRunsItsInstallScript(): void
+    {
+        $package   = self::config()['package'];
+        $installer = (string) ($package['installer'] ?? '');
+
+        self::assertNotSame('', $installer, 'cwm-build.config.json names no package installer.');
+        self::assertContains($installer, self::tracked(), $installer . ' is not in the repository.');
+        self::assertSame(
+            basename($installer),
+            trim((string) self::load($package['manifest'])->scriptfile),
+            $package['manifest'] . ' must name the installer the build ships as its <scriptfile>.'
+        );
+    }
+
+    /**
      * Every manifest the package builds, mapped to the repository folder its zip root
      * is built from. Read from cwm-build.config.json, so a child extension added there
      * is covered here without touching this test.
@@ -207,7 +232,7 @@ final class ManifestFilesTest extends TestCase
             return self::$manifests;
         }
 
-        $config = json_decode((string) file_get_contents(self::root() . '/cwm-build.config.json'), true, 512, JSON_THROW_ON_ERROR);
+        $config = self::config();
         $builds = [$config['build']];
 
         foreach ($config['package']['includes'] as $include) {
@@ -244,6 +269,14 @@ final class ManifestFilesTest extends TestCase
         }
 
         return self::$manifests;
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private static function config(): array
+    {
+        return self::$config ??= json_decode((string) file_get_contents(self::root() . '/cwm-build.config.json'), true, 512, JSON_THROW_ON_ERROR);
     }
 
     /**

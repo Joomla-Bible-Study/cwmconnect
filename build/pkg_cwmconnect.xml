@@ -11,6 +11,7 @@
     <creationDate>2026-05-12</creationDate>
     <description>CWM Connect — Church Photo Directory component for Joomla 5/6, with a birthday/anniversary site module and Smart Search adapter for directory entries.</description>
 
+    <scriptfile>script.install.php</scriptfile>
 
     <files>
         <file type="library" id="lib_mpdf">lib_mpdf.zip</file>
