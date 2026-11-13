@@ -42,7 +42,6 @@ final class PhotoThumbnailerTest extends TestCase
         imagefill($im, 0, 0, imagecolorallocate($im, 10, 120, 200));
         $path = $this->dir . "/src_{$w}x{$h}.jpg";
         imagejpeg($im, $path, 90);
-        imagedestroy($im);
 
         return $path;
     }

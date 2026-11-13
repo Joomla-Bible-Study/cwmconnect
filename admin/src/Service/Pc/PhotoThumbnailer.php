@@ -102,65 +102,58 @@ final class PhotoThumbnailer
             return false;
         }
 
-        try {
-            $srcWidth  = imagesx($src);
-            $srcHeight = imagesy($src);
+        $srcWidth  = imagesx($src);
+        $srcHeight = imagesy($src);
 
-            if ($srcWidth < 1 || $srcHeight < 1) {
-                return false;
-            }
-
-            if ($fit === 'contain') {
-                // Scale the WHOLE image to fit within the target box, keeping its
-                // own aspect (no crop, no padding) — a wide family photo stays
-                // wide and fills the card width instead of floating inside a
-                // portrait frame.
-                $scale = min($this->width / $srcWidth, $this->height / $srcHeight);
-                $dstW  = max(1, (int) round($srcWidth * $scale));
-                $dstH  = max(1, (int) round($srcHeight * $scale));
-
-                $dst = imagecreatetruecolor($dstW, $dstH);
-                imagefill($dst, 0, 0, imagecolorallocate($dst, 255, 255, 255));
-                imagecopyresampled($dst, $src, 0, 0, 0, 0, $dstW, $dstH, $srcWidth, $srcHeight);
-            } else {
-                // Centre-crop the source to the target aspect ratio (headshots).
-                $targetRatio = $this->width / $this->height;
-                $sourceRatio = $srcWidth / $srcHeight;
-
-                if ($sourceRatio > $targetRatio) {
-                    $cropHeight = $srcHeight;
-                    $cropWidth  = (int) round($srcHeight * $targetRatio);
-                    $cropX      = (int) round(($srcWidth - $cropWidth) / 2);
-                    $cropY      = 0;
-                } else {
-                    $cropWidth  = $srcWidth;
-                    $cropHeight = (int) round($srcWidth / $targetRatio);
-                    $cropX      = 0;
-                    $cropY      = (int) round(($srcHeight - $cropHeight) / 2);
-                }
-
-                $dst = imagecreatetruecolor($this->width, $this->height);
-                imagefill($dst, 0, 0, imagecolorallocate($dst, 255, 255, 255));
-                imagecopyresampled($dst, $src, 0, 0, $cropX, $cropY, $this->width, $this->height, $cropWidth, $cropHeight);
-            }
-
-            $dir = \dirname($destPath);
-
-            if (!is_dir($dir) && !mkdir($dir, 0o755, true) && !is_dir($dir)) {
-                imagedestroy($dst);
-
-                return false;
-            }
-
-            $ok = $format === 'webp' && \function_exists('imagewebp')
-                ? imagewebp($dst, $destPath, $this->quality)
-                : imagejpeg($dst, $destPath, $this->quality);
-            imagedestroy($dst);
-
-            return $ok && is_file($destPath);
-        } finally {
-            imagedestroy($src);
+        if ($srcWidth < 1 || $srcHeight < 1) {
+            return false;
         }
+
+        if ($fit === 'contain') {
+            // Scale the WHOLE image to fit within the target box, keeping its
+            // own aspect (no crop, no padding) — a wide family photo stays
+            // wide and fills the card width instead of floating inside a
+            // portrait frame.
+            $scale = min($this->width / $srcWidth, $this->height / $srcHeight);
+            $dstW  = max(1, (int) round($srcWidth * $scale));
+            $dstH  = max(1, (int) round($srcHeight * $scale));
+
+            $dst = imagecreatetruecolor($dstW, $dstH);
+            imagefill($dst, 0, 0, imagecolorallocate($dst, 255, 255, 255));
+            imagecopyresampled($dst, $src, 0, 0, 0, 0, $dstW, $dstH, $srcWidth, $srcHeight);
+        } else {
+            // Centre-crop the source to the target aspect ratio (headshots).
+            $targetRatio = $this->width / $this->height;
+            $sourceRatio = $srcWidth / $srcHeight;
+
+            if ($sourceRatio > $targetRatio) {
+                $cropHeight = $srcHeight;
+                $cropWidth  = (int) round($srcHeight * $targetRatio);
+                $cropX      = (int) round(($srcWidth - $cropWidth) / 2);
+                $cropY      = 0;
+            } else {
+                $cropWidth  = $srcWidth;
+                $cropHeight = (int) round($srcWidth / $targetRatio);
+                $cropX      = 0;
+                $cropY      = (int) round(($srcHeight - $cropHeight) / 2);
+            }
+
+            $dst = imagecreatetruecolor($this->width, $this->height);
+            imagefill($dst, 0, 0, imagecolorallocate($dst, 255, 255, 255));
+            imagecopyresampled($dst, $src, 0, 0, $cropX, $cropY, $this->width, $this->height, $cropWidth, $cropHeight);
+        }
+
+        $dir = \dirname($destPath);
+
+        if (!is_dir($dir) && !mkdir($dir, 0o755, true) && !is_dir($dir)) {
+            return false;
+        }
+
+        $ok = $format === 'webp' && \function_exists('imagewebp')
+            ? imagewebp($dst, $destPath, $this->quality)
+            : imagejpeg($dst, $destPath, $this->quality);
+
+        return $ok && is_file($destPath);
     }
 
     /**
@@ -209,13 +202,10 @@ final class PhotoThumbnailer
         $dir = \dirname($destPath);
 
         if (!is_dir($dir) && !mkdir($dir, 0o755, true) && !is_dir($dir)) {
-            imagedestroy($img);
-
             return false;
         }
 
         $ok = imagejpeg($img, $destPath, $this->quality);
-        imagedestroy($img);
 
         return $ok && is_file($destPath);
     }

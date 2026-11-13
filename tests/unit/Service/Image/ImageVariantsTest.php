@@ -42,7 +42,6 @@ final class ImageVariantsTest extends TestCase
         imagefill($im, 0, 0, imagecolorallocate($im, 30, 140, 90));
         $path = $this->dir . '/src.jpg';
         imagejpeg($im, $path, 90);
-        imagedestroy($im);
 
         return $path;
     }
