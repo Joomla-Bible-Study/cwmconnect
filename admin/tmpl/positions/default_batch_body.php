@@ -37,7 +37,7 @@ $published = (int) $this->state->get('filter.published');
     <div class="row">
         <div class="form-group col-md-6">
             <div class="controls">
-                <?php echo LayoutHelper::render('joomla.html.batch.user', []); ?>
+                <?php echo LayoutHelper::render('joomla.html.batch.user', ['noUser' => false]); ?>
             </div>
         </div>
         <?php if ($published >= 0) : ?>
