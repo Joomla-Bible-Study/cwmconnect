@@ -12,7 +12,7 @@
     <namespace path="src">CWM\Plugin\Privacy\Cwmconnect</namespace>
 
     <files>
-        <folder>services</folder>
+        <folder plugin="cwmconnect">services</folder>
         <folder>src</folder>
         <folder>language</folder>
     </files>
