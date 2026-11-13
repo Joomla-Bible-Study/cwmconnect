@@ -111,7 +111,7 @@ composer lint-queries            # $db->createQuery() over $db->getQuery(true)
 composer lint-deprecations       # Joomla 6/7 upgrade blockers (bootstrap.modal, jQuery, Joomla.Modal)
 composer lint-comments           # issue numbers don't belong in comments — git blame already links them
 composer lint-workflows          # CI path filters that match no tracked file (fails closed: job silently skipped)
-composer test                    # phpunit (250 tests under tests/unit/)
+composer test                    # phpunit (288 tests under tests/unit/)
 composer check                   # lint:syntax + the four lint-* checks + lint + test
 composer build                   # pkg_cwmconnect-{version}.zip via cwm-package (8 inner zips)
 composer release                 # full 8-step pipeline via cwm-release (phase 9 prerequisites needed)
@@ -149,11 +149,29 @@ composer clean                                  # remove all dev symlinks
 
 `composer link` reads [cwm-build.config.json](cwm-build.config.json) and creates **relative** symlinks for the component (`admin/`, `site/`, `media/`), the bundled module (`mod_birthdayanniversary`), the bundled finder plugin, and the internal `admin/cwmconnect.xml` mirror (the [cwmconnect.xml](cwmconnect.xml) source-of-truth lives at the root; Joomla expects it under `admin/` when the component is installed, so the linker mirrors it). `build.properties` is gitignored — secrets stay on your machine.
 
+### Test-installing the built package
+
+The linked dev installs can't show whether the package *installs*: they see every file whether or not a manifest lists it. Run Joomla's real installer on a throwaway DDEV site instead (cwm-build-tools 1.38+; `--path <dir>` puts the site elsewhere than beside the repo):
+
+```bash
+composer build
+libraries/vendor/bin/cwm-site-create cwmconnect-j6 --role test --php 8.4 --joomla 6.2.0 \
+    --db-port 33065 --package build/dist/pkg_cwmconnect-2.0.0-dev.zip
+build/install-check/db-check.sh cwmconnect-j6     # extension rows, admin menu, schema, installed files
+(cd <site> && ddev exec php cli/joomla.php config:set error_reporting=maximum)   # so warnings reach the page
+build/install-check/smoke.sh cwmconnect-j6        # every admin view, Options, the guest wall, the member views
+libraries/vendor/bin/cwm-site-remove cwmconnect-j6 --yes
+```
+
+- **Add `builder.installs = j5dev, j6dev` to `build.properties` before the first `cwm-site-create`.** The tool appends each new site to that line but never creates it, and the `builder.<id>.path` key it writes flips install discovery to path-only, silently dropping j5dev/j6dev from `composer link`.
+- **Pass `--db-port`.** The tool's free-port check misses ports DDEV reserves for stopped projects; on this machine 33061–33063 belong to the Proclaim test sites.
+
 ## Things to watch out for
 
 - **Always invoke the Joomla skill (`/joomla`) before writing or modifying extension code.** The skill contains Joomla 5/6/7 patterns, the J6 migration checklist, form-field references, plugin constructor signatures, and coding-standards rules (including `@since` on every class/property/method). Phases H.1–H.3 were coded without it and required a standards audit (H.5) to fix `getQuery(true)`, legacy plugin constructors, and missing `@since` tags. Don't repeat that — load the skill at the start of every session that touches PHP. Additionally, [cwm-build-tools](../cwm-build-tools) enforces project-level coding standards via `php-cs-fixer` — always run `composer lint` before committing and respect the rules in [.php-cs-fixer.dist.php](.php-cs-fixer.dist.php).
 - **Joomla 6 native, no compat plugin.** All code must run natively on Joomla 6 WITHOUT the "Behaviour - Backward Compatibility 6" plugin. Key rules: `$db->createQuery()` (not `getQuery(true)`), `$this->getCurrentUser()` (not `Factory::getUser()`), `$this->getDatabase()` (not `getDbo()` / `$this->_db`), `\Joomla\Input\Input` (not `\Joomla\CMS\Input`), direct property access on `getItem()` results (not `CMSObject->get()`), `WebAssetManager::addInlineScript()` (not `addScriptDeclaration()`), single-arg `CMSPlugin::__construct($config)` (not legacy 2-arg with dispatcher).
 - **Build filesets: excludes are source-relative.** `composer build` runs `cwm-package`, which builds `com_cwmconnect.zip` from the `build:` block and bundles it with seven sub-extension zips per the `package:` block. `excludes` / `excludePaths` match the path **relative to each `sources[].from` root**, not the path inside the zip — so the member-photo rules are `photos/*.jpg`, not `media/com_cwmconnect/photos/*.jpg`. Getting this wrong silently shipped 5183 live member photos (53 MB of PII) into the first real build. Always `unzip -l build/dist/com_cwmconnect-*.zip` after changing a fileset.
+- **Joomla installs only what the manifests list.** The zip can carry a file the installer never copies, and the symlinked dev installs hide it. The first real install found `joomla.asset.json`, `vendor/`, `photos/` and the site `forms/` and `layouts/` missing, which 500s every page that loads a cwmconnect asset, and the privacy plugin installed with no element because its manifest had no `plugin="cwmconnect"`. [tests/unit/Package/ManifestFilesTest.php](tests/unit/Package/ManifestFilesTest.php) now holds every manifest in the package against the tracked tree; still run the install check above before a release.
 - **Two stopgap excludePaths (`.php`, `nect.xml`) work around a cwm-build-tools bug.** `PackageBuilder::addDirectory()` names zip entries with `substr(getRealPath(), strlen($sourceReal) + 1)`. `getRealPath()` follows symlinks, so the untracked `admin/script.php` and `admin/cwmconnect.xml` dev symlinks that `composer link` creates resolve *above* the source root and get sliced into the corrupt entries `admin/.php` and `admin/nect.xml`. Drop both globs once PackageBuilder skips symlink targets that escape the source root.
 - **ARS IDs unset.** [cwm-build.config.json](cwm-build.config.json) has `categoryId: 0`, `updateStreamId: 0` placeholders. Run `composer ars-list` before the first real release to discover the right values.
 - **Manifest version is `2.0.0-dev`.** Pre-modernization the component shipped at 1.8.3; we're using 2.0.0-dev to flag the J3→J5/6 break. Adjust before first stable release if a different scheme is preferred.
