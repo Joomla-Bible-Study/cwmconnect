@@ -65,11 +65,20 @@ off stays off.
 | Task – CWM Connect Sync | on | scheduled background syncs (see §7, issue #191); nothing runs until you create a task |
 | Smart Search – Church Directory | **off** | members appearing in site search |
 
-Smart Search is left off on purpose. The Planning Center sync writes members
-straight to the database without telling Smart Search, so its index goes stale:
-new members are missing, and departed or privacy-removed members, or members
-whose access level has changed, stay findable as they were until someone
-rebuilds the index. Switch it on only if you will reindex after each sync.
+Smart Search is left off, because listing members in site search is a choice.
+To make it, switch the plugin on and build the index once under **Components →
+Smart Search → Index**. From then on the index keeps itself current:
+
+- the Planning Center sync reindexes the members whose details changed and
+  removes those who left
+- saves in the member form and the My Profile portal reindex that member
+- Reconcile and privacy removals take the member out
+
+A member hidden from the directory is never indexed. Each member is indexed
+under their own access level, so only someone with that level can find them.
+Synced members get the **Member view level** from Options. A member entered by
+hand gets the access set in their form, which starts at Public, so set it to the
+member view level before switching Smart Search on, or guests can find them.
 
 ---
 
@@ -253,8 +262,6 @@ Everything originally listed here has since been fixed:
 
 Also worth fixing before this becomes user documentation:
 
-- Smart Search's index not following the sync, which is why that plugin
-  installs off (§1a)
 - Membership types needing a save-and-reload before they populate (§2a)
 - No KML settings row shipped, so the map is uninitialised (§6)
 - Nothing tells an admin the directory is invisible until a view level is

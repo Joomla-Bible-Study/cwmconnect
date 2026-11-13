@@ -15,6 +15,7 @@ use CWM\Component\Cwmconnect\Administrator\Service\Pairing\DatabaseMemberPairing
 use CWM\Component\Cwmconnect\Administrator\Service\Pairing\MemberGroupSync;
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\Exception\ConfigurationException;
 use CWM\Component\Cwmconnect\Administrator\Service\Privacy\DatabasePrivacySuppressions;
+use CWM\Component\Cwmconnect\Administrator\Service\Search\FinderSearchIndex;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Http\HttpFactory;
@@ -205,12 +206,15 @@ final class SyncRunner
             'leader'         => (string) $this->params->get('pc_field_leader', PersonMapper::DEFAULT_ROLE_FIELDS['leader']),
         ];
 
+        $searchIndex = new FinderSearchIndex($this->db);
+
         return new SyncEngine(
             client: $this->buildClient(),
             repository: new DatabaseMemberRepository(
                 $this->db,
                 MemberGroupSync::configured($this->db),
                 new CachedPhotos(JPATH_ROOT . '/media/com_cwmconnect/photos'),
+                $searchIndex,
             ),
             mapper: new PersonMapper($roleFieldSlugs, (int) $this->params->get('member_access', 2)),
             fieldMapRepo: new DatabaseFieldMapRepository($this->db),
@@ -225,7 +229,12 @@ final class SyncRunner
                 http: HttpFactory::getHttp(),
                 cacheRoot: JPATH_ROOT . '/media/com_cwmconnect/photos/households',
             ),
-            suppressions: new DatabasePrivacySuppressions($this->db, new CachedPhotos(JPATH_ROOT . '/media/com_cwmconnect/photos')),
+            suppressions: new DatabasePrivacySuppressions(
+                $this->db,
+                new CachedPhotos(JPATH_ROOT . '/media/com_cwmconnect/photos'),
+                $searchIndex,
+            ),
+            searchIndex: $searchIndex,
         );
     }
 

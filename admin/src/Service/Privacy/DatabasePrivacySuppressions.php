@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace CWM\Component\Cwmconnect\Administrator\Service\Privacy;
 
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\CachedPhotos;
+use CWM\Component\Cwmconnect\Administrator\Service\Search\SearchIndexInterface;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Database\ParameterType;
 use Joomla\Database\QueryInterface;
@@ -30,15 +31,18 @@ use Joomla\Database\QueryInterface;
 final readonly class DatabasePrivacySuppressions implements PrivacySuppressionsInterface
 {
     /**
-     * @param   DatabaseInterface  $db      Database driver.
-     * @param   CachedPhotos|null  $photos  The member photo cache, for erasing a
-     *                                      row again. Null leaves the photos.
+     * @param   DatabaseInterface          $db           Database driver.
+     * @param   CachedPhotos|null          $photos       The member photo cache, for erasing
+     *                                                   a row again. Null leaves the photos.
+     * @param   SearchIndexInterface|null  $searchIndex  Smart Search, for erasing a row
+     *                                                   again. Null leaves its copy.
      *
      * @since   __DEPLOY_VERSION__
      */
     public function __construct(
         private DatabaseInterface $db,
         private ?CachedPhotos $photos = null,
+        private ?SearchIndexInterface $searchIndex = null,
     ) {}
 
     /** @inheritDoc @since __DEPLOY_VERSION__ */
@@ -128,7 +132,7 @@ final readonly class DatabasePrivacySuppressions implements PrivacySuppressionsI
         $memberIds = $this->db->setQuery($query)->loadColumn();
 
         if ($memberIds !== []) {
-            $erasure = new MemberErasure($this->db, $this, $this->photos);
+            $erasure = new MemberErasure($this->db, $this, $this->photos, $this->searchIndex);
 
             foreach ($memberIds as $memberId) {
                 $erasure->erase((int) $memberId);

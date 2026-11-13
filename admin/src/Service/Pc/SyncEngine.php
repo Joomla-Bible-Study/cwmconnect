@@ -14,6 +14,7 @@ namespace CWM\Component\Cwmconnect\Administrator\Service\Pc;
 use CWM\Component\Cwmconnect\Administrator\Service\Pairing\MemberPairingInterface;
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\Exception\PcException;
 use CWM\Component\Cwmconnect\Administrator\Service\Privacy\PrivacySuppressionsInterface;
+use CWM\Component\Cwmconnect\Administrator\Service\Search\SearchIndexInterface;
 use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
@@ -140,6 +141,9 @@ final class SyncEngine
      *                                                                 privacy request, whom the
      *                                                                 sync must not refill.
      *                                                                 Null skips the check.
+     * @param   SearchIndexInterface|null           $searchIndex     Smart Search, told about
+     *                                                                 each member the run
+     *                                                                 changed. Null skips it.
      *
      * @since   __DEPLOY_VERSION__
      */
@@ -155,6 +159,7 @@ final class SyncEngine
         private readonly ?PhotoCacheInterface $householdPhotoCache = null,
         private readonly LoggerInterface $logger = new NullLogger(),
         private readonly ?PrivacySuppressionsInterface $suppressions = null,
+        private readonly ?SearchIndexInterface $searchIndex = null,
     ) {}
 
     /**
@@ -271,9 +276,9 @@ final class SyncEngine
                     $outcome = $this->repository->upsertByPcPersonId($attrs);
 
                     match ($outcome) {
-                        UpsertOutcome::Added      => $report->added++,
-                        UpsertOutcome::Updated    => $report->updated++,
-                        UpsertOutcome::Unarchived => $report->unarchived++,
+                        UpsertOutcome::Added                             => $report->added++,
+                        UpsertOutcome::Updated, UpsertOutcome::Unchanged => $report->updated++,
+                        UpsertOutcome::Unarchived                        => $report->unarchived++,
                     };
 
                     if ($pcPersonId !== null && $pcPersonId > 0) {
@@ -286,7 +291,7 @@ final class SyncEngine
                             $report->restored++;
                         }
 
-                        $this->writeCustomFields($pcPersonId, $person, $included, $report);
+                        $fieldsChanged = $this->writeCustomFields($pcPersonId, $person, $included, $report);
 
                         // Photos are the whole cost of a first sync — 544
                         // downloads plus variant generation accounted for
@@ -299,7 +304,13 @@ final class SyncEngine
                             $this->cacheAvatar($pcPersonId, $person, $report);
                         }
 
-                        $this->tryPairByEmail($pcPersonId, $attrs, $report);
+                        $paired = $this->tryPairByEmail($pcPersonId, $attrs, $report);
+
+                        // Smart Search keeps its own copy of each member: refresh it
+                        // once this person's writes are done, if any changed something.
+                        if ($outcome !== UpsertOutcome::Unchanged || $released === true || $fieldsChanged || $paired) {
+                            $this->refreshSearchIndex($pcPersonId, $report);
+                        }
                     }
                 } catch (\Throwable $e) {
                     $report->recordError($pcPersonId, $e->getMessage());
@@ -646,26 +657,26 @@ final class SyncEngine
      * @param   array<int, array<string, mixed>>   $included    JSON:API included.
      * @param   SyncReport                         $report      Mutated in-place.
      *
-     * @return  void
+     * @return  bool  Whether a stored value changed.
      *
      * @since   __DEPLOY_VERSION__
      */
-    private function writeCustomFields(int $pcPersonId, array $person, array $included, SyncReport $report): void
+    private function writeCustomFields(int $pcPersonId, array $person, array $included, SyncReport $report): bool
     {
         if ($this->fieldMapRepo === null || $this->fieldWriter === null) {
-            return;
+            return false;
         }
 
         $extracted = $this->mapper->extractFieldData($person, $included);
 
         if ($extracted === []) {
-            return;
+            return false;
         }
 
         $this->fieldMapCache ??= $this->fieldMapRepo->allKeyedByPcFieldId();
 
         if ($this->fieldMapCache === []) {
-            return;
+            return false;
         }
 
         $memberId = $this->repository->findIdByPcPersonId($pcPersonId);
@@ -673,8 +684,10 @@ final class SyncEngine
         if ($memberId === null) {
             $report->recordError($pcPersonId, 'Custom-field write skipped: local member id not found after upsert.');
 
-            return;
+            return false;
         }
+
+        $changed = false;
 
         foreach ($extracted as $datum) {
             $mapping = $this->fieldMapCache[$datum['pc_field_id']] ?? null;
@@ -686,6 +699,7 @@ final class SyncEngine
             try {
                 if ($this->fieldWriter->setFieldValue($memberId, $mapping['joomla_field_id'], $datum['value'])) {
                     $report->customFieldsWritten++;
+                    $changed = true;
                 }
             } catch (\Throwable $e) {
                 $report->recordError($pcPersonId, \sprintf(
@@ -695,6 +709,8 @@ final class SyncEngine
                 ));
             }
         }
+
+        return $changed;
     }
 
     /**
@@ -769,41 +785,78 @@ final class SyncEngine
      *                                          `email_to`.
      * @param   SyncReport            $report  Mutated in-place.
      *
-     * @return  void
+     * @return  bool  Whether it paired the member.
      *
      * @since   __DEPLOY_VERSION__
      */
-    private function tryPairByEmail(int $pcPersonId, array $attrs, SyncReport $report): void
+    private function tryPairByEmail(int $pcPersonId, array $attrs, SyncReport $report): bool
     {
         if ($this->pairing === null) {
-            return;
+            return false;
         }
 
         $email = isset($attrs['email_to']) && \is_string($attrs['email_to']) ? trim($attrs['email_to']) : '';
 
         if ($email === '') {
-            return;
+            return false;
         }
 
         try {
             $memberId = $this->repository->findIdByPcPersonId($pcPersonId);
 
             if ($memberId === null) {
-                return;
+                return false;
             }
 
             $userId = $this->pairing->findJoomlaUserIdByEmail($email);
 
             if ($userId === null) {
-                return;
+                return false;
             }
 
             if ($this->pairing->pairMemberToUser($memberId, $userId)) {
                 $report->paired++;
+
+                return true;
             }
         } catch (\Throwable $e) {
             $report->recordError($pcPersonId, 'Pair-by-email failed: ' . $e->getMessage());
             $this->logger->error('PC sync pair-by-email error.', [
+                'pcPersonId' => $pcPersonId,
+                'error'      => $e->getMessage(),
+            ]);
+        }
+
+        return false;
+    }
+
+    /**
+     * Tell Smart Search a member changed, so its copy is indexed again (or
+     * dropped, for a member hidden from the directory). Failures land in the
+     * report: the member itself is already saved.
+     *
+     * @param   int         $pcPersonId
+     * @param   SyncReport  $report      Mutated in-place.
+     *
+     * @return  void
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    private function refreshSearchIndex(int $pcPersonId, SyncReport $report): void
+    {
+        if ($this->searchIndex === null) {
+            return;
+        }
+
+        try {
+            $memberId = $this->repository->findIdByPcPersonId($pcPersonId);
+
+            if ($memberId !== null) {
+                $this->searchIndex->memberChanged($memberId);
+            }
+        } catch (\Throwable $e) {
+            $report->recordError($pcPersonId, 'Smart Search update failed: ' . $e->getMessage());
+            $this->logger->error('PC sync Smart Search update error.', [
                 'pcPersonId' => $pcPersonId,
                 'error'      => $e->getMessage(),
             ]);

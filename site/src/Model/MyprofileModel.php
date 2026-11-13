@@ -17,6 +17,7 @@ namespace CWM\Component\Cwmconnect\Site\Model;
 
 use CWM\Component\Cwmconnect\Administrator\Helper\PcLockedFields;
 use CWM\Component\Cwmconnect\Administrator\Service\FeedToken\FeedTokenService;
+use CWM\Component\Cwmconnect\Administrator\Service\Search\FinderSearchIndex;
 use CWM\Component\Cwmconnect\Administrator\Table\MemberTable;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
@@ -174,6 +175,10 @@ class MyprofileModel extends FormModel
 
             return false;
         }
+
+        // This save bypasses the admin model, whose events Smart Search listens
+        // to, so tell it here: a member who hides themselves must drop out.
+        new FinderSearchIndex($this->getDatabase())->memberChanged((int) $item->id);
 
         return true;
     }

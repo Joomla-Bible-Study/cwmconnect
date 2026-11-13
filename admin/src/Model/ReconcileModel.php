@@ -16,6 +16,7 @@ namespace CWM\Component\Cwmconnect\Administrator\Model;
 // phpcs:enable PSR1.Files.SideEffects
 
 use CWM\Component\Cwmconnect\Administrator\Service\Pairing\MemberGroupSync;
+use CWM\Component\Cwmconnect\Administrator\Service\Search\FinderSearchIndex;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\ListModel;
 use Joomla\Database\ParameterType;
@@ -174,6 +175,10 @@ class ReconcileModel extends ListModel
         // Whoever was paired to the row may no longer be a member.
         MemberGroupSync::configured($this->getDatabase())->reconcile($userId);
 
+        if ($deleted) {
+            new FinderSearchIndex($this->getDatabase())->membersRemoved([$id]);
+        }
+
         return $deleted;
     }
 
@@ -247,6 +252,9 @@ class ReconcileModel extends ListModel
 
         $this->deleteRow($manualId);
 
+        $searchIndex = new FinderSearchIndex($db);
+        $searchIndex->membersRemoved([$manualId]);
+
         // The manual row's account link follows it to the synced row, when that
         // one has none of its own; deleting the manual row first frees the link.
         // The group is reconciled once, after the move, so the account is never
@@ -256,6 +264,9 @@ class ReconcileModel extends ListModel
         if ($userId > 0 && (int) ($syncedRow->user_id ?? 0) === 0) {
             $update = (object) ['id' => (int) $syncedRow->id, 'user_id' => $userId];
             $db->updateObject(self::TABLE, $update, 'id');
+
+            // The account's name is indexed with the member.
+            $searchIndex->memberChanged((int) $syncedRow->id);
         }
 
         MemberGroupSync::configured($db)->reconcile($userId);

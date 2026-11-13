@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace CWM\Component\Cwmconnect\Administrator\Service\Privacy;
 
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\CachedPhotos;
+use CWM\Component\Cwmconnect\Administrator\Service\Search\SearchIndexInterface;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Database\ParameterType;
 
@@ -135,6 +136,8 @@ final readonly class MemberErasure
      * @param   DatabaseInterface             $db            Database driver.
      * @param   PrivacySuppressionsInterface  $suppressions  Keeps the sync from refilling the row.
      * @param   CachedPhotos|null             $photos        The member photo cache, when it is in reach.
+     * @param   SearchIndexInterface|null     $searchIndex   Smart Search, which keeps its own copy
+     *                                                       of the member. Null leaves it.
      *
      * @since   __DEPLOY_VERSION__
      */
@@ -142,6 +145,7 @@ final readonly class MemberErasure
         private DatabaseInterface $db,
         private PrivacySuppressionsInterface $suppressions,
         private ?CachedPhotos $photos = null,
+        private ?SearchIndexInterface $searchIndex = null,
     ) {}
 
     /**
@@ -207,6 +211,8 @@ final readonly class MemberErasure
         if ($pcPersonId > 0) {
             $this->photos?->forget($pcPersonId);
         }
+
+        $this->searchIndex?->membersRemoved([$memberId]);
     }
 
     /**
