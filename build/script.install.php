@@ -36,10 +36,8 @@ return new class implements InstallerScriptInterface {
     /**
      * Plugin groups whose cwmconnect plugin a fresh install switches on.
      *
-     * Smart Search (finder) is left off on purpose. The Planning Center sync writes
-     * member rows straight to the database without telling Smart Search, so its
-     * index would go on showing new, departed and privacy-removed members as they
-     * were, under whatever access level they had, until someone reindexes.
+     * Smart Search (finder) is left off: listing members in site search is the
+     * administrator's choice, and the index is built once when they make it.
      *
      * @var    list<string>
      * @since  __DEPLOY_VERSION__
@@ -166,8 +164,8 @@ return new class implements InstallerScriptInterface {
 
         $app->enqueueMessage(
             'CWM Connect switched on its pairing, privacy and scheduled-sync plugins. Smart Search - Church'
-            . ' Directory is left off: the Planning Center sync does not update the search index, so switch it'
-            . ' on only if you will rebuild the index after each sync.',
+            . ' Directory is left off: to list members in site search, switch it on and build the index once'
+            . ' under Components → Smart Search.',
             'message'
         );
     }

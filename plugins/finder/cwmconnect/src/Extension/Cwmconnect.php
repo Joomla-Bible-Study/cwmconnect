@@ -192,6 +192,77 @@ final class Cwmconnect extends Adapter implements SubscriberInterface
     }
 
     /**
+     * Index one member again, from scratch.
+     *
+     * Core's reindex() updates an entry in place. That leaves the entry of a
+     * member the list query now leaves out, such as one hidden from the
+     * directory, and it keeps every word the old entry used: the indexer
+     * drops the entry's links to its terms without lowering their counts, so
+     * a phone number or address the member has since changed stays behind.
+     * Removing the entry first keeps the counts true.
+     *
+     * @param   int  $id  Member row id.
+     *
+     * @return  void
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    protected function reindex($id): void
+    {
+        $this->setup();
+        $this->remove((int) $id);
+
+        $item = $this->getItem($id);
+
+        if (!empty($item->id)) {
+            $this->index($item);
+        }
+    }
+
+    /**
+     * Take a member's entry out of the index, with the terms only it used.
+     *
+     * Core deletes a term once its count reaches zero, but its own in-place
+     * updates count a term again without uncounting it, so a removed
+     * member's name or email could outlive them in the term list. The terms
+     * their entry used that no other entry uses are deleted here.
+     *
+     * @param   int   $id                Member row id.
+     * @param   bool  $removeTaxonomies  Whether to delete taxonomy nodes left empty.
+     *
+     * @return  bool
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    protected function remove($id, $removeTaxonomies = true): bool
+    {
+        $db    = $this->getDatabase();
+        $url   = $this->getUrl($id, $this->extension, $this->layout);
+        $query = $db->createQuery()
+            ->select('DISTINCT ' . $db->quoteName('m.term_id'))
+            ->from($db->quoteName('#__finder_links_terms', 'm'))
+            ->join('INNER', $db->quoteName('#__finder_links', 'l'), $db->quoteName('l.link_id') . ' = ' . $db->quoteName('m.link_id'))
+            ->where($db->quoteName('l.url') . ' = :url')
+            ->bind(':url', $url);
+
+        $termIds = array_map('intval', $db->setQuery($query)->loadColumn());
+
+        parent::remove($id, $removeTaxonomies);
+
+        if ($termIds !== []) {
+            $query = $db->createQuery()
+                ->delete($db->quoteName('#__finder_terms'))
+                ->whereIn($db->quoteName('term_id'), $termIds)
+                ->where('NOT EXISTS (SELECT 1 FROM ' . $db->quoteName('#__finder_links_terms', 'm')
+                    . ' WHERE ' . $db->quoteName('m.term_id') . ' = ' . $db->quoteName('#__finder_terms.term_id') . ')');
+
+            $db->setQuery($query)->execute();
+        }
+
+        return true;
+    }
+
+    /**
      * Project one member row onto a Finder Result and tell the indexer how
      * to weight each meta-context (address, phone, etc.).
      *
@@ -241,7 +312,11 @@ final class Cwmconnect extends Adapter implements SubscriberInterface
         $item->addInstruction(Indexer::META_CONTEXT, 'user');
 
         $item->addTaxonomy('Type', 'Church Member');
-        $item->addTaxonomy('Category', $item->category, $item->cat_state, $item->cat_access);
+        // Members are uncategorised unless an administrator files them, and the
+        // join then gives no category title to add.
+        if (!empty($item->category)) {
+            $item->addTaxonomy('Category', $item->category, $item->cat_state, $item->cat_access);
+        }
         $item->addTaxonomy('Language', $item->language);
 
         if (!empty($item->region) && $this->params->get('tax_add_region', true)) {
@@ -279,11 +354,11 @@ final class Cwmconnect extends Adapter implements SubscriberInterface
             ->select('c.title AS category, c.published AS cat_state, c.access AS cat_access');
 
         $caseSlug    = ' CASE WHEN ' . $query->charLength('a.alias', '!=', '0')
-            . ' THEN ' . $query->concatenate([$query->castAsChar('a.id'), 'a.alias'], ':')
-            . ' ELSE ' . $query->castAsChar('a.id') . ' END as slug';
+            . ' THEN ' . $query->concatenate([$query->castAs('CHAR', 'a.id'), 'a.alias'], ':')
+            . ' ELSE ' . $query->castAs('CHAR', 'a.id') . ' END as slug';
         $caseCatslug = ' CASE WHEN ' . $query->charLength('c.alias', '!=', '0')
-            . ' THEN ' . $query->concatenate([$query->castAsChar('c.id'), 'c.alias'], ':')
-            . ' ELSE ' . $query->castAsChar('c.id') . ' END as catslug';
+            . ' THEN ' . $query->concatenate([$query->castAs('CHAR', 'c.id'), 'c.alias'], ':')
+            . ' ELSE ' . $query->castAs('CHAR', 'c.id') . ' END as catslug';
 
         $query->select($caseSlug)
             ->select($caseCatslug)

@@ -38,7 +38,8 @@ interface CustomFieldWriterInterface
      * @param   string  $value           Value to store. The caller has already
      *                                    stringified PC's native datum.
      *
-     * @return  bool   True on a successful write.
+     * @return  bool   True when the stored value changed: false when it already
+     *                 held this value, or the write failed.
      *
      * @since   __DEPLOY_VERSION__
      */

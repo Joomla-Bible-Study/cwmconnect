@@ -13,6 +13,7 @@ namespace CWM\Component\Cwmconnect\Administrator\Service\Pc;
 
 use CWM\Component\Cwmconnect\Administrator\Service\Pairing\MemberGroupSync;
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\Exception\PcException;
+use CWM\Component\Cwmconnect\Administrator\Service\Search\SearchIndexInterface;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Database\ParameterType;
 
@@ -75,12 +76,14 @@ final class DatabaseMemberRepository implements MemberRepositoryInterface
     /**
      * Constructor.
      *
-     * @param   DatabaseInterface  $db         Joomla database connection.
-     * @param   MemberGroupSync    $groupSync  Takes the directory-member group from
-     *                                         whoever was paired to a row the sweep
-     *                                         deletes.
-     * @param   CachedPhotos|null  $photos     The member photo cache, whose files the
-     *                                         sweep deletes with the rows. Null leaves them.
+     * @param   DatabaseInterface          $db           Joomla database connection.
+     * @param   MemberGroupSync            $groupSync    Takes the directory-member group from
+     *                                                   whoever was paired to a row the sweep
+     *                                                   deletes.
+     * @param   CachedPhotos|null          $photos       The member photo cache, whose files the
+     *                                                   sweep deletes with the rows. Null leaves them.
+     * @param   SearchIndexInterface|null  $searchIndex  Smart Search, which the sweep takes the
+     *                                                   deleted rows out of. Null leaves them.
      *
      * @since   __DEPLOY_VERSION__
      */
@@ -88,11 +91,13 @@ final class DatabaseMemberRepository implements MemberRepositoryInterface
         private readonly DatabaseInterface $db,
         private readonly MemberGroupSync $groupSync,
         private readonly ?CachedPhotos $photos = null,
+        private readonly ?SearchIndexInterface $searchIndex = null,
     ) {}
 
     /**
      * Insert or update a member row keyed on `pc_person_id`. Returns whether
-     * the row was added, updated in place, or un-archived from a prior sweep.
+     * the row was added, updated in place, left as it was, or un-archived from
+     * a prior sweep.
      *
      * @param   array<string, mixed>  $attrs
      *
@@ -118,11 +123,13 @@ final class DatabaseMemberRepository implements MemberRepositoryInterface
             return UpsertOutcome::Added;
         }
 
-        $this->update($existing['id'], $attrs);
+        $changed = $this->update($existing['id'], $attrs);
 
-        return $existing['display_in_directory'] === 0
-            ? UpsertOutcome::Unarchived
-            : UpsertOutcome::Updated;
+        return match (true) {
+            $existing['display_in_directory'] === 0 => UpsertOutcome::Unarchived,
+            $changed                                => UpsertOutcome::Updated,
+            default                                 => UpsertOutcome::Unchanged,
+        };
     }
 
     /**
@@ -152,7 +159,7 @@ final class DatabaseMemberRepository implements MemberRepositoryInterface
         }
 
         $query = $this->db->createQuery()
-            ->select($this->db->quoteName(['pc_person_id', 'user_id']))
+            ->select($this->db->quoteName(['id', 'pc_person_id', 'user_id']))
             ->from($this->db->quoteName(self::TABLE))
             ->where($this->db->quoteName('pc_person_id') . ' IS NOT NULL')
             ->where($this->db->quoteName('pc_person_id') . ' NOT IN (' . implode(',', array_map('intval', $seenPcPersonIds)) . ')');
@@ -182,6 +189,8 @@ final class DatabaseMemberRepository implements MemberRepositoryInterface
         foreach ($rows as $row) {
             $this->groupSync->reconcile((int) $row->user_id);
         }
+
+        $this->searchIndex?->membersRemoved(array_map(static fn(object $row): int => (int) $row->id, $rows));
 
         return $deleted;
     }
@@ -277,21 +286,19 @@ final class DatabaseMemberRepository implements MemberRepositoryInterface
     }
 
     /**
-     * Update an existing row in place and bump `modified`. Its visibility
-     * (`display_in_directory`, `published`) is left as it is: see below.
+     * Update an existing row in place. Its visibility (`display_in_directory`,
+     * `published`) is left as it is: see below. `modified` moves only when
+     * something Planning Center sent differs from what the row held.
      *
      * @param   int                   $id     Local row id.
      * @param   array<string, mixed>  $attrs  Column → value overrides.
      *
-     * @return  void
+     * @return  bool  Whether anything but the time of the sync changed.
      *
      * @since   __DEPLOY_VERSION__
      */
-    private function update(int $id, array $attrs): void
+    private function update(int $id, array $attrs): bool
     {
-        $attrs['id']       = $id;
-        $attrs['modified'] = new \DateTimeImmutable()->format('Y-m-d H:i:s');
-
         // Visibility is admin-owned once a row exists. The sync sets published
         // + display_in_directory on INSERT (visible by default) but must NOT
         // clobber a later admin hide/unpublish on UPDATE. Inactive people are
@@ -300,7 +307,23 @@ final class DatabaseMemberRepository implements MemberRepositoryInterface
         // synced row always means "an admin hid this person."
         unset($attrs['display_in_directory'], $attrs['published']);
 
-        $row = (object) $attrs;
+        // The time of the sync differs on every run, so it is written apart.
+        // MySQL counts a row as affected only when one of its values changed,
+        // compared as the column stores it, so the first write is the check.
+        $stamp = (object) ['id' => $id, 'pc_last_synced_at' => $attrs['pc_last_synced_at'] ?? null];
+        unset($attrs['pc_last_synced_at']);
+
+        $attrs['id'] = $id;
+        $row         = (object) $attrs;
         $this->db->updateObject(self::TABLE, $row, 'id');
+        $changed = $this->db->getAffectedRows() > 0;
+
+        if ($changed) {
+            $stamp->modified = new \DateTimeImmutable()->format('Y-m-d H:i:s');
+        }
+
+        $this->db->updateObject(self::TABLE, $stamp, 'id');
+
+        return $changed;
     }
 }

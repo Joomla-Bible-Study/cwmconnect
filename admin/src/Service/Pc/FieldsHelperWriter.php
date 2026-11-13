@@ -11,7 +11,7 @@ declare(strict_types=1);
 
 namespace CWM\Component\Cwmconnect\Administrator\Service\Pc;
 
-use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Factory;
 use Joomla\Component\Fields\Administrator\Model\FieldModel;
 
 // phpcs:disable PSR1.Files.SideEffects
@@ -40,11 +40,16 @@ final class FieldsHelperWriter implements CustomFieldWriterInterface
 {
     public function setFieldValue(int $memberId, int $joomlaFieldId, string $value): bool
     {
-        $model = ComponentHelper::getComponent('com_fields')
+        $model = Factory::getApplication()->bootComponent('com_fields')
             ->getMVCFactory()
             ->createModel('Field', 'Administrator', ['ignore_request' => true]);
 
         if (!$model instanceof FieldModel) {
+            return false;
+        }
+
+        // Most of a sync's values are the ones already stored: leave those be.
+        if ($model->getFieldValue((string) $joomlaFieldId, (string) $memberId) === $value) {
             return false;
         }
 

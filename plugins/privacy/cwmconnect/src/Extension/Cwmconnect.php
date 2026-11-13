@@ -20,10 +20,9 @@ use CWM\Component\Cwmconnect\Administrator\Service\Pairing\MemberGroupSync;
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\CachedPhotos;
 use CWM\Component\Cwmconnect\Administrator\Service\Privacy\DatabasePrivacySuppressions;
 use CWM\Component\Cwmconnect\Administrator\Service\Privacy\MemberErasure;
-use Joomla\CMS\Event\Finder\AfterDeleteEvent as FinderAfterDeleteEvent;
+use CWM\Component\Cwmconnect\Administrator\Service\Search\FinderSearchIndex;
 use Joomla\CMS\Event\Privacy\ExportRequestEvent;
 use Joomla\CMS\Event\Privacy\RemoveDataEvent;
-use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\Component\Privacy\Administrator\Plugin\PrivacyPlugin;
 use Joomla\Database\ParameterType;
 use Joomla\Event\SubscriberInterface;
@@ -185,25 +184,13 @@ final class Cwmconnect extends PrivacyPlugin implements SubscriberInterface
             $db,
             new DatabasePrivacySuppressions($db),
             new CachedPhotos(JPATH_ROOT . '/media/com_cwmconnect/photos'),
+            new FinderSearchIndex($db),
         );
 
         $memberIds = array_map('intval', $db->setQuery($query)->loadColumn());
 
         foreach ($memberIds as $memberId) {
             $erasure->erase($memberId);
-        }
-
-        // Smart Search keeps its own copy of what it indexed: drop theirs.
-        if ($memberIds !== []) {
-            $dispatcher = $this->getApplication()->getDispatcher();
-            PluginHelper::importPlugin('finder', null, true, $dispatcher);
-
-            foreach ($memberIds as $memberId) {
-                $dispatcher->dispatch('onFinderAfterDelete', new FinderAfterDeleteEvent('onFinderAfterDelete', [
-                    'context' => 'com_cwmconnect.member',
-                    'subject' => (object) ['id' => $memberId],
-                ]));
-            }
         }
 
         $revokeQuery = $db->createQuery()
