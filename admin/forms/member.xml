@@ -144,7 +144,7 @@
 		<field name="misc" type="editor"
 		       label="COM_CWMCONNECT_FIELD_INFORMATION_MISC_LABEL"
 		       description="COM_CWMCONNECT_FIELD_INFORMATION_MISC_DESC"
-		       filter="JComponentHelper::filterText"
+		       filter="\Joomla\CMS\Component\ComponentHelper::filterText"
 		       buttons="true"
 		       hide="readmore,pagebreak"
 		/>
@@ -225,11 +225,14 @@
 		<field name="children" type="textarea"
 		       label="COM_CWMCONNECT_FIELD_CHILDREN_LABEL" description="COM_CWMCONNECT_FIELD_CHILDREN_DESC"
 		       class="inputbox small" rows="3" cols="30"/>
-		<field name="anniversary" type="calendar" filter="user_utc"
+		<!-- Calendar dates, not moments. A calendar field converts a timezone by
+		     default (user_utc, applied on display only when the filter is left
+		     empty), which moves these by a day; "raw" turns it off both ways. -->
+		<field name="anniversary" type="calendar" filter="raw"
 		       label="COM_CWMCONNECT_FIELD_MEMBER_ANNIVERSARY_LABEL"
 		       description="COM_CWMCONNECT_FIELD_MEMBER_ANNIVERSARY_DESC"
 		       format="%Y-%m-%d" size="22"/>
-		<field name="birthdate" type="calendar" filter="user_utc"
+		<field name="birthdate" type="calendar" filter="raw"
 		       label="COM_CWMCONNECT_FIELD_MEMBER_BIRTHDATE_LABEL"
 		       description="COM_CWMCONNECT_FIELD_MEMBER_BIRTHDATE_DESC"
 		       format="%Y-%m-%d" size="22"/>

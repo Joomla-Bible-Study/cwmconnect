@@ -214,11 +214,13 @@ class MemberTable extends Table
             $this->attribs = (string) $registry;
         }
 
-        // If marked as a child (funitid = -1), force familypostion to 0.
-        if ((int) $this->funitid === -1) {
+        // The form offers -1 for "no family unit", which has no family
+        // position; the unsigned column stores no family unit as 0.
+        if ((int) $this->funitid < 0) {
             $registry = new Registry($this->attribs);
             $registry->set('familypostion', '0');
             $this->attribs = (string) $registry;
+            $this->funitid = 0;
         }
 
         $date   = Factory::getDate()->toSql();
@@ -246,6 +248,22 @@ class MemberTable extends Table
 
         if (!$this->publish_down) {
             $this->publish_down = $nullDate;
+        }
+
+        // A form posts an empty field as '', which these NOT NULL columns
+        // refuse: no date is the null date and no coordinate is 0, as the
+        // Planning Center sync writes them. Null means the field was not
+        // posted at all, so it is left alone.
+        foreach (['birthdate', 'anniversary'] as $column) {
+            if ($this->$column !== null && trim($this->$column) === '') {
+                $this->$column = $nullDate;
+            }
+        }
+
+        foreach (['lat', 'lng'] as $column) {
+            if ($this->$column !== null && trim($this->$column) === '') {
+                $this->$column = '0';
+            }
         }
 
         if (!$this->xreference) {
@@ -314,16 +332,21 @@ class MemberTable extends Table
         }
 
         if ($this->user_id !== null) {
-            $db    = $this->getDatabase();
-            $query = $db->createQuery()
+            // Bind copies: bind() holds its value by reference, and a property
+            // left as a reference is shared with the clone store() loads to
+            // check the alias, which overwrote the linked user with the stored one.
+            $userId = (int) $this->user_id;
+            $selfId = (int) $this->id;
+            $db     = $this->getDatabase();
+            $query  = $db->createQuery()
                 ->select($db->quoteName('id'))
                 ->from($db->quoteName('#__cwmconnect_details'))
                 ->where($db->quoteName('user_id') . ' = :userId')
-                ->bind(':userId', $this->user_id, ParameterType::INTEGER);
+                ->bind(':userId', $userId, ParameterType::INTEGER);
 
-            if ((int) $this->id > 0) {
+            if ($selfId > 0) {
                 $query->where($db->quoteName('id') . ' != :selfId')
-                    ->bind(':selfId', $this->id, ParameterType::INTEGER);
+                    ->bind(':selfId', $selfId, ParameterType::INTEGER);
             }
 
             $db->setQuery($query);

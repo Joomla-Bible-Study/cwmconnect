@@ -41,7 +41,7 @@
 		       label="COM_CWMCONNECT_FIELD_FAMILYUNIT_DESCRIPTION_LABEL"
 		       description="COM_CWMCONNECT_FIELD_FAMILYUNIT_DESCRIPTION_DESC"
 		       class="inputbox"
-		       filter="JComponentHelper::filterText"
+		       filter="\Joomla\CMS\Component\ComponentHelper::filterText"
 		       buttons="true"
 		       hide="readmore,pagebreak"
 		/>
