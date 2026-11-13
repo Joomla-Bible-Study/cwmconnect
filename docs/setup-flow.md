@@ -74,8 +74,11 @@ Smart Search → Index**. From then on the index keeps itself current:
 - saves in the member form and the My Profile portal reindex that member
 - Reconcile and privacy removals take the member out
 
-A member hidden from the directory is never indexed, and the index carries each
-member's access level, so only those who may see the directory can find them.
+A member hidden from the directory is never indexed. Each member is indexed
+under their own access level, so only someone with that level can find them.
+Synced members get the **Member view level** from Options. A member entered by
+hand gets the access set in their form, which starts at Public, so set it to the
+member view level before switching Smart Search on, or guests can find them.
 
 ---
 
