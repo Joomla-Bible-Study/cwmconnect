@@ -193,7 +193,6 @@ final class SyncEngine
         $seenIds     = [];
         $nextUrl     = null;
         $pagesWalked = 0;
-        $suppressed  = $this->suppressions?->all() ?? [];
 
         $this->logger->info('PC sync started.', ['statuses' => $membershipStatuses]);
 
@@ -235,17 +234,21 @@ final class SyncEngine
                 $report->seen++;
 
                 $pcPersonId = isset($person['id']) ? (int) $person['id'] : null;
-                $released   = $pcPersonId !== null ? ($suppressed[$pcPersonId] ?? null) : null;
+
+                // Read per person, not once per run, so a removal made while
+                // this run is going is seen before the person is written.
+                $released = $pcPersonId !== null ? $this->suppressions?->stateOf($pcPersonId) : null;
 
                 // Removed under a privacy request: nothing from Planning Center is
-                // written for them. They still count as seen, so the sweep keeps
-                // the blanked row an administrator restores them from.
+                // written for them, and their row is erased again in case a run
+                // overlapping the removal wrote to it. They still count as seen,
+                // so the sweep keeps the blanked row they are restored from.
                 if ($released === false) {
                     $seenIds[] = $pcPersonId;
                     $report->suppressed++;
 
                     try {
-                        $this->suppressions?->ensurePlaceholder($pcPersonId);
+                        $this->suppressions?->ensureRemoved($pcPersonId);
                     } catch (\Throwable $e) {
                         $report->recordError($pcPersonId, $e->getMessage());
                     }
@@ -376,7 +379,6 @@ final class SyncEngine
         $nextUrl    = $resumeUrl;
         $pages      = 0;
         $first      = $resumeUrl === null;
-        $suppressed = $this->suppressions?->all() ?? [];
 
         do {
             if ($pages > self::MAX_PAGES) {
@@ -408,7 +410,7 @@ final class SyncEngine
 
                 // Removed under a privacy request: their blanked row exists, but
                 // their photo must not come back with it.
-                if ($pcPersonId <= 0 || ($suppressed[$pcPersonId] ?? null) === false) {
+                if ($pcPersonId <= 0 || $this->suppressions?->stateOf($pcPersonId) === false) {
                     continue;
                 }
 

@@ -180,7 +180,10 @@ return new class implements ServiceProviderInterface {
                     http: \Joomla\CMS\Http\HttpFactory::getHttp(),
                     cacheRoot: JPATH_ROOT . '/media/com_cwmconnect/photos/households',
                 ),
-                suppressions: new DatabasePrivacySuppressions($c->get(DatabaseInterface::class)),
+                suppressions: new DatabasePrivacySuppressions(
+                    $c->get(DatabaseInterface::class),
+                    new PcCachedPhotos(JPATH_ROOT . '/media/com_cwmconnect/photos'),
+                ),
             ),
         );
     }

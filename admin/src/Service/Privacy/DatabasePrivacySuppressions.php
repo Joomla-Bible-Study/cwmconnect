@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace CWM\Component\Cwmconnect\Administrator\Service\Privacy;
 
+use CWM\Component\Cwmconnect\Administrator\Service\Pc\CachedPhotos;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Database\ParameterType;
 use Joomla\Database\QueryInterface;
@@ -29,26 +30,29 @@ use Joomla\Database\QueryInterface;
 final readonly class DatabasePrivacySuppressions implements PrivacySuppressionsInterface
 {
     /**
-     * @param   DatabaseInterface  $db  Database driver.
+     * @param   DatabaseInterface  $db      Database driver.
+     * @param   CachedPhotos|null  $photos  The member photo cache, for erasing a
+     *                                      row again. Null leaves the photos.
      *
      * @since   __DEPLOY_VERSION__
      */
-    public function __construct(private DatabaseInterface $db) {}
+    public function __construct(
+        private DatabaseInterface $db,
+        private ?CachedPhotos $photos = null,
+    ) {}
 
     /** @inheritDoc @since __DEPLOY_VERSION__ */
-    public function all(): array
+    public function stateOf(int $pcPersonId): ?bool
     {
         $query = $this->db->createQuery()
-            ->select($this->db->quoteName(['pc_person_id', 'released_at']))
-            ->from($this->db->quoteName('#__cwmconnect_privacy_suppressions'));
+            ->select($this->db->quoteName('released_at'))
+            ->from($this->db->quoteName('#__cwmconnect_privacy_suppressions'))
+            ->where($this->db->quoteName('pc_person_id') . ' = :pcPersonId')
+            ->bind(':pcPersonId', $pcPersonId, ParameterType::INTEGER);
 
-        $states = [];
+        $row = $this->db->setQuery($query)->loadObject();
 
-        foreach ($this->db->setQuery($query)->loadObjectList() as $row) {
-            $states[(int) $row->pc_person_id] = $row->released_at !== null;
-        }
-
-        return $states;
+        return $row === null ? null : $row->released_at !== null;
     }
 
     /** @inheritDoc @since __DEPLOY_VERSION__ */
@@ -58,12 +62,17 @@ final readonly class DatabasePrivacySuppressions implements PrivacySuppressionsI
             return;
         }
 
-        $query = $this->db->createQuery()
-            ->delete($this->db->quoteName('#__cwmconnect_privacy_suppressions'))
-            ->where($this->db->quoteName('pc_person_id') . ' = :pcPersonId')
-            ->bind(':pcPersonId', $pcPersonId, ParameterType::INTEGER);
+        if ($this->stateOf($pcPersonId) !== null) {
+            $query = $this->db->createQuery()
+                ->update($this->db->quoteName('#__cwmconnect_privacy_suppressions'))
+                ->set($this->db->quoteName('released_at') . ' = NULL')
+                ->where($this->db->quoteName('pc_person_id') . ' = :pcPersonId')
+                ->bind(':pcPersonId', $pcPersonId, ParameterType::INTEGER);
 
-        $this->db->setQuery($query)->execute();
+            $this->db->setQuery($query)->execute();
+
+            return;
+        }
 
         $row = (object) [
             'pc_person_id' => $pcPersonId,
@@ -108,15 +117,23 @@ final readonly class DatabasePrivacySuppressions implements PrivacySuppressionsI
     }
 
     /** @inheritDoc @since __DEPLOY_VERSION__ */
-    public function ensurePlaceholder(int $pcPersonId): void
+    public function ensureRemoved(int $pcPersonId): void
     {
         $query = $this->db->createQuery()
-            ->select('COUNT(*)')
+            ->select($this->db->quoteName('id'))
             ->from($this->db->quoteName('#__cwmconnect_details'))
             ->where($this->db->quoteName('pc_person_id') . ' = :pcPersonId')
             ->bind(':pcPersonId', $pcPersonId, ParameterType::INTEGER);
 
-        if ((int) $this->db->setQuery($query)->loadResult() > 0) {
+        $memberIds = $this->db->setQuery($query)->loadColumn();
+
+        if ($memberIds !== []) {
+            $erasure = new MemberErasure($this->db, $this, $this->photos);
+
+            foreach ($memberIds as $memberId) {
+                $erasure->erase((int) $memberId);
+            }
+
             return;
         }
 

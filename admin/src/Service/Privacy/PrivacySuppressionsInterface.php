@@ -29,17 +29,21 @@ namespace CWM\Component\Cwmconnect\Administrator\Service\Privacy;
 interface PrivacySuppressionsInterface
 {
     /**
-     * Every suppressed person, mapped to whether an administrator has
-     * released them.
+     * Whether a person is suppressed, read fresh, so that a removal made
+     * while a sync runs is seen before the sync writes them.
      *
-     * @return  array<int, bool>  Planning Center person id => released.
+     * @param   int  $pcPersonId  Planning Center person id.
+     *
+     * @return  bool|null  Null when not suppressed; otherwise whether an
+     *                     administrator has released them.
      *
      * @since   __DEPLOY_VERSION__
      */
-    public function all(): array;
+    public function stateOf(int $pcPersonId): ?bool;
 
     /**
-     * Suppress a person, or suppress them again after a release.
+     * Suppress a person, or suppress them again after a release. Suppressing
+     * someone already suppressed keeps the date they were first removed.
      *
      * @param   int  $pcPersonId  Planning Center person id.
      *
@@ -73,8 +77,10 @@ interface PrivacySuppressionsInterface
     public function unreleaseMembers(array $memberIds): void;
 
     /**
-     * Make sure a suppressed person still has the blank, archived row an
-     * administrator restores them from, recreating it if it was deleted.
+     * Make sure a suppressed person is still removed: erase their row again,
+     * which clears anything a sync running alongside the removal wrote back,
+     * or recreate the blank, archived row an administrator restores them
+     * from if it was deleted.
      *
      * @param   int  $pcPersonId  Planning Center person id.
      *
@@ -82,7 +88,7 @@ interface PrivacySuppressionsInterface
      *
      * @since   __DEPLOY_VERSION__
      */
-    public function ensurePlaceholder(int $pcPersonId): void;
+    public function ensureRemoved(int $pcPersonId): void;
 
     /**
      * Finish restoring a released person once the sync has refilled their

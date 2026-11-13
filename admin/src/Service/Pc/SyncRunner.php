@@ -220,7 +220,7 @@ final class SyncRunner
                 http: HttpFactory::getHttp(),
                 cacheRoot: JPATH_ROOT . '/media/com_cwmconnect/photos/households',
             ),
-            suppressions: new DatabasePrivacySuppressions($this->db),
+            suppressions: new DatabasePrivacySuppressions($this->db, new CachedPhotos(JPATH_ROOT . '/media/com_cwmconnect/photos')),
         );
     }
 

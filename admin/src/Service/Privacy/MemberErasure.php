@@ -25,8 +25,9 @@ use Joomla\Database\ParameterType;
  * The row stays, blanked and archived: it is what an administrator restores a
  * Planning Center member from, and the sync is kept from refilling it (see
  * {@see PrivacySuppressionsInterface}). Everything that says who the person is
- * goes: every personal column, their custom-field values, their geocoding
- * status and their cached photos.
+ * goes: every personal column, their custom-field values, the versions
+ * content history kept of the row, their geocoding status and their cached
+ * photos.
  *
  * @since  __DEPLOY_VERSION__
  */
@@ -184,6 +185,15 @@ final readonly class MemberErasure
             ->where($this->db->quoteName('item_id') . ' = :itemId')
             ->where($this->db->quoteName('field_id') . ' IN (' . $memberFields . ')')
             ->bind(':itemId', $itemId, ParameterType::STRING);
+
+        $this->db->setQuery($query)->execute();
+
+        // A version would put the whole row back if restored.
+        $historyId = 'com_cwmconnect.member.' . $memberId;
+        $query     = $this->db->createQuery()
+            ->delete($this->db->quoteName('#__history'))
+            ->where($this->db->quoteName('item_id') . ' = :historyId')
+            ->bind(':historyId', $historyId, ParameterType::STRING);
 
         $this->db->setQuery($query)->execute();
 

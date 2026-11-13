@@ -36,7 +36,7 @@ final class SyncEnginePrivacyTest extends TestCase
 
         self::assertSame([2], $repo->upserted);
         self::assertSame([1, 2], $repo->swept, 'Still seen, so the sweep keeps their blanked row.');
-        self::assertSame([1], $suppressions->placeholders);
+        self::assertSame([1], $suppressions->erased, 'Erased again, in case an overlapping run wrote to them.');
         self::assertSame([], $suppressions->restored);
         self::assertSame(1, $report->suppressed);
         self::assertSame(1, $report->added);
@@ -52,7 +52,7 @@ final class SyncEnginePrivacyTest extends TestCase
 
         self::assertSame([1, 2], $repo->upserted);
         self::assertSame([1], $suppressions->restored);
-        self::assertSame([], $suppressions->placeholders);
+        self::assertSame([], $suppressions->erased);
         self::assertSame(1, $report->restored);
         self::assertSame(0, $report->suppressed);
     }
@@ -164,7 +164,7 @@ final class SyncEnginePrivacyTest extends TestCase
     {
         return new class ($states) implements PrivacySuppressionsInterface {
             /** @var list<int> */
-            public array $placeholders = [];
+            public array $erased = [];
 
             /** @var list<int> */
             public array $restored = [];
@@ -172,9 +172,9 @@ final class SyncEnginePrivacyTest extends TestCase
             /** @param array<int, bool> $states */
             public function __construct(private array $states) {}
 
-            public function all(): array
+            public function stateOf(int $pcPersonId): ?bool
             {
-                return $this->states;
+                return $this->states[$pcPersonId] ?? null;
             }
 
             public function suppress(int $pcPersonId): void {}
@@ -186,9 +186,9 @@ final class SyncEnginePrivacyTest extends TestCase
 
             public function unreleaseMembers(array $memberIds): void {}
 
-            public function ensurePlaceholder(int $pcPersonId): void
+            public function ensureRemoved(int $pcPersonId): void
             {
-                $this->placeholders[] = $pcPersonId;
+                $this->erased[] = $pcPersonId;
             }
 
             public function completeRestore(int $pcPersonId): void
