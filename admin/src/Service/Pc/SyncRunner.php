@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace CWM\Component\Cwmconnect\Administrator\Service\Pc;
 
 use CWM\Component\Cwmconnect\Administrator\Service\Pairing\DatabaseMemberPairing;
+use CWM\Component\Cwmconnect\Administrator\Service\Pairing\MemberGroupSync;
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\Exception\ConfigurationException;
 use CWM\Component\Cwmconnect\Administrator\Service\Privacy\DatabasePrivacySuppressions;
 use Joomla\CMS\Component\ComponentHelper;
@@ -206,7 +207,11 @@ final class SyncRunner
 
         return new SyncEngine(
             client: $this->buildClient(),
-            repository: new DatabaseMemberRepository($this->db, new CachedPhotos(JPATH_ROOT . '/media/com_cwmconnect/photos')),
+            repository: new DatabaseMemberRepository(
+                $this->db,
+                MemberGroupSync::configured($this->db),
+                new CachedPhotos(JPATH_ROOT . '/media/com_cwmconnect/photos'),
+            ),
             mapper: new PersonMapper($roleFieldSlugs, (int) $this->params->get('member_access', 2)),
             fieldMapRepo: new DatabaseFieldMapRepository($this->db),
             fieldWriter: new FieldsHelperWriter(),
@@ -214,7 +219,7 @@ final class SyncRunner
                 http: HttpFactory::getHttp(),
                 cacheRoot: JPATH_ROOT . '/media/com_cwmconnect/photos',
             ),
-            pairing: new DatabaseMemberPairing($this->db),
+            pairing: new DatabaseMemberPairing($this->db, MemberGroupSync::configured($this->db)),
             households: new DatabaseHouseholdRepository($this->db),
             householdPhotoCache: new MediaPhotoCache(
                 http: HttpFactory::getHttp(),

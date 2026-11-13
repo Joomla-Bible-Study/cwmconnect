@@ -10,6 +10,7 @@
 \defined('_JEXEC') or die;
 
 use CWM\Component\Cwmconnect\Administrator\Service\Pairing\DatabaseMemberPairing;
+use CWM\Component\Cwmconnect\Administrator\Service\Pairing\MemberGroupSync;
 use CWM\Plugin\Content\Cwmconnect\Extension\Cwmconnect;
 use Joomla\CMS\Extension\PluginInterface;
 use Joomla\CMS\Factory;
@@ -24,7 +25,8 @@ return new class implements ServiceProviderInterface {
         $container->set(
             PluginInterface::class,
             $container->lazy(Cwmconnect::class, function (Container $container) {
-                $pairing = new DatabaseMemberPairing($container->get(DatabaseInterface::class));
+                $db      = $container->get(DatabaseInterface::class);
+                $pairing = new DatabaseMemberPairing($db, MemberGroupSync::configured($db));
                 $plugin  = new Cwmconnect(
                     (array) PluginHelper::getPlugin('content', 'cwmconnect'),
                     $pairing,

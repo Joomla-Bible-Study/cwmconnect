@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace CWM\Component\Cwmconnect\Administrator\Service\Pc;
 
+use CWM\Component\Cwmconnect\Administrator\Service\Pairing\MemberGroupSync;
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\Exception\PcException;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Database\ParameterType;
@@ -74,14 +75,18 @@ final class DatabaseMemberRepository implements MemberRepositoryInterface
     /**
      * Constructor.
      *
-     * @param   DatabaseInterface  $db      Joomla database connection.
-     * @param   CachedPhotos|null  $photos  The member photo cache, whose files the
-     *                                      sweep deletes with the rows. Null leaves them.
+     * @param   DatabaseInterface  $db         Joomla database connection.
+     * @param   MemberGroupSync    $groupSync  Takes the directory-member group from
+     *                                         whoever was paired to a row the sweep
+     *                                         deletes.
+     * @param   CachedPhotos|null  $photos     The member photo cache, whose files the
+     *                                         sweep deletes with the rows. Null leaves them.
      *
      * @since   __DEPLOY_VERSION__
      */
     public function __construct(
         private readonly DatabaseInterface $db,
+        private readonly MemberGroupSync $groupSync,
         private readonly ?CachedPhotos $photos = null,
     ) {}
 
@@ -147,12 +152,13 @@ final class DatabaseMemberRepository implements MemberRepositoryInterface
         }
 
         $query = $this->db->createQuery()
-            ->select($this->db->quoteName('pc_person_id'))
+            ->select($this->db->quoteName(['pc_person_id', 'user_id']))
             ->from($this->db->quoteName(self::TABLE))
             ->where($this->db->quoteName('pc_person_id') . ' IS NOT NULL')
             ->where($this->db->quoteName('pc_person_id') . ' NOT IN (' . implode(',', array_map('intval', $seenPcPersonIds)) . ')');
 
-        $departed = array_map('intval', $this->db->setQuery($query)->loadColumn());
+        $rows     = $this->db->setQuery($query)->loadObjectList();
+        $departed = array_map(static fn(object $row): int => (int) $row->pc_person_id, $rows);
 
         if ($departed === []) {
             return 0;
@@ -170,6 +176,11 @@ final class DatabaseMemberRepository implements MemberRepositoryInterface
         // person who comes back gets them downloaded again.
         foreach ($departed as $pcPersonId) {
             $this->photos?->forget($pcPersonId);
+        }
+
+        // Someone paired to a member who left is no longer a member themselves.
+        foreach ($rows as $row) {
+            $this->groupSync->reconcile((int) $row->user_id);
         }
 
         return $deleted;

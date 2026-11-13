@@ -108,6 +108,7 @@ return new class implements ServiceProviderInterface {
             static fn(Container $c): PcMemberRepositoryInterface
                 => new PcDatabaseMemberRepository(
                     $c->get(DatabaseInterface::class),
+                    MemberGroupSync::configured($c->get(DatabaseInterface::class)),
                     new PcCachedPhotos(JPATH_ROOT . '/media/com_cwmconnect/photos'),
                 ),
         );
@@ -144,18 +145,14 @@ return new class implements ServiceProviderInterface {
                 => new FeedTokenService($c->get(DatabaseInterface::class)),
         );
 
-        // Phase H: identity-binding pair service shared with plg_user_cwmconnect.
-        // The group sync rides along so that every pairing route — PC sync, the
-        // user plugin, the content plugin and the admin pair UI — grants the
-        // directory-member group without each caller having to remember to.
+        // Phase H: identity-binding pair service. It requires the group sync, so
+        // every pairing route grants the directory-member group; the plugins and
+        // SyncRunner build their own, the same way.
         $container->set(
             MemberPairingInterface::class,
             static fn(Container $c): MemberPairingInterface => new DatabaseMemberPairing(
                 $c->get(DatabaseInterface::class),
-                new MemberGroupSync(
-                    $c->get(DatabaseInterface::class),
-                    (int) ComponentHelper::getParams('com_cwmconnect')->get('member_group', 0),
-                ),
+                MemberGroupSync::configured($c->get(DatabaseInterface::class)),
             ),
         );
 
