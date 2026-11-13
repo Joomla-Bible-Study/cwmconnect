@@ -116,6 +116,9 @@ final class DatabaseCustomFieldWriter implements CustomFieldWriterInterface
             return $values;
         }
 
+        // Sorted, so the same options in another order are the same value.
+        sort($values);
+
         return [implode(', ', $values)];
     }
 
