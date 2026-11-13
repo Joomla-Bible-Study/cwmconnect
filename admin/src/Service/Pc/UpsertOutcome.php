@@ -22,10 +22,9 @@ namespace CWM\Component\Cwmconnect\Administrator\Service\Pc;
  *
  * - `Added`      — new row created.
  * - `Updated`    — existing row found and modified.
- * - `Unarchived` — existing row found that was previously archived
- *                  (`display_in_directory = 0` from a prior sweep); the row
- *                  is re-enabled AND its content updated. Counted separately
- *                  so the run summary can surface "people who came back."
+ * - `Unarchived` — existing row found hidden (`display_in_directory = 0`);
+ *                  its content is updated, but it stays hidden, as the sync
+ *                  leaves visibility to administrators. Counted separately.
  *
  * @since  __DEPLOY_VERSION__
  */

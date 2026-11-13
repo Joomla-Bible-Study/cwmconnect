@@ -13,6 +13,7 @@ namespace CWM\Component\Cwmconnect\Administrator\Service\Pc;
 
 use CWM\Component\Cwmconnect\Administrator\Service\Pairing\DatabaseMemberPairing;
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\Exception\ConfigurationException;
+use CWM\Component\Cwmconnect\Administrator\Service\Privacy\DatabasePrivacySuppressions;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Http\HttpFactory;
@@ -205,7 +206,7 @@ final class SyncRunner
 
         return new SyncEngine(
             client: $this->buildClient(),
-            repository: new DatabaseMemberRepository($this->db),
+            repository: new DatabaseMemberRepository($this->db, new CachedPhotos(JPATH_ROOT . '/media/com_cwmconnect/photos')),
             mapper: new PersonMapper($roleFieldSlugs, (int) $this->params->get('member_access', 2)),
             fieldMapRepo: new DatabaseFieldMapRepository($this->db),
             fieldWriter: new FieldsHelperWriter(),
@@ -219,6 +220,7 @@ final class SyncRunner
                 http: HttpFactory::getHttp(),
                 cacheRoot: JPATH_ROOT . '/media/com_cwmconnect/photos/households',
             ),
+            suppressions: new DatabasePrivacySuppressions($this->db, new CachedPhotos(JPATH_ROOT . '/media/com_cwmconnect/photos')),
         );
     }
 

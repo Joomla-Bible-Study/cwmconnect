@@ -199,6 +199,22 @@ Pairing by hand always works: open the member and set **Linked Joomla User**.
 A site updated from an earlier version keeps the pairs it has, but starts with
 no account proven, so any account still to pair is paired this way.
 
+### Privacy removals
+
+A removal request (**Users → Privacy → Requests**) reaches the member paired to
+the requester's account. It blanks that member's row and sets it to
+**Archived**, with the reason "Removed under a privacy request". It also
+deletes their custom-field values and cached photos, and stops the Planning
+Center sync from writing them back.
+
+To bring someone back, filter the Members list by **Archived** and publish or
+unpublish their row. Its edit screen links to their Planning Center profile,
+which says who it is. The next sync fills the row in from Planning Center and
+lists them again. Archiving the row again before that sync keeps them removed.
+
+Planning Center stays the system of record, so delete or anonymise the person
+there as well.
+
 ---
 
 ## 6. Remaining setup

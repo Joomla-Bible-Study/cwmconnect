@@ -72,6 +72,24 @@ final class SyncReport
     public int $unarchived = 0;
 
     /**
+     * People this run skipped because they were removed under a privacy
+     * request: nothing from Planning Center was written for them.
+     *
+     * @var    int
+     * @since  __DEPLOY_VERSION__
+     */
+    public int $suppressed = 0;
+
+    /**
+     * People released from a privacy removal whom this run refilled and
+     * listed again.
+     *
+     * @var    int
+     * @since  __DEPLOY_VERSION__
+     */
+    public int $restored = 0;
+
+    /**
      * Phase D: count of `FieldsHelper::setFieldValue()` calls completed this
      * run. Includes both "value changed" and "value rewritten to same" — we
      * don't currently diff before writing.
@@ -241,6 +259,8 @@ final class SyncReport
             'updated'          => $this->updated,
             'deleted'          => $this->deleted,
             'unarchived'       => $this->unarchived,
+            'suppressed'       => $this->suppressed,
+            'restored'         => $this->restored,
             'customFieldsWritten' => $this->customFieldsWritten,
             'photosDownloaded'    => $this->photosDownloaded,
             'photosUnchanged'     => $this->photosUnchanged,

@@ -74,11 +74,16 @@ final class DatabaseMemberRepository implements MemberRepositoryInterface
     /**
      * Constructor.
      *
-     * @param   DatabaseInterface  $db  Joomla database connection.
+     * @param   DatabaseInterface  $db      Joomla database connection.
+     * @param   CachedPhotos|null  $photos  The member photo cache, whose files the
+     *                                      sweep deletes with the rows. Null leaves them.
      *
      * @since   __DEPLOY_VERSION__
      */
-    public function __construct(private readonly DatabaseInterface $db) {}
+    public function __construct(
+        private readonly DatabaseInterface $db,
+        private readonly ?CachedPhotos $photos = null,
+    ) {}
 
     /**
      * Insert or update a member row keyed on `pc_person_id`. Returns whether
@@ -141,15 +146,33 @@ final class DatabaseMemberRepository implements MemberRepositoryInterface
             return 0;
         }
 
-        $query = $this->db->createQuery();
-
-        $query->delete($this->db->quoteName(self::TABLE))
+        $query = $this->db->createQuery()
+            ->select($this->db->quoteName('pc_person_id'))
+            ->from($this->db->quoteName(self::TABLE))
             ->where($this->db->quoteName('pc_person_id') . ' IS NOT NULL')
             ->where($this->db->quoteName('pc_person_id') . ' NOT IN (' . implode(',', array_map('intval', $seenPcPersonIds)) . ')');
 
+        $departed = array_map('intval', $this->db->setQuery($query)->loadColumn());
+
+        if ($departed === []) {
+            return 0;
+        }
+
+        $query = $this->db->createQuery()
+            ->delete($this->db->quoteName(self::TABLE))
+            ->where($this->db->quoteName('pc_person_id') . ' IN (' . implode(',', $departed) . ')');
+
         $this->db->setQuery($query)->execute();
 
-        return (int) $this->db->getAffectedRows();
+        $deleted = (int) $this->db->getAffectedRows();
+
+        // Their cached photos are personal data too, and only a cache: a
+        // person who comes back gets them downloaded again.
+        foreach ($departed as $pcPersonId) {
+            $this->photos?->forget($pcPersonId);
+        }
+
+        return $deleted;
     }
 
     public function findIdByPcPersonId(int $pcPersonId): ?int
@@ -243,9 +266,8 @@ final class DatabaseMemberRepository implements MemberRepositoryInterface
     }
 
     /**
-     * Update an existing row in place. Bumps `modified`, and force-enables
-     * `display_in_directory` + `published` so a previously-swept row comes
-     * back when its PC person reappears.
+     * Update an existing row in place and bump `modified`. Its visibility
+     * (`display_in_directory`, `published`) is left as it is: see below.
      *
      * @param   int                   $id     Local row id.
      * @param   array<string, mixed>  $attrs  Column → value overrides.
