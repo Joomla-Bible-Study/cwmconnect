@@ -20,7 +20,6 @@ use CWM\Component\Cwmconnect\Administrator\Service\Pairing\MemberGroupSync;
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\FieldMapRepositoryInterface;
 use CWM\Component\Cwmconnect\Administrator\Service\Privacy\DatabasePrivacySuppressions;
 use Joomla\CMS\Application\ApplicationHelper;
-use Joomla\CMS\Component\ComponentHelper;
 use Joomla\Component\Categories\Administrator\Helper\CategoriesHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
@@ -285,6 +284,12 @@ class MemberModel extends AdminModel
         $user  = Factory::getApplication()->getIdentity();
         $table = $this->getTable();
 
+        // Whoever these rows are paired to now loses that pairing, so their
+        // member group is reconciled along with the new user's.
+        $affected = $this->pairedUserIds($pks);
+        $affected[] = (int) $value;
+        $stored     = true;
+
         foreach ($pks as $pk) {
             if ($user && $user->authorise('core.edit', $contexts[$pk])) {
                 $table->reset();
@@ -293,22 +298,31 @@ class MemberModel extends AdminModel
 
                 if (!$table->store()) {
                     $this->setError($table->getError());
+                    $stored = false;
 
-                    return false;
+                    break;
                 }
             } else {
                 Factory::getApplication()->enqueueMessage(
                     Text::_('JLIB_APPLICATION_ERROR_BATCH_CANNOT_EDIT'),
                     'error'
                 );
+                $stored = false;
 
-                return false;
+                break;
             }
         }
 
         $this->cleanCache();
 
-        return true;
+        // Even after a failure: the rows stored before it have changed hands.
+        $sync = MemberGroupSync::configured($this->getDatabase());
+
+        foreach (array_unique(array_filter($affected)) as $userId) {
+            $sync->reconcile((int) $userId);
+        }
+
+        return $stored;
     }
 
     /**
@@ -640,13 +654,7 @@ class MemberModel extends AdminModel
      */
     private function reconcileMemberGroups(int $previousUserId, int $newUserId): void
     {
-        $groupId = (int) ComponentHelper::getParams('com_cwmconnect')->get('member_group', 0);
-
-        if ($groupId <= 0) {
-            return;
-        }
-
-        $sync = new MemberGroupSync($this->getDatabase(), $groupId);
+        $sync = MemberGroupSync::configured($this->getDatabase());
 
         foreach (array_unique(array_filter([$previousUserId, $newUserId])) as $userId) {
             $sync->reconcile((int) $userId);

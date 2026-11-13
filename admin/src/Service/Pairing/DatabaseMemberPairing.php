@@ -32,18 +32,16 @@ final readonly class DatabaseMemberPairing implements MemberPairingInterface
 {
     /**
      * @param   DatabaseInterface  $db         Database driver.
-     * @param   MemberGroupSync|null  $groupSync  Grants the directory-member
-     *                                            group on a successful pair.
-     *                                            Null in contexts that only
-     *                                            need the lookups (and in
-     *                                            tests), where group
-     *                                            membership is not in play.
+     * @param   MemberGroupSync    $groupSync  Grants the directory-member group on
+     *                                         a successful pair. Required, so no
+     *                                         pairing route can leave it out; it
+     *                                         does nothing until a group is chosen.
      *
      * @since   __DEPLOY_VERSION__
      */
     public function __construct(
         private DatabaseInterface $db,
-        private ?MemberGroupSync $groupSync = null,
+        private MemberGroupSync $groupSync,
     ) {}
 
     /** @inheritDoc @since __DEPLOY_VERSION__ */
@@ -182,7 +180,7 @@ final readonly class DatabaseMemberPairing implements MemberPairingInterface
         // Pairing is what makes someone a member of the directory rather than
         // merely a registered website account, so it is also what grants the
         // member group that carries the directory view level.
-        $this->groupSync?->reconcile($userId);
+        $this->groupSync->reconcile($userId);
 
         return true;
     }

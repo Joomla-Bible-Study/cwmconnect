@@ -15,6 +15,7 @@ namespace CWM\Component\Cwmconnect\Administrator\Model;
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
+use CWM\Component\Cwmconnect\Administrator\Service\Pairing\MemberGroupSync;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\ListModel;
 use Joomla\Database\ParameterType;
@@ -169,7 +170,8 @@ class ReconcileModel extends ListModel
             throw new \RuntimeException('Reconcile can only delete hand-entered (non-PC) rows.');
         }
 
-        $query = $db->createQuery()
+        $userId = (int) $this->loadRow($id)->user_id;
+        $query  = $db->createQuery()
             ->delete($db->quoteName(self::TABLE))
             ->where($db->quoteName('id') . ' = :id')
             ->where($db->quoteName('pc_person_id') . ' IS NULL')
@@ -177,7 +179,12 @@ class ReconcileModel extends ListModel
 
         $db->setQuery($query)->execute();
 
-        return $db->getAffectedRows() > 0;
+        $deleted = $db->getAffectedRows() > 0;
+
+        // Whoever was paired to the row may no longer be a member.
+        MemberGroupSync::configured($db)->reconcile($userId);
+
+        return $deleted;
     }
 
     /**
@@ -227,6 +234,16 @@ class ReconcileModel extends ListModel
 
         $this->deleteManual($manualId);
 
+        // The manual row's account link follows it to the synced row, when that
+        // one has none of its own; deleting the manual row first frees the link.
+        $userId = (int) $manual->user_id;
+
+        if ($userId > 0 && (int) ($syncedRow->user_id ?? 0) === 0) {
+            $update = (object) ['id' => (int) $syncedRow->id, 'user_id' => $userId];
+            $db->updateObject(self::TABLE, $update, 'id');
+            MemberGroupSync::configured($db)->reconcile($userId);
+        }
+
         return 'merged';
     }
 
@@ -265,12 +282,12 @@ class ReconcileModel extends ListModel
     {
         $db    = $this->getDatabase();
         $query = $db->createQuery()
-            ->select($db->quoteName(['id', 'image']))
+            ->select($db->quoteName(['id', 'image', 'user_id']))
             ->from($db->quoteName(self::TABLE))
             ->where($db->quoteName('id') . ' = :id')
             ->bind(':id', $id, ParameterType::INTEGER);
 
-        return $db->setQuery($query)->loadObject() ?: (object) ['id' => $id, 'image' => ''];
+        return $db->setQuery($query)->loadObject() ?: (object) ['id' => $id, 'image' => '', 'user_id' => null];
     }
 
     /**
@@ -286,7 +303,7 @@ class ReconcileModel extends ListModel
     {
         $db    = $this->getDatabase();
         $query = $db->createQuery()
-            ->select($db->quoteName(['id', 'image']))
+            ->select($db->quoteName(['id', 'image', 'user_id']))
             ->from($db->quoteName(self::TABLE))
             ->where($db->quoteName('pc_person_id') . ' = :pid')
             ->bind(':pid', $pcPersonId, ParameterType::INTEGER);

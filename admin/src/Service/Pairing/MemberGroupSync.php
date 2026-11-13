@@ -15,6 +15,7 @@ namespace CWM\Component\Cwmconnect\Administrator\Service\Pairing;
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
+use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\User\UserHelper;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Database\ParameterType;
@@ -51,6 +52,20 @@ final readonly class MemberGroupSync
      * @since   __DEPLOY_VERSION__
      */
     public function __construct(private DatabaseInterface $db, private int $groupId) {}
+
+    /**
+     * The sync for the group chosen in Options: a no-op until one is chosen.
+     *
+     * @param   DatabaseInterface  $db  Database driver.
+     *
+     * @return  self
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    public static function configured(DatabaseInterface $db): self
+    {
+        return new self($db, (int) ComponentHelper::getParams('com_cwmconnect')->get('member_group', 0));
+    }
 
     /**
      * Put this user in the member group, or take them out, to match whether

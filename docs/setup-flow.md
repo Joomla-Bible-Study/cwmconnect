@@ -162,6 +162,12 @@ a **user group**. There are two independent routes into it.
 5. Optionally **Options → Shared access code**: enable, generate a code, and
    point **Group granted by the code** at the second group
 
+The member group follows pairing, however it happens: an administrator
+linking the account (in the member form or by batch), the account proving a
+member's email, or the Planning Center sync. It goes when the pairing ends:
+unlinking, unpublishing or deleting the member, a privacy removal, or the
+member leaving Planning Center.
+
 ### Ordering matters here
 
 Set **Member view level** *last*, after pairing has populated the group.
