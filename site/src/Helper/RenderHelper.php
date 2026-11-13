@@ -437,7 +437,9 @@ class RenderHelper
         $results = [];
 
         foreach ($records as $i => $record) {
-            $date         = HTMLHelper::_('date', $record->anniversary, Text::_('DATE_FORMAT_LC4'), false);
+            // A calendar date: null converts no timezone (false would move it
+            // into the site's, a day early west of UTC).
+            $date         = HTMLHelper::_('date', $record->anniversary, Text::_('DATE_FORMAT_LC4'), null);
             [, , $bday]   = explode('-', $date);
 
             if ($record->f_name && (int) $record->f_id !== $this->f_id) {
