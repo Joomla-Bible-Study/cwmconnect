@@ -53,6 +53,19 @@ EMPTY=$(q "SELECT COUNT(*) FROM #__extensions WHERE type = 'plugin' AND element 
 
 if [ "$EMPTY" = "0" ]; then ok "no plugin installed without an element"; else fail "$EMPTY plugin(s) installed with an empty element"; fi
 
+# The plugin states a fresh install leaves: the groups build/script.install.php
+# lists in ENABLE_ON_INSTALL switched on, every other bundled plugin off. On a
+# site where an admin has changed them since, these fail by design.
+ON=" $(grep -o "ENABLE_ON_INSTALL = \[[^]]*\]" "$ROOT/build/script.install.php" | grep -o "'[a-z]*'" | tr -d "'" | tr '\n' ' ')"
+
+for dir in "$ROOT"/plugins/*/cwmconnect; do
+    group=$(basename "$(dirname "$dir")")
+    case $ON in *" $group "*) want=1 ;; *) want=0 ;; esac
+    got=$(q "SELECT enabled FROM #__extensions WHERE type = 'plugin' AND element = 'cwmconnect' AND folder = '$group'")
+
+    if [ "$got" = "$want" ]; then ok "$group plugin enabled=$got"; else fail "$group plugin enabled=${got:-<missing>}, a fresh install sets $want"; fi
+done
+
 echo "== Admin menu"
 WANT=$(php -r 'echo count(simplexml_load_string(file_get_contents($argv[1]))->administration->submenu->menu);' "$ROOT/cwmconnect.xml")
 GOT=$(q "SELECT COUNT(*) FROM #__menu WHERE client_id = 1 AND menutype = 'main' AND level = 2 AND link LIKE '%com_cwmconnect%'")
