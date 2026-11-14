@@ -10,28 +10,7 @@
 \defined('_JEXEC') or die;
 
 use CWM\Component\Cwmconnect\Administrator\Extension\CwmconnectComponent;
-use CWM\Component\Cwmconnect\Administrator\Service\FeedToken\FeedTokenService;
-use CWM\Component\Cwmconnect\Administrator\Service\Pairing\DatabaseMemberPairing;
-use CWM\Component\Cwmconnect\Administrator\Service\Pairing\MemberGroupSync;
-use CWM\Component\Cwmconnect\Administrator\Service\Pairing\MemberPairingInterface;
-use CWM\Component\Cwmconnect\Administrator\Service\Pc\CachedPhotos as PcCachedPhotos;
-use CWM\Component\Cwmconnect\Administrator\Service\Pc\Client as PcClient;
-use CWM\Component\Cwmconnect\Administrator\Service\Pc\CustomFieldWriterInterface as PcCustomFieldWriterInterface;
-use CWM\Component\Cwmconnect\Administrator\Service\Pc\DatabaseCustomFieldWriter as PcDatabaseCustomFieldWriter;
-use CWM\Component\Cwmconnect\Administrator\Service\Pc\DatabaseFieldMapRepository as PcDatabaseFieldMapRepository;
-use CWM\Component\Cwmconnect\Administrator\Service\Pc\DatabaseHouseholdRepository as PcDatabaseHouseholdRepository;
-use CWM\Component\Cwmconnect\Administrator\Service\Pc\DatabaseMemberRepository as PcDatabaseMemberRepository;
-use CWM\Component\Cwmconnect\Administrator\Service\Pc\Exception\ConfigurationException as PcConfigurationException;
-use CWM\Component\Cwmconnect\Administrator\Service\Pc\FieldMapRepositoryInterface as PcFieldMapRepositoryInterface;
-use CWM\Component\Cwmconnect\Administrator\Service\Pc\HouseholdRepositoryInterface as PcHouseholdRepositoryInterface;
-use CWM\Component\Cwmconnect\Administrator\Service\Pc\MediaPhotoCache as PcMediaPhotoCache;
-use CWM\Component\Cwmconnect\Administrator\Service\Pc\MemberRepositoryInterface as PcMemberRepositoryInterface;
-use CWM\Component\Cwmconnect\Administrator\Service\Pc\PersonMapper as PcPersonMapper;
-use CWM\Component\Cwmconnect\Administrator\Service\Pc\PhotoCacheInterface as PcPhotoCacheInterface;
-use CWM\Component\Cwmconnect\Administrator\Service\Pc\SyncEngine as PcSyncEngine;
-use CWM\Component\Cwmconnect\Administrator\Service\Privacy\DatabasePrivacySuppressions;
 use Joomla\CMS\Categories\CategoryFactoryInterface;
-use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Component\Router\RouterFactoryInterface;
 use Joomla\CMS\Dispatcher\ComponentDispatcherFactoryInterface;
 use Joomla\CMS\Extension\ComponentInterface;
@@ -40,12 +19,16 @@ use Joomla\CMS\Extension\Service\Provider\ComponentDispatcherFactory;
 use Joomla\CMS\Extension\Service\Provider\MVCFactory;
 use Joomla\CMS\Extension\Service\Provider\RouterFactory;
 use Joomla\CMS\HTML\Registry;
-use Joomla\CMS\Http\HttpFactory;
 use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
-use Joomla\Database\DatabaseInterface;
 use Joomla\DI\Container;
 use Joomla\DI\ServiceProviderInterface;
 
+/*
+ * Only what Joomla needs to boot the component. This container is the
+ * component's own, which nothing else can reach, so the services the
+ * component's code uses (the sync, pairing, feed tokens) are built where
+ * they're used rather than registered here.
+ */
 return new class implements ServiceProviderInterface {
     public function register(Container $container): void
     {
@@ -65,124 +48,6 @@ return new class implements ServiceProviderInterface {
 
                 return $component;
             }
-        );
-
-        // Planning Center client. Resolves lazily — reads component params at
-        // first request so config edits take effect without a service rebuild.
-        // Throws PcConfigurationException if the token is empty; callers
-        // (Phase C sync entry point) catch and surface a "not configured"
-        // state instead of letting the exception bubble.
-        $container->set(
-            PcClient::class,
-            static function (): PcClient {
-                $params  = ComponentHelper::getParams('com_cwmconnect');
-                $token   = (string) $params->get('pc_personal_access_token', '');
-                $appId   = (string) $params->get('pc_application_id', '');
-                $baseUrl = (string) $params->get('pc_api_base_url', PcClient::DEFAULT_BASE_URL);
-
-                if ($token === '') {
-                    throw new PcConfigurationException(
-                        'Planning Center is not configured: personal access token is empty.',
-                    );
-                }
-
-                return new PcClient(
-                    http: HttpFactory::getHttp(),
-                    personalAccessToken: $token,
-                    applicationId: $appId,
-                    baseUrl: $baseUrl !== '' ? $baseUrl : PcClient::DEFAULT_BASE_URL,
-                );
-            },
-        );
-
-        // PC sync support services: stateless mapper, DB-backed repository,
-        // and the engine that ties them together. Resolved per request so
-        // tests can override individual collaborators via the container.
-        $container->set(
-            PcPersonMapper::class,
-            static fn(): PcPersonMapper => new PcPersonMapper(),
-        );
-
-        $container->set(
-            PcMemberRepositoryInterface::class,
-            static fn(Container $c): PcMemberRepositoryInterface
-                => new PcDatabaseMemberRepository(
-                    $c->get(DatabaseInterface::class),
-                    MemberGroupSync::configured($c->get(DatabaseInterface::class)),
-                    new PcCachedPhotos(JPATH_ROOT . '/media/com_cwmconnect/photos'),
-                ),
-        );
-
-        // Phase D: PC custom-field mapping repo + writer. Engine constructor
-        // accepts them as nullable (Phase C parity), but in production we
-        // always wire them so an admin who's saved mappings sees them used.
-        $container->set(
-            PcFieldMapRepositoryInterface::class,
-            static fn(Container $c): PcFieldMapRepositoryInterface
-                => new PcDatabaseFieldMapRepository($c->get(DatabaseInterface::class)),
-        );
-
-        $container->set(
-            PcCustomFieldWriterInterface::class,
-            static fn(Container $c): PcCustomFieldWriterInterface
-                => new PcDatabaseCustomFieldWriter($c->get(DatabaseInterface::class)),
-        );
-
-        // Phase E: avatar cache. Resolves the cache root at request time so
-        // a relocated Joomla install (JPATH_ROOT change after a move) keeps
-        // pointing at the right photos directory.
-        $container->set(
-            PcPhotoCacheInterface::class,
-            static fn(): PcPhotoCacheInterface => new PcMediaPhotoCache(
-                http: HttpFactory::getHttp(),
-                cacheRoot: JPATH_ROOT . '/media/com_cwmconnect/photos',
-            ),
-        );
-
-        // Phase J: KML feed token service shared with site KmlView.
-        $container->set(
-            FeedTokenService::class,
-            static fn(Container $c): FeedTokenService
-                => new FeedTokenService($c->get(DatabaseInterface::class)),
-        );
-
-        // Phase H: identity-binding pair service. It requires the group sync, so
-        // every pairing route grants the directory-member group; the plugins and
-        // SyncRunner build their own, the same way.
-        $container->set(
-            MemberPairingInterface::class,
-            static fn(Container $c): MemberPairingInterface => new DatabaseMemberPairing(
-                $c->get(DatabaseInterface::class),
-                MemberGroupSync::configured($c->get(DatabaseInterface::class)),
-            ),
-        );
-
-        $container->set(
-            PcHouseholdRepositoryInterface::class,
-            static fn(Container $c): PcHouseholdRepositoryInterface
-                => new PcDatabaseHouseholdRepository($c->get(DatabaseInterface::class)),
-        );
-
-        $container->set(
-            PcSyncEngine::class,
-            static fn(Container $c): PcSyncEngine => new PcSyncEngine(
-                client: $c->get(PcClient::class),
-                repository: $c->get(PcMemberRepositoryInterface::class),
-                mapper: $c->get(PcPersonMapper::class),
-                fieldMapRepo: $c->get(PcFieldMapRepositoryInterface::class),
-                fieldWriter: $c->get(PcCustomFieldWriterInterface::class),
-                photoCache: $c->get(PcPhotoCacheInterface::class),
-                pairing: $c->get(MemberPairingInterface::class),
-                households: $c->get(PcHouseholdRepositoryInterface::class),
-                householdPhotoCache: new PcMediaPhotoCache(
-                    http: \Joomla\CMS\Http\HttpFactory::getHttp(),
-                    cacheRoot: JPATH_ROOT . '/media/com_cwmconnect/photos/households',
-                ),
-                suppressions: new DatabasePrivacySuppressions(
-                    $c->get(DatabaseInterface::class),
-                    new PcCachedPhotos(JPATH_ROOT . '/media/com_cwmconnect/photos'),
-                ),
-            ),
         );
     }
 };
