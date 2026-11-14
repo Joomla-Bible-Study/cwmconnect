@@ -46,6 +46,10 @@ class MyprofileModel extends FormModel
      * browser respects the lock; {@see detectLockedFieldChanges()} provides
      * the server-side enforcement for URL-hacked payloads.
      *
+     * A locked field is never saved, so it is neither required nor checked,
+     * and keeps its raw value: a filter could change a stored value (one with
+     * a `<`, say) enough for the lock check to see an edit nobody made.
+     *
      * @since  2.0.0
      */
     public function getForm($data = [], $loadData = true): Form|false
@@ -61,6 +65,9 @@ class MyprofileModel extends FormModel
 
         foreach ($locked as $field) {
             $form->setFieldAttribute($field, 'readonly', 'true');
+            $form->setFieldAttribute($field, 'required', 'false');
+            $form->setFieldAttribute($field, 'validate', '');
+            $form->setFieldAttribute($field, 'filter', 'raw');
         }
 
         return $form;
@@ -158,6 +165,10 @@ class MyprofileModel extends FormModel
 
             return false;
         }
+
+        // The member table reports a failed check in the component's admin
+        // strings, which the site doesn't load.
+        Factory::getApplication()->getLanguage()->load('com_cwmconnect', JPATH_ADMINISTRATOR);
 
         $table = new MemberTable($this->getDatabase());
 
