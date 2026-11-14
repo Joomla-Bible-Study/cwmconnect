@@ -170,6 +170,11 @@ final class CwmconnectTest extends TestCase
                 return $this->pairResult;
             }
 
+            public function unpairUser(int $userId): int
+            {
+                return 0;
+            }
+
             public function recordVerifiedEmail(int $userId, string $email, string $source): void {}
 
             public function hasVerifiedEmail(int $userId, string $email): bool

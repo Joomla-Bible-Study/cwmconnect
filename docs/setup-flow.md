@@ -178,6 +178,9 @@ member's email, or the Planning Center sync. It goes when the pairing ends:
 unlinking, unpublishing or deleting the member, a privacy removal, or the
 member leaving Planning Center.
 
+Deleting a Joomla account ends its pairing too, so the member can pair with
+another account, and revokes the account's map feeds.
+
 ### Ordering matters here
 
 Set **Member view level** *last*, after pairing has populated the group.

@@ -311,6 +311,11 @@ final class SyncEngineSearchIndexTest extends TestCase
             {
                 return true;
             }
+
+            public function unpairUser(int $userId): int
+            {
+                return 0;
+            }
         };
     }
 

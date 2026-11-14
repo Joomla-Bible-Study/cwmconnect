@@ -9,6 +9,7 @@
 
 \defined('_JEXEC') or die;
 
+use CWM\Component\Cwmconnect\Administrator\Service\FeedToken\FeedTokenService;
 use CWM\Component\Cwmconnect\Administrator\Service\Pairing\DatabaseMemberPairing;
 use CWM\Component\Cwmconnect\Administrator\Service\Pairing\MemberGroupSync;
 use CWM\Plugin\User\Cwmconnect\Extension\Cwmconnect;
@@ -30,6 +31,7 @@ return new class implements ServiceProviderInterface {
                 $plugin  = new Cwmconnect(
                     (array) PluginHelper::getPlugin('user', 'cwmconnect'),
                     $pairing,
+                    new FeedTokenService($db),
                 );
                 $plugin->setApplication(Factory::getApplication());
 
