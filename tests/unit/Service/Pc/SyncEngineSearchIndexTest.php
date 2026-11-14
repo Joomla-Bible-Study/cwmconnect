@@ -81,13 +81,13 @@ final class SyncEngineSearchIndexTest extends TestCase
     }
 
     #[Test]
-    public function aNewPairingCountsAsAChange(): void
+    public function aNewPairingAloneIsNoChange(): void
     {
         $index = $this->searchIndex();
 
         $this->engine($this->unchanged(), $index, pairing: $this->pairing())->run([]);
 
-        self::assertSame([1003], $index->changed, "The account's name is indexed with the member.");
+        self::assertSame([], $index->changed, 'Nothing about the account is indexed with the member.');
     }
 
     #[Test]

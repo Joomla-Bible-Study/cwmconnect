@@ -331,11 +331,11 @@ final class SyncEngine
                             $this->cacheAvatar($pcPersonId, $person, $report);
                         }
 
-                        $paired = $this->tryPairByEmail($pcPersonId, $attrs, $report);
+                        $this->tryPairByEmail($pcPersonId, $attrs, $report);
 
                         // Smart Search keeps its own copy of each member: refresh it
                         // once this person's writes are done, if any changed something.
-                        if ($outcome !== UpsertOutcome::Unchanged || $released === true || $fieldsChanged || $paired) {
+                        if ($outcome !== UpsertOutcome::Unchanged || $released === true || $fieldsChanged) {
                             $this->refreshSearchIndex($pcPersonId, $report);
                         }
                     }
@@ -882,39 +882,37 @@ final class SyncEngine
      *                                          `email_to`.
      * @param   SyncReport            $report  Mutated in-place.
      *
-     * @return  bool  Whether it paired the member.
+     * @return  void
      *
      * @since   __DEPLOY_VERSION__
      */
-    private function tryPairByEmail(int $pcPersonId, array $attrs, SyncReport $report): bool
+    private function tryPairByEmail(int $pcPersonId, array $attrs, SyncReport $report): void
     {
         if ($this->pairing === null) {
-            return false;
+            return;
         }
 
         $email = isset($attrs['email_to']) && \is_string($attrs['email_to']) ? trim($attrs['email_to']) : '';
 
         if ($email === '') {
-            return false;
+            return;
         }
 
         try {
             $memberId = $this->repository->findIdByPcPersonId($pcPersonId);
 
             if ($memberId === null) {
-                return false;
+                return;
             }
 
             $userId = $this->pairing->findJoomlaUserIdByEmail($email);
 
             if ($userId === null) {
-                return false;
+                return;
             }
 
             if ($this->pairing->pairMemberToUser($memberId, $userId)) {
                 $report->paired++;
-
-                return true;
             }
         } catch (\Throwable $e) {
             $report->recordError($pcPersonId, 'Pair-by-email failed: ' . $e->getMessage());
@@ -923,8 +921,6 @@ final class SyncEngine
                 'error'      => $e->getMessage(),
             ]);
         }
-
-        return false;
     }
 
     /**
