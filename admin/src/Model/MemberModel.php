@@ -20,6 +20,7 @@ use CWM\Component\Cwmconnect\Administrator\Service\Pairing\MemberGroupSync;
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\FieldMapRepositoryInterface;
 use CWM\Component\Cwmconnect\Administrator\Service\Privacy\DatabasePrivacySuppressions;
 use Joomla\CMS\Application\ApplicationHelper;
+use Joomla\CMS\Component\ComponentHelper;
 use Joomla\Component\Categories\Administrator\Helper\CategoriesHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
@@ -856,6 +857,12 @@ class MemberModel extends AdminModel
 
                 if ($catid && \is_object($data)) {
                     $data->catid = $catid;
+                }
+
+                // A new member starts at the member view level, as synced ones
+                // do: at Public, a site search would show them to anyone.
+                if (\is_object($data)) {
+                    $data->access = (int) ComponentHelper::getParams('com_cwmconnect')->get('member_access', 2);
                 }
             }
         }

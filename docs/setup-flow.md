@@ -60,7 +60,7 @@ off stays off.
 | Plugin | After install | Needed for |
 |---|---|---|
 | User – Church Directory Pairing | on | recording which accounts have proven their email (§5), and pairing a member to their Joomla account when the account is saved |
-| Content – Church Directory Pairing | on | pairing when an admin saves a member |
+| Content – Church Directory Pairing | on | pairing when an admin saves a member, and moving members to a new **Member view level** when it changes (§5) |
 | Privacy – Church Directory | on | GDPR export / removal covering member data |
 | Task – CWM Connect Sync | on | scheduled background syncs (see §7, issue #191); nothing runs until you create a task |
 | Smart Search – Church Directory | **off** | members appearing in site search |
@@ -76,9 +76,9 @@ Smart Search → Index**. From then on the index keeps itself current:
 
 A member hidden from the directory is never indexed. Each member is indexed
 under their own access level, so only someone with that level can find them.
-Synced members get the **Member view level** from Options. A member entered by
-hand gets the access set in their form, which starts at Public, so set it to the
-member view level before switching Smart Search on, or guests can find them.
+Every member gets the **Member view level** from Options: synced members at each
+sync, members entered by hand when they're created, and all of them when you
+change it.
 
 ---
 
@@ -182,6 +182,10 @@ member leaving Planning Center.
 
 Set **Member view level** *last*, after pairing has populated the group.
 Switching it first locks out every existing member until the group fills.
+
+Saving a new level moves every member at the old level to it, so site search
+shows members only to those who may see the directory. A member you set to
+some other level by hand keeps it.
 
 ### Know the ceiling before relying on pairing
 

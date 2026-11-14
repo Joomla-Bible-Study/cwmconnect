@@ -9,8 +9,10 @@
 
 \defined('_JEXEC') or die;
 
+use CWM\Component\Cwmconnect\Administrator\Service\Access\MemberViewLevel;
 use CWM\Component\Cwmconnect\Administrator\Service\Pairing\DatabaseMemberPairing;
 use CWM\Component\Cwmconnect\Administrator\Service\Pairing\MemberGroupSync;
+use CWM\Component\Cwmconnect\Administrator\Service\Search\FinderSearchIndex;
 use CWM\Plugin\Content\Cwmconnect\Extension\Cwmconnect;
 use Joomla\CMS\Extension\PluginInterface;
 use Joomla\CMS\Factory;
@@ -30,6 +32,7 @@ return new class implements ServiceProviderInterface {
                 $plugin  = new Cwmconnect(
                     (array) PluginHelper::getPlugin('content', 'cwmconnect'),
                     $pairing,
+                    new MemberViewLevel($db, new FinderSearchIndex($db)),
                 );
                 $plugin->setApplication(Factory::getApplication());
 
