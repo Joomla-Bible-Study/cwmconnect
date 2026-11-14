@@ -33,6 +33,7 @@
 			label="COM_CWMCONNECT_FIELD_EMAIL_TO_LABEL"
 			size="40"
 			filter="string"
+			validate="email"
 		/>
 
 		<field name="telephone"
@@ -109,6 +110,8 @@
 	<fieldset name="directory" label="COM_CWMCONNECT_MYPROFILE_FIELDSET_DIRECTORY">
 		<field name="display_in_directory"
 			type="radio"
+			filter="integer"
+			validate="options"
 			label="COM_CWMCONNECT_FIELD_DISPLAY_IN_DIRECTORY_LABEL"
 			description="COM_CWMCONNECT_FIELD_DISPLAY_IN_DIRECTORY_DESC"
 			default="1"

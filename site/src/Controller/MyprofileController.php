@@ -62,10 +62,34 @@ class MyprofileController extends BaseController
         $data = (array) $app->getInput()->post->get('jform', [], 'array');
 
         /** @var MyprofileModel $model */
-        $model  = $this->getModel('Myprofile');
-        $result = $model->save($data);
-
+        $model    = $this->getModel('Myprofile');
         $redirect = Route::_('index.php?option=com_cwmconnect&view=myprofile', false);
+
+        // Through the form's filters and rules first, as any Joomla form save
+        // goes: the posted data used to reach the model untouched, so neither
+        // a required field nor a filter ever applied.
+        $form      = $model->getForm($data, false);
+        $validData = $form === false ? false : $model->validate($form, $data);
+
+        if ($validData === false) {
+            $app->setUserState('com_cwmconnect.myprofile.data', $data);
+
+            $errors = $form === false ? [] : $form->getErrors();
+
+            foreach ($errors as $error) {
+                $app->enqueueMessage($error instanceof \Throwable ? $error->getMessage() : (string) $error, 'warning');
+            }
+
+            if ($errors === []) {
+                $app->enqueueMessage(Text::_('COM_CWMCONNECT_MYPROFILE_ERROR_SAVE'), 'error');
+            }
+
+            $this->setRedirect($redirect);
+
+            return;
+        }
+
+        $result = $model->save($validData);
 
         if (!$result) {
             $app->setUserState('com_cwmconnect.myprofile.data', $data);
