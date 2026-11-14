@@ -17,7 +17,7 @@ namespace CWM\Component\Cwmconnect\Administrator\Model;
 
 use CWM\Component\Cwmconnect\Administrator\Helper\PcLockedFields;
 use CWM\Component\Cwmconnect\Administrator\Service\Pairing\MemberGroupSync;
-use CWM\Component\Cwmconnect\Administrator\Service\Pc\FieldMapRepositoryInterface;
+use CWM\Component\Cwmconnect\Administrator\Service\Pc\DatabaseFieldMapRepository;
 use CWM\Component\Cwmconnect\Administrator\Service\Privacy\DatabasePrivacySuppressions;
 use Joomla\CMS\Application\ApplicationHelper;
 use Joomla\CMS\Component\ComponentHelper;
@@ -386,6 +386,20 @@ class MemberModel extends AdminModel
     {
         $input = Factory::getApplication()->getInput();
 
+        // Planning Center owns a synced member's locked fields, which the form
+        // shows read-only: whatever a request posts for them, they keep what
+        // the sync wrote. Table::bind() skips a column the data doesn't carry,
+        // and core's fields plugin keeps a custom field's stored value then.
+        $locked = $this->pcLockedFields((int) ($data['id'] ?? 0));
+
+        foreach ($locked['columns'] as $column) {
+            unset($data[$column]);
+        }
+
+        foreach ($locked['customFields'] as $fieldName) {
+            unset($data['com_fields'][$fieldName]);
+        }
+
         // Remember who this member was paired to before the save so the
         // directory-member group can be reconciled for *both* users when an
         // admin re-points or clears `user_id` — the person losing the pairing
@@ -712,70 +726,86 @@ class MemberModel extends AdminModel
             $form->setFieldAttribute('published', 'filter', 'unset');
         }
 
-        $this->applyPcFieldLocks($form);
+        // The member being edited. A save request's model doesn't read the id
+        // from the request (FormController builds it with ignore_request), so
+        // it comes with the posted data there.
+        $id = (int) (\is_array($data) && isset($data['id']) ? $data['id'] : $this->getState($this->getName() . '.id', 0));
+
+        $this->applyPcFieldLocks($form, $id);
 
         return $form;
     }
 
     /**
-     * Phase F: render PC-owned fields as read-only and `filter=unset` so
-     * the model never accepts a value for them from the admin form. The
-     * lock covers two surfaces:
+     * Phase F: show the fields Planning Center owns read-only on a synced
+     * member's form: their own columns ({@see PcLockedFields::forItem()}) and
+     * the mapped custom fields. {@see self::save()} is what holds the lock,
+     * whatever a request posts; the form only shows it.
      *
-     *  - Local columns (name, contact, address, dates, image) via
-     *    {@see PcLockedFields::forItem()}.
-     *  - Joomla custom fields whose ids appear in the PC mapping table,
-     *    via {@see FieldMapRepositoryInterface::lockedJoomlaFieldNames()}.
+     * Columns are `readonly`, not `disabled`: a media field has no disabled
+     * state. Custom fields are both, so the browser doesn't post them and
+     * core's fields plugin keeps the stored value. Neither stays `required`,
+     * as their value is kept regardless.
      *
-     * No-op for new records (id=0) and standalone members (no
-     * `pc_person_id`). `filter=unset` is the load-bearing part: even if a
-     * malicious POST bypasses the read-only UI, the model drops the value
-     * before save.
+     * No filter: `unset` gives the field a null rather than dropping it, which
+     * fails a required field and tells core's fields plugin to delete a custom
+     * field's value. A calendar field ignores it in any case.
      *
-     * Deliberately `readonly` **without** `disabled`. A disabled input is not
-     * submitted by the browser, but {@see Form::validate()} still validates
-     * every field in the definition — so disabling the locked `name` and
-     * `lname` (both `required="true"`) made every PC-synced member fail
-     * validation with "Field required", i.e. unsaveable from admin even for
-     * the fields that stay editable. Read-only inputs post their value
-     * normally, satisfying `required`, and `filter=unset` then discards it so
-     * PC-owned data still cannot be overwritten.
-     *
-     * @param   Form  $form
+     * @param   Form  $form  The member form.
+     * @param   int   $id    The member being edited, or 0 for a new one.
      *
      * @return  void
      *
      * @since   __DEPLOY_VERSION__
      */
-    private function applyPcFieldLocks(Form $form): void
+    private function applyPcFieldLocks(Form $form, int $id): void
     {
-        $item = $this->getItem((int) $this->getState($this->getName() . '.id', 0));
+        $locked = $this->pcLockedFields($id);
 
-        if (!\is_object($item) || (int) ($item->pc_person_id ?? 0) <= 0) {
-            return;
-        }
-
-        foreach (PcLockedFields::forItem($item) as $fieldName) {
+        foreach ($locked['columns'] as $fieldName) {
             $form->setFieldAttribute($fieldName, 'readonly', 'true');
-            $form->setFieldAttribute($fieldName, 'filter', 'unset');
+            $form->setFieldAttribute($fieldName, 'required', 'false');
         }
 
-        try {
-            $repo = Factory::getContainer()->get(FieldMapRepositoryInterface::class);
-        } catch (\Throwable) {
-            // DI container unreachable in unusual contexts (e.g. CLI
-            // form discovery). Local-column lock above is already in
-            // place; we just skip the custom-field layer.
-            return;
-        }
-
-        foreach ($repo->lockedJoomlaFieldNames() as $fieldName) {
+        foreach ($locked['customFields'] as $fieldName) {
             // com_fields adds custom fields under the `com_fields` form
             // path; the fourth setFieldAttribute() arg targets that path.
             $form->setFieldAttribute($fieldName, 'readonly', 'true', 'com_fields');
             $form->setFieldAttribute($fieldName, 'disabled', 'true', 'com_fields');
-            $form->setFieldAttribute($fieldName, 'filter', 'unset', 'com_fields');
+            $form->setFieldAttribute($fieldName, 'required', 'false', 'com_fields');
         }
+    }
+
+    /**
+     * The fields Planning Center owns on a stored member: their own columns,
+     * and the custom fields mapped to Planning Center ones. None for a new
+     * member or one entered by hand.
+     *
+     * @param   int  $id  Member row id, or 0 for a new member.
+     *
+     * @return  array{columns: list<string>, customFields: list<string>}
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    private function pcLockedFields(int $id): array
+    {
+        $none  = ['columns' => [], 'customFields' => []];
+        $table = $this->getTable();
+
+        if ($id <= 0 || !$table->load($id)) {
+            return $none;
+        }
+
+        $columns = PcLockedFields::forItem($table);
+
+        if ($columns === []) {
+            return $none;
+        }
+
+        return [
+            'columns'      => $columns,
+            'customFields' => new DatabaseFieldMapRepository($this->getDatabase())->lockedJoomlaFieldNames(),
+        ];
     }
 
     /**
