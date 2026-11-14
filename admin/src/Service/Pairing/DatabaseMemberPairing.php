@@ -19,8 +19,8 @@ use Joomla\Database\ParameterType;
 // phpcs:enable PSR1.Files.SideEffects
 
 /**
- * DB-backed implementation of {@see MemberPairingInterface}. Production
- * binding registered in admin/services/provider.php.
+ * DB-backed implementation of {@see MemberPairingInterface}, built where it's
+ * used with {@see MemberGroupSync::configured()}.
  *
  * Tolerates both pre-H.1 (`user_id INT NOT NULL DEFAULT 0`) and post-H.1
  * (`user_id INT UNSIGNED NULL` + UNIQUE) schemas: the "unpaired" predicate
