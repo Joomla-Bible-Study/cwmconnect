@@ -10,12 +10,15 @@
     Hosted at:
     https://raw.githubusercontent.com/Joomla-Bible-Study/cwmconnect/master/build/cwmconnect-changelog.xml
 
-    Joomla reads this file via the `<changelogurl>` element in the
-    package manifest (build/pkg_cwmconnect.xml) when checking for
-    updates. The URL is also recorded in cwm-build.config.json under
-    `changelog.url` for tooling reference; modern Akeeba ARS does not
-    expose a changelog field on its update streams, so the manifest
-    element is the load-bearing wiring.
+    Joomla reads this file from two places. Extensions → Manage takes the
+    URL from the `<changelogurl>` element in the package manifest
+    (build/pkg_cwmconnect.xml). Extensions → Update takes it from the update
+    stream, where ARS publishes each release's changelog URL;
+    cwm-ars-publish sets that from `changelog.url` in cwm-build.config.json
+    on every publish. A release without one falls back to its web page, and
+    the Update screen shows an empty changelog. cwmconnect does not publish
+    to ARS yet (ars.categoryId is 0), so for now only Extensions → Manage
+    reads this file.
 -->
 <changelogs>
 
