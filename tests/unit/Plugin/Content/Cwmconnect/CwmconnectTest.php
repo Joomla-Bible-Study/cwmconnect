@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace CWM\Component\Cwmconnect\Tests\Plugin\Content\Cwmconnect;
 
+use CWM\Component\Cwmconnect\Administrator\Service\Access\MemberViewLevel;
 use CWM\Component\Cwmconnect\Administrator\Service\Pairing\MemberPairingInterface;
+use CWM\Component\Cwmconnect\Administrator\Service\Search\SearchIndexInterface;
 use CWM\Plugin\Content\Cwmconnect\Extension\Cwmconnect;
 use Joomla\CMS\Event\Content\AfterSaveEvent;
+use Joomla\Database\DatabaseInterface;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
@@ -122,7 +125,13 @@ final class CwmconnectTest extends TestCase
 
     private function makePlugin(MemberPairingInterface $pairing): Cwmconnect
     {
-        return new Cwmconnect([], $pairing);
+        $index = new class implements SearchIndexInterface {
+            public function memberChanged(int $memberId): void {}
+
+            public function membersRemoved(array $memberIds): void {}
+        };
+
+        return new Cwmconnect([], $pairing, new MemberViewLevel($this->createStub(DatabaseInterface::class), $index));
     }
 
     /**
