@@ -2,8 +2,9 @@
 <!--
     Joomla update changelog for pkg_cwmconnect.
 
-    New entries are inserted at the top by `composer changelog -- <version>`,
-    which fetches the GitHub release notes for the tag and converts headings
+    New entries are inserted at the top by the `composer changelog` script
+    (pass the version after a bare double dash), which fetches the GitHub
+    release notes for the tag and converts headings
     (### Fixes, ### Features, ### Changes, etc.) into Joomla changelog types.
 
     Hosted at:
