@@ -450,6 +450,21 @@ final class CwmconnectTest extends TestCase
         self::assertSame([7], $pairing->forgotten);
     }
 
+    #[Test]
+    public function aDeletedAccountsMemberIsUnpaired(): void
+    {
+        $pairing = $this->stubPairing();
+        $plugin  = $this->makePlugin($pairing);
+
+        $plugin->onUserAfterDelete(new AfterDeleteEvent(['id' => 7], false));
+
+        self::assertSame([], $pairing->unpaired, 'A failed deletion leaves the account paired.');
+
+        $plugin->onUserAfterDelete(new AfterDeleteEvent(['id' => 7], true));
+
+        self::assertSame([7], $pairing->unpaired, 'So another account can pair with the member.');
+    }
+
     /**
      * @param  array{id: int, can: list<string>}|null  $identity  Who is signed in, and what they may do in com_users.
      */
@@ -529,6 +544,9 @@ final class CwmconnectTest extends TestCase
             /** @var list<int> */
             public array $forgotten = [];
 
+            /** @var list<int> */
+            public array $unpaired = [];
+
             /**
              * @param array<int, string> $verified
              * @param array<string, int> $memberIdByEmail
@@ -571,6 +589,13 @@ final class CwmconnectTest extends TestCase
             {
                 $this->forgotten[] = $userId;
                 unset($this->verified[$userId]);
+            }
+
+            public function unpairUser(int $userId): int
+            {
+                $this->unpaired[] = $userId;
+
+                return 1;
             }
         };
     }

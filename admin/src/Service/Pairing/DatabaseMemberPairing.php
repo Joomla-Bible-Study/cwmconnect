@@ -184,4 +184,22 @@ final readonly class DatabaseMemberPairing implements MemberPairingInterface
 
         return true;
     }
+
+    /** @inheritDoc @since __DEPLOY_VERSION__ */
+    public function unpairUser(int $userId): int
+    {
+        if ($userId <= 0) {
+            return 0;
+        }
+
+        $query = $this->db->createQuery()
+            ->update($this->db->quoteName('#__cwmconnect_details'))
+            ->set($this->db->quoteName('user_id') . ' = NULL')
+            ->where($this->db->quoteName('user_id') . ' = :userId')
+            ->bind(':userId', $userId, ParameterType::INTEGER);
+
+        $this->db->setQuery($query)->execute();
+
+        return $this->db->getAffectedRows();
+    }
 }

@@ -15,6 +15,7 @@ namespace CWM\Plugin\User\Cwmconnect\Extension;
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
+use CWM\Component\Cwmconnect\Administrator\Service\FeedToken\FeedTokenService;
 use CWM\Component\Cwmconnect\Administrator\Service\Pairing\MemberPairingInterface;
 use Joomla\CMS\Plugin\CMSPlugin;
 use Joomla\Event\EventInterface;
@@ -58,6 +59,10 @@ use Joomla\Event\SubscriberInterface;
  * overwritten. Ambiguous matches (two members with the same email) are
  * silently skipped; the admin must resolve them via the manual pair UI.
  *
+ * When an account is deleted, it lets go of everything the directory held
+ * for it: its proven email, its member, who can then pair with another
+ * account, and its map feeds.
+ *
  * @since  2.0.0
  */
 final class Cwmconnect extends CMSPlugin implements SubscriberInterface
@@ -75,14 +80,17 @@ final class Cwmconnect extends CMSPlugin implements SubscriberInterface
     private array $before = [];
 
     /**
-     * @param   array<string, mixed>          $config   Plugin config row.
-     * @param   MemberPairingInterface        $pairing  Identity-binding service.
+     * @param   array<string, mixed>     $config      Plugin config row.
+     * @param   MemberPairingInterface   $pairing     Identity-binding service.
+     * @param   FeedTokenService|null    $feedTokens  Map feed tokens, which a deleted account's
+     *                                                are revoked from. Null leaves them.
      *
      * @since   __DEPLOY_VERSION__
      */
     public function __construct(
         array $config,
         private readonly MemberPairingInterface $pairing,
+        private readonly ?FeedTokenService $feedTokens = null,
     ) {
         parent::__construct($config);
     }
@@ -191,7 +199,9 @@ final class Cwmconnect extends CMSPlugin implements SubscriberInterface
     }
 
     /**
-     * Forget a deleted account's proven email.
+     * Let go of what the directory held for a deleted account: its proven
+     * email, the pairing of its member, who can then pair with another
+     * account, and its map feeds, which had stopped working with it.
      *
      * @param   EventInterface  $event  The after-delete event.
      *
@@ -213,7 +223,11 @@ final class Cwmconnect extends CMSPlugin implements SubscriberInterface
             ? $event->getUser()
             : $event->getArgument('subject', []));
 
-        $this->pairing->forgetVerifiedEmail((int) ($user['id'] ?? 0));
+        $userId = (int) ($user['id'] ?? 0);
+
+        $this->pairing->forgetVerifiedEmail($userId);
+        $this->pairing->unpairUser($userId);
+        $this->feedTokens?->revokeAllForUser($userId);
     }
 
     /**
