@@ -28,7 +28,7 @@ use Psr\Log\NullLogger;
  *
  * Spec mapping:
  *  - §5.3 Per-person sync: each PC person → PersonMapper → repo upsert
- *  - §5.4 Sweep step:      after the page walk, archive any local rows whose
+ *  - §5.4 Sweep step:      after a complete page walk, delete any local rows whose
  *                          pc_person_id wasn't seen this run
  *  - §5.5 Audit:           caller (controller / scheduled task) logs the
  *                          returned {@see SyncReport} to com_actionlogs.
@@ -42,7 +42,9 @@ use Psr\Log\NullLogger;
  *    pairs off each person
  *  - {@see FieldMapRepositoryInterface} resolves each pc_field_id to a
  *    Joomla custom-field id (admin-managed mapping table)
- *  - {@see CustomFieldWriterInterface} performs the actual write
+ *  - {@see CustomFieldWriterInterface} makes each mapped field hold what
+ *    Planning Center does, clearing one it holds nothing for once the run
+ *    shows Planning Center still returns that field
  *
  * Phase E adds avatar caching:
  *  - {@see PersonMapper::extractAvatarUrl()} pulls the `avatar` URL
@@ -110,6 +112,23 @@ final class SyncEngine
      * @since  __DEPLOY_VERSION__
      */
     private ?array $fieldMapCache = null;
+
+    /**
+     * Per-run: the Planning Center fields someone in the run held a value for.
+     *
+     * @var    array<int, true>
+     * @since  __DEPLOY_VERSION__
+     */
+    private array $heldFields = [];
+
+    /**
+     * Per-run: by PC person id, the mapped fields they held nothing for, which
+     * {@see self::clearUnheldFields()} clears once the run is over.
+     *
+     * @var    array<int, array{memberId: int, fields: array<int, int>}>
+     * @since  __DEPLOY_VERSION__
+     */
+    private array $unheldFields = [];
 
     /**
      * Constructor.
@@ -199,6 +218,10 @@ final class SyncEngine
         $nextUrl     = null;
         $pagesWalked = 0;
 
+        $this->heldFields   = [];
+        $this->unheldFields = [];
+        $capped             = false;
+
         $this->logger->info('PC sync started.', ['statuses' => $membershipStatuses]);
 
         // Discovery pass: which households contain a qualifying member? Their
@@ -215,7 +238,9 @@ final class SyncEngine
 
             if ($pagesWalked > self::MAX_PAGES) {
                 $this->logger->warning('PC sync hit MAX_PAGES guard.', ['pages' => $pagesWalked]);
-                $report->recordError(null, \sprintf('Pagination cap reached at %d pages.', self::MAX_PAGES));
+                $report->recordError(null, \sprintf('Pagination cap reached at %d pages, so nobody was deleted.', self::MAX_PAGES));
+                $capped = true;
+
                 break;
             }
 
@@ -225,6 +250,11 @@ final class SyncEngine
 
             $data     = \is_array($page['data'] ?? null) ? $page['data'] : [];
             $included = \is_array($page['included'] ?? null) ? $page['included'] : [];
+
+            // A page with no custom-field value at all is likelier a response
+            // without them than a page of people who have none: nobody on it
+            // has a mapped field cleared.
+            $clearsFields = \in_array('FieldDatum', array_column($included, 'type'), true);
 
             foreach ($data as $person) {
                 if (!\is_array($person)) {
@@ -291,7 +321,7 @@ final class SyncEngine
                             $report->restored++;
                         }
 
-                        $fieldsChanged = $this->writeCustomFields($pcPersonId, $person, $included, $report);
+                        $fieldsChanged = $this->writeCustomFields($pcPersonId, $person, $included, $report, $clearsFields);
 
                         // Photos are the whole cost of a first sync — 544
                         // downloads plus variant generation accounted for
@@ -304,11 +334,11 @@ final class SyncEngine
                             $this->cacheAvatar($pcPersonId, $person, $report);
                         }
 
-                        $paired = $this->tryPairByEmail($pcPersonId, $attrs, $report);
+                        $this->tryPairByEmail($pcPersonId, $attrs, $report);
 
                         // Smart Search keeps its own copy of each member: refresh it
                         // once this person's writes are done, if any changed something.
-                        if ($outcome !== UpsertOutcome::Unchanged || $released === true || $fieldsChanged || $paired) {
+                        if ($outcome !== UpsertOutcome::Unchanged || $released === true || $fieldsChanged) {
                             $this->refreshSearchIndex($pcPersonId, $report);
                         }
                     }
@@ -328,17 +358,23 @@ final class SyncEngine
             $nextUrl = $this->extractNextLink($page);
         } while ($nextUrl !== null);
 
-        if ($onProgress !== null) {
-            $onProgress($pagesWalked, $report->seen, 'sweeping');
-        }
+        $this->clearUnheldFields($report);
 
-        try {
-            $report->deleted = $this->repository->deleteMissingPcPersonIds(
-                array_values(array_unique($seenIds)),
-            );
-        } catch (\Throwable $e) {
-            $report->recordError(null, 'Sweep step failed: ' . $e->getMessage());
-            $this->logger->error('PC sync sweep failed.', ['error' => $e->getMessage()]);
+        // Only a walk to the end of Planning Center's list shows who has left:
+        // the people a capped run didn't reach are still there.
+        if (!$capped) {
+            if ($onProgress !== null) {
+                $onProgress($pagesWalked, $report->seen, 'sweeping');
+            }
+
+            try {
+                $report->deleted = $this->repository->deleteMissingPcPersonIds(
+                    array_values(array_unique($seenIds)),
+                );
+            } catch (\Throwable $e) {
+                $report->recordError(null, 'Sweep step failed: ' . $e->getMessage());
+                $this->logger->error('PC sync sweep failed.', ['error' => $e->getMessage()]);
+            }
         }
 
         $report->finish();
@@ -646,36 +682,61 @@ final class SyncEngine
      * Phase D: per-person custom-field write step. No-op when the engine
      * was constructed without a mapping repo + writer (Phase C parity).
      *
+     * Every mapped field gets the values Planning Center holds for the person,
+     * one per checked option of a checkboxes field. Planning Center owns mapped
+     * fields, which the admin form shows read-only, so one they hold nothing
+     * for is noted to be cleared at the end of the run: see
+     * {@see self::clearUnheldFields()}.
+     *
      * Mapping-table lookup is cached for the duration of the run: a single
      * org typically has <50 PC custom fields, so loading the full mapping
      * once and reusing it across pages is cheaper than re-querying per
-     * person. Per-field errors don't abort the run — they're appended to
-     * the report.
+     * person. A failed write doesn't abort the run: it's appended to the
+     * report.
      *
      * @param   int                                $pcPersonId
-     * @param   array<string, mixed>               $person      Raw PC Person row.
-     * @param   array<int, array<string, mixed>>   $included    JSON:API included.
-     * @param   SyncReport                         $report      Mutated in-place.
+     * @param   array<string, mixed>               $person        Raw PC Person row.
+     * @param   array<int, array<string, mixed>>   $included      JSON:API included.
+     * @param   SyncReport                         $report        Mutated in-place.
+     * @param   bool                               $clearsFields  Whether a mapped field the
+     *                                                            person has no value for may
+     *                                                            be cleared, or is left as it is.
      *
      * @return  bool  Whether a stored value changed.
      *
      * @since   __DEPLOY_VERSION__
      */
-    private function writeCustomFields(int $pcPersonId, array $person, array $included, SyncReport $report): bool
+    private function writeCustomFields(int $pcPersonId, array $person, array $included, SyncReport $report, bool $clearsFields): bool
     {
         if ($this->fieldMapRepo === null || $this->fieldWriter === null) {
-            return false;
-        }
-
-        $extracted = $this->mapper->extractFieldData($person, $included);
-
-        if ($extracted === []) {
             return false;
         }
 
         $this->fieldMapCache ??= $this->fieldMapRepo->allKeyedByPcFieldId();
 
         if ($this->fieldMapCache === []) {
+            return false;
+        }
+
+        $held = [];
+
+        foreach ($this->mapper->extractFieldData($person, $included) as $datum) {
+            $held[$datum['pc_field_id']][] = $datum['value'];
+        }
+
+        $values = [];
+        $unheld = [];
+
+        foreach ($this->fieldMapCache as $pcFieldId => $mapping) {
+            if (isset($held[$pcFieldId])) {
+                $values[$mapping['joomla_field_id']] = $held[$pcFieldId];
+                $this->heldFields[$pcFieldId]        = true;
+            } elseif ($clearsFields) {
+                $unheld[$mapping['joomla_field_id']] = $pcFieldId;
+            }
+        }
+
+        if ($values === [] && $unheld === []) {
             return false;
         }
 
@@ -687,30 +748,73 @@ final class SyncEngine
             return false;
         }
 
-        $changed = false;
+        if ($unheld !== []) {
+            $this->unheldFields[$pcPersonId] = ['memberId' => $memberId, 'fields' => $unheld];
+        }
 
-        foreach ($extracted as $datum) {
-            $mapping = $this->fieldMapCache[$datum['pc_field_id']] ?? null;
+        if ($values === []) {
+            return false;
+        }
 
-            if ($mapping === null) {
+        try {
+            $written = $this->fieldWriter->writeValues($memberId, $values);
+        } catch (\Throwable $e) {
+            $report->recordError($pcPersonId, 'Custom-field write failed: ' . $e->getMessage());
+
+            return false;
+        }
+
+        $report->customFieldsWritten += $written;
+
+        return $written > 0;
+    }
+
+    /**
+     * Clear the mapped fields people held nothing for, now the run is over,
+     * but only a field someone in the run held a value for. One nobody holds
+     * is likelier a field Planning Center stopped returning, such as a tab
+     * the token lost access to, than one emptied for everyone, so it keeps
+     * its values.
+     *
+     * @param   SyncReport  $report  Mutated in-place.
+     *
+     * @return  void
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    private function clearUnheldFields(SyncReport $report): void
+    {
+        if ($this->fieldWriter === null) {
+            return;
+        }
+
+        foreach ($this->unheldFields as $pcPersonId => $unheld) {
+            $clear = [];
+
+            foreach ($unheld['fields'] as $joomlaFieldId => $pcFieldId) {
+                if (isset($this->heldFields[$pcFieldId])) {
+                    $clear[$joomlaFieldId] = [];
+                }
+            }
+
+            if ($clear === []) {
                 continue;
             }
 
             try {
-                if ($this->fieldWriter->setFieldValue($memberId, $mapping['joomla_field_id'], $datum['value'])) {
-                    $report->customFieldsWritten++;
-                    $changed = true;
-                }
+                $written = $this->fieldWriter->writeValues($unheld['memberId'], $clear);
             } catch (\Throwable $e) {
-                $report->recordError($pcPersonId, \sprintf(
-                    'Custom-field write failed (pc_field_id=%d): %s',
-                    $datum['pc_field_id'],
-                    $e->getMessage(),
-                ));
+                $report->recordError($pcPersonId, 'Custom-field clear failed: ' . $e->getMessage());
+
+                continue;
+            }
+
+            $report->customFieldsWritten += $written;
+
+            if ($written > 0) {
+                $this->refreshSearchIndex($pcPersonId, $report);
             }
         }
-
-        return $changed;
     }
 
     /**
@@ -785,39 +889,37 @@ final class SyncEngine
      *                                          `email_to`.
      * @param   SyncReport            $report  Mutated in-place.
      *
-     * @return  bool  Whether it paired the member.
+     * @return  void
      *
      * @since   __DEPLOY_VERSION__
      */
-    private function tryPairByEmail(int $pcPersonId, array $attrs, SyncReport $report): bool
+    private function tryPairByEmail(int $pcPersonId, array $attrs, SyncReport $report): void
     {
         if ($this->pairing === null) {
-            return false;
+            return;
         }
 
         $email = isset($attrs['email_to']) && \is_string($attrs['email_to']) ? trim($attrs['email_to']) : '';
 
         if ($email === '') {
-            return false;
+            return;
         }
 
         try {
             $memberId = $this->repository->findIdByPcPersonId($pcPersonId);
 
             if ($memberId === null) {
-                return false;
+                return;
             }
 
             $userId = $this->pairing->findJoomlaUserIdByEmail($email);
 
             if ($userId === null) {
-                return false;
+                return;
             }
 
             if ($this->pairing->pairMemberToUser($memberId, $userId)) {
                 $report->paired++;
-
-                return true;
             }
         } catch (\Throwable $e) {
             $report->recordError($pcPersonId, 'Pair-by-email failed: ' . $e->getMessage());
@@ -826,8 +928,6 @@ final class SyncEngine
                 'error'      => $e->getMessage(),
             ]);
         }
-
-        return false;
     }
 
     /**

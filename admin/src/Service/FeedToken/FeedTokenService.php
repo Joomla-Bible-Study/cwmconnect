@@ -315,4 +315,34 @@ final readonly class FeedTokenService
 
         return $this->db->getAffectedRows();
     }
+
+    /**
+     * Revoke every token an account still holds: it was deleted, or asked to
+     * be forgotten.
+     *
+     * @param   int  $userId  `#__users.id`
+     *
+     * @return  int  Number of tokens revoked.
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    public function revokeAllForUser(int $userId): int
+    {
+        if ($userId <= 0) {
+            return 0;
+        }
+
+        $now   = new \DateTimeImmutable('now', new \DateTimeZone('UTC'))->format('Y-m-d H:i:s');
+        $query = $this->db->createQuery()
+            ->update($this->db->quoteName('#__cwmconnect_feed_tokens'))
+            ->set($this->db->quoteName('revoked_at') . ' = :now')
+            ->where($this->db->quoteName('user_id') . ' = :userId')
+            ->where($this->db->quoteName('revoked_at') . ' IS NULL')
+            ->bind(':now', $now, ParameterType::STRING)
+            ->bind(':userId', $userId, ParameterType::INTEGER);
+
+        $this->db->setQuery($query)->execute();
+
+        return $this->db->getAffectedRows();
+    }
 }

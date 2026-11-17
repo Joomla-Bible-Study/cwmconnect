@@ -218,7 +218,7 @@ final class SyncRunner
             ),
             mapper: new PersonMapper($roleFieldSlugs, (int) $this->params->get('member_access', 2)),
             fieldMapRepo: new DatabaseFieldMapRepository($this->db),
-            fieldWriter: new FieldsHelperWriter(),
+            fieldWriter: new DatabaseCustomFieldWriter($this->db),
             photoCache: new MediaPhotoCache(
                 http: HttpFactory::getHttp(),
                 cacheRoot: JPATH_ROOT . '/media/com_cwmconnect/photos',

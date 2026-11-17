@@ -250,6 +250,11 @@ final class SyncEnginePhaseHTest extends TestCase
                 return $this->pairResult;
             }
 
+            public function unpairUser(int $userId): int
+            {
+                return 0;
+            }
+
             public function recordVerifiedEmail(int $userId, string $email, string $source): void {}
 
             public function hasVerifiedEmail(int $userId, string $email): bool
@@ -277,6 +282,11 @@ final class SyncEnginePhaseHTest extends TestCase
             public function pairMemberToUser(int $memberId, int $userId): bool
             {
                 return false;
+            }
+
+            public function unpairUser(int $userId): int
+            {
+                return 0;
             }
 
             public function recordVerifiedEmail(int $userId, string $email, string $source): void {}

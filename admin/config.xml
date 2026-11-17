@@ -272,16 +272,6 @@
 		       showon="pc_enabled:1"
 		/>
 
-		<field name="pc_archive_policy"
-		       type="radio"
-		       default="archive"
-		       label="COM_CWMCONNECT_FIELD_PC_ARCHIVE_POLICY_LABEL"
-		       description="COM_CWMCONNECT_FIELD_PC_ARCHIVE_POLICY_DESC"
-		       showon="pc_enabled:1"
-		>
-			<option value="archive">COM_CWMCONNECT_FIELD_PC_ARCHIVE_POLICY_ARCHIVE</option>
-			<option value="delete">COM_CWMCONNECT_FIELD_PC_ARCHIVE_POLICY_DELETE</option>
-		</field>
 		<field name="pc_field_spacer"
 		       type="spacer"
 		       label="COM_CWMCONNECT_FIELD_PC_ROLE_FIELDS_HEADING"

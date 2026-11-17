@@ -233,8 +233,8 @@ final class PersonMapper
      * Phase D: extract every `FieldDatum` related to a person via the
      * `field_data` relationship, paired with the PC FieldDefinition id it
      * targets. The sync engine resolves each `pc_field_id` against the
-     * admin-managed mapping table and writes the value through
-     * `FieldsHelper::setFieldValue('com_cwmconnect.member', ...)`.
+     * admin-managed mapping table and writes the values to the mapped
+     * `com_cwmconnect.member` field.
      *
      * Sensitive PC resources (notes, medical, background checks) are never
      * requested in the engine's `?include=` query, so this method only ever

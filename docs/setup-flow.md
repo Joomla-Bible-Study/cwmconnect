@@ -60,7 +60,7 @@ off stays off.
 | Plugin | After install | Needed for |
 |---|---|---|
 | User – Church Directory Pairing | on | recording which accounts have proven their email (§5), and pairing a member to their Joomla account when the account is saved |
-| Content – Church Directory Pairing | on | pairing when an admin saves a member |
+| Content – Church Directory Pairing | on | pairing when an admin saves a member, and moving members to a new **Member view level** when it changes (§5) |
 | Privacy – Church Directory | on | GDPR export / removal covering member data |
 | Task – CWM Connect Sync | on | scheduled background syncs (see §7, issue #191); nothing runs until you create a task |
 | Smart Search – Church Directory | **off** | members appearing in site search |
@@ -76,9 +76,9 @@ Smart Search → Index**. From then on the index keeps itself current:
 
 A member hidden from the directory is never indexed. Each member is indexed
 under their own access level, so only someone with that level can find them.
-Synced members get the **Member view level** from Options. A member entered by
-hand gets the access set in their form, which starts at Public, so set it to the
-member view level before switching Smart Search on, or guests can find them.
+Every member gets the **Member view level** from Options: synced members at each
+sync, members entered by hand when they're created, and all of them when you
+change it.
 
 ---
 
@@ -107,11 +107,15 @@ Leaving all types unticked syncs **everyone** in Planning Center, which is
 rarely what a directory wants. On the reference account this is the difference
 between ~540 members and 797 active people.
 
-### 2b. Decide the archive policy
+### 2b. Know what the sync removes
 
-**When a person no longer matches** — archive locally (hide, keep the row) or
-delete the local row. This decides what happens when someone leaves the church
-or their membership type changes. Worth choosing deliberately.
+Someone who leaves Planning Center, goes inactive there, or stops matching the
+membership types is deleted at the next sync, with their cached photos and the
+directory member group of any account paired to them. If they come back, the
+sync adds them again as a new member. A member entered by hand is never touched.
+
+A sync that stops before the end of Planning Center's list, at its safety cap
+of 200 pages, deletes no one: the next complete sync does.
 
 ---
 
@@ -133,6 +137,7 @@ What the sync brings in:
 | Photos | downloaded and cached locally, with sized web variants |
 | Households | family units, and each member's link to theirs |
 | Campuses | written to Directory Headers, including address and contact details |
+| Custom fields | the values of the Planning Center fields mapped under **PC Field Mappings**, every checked option of a checkboxes field; a value removed in Planning Center is cleared, as long as someone in the sync still holds a value for that field |
 
 What it does **not** bring in: coordinates, categories, positions *assignments*,
 KML settings, or any access configuration.
@@ -177,10 +182,17 @@ member's email, or the Planning Center sync. It goes when the pairing ends:
 unlinking, unpublishing or deleting the member, a privacy removal, or the
 member leaving Planning Center.
 
+Deleting a Joomla account ends its pairing too, so the member can pair with
+another account, and revokes the account's map feeds.
+
 ### Ordering matters here
 
 Set **Member view level** *last*, after pairing has populated the group.
 Switching it first locks out every existing member until the group fills.
+
+Saving a new level moves every member at the old level to it, so site search
+shows members only to those who may see the directory. A member you set to
+some other level by hand keeps it.
 
 ### Know the ceiling before relying on pairing
 

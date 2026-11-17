@@ -121,4 +121,16 @@ interface MemberPairingInterface
      * @since   __DEPLOY_VERSION__
      */
     public function pairMemberToUser(int $memberId, int $userId): bool;
+
+    /**
+     * The account was deleted: unpair the member rows still paired to it, so
+     * another account can pair with them.
+     *
+     * @param   int  $userId  `#__users.id`
+     *
+     * @return  int  How many member rows were unpaired.
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    public function unpairUser(int $userId): int;
 }

@@ -252,8 +252,7 @@ class ReconcileModel extends ListModel
 
         $this->deleteRow($manualId);
 
-        $searchIndex = new FinderSearchIndex($db);
-        $searchIndex->membersRemoved([$manualId]);
+        new FinderSearchIndex($db)->membersRemoved([$manualId]);
 
         // The manual row's account link follows it to the synced row, when that
         // one has none of its own; deleting the manual row first frees the link.
@@ -264,9 +263,6 @@ class ReconcileModel extends ListModel
         if ($userId > 0 && (int) ($syncedRow->user_id ?? 0) === 0) {
             $update = (object) ['id' => (int) $syncedRow->id, 'user_id' => $userId];
             $db->updateObject(self::TABLE, $update, 'id');
-
-            // The account's name is indexed with the member.
-            $searchIndex->memberChanged((int) $syncedRow->id);
         }
 
         MemberGroupSync::configured($db)->reconcile($userId);

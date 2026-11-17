@@ -34,10 +34,82 @@ final class SyncEnginePhaseDTest extends TestCase
         $report = new SyncEngine($client, $repo, new PersonMapper(), $mapRepo, $writer)->run([]);
 
         self::assertSame(1, $report->customFieldsWritten);
-        self::assertSame(
-            [['memberId' => 1001, 'fieldId' => 7777, 'value' => 'Veteran']],
-            $writer->captured,
-        );
+        self::assertSame([['memberId' => 1001, 'values' => [7777 => ['Veteran']]]], $writer->captured);
+    }
+
+    #[Test]
+    public function everyCheckedOptionIsWrittenTogether(): void
+    {
+        $client  = $this->clientReturning($this->pageOf($this->person(1, [[42, 'Choir'], [42, 'Ushers']])));
+        $mapRepo = $this->stubMapRepo([42 => $this->mappingRow(42, 7777)]);
+        $writer  = $this->stubWriter(true);
+
+        $report = new SyncEngine($client, $this->stubRepo(), new PersonMapper(), $mapRepo, $writer)->run([]);
+
+        self::assertSame([['memberId' => 1001, 'values' => [7777 => ['Choir', 'Ushers']]]], $writer->captured);
+        self::assertSame(1, $report->customFieldsWritten, 'One field, however many options.');
+    }
+
+    #[Test]
+    public function aMappedFieldThePersonHasNoValueForIsClearedOnceTheRunIsOver(): void
+    {
+        $client  = $this->clientReturning($this->pageOf($this->person(1, [[42, 'Veteran']]), $this->person(2, [])));
+        $mapRepo = $this->stubMapRepo([42 => $this->mappingRow(42, 7777)]);
+        $writer  = $this->stubWriter(true);
+
+        $report = new SyncEngine($client, $this->stubRepo(), new PersonMapper(), $mapRepo, $writer)->run([]);
+
+        self::assertSame([
+            ['memberId' => 1001, 'values' => [7777 => ['Veteran']]],
+            ['memberId' => 1002, 'values' => [7777 => []]],
+        ], $writer->captured);
+        self::assertSame(2, $report->customFieldsWritten);
+    }
+
+    #[Test]
+    public function aFieldNobodyInTheRunHoldsKeepsItsValues(): void
+    {
+        $client  = $this->clientReturning($this->pageOf($this->person(1, [[42, 'Veteran']]), $this->person(2, [[42, 'Choir']])));
+        $mapRepo = $this->stubMapRepo([42 => $this->mappingRow(42, 7777), 43 => $this->mappingRow(43, 8888)]);
+        $writer  = $this->stubWriter(true);
+
+        new SyncEngine($client, $this->stubRepo(), new PersonMapper(), $mapRepo, $writer)->run([]);
+
+        self::assertSame([
+            ['memberId' => 1001, 'values' => [7777 => ['Veteran']]],
+            ['memberId' => 1002, 'values' => [7777 => ['Choir']]],
+        ], $writer->captured, 'More likely a field Planning Center stopped returning, such as a tab the token lost, than one emptied for everyone.');
+    }
+
+    #[Test]
+    public function aPageWithNoFieldDataClearsNothing(): void
+    {
+        $client  = $this->clientWithPages($this->pageOf($this->person(1, [[42, 'Veteran']])), $this->pageOf($this->person(2, [])));
+        $mapRepo = $this->stubMapRepo([42 => $this->mappingRow(42, 7777)]);
+        $writer  = $this->stubWriter(true);
+
+        $report = new SyncEngine($client, $this->stubRepo(), new PersonMapper(), $mapRepo, $writer)->run([]);
+
+        self::assertSame(2, $report->seen);
+        self::assertSame([['memberId' => 1001, 'values' => [7777 => ['Veteran']]]], $writer->captured, 'More likely a response without field data than people with none.');
+        self::assertTrue($report->success());
+    }
+
+    #[Test]
+    public function aPersonOnAnotherPageIsClearedForAFieldHeldEarlierInTheRun(): void
+    {
+        $client  = $this->clientWithPages($this->pageOf($this->person(1, [[42, 'Veteran']])), $this->pageOf($this->person(2, [[43, 'Choir']])));
+        $mapRepo = $this->stubMapRepo([42 => $this->mappingRow(42, 7777), 43 => $this->mappingRow(43, 8888)]);
+        $writer  = $this->stubWriter(true);
+
+        new SyncEngine($client, $this->stubRepo(), new PersonMapper(), $mapRepo, $writer)->run([]);
+
+        self::assertSame([
+            ['memberId' => 1001, 'values' => [7777 => ['Veteran']]],
+            ['memberId' => 1002, 'values' => [8888 => ['Choir']]],
+            ['memberId' => 1001, 'values' => [8888 => []]],
+            ['memberId' => 1002, 'values' => [7777 => []]],
+        ], $writer->captured);
     }
 
     #[Test]
@@ -72,18 +144,18 @@ final class SyncEnginePhaseDTest extends TestCase
     }
 
     #[Test]
-    public function writerExceptionIsCapturedPerFieldAndDoesNotAbortRun(): void
+    public function writerExceptionIsCapturedAndDoesNotAbortRun(): void
     {
-        $client  = $this->clientReturning($this->pageWith($this->personWithFieldData(1, 'fd-1', 'Boom', 42)));
-        $repo    = $this->stubRepo();
+        $client  = $this->clientReturning($this->pageOf($this->person(1, [[42, 'Boom']]), $this->person(2, [[42, 'Fine']])));
         $mapRepo = $this->stubMapRepo([42 => $this->mappingRow(42, 7777)]);
-        $writer  = $this->stubWriterThatThrows();
+        $writer  = $this->stubWriterThatThrowsFor(1001);
 
-        $report = new SyncEngine($client, $repo, new PersonMapper(), $mapRepo, $writer)->run([]);
+        $report = new SyncEngine($client, $this->stubRepo(), new PersonMapper(), $mapRepo, $writer)->run([]);
 
-        self::assertSame(0, $report->customFieldsWritten);
+        self::assertSame(1, $report->customFieldsWritten, 'The next person is still written.');
         self::assertSame(1, $report->errorCount());
-        self::assertFalse($report->success());
+        self::assertStringContainsString('Custom-field write failed', $report->errors[0]['message']);
+        self::assertSame(2, $report->added);
     }
 
     /**
@@ -105,6 +177,34 @@ final class SyncEnginePhaseDTest extends TestCase
             public function getJsonAbsolute(string $url): array
             {
                 return ['data' => [], 'included' => [], 'links' => []];
+            }
+        };
+    }
+
+    /**
+     * A client whose people come in two pages.
+     *
+     * @param  array<string, mixed>  $first
+     * @param  array<string, mixed>  $second
+     */
+    private function clientWithPages(array $first, array $second): Client
+    {
+        $first['links'] = ['next' => 'https://api.example.test/people/v2/people?offset=100'];
+
+        return new class ($first, $second) extends Client {
+            public function __construct(private array $first, private array $second)
+            {
+                // bypass parent
+            }
+
+            public function getJson(string $path, array $query = []): array
+            {
+                return $this->first;
+            }
+
+            public function getJsonAbsolute(string $url): array
+            {
+                return $this->second;
             }
         };
     }
@@ -162,32 +262,87 @@ final class SyncEnginePhaseDTest extends TestCase
         };
     }
 
-    /** @return object&CustomFieldWriterInterface */
-    private function stubWriter(bool $ok): object
+    /**
+     * @param  bool  $changes  Whether every field it's given changes.
+     *
+     * @return object&CustomFieldWriterInterface
+     */
+    private function stubWriter(bool $changes): object
     {
-        return new class ($ok) implements CustomFieldWriterInterface {
-            /** @var list<array{memberId: int, fieldId: int, value: string}> */
+        return new class ($changes) implements CustomFieldWriterInterface {
+            /** @var list<array{memberId: int, values: array<int, list<string>>}> */
             public array $captured = [];
 
-            public function __construct(private bool $ok) {}
+            public function __construct(private bool $changes) {}
 
-            public function setFieldValue(int $memberId, int $joomlaFieldId, string $value): bool
+            public function writeValues(int $memberId, array $values): int
             {
-                $this->captured[] = ['memberId' => $memberId, 'fieldId' => $joomlaFieldId, 'value' => $value];
+                $this->captured[] = ['memberId' => $memberId, 'values' => $values];
 
-                return $this->ok;
+                return $this->changes ? \count($values) : 0;
             }
         };
     }
 
-    private function stubWriterThatThrows(): CustomFieldWriterInterface
+    private function stubWriterThatThrowsFor(int $failingMemberId): CustomFieldWriterInterface
     {
-        return new class implements CustomFieldWriterInterface {
-            public function setFieldValue(int $memberId, int $joomlaFieldId, string $value): bool
+        return new class ($failingMemberId) implements CustomFieldWriterInterface {
+            public function __construct(private int $failingMemberId) {}
+
+            public function writeValues(int $memberId, array $values): int
             {
-                throw new \RuntimeException('FieldsHelper rejected the write');
+                if ($memberId === $this->failingMemberId) {
+                    throw new \RuntimeException('The database rejected the write');
+                }
+
+                return \count($values);
             }
         };
+    }
+
+    /**
+     * @param  array{0: list<array<string, mixed>>, 1: list<array<string, mixed>>}  ...$people
+     *
+     * @return array<string, mixed>
+     */
+    private function pageOf(array ...$people): array
+    {
+        return [
+            'data'     => array_merge(...array_column($people, 0)),
+            'included' => array_merge(...array_column($people, 1)),
+            'links'    => [],
+        ];
+    }
+
+    /**
+     * @param  list<array{0: int, 1: string}>  $values  Planning Center field id and value, one per datum.
+     *
+     * @return array{0: list<array<string, mixed>>, 1: list<array<string, mixed>>}
+     */
+    private function person(int $personId, array $values): array
+    {
+        $refs   = [];
+        $datums = [];
+
+        foreach ($values as $i => [$pcFieldId, $value]) {
+            $id       = 'fd-' . $personId . '-' . $i;
+            $refs[]   = ['type' => 'FieldDatum', 'id' => $id];
+            $datums[] = [
+                'type'          => 'FieldDatum',
+                'id'            => $id,
+                'attributes'    => ['value' => $value],
+                'relationships' => ['field_definition' => ['data' => ['type' => 'FieldDefinition', 'id' => (string) $pcFieldId]]],
+            ];
+        }
+
+        $person = [
+            'type'          => 'Person',
+            'id'            => (string) $personId,
+            'attributes'    => ['first_name' => 'Person', 'last_name' => (string) $personId],
+            'relationships' => ['field_data' => ['data' => $refs]],
+        ];
+
+        return [[$person], $datums];
     }
 
     /**

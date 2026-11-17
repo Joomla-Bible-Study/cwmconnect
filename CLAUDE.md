@@ -59,7 +59,8 @@ cwmconnect.xml                          # type=component, J5+J6, php 8.4
 cwmconnect.script.php                   # rewritten for namespaced base
 admin/
   services/provider.php                      # registers MVCFactory + ComponentDispatcherFactory
-                                             # + RouterFactory + CategoryFactory; PHP_VERSION_ID gate
+                                             # + RouterFactory + CategoryFactory, and nothing else:
+                                             # the component's container is unreachable from its code
   src/
     Controller/{Member,Members,Familyunit,Familyunits,Dirheader,Dirheaders,
                 Position,Positions,Kml,Kmls,Cpanel,Geoupdate,Geostatus,

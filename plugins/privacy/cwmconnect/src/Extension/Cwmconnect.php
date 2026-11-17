@@ -15,6 +15,7 @@ namespace CWM\Plugin\Privacy\Cwmconnect\Extension;
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
+use CWM\Component\Cwmconnect\Administrator\Service\FeedToken\FeedTokenService;
 use CWM\Component\Cwmconnect\Administrator\Service\Pairing\DatabaseMemberPairing;
 use CWM\Component\Cwmconnect\Administrator\Service\Pairing\MemberGroupSync;
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\CachedPhotos;
@@ -171,7 +172,6 @@ final class Cwmconnect extends PrivacyPlugin implements SubscriberInterface
         }
 
         $db     = $this->getDatabase();
-        $now    = new \DateTimeImmutable('now', new \DateTimeZone('UTC'))->format('Y-m-d H:i:s');
         $userId = (int) $user->id;
 
         $query = $db->createQuery()
@@ -193,15 +193,7 @@ final class Cwmconnect extends PrivacyPlugin implements SubscriberInterface
             $erasure->erase($memberId);
         }
 
-        $revokeQuery = $db->createQuery()
-            ->update($db->quoteName('#__cwmconnect_feed_tokens'))
-            ->set($db->quoteName('revoked_at') . ' = :now')
-            ->where($db->quoteName('user_id') . ' = :userId')
-            ->where($db->quoteName('revoked_at') . ' IS NULL')
-            ->bind(':now', $now, ParameterType::STRING)
-            ->bind(':userId', $userId, ParameterType::INTEGER);
-
-        $db->setQuery($revokeQuery)->execute();
+        new FeedTokenService($db)->revokeAllForUser($userId);
 
         $groupSync = MemberGroupSync::configured($db);
 
