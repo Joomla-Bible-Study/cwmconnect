@@ -16,6 +16,8 @@ namespace CWM\Component\Cwmconnect\Site\Controller;
 // phpcs:enable PSR1.Files.SideEffects
 
 use CWM\Component\Cwmconnect\Administrator\Service\FeedToken\FeedTokenService;
+use CWM\Component\Cwmconnect\Administrator\Service\Visibility\DirectoryPrivacy;
+use CWM\Component\Cwmconnect\Administrator\Service\Visibility\DirectoryViewer;
 use CWM\Component\Cwmconnect\Site\Helper\MemberAccess;
 use CWM\Component\Cwmconnect\Site\Helper\PhotoAccess;
 use Joomla\CMS\Access\Exception\NotAllowed;
@@ -88,9 +90,12 @@ class PhotoController extends BaseController
         $viewerId  = $isLoggedIn ? (int) $user->id : (int) $tokenUserId;
         $household = $isManager ? null : PhotoAccess::householdId($db, $viewerId);
 
+        // Members' choices depend on who is looking, and a token looks as its owner.
+        $viewer = $isLoggedIn ? DirectoryViewer::forUser($user, $db) : DirectoryViewer::forUserId($viewerId, $db);
+
         $path = null;
 
-        if (PhotoAccess::canView($isManager, $member, $household)) {
+        if (PhotoAccess::canView($isManager, $member, $household, $viewer)) {
             $image       = (string) ($member->image ?? '');
             $size        = $this->input->getWord('size', '');
             $acceptsWebp = str_contains($this->input->server->getString('HTTP_ACCEPT', ''), 'image/webp');
@@ -138,7 +143,12 @@ class PhotoController extends BaseController
 
         $path = null;
 
-        if ($household !== null && (int) ($household->published ?? 0) === 1) {
+        // A household photo shows everyone in it, so it is held back when any
+        // of them hides their own photo, as on the households page.
+        $hidden = $household !== null
+            && new DirectoryPrivacy($db)->hiddenHouseholdPhotos([(int) $household->id], DirectoryViewer::forUser($user, $db)) !== [];
+
+        if ($household !== null && (int) ($household->published ?? 0) === 1 && !$hidden) {
             $size        = $this->input->getWord('size', '');
             $acceptsWebp = str_contains($this->input->server->getString('HTTP_ACCEPT', ''), 'image/webp');
             $path        = PhotoAccess::resolveHouseholdImage((string) ($household->image ?? ''), $size, $acceptsWebp);

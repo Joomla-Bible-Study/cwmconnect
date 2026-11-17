@@ -15,6 +15,7 @@ namespace CWM\Component\Cwmconnect\Administrator\Table;
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
+use CWM\Component\Cwmconnect\Administrator\Service\Visibility\MemberVisibility;
 use Joomla\CMS\Application\ApplicationHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Filter\InputFilter;
@@ -151,6 +152,13 @@ class MemberTable extends Table
     public ?int $hits = 0;
     /** @since 2.0.0 */
     public ?string $surname = null;
+    /**
+     * The details the member keeps from the general membership
+     * ({@see MemberVisibility}).
+     *
+     * @since  __DEPLOY_VERSION__
+     */
+    public ?string $hidden_fields = null;
     /** @since 2.0.0 */
     public ?int $mstatus = 0;
 
@@ -187,6 +195,11 @@ class MemberTable extends Table
             && \is_array($array['con_position'])
         ) {
             $array['con_position'] = implode(',', $array['con_position']);
+        }
+
+        // Whatever form it arrives in, a member's choice is stored the one way.
+        if (\is_array($array) && \array_key_exists('hidden_fields', $array)) {
+            $array['hidden_fields'] = MemberVisibility::encode($array['hidden_fields']);
         }
 
         return parent::bind($this->normaliseTypedInput($array), $ignore);

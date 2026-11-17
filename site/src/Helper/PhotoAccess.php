@@ -12,6 +12,8 @@ declare(strict_types=1);
 namespace CWM\Component\Cwmconnect\Site\Helper;
 
 use CWM\Component\Cwmconnect\Administrator\Service\Image\ImageVariants;
+use CWM\Component\Cwmconnect\Administrator\Service\Visibility\DirectoryViewer;
+use CWM\Component\Cwmconnect\Administrator\Service\Visibility\MemberVisibility;
 use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Database\ParameterType;
@@ -42,20 +44,23 @@ final class PhotoAccess
     private const IMAGE_EXTENSIONS = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
 
     /**
-     * May the viewer see this member's photo? Managers (core.manage) see all;
-     * everyone else is held to the same visibility gates as the directory
-     * listing (published + display_in_directory + directory_scope, with
-     * household scope limited to the same household).
+     * May the viewer see this member's photo? Managers (core.manage) see all.
+     * Church leadership, the member and their household see past the member's
+     * choices, as on their profile. Everyone else is held to the same gates as
+     * the directory listing (published + display_in_directory + directory_scope,
+     * with household scope limited to the same household), and to the member's
+     * choice to hide their photo.
      *
-     * @param   bool         $isManager          Viewer has core.manage.
-     * @param   object|null  $member             Member row, or null when not found.
-     * @param   int|null     $viewerHouseholdId  Viewer's funitid, or null.
+     * @param   bool                  $isManager          Viewer has core.manage.
+     * @param   object|null           $member             Member row, or null when not found.
+     * @param   int|null              $viewerHouseholdId  Viewer's funitid, or null.
+     * @param   DirectoryViewer|null  $viewer             Who is asking.
      *
      * @return  bool
      *
      * @since   __DEPLOY_VERSION__
      */
-    public static function canView(bool $isManager, ?object $member, ?int $viewerHouseholdId): bool
+    public static function canView(bool $isManager, ?object $member, ?int $viewerHouseholdId, ?DirectoryViewer $viewer = null): bool
     {
         if ($member === null) {
             return false;
@@ -65,7 +70,18 @@ final class PhotoAccess
             return true;
         }
 
-        if ((int) ($member->published ?? 0) !== 1 || (int) ($member->display_in_directory ?? 0) !== 1) {
+        if ((int) ($member->published ?? 0) !== 1) {
+            return false;
+        }
+
+        if ($viewer?->seesAllOf($member)) {
+            return true;
+        }
+
+        if (
+            (int) ($member->display_in_directory ?? 0) !== 1
+            || \in_array('photo', MemberVisibility::parse($member->hidden_fields ?? ''), true)
+        ) {
             return false;
         }
 
@@ -291,7 +307,7 @@ final class PhotoAccess
         }
 
         $query = $db->createQuery()
-            ->select($db->quoteName(['id', 'image', 'published', 'display_in_directory', 'directory_scope', 'funitid']))
+            ->select($db->quoteName(['id', 'image', 'published', 'display_in_directory', 'directory_scope', 'funitid', 'hidden_fields']))
             ->from($db->quoteName('#__cwmconnect_details'))
             ->where($db->quoteName('id') . ' = :id')
             ->bind(':id', $id, ParameterType::INTEGER);

@@ -19,6 +19,7 @@ use CWM\Component\Cwmconnect\Administrator\Helper\PcLockedFields;
 use CWM\Component\Cwmconnect\Administrator\Service\Pairing\MemberGroupSync;
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\DatabaseFieldMapRepository;
 use CWM\Component\Cwmconnect\Administrator\Service\Privacy\DatabasePrivacySuppressions;
+use CWM\Component\Cwmconnect\Administrator\Service\Visibility\MemberVisibility;
 use Joomla\CMS\Application\ApplicationHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\Component\Categories\Administrator\Helper\CategoriesHelper;
@@ -399,6 +400,11 @@ class MemberModel extends AdminModel
         foreach ($locked['customFields'] as $fieldName) {
             unset($data['com_fields'][$fieldName]);
         }
+
+        // A browser sends nothing for checkboxes left unticked, so no choices
+        // posted means none: otherwise the last box could never be cleared.
+        // Only the edit form saves through here, and it always shows them.
+        $data['hidden_fields'] = MemberVisibility::encode($data['hidden_fields'] ?? []);
 
         // Remember who this member was paired to before the save so the
         // directory-member group can be reconciled for *both* users when an

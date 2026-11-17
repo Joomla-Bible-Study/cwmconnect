@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CWM\Component\Cwmconnect\Tests\Site\Helper;
 
+use CWM\Component\Cwmconnect\Administrator\Service\Visibility\DirectoryViewer;
 use CWM\Component\Cwmconnect\Site\Helper\PhotoAccess;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Test;
@@ -62,6 +63,27 @@ final class PhotoAccessTest extends TestCase
         self::assertTrue(PhotoAccess::canView(false, $member, 42), 'same household sees photo');
         self::assertFalse(PhotoAccess::canView(false, $member, 7), 'other household does not');
         self::assertFalse(PhotoAccess::canView(false, $member, null), 'no household does not');
+    }
+
+    #[Test]
+    public function aPhotoAMemberHidesIsHeldBackFromTheGeneralMembership(): void
+    {
+        $member = self::member(['id' => 7, 'funitid' => 3, 'hidden_fields' => 'email,photo']);
+
+        self::assertFalse(PhotoAccess::canView(false, $member, 4, new DirectoryViewer(memberIds: [10], householdIds: [4])), 'another member');
+        self::assertFalse(PhotoAccess::canView(false, $member, null), 'with nobody named, the choice still holds');
+        self::assertTrue(PhotoAccess::canView(false, $member, 3, new DirectoryViewer(memberIds: [7], householdIds: [3])), 'the member');
+        self::assertTrue(PhotoAccess::canView(false, $member, 3, new DirectoryViewer(memberIds: [8], householdIds: [3])), 'their household');
+        self::assertTrue(PhotoAccess::canView(false, $member, null, new DirectoryViewer(seesAll: true)), 'church leadership');
+    }
+
+    #[Test]
+    public function leadershipSeesAMemberWhoHidThemselvesButNotOneWhoLeft(): void
+    {
+        $leader = new DirectoryViewer(seesAll: true);
+
+        self::assertTrue(PhotoAccess::canView(false, self::member(['display_in_directory' => 0]), null, $leader));
+        self::assertFalse(PhotoAccess::canView(false, self::member(['published' => 0]), null, $leader));
     }
 
     #[Test]

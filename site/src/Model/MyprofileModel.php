@@ -18,6 +18,7 @@ namespace CWM\Component\Cwmconnect\Site\Model;
 use CWM\Component\Cwmconnect\Administrator\Helper\PcLockedFields;
 use CWM\Component\Cwmconnect\Administrator\Service\FeedToken\FeedTokenService;
 use CWM\Component\Cwmconnect\Administrator\Service\Search\FinderSearchIndex;
+use CWM\Component\Cwmconnect\Administrator\Service\Visibility\MemberVisibility;
 use CWM\Component\Cwmconnect\Administrator\Table\MemberTable;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
@@ -178,6 +179,10 @@ class MyprofileModel extends FormModel
             return false;
         }
 
+        // A browser sends nothing for checkboxes left unticked, so no choices
+        // posted means none: otherwise the last box could never be cleared.
+        $data['hidden_fields'] = MemberVisibility::encode($data['hidden_fields'] ?? []);
+
         $allowed = self::editableColumns($item);
         $bind    = array_intersect_key($data, array_flip($allowed));
 
@@ -265,7 +270,7 @@ class MyprofileModel extends FormModel
             'email_to', 'telephone', 'mobile',
             'address', 'suburb', 'state', 'postcode', 'country',
             'birthdate', 'anniversary',
-            'display_in_directory',
+            'display_in_directory', 'hidden_fields',
             'sortname1', 'sortname2', 'sortname3',
         ];
 

@@ -15,6 +15,8 @@ namespace CWM\Component\Cwmconnect\Site\Model;
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
+use CWM\Component\Cwmconnect\Administrator\Service\Visibility\DirectoryPrivacy;
+use CWM\Component\Cwmconnect\Administrator\Service\Visibility\DirectoryViewer;
 use Joomla\CMS\Factory;
 use Joomla\CMS\MVC\Model\ListModel;
 use Joomla\Database\QueryInterface;
@@ -93,5 +95,42 @@ class HouseholdsModel extends ListModel
         $query->order($db->escape($orderCol . ' ' . $orderDirn));
 
         return $query;
+    }
+
+    /**
+     * The households on the list. A household photo shows everyone in it, so
+     * it is left out when any of them hides their own photo, except for church
+     * leadership and the household itself.
+     *
+     * @return  array<int, object>|false
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    #[\Override]
+    public function getItems(): array|false
+    {
+        $store = $this->getStoreId();
+
+        if (isset($this->cache[$store])) {
+            return $this->cache[$store];
+        }
+
+        $items = parent::getItems();
+
+        if ($items) {
+            $db     = $this->getDatabase();
+            $hidden = new DirectoryPrivacy($db)->hiddenHouseholdPhotos(
+                array_map(static fn(object $item): int => (int) $item->id, $items),
+                DirectoryViewer::forUser($this->getCurrentUser(), $db),
+            );
+
+            foreach ($items as $item) {
+                if (\in_array((int) $item->id, $hidden, true)) {
+                    $item->image = '';
+                }
+            }
+        }
+
+        return $this->cache[$store] = $items;
     }
 }

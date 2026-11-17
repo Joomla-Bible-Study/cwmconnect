@@ -257,6 +257,23 @@
 		</field>
 	</fieldset>
 
+	<fieldset name="visibility" label="COM_CWMCONNECT_MEMBER_VISIBILITY_LABEL"
+	          description="COM_CWMCONNECT_MEMBER_VISIBILITY_DESC">
+		<field name="hidden_fields"
+		       type="checkboxes"
+		       label="COM_CWMCONNECT_FIELD_HIDDEN_FIELDS_LABEL"
+		       description="COM_CWMCONNECT_FIELD_HIDDEN_FIELDS_DESC"
+		>
+			<option value="email">COM_CWMCONNECT_DETAIL_EMAIL</option>
+			<option value="phone">COM_CWMCONNECT_DETAIL_PHONE</option>
+			<option value="mobile">COM_CWMCONNECT_DETAIL_MOBILE</option>
+			<option value="address">COM_CWMCONNECT_DETAIL_ADDRESS</option>
+			<option value="birthdate">COM_CWMCONNECT_DETAIL_BIRTHDATE</option>
+			<option value="anniversary">COM_CWMCONNECT_DETAIL_ANNIVERSARY</option>
+			<option value="photo">COM_CWMCONNECT_DETAIL_PHOTO</option>
+		</field>
+	</fieldset>
+
 	<fields name="params">
 		<fieldset name="kml" label="COM_CWMCONNECT_KML_OPTIONS"
 		          description="COM_CWMCONNECT_KML_OPTIONS_DISC">

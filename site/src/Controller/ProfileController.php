@@ -20,7 +20,6 @@ use Joomla\CMS\Router\Route;
 use Joomla\CMS\Session\Session;
 use Joomla\CMS\String\PunycodeHelper;
 use Joomla\CMS\Uri\Uri;
-use Joomla\CMS\User\User;
 
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
@@ -65,6 +64,15 @@ class ProfileController extends BaseController
         if ($member === false) {
             $app->enqueueMessage(Text::_('COM_CWMCONNECT_PROFILE_NOT_FOUND'), 'error');
             $this->setRedirect(Route::_('index.php?option=com_cwmconnect&view=members', false));
+
+            return false;
+        }
+
+        // The same rule as the page: no form, no message. A hidden email is
+        // blank here, so a member who hid theirs can't be written to this way.
+        if (!$params->get('show_email_form', 0) || trim((string) ($member->email_to ?? '')) === '') {
+            $app->enqueueMessage(Text::_('COM_CWMCONNECT_PROFILE_CONTACT_UNAVAILABLE'), 'warning');
+            $this->setRedirect($back);
 
             return false;
         }
@@ -117,14 +125,6 @@ class ProfileController extends BaseController
     private function sendEmail(array $data, object $member, bool $copyEnabled): bool|\Throwable
     {
         $app = Factory::getApplication();
-
-        if (empty($member->email_to) && (int) ($member->user_id ?? 0) !== 0) {
-            $member->email_to = User::getInstance($member->user_id)->get('email');
-        }
-
-        if (empty($member->email_to)) {
-            return false;
-        }
 
         $mailfrom = $app->get('mailfrom');
         $fromname = $app->get('fromname');

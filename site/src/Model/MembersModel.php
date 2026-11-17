@@ -15,6 +15,8 @@ namespace CWM\Component\Cwmconnect\Site\Model;
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
+use CWM\Component\Cwmconnect\Administrator\Service\Visibility\DirectoryPrivacy;
+use CWM\Component\Cwmconnect\Administrator\Service\Visibility\DirectoryViewer;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\ListModel;
@@ -25,8 +27,15 @@ use Joomla\Database\QueryInterface;
  * Phase G: paginated, members-only directory list. Backs `view=members`.
  *
  * Wraps a single SELECT against `#__cwmconnect_details` filtered by:
- *  - `published = 1` AND `display_in_directory = 1` (spec §7.2)
- *  - optional search string against name/lname/surname
+ *  - `published = 1` AND `display_in_directory = 1` (spec §7.2); church
+ *    leadership, with the "See all member details" permission, also sees
+ *    the members who hid themselves
+ *  - optional search string against name/lname/surname, and email unless
+ *    the member hid it
+ *
+ * Each row then has what the viewer may not see blanked
+ * ({@see DirectoryPrivacy}), so the pages, the PDF and the map feed built from
+ * this list all follow members' choices.
  *  - optional category / dirheader / household filters
  *
  * Photos resolve to `media/com_cwmconnect/photos/{image}` per the Phase E
@@ -37,6 +46,14 @@ use Joomla\Database\QueryInterface;
  */
 class MembersModel extends ListModel
 {
+    /**
+     * Viewers already looked up, by user id ('session' for the current user).
+     *
+     * @var    array<int|string, DirectoryViewer>
+     * @since  __DEPLOY_VERSION__
+     */
+    private array $viewers = [];
+
     public function __construct($config = [])
     {
         if (empty($config['filter_fields'])) {
@@ -74,8 +91,51 @@ class MembersModel extends ListModel
         $id .= ':' . $this->getState('filter.category_id');
         $id .= ':' . $this->getState('filter.dirheader_id');
         $id .= ':' . $this->getState('filter.household_id');
+        $id .= ':' . $this->getState('viewer.user_id');
 
         return parent::getStoreId($id);
+    }
+
+    /**
+     * Who the list is for. The current user, unless `viewer.user_id` names
+     * someone else: a map feed's token owner, who comes without a session.
+     *
+     * @return  DirectoryViewer
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    public function getViewer(): DirectoryViewer
+    {
+        $userId = $this->getState('viewer.user_id');
+
+        return $this->viewers[$userId === null ? 'session' : (int) $userId] ??= $userId === null
+            ? DirectoryViewer::forUser($this->getCurrentUser(), $this->getDatabase())
+            : DirectoryViewer::forUserId((int) $userId, $this->getDatabase());
+    }
+
+    /**
+     * The members on the list, with what the viewer may not see blanked.
+     *
+     * @return  array<int, object>|false
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    #[\Override]
+    public function getItems(): array|false
+    {
+        $store = $this->getStoreId();
+
+        if (isset($this->cache[$store])) {
+            return $this->cache[$store];
+        }
+
+        $items = parent::getItems();
+
+        if ($items) {
+            new DirectoryPrivacy($this->getDatabase())->apply($items, $this->getViewer());
+        }
+
+        return $this->cache[$store] = $items;
     }
 
     protected function getListQuery(): QueryInterface
@@ -119,6 +179,8 @@ class MembersModel extends ListModel
             $db->quoteName('a.fax'),
             $db->quoteName('a.misc'),
             $db->quoteName('a.anniversary'),
+            $db->quoteName('a.hidden_fields'),
+            $db->quoteName('a.display_in_directory'),
         ])
         ->select($db->quoteName('c.title', 'category_title'))
         ->select($db->quoteName('c.params', 'category_params'))
@@ -129,9 +191,15 @@ class MembersModel extends ListModel
         ->join('LEFT', $db->quoteName('#__cwmconnect_dirheader', 'd') . ' ON d.id = a.kmlid')
         ->join('LEFT', $db->quoteName('#__cwmconnect_familyunit', 'fu') . ' ON fu.id = a.funitid')
         ->where($db->quoteName('a.published') . ' = 1')
-        ->where($db->quoteName('a.display_in_directory') . ' = 1')
         // Minors appear under their family unit, not as their own listing.
         ->where($db->quoteName('a.is_child') . ' = 0');
+
+        // Church leadership sees the members who hid themselves too.
+        $seesAll = $this->getViewer()->seesAll;
+
+        if (!$seesAll) {
+            $query->where($db->quoteName('a.display_in_directory') . ' = 1');
+        }
 
         if ($catId = (int) $this->getState('filter.category_id')) {
             $query->where($db->quoteName('a.catid') . ' = ' . $catId);
@@ -149,11 +217,20 @@ class MembersModel extends ListModel
 
         if ($search !== '') {
             $like = $db->quote('%' . $db->escape($search, true) . '%');
+
+            // A hidden email can't be found by searching for it, or the
+            // search would confirm it.
+            $email = $db->quoteName('a.email_to') . ' LIKE ' . $like;
+
+            if (!$seesAll) {
+                $email = '(' . $email . " AND FIND_IN_SET('email', " . $db->quoteName('a.hidden_fields') . ') = 0)';
+            }
+
             $query->where(
                 '(' . $db->quoteName('a.name') . ' LIKE ' . $like
                 . ' OR ' . $db->quoteName('a.lname') . ' LIKE ' . $like
                 . ' OR ' . $db->quoteName('a.surname') . ' LIKE ' . $like
-                . ' OR ' . $db->quoteName('a.email_to') . ' LIKE ' . $like . ')',
+                . ' OR ' . $email . ')',
             );
         }
 
