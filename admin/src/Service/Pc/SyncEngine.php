@@ -28,7 +28,7 @@ use Psr\Log\NullLogger;
  *
  * Spec mapping:
  *  - §5.3 Per-person sync: each PC person → PersonMapper → repo upsert
- *  - §5.4 Sweep step:      after the page walk, archive any local rows whose
+ *  - §5.4 Sweep step:      after a complete page walk, delete any local rows whose
  *                          pc_person_id wasn't seen this run
  *  - §5.5 Audit:           caller (controller / scheduled task) logs the
  *                          returned {@see SyncReport} to com_actionlogs.
@@ -220,6 +220,7 @@ final class SyncEngine
 
         $this->heldFields   = [];
         $this->unheldFields = [];
+        $capped             = false;
 
         $this->logger->info('PC sync started.', ['statuses' => $membershipStatuses]);
 
@@ -237,7 +238,9 @@ final class SyncEngine
 
             if ($pagesWalked > self::MAX_PAGES) {
                 $this->logger->warning('PC sync hit MAX_PAGES guard.', ['pages' => $pagesWalked]);
-                $report->recordError(null, \sprintf('Pagination cap reached at %d pages.', self::MAX_PAGES));
+                $report->recordError(null, \sprintf('Pagination cap reached at %d pages, so nobody was deleted.', self::MAX_PAGES));
+                $capped = true;
+
                 break;
             }
 
@@ -357,17 +360,21 @@ final class SyncEngine
 
         $this->clearUnheldFields($report);
 
-        if ($onProgress !== null) {
-            $onProgress($pagesWalked, $report->seen, 'sweeping');
-        }
+        // Only a walk to the end of Planning Center's list shows who has left:
+        // the people a capped run didn't reach are still there.
+        if (!$capped) {
+            if ($onProgress !== null) {
+                $onProgress($pagesWalked, $report->seen, 'sweeping');
+            }
 
-        try {
-            $report->deleted = $this->repository->deleteMissingPcPersonIds(
-                array_values(array_unique($seenIds)),
-            );
-        } catch (\Throwable $e) {
-            $report->recordError(null, 'Sweep step failed: ' . $e->getMessage());
-            $this->logger->error('PC sync sweep failed.', ['error' => $e->getMessage()]);
+            try {
+                $report->deleted = $this->repository->deleteMissingPcPersonIds(
+                    array_values(array_unique($seenIds)),
+                );
+            } catch (\Throwable $e) {
+                $report->recordError(null, 'Sweep step failed: ' . $e->getMessage());
+                $this->logger->error('PC sync sweep failed.', ['error' => $e->getMessage()]);
+            }
         }
 
         $report->finish();
