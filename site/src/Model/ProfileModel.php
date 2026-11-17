@@ -11,6 +11,8 @@ declare(strict_types=1);
 
 namespace CWM\Component\Cwmconnect\Site\Model;
 
+use CWM\Component\Cwmconnect\Administrator\Service\Visibility\DirectoryPrivacy;
+use CWM\Component\Cwmconnect\Administrator\Service\Visibility\DirectoryViewer;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Form;
@@ -33,6 +35,14 @@ use Joomla\Database\ParameterType;
  */
 class ProfileModel extends FormModel
 {
+    /**
+     * The current user, as far as members' choices are concerned.
+     *
+     * @var    DirectoryViewer|null
+     * @since  __DEPLOY_VERSION__
+     */
+    private ?DirectoryViewer $viewer = null;
+
     /**
      * Read the requested member id into state.
      *
@@ -91,7 +101,8 @@ class ProfileModel extends FormModel
     }
 
     /**
-     * Load the target member, or false when not found / not directory-visible.
+     * Load the target member, or false when not found / not directory-visible,
+     * with what the viewer may not see blanked ({@see DirectoryPrivacy}).
      *
      * @param   integer|null  $pk  Optional member id (defaults to state).
      *
@@ -136,16 +147,40 @@ class ProfileModel extends FormModel
                 $db->quoteName('a.misc'),
                 $db->quoteName('a.anniversary'),
                 $db->quoteName('a.user_id'),
+                $db->quoteName('a.hidden_fields'),
+                $db->quoteName('a.display_in_directory'),
                 $db->quoteName('fu.name', 'household_name'),
             ])
             ->from($db->quoteName('#__cwmconnect_details', 'a'))
             ->join('LEFT', $db->quoteName('#__cwmconnect_familyunit', 'fu') . ' ON fu.id = a.funitid')
             ->where($db->quoteName('a.id') . ' = :id')
             ->where($db->quoteName('a.published') . ' = 1')
-            ->where($db->quoteName('a.display_in_directory') . ' = 1')
             ->bind(':id', $id, ParameterType::INTEGER);
 
-        return $db->setQuery($query)->loadObject() ?: false;
+        $item   = $db->setQuery($query)->loadObject();
+        $viewer = $this->getViewer();
+
+        // A member who hid themselves is still there for church leadership,
+        // themselves and their household, as their household cards already are.
+        if (!$item || ((int) $item->display_in_directory !== 1 && !$viewer->seesAllOf($item))) {
+            return false;
+        }
+
+        new DirectoryPrivacy($db)->apply([$item], $viewer);
+
+        return $item;
+    }
+
+    /**
+     * Who is looking: the current user.
+     *
+     * @return  DirectoryViewer
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    public function getViewer(): DirectoryViewer
+    {
+        return $this->viewer ??= DirectoryViewer::forUser($this->getCurrentUser(), $this->getDatabase());
     }
 
     /**
@@ -203,6 +238,8 @@ class ProfileModel extends FormModel
                 $db->quoteName('image'),
                 $db->quoteName('display_in_directory'),
                 $db->quoteName('is_child'),
+                $db->quoteName('funitid'),
+                $db->quoteName('hidden_fields'),
             ])
             ->from($db->quoteName('#__cwmconnect_details'))
             ->where($db->quoteName('funitid') . ' = :fid')
@@ -217,7 +254,11 @@ class ProfileModel extends FormModel
                 ->where($db->quoteName('is_child') . ' = 0');
         }
 
-        return $db->setQuery($query)->loadObjectList() ?: [];
+        $members = $db->setQuery($query)->loadObjectList() ?: [];
+
+        new DirectoryPrivacy($db)->apply($members, $this->getViewer());
+
+        return $members;
     }
 
     /**

@@ -16,6 +16,7 @@ namespace CWM\Component\Cwmconnect\Site\View\Profile;
 // phpcs:enable PSR1.Files.SideEffects
 
 use CWM\Component\Cwmconnect\Site\Model\ProfileModel;
+use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView as BaseHtmlView;
@@ -42,6 +43,12 @@ class VcfView extends BaseHtmlView
     public function display($tpl = null): void
     {
         $app = Factory::getApplication();
+
+        // The profile offers the vCard only when the option is on; asking for
+        // it directly mustn't get round that.
+        if (!(bool) ComponentHelper::getParams('com_cwmconnect')->get('allow_vcard', 0)) {
+            throw new \RuntimeException(Text::_('COM_CWMCONNECT_PROFILE_NOT_FOUND'), 404);
+        }
 
         /** @var ProfileModel $model */
         $model = $this->getModel();

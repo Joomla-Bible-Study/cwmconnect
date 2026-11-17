@@ -130,6 +130,18 @@ $wa->useScript('form.validate');
 						</div>
 					</div>
 
+					<?php // Directory listing: inside the form, so its choices are saved with the rest.?>
+					<div class="card mb-3">
+						<div class="card-header"><h3 class="card-title h6 mb-0"><?php echo Text::_('COM_CWMCONNECT_MYPROFILE_FIELDSET_DIRECTORY'); ?></h3></div>
+						<div class="card-body">
+							<?php foreach ($this->form->getFieldset('directory') as $field) : ?>
+								<div class="mb-3">
+									<?php echo $field->renderField(); ?>
+								</div>
+							<?php endforeach; ?>
+						</div>
+					</div>
+
 					<div class="mb-4">
 						<button type="submit" class="btn btn-primary btn-lg">
 							<span class="icon-save" aria-hidden="true"></span>
@@ -148,20 +160,6 @@ $wa->useScript('form.validate');
 
 		<?php // ── Right column: settings sidebar ──?>
 		<div class="col-lg-4">
-			<?php // Directory visibility?>
-			<?php if ($this->form !== null) : ?>
-				<div class="card mb-3">
-					<div class="card-header"><h3 class="card-title h6 mb-0"><?php echo Text::_('COM_CWMCONNECT_MYPROFILE_FIELDSET_DIRECTORY'); ?></h3></div>
-					<div class="card-body">
-						<?php foreach ($this->form->getFieldset('directory') as $field) : ?>
-							<div class="mb-3">
-								<?php echo $field->renderField(); ?>
-							</div>
-						<?php endforeach; ?>
-					</div>
-				</div>
-			<?php endif; ?>
-
 			<?php // My live map feeds?>
 			<div class="card mb-3">
 				<div class="card-header"><h3 class="card-title h6 mb-0"><?php echo Text::_('COM_CWMCONNECT_MYPROFILE_FEEDS_HEADING'); ?></h3></div>

@@ -129,6 +129,12 @@ class KmlView extends BaseHtmlView
         $model->setState('list.start', 0);
         $model->setState('list.limit', 0);
 
+        // A feed shows what its token's owner may see: it has no session, and
+        // members' choices depend on who is looking.
+        if ($token !== '') {
+            $model->setState('viewer.user_id', (int) $tokenRow->user_id);
+        }
+
         $items      = $model->getItems() ?: [];
         $kmlSettings = new DbHelper()->getKmlSettings();
         $kml        = $this->buildKml($items, $kmlSettings);

@@ -87,6 +87,7 @@ final readonly class MemberErasure
         'is_leader'         => 0,
         'pc_membership'     => '',
         'pc_shared_info'    => null,
+        'hidden_fields'     => '',
         'misc'              => null,
         'params'            => '',
         'attribs'           => '',

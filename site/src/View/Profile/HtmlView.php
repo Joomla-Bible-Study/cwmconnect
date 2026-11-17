@@ -108,7 +108,10 @@ class HtmlView extends BaseHtmlView
         $viewerHouseholdId = $model->viewerHouseholdId($viewerUserId);
         $targetHouseholdId = (int) ($item->funitid ?? 0);
 
-        $this->householdScope = HouseholdVisibility::scope($viewerHouseholdId, $targetHouseholdId ?: null);
+        // Church leadership sees a household as its own members do.
+        $this->householdScope = $model->getViewer()->seesAll
+            ? HouseholdVisibility::SAME_HOUSEHOLD
+            : HouseholdVisibility::scope($viewerHouseholdId, $targetHouseholdId ?: null);
 
         if ($targetHouseholdId > 0) {
             $sameHousehold          = $this->householdScope === HouseholdVisibility::SAME_HOUSEHOLD;

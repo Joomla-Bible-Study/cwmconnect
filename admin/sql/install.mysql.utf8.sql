@@ -11,6 +11,7 @@ CREATE TABLE IF NOT EXISTS `#__cwmconnect_details` (
   `display_in_directory` TINYINT(1)                             NOT NULL DEFAULT 1,
   `directory_scope`      ENUM('public', 'household', 'hidden')  NOT NULL DEFAULT 'public',
   `hidden_reason`        VARCHAR(20)                            NOT NULL DEFAULT '',
+  `hidden_fields`        VARCHAR(255)                           NOT NULL DEFAULT '',
   `pc_membership`        VARCHAR(50)                            NOT NULL DEFAULT '',
   `gender`               VARCHAR(20)                            NOT NULL DEFAULT '',
   `is_child`             TINYINT(1)                             NOT NULL DEFAULT 0,
