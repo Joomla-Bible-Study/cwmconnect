@@ -20,9 +20,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Controller\BaseController;
 use Joomla\CMS\Response\JsonResponse;
-use Joomla\CMS\Router\Route;
 use Joomla\CMS\Session\Session;
-use Joomla\CMS\Uri\Uri;
 use Joomla\Component\Actionlogs\Administrator\Model\ActionlogModel;
 
 /**
@@ -58,8 +56,9 @@ class ReportsController extends BaseController
     }
 
     /**
-     * Export task — runs a single export and short-circuits the response
-     * (the report helper streams headers + body and exits).
+     * Export task — runs a single export and short-circuits the response: the
+     * report helper streams CSV, KML and missing-photo exports itself, and the
+     * PDF is sent from here.
      *
      * @return  void
      *
@@ -77,33 +76,22 @@ class ReportsController extends BaseController
 
         /** @var ReportsModel $model */
         $model = $this->getModel('Reports');
-        $model->getExport($type, $report);
+        $pdf   = $model->getExport($type, $report);
 
-        if ($type === 'pdf') {
-            $includeHidden = (bool) $this->input->getInt('include_hidden', 0);
-
-            if ($includeHidden) {
+        if ($pdf !== null) {
+            if ((bool) $this->input->getInt('include_hidden', 0)) {
                 $this->logHiddenPrintOverride();
             }
 
-            $pdfPath = $this->app->getUserState('com_cwmconnect.reports.pdf_path', '');
-            $this->app->setUserState('com_cwmconnect.reports.pdf_path', null);
-
-            if ($pdfPath !== '') {
-                $this->app->enqueueMessage(Text::_('COM_CWMCONNECT_REPORTS_PDF_GENERATED'));
-            } else {
-                $this->app->enqueueMessage(Text::_('COM_CWMCONNECT_REPORTS_PDF_FAILED'), 'error');
-            }
-
-            $this->setRedirect(Route::_('index.php?option=com_cwmconnect&view=reports', false));
+            $this->sendPdf($pdf);
         }
     }
 
     /**
-     * AJAX endpoint: build the directory PDF and return its download URL as
-     * JSON. Lets the reports page show a "building…" spinner and then a
-     * download link, instead of a frozen full-page navigation while mpdf
-     * renders hundreds of members.
+     * AJAX endpoint: build the directory PDF and send it back. Lets the
+     * reports page show a "building…" spinner and then a download link,
+     * instead of a frozen full-page navigation while mpdf renders hundreds
+     * of members. A failure is a JSON message.
      *
      * @return  void
      *
@@ -120,31 +108,53 @@ class ReportsController extends BaseController
         try {
             /** @var ReportsModel $model */
             $model = $this->getModel('Reports');
-            $model->getExport('pdf', $report);
+            $pdf   = $model->getExport('pdf', $report);
 
-            $path  = (string) $this->app->getUserState('com_cwmconnect.reports.pdf_path', '');
-            $count = (int) $this->app->getUserState('com_cwmconnect.reports.pdf_count', 0);
-            $this->app->setUserState('com_cwmconnect.reports.pdf_path', null);
-            $this->app->setUserState('com_cwmconnect.reports.pdf_count', null);
-
-            if ($path === '') {
+            if ($pdf === null) {
                 throw new \RuntimeException(Text::_('COM_CWMCONNECT_REPORTS_PDF_FAILED'));
             }
-
-            if ((bool) $this->input->getInt('include_hidden', 0)) {
-                $this->logHiddenPrintOverride();
-            }
-
-            $response = new JsonResponse(
-                ['url' => Uri::root() . $path, 'count' => $count],
-                Text::_('COM_CWMCONNECT_REPORTS_PDF_GENERATED'),
-                false,
-            );
         } catch (\Throwable $e) {
-            $response = new JsonResponse(null, $e->getMessage(), true);
+            $this->sendJson(new JsonResponse(null, $e->getMessage(), true));
+
+            return;
         }
 
-        $this->sendJson($response);
+        if ((bool) $this->input->getInt('include_hidden', 0)) {
+            $this->logHiddenPrintOverride();
+        }
+
+        $this->sendPdf($pdf);
+    }
+
+    /**
+     * Send a directory PDF to the admin who asked for it, and end the request.
+     * It holds every member's details, so it is never saved anywhere another
+     * request could fetch it from: it exists only in this response.
+     *
+     * @param   array{content: string, name: string, count: int}  $pdf  From ReportsModel::getExport().
+     *
+     * @return  void
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    private function sendPdf(array $pdf): void
+    {
+        // Straight to the browser, not through the component's output buffer.
+        while (ob_get_level() > 0) {
+            ob_end_clean();
+        }
+
+        $this->app->setHeader('Content-Type', 'application/pdf', true);
+        $this->app->setHeader('Content-Disposition', 'inline; filename="' . $pdf['name'] . '"', true);
+        $this->app->setHeader('Content-Length', (string) \strlen($pdf['content']), true);
+        $this->app->setHeader('Cache-Control', 'no-store, private', true);
+        $this->app->setHeader('X-Content-Type-Options', 'nosniff', true);
+        $this->app->setHeader('X-Cwmconnect-Members', (string) $pdf['count'], true);
+        $this->app->sendHeaders();
+
+        echo $pdf['content'];
+
+        $this->app->close();
     }
 
     /**

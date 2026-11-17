@@ -113,6 +113,7 @@ class Com_cwmconnectInstallerScript
     {
         if ($route === 'install' || $route === 'update') {
             $this->ensureHiddenMenu();
+            $this->removePublicExports();
         }
 
         if ($route === 'install') {
@@ -130,6 +131,32 @@ class Com_cwmconnectInstallerScript
         }
 
         return true;
+    }
+
+    /**
+     * Delete the directory PDFs that earlier versions saved in the public
+     * media folder, where anyone could download them. They hold members'
+     * details. PDFs are now kept privately, so the folder has no use.
+     *
+     * @return  void
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    private function removePublicExports(): void
+    {
+        $folder = JPATH_ROOT . '/media/com_cwmconnect/exports';
+
+        if (!is_dir($folder)) {
+            return;
+        }
+
+        foreach (scandir($folder) ?: [] as $name) {
+            if (is_file($folder . '/' . $name)) {
+                @unlink($folder . '/' . $name);
+            }
+        }
+
+        @rmdir($folder);
     }
 
     /**

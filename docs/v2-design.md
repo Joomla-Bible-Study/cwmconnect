@@ -46,7 +46,7 @@ Admin surface is the usual Joomla backend, gated by `core.manage` on
 | 13 | Photo handling | Cache locally on sync at `media/com_cwmconnect/photos/`. Detect changes via the URL hash PC bakes into avatar paths. |
 | 14 | KML feed access | Signed token URL per user (`?token=<hmac>`), revocable from admin. Lives in `#__cwmconnect_feed_tokens`. |
 | 15 | Self-service PDF | "Download what I see" — frontend button on the member list view. Renders the current filter set through `mpdf`. |
-| 16 | Admin printable directory | Dedicated admin "Reports → Print Directory" workflow. v1 ships one template (alphabetical with photo + contact + household). Output stored at `media/com_cwmconnect/exports/`. |
+| 16 | Admin printable directory | Dedicated admin "Reports → Print Directory" workflow. v1 ships one template (alphabetical with photo + contact + household). The PDF is sent straight to the admin who built it and never stored on the server. |
 | 17 | Admin override of `display_in_directory` at print | Print form exposes "Include members marked hidden" toggle (default off). Override is gated by `core.admin` and logged to `com_actionlogs`. Rows printed under override flagged visually in the PDF ("Staff copy"). |
 | 18 | Children handling | Children become an automatic case of `display_in_directory = 0`. PC's `Person.child` boolean drives the flag on sync and locks it. Household view shows children's first name + age to viewers in the same household only; non-household viewers see a count ("…and 2 children"). Standalone installs use the manual flag; auto-detection from birthdate deferred to v2.x. |
 | 19 | Member self-service portal | Each logged-in member edits their own record at `view=myprofile`. **PC-synced records**: only local fields (`display_in_directory`, photo override) are editable; PC-sourced fields are read-only with a link to My PCO. **Local-only records**: full edit of name, contact info, custom fields. Identity binding via `user_id` FK on the member row — PC sync attempts email-match on insert; admin can manually pair from the admin edit screen. |
@@ -264,7 +264,7 @@ and continue (one bad person doesn't abort the run).
 | Dir Headers | (Campus mirror when PC-linked) |
 | Positions | Local-only roles (no PC equivalent) |
 | Categories | Joomla core |
-| Reports → Print Directory | Filter form + template picker + "Include hidden members" toggle (admin-only). Generates PDF, stores in `media/com_cwmconnect/exports/<date>.pdf`, gives a download link |
+| Reports → Print Directory | Filter form + template picker + "Include hidden members" toggle (admin-only). Generates the PDF and sends it straight back to the admin (never stored on the server), who saves or prints it from there |
 | Options → Planning Center | Sync config (see §5.2) |
 | Options → PC Field Mappings | Per-org PC FieldDefinition → `com_fields` mapping table |
 | Options → Feed Tokens | Per-user KML token management |

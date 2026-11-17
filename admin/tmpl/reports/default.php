@@ -27,11 +27,6 @@ $reportsLevel   = (int) ($this->state?->get('reportslevel', 8) ?? 8);
 $canRunReports  = \in_array($reportsLevel, $userGroups, true) || ($user && $user->authorise('core.admin'));
 $isAdmin        = $user && $user->authorise('core.admin');
 $token          = Session::getFormToken();
-$pdfPath        = (string) $app->getUserState('com_cwmconnect.reports.pdf_path', '');
-
-if ($pdfPath !== '') {
-    $app->setUserState('com_cwmconnect.reports.pdf_path', null);
-}
 ?>
 <form action="<?php echo Route::_('index.php?option=com_cwmconnect&view=reports'); ?>"
       method="post" name="adminForm" id="adminForm">
@@ -81,13 +76,6 @@ if ($pdfPath !== '') {
                        href="<?php echo Route::_('index.php?option=com_cwmconnect&task=reports.export&report=directory&cdtype=pdf&' . $token . '=1'); ?>">
                         <span class="icon-file-pdf" aria-hidden="true"></span> <?php echo Text::_('COM_CWMCONNECT_REPORTS_GENERATE_PDF'); ?>
                     </a>
-                    <?php if ($pdfPath !== '') : ?>
-                        <div class="alert alert-success mt-2">
-                            <a href="<?php echo Uri::root() . $this->escape($pdfPath); ?>" target="_blank" rel="noopener">
-                                <span class="icon-download" aria-hidden="true"></span> <?php echo Text::_('COM_CWMCONNECT_REPORTS_DOWNLOAD_PDF'); ?>
-                            </a>
-                        </div>
-                    <?php endif; ?>
                     <?php /* AJAX build feedback (admin-reports.js targets these). */ ?>
                     <div id="pdf-build-status" class="mt-2" aria-live="polite"></div>
                     <div id="pdf-build-result" class="mt-2"></div>

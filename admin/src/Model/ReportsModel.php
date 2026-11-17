@@ -278,17 +278,19 @@ class ReportsModel extends ListModel
     }
 
     /**
-     * Run an export — writes directly to the output stream and exits.
+     * Run an export. CSV, KML and missing-photo exports write directly to the
+     * output stream and exit; the PDF is returned for the controller to send.
      *
      * @param   string  $type    Export type (csv|kml|pdf|missingphotos).
      * @param   string  $report  File-name stem.
      *
-     * @return  void
+     * @return  array{content: string, name: string, count: int}|null  The PDF,
+     *          its file name and how many members it lists; null for the rest.
      *
      * @throws  \Exception
      * @since   2.0.0
      */
-    public function getExport(string $type, string $report): void
+    public function getExport(string $type, string $report): ?array
     {
         $params = ComponentHelper::getParams('com_cwmconnect');
 
@@ -341,13 +343,7 @@ class ReportsModel extends ListModel
         }
 
         if ($type === 'pdf') {
-            $relativePath = $reportBuild->getPdf($items, $report, $includeHidden);
-
-            $app = Factory::getApplication();
-            $app->setUserState('com_cwmconnect.reports.pdf_path', $relativePath);
-            $app->setUserState('com_cwmconnect.reports.pdf_count', \count($items));
-
-            return;
+            return $reportBuild->getPdf($items, $report, $includeHidden) + ['count' => \count($items)];
         }
 
         match ($type) {
@@ -356,5 +352,7 @@ class ReportsModel extends ListModel
             'missingphotos' => $reportBuild->getMissingPhotos($items, $report),
             default         => null,
         };
+
+        return null;
     }
 }

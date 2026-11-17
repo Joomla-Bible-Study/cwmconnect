@@ -366,20 +366,21 @@ class ReportbuildHelper
     }
 
     /**
-     * Generate a print directory PDF via mpdf and save to the exports
-     * directory. Returns the relative path to the generated file so the
-     * caller can redirect to a download link.
+     * Generate a print directory PDF via mpdf, in memory. It holds every
+     * member's details, so it is never saved as a file: the caller sends it
+     * straight to the admin who asked for it.
      *
      * @param   array<int, object>  $items          Member rows.
      * @param   string|null         $report         Optional file-name stem.
      * @param   bool                $includeHidden  Include display_in_directory=0 rows (admin override, spec §17).
      *
-     * @return  string  Relative path under JPATH_ROOT to the generated PDF.
+     * @return  array{content: string, name: string}  The PDF, and the file
+     *                                                name to send it under.
      *
      * @throws  \RuntimeException
      * @since   __DEPLOY_VERSION__
      */
-    public function getPdf(array $items = [], ?string $report = null, bool $includeHidden = false): string
+    public function getPdf(array $items = [], ?string $report = null, bool $includeHidden = false): array
     {
         // A full-directory PDF (hundreds of members + embedded photos) is
         // memory- and time-hungry in mpdf. Raise the ceilings for this request
@@ -398,12 +399,6 @@ class ReportbuildHelper
         }
 
         require_once $autoload;
-
-        $exportsDir = JPATH_ROOT . '/media/com_cwmconnect/exports';
-
-        if (!is_dir($exportsDir)) {
-            mkdir($exportsDir, 0o755, true);
-        }
 
         $app    = Factory::getApplication();
         $params = ComponentHelper::getParams('com_cwmconnect');
@@ -478,13 +473,12 @@ class ReportbuildHelper
             throw new \RuntimeException('PDF rendering failed: ' . $e->getMessage());
         }
 
-        $stem     = preg_replace('/[^A-Za-z0-9._-]/', '_', $report ?: 'directory') ?: 'directory';
-        $filename = $stem . '-' . date('Y-m-d-His') . '.pdf';
-        $fullPath = $exportsDir . '/' . $filename;
+        $stem = preg_replace('/[^A-Za-z0-9._-]/', '_', $report ?: 'directory') ?: 'directory';
 
-        $mpdf->Output($fullPath, \Mpdf\Output\Destination::FILE);
-
-        return 'media/com_cwmconnect/exports/' . $filename;
+        return [
+            'content' => $mpdf->Output('', \Mpdf\Output\Destination::STRING_RETURN),
+            'name'    => $stem . '-' . date('Y-m-d-His') . '.pdf',
+        ];
     }
 
     /**
