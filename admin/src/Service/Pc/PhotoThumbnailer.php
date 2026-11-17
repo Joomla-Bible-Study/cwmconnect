@@ -222,9 +222,11 @@ final class PhotoThumbnailer
      */
     private function load(string $path): ?\GdImage
     {
-        $type = @exif_imagetype($path);
+        // getimagesize() is core PHP. exif_imagetype() needs ext-exif, which
+        // many hosts don't load, and calling it there throws.
+        $info = @getimagesize($path);
 
-        $image = match ($type) {
+        $image = match ($info[2] ?? null) {
             \IMAGETYPE_JPEG => @imagecreatefromjpeg($path),
             \IMAGETYPE_PNG  => @imagecreatefrompng($path),
             \IMAGETYPE_GIF  => @imagecreatefromgif($path),
