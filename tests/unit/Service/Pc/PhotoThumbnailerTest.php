@@ -6,6 +6,7 @@ namespace CWM\Component\Cwmconnect\Tests\Service\Pc;
 
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\PhotoThumbnailer;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
@@ -81,6 +82,61 @@ final class PhotoThumbnailerTest extends TestCase
         $notImage = $this->dir . '/notimage.jpg';
         file_put_contents($notImage, 'this is not an image');
         self::assertFalse(new PhotoThumbnailer()->generate($notImage, $this->dir . '/out.jpg'));
+    }
+
+    #[Test]
+    #[DataProvider('formats')]
+    public function readsEachFormatGdWrites(string $extension, string $writer): void
+    {
+        if (!\function_exists($writer)) {
+            self::markTestSkipped("This GD build has no {$writer}().");
+        }
+
+        $im = imagecreatetruecolor(600, 600);
+        imagefill($im, 0, 0, imagecolorallocate($im, 10, 120, 200));
+        $src = $this->dir . '/src.' . $extension;
+        $writer($im, $src);
+        $dest = $this->dir . '/out.jpg';
+
+        self::assertTrue(new PhotoThumbnailer(300, 400)->generate($src, $dest));
+
+        [$w, $h] = getimagesize($dest);
+        self::assertSame(300, $w);
+        self::assertSame(400, $h);
+    }
+
+    /**
+     * @return iterable<string, array{string, string}>
+     */
+    public static function formats(): iterable
+    {
+        yield 'jpeg' => ['jpg', 'imagejpeg'];
+        yield 'png' => ['png', 'imagepng'];
+        yield 'gif' => ['gif', 'imagegif'];
+        yield 'webp' => ['webp', 'imagewebp'];
+    }
+
+    #[Test]
+    public function worksWithoutTheExifExtension(): void
+    {
+        // Many hosts don't load ext-exif. A disabled function is undefined,
+        // the same as on such a host.
+        $script = $this->dir . '/no_exif.php';
+        file_put_contents($script, <<<'PHP'
+            <?php
+            require $argv[1];
+
+            echo \function_exists('exif_imagetype') ? 'exif is still loaded'
+                : (new CWM\Component\Cwmconnect\Administrator\Service\Pc\PhotoThumbnailer()->generate($argv[2], $argv[3]) ? 'ok' : 'failed');
+            PHP);
+
+        $command = [
+            \PHP_BINARY, '-d', 'disable_functions=exif_imagetype,exif_read_data,exif_tagname,exif_thumbnail',
+            $script, \dirname(__DIR__, 3) . '/bootstrap.php', $this->makeSource(400, 400), $this->dir . '/out.jpg',
+        ];
+        $output = shell_exec(implode(' ', array_map(escapeshellarg(...), $command)) . ' 2>&1');
+
+        self::assertSame('ok', trim((string) $output));
     }
 
     #[Test]
