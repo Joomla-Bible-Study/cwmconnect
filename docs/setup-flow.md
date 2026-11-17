@@ -107,11 +107,15 @@ Leaving all types unticked syncs **everyone** in Planning Center, which is
 rarely what a directory wants. On the reference account this is the difference
 between ~540 members and 797 active people.
 
-### 2b. Decide the archive policy
+### 2b. Know what the sync removes
 
-**When a person no longer matches** — archive locally (hide, keep the row) or
-delete the local row. This decides what happens when someone leaves the church
-or their membership type changes. Worth choosing deliberately.
+Someone who leaves Planning Center, goes inactive there, or stops matching the
+membership types is deleted at the next sync, with their cached photos and the
+directory member group of any account paired to them. If they come back, the
+sync adds them again as a new member. A member entered by hand is never touched.
+
+A sync that stops before the end of Planning Center's list, at its safety cap
+of 200 pages, deletes no one: the next complete sync does.
 
 ---
 

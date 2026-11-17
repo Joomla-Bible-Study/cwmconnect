@@ -36,7 +36,7 @@ Admin surface is the usual Joomla backend, gated by `core.manage` on
 | 3 | PC sync direction | One-way pull (PC → Joomla). Treat PC API as read-only. |
 | 4 | PC sync scope filter | Configurable subset of **membership status** values (essential — not all PC people are members) AND optionally a specific **PC List**. |
 | 5 | PC sync trigger | Scheduled task (`plg_task_cwmconnect_pc_sync`) + manual "Sync now" button. Webhook deferred to v2.x. |
-| 6 | When PC person no longer matches the filter | Archive locally: set `published = 0` + `display_in_directory = 0`; keep the row + `pc_person_id` link. Reversible. |
+| 6 | When PC person no longer matches the filter | Delete the local row, with its cached photos and the paired account's member group; a person who comes back syncs in as a new row. Decided in live testing (June 2026), replacing archive-locally: an inactive member must never sit in the directory, even hidden. A run that doesn't finish its walk deletes no one. |
 | 7 | Per-field local override of PC values | Not in v1. PC is authoritative; admin fixes at the source. |
 | 8 | Intentional "unlink from PC" button | Yes — toolbar action on the member edit screen. Nulls `pc_person_id`, unlocks fields. |
 | 9 | PC custom field mapping | Manual mapping screen (admin picks which PC FieldDefinitions to mirror). Type-mapped to `com_fields` rows in context `com_cwmconnect.member`. Drop PC `file` type from v1. Soft-orphan stale mappings (warn, don't delete). |
@@ -158,10 +158,6 @@ Include people whose membership status is:
 Restrict further by PC List      [— none —          ▾]
    ↑ optional; AND'd with the status filter above.
 
-When a person no longer matches the filter:
-   ⦿ Archive locally (display_in_directory = 0, keep the row)
-   ◯ Hard-delete the row
-
 Photo cache:
    [Refresh now]   [Last refreshed: 2026-05-12 09:14]
 
@@ -232,9 +228,11 @@ For each person matching the filter:
 
 After per-person pass:
 
-- Local rows with `pc_person_id` not present in the current PC result → archive
-  per config (display_in_directory=0 + published=0).
-- Reappearing PC people → un-archive on next sync.
+- Local rows with `pc_person_id` not present in the current PC result are
+  deleted, with their cached photos; whoever was paired to one loses the
+  directory member group, and Smart Search drops it (decision #6).
+- Reappearing PC people sync in as new rows.
+- A run that stops at the page cap before the end of the walk sweeps no one.
 
 ### 5.5 Audit + observability
 
