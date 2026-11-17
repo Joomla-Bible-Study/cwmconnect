@@ -11,10 +11,12 @@
  * Turns the "Generate PDF" button on the Reports page into an AJAX action:
  * instead of a full-page navigation that freezes while mpdf renders hundreds
  * of members, it shows a spinner, POSTs to task=reports.generatepdf, and then
- * renders a Download link from the JsonResponse envelope.
+ * offers the PDF it gets back as a download. The PDF holds every member's
+ * details, so the server never stores it: it exists only in that response
+ * and in this page's memory. A failure comes back as a JsonResponse message.
  *
  * All DOM construction uses createElement + textContent so server strings
- * (messages, error text, URLs) never reach the HTML parser as markup.
+ * (messages, error text, file names) never reach the HTML parser as markup.
  */
 ((document, Joomla) => {
     'use strict';
@@ -135,18 +137,31 @@
     };
 
     /**
+     * The object URL of the last PDF, released when another replaces it.
+     *
+     * @type {?string}
+     */
+    let pdfUrl = null;
+
+    /**
      * Render the success state: a summary line plus a download link.
      *
-     * @param {string} url
+     * @param {Blob}   pdf
      * @param {number} count
+     * @param {string} name   File name to save it under.
      */
-    const showDownload = (url, count) => {
+    const showDownload = (pdf, count, name) => {
         showStatus('success', sprintf(options.i18n.ready, String(count)));
 
+        if (pdfUrl) {
+            URL.revokeObjectURL(pdfUrl);
+        }
+
+        pdfUrl = URL.createObjectURL(pdf);
+
         const link = make('a', 'btn btn-success', null);
-        link.setAttribute('href', url);
-        link.setAttribute('target', '_blank');
-        link.setAttribute('rel', 'noopener');
+        link.setAttribute('href', pdfUrl);
+        link.setAttribute('download', name);
 
         const icon = make('span', 'icon-download');
         icon.setAttribute('aria-hidden', 'true');
@@ -157,13 +172,35 @@
     };
 
     /**
+     * The file name from a Content-Disposition header.
+     *
+     * @param {?string} disposition
+     * @returns {string}
+     */
+    const fileName = (disposition) => {
+        const match = /filename="([^"]+)"/.exec(disposition || '');
+
+        return match ? match[1] : 'directory.pdf';
+    };
+
+    /**
+     * The result of a build: the PDF, or the message saying why there isn't one.
+     *
+     * @typedef {object} BuildResult
+     * @property {?Blob}  pdf
+     * @property {string} name     File name to save the PDF under.
+     * @property {number} count    How many members it lists.
+     * @property {string} message  Why it failed.
+     */
+
+    /**
      * POST to the generate endpoint. The CSRF token is sent as a hidden form
      * field per Joomla convention; the optional include_hidden flag mirrors
      * the checkbox so a staff copy can flag hidden members.
      *
      * @param {boolean} includeHidden
      * @param {boolean} membersOnly
-     * @returns {Promise<{success: boolean, message: string, data: *}>}
+     * @returns {Promise<BuildResult>}
      */
     const callEndpoint = async (includeHidden, membersOnly) => {
         const body = new FormData();
@@ -182,17 +219,30 @@
             credentials: 'same-origin',
             body,
             headers: {
-                Accept: 'application/json',
+                Accept: 'application/pdf, application/json',
             },
         });
 
-        const text = await response.text();
+        if (response.ok && (response.headers.get('Content-Type') || '').startsWith('application/pdf')) {
+            return {
+                pdf:     await response.blob(),
+                name:    fileName(response.headers.get('Content-Disposition')),
+                count:   Number(response.headers.get('X-Cwmconnect-Members')) || 0,
+                message: '',
+            };
+        }
+
+        let message = '';
 
         try {
-            return JSON.parse(text);
+            message = JSON.parse(await response.text()).message || '';
         } catch {
-            return { success: false, message: options.i18n.unknownError, data: null };
+            // Not a JsonResponse: fall through to the generic message.
         }
+
+        return {
+            pdf: null, name: '', count: 0, message: message || options.i18n.unknownError,
+        };
     };
 
     button.addEventListener('click', async (event) => {
@@ -211,21 +261,23 @@
         button.setAttribute('aria-disabled', 'true');
         showSpinner(options.i18n.building);
 
-        let json;
+        let built;
 
         try {
-            json = await callEndpoint(includeHidden, membersOnly);
+            built = await callEndpoint(includeHidden, membersOnly);
         } catch {
-            json = { success: false, message: options.i18n.unknownError, data: null };
+            built = {
+                pdf: null, name: '', count: 0, message: options.i18n.unknownError,
+            };
         }
 
         button.classList.remove('disabled');
         button.removeAttribute('aria-disabled');
 
-        if (json && json.success && json.data && json.data.url) {
-            showDownload(json.data.url, Number(json.data.count) || 0);
+        if (built.pdf) {
+            showDownload(built.pdf, built.count, built.name);
         } else {
-            showStatus('danger', (json && json.message) || options.i18n.unknownError);
+            showStatus('danger', built.message);
         }
     });
 })(document, window.Joomla);
