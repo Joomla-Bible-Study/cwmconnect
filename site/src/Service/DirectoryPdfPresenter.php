@@ -179,7 +179,16 @@ final class DirectoryPdfPresenter
 
         $render = \Closure::bind(function (string $tpl): string {
             ob_start();
-            include $tpl;
+
+            try {
+                include $tpl;
+            } catch (\Throwable $e) {
+                // Don't leave the half-rendered HTML buffered, where it would
+                // go out ahead of the error reply.
+                ob_end_clean();
+
+                throw $e;
+            }
 
             return (string) ob_get_clean();
         }, $this, self::class);

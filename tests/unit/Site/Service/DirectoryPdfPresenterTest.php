@@ -276,4 +276,22 @@ final class DirectoryPdfPresenterTest extends TestCase
         self::assertStringStartsWith('%PDF-', $pdf, "layout {$layout}");
         self::assertGreaterThanOrEqual(1, $mpdf->page);
     }
+
+    #[Test]
+    public function aTemplateThatThrowsLeavesNothingBuffered(): void
+    {
+        // Whatever the template fails on, here a name that can't be a string,
+        // its half-rendered HTML must not stay buffered: it would go out ahead
+        // of the error reply the admin's Build PDF button reads.
+        $this->presenter->items = [self::member(['surname' => 'Abbott', 'name' => new \stdClass()])];
+        $level                  = ob_get_level();
+
+        try {
+            $this->presenter->renderHtml();
+            self::fail('The template should have thrown.');
+        } catch (\Error) {
+        }
+
+        self::assertSame($level, ob_get_level());
+    }
 }
