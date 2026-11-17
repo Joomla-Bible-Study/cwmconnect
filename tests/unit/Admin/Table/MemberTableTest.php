@@ -225,6 +225,11 @@ final class MemberTableTest extends TestCase
                 return $this;
             }
 
+            public function whereIn(string $keyName, array $keyValues, ParameterType $dataType = ParameterType::INTEGER): static
+            {
+                return $this;
+            }
+
             public function bind(string|array $key, mixed &$value, ParameterType $dataType = ParameterType::STRING, int $length = 0): static
             {
                 $this->bound[(string) $key] = &$value;

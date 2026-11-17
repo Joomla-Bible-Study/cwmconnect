@@ -72,6 +72,51 @@ final class DirectoryPrivacy
     }
 
     /**
+     * What the general membership may not see of a member: their own choices
+     * and their household's. For what is shared by everyone, such as the
+     * Smart Search index.
+     *
+     * @param   object  $member  A row with `funitid` and `hidden_fields`.
+     *
+     * @return  list<string>
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    public function hiddenFromMembers(object $member): array
+    {
+        $household = (int) ($member->funitid ?? 0);
+        $choices   = $this->householdChoices([$household]);
+
+        return MemberVisibility::hiddenFor($member, MemberVisibility::sharedHidden($choices[$household] ?? []));
+    }
+
+    /**
+     * The members of these households.
+     *
+     * @param   list<int>  $householdIds  Households; 0 means none.
+     *
+     * @return  list<int>
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    public function householdMembers(array $householdIds): array
+    {
+        $householdIds = array_values(array_unique(array_filter($householdIds, static fn(int $id): bool => $id > 0)));
+
+        if ($householdIds === []) {
+            return [];
+        }
+
+        $db    = $this->db;
+        $query = $db->createQuery()
+            ->select($db->quoteName('id'))
+            ->from($db->quoteName('#__cwmconnect_details'))
+            ->whereIn($db->quoteName('funitid'), $householdIds);
+
+        return array_map('intval', $db->setQuery($query)->loadColumn() ?: []);
+    }
+
+    /**
      * Of these households, the ones whose photo a viewer may not see: a
      * household photo shows everyone in it, so it is hidden when any of them
      * hides their own.

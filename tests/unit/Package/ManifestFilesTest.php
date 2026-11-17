@@ -120,6 +120,41 @@ final class ManifestFilesTest extends TestCase
     }
 
     /**
+     * Every folder Joomla's autoloader maps a manifest's `<namespace>` onto, with the
+     * namespace it maps there (libraries/namespacemap.php in Joomla 5 and 6): a plugin
+     * keeps the namespace as declared, a module gets `Site` or `Administrator` added
+     * for its client, and a component gets one of each, for its two sides.
+     *
+     * @return iterable<string, array{string, string}>
+     */
+    public static function namespaceFolders(): iterable
+    {
+        foreach (self::manifests() as $manifest => $zipRoot) {
+            $xml       = self::load($manifest);
+            $namespace = trim((string) $xml->namespace, '\\');
+
+            if ($namespace === '') {
+                continue;
+            }
+
+            $sides = match ((string) $xml['type']) {
+                'component' => [
+                    'Administrator' => (string) $xml->administration->files['folder'],
+                    'Site'          => (string) $xml->files['folder'],
+                ],
+                'module' => [((string) $xml['client'] === 'administrator' ? 'Administrator' : 'Site') => (string) $xml->files['folder']],
+                default  => ['' => (string) $xml->files['folder']],
+            };
+
+            foreach ($sides as $side => $folder) {
+                $folder = self::inRepo(self::inRepo($zipRoot, $folder), (string) $xml->namespace['path']);
+
+                yield $manifest . ' ' . $folder => [$folder, rtrim($namespace . '\\' . $side, '\\')];
+            }
+        }
+    }
+
+    /**
      * @param  list<string>  $listed
      */
     #[Test]
@@ -197,6 +232,36 @@ final class ManifestFilesTest extends TestCase
             $type,
             $element
         ));
+    }
+
+    /**
+     * Joomla looks for an extension's classes only under the namespace it builds from
+     * the manifest, so a class declared under any other is never found. Nothing says
+     * so: a module whose dispatcher can't be found falls back to core's, which finds
+     * no legacy entry file and renders nothing.
+     */
+    #[Test]
+    #[DataProvider('namespaceFolders')]
+    public function everyClassIsWhereTheAutoloaderLooks(string $folder, string $namespace): void
+    {
+        $misplaced = [];
+
+        foreach (self::tracked() as $path) {
+            if (!str_starts_with($path, $folder . '/') || !str_ends_with($path, '.php')) {
+                continue;
+            }
+
+            $subfolder = \dirname(substr($path, \strlen($folder) + 1));
+            $expected  = $subfolder === '.' ? $namespace : $namespace . '\\' . str_replace('/', '\\', $subfolder);
+
+            preg_match('/^namespace\s+([^;\s]+)\s*;/m', (string) file_get_contents(self::root() . '/' . $path), $declared);
+
+            if (($declared[1] ?? '') !== $expected) {
+                $misplaced[] = \sprintf('%s declares %s; Joomla looks for it in %s', $path, $declared[1] ?? 'no namespace', $expected);
+            }
+        }
+
+        self::assertSame([], $misplaced);
     }
 
     /**

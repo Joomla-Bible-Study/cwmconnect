@@ -15,6 +15,7 @@ namespace CWM\Plugin\Finder\Cwmconnect\Extension;
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
+use CWM\Component\Cwmconnect\Administrator\Service\Visibility\DirectoryPrivacy;
 use CWM\Component\Cwmconnect\Site\Helper\RouteHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Event\Finder as FinderEvent;
@@ -57,6 +58,20 @@ final class Cwmconnect extends Adapter implements SubscriberInterface
 
     /** @var string Column the published state lives in (default `state` doesn't apply here). */
     protected $state_field = 'published';
+
+    /**
+     * What this adapter indexes for each detail a member can keep from the
+     * general membership, as {@see getListQuery()} names it.
+     *
+     * @var    array<string, list<string>>
+     * @since  __DEPLOY_VERSION__
+     */
+    private const DETAIL_PROPERTIES = [
+        'email'   => ['email'],
+        'phone'   => ['telephone', 'fax'],
+        'mobile'  => ['mobile'],
+        'address' => ['address', 'city', 'region', 'zip', 'country'],
+    ];
 
     /** @var bool Auto-load the plugin's language strings. */
     protected $autoloadLanguage = true;
@@ -278,6 +293,15 @@ final class Cwmconnect extends Adapter implements SubscriberInterface
         $item->context = 'com_cwmconnect.member';
         $item->params  = new Registry($item->params);
 
+        // One index serves everyone who searches, so a detail the general
+        // membership may not see is left out of it entirely, for church
+        // leadership too. The region and country tags below go with it.
+        foreach (new DirectoryPrivacy($this->getDatabase())->hiddenFromMembers($item) as $detail) {
+            foreach (self::DETAIL_PROPERTIES[$detail] ?? [] as $property) {
+                $item->{$property} = '';
+            }
+        }
+
         $item->url   = $this->getUrl($item->id, $this->extension, $this->layout);
         $item->route = RouteHelper::getMemberRoute($item->slug, (int) $item->catid, $item->language);
 
@@ -351,6 +375,7 @@ final class Cwmconnect extends Adapter implements SubscriberInterface
             ->select('a.suburb AS city, a.state AS region, a.country, a.postcode AS zip')
             ->select('a.telephone, a.fax, a.misc AS summary, a.email_to AS email, a.mobile')
             ->select('a.webpage, a.access, a.published AS state, a.ordering, a.params, a.catid')
+            ->select('a.funitid, a.hidden_fields')
             ->select('c.title AS category, c.published AS cat_state, c.access AS cat_access');
 
         $caseSlug    = ' CASE WHEN ' . $query->charLength('a.alias', '!=', '0')

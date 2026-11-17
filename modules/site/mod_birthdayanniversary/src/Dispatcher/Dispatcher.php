@@ -43,10 +43,12 @@ class Dispatcher extends AbstractModuleDispatcher implements HelperFactoryAwareI
     {
         $data = parent::getLayoutData();
 
-        $this->getApplication()
-            ->getDocument()
-            ->getWebAssetManager()
-            ->useStyle('com_cwmconnect.general')
+        // Joomla loads only the current component's asset file, and this
+        // module shows on any page: without registering it here, the styles
+        // below are unknown and every page carrying the module fails.
+        $wa = $this->getApplication()->getDocument()->getWebAssetManager();
+        $wa->getRegistry()->addExtensionRegistryFile('com_cwmconnect');
+        $wa->useStyle('com_cwmconnect.general')
             ->useStyle('com_cwmconnect.model');
 
         $helper = $this->getHelperFactory()->getHelper('BirthdayanniversaryHelper');

@@ -16,6 +16,8 @@ namespace CWM\Component\Cwmconnect\Site\View\Members;
 // phpcs:enable PSR1.Files.SideEffects
 
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\DatabaseCampusRepository;
+use CWM\Component\Cwmconnect\Administrator\Service\Visibility\DirectoryPrivacy;
+use CWM\Component\Cwmconnect\Administrator\Service\Visibility\DirectoryViewer;
 use CWM\Component\Cwmconnect\Site\Model\MembersModel;
 use CWM\Component\Cwmconnect\Site\Service\DirectoryPdfPresenter;
 use Joomla\CMS\Application\CMSApplicationInterface;
@@ -68,6 +70,10 @@ class PdfView extends BaseHtmlView
             throw new \RuntimeException(Text::_('COM_CWMCONNECT_PDF_ERROR_NO_MEMBERS'), 404);
         }
 
+        // The list already follows members' choices for this viewer; what is
+        // loaded alongside it below has to as well.
+        $viewer = $model->getViewer();
+
         $app    = Factory::getApplication();
         $params = ComponentHelper::getParams('com_cwmconnect');
 
@@ -81,11 +87,17 @@ class PdfView extends BaseHtmlView
             // Children are kept out of the individual listing (MembersModel filters
             // is_child = 0) but belong under their family here. Pull the children
             // of the households already on the page and merge them in.
-            $items            = array_merge($items, $this->loadHouseholdChildren($items));
+            $items            = array_merge($items, $this->loadHouseholdChildren($items, $viewer));
             $presenter->items = $items;
 
-            $presenter->families = $this->loadFamilies($items);
+            $presenter->families = $this->loadFamilies($items, $viewer);
         }
+
+        // Church leadership's copy shows what members keep from the general
+        // membership, so it says so on every page and badges the members who
+        // hid themselves, like the administrator's staff copy.
+        $presenter->showHiddenBadges = $viewer->seesAll;
+
         $presenter->appearance         = [
             'fontBasePt' => match ((string) $params->get('pdf_font_size', 'normal')) {
                 'large'  => 12.0,
@@ -181,12 +193,17 @@ class PdfView extends BaseHtmlView
 
             $mpdf->SetTitle(Text::_('COM_CWMCONNECT_PDF_TITLE'));
             $mpdf->SetAuthor(Text::_('COM_CWMCONNECT'));
+
+            if ($viewer->seesAll) {
+                $mpdf->SetHeader('|' . Text::_('COM_CWMCONNECT_PDF_STAFF_COPY') . '|');
+            }
+
             $mpdf->WriteHTML($html);
         } catch (\Mpdf\MpdfException $e) {
             throw new \RuntimeException(Text::sprintf('COM_CWMCONNECT_PDF_ERROR_RENDER', $e->getMessage()), 500);
         }
 
-        $filename = 'church-directory-' . date('Y-m-d') . '.pdf';
+        $filename = 'church-directory-' . ($viewer->seesAll ? 'staff-copy-' : '') . date('Y-m-d') . '.pdf';
 
         $app->setHeader('Content-Type', 'application/pdf', true);
         $app->setHeader('Content-Disposition', 'attachment; filename="' . $filename . '"', true);
@@ -204,13 +221,18 @@ class PdfView extends BaseHtmlView
      * can list them under their family. Restricting to those households avoids
      * surfacing a child as a lone directory entry.
      *
-     * @param   list<object>   $adults
+     * Children follow members' choices like everyone else: one who hid
+     * themselves is left out, and hidden details are blanked, unless the
+     * viewer sees past them.
+     *
+     * @param   list<object>     $adults
+     * @param   DirectoryViewer  $viewer  Who the PDF is for.
      *
      * @return  list<object>
      *
      * @since   __DEPLOY_VERSION__
      */
-    private function loadHouseholdChildren(array $adults): array
+    private function loadHouseholdChildren(array $adults, DirectoryViewer $viewer): array
     {
         $funitIds = [];
 
@@ -234,22 +256,28 @@ class PdfView extends BaseHtmlView
             ->where($db->quoteName('a.is_child') . ' = 1')
             ->whereIn($db->quoteName('a.funitid'), array_values($funitIds));
 
-        $db->setQuery($query);
+        $children = array_values(array_filter(
+            $db->setQuery($query)->loadObjectList() ?: [],
+            static fn(object $child): bool => (int) $child->display_in_directory === 1 || $viewer->seesAllOf($child),
+        ));
 
-        return $db->loadObjectList() ?: [];
+        new DirectoryPrivacy($db)->apply($children, $viewer);
+
+        return $children;
     }
 
     /**
      * Load the family-unit rows (id/name/image) referenced by the members'
      * `funitid`, keyed by id, for the family layout's household grouping.
      *
-     * @param   list<object>   $items
+     * @param   list<object>     $items
+     * @param   DirectoryViewer  $viewer  Who the PDF is for.
      *
      * @return  array<int, object>
      *
      * @since   __DEPLOY_VERSION__
      */
-    private function loadFamilies(array $items): array
+    private function loadFamilies(array $items, DirectoryViewer $viewer): array
     {
         $ids = [];
 
@@ -277,6 +305,12 @@ class PdfView extends BaseHtmlView
 
         foreach ($db->loadObjectList() ?: [] as $row) {
             $families[(int) $row->id] = $row;
+        }
+
+        // A household photo shows everyone in it, so it is left out when any
+        // of them hides their own photo, as on the households page.
+        foreach (new DirectoryPrivacy($db)->hiddenHouseholdPhotos(array_keys($families), $viewer) as $household) {
+            $families[$household]->image = '';
         }
 
         return $families;

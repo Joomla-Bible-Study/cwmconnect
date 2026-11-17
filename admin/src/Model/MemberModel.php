@@ -19,6 +19,8 @@ use CWM\Component\Cwmconnect\Administrator\Helper\PcLockedFields;
 use CWM\Component\Cwmconnect\Administrator\Service\Pairing\MemberGroupSync;
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\DatabaseFieldMapRepository;
 use CWM\Component\Cwmconnect\Administrator\Service\Privacy\DatabasePrivacySuppressions;
+use CWM\Component\Cwmconnect\Administrator\Service\Search\FinderSearchIndex;
+use CWM\Component\Cwmconnect\Administrator\Service\Visibility\DirectoryPrivacy;
 use CWM\Component\Cwmconnect\Administrator\Service\Visibility\MemberVisibility;
 use Joomla\CMS\Application\ApplicationHelper;
 use Joomla\CMS\Component\ComponentHelper;
@@ -413,6 +415,11 @@ class MemberModel extends AdminModel
         // pairing service.
         $previousUserId = $this->pairedUserId((int) ($data['id'] ?? 0));
 
+        // Smart Search holds a household's shared details on each member of
+        // it, so a change to this member's choice or household re-indexes the
+        // household it leaves and the one it joins.
+        $previousVisibility = $this->choiceAndHousehold((int) ($data['id'] ?? 0));
+
         $rawCatid = trim((string) ($data['catid'] ?? ''));
         $catid    = (int) $rawCatid;
 
@@ -487,6 +494,21 @@ class MemberModel extends AdminModel
                         Text::sprintf('COM_CWMCONNECT_GEOCODE_FAILED', $e->getMessage()),
                         'warning'
                     );
+                }
+            }
+
+            // The saved row's id, which a new member only has once saved.
+            $savedId    = (int) $this->getState($this->getName() . '.id');
+            $visibility = $this->choiceAndHousehold($savedId);
+
+            if ($savedId > 0 && $visibility !== $previousVisibility) {
+                $db    = $this->getDatabase();
+                $index = new FinderSearchIndex($db);
+
+                foreach (new DirectoryPrivacy($db)->householdMembers([$previousVisibility[1], $visibility[1]]) as $mateId) {
+                    if ($mateId !== $savedId) {
+                        $index->memberChanged($mateId);
+                    }
                 }
             }
 
@@ -634,6 +656,33 @@ class MemberModel extends AdminModel
             ->bind(':id', $memberId, ParameterType::INTEGER);
 
         $db->setQuery($query)->execute();
+    }
+
+    /**
+     * A member's stored choice of what to hide, and their household.
+     *
+     * @param   int  $memberId  Member id; 0 for a new record.
+     *
+     * @return  array{0: string, 1: int}
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    private function choiceAndHousehold(int $memberId): array
+    {
+        if ($memberId <= 0) {
+            return ['', 0];
+        }
+
+        $db    = $this->getDatabase();
+        $query = $db->createQuery()
+            ->select($db->quoteName(['hidden_fields', 'funitid']))
+            ->from($db->quoteName('#__cwmconnect_details'))
+            ->where($db->quoteName('id') . ' = :id')
+            ->bind(':id', $memberId, ParameterType::INTEGER);
+
+        $row = $db->setQuery($query)->loadObject();
+
+        return [(string) ($row->hidden_fields ?? ''), (int) ($row->funitid ?? 0)];
     }
 
     /**

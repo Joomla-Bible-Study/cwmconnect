@@ -15,10 +15,13 @@ namespace CWM\Component\Cwmconnect\Site\Helper;
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
+use CWM\Component\Cwmconnect\Administrator\Service\Visibility\DirectoryPrivacy;
+use CWM\Component\Cwmconnect\Administrator\Service\Visibility\DirectoryViewer;
 use Joomla\CMS\Factory;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Router\Route;
+use Joomla\CMS\User\User;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Registry\Registry;
 
@@ -347,8 +350,10 @@ class RenderHelper
             ->select('a.*')
             ->from($db->quoteName('#__cwmconnect_details', 'a'))
             ->where('a.access IN (' . $groups . ')')
-            ->join('INNER', $db->quoteName('#__categories', 'c') . ' ON c.id = a.catid')
-            ->where('c.access IN (' . $groups . ')')
+            // Members are uncategorised unless an administrator files them, so
+            // a category's access applies only to those in one.
+            ->join('LEFT', $db->quoteName('#__categories', 'c') . ' ON c.id = a.catid')
+            ->where('(a.catid = 0 OR c.access IN (' . $groups . '))')
             ->where('a.published = 1');
 
         $this->applyCategoryStateJoins($query, $db);
@@ -369,12 +374,12 @@ class RenderHelper
             ->where('a.birthdate != ' . $db->quote('0000-00-00'))
             ->order('DAY(a.birthdate) ASC');
 
-        $records = $db->setQuery($query)->loadObjectList();
+        $records = $this->shownTo($db->setQuery($query)->loadObjectList() ?: [], 'birthdate', $user, $db);
         $results = [];
 
         foreach ($records as $record) {
             [$date]                                        = explode(' ', $record->birthdate);
-            [$this->byear, $this->bmonth, $this->bday]     = explode('-', $date);
+            [$this->byear, $this->bmonth, $this->bday]     = array_map('intval', explode('-', $date));
 
             $results[] = [
                 'name'   => $record->name,
@@ -410,8 +415,8 @@ class RenderHelper
             ->select('f.name as f_name, f.id as f_id')
             ->from($db->quoteName('#__cwmconnect_details', 'a'))
             ->where('a.access IN (' . $groups . ')')
-            ->join('INNER', $db->quoteName('#__categories', 'c') . ' ON c.id = a.catid')
-            ->where('c.access IN (' . $groups . ')')
+            ->join('LEFT', $db->quoteName('#__categories', 'c') . ' ON c.id = a.catid')
+            ->where('(a.catid = 0 OR c.access IN (' . $groups . '))')
             ->where('a.published = 1')
             ->join('LEFT OUTER', $db->quoteName('#__cwmconnect_familyunit', 'f') . ' ON f.id = a.funitid');
 
@@ -433,7 +438,7 @@ class RenderHelper
             ->where('a.anniversary != ' . $db->quote('0000-00-00'))
             ->order('DAY(a.anniversary) ASC');
 
-        $records = $db->setQuery($query)->loadObjectList();
+        $records = $this->shownTo($db->setQuery($query)->loadObjectList() ?: [], 'anniversary', $user, $db);
         $results = [];
 
         foreach ($records as $i => $record) {
@@ -477,6 +482,34 @@ class RenderHelper
         $chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_-=+;:,.?';
 
         return substr(str_shuffle($chars), 0, $length);
+    }
+
+    /**
+     * The members whose date the viewer may see. One who hid themselves, or
+     * hid this date, is left out unless the viewer sees past members' choices;
+     * an anniversary is hidden for the whole household when anyone in it
+     * hides it.
+     *
+     * @param   list<object>       $records  Member rows (`a.*`).
+     * @param   string             $detail   'birthdate' or 'anniversary'.
+     * @param   User|null          $user     Who is looking.
+     * @param   DatabaseInterface  $db       Database to read households' choices from.
+     *
+     * @return  list<object>
+     *
+     * @since   __DEPLOY_VERSION__
+     */
+    private function shownTo(array $records, string $detail, ?User $user, DatabaseInterface $db): array
+    {
+        $viewer = DirectoryViewer::forUser($user, $db);
+
+        new DirectoryPrivacy($db)->apply($records, $viewer);
+
+        return array_values(array_filter(
+            $records,
+            static fn(object $record): bool => ($viewer->seesAllOf($record) || (int) $record->display_in_directory === 1)
+                && !\in_array($detail, $record->hidden_details ?? [], true),
+        ));
     }
 
     /**
