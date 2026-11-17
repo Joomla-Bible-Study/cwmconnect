@@ -18,6 +18,7 @@ namespace CWM\Component\Cwmconnect\Site\Model;
 use CWM\Component\Cwmconnect\Administrator\Helper\PcLockedFields;
 use CWM\Component\Cwmconnect\Administrator\Service\FeedToken\FeedTokenService;
 use CWM\Component\Cwmconnect\Administrator\Service\Search\FinderSearchIndex;
+use CWM\Component\Cwmconnect\Administrator\Service\Visibility\DirectoryPrivacy;
 use CWM\Component\Cwmconnect\Administrator\Service\Visibility\MemberVisibility;
 use CWM\Component\Cwmconnect\Administrator\Table\MemberTable;
 use Joomla\CMS\Component\ComponentHelper;
@@ -194,7 +195,18 @@ class MyprofileModel extends FormModel
 
         // This save bypasses the admin model, whose events Smart Search listens
         // to, so tell it here: a member who hides themselves must drop out.
-        new FinderSearchIndex($this->getDatabase())->memberChanged((int) $item->id);
+        $index = new FinderSearchIndex($this->getDatabase());
+        $index->memberChanged((int) $item->id);
+
+        // The index holds a household's shared details on each member of it,
+        // so a changed choice re-indexes the rest of the household too.
+        if ((string) ($item->hidden_fields ?? '') !== (string) $table->hidden_fields) {
+            foreach (new DirectoryPrivacy($this->getDatabase())->householdMembers([(int) ($item->funitid ?? 0)]) as $memberId) {
+                if ($memberId !== (int) $item->id) {
+                    $index->memberChanged($memberId);
+                }
+            }
+        }
 
         return true;
     }

@@ -9,7 +9,7 @@
     <version>2.0.0-dev</version>
     <license>GNU General Public License version 2 or later; see LICENSE.txt</license>
     <description>MOD_BIRTHDAYANNIVERSARY_XML_DESCRIPTION</description>
-    <namespace path="src">CWM\Module\Birthdayanniversary\Site</namespace>
+    <namespace path="src">CWM\Module\Birthdayanniversary</namespace>
 
     <compatibility>
         <cms>

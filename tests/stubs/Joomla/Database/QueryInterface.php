@@ -15,6 +15,8 @@ interface QueryInterface
 
     public function where(string|array $conditions, string $glue = 'AND'): static;
 
+    public function whereIn(string $keyName, array $keyValues, ParameterType $dataType = ParameterType::INTEGER): static;
+
     public function update(string $table): static;
 
     public function set(string|array $conditions, string $glue = ','): static;
