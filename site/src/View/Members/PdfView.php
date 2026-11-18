@@ -19,6 +19,7 @@ use CWM\Component\Cwmconnect\Administrator\Service\Pc\DatabaseCampusRepository;
 use CWM\Component\Cwmconnect\Administrator\Service\Visibility\DirectoryPrivacy;
 use CWM\Component\Cwmconnect\Administrator\Service\Visibility\DirectoryViewer;
 use CWM\Component\Cwmconnect\Site\Model\MembersModel;
+use CWM\Component\Cwmconnect\Site\Service\DirectoryPdfFonts;
 use CWM\Component\Cwmconnect\Site\Service\DirectoryPdfPresenter;
 use Joomla\CMS\Application\CMSApplicationInterface;
 use Joomla\CMS\Component\ComponentHelper;
@@ -189,7 +190,7 @@ class PdfView extends BaseHtmlView
         }
 
         try {
-            $mpdf = new \Mpdf\Mpdf($config);
+            $mpdf = new \Mpdf\Mpdf(DirectoryPdfFonts::config($config));
 
             $mpdf->SetTitle(Text::_('COM_CWMCONNECT_PDF_TITLE'));
             $mpdf->SetAuthor(Text::_('COM_CWMCONNECT'));

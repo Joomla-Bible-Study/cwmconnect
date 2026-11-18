@@ -13,5 +13,13 @@
     "require": {
         "php": "^8.4.0",
         "mpdf/mpdf": "^8.2"
+    },
+    "scripts": {
+        "post-install-cmd": "@php prune-fonts.php",
+        "post-update-cmd": "@php prune-fonts.php"
+    },
+    "scripts-descriptions": {
+        "post-install-cmd": "Delete every mPDF font except DejaVu Sans (see prune-fonts.php).",
+        "post-update-cmd": "Delete every mPDF font except DejaVu Sans (see prune-fonts.php)."
     }
 }
