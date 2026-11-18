@@ -17,6 +17,7 @@ namespace CWM\Component\Cwmconnect\Administrator\Helper;
 
 use CWM\Component\Cwmconnect\Administrator\Service\Pc\PhotoThumbnailer;
 use CWM\Component\Cwmconnect\Site\Helper\PhotoAccess;
+use CWM\Component\Cwmconnect\Site\Service\DirectoryPdfFonts;
 use CWM\Component\Cwmconnect\Site\Service\DirectoryPdfPresenter;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Date\Date;
@@ -460,7 +461,7 @@ class ReportbuildHelper
         }
 
         try {
-            $mpdf = new \Mpdf\Mpdf($config);
+            $mpdf = new \Mpdf\Mpdf(DirectoryPdfFonts::config($config));
 
             $title = 'Church Member Directory';
             $mpdf->SetTitle($title);

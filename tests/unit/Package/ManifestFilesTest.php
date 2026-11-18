@@ -24,8 +24,9 @@ final class ManifestFilesTest extends TestCase
      * installed, keyed by the repository folder they are in.
      */
     private const array NOT_INSTALLED = [
-        // The recipe the build runs to generate vendor/; nothing reads it at runtime.
-        'libraries/mpdf' => ['composer.json'],
+        // The recipe the build runs to generate vendor/, and the script that trims its
+        // fonts after Composer installs it; nothing reads either at runtime.
+        'libraries/mpdf' => ['composer.json', 'prune-fonts.php'],
     ];
 
     /**

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace CWM\Component\Cwmconnect\Tests\Site\Service;
 
+use CWM\Component\Cwmconnect\Site\Service\DirectoryPdfFonts;
 use CWM\Component\Cwmconnect\Site\Service\DirectoryPdfPresenter;
 use Joomla\CMS\Language\Text;
 use PHPUnit\Framework\Attributes\CoversClass;
@@ -269,7 +270,8 @@ final class DirectoryPdfPresenterTest extends TestCase
             self::assertStringContainsString('hidden-badge', $html);
         }
 
-        $mpdf = new \Mpdf\Mpdf(['mode' => 'utf-8', 'format' => 'Letter', 'tempDir' => sys_get_temp_dir()]);
+        // The same font settings the component uses: CI installs lib_mpdf with its fonts pruned.
+        $mpdf = new \Mpdf\Mpdf(DirectoryPdfFonts::config(['mode' => 'utf-8', 'format' => 'Letter', 'tempDir' => sys_get_temp_dir()]));
         $mpdf->WriteHTML($html);
         $pdf = $mpdf->Output('', \Mpdf\Output\Destination::STRING_RETURN);
 
