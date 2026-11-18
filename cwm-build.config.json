@@ -118,10 +118,12 @@
         "endpoint": "https://www.christianwebministries.org",
         "categoryId": 0,
         "updateStreamId": 0,
+        "_environments_comment": "ARS environment ids on christianwebministries.org: 45 = Joomla 5, 46 = Joomla 6, 49 = PHP 8.4, 50 = PHP 8.5. ARS takes the lowest PHP environment as php_minimum, so 49 matches the 8.4 floor. The earlier 50/51/60 meant PHP 8.5, Joomla 7 and PHP 8.6.",
         "environments": [
-            "50",
-            "51",
-            "60"
+            "45",
+            "46",
+            "49",
+            "50"
         ],
         "tokenItem": "CWM ARS API Token",
         "tokenVault": "CWM",
