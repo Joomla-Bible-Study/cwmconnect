@@ -28,6 +28,14 @@ return new class implements ServiceProviderInterface {
      */
     public function register(Container $container): void
     {
+        // CWM Connect needs PHP 8.4, and its classes do not parse on anything older.
+        // There, register nothing: Joomla boots a do-nothing plugin in this one's
+        // place instead of the parse error taking the site down with it. See
+        // admin/services/provider.php.
+        if (PHP_VERSION_ID < 80400) {
+            return;
+        }
+
         $container->set(
             PluginInterface::class,
             $container->lazy(Cwmconnect::class, function (Container $container) {
