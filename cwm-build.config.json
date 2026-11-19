@@ -378,5 +378,8 @@
                 "plg_task_cwmconnect.zip"
             ]
         }
+    },
+    "release": {
+        "viaPullRequest": true
     }
 }
